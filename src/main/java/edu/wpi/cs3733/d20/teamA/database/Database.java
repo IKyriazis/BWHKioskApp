@@ -11,4 +11,27 @@ public abstract class Database {
       return;
     }
   }
+
+  /**
+   * makes connection
+   *
+   * @param str the sql statement in a string
+   * @return false if anything goes wrong
+   * @throws SQLException
+   */
+  public boolean helperPrepared(String str) throws SQLException {
+
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+
+      PreparedStatement stmt = conn.prepareStatement(str);
+
+      stmt.executeUpdate();
+      stmt.close();
+      conn.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
 }
