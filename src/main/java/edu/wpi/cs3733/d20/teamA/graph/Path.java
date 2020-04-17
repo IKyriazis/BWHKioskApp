@@ -104,7 +104,6 @@ public class Path {
         if (edge.getEnd().equals(pathNodes.get(i + 1))) {
           // Forward edge found, add it to the list.
           pathEdges.add(edge);
-          pathEdges.add(edge.getReverseEdge());
         }
       }
     }
