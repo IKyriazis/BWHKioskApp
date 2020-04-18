@@ -1,14 +1,18 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
+import edu.wpi.cs3733.d20.teamA.graph.Edge;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 public class MapCanvas extends Canvas {
   private Bounds viewSpace;
   private Image[] floorImages;
+  private Canvas canvas;
 
   public MapCanvas() {
     super();
@@ -56,5 +60,23 @@ public class MapCanvas extends Canvas {
             imgStart.getY(),
             imgEnd.getX() - imgStart.getX(),
             imgEnd.getY() - imgStart.getY());
+  }
+
+  // Draws an edge
+  public void drawEdges(Edge edge){
+    GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+
+    // Clear canvas
+    graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
+
+    Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
+    Point2D end = graphToCanvas(new Point2D(edge.getEnd().getX(), edge.getEnd().getY()));
+
+    // Set the color to blue for the edge
+    graphicsContext.setLineWidth(5);
+    graphicsContext.setStroke(Color.BLUE);
+
+    // Draw the line in between the points
+    graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
   }
 }
