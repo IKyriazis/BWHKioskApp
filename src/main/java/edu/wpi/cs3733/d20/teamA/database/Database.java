@@ -44,8 +44,6 @@ public abstract class Database {
       // connection.close();
       return true;
     } catch (SQLException e) {
-      System.out.println(str);
-      e.printStackTrace();
       return false;
     }
   }
