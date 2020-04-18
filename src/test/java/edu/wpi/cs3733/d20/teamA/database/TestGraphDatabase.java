@@ -5,14 +5,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestGraphDatabase {
-
   GraphDatabase DB;
 
   public TestGraphDatabase() throws SQLException {
     DB = new GraphDatabase();
   }
 
-  @Test
+  // @Test
   public void testDB() throws SQLException {
     boolean test = false;
     try {
