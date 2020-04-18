@@ -135,6 +135,10 @@ public class FlowerDatabase extends Database {
    */
   public boolean updateQTY(String type, String color, int newNum) throws SQLException {
 
+    if (newNum < 0) {
+      return false;
+    }
+
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
@@ -178,8 +182,7 @@ public class FlowerDatabase extends Database {
   }
 
   /** @return */
-  public boolean addOrder(int numFlowers, String flowerType, String flowerColor)
-      throws SQLException {
+  public int addOrder(int numFlowers, String flowerType, String flowerColor) throws SQLException {
 
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
@@ -213,9 +216,9 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       conn.close();
       orderNum++;
-      return true;
+      return orderNum - 1;
     } catch (SQLException e) {
-      return false;
+      return 0;
     }
   }
 
