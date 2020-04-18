@@ -8,6 +8,8 @@ public class TestGraphDatabase {
 
   GraphDatabase DB = new GraphDatabase();
 
+  public TestGraphDatabase() throws SQLException {}
+
   @Test
   public void testDB() throws SQLException {
     boolean test = false;

@@ -4,6 +4,8 @@ import java.sql.SQLException;
 
 public class FlowerDatabase extends Database {
 
+  public FlowerDatabase() throws SQLException {}
+
   /**
    * Drops the graph tables so we can start fresh
    *

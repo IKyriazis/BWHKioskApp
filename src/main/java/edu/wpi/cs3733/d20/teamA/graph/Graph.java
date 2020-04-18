@@ -22,7 +22,6 @@ public class Graph {
   /** Create a new empty graph, private b/c this is a singleton */
   private Graph() throws SQLException {
     nodes = new HashMap<>();
-    DB.makeDatabase();
     DB.dropTables();
     DB.createTables();
   }

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 public class TestFlowerDatabase {
   FlowerDatabase fDB = new FlowerDatabase();
 
+  public TestFlowerDatabase() throws SQLException {}
+
   @Test
   public void testDB() throws SQLException {
     boolean test = false;
