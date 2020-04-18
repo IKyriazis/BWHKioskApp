@@ -1,40 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<?import javafx.scene.image.Image?>
-<AnchorPane prefHeight="500.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.amethystasgardians.PictureBoothController">
+<AnchorPane prefHeight="500.0" prefWidth="1160.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PictureBoothController">
    <children>
       <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="500.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <bottom>
-            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="100.0" prefWidth="800.0" BorderPane.alignment="CENTER">
+         <center>
+            <ImageView fx:id="imageViewPictureBooth" fitHeight="540.0" fitWidth="960.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </center>
+         <left>
+            <SplitPane orientation="VERTICAL" prefHeight="540.0" prefWidth="200.0" BorderPane.alignment="CENTER">
               <items>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="50.0" prefWidth="800.0">
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                      <children>
-                        <Button layoutX="52.0" layoutY="11.0" mnemonicParsing="false" text="Image Cover 1" />
-                        <Button layoutX="195.0" layoutY="11.0" mnemonicParsing="false" text="Image Cover 2" />
-                        <Button layoutX="353.0" layoutY="11.0" mnemonicParsing="false" text="Image Cover 3" />
-                        <Button layoutX="502.0" layoutY="11.0" mnemonicParsing="false" text="Image Cover 4" />
-                        <Button layoutX="650.0" layoutY="11.0" mnemonicParsing="false" text="Image Cover 5" />
-                     </children>
-                  </AnchorPane>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="50.0" prefWidth="160.0">
-                     <children>
-                        <Button layoutX="359.0" layoutY="11.0" mnemonicParsing="false" text="Take Picture" />
-                        <Button layoutX="575.0" layoutY="11.0" mnemonicParsing="false" text="Retake Picture" />
-                        <Button fx:id="btnHome" layoutX="130.0" layoutY="11.0" mnemonicParsing="false" text="Back to Home" />
+                        <JFXComboBox fx:id="dropdownMenu" focusColor="#00bf23" layoutX="27.0" layoutY="89.0" promptText="Choose an Overlay!" unFocusColor="WHITE" />
+                        <JFXButton fx:id="takePictureButton" layoutX="55.0" layoutY="257.0" text="Take a Picture" />
                      </children>
                   </AnchorPane>
               </items>
             </SplitPane>
-         </bottom>
-         <center>
-            <ImageView fx:id="imageViewPictureBooth" fitHeight="400.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER"/>
-         </center>
+         </left>
       </BorderPane>
    </children>
 </AnchorPane>
