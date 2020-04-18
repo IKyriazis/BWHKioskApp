@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.FlowerAdminController">
     <children>
         <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -30,7 +30,7 @@
                                  </font>
                               </Label>
                               <Separator prefWidth="200.0" />
-                              <TableView prefWidth="500.0">
+                              <TableView fx:id="tblFlowerView" prefWidth="500.0">
                                  <VBox.margin>
                                     <Insets bottom="50.0" left="25.0" right="25.0" top="10.0" />
                                  </VBox.margin>
@@ -46,6 +46,9 @@
                                  </font>
                               </Label>
                               <Separator prefWidth="200.0" />
+                              <JFXButton onAction="#addFlower" text="Add New Flower" />
+                              <JFXButton text="Edit Existing Flower" />
+                              <JFXButton text="Delete Flower" />
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
@@ -102,7 +105,7 @@
                                  </font>
                               </Label>
                               <JFXButton prefWidth="150.0" text="Return to Admin Screen" />
-                              <JFXButton prefWidth="150.0" text="Logout of Admin Mode" />
+                              <JFXButton onAction="#cancel" prefWidth="150.0" text="Logout of Admin Mode" />
                            </children>
                         </VBox>
                      </children>

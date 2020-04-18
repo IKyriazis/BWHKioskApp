@@ -1,10 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /** Represents locations on the map in an 'undirected' Graph */
 public class Graph {
+
+  GraphDatabase DB = new GraphDatabase();
   /** The nodes in this graph, mapping ID to Node */
   private HashMap<String, Node> nodes;
   // private GraphDatabase database;
@@ -16,9 +20,11 @@ public class Graph {
   private int edgeCount = 0;
 
   /** Create a new empty graph, private b/c this is a singleton */
-  private Graph() {
+  private Graph() throws SQLException {
     nodes = new HashMap<>();
-    // TODO; Load database
+    DB.makeDatabase();
+    DB.dropTables();
+    DB.createTables();
   }
 
   /**
@@ -26,7 +32,7 @@ public class Graph {
    *
    * @return instance
    */
-  public static Graph getInstance() {
+  public static Graph getInstance() throws SQLException {
     return (instance == null) ? (instance = new Graph()) : instance;
   }
 
@@ -54,7 +60,7 @@ public class Graph {
    * @param node Node to add to graph
    * @return Success / Failure
    */
-  public boolean addNode(Node node) {
+  public boolean addNode(Node node) throws SQLException {
     if ((node == null) || (nodes.containsKey(node.getNodeID()))) {
       // Skip if node doesn't exist or already is in the graph.
       return false;
@@ -62,7 +68,16 @@ public class Graph {
 
     nodes.put(node.getNodeID(), node);
 
-    // TODO; Update database
+    DB.addNode(
+        node.getNodeID(),
+        node.getX(),
+        node.getY(),
+        node.getFloor(),
+        node.getBuilding(),
+        node.getStringType(),
+        node.getLongName(),
+        node.getShortName(),
+        node.getTeamAssigned());
 
     return true;
   }
@@ -75,7 +90,7 @@ public class Graph {
    * @param weight Weight of edge
    * @return Success / Failure
    */
-  public boolean addEdge(Node start, Node end, int weight) {
+  public boolean addEdge(Node start, Node end, int weight) throws SQLException {
     // Skip if either node doesn't exist
     if (start == null || end == null) return false;
 
@@ -95,7 +110,8 @@ public class Graph {
     // Update edge count
     edgeCount++;
 
-    // TODO; Update database
+    DB.addEdge(start.getNodeID() + "_" + end.getNodeID(), start.getNodeID(), end.getNodeID());
+    DB.addEdge(end.getNodeID() + "_" + start.getNodeID(), end.getNodeID(), start.getNodeID());
     return true;
   }
 
@@ -105,7 +121,7 @@ public class Graph {
    * @param node Node to delete
    * @return Success / Failure
    */
-  public boolean deleteNode(Node node) {
+  public boolean deleteNode(Node node) throws SQLException {
     // Skip if node is null or is already in graph
     if ((node == null) || (!nodes.containsKey(node.getNodeID()))) return false;
 
@@ -116,7 +132,7 @@ public class Graph {
     // Delete node
     nodes.remove(node.getNodeID());
 
-    // TODO; Update database
+    DB.deleteNode(node.getNodeID());
 
     return true;
   }
@@ -127,7 +143,7 @@ public class Graph {
    * @param nodeID ID of node to delete
    * @return Success / Failure
    */
-  public boolean deleteNode(String nodeID) {
+  public boolean deleteNode(String nodeID) throws SQLException {
     return deleteNode(nodes.get(nodeID));
   }
 
@@ -151,11 +167,14 @@ public class Graph {
 
     Edge reverse = forward.getReverseEdge();
     if (reverse == null) return false;
+    try {
+      DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID());
+      DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID());
+    } catch (SQLException e) {
 
+    }
     // Update edge count
     edgeCount--;
-
-    // TODO: Update database
 
     return (start.deleteEdge(forward) && end.deleteEdge(reverse));
   }
@@ -224,5 +243,9 @@ public class Graph {
 
     // Reset edge count
     edgeCount = 0;
+  }
+
+  public GraphDatabase getDB() {
+    return DB;
   }
 }
