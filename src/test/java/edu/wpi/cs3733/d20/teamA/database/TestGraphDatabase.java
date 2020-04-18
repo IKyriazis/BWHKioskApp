@@ -11,7 +11,7 @@ public class TestGraphDatabase {
     DB = new GraphDatabase();
   }
 
-  // @Test
+  @Test
   public void testDB() throws SQLException {
     boolean test = false;
     try {
