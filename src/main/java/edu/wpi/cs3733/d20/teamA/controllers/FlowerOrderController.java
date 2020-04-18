@@ -8,15 +8,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
 
 public class FlowerOrderController {
-  @FXML private ChoiceBox choiceFlower;
+  // @FXML private ChoiceBox choiceFlower;
 
   public void initialize() {
-    choiceFlower.getItems().add("Flower1");
-    choiceFlower.getItems().add("Flower2");
+    /*choiceFlower.getItems().add("Flower1");
+    choiceFlower.getItems().add("Flower2");*/
   }
 
   @FXML
