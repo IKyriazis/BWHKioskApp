@@ -31,7 +31,26 @@ public abstract class Database {
       conn.close();
       return true;
     } catch (SQLException e) {
-      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean helperEmpty(String str) throws SQLException {
+
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery(str);
+
+      if (rs.next() == false) {
+        return false;
+      }
+
+      stmt.close();
+      conn.close();
+      return true;
+    } catch (SQLException e) {
       return false;
     }
   }
