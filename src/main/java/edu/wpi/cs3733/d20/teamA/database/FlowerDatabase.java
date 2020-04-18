@@ -268,7 +268,7 @@ public class FlowerDatabase extends Database {
     return removeAllFlowers() && removeAllOrders();
   }
 
-  public ObservableList<Flower> databaseToOL() throws SQLException {
+  public ObservableList<Flower> flowerOl() throws SQLException {
     ObservableList<Flower> oList = FXCollections.observableArrayList();
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");

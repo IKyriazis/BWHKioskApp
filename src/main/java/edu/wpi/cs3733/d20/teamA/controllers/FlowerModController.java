@@ -19,11 +19,13 @@ public class FlowerModController {
   @FXML private JFXTextField txtCost;
 
   private Flower myFlower;
+  private FlowerAdminController lastController;
 
-  public FlowerModController(FlowerDatabase database) {
+  public FlowerModController(FlowerDatabase database, FlowerAdminController flowerAdminController) {
     System.out.println("Constructor for modify window");
     d = database;
     modify = false;
+    lastController = flowerAdminController;
   }
 
   /* public FlowerModController(ModifyController ctrl) {
@@ -75,6 +77,7 @@ public class FlowerModController {
     Stage stage;
     stage =
         (Stage) this.txtColor.getScene().getWindow(); // Get the stage from an arbitrary component
+    lastController.update();
     stage.close();
   }
 }

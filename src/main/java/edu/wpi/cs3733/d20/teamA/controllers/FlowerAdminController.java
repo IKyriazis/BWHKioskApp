@@ -42,9 +42,7 @@ public class FlowerAdminController {
     TableColumn column4 = new TableColumn("Unit Price");
     column4.setCellValueFactory(new PropertyValueFactory<>("pricePer"));
 
-    // ObservableList o = database.databaseToOL();
-    System.out.println("Load table");
-    // tblFlowerView.setItems(o);
+    tblFlowerView.setItems(database.flowerOl());
     tblFlowerView.getColumns().addAll(column1, column2, column3, column4);
   }
 
@@ -61,7 +59,7 @@ public class FlowerAdminController {
     FXMLLoader load = new FXMLLoader();
     load.setControllerFactory(
         param -> {
-          return new FlowerModController(database);
+          return new FlowerModController(database, this);
         });
     load.setLocation(App.class.getResource("views/AddFlowerPopup.fxml"));
 
@@ -69,6 +67,10 @@ public class FlowerAdminController {
     Scene scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
+  }
+
+  public void update() throws SQLException {
+    tblFlowerView.setItems(database.flowerOl());
   }
 
   @FXML

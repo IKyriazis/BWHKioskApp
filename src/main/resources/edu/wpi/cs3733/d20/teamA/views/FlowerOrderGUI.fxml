@@ -5,6 +5,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
@@ -41,13 +42,17 @@
                   <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
                      <children>
                         <Label text="Type of flower:" />
-                        <JFXComboBox fx:id="choiceFlower" prefHeight="25.0" prefWidth="155.0" />
+                        <JFXComboBox fx:id="choiceFlower" onAction="#setMaxNumber" prefHeight="25.0" prefWidth="155.0" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
                      <children>
                         <Label text="Number of flowers:" />
-                        <JFXComboBox prefHeight="25.0" prefWidth="155.0" />
+                        <Spinner fx:id="spnNum">
+                           <VBox.margin>
+                              <Insets top="8.0" />
+                           </VBox.margin>
+                        </Spinner>
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" spacing="5.0">
@@ -61,12 +66,12 @@
             <HBox alignment="CENTER" prefHeight="44.0" prefWidth="600.0">
                <children>
                   <Label alignment="CENTER" text="Total:  " textAlignment="CENTER" />
-                  <JFXTextField />
+                  <JFXTextField fx:id="txtTotal" />
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                <children>
-                  <JFXButton text="Submit" />
+                  <JFXButton onAction="#placeOrder" text="Submit" />
                   <JFXButton onAction="#cancel" text="Cancel" />
                </children>
             </HBox>
