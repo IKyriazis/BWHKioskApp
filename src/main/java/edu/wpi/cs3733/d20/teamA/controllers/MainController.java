@@ -1,9 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.graph.Graph;
+import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import java.io.IOException;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +21,9 @@ import javafx.stage.Stage;
 public class MainController {
   @FXML private VBox searchFields;
   @FXML private MapCanvas canvas;
+  @FXML private JFXComboBox startLocation;
+  @FXML private JFXComboBox destination;
+  private Graph graph;
 
   public void initialize() {
     searchFields.setVisible(false);
@@ -52,5 +60,17 @@ public class MainController {
     Scene scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
+  }
+
+  @FXML
+  public void displayNodes(ActionEvent actionEvent) {
+    ObservableList<Node> mapNodes = FXCollections.observableArrayList();
+
+    for (Node node : graph.getNodes().values()) {
+      mapNodes.add(node);
+    }
+
+    startLocation.setItems(mapNodes);
+    destination.setItems(mapNodes);
   }
 }

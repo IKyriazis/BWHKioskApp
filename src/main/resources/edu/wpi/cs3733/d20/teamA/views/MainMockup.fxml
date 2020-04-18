@@ -14,8 +14,8 @@
             </AnchorPane>
             <VBox fx:id="searchFields" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0" style="-fx-background-color: #d0d0d0; -fx-background-radius: 0 0 25 0; -fx-border-radius: 25; -fx-border-color: #d0d0d0; -fx-border-width: 0 25 25 0;" StackPane.alignment="TOP_LEFT">
                <children>
-                  <JFXComboBox editable="true" labelFloat="true" prefWidth="150.0" promptText="Starting Location" />
-                  <JFXComboBox editable="true" labelFloat="true" prefWidth="150.0" promptText="Destination" />
+                  <JFXComboBox fx:id="startLocation" editable="true" labelFloat="true" onAction="#displayNodes" prefWidth="150.0" promptText="Starting Location" />
+                  <JFXComboBox fx:id="destination" editable="true" labelFloat="true" onAction="#displayNodes" prefWidth="150.0" promptText="Destination" />
                   <JFXButton mnemonicParsing="false" text="Go" />
                </children>
                <padding>
