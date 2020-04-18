@@ -65,7 +65,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws an edge
-  public void drawEdge(Edge edge){
+  public void drawEdge(Edge edge) {
     GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
@@ -80,24 +80,23 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws a node on the map
-  public void drawNode(Node node){
+  public void drawNode(Node node) {
     GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
     graphicsContext.setFill(Color.DARKTURQUOISE);
 
     Point2D nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
-    graphicsContext.fillOval(nodePoint.getX() - 4, nodePoint.getY() - 4,8, 8);
+    graphicsContext.fillOval(nodePoint.getX() - 4, nodePoint.getY() - 4, 8, 8);
   }
 
   // Draws the path found
-  public void drawPath(Path path){
-    for(Node node: path.getPathNodes()){
+  public void drawPath(Path path) {
+    for (Node node : path.getPathNodes()) {
       drawNode(node);
     }
 
-    for(Edge edge: path.getPathEdges()){
+    for (Edge edge : path.getPathEdges()) {
       drawEdge(edge);
     }
   }
-
 }
