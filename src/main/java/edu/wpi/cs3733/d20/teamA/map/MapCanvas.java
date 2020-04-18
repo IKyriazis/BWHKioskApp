@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.map;
 
 import edu.wpi.cs3733.d20.teamA.graph.Edge;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.graph.Path;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -67,9 +68,6 @@ public class MapCanvas extends Canvas {
   public void drawEdge(Edge edge){
     GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
-    // Clear canvas
-    graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
     Point2D end = graphToCanvas(new Point2D(edge.getEnd().getX(), edge.getEnd().getY()));
 
@@ -85,12 +83,21 @@ public class MapCanvas extends Canvas {
   public void drawNode(Node node){
     GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
-    graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
-
     graphicsContext.setFill(Color.DARKTURQUOISE);
 
     Point2D nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
     graphicsContext.fillOval(nodePoint.getX() - 4, nodePoint.getY() - 4,8, 8);
+  }
+
+  // Draws the path found
+  public void drawPath(Path path){
+    for(Node node: path.getPathNodes()){
+      drawNode(node);
+    }
+
+    for(Edge edge: path.getPathEdges()){
+      drawEdge(edge);
+    }
   }
 
 }
