@@ -32,4 +32,25 @@ public class TestJanitorDatabase {
     Assertions.assertTrue(dropTables2);
     jDB.createTables();
   }
+
+  @Test
+  public void testAddRequest() throws SQLException {
+    jDB.removeAll();
+    boolean a = jDB.addRequest("biscuit", "High");
+    Assertions.assertTrue(a);
+    boolean b = jDB.addRequest("ADEPT00101", "Extra Large");
+    Assertions.assertFalse(b);
+    jDB.removeAll();
+  }
+
+  //  Unsure on how to test deleteRequest() because we need the request timestamp to delete it but
+  // that is stored in
+  //  the database
+  //  @Test
+  //  public void testDeleteRequest() throws SQLException {
+  //    jDB.removeAll();
+  //    boolean a = jDB.addRequest("Lobby", "High");
+  //    boolean b = jDB.addRequest("Main A", "Medium");
+  //    boolean c = jDB.deleteRequest("Main A", )
+  //  }
 }
