@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,9 @@ public class TestPath {
   Node nodeH = new Node("NodeH", 3, 8, 0, "", NodeType.HALL, "", "", "");
   Node nodeI = new Node("NodeI", 6, 8, 0, "", NodeType.HALL, "", "", "");
 
-  public void setupFirstGraph() {
+  public TestPath() throws SQLException {}
+
+  public void setupFirstGraph() throws SQLException {
     graph.clearGraph();
 
     // Add Nodes to Graph
@@ -39,7 +42,7 @@ public class TestPath {
     graph.addEdge(node1, node4, 1);
   }
 
-  public void setupSecondGraph() {
+  public void setupSecondGraph() throws SQLException {
     graph.clearGraph();
 
     graph.addNode(nodeA);
@@ -71,7 +74,7 @@ public class TestPath {
   }
 
   @Test
-  public void testAStarGraph1() {
+  public void testAStarGraph1() throws SQLException {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(node1);
     realPath.add(node3);
@@ -87,7 +90,7 @@ public class TestPath {
   }
 
   @Test
-  public void testAStarGraph2() {
+  public void testAStarGraph2() throws SQLException {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(nodeG);
     realPath.add(nodeH);
