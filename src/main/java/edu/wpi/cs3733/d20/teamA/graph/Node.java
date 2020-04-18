@@ -3,7 +3,7 @@ package edu.wpi.cs3733.d20.teamA.graph;
 import java.util.HashMap;
 
 /** Represents a mostly immutable node on the graph */
-public class Node {
+public class Node implements Comparable<Node> {
   /** Map of edges in this node, mapping End Node to Edge */
   private final HashMap<Node, Edge> edges;
 
@@ -233,5 +233,26 @@ public class Node {
     }
 
     return false;
+  }
+
+  /**
+   * Compar nodes based on cost
+   *
+   * @param o Other node
+   * @return -1 = Lesser, 0 = Equal, 1 = Greater
+   */
+  @Override
+  public int compareTo(Node o) {
+    return Integer.compare(cost, o.getCost());
+  }
+
+  /**
+   * Convert this node to a string based off of node iD
+   *
+   * @return Node ID
+   */
+  @Override
+  public String toString() {
+    return nodeID;
   }
 }

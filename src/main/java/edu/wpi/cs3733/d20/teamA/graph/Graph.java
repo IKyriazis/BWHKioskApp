@@ -22,7 +22,6 @@ public class Graph {
   /** Create a new empty graph, private b/c this is a singleton */
   private Graph() throws SQLException {
     nodes = new HashMap<>();
-    DB.makeDatabase();
     DB.dropTables();
     DB.createTables();
   }
@@ -43,6 +42,15 @@ public class Graph {
    */
   public int getNodeCount() {
     return nodes.size();
+  }
+
+  /**
+   * Get the nodes in the graph
+   *
+   * @return Node map
+   */
+  public HashMap<String, Node> getNodes() {
+    return nodes;
   }
 
   /**

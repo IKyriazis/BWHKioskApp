@@ -5,6 +5,7 @@ import java.sql.*;
 public class FlowerDatabase extends Database {
 
   private int orderNum = 1;
+  public FlowerDatabase() throws SQLException {}
 
   /**
    * Drops the graph tables so we can start fresh

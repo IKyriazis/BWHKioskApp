@@ -4,6 +4,10 @@ import java.sql.*;
 
 public abstract class Database {
 
+  public Database() throws SQLException {
+    makeDatabase();
+  }
+
   public static void makeDatabase() throws SQLException {
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase;create=true");

@@ -10,6 +10,8 @@ public class TestFlowerDatabase {
   FlowerDatabase fDB = new FlowerDatabase();
   GraphDatabase DB = new GraphDatabase();
 
+  public TestFlowerDatabase() throws SQLException {}
+
   @Test
   public void testDB() throws SQLException {
     boolean test = false;
