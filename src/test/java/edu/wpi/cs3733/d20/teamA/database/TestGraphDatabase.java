@@ -6,9 +6,11 @@ import org.junit.jupiter.api.Test;
 
 public class TestGraphDatabase {
 
-  GraphDatabase DB = new GraphDatabase();
+  GraphDatabase DB;
 
-  public TestGraphDatabase() throws SQLException {}
+  public TestGraphDatabase() throws SQLException {
+    DB = new GraphDatabase();
+  }
 
   @Test
   public void testDB() throws SQLException {
