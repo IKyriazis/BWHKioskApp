@@ -4,6 +4,8 @@ import java.sql.*;
 
 public class GraphDatabase extends Database {
 
+  public GraphDatabase() throws SQLException {}
+
   /**
    * Drops the graph tables so we can start fresh
    *
