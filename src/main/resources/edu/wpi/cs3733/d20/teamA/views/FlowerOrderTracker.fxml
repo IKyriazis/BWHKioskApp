@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.FlowerTrackerController">
    <children>
       <VBox alignment="TOP_CENTER" layoutX="200.0" layoutY="56.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -47,7 +47,7 @@
             </HBox>
             <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="125.0" prefWidth="600.0">
                <children>
-                  <Button maxWidth="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefWidth="200.0" text="Return to previous screen" />
+                  <Button onAction="#cancel" maxWidth="-Infinity" minHeight="-Infinity" mnemonicParsing="false" prefWidth="200.0" text="Return to previous screen" />
                </children>
             </HBox>
          </children>

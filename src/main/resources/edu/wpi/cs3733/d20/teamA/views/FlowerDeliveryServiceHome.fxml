@@ -7,7 +7,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="400.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ServiceSelector">
    <children>
       <BorderPane layoutX="206.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -25,8 +25,8 @@
          <center>
             <AnchorPane prefHeight="300.0" prefWidth="600.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button layoutX="178.0" layoutY="138.0" mnemonicParsing="false" prefWidth="84.0" scaleX="3.0" scaleY="3.0" text="Place Order" AnchorPane.leftAnchor="200.0" />
-                  <Button layoutX="579.0" layoutY="138.0" mnemonicParsing="false" scaleX="3.0" scaleY="3.0" text="Check Status" AnchorPane.rightAnchor="200.0" />
+                  <Button layoutX="178.0" layoutY="138.0" mnemonicParsing="false" onAction="#placeOrderFlowers" prefWidth="84.0" scaleX="3.0" scaleY="3.0" text="Place Order" AnchorPane.leftAnchor="200.0" />
+                  <Button layoutX="579.0" layoutY="138.0" mnemonicParsing="false" onAction="#viewOrderFlowers" scaleX="3.0" scaleY="3.0" text="Check Status" AnchorPane.rightAnchor="200.0" />
                </children></AnchorPane>
          </center>
       </BorderPane>

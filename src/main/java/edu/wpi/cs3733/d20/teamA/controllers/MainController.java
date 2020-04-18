@@ -13,6 +13,10 @@ import javafx.stage.Stage;
 public class MainController {
   @FXML private VBox searchFields;
 
+  public void initialize() {
+    searchFields.setVisible(false);
+  }
+
   @FXML
   public void toggleSearch(ActionEvent actionEvent) {
     searchFields.setVisible(!searchFields.isVisible());
@@ -21,7 +25,7 @@ public class MainController {
   @FXML
   public void showServices() throws IOException {
     Stage stage = new Stage();
-    Parent root = FXMLLoader.load(App.class.getResource("views/ServiceSelect.fxml"));
+    Parent root = FXMLLoader.load(App.class.getResource("views/FlowerDeliveryServiceHome.fxml"));
 
     Scene scene = new Scene(root);
     stage.setScene(scene);
