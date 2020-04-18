@@ -11,7 +11,9 @@
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0">
          <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
-            </AnchorPane>
+               <children>
+                  <JFXSlider layoutX="846.0" layoutY="672.0" value="-1.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+               </children></AnchorPane>
             <VBox fx:id="searchFields" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0" style="-fx-background-color: #d0d0d0; -fx-background-radius: 0 0 25 0; -fx-border-radius: 25; -fx-border-color: #d0d0d0; -fx-border-width: 0 25 25 0;" StackPane.alignment="TOP_LEFT">
                <children>
                   <JFXComboBox fx:id="startLocation" editable="true" labelFloat="true" onAction="#displayNodes" prefWidth="150.0" promptText="Starting Location" />

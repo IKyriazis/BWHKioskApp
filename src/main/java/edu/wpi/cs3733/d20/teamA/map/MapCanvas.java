@@ -12,10 +12,12 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class MapCanvas extends Canvas {
-  private Bounds viewSpace;
   private int lastDrawnFloor = 0;
   private Image[] floorImages;
   private Canvas canvas;
+
+  private Bounds viewSpace;
+  private Bounds floorSpace;
 
   public MapCanvas() {
     super();
@@ -58,7 +60,7 @@ public class MapCanvas extends Canvas {
         (point.getY() * yRatio) + viewSpace.getMinY());
   }
 
-  private void fitToFloor(int floor, boolean forceRefit) {
+  private void calcFloorSpace(int floor, boolean forceRefit) {
     if ((lastDrawnFloor == floor) && (!forceRefit)) {
       return;
     }
@@ -81,7 +83,7 @@ public class MapCanvas extends Canvas {
   }
 
   public void drawFloorBackground(int floor) {
-    fitToFloor(floor, false);
+    calcFloorSpace(floor, false);
 
     // Clamp floor to between 1 and 5
     floor = Math.max(1, Math.min(floor, 5));
@@ -139,7 +141,7 @@ public class MapCanvas extends Canvas {
     super.resize(width, height);
 
     lastDrawnFloor = Math.max(lastDrawnFloor, 1);
-    fitToFloor(lastDrawnFloor, true);
+    calcFloorSpace(lastDrawnFloor, true);
     drawFloorBackground(lastDrawnFloor);
   }
 }

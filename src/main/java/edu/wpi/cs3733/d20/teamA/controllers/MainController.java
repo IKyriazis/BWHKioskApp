@@ -20,18 +20,21 @@ import javafx.stage.Stage;
 
 public class MainController {
   @FXML private VBox searchFields;
-  @FXML private MapCanvas canvas;
   @FXML private JFXComboBox startLocation;
   @FXML private JFXComboBox destination;
   private Graph graph;
+  @FXML private AnchorPane canvasPane;
+
+  private MapCanvas canvas;
 
   public void initialize() {
     searchFields.setVisible(false);
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
-    AnchorPane anchorPane = (AnchorPane) canvas.getParent();
-    canvas.widthProperty().bind(anchorPane.widthProperty());
-    canvas.heightProperty().bind(anchorPane.heightProperty());
+    canvas = new MapCanvas();
+    canvasPane.getChildren().add(0, canvas);
+    canvas.widthProperty().bind(canvasPane.widthProperty());
+    canvas.heightProperty().bind(canvasPane.heightProperty());
 
     // Draw background asap
     Platform.runLater(() -> canvas.drawFloorBackground(1));
