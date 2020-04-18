@@ -198,6 +198,10 @@ public class Node {
     return type;
   }
 
+  public String getStringType() {
+    return type.toString();
+  }
+
   /**
    * Get the cost to reach this node, only used for path finding
    *

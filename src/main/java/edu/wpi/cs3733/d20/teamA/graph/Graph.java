@@ -1,10 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /** Represents locations on the map in an 'undirected' Graph */
 public class Graph {
+
+  GraphDatabase DB = new GraphDatabase();
   /** The nodes in this graph, mapping ID to Node */
   private HashMap<String, Node> nodes;
   // private GraphDatabase database;
@@ -16,9 +20,11 @@ public class Graph {
   private int edgeCount = 0;
 
   /** Create a new empty graph, private b/c this is a singleton */
-  private Graph() {
+  private Graph() throws SQLException {
     nodes = new HashMap<>();
-    // TODO; Load database
+    DB.makeDatabase();
+    DB.dropTables();
+    DB.createTables();
   }
 
   /**
@@ -26,7 +32,7 @@ public class Graph {
    *
    * @return instance
    */
-  public static Graph getInstance() {
+  public static Graph getInstance() throws SQLException {
     return (instance == null) ? (instance = new Graph()) : instance;
   }
 
@@ -54,7 +60,7 @@ public class Graph {
    * @param node Node to add to graph
    * @return Success / Failure
    */
-  public boolean addNode(Node node) {
+  public boolean addNode(Node node) throws SQLException {
     if ((node == null) || (nodes.containsKey(node.getNodeID()))) {
       // Skip if node doesn't exist or already is in the graph.
       return false;
@@ -62,7 +68,16 @@ public class Graph {
 
     nodes.put(node.getNodeID(), node);
 
-    // TODO; Update database
+    DB.addNode(
+        node.getNodeID(),
+        node.getX(),
+        node.getY(),
+        node.getFloor(),
+        node.getBuilding(),
+        node.getStringType(),
+        node.getLongName(),
+        node.getShortName(),
+        node.getTeamAssigned());
 
     return true;
   }
@@ -224,5 +239,9 @@ public class Graph {
 
     // Reset edge count
     edgeCount = 0;
+  }
+
+  public GraphDatabase getDB() {
+    return DB;
   }
 }
