@@ -47,8 +47,8 @@
                               </Label>
                               <Separator prefWidth="200.0" />
                               <JFXButton onAction="#addFlower" text="Add New Flower" />
-                              <JFXButton text="Edit Existing Flower" />
-                              <JFXButton text="Delete Flower" />
+                              <JFXButton onAction="#editFlower" text="Edit Existing Flower" />
+                              <JFXButton onAction="#deleteFlower" text="Delete Flower" />
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />

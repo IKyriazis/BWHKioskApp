@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -18,7 +20,7 @@ import javafx.stage.Stage;
 public class FlowerAdminController {
   private FlowerDatabase database;
 
-  @FXML private TableView tblFlowerView;
+  @FXML private TableView<Flower> tblFlowerView;
 
   public void initialize() throws SQLException {
     database = new FlowerDatabase();
@@ -47,20 +49,55 @@ public class FlowerAdminController {
   }
 
   public void addFlower(ActionEvent actionEvent) throws IOException {
-    toFlowerPopUp();
-  }
-
-  // Scene Switch
-  @FXML
-  public void toFlowerPopUp() throws IOException {
-
-    Stage stage = new Stage();
-    Parent root;
     FXMLLoader load = new FXMLLoader();
     load.setControllerFactory(
         param -> {
           return new FlowerModController(database, this);
         });
+
+    toFlowerPopUp(load);
+  }
+
+  public void editFlower(ActionEvent actionEvent) throws IOException {
+    Flower f = tblFlowerView.getSelectionModel().getSelectedItem();
+    if (f == null) {
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("No item selected");
+      alert.setContentText("Please select an item by clicking a row in the table");
+      alert.show();
+    } else {
+      FXMLLoader load = new FXMLLoader();
+      load.setControllerFactory(
+          param -> {
+            return new FlowerModController(database, this, f);
+          });
+
+      toFlowerPopUp(load);
+    }
+  }
+
+  public void deleteFlower(ActionEvent actionEvent) throws SQLException {
+    Flower f = tblFlowerView.getSelectionModel().getSelectedItem();
+    if (f != null) {
+      String name = f.getTypeFlower();
+      String color = f.getColor();
+      database.deleteFlower(name, color);
+      update();
+    } else {
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("No item selected");
+      alert.setContentText("Please select an item by clicking a row in the table");
+      alert.show();
+    }
+  }
+
+  // Scene Switch
+  @FXML
+  public void toFlowerPopUp(FXMLLoader load) throws IOException {
+    Stage stage = new Stage();
+
+    Parent root;
+
     load.setLocation(App.class.getResource("views/AddFlowerPopup.fxml"));
 
     root = load.load();

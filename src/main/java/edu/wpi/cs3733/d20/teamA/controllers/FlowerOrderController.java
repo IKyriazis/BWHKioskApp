@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
@@ -13,12 +14,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Spinner;
 import javafx.stage.Stage;
 
 public class FlowerOrderController {
-  @FXML private JFXComboBox choiceFlower;
-  @FXML private Spinner spnNumber;
+  @FXML private JFXComboBox<String> choiceFlower;
+  @FXML private JFXTextField txtNumber;
   private FlowerDatabase data;
 
   public FlowerOrderController() throws SQLException {
@@ -51,14 +51,19 @@ public class FlowerOrderController {
     stage.show();
   }
 
-  public void placeOrder(ActionEvent actionEvent) {
-    if(choiceFlower.getSelectionModel().getSelectedItem() != null)
-    {
-      //data.addOrder(num,type,color)
+  public void placeOrder(ActionEvent actionEvent) throws SQLException {
+    if (choiceFlower.getSelectionModel().getSelectedItem() != null) {
+      String s = choiceFlower.getSelectionModel().getSelectedItem();
+      String type = s.substring(0, s.indexOf(','));
+      String color = s.substring(s.indexOf('0') + 1);
+
+      int num = Integer.parseInt(txtNumber.getText());
+
+      data.addOrder(num, type, color);
+
+      // Close window if successful
     }
   }
 
-  public void setMaxNumber(ActionEvent actionEvent) {
-
-  }
+  public void setMaxNumber(ActionEvent actionEvent) {}
 }

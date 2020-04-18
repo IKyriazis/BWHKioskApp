@@ -22,46 +22,31 @@ public class FlowerModController {
   private FlowerAdminController lastController;
 
   public FlowerModController(FlowerDatabase database, FlowerAdminController flowerAdminController) {
-    System.out.println("Constructor for modify window");
     d = database;
     modify = false;
     lastController = flowerAdminController;
   }
 
-  /* public FlowerModController(ModifyController ctrl) {
-      modify = false;
-
-      prevControl = ctrl;
+  public FlowerModController(
+      FlowerDatabase database, FlowerAdminController flowerAdminController, Flower f) {
+    d = database;
+    modify = true;
+    lastController = flowerAdminController;
+    myFlower = f;
   }
 
-  public NodesPopUpController(ModifyController ctrl, ProtoNode n) {
-      modify = true;
-
-      prevControl = ctrl;
-
-      myNode = n;
-  }*/
-
   public void initialize() {
-    /*nodeType.getItems().addAll(types);
-    nodeType.getSelectionModel().select(0);
     if (modify) {
-        nodeID.setText(myNode.getId());
-
-        nodeType.getSelectionModel().select(myNode.getNodeType());
-
-        nodeID.setText(myNode.getId());
-        floor.setText("" + myNode.getFloor());
-        building.setText(myNode.getBuilding());
-        longName.setText(myNode.getLongName());
-        shortName.setText(myNode.getShortName());
-        xCoord.setText("" + myNode.getXcoord());
-        yCoord.setText("" + myNode.getYcoord());
-
-        nodeID.setEditable(false);
-
-        done.setDisable(false);
-    }*/
+      txtName.setEditable(false);
+      txtColor.setEditable(false);
+      txtName.setText(myFlower.getTypeFlower());
+      txtColor.setText(myFlower.getColor());
+      txtQty.setText("" + myFlower.getQty());
+      txtCost.setText("" + myFlower.getPricePer());
+    } else {
+      txtName.setEditable(true);
+      txtColor.setEditable(true);
+    }
   }
 
   // Scene switch & database addNode
@@ -73,7 +58,11 @@ public class FlowerModController {
     double price = Double.parseDouble(txtCost.getText());
 
     if (!modify) d.addFlower(name, color, qty, price);
-    // MODIFY FLOWER else d.c(name,color,qty,price);
+    else {
+      d.updatePrice(name, color, price);
+      d.updateQTY(name, color, qty);
+    }
+
     Stage stage;
     stage =
         (Stage) this.txtColor.getScene().getWindow(); // Get the stage from an arbitrary component
