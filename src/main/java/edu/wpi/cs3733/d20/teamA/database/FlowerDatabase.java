@@ -5,8 +5,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class FlowerDatabase extends Database {
-
   private int orderNum = 1;
+
+  public FlowerDatabase() throws SQLException {}
 
   /**
    * Drops the graph tables so we can start fresh
@@ -296,10 +297,8 @@ public class FlowerDatabase extends Database {
     }
   }
 
-  //public Flower getFlowerInfo(String type, String ){
+  // public Flower getFlowerInfo(String type, String ){
 
-
-
-  //}
+  // }
 
 }
