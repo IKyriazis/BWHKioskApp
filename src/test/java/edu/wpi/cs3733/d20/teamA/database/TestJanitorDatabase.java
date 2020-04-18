@@ -36,7 +36,7 @@ public class TestJanitorDatabase {
   @Test
   public void testAddRequest() throws SQLException {
     jDB.removeAll();
-    boolean a = jDB.addRequest("biscuit", "High");
+    boolean a = jDB.addRequest("ADEPT00101", "High");
     Assertions.assertTrue(a);
     boolean b = jDB.addRequest("ADEPT00101", "Extra Large");
     Assertions.assertFalse(b);

@@ -91,6 +91,20 @@ public class JanitorDatabase extends Database {
     }
   }
 
+  public boolean deleteDoneRequests() throws SQLException {
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt =
+              conn.prepareStatement("DELETE From JanitorRequest Where progress = 'Done'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      conn.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
   public boolean updateRequest(Timestamp time, String location, String name, String progress)
       throws SQLException {
     try {
