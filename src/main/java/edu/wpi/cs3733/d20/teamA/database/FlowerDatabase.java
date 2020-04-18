@@ -15,13 +15,12 @@ public class FlowerDatabase extends Database {
 
     // if the helper returns false this method should too
     // drop the CONSTRAINT first
-    if (!(helperPrepared("ALTER TABLE Orders DROP CONSTRAINT FK_fT")
-        && helperPrepared("ALTER TABLE Orders DROP CONSTRAINT FK_fc"))) {
+    if (!(helperPrepared("ALTER TABLE Orders DROP CONSTRAINT FK_fT"))) {
 
       return false;
     }
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE Orders") && helperPrepared("DROP TABLE Flowers"))) {
+    if (!(helperPrepared("DROP TABLE Flowers") && helperPrepared("DROP TABLE Orders"))) {
       return false;
     }
 
@@ -39,13 +38,13 @@ public class FlowerDatabase extends Database {
     // Create the graph tables
     boolean a =
         helperPrepared(
-            "CREATE TABLE Flowers (type Varchar(15), qty INTEGER NOT NULL, color Varchar(15), pricePer DECIMAL(5,2) NOT NULL, CONSTRAINT pk PRIMARY KEY (type, color))");
+            "CREATE TABLE Flowers (typeFlower Varchar(15), qty INTEGER NOT NULL, color Varchar(15), pricePer DECIMAL(5,2) NOT NULL, CONSTRAINT PK_fl PRIMARY KEY (typeFlower, color))");
 
     boolean b =
         helperPrepared(
-            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flowerType Varchar(15) NOT NULL, flowerColor Varchar(15) NOT NULL, price DECIMAL(5,2) NOT NULL, CONSTRAINT FK_fT FOREIGN KEY(flowerType) REFERENCES Flowers(type), CONSTRAINT FK_fc FOREIGN KEY(flowerColor) REFERENCES Flowers(color))");
+            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flowerType Varchar(15) NOT NULL, flowerColor Varchar(15) NOT NULL, price DECIMAL(5,2) NOT NULL, CONSTRAINT FK_fT FOREIGN KEY (flowerType, flowerColor) REFERENCES Flowers(typeFlower, color))");
 
-    System.out.println("A: " + a + " B: " + b);
+
     if (a && b) {
       return true;
     } else {

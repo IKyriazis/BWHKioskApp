@@ -30,5 +30,6 @@ public class TestFlowerDatabase {
     Assertions.assertTrue(makeTables);
     boolean dropTables2 = fDB.dropTables();
     Assertions.assertTrue(dropTables2);
+    fDB.createTables();
   }
 }
