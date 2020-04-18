@@ -115,7 +115,7 @@ public class TestFlowerDatabase {
     Assertions.assertFalse(b);
     fDB.addOrder(2, "Daisy", "Blue", "buiscuit");
     fDB.addOrder(6, "Daisy", "Blue", "biscuit");
-    boolean r = fDB.deleteOrder(2git);
+    boolean r = fDB.deleteOrder(2);
     Assertions.assertTrue(r);
     boolean s = fDB.helperEmpty("SELECT * FROM Orders");
     Assertions.assertTrue(s);
