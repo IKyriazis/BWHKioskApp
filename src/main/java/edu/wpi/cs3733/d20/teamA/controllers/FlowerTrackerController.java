@@ -8,9 +8,16 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import javax.swing.*;
 
 public class FlowerTrackerController {
+  @FXML private JTextField txtNumber;
+  @FXML private JProgressBar progress;
+  @FXML private Label output;
+
   @FXML
   public void cancel(ActionEvent event) throws IOException {
     Stage stage;
@@ -27,5 +34,11 @@ public class FlowerTrackerController {
 
     stage.setScene(scene);
     stage.show();
+  }
+
+  @FXML
+  public void setProgress(KeyEvent keyEvent) {
+    // Get status from database
+    if (txtNumber.getText().equals("1")) progress.setValue(1);
   }
 }

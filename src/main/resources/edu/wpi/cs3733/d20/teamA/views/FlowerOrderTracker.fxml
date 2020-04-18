@@ -28,17 +28,17 @@
             <HBox alignment="CENTER" prefHeight="178.0" prefWidth="600.0" spacing="5.0">
                <children>
                   <Label text="Order Number: " />
-                  <JFXTextField />
+                  <JFXTextField fx:id="txtNumber" onKeyPressed="#setProgress" />
                </children>
             </HBox>
-            <JFXProgressBar prefHeight="57.0" prefWidth="363.0" progress="0.25" />
+            <JFXProgressBar fx:id="progress" prefHeight="57.0" prefWidth="363.0" progress="0.25" />
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <StackPane prefHeight="150.0" prefWidth="200.0" />
                   <StackPane prefHeight="150.0" prefWidth="200.0" />
                   <StackPane alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0">
                      <children>
-                        <Label text="Order Recieved" />
+                        <Label fx:id="lblOutput" text="Order Recieved" />
                      </children>
                   </StackPane>
                   <StackPane prefHeight="150.0" prefWidth="200.0" />
@@ -47,7 +47,7 @@
             </HBox>
             <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="125.0" prefWidth="600.0">
                <children>
-                  <JFXButton text="Return to Previous Screen" />
+                  <JFXButton onAction="#cancel" text="Return to Previous Screen" />
                </children>
             </HBox>
          </children>
