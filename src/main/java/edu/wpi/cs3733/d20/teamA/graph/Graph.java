@@ -40,6 +40,15 @@ public class Graph {
   }
 
   /**
+   * Get the nodes in the graph
+   *
+   * @return Node map
+   */
+  public HashMap<String, Node> getNodes() {
+    return nodes;
+  }
+
+  /**
    * Get the number of bidirectional edges in the graph
    *
    * @return Edge count
