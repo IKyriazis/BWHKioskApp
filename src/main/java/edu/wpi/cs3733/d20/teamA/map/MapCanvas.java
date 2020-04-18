@@ -13,7 +13,7 @@ import javafx.scene.paint.Color;
 
 public class MapCanvas extends Canvas {
   private Bounds viewSpace;
-  private int floorFit = 0;
+  private int lastDrawnFloor = 0;
   private Image[] floorImages;
   private Canvas canvas;
 
@@ -25,6 +25,16 @@ public class MapCanvas extends Canvas {
     for (int i = 0; i < 5; i++) {
       floorImages[i] = new Image("/edu/wpi/cs3733/d20/teamA/images/Floor" + (i + 1) + ".jpg");
     }
+
+    viewSpace = new BoundingBox(0, 0, 100, 100);
+    setManaged(false);
+
+    widthProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> resize(newValue.doubleValue(), getHeight()));
+    heightProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
   }
 
   // graphToCanvas() projects a point from graph coordinates onto canvas coordinates
@@ -48,8 +58,8 @@ public class MapCanvas extends Canvas {
         (point.getY() * yRatio) + viewSpace.getMinY());
   }
 
-  private void fitToFloor(int floor) {
-    if (floorFit == floor) {
+  private void fitToFloor(int floor, boolean forceRefit) {
+    if ((lastDrawnFloor == floor) && (!forceRefit)) {
       return;
     }
 
@@ -66,12 +76,12 @@ public class MapCanvas extends Canvas {
     } else {
       double displayedHeight = (imageHeight * wScalar) / hScalar;
       double excess = imageHeight - displayedHeight;
-      viewSpace = new BoundingBox(0, 0, imageWidth, displayedHeight);
+      viewSpace = new BoundingBox(0, excess / 2, imageWidth, displayedHeight);
     }
   }
 
   public void drawFloorBackground(int floor) {
-    fitToFloor(floor);
+    fitToFloor(floor, false);
 
     // Clamp floor to between 1 and 5
     floor = Math.max(1, Math.min(floor, 5));
@@ -122,5 +132,14 @@ public class MapCanvas extends Canvas {
     for (Edge edge : path.getPathEdges()) {
       drawEdge(edge);
     }
+  }
+
+  @Override
+  public void resize(double width, double height) {
+    super.resize(width, height);
+
+    lastDrawnFloor = Math.max(lastDrawnFloor, 1);
+    fitToFloor(lastDrawnFloor, true);
+    drawFloorBackground(lastDrawnFloor);
   }
 }

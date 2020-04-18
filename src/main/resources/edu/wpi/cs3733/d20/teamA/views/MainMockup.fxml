@@ -1,21 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
-<?import edu.wpi.cs3733.d20.teamA.map.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.MainController">
    <center>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0">
          <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <AnchorPane prefHeight="667.0" prefWidth="951.0">
-               <children>
-                  <MapCanvas fx:id="canvas" height="200.0" width="200.0" />
-               </children>
+            <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
             </AnchorPane>
             <VBox fx:id="searchFields" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0" style="-fx-background-color: #d0d0d0; -fx-background-radius: 0 0 25 0; -fx-border-radius: 25; -fx-border-color: #d0d0d0; -fx-border-width: 0 25 25 0;" StackPane.alignment="TOP_LEFT">
                <children>
