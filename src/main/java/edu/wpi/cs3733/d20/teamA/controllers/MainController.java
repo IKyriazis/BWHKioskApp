@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXSlider;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
@@ -24,6 +25,7 @@ public class MainController {
   @FXML private ComboBox<Node> destination;
   @FXML private AnchorPane canvasPane;
   @FXML private Label textualDirectionsLabel;
+  @FXML private JFXSlider zoomSlider;
 
   private ObservableList<Node> mapNodes = FXCollections.observableArrayList();
 
@@ -41,6 +43,15 @@ public class MainController {
 
     // Draw background asap
     Platform.runLater(() -> canvas.drawFloorBackground(1));
+
+    // Setup zoom slider hook
+    zoomSlider
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              canvas.setZoom(1.0 + (newValue.doubleValue() / 100));
+              canvas.drawFloorBackground(1);
+            });
 
     path = new Path(Graph.getInstance());
     // Create the dropdown observable list

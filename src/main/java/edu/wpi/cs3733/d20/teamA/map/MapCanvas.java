@@ -4,7 +4,6 @@ import edu.wpi.cs3733.d20.teamA.graph.Edge;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
 import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,12 +11,15 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class MapCanvas extends Canvas {
-  private int lastDrawnFloor = 0;
   private Image[] floorImages;
   private Canvas canvas;
 
-  private Bounds viewSpace;
-  private Bounds floorSpace;
+  private int lastDrawnFloor = 1;
+  private double zoom = 1.0;
+
+  private BoundingBox viewSpace;
+  private Point2D center;
+  private Point2D dragLast;
 
   public MapCanvas() {
     super();
@@ -37,6 +39,26 @@ public class MapCanvas extends Canvas {
     heightProperty()
         .addListener(
             (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
+
+    // Drag to change center
+    setOnMousePressed(
+        event -> {
+          dragLast = new Point2D(event.getX(), event.getY());
+        });
+    setOnMouseDragged(
+        event -> {
+          Point2D startGraphPos = canvasToGraph(dragLast);
+          Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
+
+          double xDiff = startGraphPos.getX() - endGraphPos.getX();
+          double yDiff = startGraphPos.getY() - endGraphPos.getY();
+
+          center = new Point2D(xDiff + center.getX(), yDiff + center.getY());
+
+          drawFloorBackground(lastDrawnFloor);
+
+          dragLast = new Point2D(event.getX(), event.getY());
+        });
   }
 
   // graphToCanvas() projects a point from graph coordinates onto canvas coordinates
@@ -60,37 +82,61 @@ public class MapCanvas extends Canvas {
         (point.getY() * yRatio) + viewSpace.getMinY());
   }
 
-  private void calcFloorSpace(int floor, boolean forceRefit) {
-    if ((lastDrawnFloor == floor) && (!forceRefit)) {
-      return;
-    }
-
+  private void calcViewSpace(int floor) {
     double imageWidth = floorImages[floor - 1].getWidth();
     double imageHeight = floorImages[floor - 1].getHeight();
 
-    double wScalar = imageWidth / getWidth();
-    double hScalar = imageHeight / getHeight();
+    double aspectRatio = (imageWidth / getWidth()) / (imageHeight / getHeight());
 
-    if (wScalar > hScalar) {
-      double displayedWidth = (imageWidth * hScalar) / wScalar;
-      double excess = imageWidth - displayedWidth;
-      viewSpace = new BoundingBox(excess / 2, 0, displayedWidth, imageHeight);
-    } else {
-      double displayedHeight = (imageHeight * wScalar) / hScalar;
-      double excess = imageHeight - displayedHeight;
-      viewSpace = new BoundingBox(0, excess / 2, imageWidth, displayedHeight);
+    double width = ((aspectRatio < 1.0) ? imageWidth : (imageWidth / aspectRatio)) / zoom;
+    double height = ((aspectRatio > 1.0) ? imageHeight : (imageHeight * aspectRatio)) / zoom;
+
+    double startX = center.getX() - (width / 2);
+    double startY = center.getY() - (height / 2);
+
+    // Correct center if view is off screen
+    if (startX < 0) {
+      center = center.add(-startX, 0);
+      startX = 0;
     }
+
+    if (startY < 0) {
+      center = center.add(0, -startY);
+      startY = 0;
+    }
+
+    if ((startX + width) > imageWidth) {
+      double xDiff = (startX + width) - imageWidth;
+      center = center.subtract(xDiff, 0);
+      startX -= xDiff;
+    }
+
+    if ((startY + height) > imageHeight) {
+      double yDiff = (startY + height) - imageHeight;
+      center = center.subtract(0, yDiff);
+      startY -= yDiff;
+    }
+
+    viewSpace = new BoundingBox(startX, startY, width, height);
   }
 
   public void drawFloorBackground(int floor) {
-    calcFloorSpace(floor, false);
+    // Clear background
+    getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
 
     // Clamp floor to between 1 and 5
     floor = Math.max(1, Math.min(floor, 5));
 
     Image img = floorImages[floor - 1];
+
+    if ((center == null) || (floor != lastDrawnFloor)) {
+      center = new Point2D(0, 0).midpoint(new Point2D(img.getWidth(), img.getHeight()));
+    }
+    calcViewSpace(floor);
+
     Point2D imgStart = graphToCanvas(new Point2D(0, 0));
     Point2D imgEnd = graphToCanvas(new Point2D(img.getWidth(), img.getHeight()));
+
     getGraphicsContext2D()
         .drawImage(
             img,
@@ -98,6 +144,8 @@ public class MapCanvas extends Canvas {
             imgStart.getY(),
             imgEnd.getX() - imgStart.getX(),
             imgEnd.getY() - imgStart.getY());
+
+    lastDrawnFloor = floor;
   }
 
   // Draws an edge
@@ -140,8 +188,14 @@ public class MapCanvas extends Canvas {
   public void resize(double width, double height) {
     super.resize(width, height);
 
-    lastDrawnFloor = Math.max(lastDrawnFloor, 1);
-    calcFloorSpace(lastDrawnFloor, true);
     drawFloorBackground(lastDrawnFloor);
+  }
+
+  public double getZoom() {
+    return zoom;
+  }
+
+  public void setZoom(double zoom) {
+    this.zoom = zoom;
   }
 }
