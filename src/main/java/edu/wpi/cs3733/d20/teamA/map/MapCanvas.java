@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
 import edu.wpi.cs3733.d20.teamA.graph.Edge;
+import edu.wpi.cs3733.d20.teamA.graph.Node;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
@@ -63,7 +64,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws an edge
-  public void drawEdges(Edge edge){
+  public void drawEdge(Edge edge){
     GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
     // Clear canvas
@@ -79,4 +80,17 @@ public class MapCanvas extends Canvas {
     // Draw the line in between the points
     graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
   }
+
+  // Draws a node on the map
+  public void drawNode(Node node){
+    GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+
+    graphicsContext.clearRect(0,0, canvas.getWidth(), canvas.getHeight());
+
+    graphicsContext.setFill(Color.DARKTURQUOISE);
+
+    Point2D nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
+    graphicsContext.fillOval(nodePoint.getX() - 4, nodePoint.getY() - 4,8, 8);
+  }
+
 }
