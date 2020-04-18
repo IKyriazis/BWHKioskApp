@@ -35,7 +35,6 @@ public abstract class Database {
       conn.close();
       return true;
     } catch (SQLException e) {
-      e.printStackTrace();
       return false;
     }
   }
