@@ -295,4 +295,11 @@ public class FlowerDatabase extends Database {
       return oList;
     }
   }
+
+  //public Flower getFlowerInfo(String type, String ){
+
+
+
+  //}
+
 }
