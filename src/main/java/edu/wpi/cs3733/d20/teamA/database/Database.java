@@ -47,7 +47,7 @@ public abstract class Database {
       Statement stmt = conn.createStatement();
       ResultSet rs = stmt.executeQuery(str);
 
-      if (rs.next() == false) {
+      if (!rs.next()) {
         return false;
       }
 

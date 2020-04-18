@@ -47,7 +47,7 @@ public class FlowerDatabase extends Database {
 
     boolean b =
         helperPrepared(
-            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flowerType Varchar(15) NOT NULL, flowerColor Varchar(15) NOT NULL, price DOUBLE NOT NULL, status Varchar(50), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Collected', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT FK_fT FOREIGN KEY (flowerType, flowerColor) REFERENCES Flowers(typeFlower, color), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
+            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flowerType Varchar(15) NOT NULL, flowerColor Varchar(15) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT FK_fT FOREIGN KEY (flowerType, flowerColor) REFERENCES Flowers(typeFlower, color), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
 
     if (a && b) {
       return true;
@@ -183,7 +183,8 @@ public class FlowerDatabase extends Database {
   }
 
   /** @return */
-  public int addOrder(int numFlowers, String flowerType, String flowerColor) throws SQLException {
+  public int addOrder(int numFlowers, String flowerType, String flowerColor, String location)
+      throws SQLException {
 
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
@@ -206,13 +207,15 @@ public class FlowerDatabase extends Database {
 
       PreparedStatement pstmt =
           conn.prepareStatement(
-              "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status) VALUES (?, ?, ?, ?, ?, ?)");
+              "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
       pstmt.setInt(1, orderNum);
       pstmt.setInt(2, numFlowers);
       pstmt.setString(3, flowerType);
       pstmt.setString(4, flowerColor);
       pstmt.setDouble(5, price);
       pstmt.setString(6, status);
+      pstmt.setString(7, location);
+      orderNum++;
       pstmt.executeUpdate();
       pstmt.close();
       conn.close();
@@ -265,6 +268,7 @@ public class FlowerDatabase extends Database {
   }
 
   public boolean removeAllOrders() throws SQLException {
+    orderNum = 1;
     return helperPrepared("DELETE From Orders");
   }
 
