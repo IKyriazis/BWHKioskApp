@@ -1,10 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import java.sql.SQLException;
+import java.sql.*;
 
 public class FlowerDatabase extends Database {
 
-  public FlowerDatabase() throws SQLException {}
+  public FlowerDatabase(Connection connection) throws SQLException {
+    super(connection);
+  }
 
   /**
    * Drops the graph tables so we can start fresh
@@ -52,7 +54,4 @@ public class FlowerDatabase extends Database {
       return false;
     }
   }
-
-  // public boolean addFlower(String type, int qty, )
-
 }

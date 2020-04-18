@@ -1,17 +1,35 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import java.sql.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestGraphDatabase {
+  private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
+  private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
+  private Connection conn;
   GraphDatabase DB;
 
-  public TestGraphDatabase() throws SQLException {
-    DB = new GraphDatabase();
+  public TestGraphDatabase() throws SQLException {}
+
+  @BeforeEach
+  public void init() throws SQLException {
+    conn = DriverManager.getConnection(jdbcUrl);
+    DB = new GraphDatabase(conn);
   }
 
-  @Test
+  @AfterEach
+  public void teardown() {
+    try {
+      conn.close();
+      DriverManager.getConnection(closeUrl);
+    } catch (SQLException ignored) {
+    }
+  }
+
+  // @Test
   public void testDB() throws SQLException {
     boolean test = false;
     try {
@@ -37,6 +55,7 @@ public class TestGraphDatabase {
 
   @Test
   public void testGetSizeNode() throws SQLException {
+    DB.createTables();
     DB.removeAllNodes();
     Assertions.assertEquals(0, DB.getSizeNode());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -46,6 +65,7 @@ public class TestGraphDatabase {
 
   @Test
   public void testGetSizeEdge() throws SQLException {
+    DB.createTables();
     DB.removeAll();
     Assertions.assertEquals(0, DB.getSizeEdge());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -57,6 +77,7 @@ public class TestGraphDatabase {
 
   @Test
   public void testAddNode() throws SQLException {
+    DB.createTables();
     DB.removeAllNodes();
     boolean a = DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     Assertions.assertTrue(a);
@@ -76,6 +97,7 @@ public class TestGraphDatabase {
 
   @Test
   public void testAddEdge() throws SQLException {
+    DB.createTables();
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -88,6 +110,7 @@ public class TestGraphDatabase {
 
   @Test
   public void testDeleteEdge() throws SQLException {
+    DB.createTables();
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -101,6 +124,7 @@ public class TestGraphDatabase {
 
   @Test
   public void testDeleteNode() throws SQLException {
+    DB.createTables();
     DB.removeAllNodes();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");

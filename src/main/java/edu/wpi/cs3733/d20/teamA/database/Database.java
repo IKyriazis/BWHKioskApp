@@ -3,17 +3,27 @@ package edu.wpi.cs3733.d20.teamA.database;
 import java.sql.*;
 
 public abstract class Database {
+  /*
+   Database service class. This class will be loaded as a Singleton by Guice.
+  */
 
-  public Database() throws SQLException {
-    makeDatabase();
+  private final Connection connection;
+
+  public Database(Connection connection) throws SQLException {
+    this.connection = connection;
+    // makeDatabase();
   }
 
-  public static void makeDatabase() throws SQLException {
-    try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase;create=true");
-    } catch (SQLException e) {
-      return;
-    }
+  // public static void makeDatabase() throws SQLException {
+  //  try {
+  //    Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase;create=true");
+  //  } catch (SQLException e) {
+  //    return;
+  //  }
+  // }
+
+  public Connection getConnection() {
+    return connection;
   }
 
   /**
@@ -26,15 +36,16 @@ public abstract class Database {
   public boolean helperPrepared(String str) throws SQLException {
 
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
 
-      PreparedStatement stmt = conn.prepareStatement(str);
+      PreparedStatement stmt = connection.prepareStatement(str);
 
       stmt.executeUpdate();
       stmt.close();
-      conn.close();
+      // connection.close();
       return true;
     } catch (SQLException e) {
+      System.out.println(str);
+      e.printStackTrace();
       return false;
     }
   }
