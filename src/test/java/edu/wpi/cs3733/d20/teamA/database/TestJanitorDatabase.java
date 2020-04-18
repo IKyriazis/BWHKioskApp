@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 public class TestJanitorDatabase {
   JanitorDatabase jDB = new JanitorDatabase();
+  GraphDatabase gDB = new GraphDatabase();
 
   @Test
   public void testDB() throws SQLException {
@@ -35,12 +36,52 @@ public class TestJanitorDatabase {
 
   @Test
   public void testAddRequest() throws SQLException {
+
+    gDB.removeAllNodes();
+    // need nodeID "biscuit" in node table so addrequest works
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     jDB.removeAll();
-    boolean a = jDB.addRequest("ADEPT00101", "High");
+    boolean a = jDB.addRequest("biscuit", "High");
     Assertions.assertTrue(a);
-    boolean b = jDB.addRequest("ADEPT00101", "Extra Large");
+    boolean b = jDB.addRequest("biscuit", "Extra Large");
     Assertions.assertFalse(b);
+    boolean c = jDB.addRequest("yoyoyo", "Medium");
+    Assertions.assertFalse(c);
     jDB.removeAll();
+    gDB.removeAllNodes();
+  }
+
+  @Test
+  public void testDeleteDoneRequests() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    gDB.addNode("hihihi", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.removeAll();
+    jDB.addRequest("biscuit", "Medium");
+    jDB.addRequest("yoyoyo", "Medium");
+    jDB.addRequest("hihihi", "Medium");
+    jDB.removeAll();
+    gDB.removeAllNodes();
+  }
+
+  @Test
+  public void testGetTimestamp() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    gDB.addNode("hihihi", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.removeAll();
+    jDB.addRequest("biscuit", "Medium");
+    jDB.addRequest("yoyoyo", "Medium");
+    jDB.addRequest("hihihi", "Medium");
+
+    Assertions.assertNotNull(jDB.getTimestamp("biscuit"));
+    System.out.println(jDB.getTimestamp("biscuit"));
+    jDB.removeAll();
+    gDB.removeAllNodes();
   }
 
   //  Unsure on how to test deleteRequest() because we need the request timestamp to delete it but

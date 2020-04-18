@@ -36,7 +36,7 @@ public class JanitorDatabase extends Database {
     // Create the janitorrequest table
     boolean a =
         helperPrepared(
-            "CREATE TABLE JanitorRequest (time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')), CONSTRAINT PK_J PRIMARY KEY (time, location))");
+            "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
     if (a) {
       return true;
     } else {
@@ -71,6 +71,8 @@ public class JanitorDatabase extends Database {
       conn.close();
       return true;
     } catch (SQLException e) {
+      //      System.out.println("Add request failed");
+      //      System.out.println(e.getMessage());
       return false;
     }
   }
@@ -95,7 +97,7 @@ public class JanitorDatabase extends Database {
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-              conn.prepareStatement("DELETE From JanitorRequest Where progress = 'Done'");
+          conn.prepareStatement("DELETE From JanitorRequest Where progress = 'Done'");
       pstmt.executeUpdate();
       pstmt.close();
       conn.close();
@@ -122,6 +124,26 @@ public class JanitorDatabase extends Database {
       return true;
     } catch (SQLException e) {
       return false;
+    }
+  }
+
+  // this function is for testing purposes,
+  // since we need to use a timestamp to use the deleterequest method
+  // and update request method
+  public Timestamp getTimestamp(String location) throws SQLException {
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt =
+          conn.prepareStatement("SELECT time FROM JanitorRequest WHERE location = ?");
+      pstmt.setString(1, location);
+      ResultSet rset = pstmt.executeQuery();
+      Timestamp time = rset.getTimestamp("time");
+      pstmt.close();
+      conn.close();
+      return time;
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
     }
   }
 }
