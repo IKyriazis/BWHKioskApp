@@ -52,13 +52,10 @@ public class FlowerOrderController {
   }
 
   public void placeOrder(ActionEvent actionEvent) {
-    if(choiceFlower.getSelectionModel().getSelectedItem() != null)
-    {
-      //data.addOrder(num,type,color)
+    if (choiceFlower.getSelectionModel().getSelectedItem() != null) {
+      // data.addOrder(num,type,color)
     }
   }
 
-  public void setMaxNumber(ActionEvent actionEvent) {
-
-  }
+  public void setMaxNumber(ActionEvent actionEvent) {}
 }

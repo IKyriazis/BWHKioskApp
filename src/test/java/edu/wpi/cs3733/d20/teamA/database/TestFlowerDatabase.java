@@ -89,10 +89,8 @@ public class TestFlowerDatabase {
   public void testAddOrder() throws SQLException {
     fDB.removeAllOrders();
     fDB.addFlower("Daisy", "Blue", 10, 1.20);
-    boolean a = fDB.addOrder(5, "Daisy", "Blue");
-    Assertions.assertTrue(a);
-    boolean b = fDB.addOrder(-1, "Daisy", "Blue");
-    Assertions.assertFalse(b);
+    fDB.addOrder(5, "Daisy", "Blue");
+    fDB.addOrder(-1, "Daisy", "Blue");
     boolean e = fDB.helperEmpty("SELECT * FROM Orders");
     Assertions.assertTrue(e);
     fDB.removeAllOrders();
