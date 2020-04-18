@@ -2,24 +2,33 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXSlider;
 import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import java.io.IOException;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainController {
   @FXML private VBox searchFields;
+  @FXML private ComboBox<Node> startLocation;
+  @FXML private ComboBox<Node> destination;
   @FXML private AnchorPane canvasPane;
   @FXML private JFXSlider zoomSlider;
 
+  private ObservableList<Node> mapNodes = FXCollections.observableArrayList();
+
   private MapCanvas canvas;
+  private Path path;
 
   public void initialize() {
     searchFields.setVisible(false);
@@ -41,6 +50,22 @@ public class MainController {
               canvas.setZoom(1.0 + (newValue.doubleValue() / 100));
               canvas.drawFloorBackground(1);
             });
+
+    path = new Path(Graph.getInstance());
+    // Create the dropdown observable list
+    for (Node node : Graph.getInstance().getNodes().values()) {
+      mapNodes.add(node);
+    }
+
+    Node one = new Node("Test node", 1208, 600, 1, "", NodeType.DEPT, "long name", "short", "A");
+    Node two = new Node("Test node 2", 1000, 600, 1, "", NodeType.DEPT, "long name", "short", "A");
+    Edge oneEdge = new Edge(one, two, 1);
+    mapNodes.add(one);
+    mapNodes.add(two);
+
+    startLocation.setItems(mapNodes);
+    startLocation.setValue(one);
+    destination.setItems(mapNodes);
   }
 
   @FXML
@@ -66,5 +91,12 @@ public class MainController {
     Scene scene = new Scene(root);
     stage.setScene(scene);
     stage.show();
+  }
+
+  @FXML
+  public void pressedGo(ActionEvent actionEvent) {
+
+    path.findPath(mapNodes.get(0), mapNodes.get(1));
+    canvas.drawPath(path);
   }
 }
