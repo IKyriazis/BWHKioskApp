@@ -34,11 +34,23 @@ public class TestGraphDatabase {
 
   @Test
   public void testGetSizeNode() throws SQLException {
-    // Assertions.assertEquals(0, DB.getSizeNode());
+    DB.removeAllNodes();
+    Assertions.assertEquals(0, DB.getSizeNode());
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    Assertions.assertEquals(1, DB.getSizeNode());
+    DB.removeAllNodes();
   }
 
   @Test
-  public void testRemoveAllNodes() {}
+  public void testGetSizeEdge() throws SQLException {
+    DB.removeAll();
+    Assertions.assertEquals(0, DB.getSizeEdge());
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addEdge("biscuit_nugget", "biscuit", "nugget");
+    Assertions.assertEquals(1, DB.getSizeEdge());
+    DB.removeAll();
+  }
 
   @Test
   public void testAddNode() throws SQLException {
@@ -56,6 +68,43 @@ public class TestGraphDatabase {
     boolean f =
         DB.addNode("banana", 2, 5, 1, "White House", "abacabadabacaba", "balogna", "b", "Team A");
     Assertions.assertFalse(f);
+    DB.removeAllNodes();
+  }
+
+  @Test
+  public void testAddEdge() throws SQLException {
+    DB.removeAll();
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
+    boolean a = DB.addEdge("biscuit_nugget", "biscuit", "nugget");
+    Assertions.assertTrue(a);
+    boolean b = DB.addEdge("biscuit_mashedP", "biscuit", "mashedP");
+    Assertions.assertFalse(b);
+    DB.removeAll();
+  }
+
+  @Test
+  public void testDeleteEdge() throws SQLException {
+    DB.removeAll();
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addEdge("biscuit_nugget", "biscuit", "nugget");
+    Assertions.assertEquals(1, DB.getSizeEdge());
+    boolean a = DB.deleteEdge("biscuit_nugget");
+    Assertions.assertTrue(a);
+    Assertions.assertEquals(0, DB.getSizeEdge());
+    DB.removeAll();
+  }
+
+  @Test
+  public void testDeleteNode() throws SQLException {
+    DB.removeAllNodes();
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
+    Assertions.assertEquals(2, DB.getSizeNode());
+    boolean a = DB.deleteNode("nugget");
+    Assertions.assertTrue(a);
+    Assertions.assertEquals(1, DB.getSizeNode());
     DB.removeAllNodes();
   }
 }
