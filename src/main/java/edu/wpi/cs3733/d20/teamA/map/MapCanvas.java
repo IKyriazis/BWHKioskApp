@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 
 public class MapCanvas extends Canvas {
   private Bounds viewSpace;
+  private int floorFit = 0;
   private Image[] floorImages;
   private Canvas canvas;
 
@@ -47,12 +48,31 @@ public class MapCanvas extends Canvas {
         (point.getY() * yRatio) + viewSpace.getMinY());
   }
 
+  private void fitToFloor(int floor) {
+    if (floorFit == floor) {
+      return;
+    }
+
+    double width = floorImages[floor - 1].getWidth();
+    double height = floorImages[floor - 1].getHeight();
+
+    double wScalar = width / getWidth();
+    double hScalar = height / getHeight();
+
+    if (wScalar > hScalar) {
+      viewSpace = new BoundingBox(0, 0, (width * hScalar) / wScalar, height);
+    } else {
+      viewSpace = new BoundingBox(0, 0, width, (height * wScalar) / hScalar);
+    }
+  }
+
   public void drawFloorBackground(int floor) {
+    fitToFloor(floor);
+
     // Clamp floor to between 1 and 5
     floor = Math.max(1, Math.min(floor, 5));
 
     Image img = floorImages[floor - 1];
-    viewSpace = new BoundingBox(0, 0, img.getWidth(), img.getHeight());
     Point2D imgStart = graphToCanvas(new Point2D(0, 0));
     Point2D imgEnd = graphToCanvas(new Point2D(img.getWidth(), img.getHeight()));
     getGraphicsContext2D()
