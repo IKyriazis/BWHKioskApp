@@ -4,7 +4,7 @@ import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,15 +22,14 @@ public class App extends Application {
     FXMLLoader loader = new FXMLLoader();
 
     loader.setLocation(App.class.getResource("views/MainMockup.fxml"));
-    AnchorPane anchorPane = loader.load();
+    BorderPane borderPane = loader.load();
 
     // Set up the stage
-    Scene scene = new Scene(anchorPane);
+    Scene scene = new Scene(borderPane);
 
     primaryStage.setScene(scene);
     primaryStage.setTitle("Hospital GUI");
     // primaryStage.setFullScreen(true);
-    primaryStage.setResizable(false);
 
     // Display the stage
     primaryStage.show();

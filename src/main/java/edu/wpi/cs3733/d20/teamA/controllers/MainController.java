@@ -10,11 +10,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainController {
-  @FXML private HBox searchFields;
+  @FXML private VBox searchFields;
   @FXML private MapCanvas canvas;
 
   public void initialize() {
