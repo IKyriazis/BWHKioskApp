@@ -7,9 +7,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestFlowerDatabase {
-  FlowerDatabase fDB = new FlowerDatabase();
+  FlowerDatabase fDB;
 
-  public TestFlowerDatabase() throws SQLException {}
+  public TestFlowerDatabase() throws SQLException {
+    fDB = new FlowerDatabase();
+  }
 
   @Test
   public void testDB() throws SQLException {
