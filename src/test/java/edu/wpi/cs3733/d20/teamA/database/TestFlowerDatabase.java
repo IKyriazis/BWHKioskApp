@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 public class TestFlowerDatabase {
   FlowerDatabase fDB = new FlowerDatabase();
+  GraphDatabase DB = new GraphDatabase();
 
   @Test
   public void testDB() throws SQLException {
@@ -88,11 +89,14 @@ public class TestFlowerDatabase {
   @Test
   public void testAddOrder() throws SQLException {
     fDB.removeAllOrders();
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     fDB.addFlower("Daisy", "Blue", 10, 1.20);
-    boolean a = fDB.addOrder(5, "Daisy", "Blue");
+    boolean a = fDB.addOrder(5, "Daisy", "Blue", "biscuit");
     Assertions.assertTrue(a);
-    boolean b = fDB.addOrder(-1, "Daisy", "Blue");
+    boolean b = fDB.addOrder(-1, "Daisy", "Blue", "buiscuit");
     Assertions.assertFalse(b);
+    boolean c = fDB.addOrder(1, "Daisy", "Blue", "butter");
+    Assertions.assertFalse(c);
     boolean e = fDB.helperEmpty("SELECT * FROM Orders");
     Assertions.assertTrue(e);
     fDB.removeAllOrders();
@@ -102,14 +106,15 @@ public class TestFlowerDatabase {
   public void testDeleteOrder() throws SQLException {
 
     fDB.removeAllOrders();
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     fDB.addFlower("Daisy", "Blue", 20, 1.20);
-    fDB.addOrder(5, "Daisy", "Blue");
+    fDB.addOrder(5, "Daisy", "Blue", "biscuit");
     boolean a = fDB.deleteOrder(1);
     Assertions.assertTrue(a);
     boolean b = fDB.helperEmpty("SELECT * FROM Orders");
     Assertions.assertFalse(b);
-    fDB.addOrder(5, "Daisy", "Blue");
-    fDB.addOrder(5, "Daisy", "Blue");
+    fDB.addOrder(2, "Daisy", "Blue", "buiscuit");
+    fDB.addOrder(6, "Daisy", "Blue", "biscuit");
     boolean r = fDB.deleteOrder(2);
     Assertions.assertTrue(r);
     boolean s = fDB.helperEmpty("SELECT * FROM Orders");
@@ -120,7 +125,8 @@ public class TestFlowerDatabase {
   @Test
   public void testUpdateStatus() throws SQLException {
     fDB.removeAllOrders();
-    fDB.addOrder(5, "Daisy", "Blue");
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    fDB.addOrder(5, "Daisy", "Blue", "biscuit");
     boolean a = fDB.changeOrderStatus(5, "Order Received");
     Assertions.assertTrue(a);
     fDB.removeAllOrders();
