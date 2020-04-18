@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -22,6 +23,7 @@ public class MainController {
   @FXML private ComboBox<Node> startLocation;
   @FXML private ComboBox<Node> destination;
   @FXML private AnchorPane canvasPane;
+  @FXML private Label textualDirectionsLabel;
 
   private ObservableList<Node> mapNodes = FXCollections.observableArrayList();
 
@@ -84,8 +86,10 @@ public class MainController {
 
   @FXML
   public void pressedGo(ActionEvent actionEvent) {
-
     path.findPath(mapNodes.get(0), mapNodes.get(1));
     canvas.drawPath(path);
+    textualDirectionsLabel.setText(path.textualDirections());
+    textualDirectionsLabel.setText(
+        "Here is where the path would go.\n if the path existed it would go here \n hi");
   }
 }

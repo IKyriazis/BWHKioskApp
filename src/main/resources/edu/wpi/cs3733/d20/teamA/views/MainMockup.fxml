@@ -13,6 +13,7 @@
             <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
                <children>
                   <JFXSlider layoutX="846.0" layoutY="672.0" value="-1.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                  <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
                </children></AnchorPane>
             <VBox fx:id="searchFields" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0" style="-fx-background-color: #d0d0d0; -fx-background-radius: 0 0 25 0; -fx-border-radius: 25; -fx-border-color: #d0d0d0; -fx-border-width: 0 25 25 0;" StackPane.alignment="TOP_LEFT">
                <children>
