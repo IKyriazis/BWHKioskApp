@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane prefHeight="500.0" prefWidth="1160.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PictureBoothController">
+   <children>
+      <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="500.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <ImageView fx:id="imageViewPictureBooth" fitHeight="540.0" fitWidth="960.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+         </center>
+         <left>
+            <SplitPane orientation="VERTICAL" prefHeight="540.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+              <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <JFXComboBox fx:id="dropdownMenu" focusColor="#00bf23" layoutX="27.0" layoutY="89.0" promptText="Choose an Overlay!" unFocusColor="WHITE" />
+                        <JFXButton fx:id="takePictureButton" layoutX="55.0" layoutY="257.0" text="Take a Picture" />
+                     </children>
+                  </AnchorPane>
+              </items>
+            </SplitPane>
+         </left>
+      </BorderPane>
+   </children>
+</AnchorPane>
