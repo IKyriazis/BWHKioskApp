@@ -29,6 +29,8 @@ public class App extends Application {
 
     primaryStage.setScene(scene);
     primaryStage.setTitle("Hospital GUI");
+    primaryStage.setMinWidth(1000);
+    primaryStage.setMinHeight(755);
     // primaryStage.setFullScreen(true);
 
     // Display the stage
