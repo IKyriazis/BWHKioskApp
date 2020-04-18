@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import java.sql.SQLException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -12,14 +13,17 @@ public class TestGraph {
   Node node4 = new Node("testNode4", 0, 0, 1, "", NodeType.HALL, "", "", "");
   Node node5 = new Node("testNode5", 2, 1, 1, "", NodeType.HALL, "", "", "");
 
+  public TestGraph() throws SQLException {}
+
   @Test
-  public void testSingleton() {
+  public void testSingleton() throws SQLException {
     Assertions.assertNotNull(Graph.getInstance());
+    Assertions.assertNotNull(Graph.getInstance().getDB());
   }
 
   @Test
   // Adds multiple node and tests to make sure there is the correct number of nodes after
-  public void testAddingMultipleNodes() {
+  public void testAddingMultipleNodes() throws SQLException {
     graph.clearGraph();
 
     graph.addNode(node1);
@@ -34,7 +38,7 @@ public class TestGraph {
   // 1. Creates nodes and checks to make sure there are the correct number of nodes after
   // 2. Adds edges to the nodes and checks to make sure the correct number of edges are there after
   // 3. Deletes nodes and checks to make sure the correct number of nodes AND edges are there after
-  public void testDeletingNodes() {
+  public void testDeletingNodes() throws SQLException {
     graph.clearGraph();
     Assertions.assertEquals(graph.getNodeCount(), 0);
 
@@ -72,7 +76,7 @@ public class TestGraph {
   // 2. Adds edges to the nodes and checks to make sure the correct number of edges is there after
   // 3. Deletes edges from the nodes and checks to make sure the correct number of edges is there
   // after
-  public void testNumEdges() {
+  public void testNumEdges() throws SQLException {
     graph.clearGraph();
 
     Assertions.assertEquals(graph.getEdgeCount(), 0);
@@ -96,7 +100,7 @@ public class TestGraph {
 
   @Test
   // Tests all the possibilities with edges
-  public void testEdges() {
+  public void testEdges() throws SQLException {
     graph.clearGraph();
 
     // Adds the nodes to the graph
