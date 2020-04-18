@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import com.sun.javafx.scene.traversal.Direction;
 import java.util.*;
 
 /** Represents a path along the graph */
@@ -116,5 +117,70 @@ public class Path {
     double yDist = Math.pow((goal.getY() - current.getY()), 2);
 
     return (int) Math.sqrt(xDist + yDist);
+  }
+
+  public String textualDirections() {
+    double currentAngle = 0;
+    String textPath = "";
+    ArrayList<Direction> directions = new ArrayList<>();
+    for (int i = 0; i < pathNodes.size() - 1; i++) {
+
+      int currX = pathNodes.get(i).getX();
+      int currY = pathNodes.get(i).getY();
+      int nextX = pathNodes.get(i + 1).getX();
+      int nextY = pathNodes.get(i + 1).getY();
+      double angle = 0;
+      if (nextX != currX) {
+        angle = Math.atan((nextY - currY) / (nextX - currX));
+      } else {
+        angle = currentAngle;
+      }
+
+      // Set the first angle to the angle between the first two nodes for comparison
+      if (i == 0) {
+        currentAngle = angle;
+      }
+
+      if (angle - currentAngle > Math.PI / 8) {
+        // Turn Right
+        directions.add(Direction.RIGHT);
+      } else if (angle - currentAngle < -Math.PI / 8) {
+        // Turn Left
+        directions.add(Direction.LEFT);
+      } else {
+        // Go straight
+        directions.add(Direction.UP);
+      }
+      currentAngle = angle;
+    } // for
+
+    // Convert the directions to a string
+    for (int j = 0; j < directions.size(); j++) {
+      if (directions.get(j) == Direction.RIGHT) {
+        textPath += " Turn Right at:" + pathNodes.get(j).getNodeID() + "\n";
+      } else if (directions.get(j) == Direction.LEFT) {
+        textPath += " Turn Left at:" + pathNodes.get(j).getNodeID() + "\n";
+      } else {
+        // else if it's straight keep track of how many nodes it is straight for
+        String end = "";
+        int nextNotStraight = j;
+        for (int k = j + 1; k < directions.size(); k++) {
+          if (directions.get(k) != Direction.UP) {
+            end = pathNodes.get(k).getNodeID();
+            nextNotStraight = k;
+            break;
+          }
+        }
+        j = nextNotStraight - 1;
+        // If end is empty then there were no other turns
+        if (end.isEmpty()) {
+          textPath += "Continue straight until destination." + "\n";
+          break;
+        } else {
+          textPath += " Go straight until:" + end + "\n";
+        }
+      }
+    }
+    return textPath;
   }
 }

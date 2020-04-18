@@ -102,5 +102,6 @@ public class TestPath {
     Assertions.assertNotNull(pathNodes);
 
     Assertions.assertEquals(realPath, pathNodes);
+    System.out.println(path.textualDirections());
   }
 }
