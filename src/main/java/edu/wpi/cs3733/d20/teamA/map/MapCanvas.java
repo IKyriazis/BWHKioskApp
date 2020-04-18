@@ -53,16 +53,20 @@ public class MapCanvas extends Canvas {
       return;
     }
 
-    double width = floorImages[floor - 1].getWidth();
-    double height = floorImages[floor - 1].getHeight();
+    double imageWidth = floorImages[floor - 1].getWidth();
+    double imageHeight = floorImages[floor - 1].getHeight();
 
-    double wScalar = width / getWidth();
-    double hScalar = height / getHeight();
+    double wScalar = imageWidth / getWidth();
+    double hScalar = imageHeight / getHeight();
 
     if (wScalar > hScalar) {
-      viewSpace = new BoundingBox(0, 0, (width * hScalar) / wScalar, height);
+      double displayedWidth = (imageWidth * hScalar) / wScalar;
+      double excess = imageWidth - displayedWidth;
+      viewSpace = new BoundingBox(excess / 2, 0, displayedWidth, imageHeight);
     } else {
-      viewSpace = new BoundingBox(0, 0, width, (height * wScalar) / hScalar);
+      double displayedHeight = (imageHeight * wScalar) / hScalar;
+      double excess = imageHeight - displayedHeight;
+      viewSpace = new BoundingBox(0, 0, imageWidth, displayedHeight);
     }
   }
 
