@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXSlider;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 public class MainController {
   @FXML private VBox searchFields;
   @FXML private AnchorPane canvasPane;
+  @FXML private JFXSlider zoomSlider;
 
   private MapCanvas canvas;
 
@@ -30,6 +32,15 @@ public class MainController {
 
     // Draw background asap
     Platform.runLater(() -> canvas.drawFloorBackground(1));
+
+    // Setup zoom slider hook
+    zoomSlider
+        .valueProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              canvas.setZoom(1.0 + (newValue.doubleValue() / 100));
+              canvas.drawFloorBackground(1);
+            });
   }
 
   @FXML
