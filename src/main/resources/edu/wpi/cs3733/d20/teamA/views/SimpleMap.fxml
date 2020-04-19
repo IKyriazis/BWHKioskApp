@@ -30,6 +30,7 @@
                            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                         </padding>
                         <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" promptText="Starting Location" />
+                        <JFXButton fx:id="swapBtn" buttonType="RAISED" prefHeight="25.0" prefWidth="39.0" />
                         <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" promptText="Destination" />
                         <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
                      </VBox>
@@ -61,7 +62,6 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <JFXButton fx:id="swapBtn" buttonType="RAISED" layoutX="224.0" layoutY="155.0" prefHeight="25.0" prefWidth="39.0" />
                </children></AnchorPane>
          </StackPane>
       </AnchorPane>
