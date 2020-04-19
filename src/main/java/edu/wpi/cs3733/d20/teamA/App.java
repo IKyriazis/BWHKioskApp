@@ -37,8 +37,8 @@ public class App extends Application {
 
     primaryStage.setMinWidth(1000);
     primaryStage.setWidth(1000);
-    primaryStage.setMinHeight(765);
-    primaryStage.setHeight(765);
+    primaryStage.setMinHeight(780);
+    primaryStage.setHeight(780);
     // primaryStage.setFullScreen(true);
 
     // Display the stage

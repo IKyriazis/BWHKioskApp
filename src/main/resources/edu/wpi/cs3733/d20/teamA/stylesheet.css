@@ -1,9 +1,12 @@
 .tab .tab-label {
-    -fx-skin: "com.sun.javafx.scene.control.skin.LabelSkin";
     -fx-background-color: transparent;
     -fx-alignment: CENTER;
     -fx-text-fill: -fx-text-base-color;
     -fx-font-size: 18pt; /* all the same except this newly added one */
+}
+
+.jfx-tab-pane .headers-region, .jfx-tab-pane .tab-header-background {
+    -fx-background-color: #607D8B;
 }
 
 #settingsButton {
@@ -11,4 +14,19 @@
     -fx-alignment: CENTER;
     -fx-font-size: 21pt;
     -fx-background-color: white;
+}
+
+#usernameBox, #passwordBox {
+    -fx-font-size: 18pt;
+}
+
+#loginButton {
+    -fx-background-color: #607D8B;
+    -fx-padding: 0 5 0 5;
+    -fx-font-size: 18pt;
+}
+#loginBox {
+    -fx-background-color: #F5F5F5;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
 }

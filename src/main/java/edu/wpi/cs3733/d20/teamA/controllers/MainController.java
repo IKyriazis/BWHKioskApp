@@ -64,8 +64,8 @@ public class MainController {
 
     // Setup directions drawer
     directionsDrawer.setSidePane(directionsBox);
-    directionsDrawer.close();
-    directionsDrawer.setMouseTransparent(true);
+    directionsDrawer.setOnDrawerClosed(event -> directionsDrawer.setMouseTransparent(true));
+    directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
 
     // Set button icons
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
@@ -106,8 +106,8 @@ public class MainController {
   @FXML
   public void toggleSearch() {
     directionsDrawer.toggle();
-    directionsDrawer.setMouseTransparent(
-        directionsDrawer.isClosed() || directionsDrawer.isClosing());
+    // directionsDrawer.setMouseTransparent(
+    // directionsDrawer.isClosed() || directionsDrawer.isClosing());
   }
 
   @FXML
