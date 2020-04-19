@@ -52,6 +52,22 @@ public class TestJanitorDatabase {
   }
 
   @Test
+  public void testUpdateRequest() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.removeAll();
+    jDB.addRequest("biscuit", "Medium");
+    boolean a = jDB.updateRequest(1, "Harry", "Dispatched");
+    Assertions.assertTrue(a);
+    boolean b = jDB.updateRequest(1, "Harry", "Ert");
+    Assertions.assertFalse(b);
+
+    jDB.removeAll();
+    gDB.removeAllNodes();
+  }
+
+  @Test
   public void testDeleteDoneRequests() throws SQLException {
     gDB.removeAllNodes();
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -62,27 +78,38 @@ public class TestJanitorDatabase {
     jDB.addRequest("biscuit", "Medium");
     jDB.addRequest("yoyoyo", "Medium");
     jDB.addRequest("hihihi", "Medium");
+
+    boolean a = jDB.deleteDoneRequests();
+    // Assertions.assertFalse(a);
+
+    jDB.updateRequest(1, "harry", "Done");
+    jDB.updateRequest(2, "harry", "Done");
+    jDB.updateRequest(3, "harry", "Done");
+
+    boolean b = jDB.deleteDoneRequests();
+    Assertions.assertTrue(b);
+
     jDB.removeAll();
     gDB.removeAllNodes();
   }
 
-  @Test
-  public void testGetTimestamp() throws SQLException {
-    gDB.removeAllNodes();
-    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("hihihi", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-
-    jDB.removeAll();
-    jDB.addRequest("biscuit", "Medium");
-    jDB.addRequest("yoyoyo", "Medium");
-    jDB.addRequest("hihihi", "Medium");
-
-    Assertions.assertNotNull(jDB.getTimestamp("biscuit"));
-    System.out.println(jDB.getTimestamp("biscuit"));
-    jDB.removeAll();
-    gDB.removeAllNodes();
-  }
+  //  @Test
+  //  public void testGetTimestamp() throws SQLException {
+  //    gDB.removeAllNodes();
+  //    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+  //    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+  //    gDB.addNode("hihihi", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+  //
+  //    jDB.removeAll();
+  //    jDB.addRequest("biscuit", "Medium");
+  //    jDB.addRequest("yoyoyo", "Medium");
+  //    jDB.addRequest("hihihi", "Medium");
+  //
+  //    Assertions.assertNotNull(jDB.getTimestamp("biscuit"));
+  //    System.out.println(jDB.getTimestamp("biscuit"));
+  //    jDB.removeAll();
+  //    gDB.removeAllNodes();
+  //  }
 
   //  Unsure on how to test deleteRequest() because we need the request timestamp to delete it but
   // that is stored in

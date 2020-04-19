@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.database;
 import java.sql.*;
 
 public class JanitorDatabase extends Database {
+  private int requestCount = 0;
   /**
    * Drops the janitor tables so we can start fresh
    *
@@ -61,29 +62,29 @@ public class JanitorDatabase extends Database {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
           conn.prepareStatement(
-              "INSERT INTO JanitorRequest (time, location, progress, priority) VALUES (?, ?, ?, ?)");
+              "INSERT INTO JanitorRequest (time, location, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?)");
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, location);
       pstmt.setString(3, progress);
       pstmt.setString(4, priority);
+      pstmt.setInt(5, ++requestCount);
       pstmt.executeUpdate();
       pstmt.close();
       conn.close();
       return true;
     } catch (SQLException e) {
-      //      System.out.println("Add request failed");
-      //      System.out.println(e.getMessage());
+//      System.out.println("Add request failed");
+//      System.out.println(e.getMessage());
       return false;
     }
   }
 
-  public boolean deleteRequest(Timestamp time, String location) throws SQLException {
+  public boolean deleteRequest(int rn) throws SQLException {
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement("DELETE From JanitorRequest Where time = ? AND location = ?");
-      pstmt.setTimestamp(1, time);
-      pstmt.setString(2, location);
+          conn.prepareStatement("DELETE From JanitorRequest Where requestNumber = ?");
+      pstmt.setInt(1, rn);
       pstmt.executeUpdate();
       pstmt.close();
       conn.close();
@@ -107,17 +108,15 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public boolean updateRequest(Timestamp time, String location, String name, String progress)
-      throws SQLException {
+  public boolean updateRequest(int rn, String name, String progress) throws SQLException {
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
           conn.prepareStatement(
-              "UPDATE JanitorRequest SET name = ?, progress = ? Where time = ? AND location = ?");
+              "UPDATE JanitorRequest SET name = ?, progress = ? Where requestNumber = ?");
       pstmt.setString(1, name);
       pstmt.setString(2, progress);
-      pstmt.setTimestamp(3, time);
-      pstmt.setString(4, location);
+      pstmt.setInt(3, rn);
       pstmt.executeUpdate();
       pstmt.close();
       conn.close();
@@ -130,20 +129,20 @@ public class JanitorDatabase extends Database {
   // this function is for testing purposes,
   // since we need to use a timestamp to use the deleterequest method
   // and update request method
-  public Timestamp getTimestamp(String location) throws SQLException {
-    try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt =
-          conn.prepareStatement("SELECT time FROM JanitorRequest WHERE location = ?");
-      pstmt.setString(1, location);
-      ResultSet rset = pstmt.executeQuery();
-      Timestamp time = rset.getTimestamp("time");
-      pstmt.close();
-      conn.close();
-      return time;
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-      return null;
-    }
-  }
+  //  public Timestamp getTimestamp(String location) throws SQLException {
+  //    try {
+  //      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+  //      PreparedStatement pstmt =
+  //          conn.prepareStatement("SELECT time FROM JanitorRequest WHERE location = ?");
+  //      pstmt.setString(1, location);
+  //      ResultSet rset = pstmt.executeQuery();
+  //      Timestamp time = rset.getTimestamp("time");
+  //      pstmt.close();
+  //      conn.close();
+  //      return time;
+  //    } catch (SQLException e) {
+  //      System.out.println(e.getMessage());
+  //      return null;
+  //    }
+  //  }
 }
