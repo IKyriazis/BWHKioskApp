@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
 import edu.wpi.cs3733.d20.teamA.graph.Edge;
+import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -17,6 +18,7 @@ public class MapCanvas extends Canvas {
   private Canvas canvas;
 
   private int lastDrawnFloor = 1;
+  private boolean drawAllNodes;
   private SimpleDoubleProperty zoom;
 
   private BoundingBox viewSpace;
@@ -155,6 +157,23 @@ public class MapCanvas extends Canvas {
     // Draw background
     drawFloorBackground(floor);
 
+    // All nodes if flag is set.
+    if (drawAllNodes) {
+      try {
+        Graph.getInstance()
+            .getNodes()
+            .values()
+            .forEach(
+                node -> {
+                  drawNode(node);
+
+                  node.getEdges().values().forEach(this::drawEdge);
+                });
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
+
     // Draw path if it exists
     if (path != null) {
       drawPath(path);
@@ -235,5 +254,13 @@ public class MapCanvas extends Canvas {
 
   public void setZoom(double zoom) {
     this.zoom.set(zoom);
+  }
+
+  public boolean isDrawAllNodes() {
+    return drawAllNodes;
+  }
+
+  public void setDrawAllNodes(boolean drawAllNodes) {
+    this.drawAllNodes = drawAllNodes;
   }
 }

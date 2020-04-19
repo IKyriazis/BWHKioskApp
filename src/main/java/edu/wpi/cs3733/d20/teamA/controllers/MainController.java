@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDrawer;
-import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
@@ -34,6 +31,9 @@ public class MainController {
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton directionsButton;
+
+  @FXML private JFXRadioButton drawPathButton;
+  @FXML private JFXRadioButton drawAllNodesButton;
 
   private MapCanvas canvas;
   private Graph graph;
@@ -66,6 +66,20 @@ public class MainController {
     // Set button icons
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
+
+    // Setup radio buttons
+    drawPathButton.setOnAction(
+        event -> {
+          drawAllNodesButton.setSelected(false);
+          canvas.setDrawAllNodes(false);
+          canvas.draw(1);
+        });
+    drawAllNodesButton.setOnAction(
+        event -> {
+          drawPathButton.setSelected(false);
+          canvas.setDrawAllNodes(true);
+          canvas.draw(1);
+        });
 
     try {
       // Load graph info
