@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
-import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
@@ -17,20 +16,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class FlowerAdminController {
-  private FlowerDatabase database;
-
+public class FlowerAdminController extends AbstractController {
   @FXML private TableView<Flower> tblFlowerView;
 
+  public FlowerAdminController() throws SQLException {}
+
   public void initialize() throws SQLException {
-    database = new FlowerDatabase(database.getConnection());
-    database.createTables();
-    database.addFlower("Flower1", "Red", 8, 1.25);
 
-    database.deleteFlower("Flower1", "Red");
-    database.addFlower("Flower1", "Red", 9, 1.25);
-
-    System.out.println("init");
     // Setup columns in table
     TableColumn column1 = new TableColumn("Type");
     column1.setCellValueFactory(new PropertyValueFactory<>("typeFlower"));
@@ -44,7 +36,7 @@ public class FlowerAdminController {
     TableColumn column4 = new TableColumn("Unit Price");
     column4.setCellValueFactory(new PropertyValueFactory<>("pricePer"));
 
-    tblFlowerView.setItems(database.flowerOl());
+    tblFlowerView.setItems(super.flDatabase.flowerOl());
     tblFlowerView.getColumns().addAll(column1, column2, column3, column4);
   }
 
@@ -52,7 +44,7 @@ public class FlowerAdminController {
     FXMLLoader load = new FXMLLoader();
     load.setControllerFactory(
         param -> {
-          return new FlowerModController(database, this);
+          return new FlowerModController(super.flDatabase, this);
         });
 
     toFlowerPopUp(load);
@@ -69,7 +61,7 @@ public class FlowerAdminController {
       FXMLLoader load = new FXMLLoader();
       load.setControllerFactory(
           param -> {
-            return new FlowerModController(database, this, f);
+            return new FlowerModController(super.flDatabase, this, f);
           });
 
       toFlowerPopUp(load);
@@ -81,7 +73,7 @@ public class FlowerAdminController {
     if (f != null) {
       String name = f.getTypeFlower();
       String color = f.getColor();
-      database.deleteFlower(name, color);
+      super.flDatabase.deleteFlower(name, color);
       update();
     } else {
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -107,7 +99,7 @@ public class FlowerAdminController {
   }
 
   public void update() throws SQLException {
-    tblFlowerView.setItems(database.flowerOl());
+    tblFlowerView.setItems(super.flDatabase.flowerOl());
   }
 
   @FXML
