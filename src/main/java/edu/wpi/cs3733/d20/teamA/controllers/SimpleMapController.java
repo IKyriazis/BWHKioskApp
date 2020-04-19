@@ -153,4 +153,12 @@ public class SimpleMapController {
       canvas.draw(1);
     }
   }
+
+  public MapCanvas getCanvas() {
+    return canvas;
+  }
+
+  public Graph getGraph() {
+    return graph;
+  }
 }

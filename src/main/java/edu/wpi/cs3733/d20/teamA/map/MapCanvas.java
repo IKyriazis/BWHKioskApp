@@ -232,6 +232,10 @@ public class MapCanvas extends Canvas {
     }
   }
 
+
+  public Path getPath() {
+    return this.path;
+  }
   // Get distance between two points
   private double getDistance(Point2D p0, Point2D p1) {
     double xDiff = p1.getX() - p0.getX();
