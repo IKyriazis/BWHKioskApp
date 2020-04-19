@@ -8,12 +8,14 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class MapCanvas extends Canvas {
@@ -27,10 +29,16 @@ public class MapCanvas extends Canvas {
   private Point2D center;
   private Point2D dragLast;
 
+  private boolean dragEnabled;
+  private EventHandler<MouseEvent> dragStartHandler;
+  private EventHandler<MouseEvent> dragHandler;
+
   private Path path;
 
-  public MapCanvas() {
+  public MapCanvas(boolean dragEnabled) {
     super();
+
+    this.dragEnabled = dragEnabled;
 
     // Load floor images
     floorImages = new Image[5];
@@ -48,9 +56,9 @@ public class MapCanvas extends Canvas {
         .addListener(
             (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
 
-    // Drag to change center
-    setOnMousePressed(event -> dragLast = new Point2D(event.getX(), event.getY()));
-    setOnMouseDragged(
+    // Create drag event handlers
+    dragStartHandler = event -> dragLast = new Point2D(event.getX(), event.getY());
+    dragHandler =
         event -> {
           Point2D startGraphPos = canvasToGraph(dragLast);
           Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
@@ -63,15 +71,22 @@ public class MapCanvas extends Canvas {
           draw(lastDrawnFloor);
 
           dragLast = new Point2D(event.getX(), event.getY());
-        });
+        };
+
+    // Register drag handlers if enabled
+    if (dragEnabled) {
+      setOnMousePressed(dragStartHandler);
+      setOnMouseDragged(dragHandler);
+
+      // Set cursor to indicate panning possibility
+      setCursor(Cursor.MOVE);
+    }
+
     setOnScroll(
         event -> {
           double diff = event.getDeltaY() / 10.0;
           zoom.set(Math.min(100, Math.max(0, zoom.getValue() + diff)));
         });
-
-    // Set cursor to indicate panning possibility
-    setCursor(Cursor.MOVE);
 
     // Setup zoom property
     zoom = new SimpleDoubleProperty(0.0);
@@ -282,5 +297,21 @@ public class MapCanvas extends Canvas {
 
   public void setDrawAllNodes(boolean drawAllNodes) {
     this.drawAllNodes = drawAllNodes;
+  }
+
+  public void setDragEnabled(boolean dragEnabled) {
+    if (dragEnabled == this.dragEnabled) return;
+
+    if (dragEnabled) {
+      setOnMousePressed(dragStartHandler);
+      setOnMouseDragged(dragHandler);
+      setCursor(Cursor.MOVE);
+    } else {
+      setOnMousePressed(null);
+      setOnMouseDragged(null);
+      setCursor(Cursor.DEFAULT);
+    }
+
+    this.dragEnabled = dragEnabled;
   }
 }

@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.MapEditorController">
    <children>
       <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" layoutX="15.0" layoutY="15.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
-      <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="53.0" spacing="10.0">
+      <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="53.0" pickOnBounds="false" spacing="10.0">
          <children>
-            <Label text="Mode" />
-            <HBox alignment="CENTER_LEFT">
-               <children>
-                  <JFXButton buttonType="RAISED" contentDisplay="CENTER" onAction="#nodeInfoPressed" style="-fx-background-color: white;" text="Node Info" textAlignment="CENTER" />
-                  <Label fx:id="nodeInfoLbl" />
-               </children>
-            </HBox>
+            <Label fx:id="modeLabel" />
+            <JFXButton fx:id="nodeInfoButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Node Info" />
+            <JFXButton fx:id="panMapButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Pan Map" />
+            <JFXButton fx:id="addNodeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Add Node" />
+            <JFXButton fx:id="editNodeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Edit Node" />
+            <JFXButton fx:id="deleteNodeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Delete Node" />
+            <JFXButton fx:id="addEdgeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Add Edge" />
+            <JFXButton fx:id="deleteEdgeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Delete Edge" textAlignment="CENTER" />
          </children>
       </VBox>
+      <JFXDrawer fx:id="infoDrawer" layoutY="259.0" mouseTransparent="true" resizeContent="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="330.0">
+         <children>
+            <Label fx:id="nodeInfoLbl" />
+         </children>
+      </JFXDrawer>
    </children>
 </AnchorPane>
