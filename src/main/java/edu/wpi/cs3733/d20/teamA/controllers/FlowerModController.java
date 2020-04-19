@@ -2,15 +2,15 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
-import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import lombok.SneakyThrows;
 
-public class FlowerModController {
-  private FlowerDatabase d;
-
+public class FlowerModController extends AbstractController {
   private boolean modify;
 
   @FXML private JFXTextField txtName;
@@ -18,50 +18,46 @@ public class FlowerModController {
   @FXML private JFXTextField txtQty;
   @FXML private JFXTextField txtCost;
 
+  @FXML private GridPane modPane;
+
   private Flower myFlower;
   private FlowerAdminController lastController;
 
-  public FlowerModController(FlowerDatabase database, FlowerAdminController flowerAdminController) {
-    System.out.println("Constructor for modify window");
-    d = database;
+  private GaussianBlur myBlur;
+
+  @SneakyThrows
+  public FlowerModController(FlowerAdminController flowerAdminController) {
+    super();
     modify = false;
     lastController = flowerAdminController;
   }
 
-  /* public FlowerModController(ModifyController ctrl) {
-      modify = false;
-
-      prevControl = ctrl;
+  @SneakyThrows
+  public FlowerModController(FlowerAdminController flowerAdminController, Flower f) {
+    super();
+    modify = true;
+    lastController = flowerAdminController;
+    myFlower = f;
   }
 
-  public NodesPopUpController(ModifyController ctrl, ProtoNode n) {
-      modify = true;
-
-      prevControl = ctrl;
-
-      myNode = n;
-  }*/
-
   public void initialize() {
-    /*nodeType.getItems().addAll(types);
-    nodeType.getSelectionModel().select(0);
     if (modify) {
-        nodeID.setText(myNode.getId());
+      txtName.setEditable(false);
+      txtColor.setEditable(false);
+      txtName.setText(myFlower.getTypeFlower());
+      txtColor.setText(myFlower.getColor());
+      txtQty.setText("" + myFlower.getQty());
+      txtCost.setText("" + myFlower.getPricePer());
+    } else {
+      txtName.setEditable(true);
+      txtColor.setEditable(true);
+    }
 
-        nodeType.getSelectionModel().select(myNode.getNodeType());
+    // Blur everything in background
+    myBlur = new GaussianBlur();
+    myBlur.setRadius(7.5);
 
-        nodeID.setText(myNode.getId());
-        floor.setText("" + myNode.getFloor());
-        building.setText(myNode.getBuilding());
-        longName.setText(myNode.getLongName());
-        shortName.setText(myNode.getShortName());
-        xCoord.setText("" + myNode.getXcoord());
-        yCoord.setText("" + myNode.getYcoord());
-
-        nodeID.setEditable(false);
-
-        done.setDisable(false);
-    }*/
+    lastController.getPane().setEffect(myBlur);
   }
 
   // Scene switch & database addNode
@@ -72,12 +68,17 @@ public class FlowerModController {
     int qty = Integer.parseInt(txtQty.getText());
     double price = Double.parseDouble(txtCost.getText());
 
-    if (!modify) d.addFlower(name, color, qty, price);
-    // MODIFY FLOWER else d.c(name,color,qty,price);
+    if (!modify) super.flDatabase.addFlower(name, color, qty, price);
+    else {
+      super.flDatabase.updatePrice(name, color, price);
+      super.flDatabase.updateQTY(name, color, qty);
+    }
+
     Stage stage;
     stage =
         (Stage) this.txtColor.getScene().getWindow(); // Get the stage from an arbitrary component
     lastController.update();
+    lastController.getPane().setEffect(null);
     stage.close();
   }
 }

@@ -163,8 +163,23 @@ public class TestFlowerDatabase {
   }
 
   @Test
-  public void testFlowers(){
-
+  public void testFlowers() {
+    Flower flr = new Flower("Daisy", "Blue", 9, 9.20);
+    Assertions.assertEquals("Daisy", flr.getTypeFlower());
+    Assertions.assertEquals("Blue", flr.getColor());
+    Assertions.assertEquals(9, flr.getQty());
+    Assertions.assertEquals(9.20, flr.getPricePer());
   }
 
+  @Test
+  public void testOrders() {
+    Order flr = new Order(1, 4, "Daisy", "Yellow", 9.88, "Order Sent", "dsss");
+    Assertions.assertEquals(1, flr.getOrderNumber());
+    Assertions.assertEquals(4, flr.getNumFlowers());
+    Assertions.assertEquals("Daisy", flr.getFlowerType());
+    Assertions.assertEquals("Yellow", flr.getFlowerColor());
+    Assertions.assertEquals(9.88, flr.getPrice());
+    Assertions.assertEquals("Order Sent", flr.getStatus());
+    Assertions.assertEquals("dsss", flr.getLocation());
+  }
 }

@@ -9,10 +9,11 @@ public class FlowerDatabase extends Database {
 
   public FlowerDatabase(Connection connection) throws SQLException {
     super(connection);
+    System.out.println(orderNum);
   }
 
   /**
-   * Drops the graph tables so we can start fresh
+   * Drops thetables so we can start fresh
    *
    * @return false if the tables don't exist and CONSTRAINT can't be dropped, true if CONSTRAINT and
    *     tables are dropped correctly
@@ -35,7 +36,7 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * Creates graph tables
+   * Creates tables
    *
    * @return False if tables couldn't be created
    * @throws SQLException
@@ -58,11 +59,13 @@ public class FlowerDatabase extends Database {
     }
   }
   /**
-   * @param type
+   * Adds a flower to the flower table
+   *
+   * @param type type of flower
    * @param color
-   * @param qty
+   * @param qty how many are available in inventory
    * @param pricePer
-   * @return
+   * @return boolean for test purposes. True is everything goes through without an SQL exception
    */
   public boolean addFlower(String type, String color, int qty, double pricePer)
       throws SQLException {
@@ -93,6 +96,8 @@ public class FlowerDatabase extends Database {
   }
 
   /**
+   * Takes in the color and type of flower and updates to a given price
+   *
    * @param type
    * @param color
    * @param newPrice
@@ -128,6 +133,8 @@ public class FlowerDatabase extends Database {
   }
 
   /**
+   * Takes in the type and color of the flower and updates the inventory qty
+   *
    * @param type
    * @param color
    * @param newNum
@@ -159,7 +166,7 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * Should only have to be used by employees if there was a typo??
+   * Deletes a flower from the flower table
    *
    * @param type, color
    * @return
@@ -183,10 +190,15 @@ public class FlowerDatabase extends Database {
     }
   }
 
-  /** @return */
+  /**
+   * adds an order to the order table
+   *
+   * @return
+   */
   public int addOrder(int numFlowers, String flowerType, String flowerColor, String location)
       throws SQLException {
     try {
+      System.out.println("enter add");
       double price;
       Statement priceStmt = getConnection().createStatement();
       ResultSet rst =
@@ -202,12 +214,15 @@ public class FlowerDatabase extends Database {
 
       price = Math.round(price * 100.0) / 100.0;
 
+      System.out.println("Calc price");
+
       String status = "Order Sent";
 
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      System.out.println("Create statement");
       pstmt.setInt(1, orderNum);
       pstmt.setInt(2, numFlowers);
       pstmt.setString(3, flowerType);
@@ -216,6 +231,7 @@ public class FlowerDatabase extends Database {
       pstmt.setString(6, status);
       pstmt.setString(7, location);
       pstmt.executeUpdate();
+      System.out.println("Update");
       pstmt.close();
       orderNum++;
       return orderNum - 1;
@@ -224,6 +240,13 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  /**
+   * Changes the order status of a selected order
+   *
+   * @param orderNum
+   * @param newStat
+   * @return
+   */
   public boolean changeOrderStatus(int orderNum, String newStat) {
 
     try {
@@ -240,7 +263,7 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * needs to end up being automated?
+   * Deletes a certain order from the table
    *
    * @param orderNumber
    * @return
@@ -259,6 +282,12 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  /**
+   * Gets how many entries are in the flower table
+   *
+   * @return
+   * @throws SQLException
+   */
   public int getSizeFlowers() throws SQLException {
     int count = 0;
     try {
@@ -275,6 +304,12 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  /**
+   * Gets how many entries in the order table
+   *
+   * @return
+   * @throws SQLException
+   */
   public int getSizeOrders() throws SQLException {
     int count = 0;
     try {
@@ -291,19 +326,43 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  /**
+   * removes all flowers from the table
+   *
+   * @return
+   * @throws SQLException
+   */
   public boolean removeAllFlowers() throws SQLException {
     return helperPrepared("DELETE From Flowers");
   }
 
+  /**
+   * Removes all orders from the table
+   *
+   * @return
+   * @throws SQLException
+   */
   public boolean removeAllOrders() throws SQLException {
     orderNum = 1;
     return helperPrepared("DELETE From Orders");
   }
 
+  /**
+   * Removes all orders and flowers from the database
+   *
+   * @return
+   * @throws SQLException
+   */
   public boolean removeAll() throws SQLException {
     return removeAllFlowers() && removeAllOrders();
   }
 
+  /**
+   * Returns all flowers in the flower table in an observable list
+   *
+   * @return
+   * @throws SQLException
+   */
   public ObservableList<Flower> flowerOl() throws SQLException {
     ObservableList<Flower> oList = FXCollections.observableArrayList();
     try {
@@ -329,6 +388,12 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  /**
+   * Returns an observable list containing all orders in the table
+   *
+   * @return
+   * @throws SQLException
+   */
   public ObservableList<Order> orderOl() throws SQLException {
     ObservableList<Order> oList = FXCollections.observableArrayList();
     try {
@@ -358,6 +423,13 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  /**
+   * returns just the individual flower price for a given flower
+   *
+   * @param type
+   * @param color
+   * @return
+   */
   public double getFlowerPricePer(String type, String color) {
     double price = -1;
     try {
@@ -381,6 +453,12 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  /**
+   * gets the order status for a chosen order
+   *
+   * @param orderNum
+   * @return
+   */
   public String getOrderStatus(int orderNum) {
     String status = null;
     try {

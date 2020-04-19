@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
@@ -14,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.FlowerAdminController">
+<AnchorPane fx:id="flowerPane" prefHeight="768.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.FlowerAdminController">
     <children>
         <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -24,7 +23,7 @@
                      <children>
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="450.0" spacing="10.0">
                            <children>
-                              <Label text="List of Avalible Flowers" textAlignment="CENTER" wrapText="true">
+                              <Label text="Flowers" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -32,80 +31,65 @@
                               <Separator prefWidth="200.0" />
                               <TableView fx:id="tblFlowerView" prefWidth="500.0">
                                  <VBox.margin>
-                                    <Insets bottom="50.0" left="25.0" right="25.0" top="10.0" />
+                                    <Insets bottom="25.0" left="25.0" right="25.0" top="10.0" />
                                  </VBox.margin>
                               </TableView>
-                           </children>
-                        </VBox>
-                        <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="300.0" spacing="10.0">
-                           <children>
-                              <Label text="Modify Avalible Flowers" textAlignment="CENTER" wrapText="true">
+                              <Separator prefWidth="200.0" />
+                              <Label text="Modify Availible Flowers" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <Separator prefWidth="200.0" />
-                              <JFXButton onAction="#addFlower" text="Add New Flower" />
-                              <JFXButton text="Edit Existing Flower" />
-                              <JFXButton text="Delete Flower" />
+                              <JFXButton onAction="#addFlower" prefWidth="175.0" text="Add New Flower">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></JFXButton>
+                              <JFXButton onAction="#editFlower" prefWidth="175.0" text="Edit Existing Flower">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></JFXButton>
+                              <JFXButton onAction="#deleteFlower" prefWidth="175.0" text="Delete Flower">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></JFXButton>
                            </children>
                         </VBox>
                         <Separator orientation="VERTICAL" prefHeight="200.0" />
+                        <Separator orientation="VERTICAL" prefHeight="200.0" />
                         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="450.0" spacing="10.0">
                            <children>
-                                    <Label text="List of Flower Orders in Progress" textAlignment="CENTER" wrapText="true">
+                                    <Label text="Orders" textAlignment="CENTER" wrapText="true">
                                         <font>
                                             <Font size="24.0" />
                                         </font>
                                     </Label>
                               <Separator prefWidth="200.0" />
-                              <TableView prefWidth="500.0">
+                              <TableView fx:id="tblOrderView" prefWidth="500.0">
                                  <VBox.margin>
-                                    <Insets left="25.0" right="25.0" top="10.0" />
+                                    <Insets bottom="25.0" left="25.0" right="25.0" top="10.0" />
                                  </VBox.margin>
                               </TableView>
-                              <JFXCheckBox text="Include completed orders">
-                                 <VBox.margin>
-                                    <Insets bottom="25.0" />
-                                 </VBox.margin>
-                              </JFXCheckBox>
-                           </children>
-                        </VBox>
-                        <Separator orientation="VERTICAL" prefHeight="200.0" />
-                        <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefHeight="500.0" prefWidth="300.0" spacing="10.0">
-                           <children>
-                              <Label text="Update Order">
+                              <Separator prefWidth="200.0" />
+                              <Label text="Modify Order" textAlignment="CENTER" wrapText="true">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <Separator prefWidth="200.0" />
-                              <Label text="Current Status" />
-                              <JFXTextField editable="false">
+                              <JFXTextField prefWidth="300.0">
                                  <VBox.margin>
-                                    <Insets left="10.0" right="10.0" />
+                                    <Insets left="75.0" right="75.0" />
                                  </VBox.margin>
                               </JFXTextField>
-                              <Label text="New Status" />
                               <JFXComboBox maxWidth="1.7976931348623157E308">
                                  <VBox.margin>
-                                    <Insets left="10.0" right="10.0" />
+                                    <Insets left="75.0" right="75.0" />
                                  </VBox.margin>
                               </JFXComboBox>
-                              <JFXButton prefWidth="150.0" text="Change Status">
+                              <JFXButton prefWidth="200.0" text="Change Order Progress">
                                  <font>
-                                    <Font size="16.0" />
+                                    <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <Separator prefWidth="200.0" />
-                              <Label text="Exit Flower Orders">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                              </Label>
-                              <JFXButton prefWidth="150.0" text="Return to Admin Screen" />
-                              <JFXButton onAction="#cancel" prefWidth="150.0" text="Logout of Admin Mode" />
                            </children>
                         </VBox>
                      </children>
