@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -8,7 +10,10 @@ import java.util.stream.Collectors;
 /** Represents locations on the map in an 'undirected' Graph */
 public class Graph {
 
-  GraphDatabase DB = new GraphDatabase();
+  DatabaseServiceProvider provider = new DatabaseServiceProvider();
+  Connection conn = provider.provideConnection();
+
+  GraphDatabase DB = new GraphDatabase(conn);
   /** The nodes in this graph, mapping ID to Node */
   private HashMap<String, Node> nodes;
   // private GraphDatabase database;
