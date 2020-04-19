@@ -195,7 +195,53 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public Timestamp getField(int rn, String field) throws SQLException{
+  //  public Timestamp getTimestamp(int rn) throws SQLException {
+  //    Timestamp ts;
+  //    try {
+  //      PreparedStatement pstmt =
+  //          getConnection()
+  //              .prepareStatement("SELECT time FROM JanitorRequest WHERE requestNumber = ?");
+  //      pstmt.setInt(1, rn);
+  //      ResultSet rset = pstmt.executeQuery();
+  //      rset.next();
+  //      ts = rset.getTimestamp("time");
+  //      pstmt.close();
+  //      return ts;
+  //    } catch (SQLException e) {
+  //      return null;
+  //    }
+  //  }
 
+  public Timestamp getTimestamp(int rn) throws SQLException {
+    Timestamp ts;
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      ts = rset.getTimestamp("time");
+      pstmt.close();
+      return ts;
+    } catch (SQLException e) {
+      return null;
+    }
   }
+
+  //  public String getName(int rn) throws SQLException {
+  //    String n;
+  //    try {
+  //      PreparedStatement pstmt =
+  //          getConnection()
+  //              .prepareStatement("SELECT name FROM JanitorRequest WHERE requestNumber = ?");
+  //      pstmt.setInt(1, rn);
+  //      ResultSet rset = pstmt.executeQuery();
+  //      rset.next();
+  //      n = rset.getString("name");
+  //      pstmt.close();
+  //      return n;
+  //    } catch (SQLException e) {
+  //      return null;
+  //    }
+  //  }
 }

@@ -163,6 +163,25 @@ public class TestJanitorDatabase {
     jDB.dropTables();
     gDB.removeAllNodes();
   }
+
+  @Test
+  public void testGetTimestamp() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.createTables();
+    jDB.removeAll();
+    boolean a = jDB.addRequest("biscuit", "Medium");
+    Assertions.assertTrue(a);
+    Assertions.assertEquals(1, jDB.getRequestSize());
+    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+
+    System.out.println(jDB.getTimestamp(1));
+
+    jDB.removeAll();
+    jDB.dropTables();
+    gDB.removeAllNodes();
+  }
   //  @Test
   //  public void testGetTimestamp() throws SQLException {
   //    gDB.removeAllNodes();
