@@ -16,7 +16,7 @@
             <HBox alignment="CENTER_LEFT">
                <children>
                   <JFXButton buttonType="RAISED" contentDisplay="CENTER" onAction="#nodeInfoPressed" style="-fx-background-color: white;" text="Node Info" textAlignment="CENTER" />
-                  <Label fx:id="nodeInfoLbl" text="testLBl" />
+                  <Label fx:id="nodeInfoLbl" />
                </children>
             </HBox>
          </children>
