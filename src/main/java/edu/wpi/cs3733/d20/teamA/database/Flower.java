@@ -19,20 +19,4 @@ public class Flower {
     this.qty = new SimpleIntegerProperty(qty);
     this.pricePer = new SimpleDoubleProperty(pricePer);
   }
-
-  public String getTypeFlower() {
-    return typeFlower.get();
-  }
-
-  public String getColor() {
-    return color.get();
-  }
-
-  public int getQty() {
-    return qty.get();
-  }
-
-  public double getPricePer() {
-    return pricePer.get();
-  }
 }

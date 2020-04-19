@@ -1,8 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,12 +18,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 public class FlowerAdminController {
+  private DatabaseServiceProvider provider = new DatabaseServiceProvider();
+  private Connection conn = provider.provideConnection();
   private FlowerDatabase database;
 
   @FXML private TableView tblFlowerView;
 
+  public FlowerAdminController() throws SQLException {}
+
   public void initialize() throws SQLException {
-    database = new FlowerDatabase(database.getConnection());
+    database = new FlowerDatabase(conn);
     database.createTables();
     database.addFlower("Flower1", "Red", 8, 1.25);
 
