@@ -4,6 +4,9 @@ import edu.wpi.cs3733.d20.teamA.graph.Edge;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
+import java.util.Comparator;
+import java.util.Optional;
+import java.util.stream.Stream;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
@@ -226,6 +229,35 @@ public class MapCanvas extends Canvas {
 
     for (Edge edge : path.getPathEdges()) {
       drawEdge(edge);
+    }
+  }
+
+  // Get distance between two points
+  private double getDistance(Point2D p0, Point2D p1) {
+    double xDiff = p1.getX() - p0.getX();
+    double yDiff = p1.getY() - p1.getY();
+
+    return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+  }
+
+  // Get the closest node to a position on the canvas (within a given radius in canvas space)
+  public Optional<Node> getClosestNode(Point2D point, double maxDistance) {
+    try {
+      Stream<Node> nodeStream = Graph.getInstance().getNodes().values().stream();
+
+      return nodeStream
+          .filter(
+              node -> {
+                Point2D nodeCanvasPoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
+
+                return getDistance(point, nodeCanvasPoint) < maxDistance;
+              })
+          .min(
+              Comparator.comparingDouble(
+                  o -> getDistance(graphToCanvas(new Point2D(o.getX(), o.getY())), point)));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return Optional.empty();
     }
   }
 
