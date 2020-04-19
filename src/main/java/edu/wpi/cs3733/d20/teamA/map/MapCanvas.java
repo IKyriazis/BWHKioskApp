@@ -21,6 +21,8 @@ public class MapCanvas extends Canvas {
   private Point2D center;
   private Point2D dragLast;
 
+  private Path path;
+
   public MapCanvas() {
     super();
 
@@ -55,7 +57,7 @@ public class MapCanvas extends Canvas {
 
           center = new Point2D(xDiff + center.getX(), yDiff + center.getY());
 
-          drawFloorBackground(lastDrawnFloor);
+          draw(lastDrawnFloor);
 
           dragLast = new Point2D(event.getX(), event.getY());
         });
@@ -85,6 +87,11 @@ public class MapCanvas extends Canvas {
   private void calcViewSpace(int floor) {
     double imageWidth = floorImages[floor - 1].getWidth();
     double imageHeight = floorImages[floor - 1].getHeight();
+
+    // Set center if not yet set
+    if ((center == null) || (floor != lastDrawnFloor)) {
+      center = new Point2D(0, 0).midpoint(new Point2D(imageWidth, imageHeight));
+    }
 
     double aspectRatio = (imageWidth / getWidth()) / (imageHeight / getHeight());
 
@@ -120,19 +127,29 @@ public class MapCanvas extends Canvas {
     viewSpace = new BoundingBox(startX, startY, width, height);
   }
 
-  public void drawFloorBackground(int floor) {
+  public void draw(int floor) {
     // Clear background
     getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
 
     // Clamp floor to between 1 and 5
     floor = Math.max(1, Math.min(floor, 5));
 
-    Image img = floorImages[floor - 1];
-
-    if ((center == null) || (floor != lastDrawnFloor)) {
-      center = new Point2D(0, 0).midpoint(new Point2D(img.getWidth(), img.getHeight()));
-    }
+    // Update view space
     calcViewSpace(floor);
+
+    // Draw background
+    drawFloorBackground(floor);
+
+    // Draw path if it exists
+    if (path != null) {
+      drawPath(path);
+    }
+
+    lastDrawnFloor = floor;
+  }
+
+  private void drawFloorBackground(int floor) {
+    Image img = floorImages[floor - 1];
 
     Point2D imgStart = graphToCanvas(new Point2D(0, 0));
     Point2D imgEnd = graphToCanvas(new Point2D(img.getWidth(), img.getHeight()));
@@ -144,13 +161,11 @@ public class MapCanvas extends Canvas {
             imgStart.getY(),
             imgEnd.getX() - imgStart.getX(),
             imgEnd.getY() - imgStart.getY());
-
-    lastDrawnFloor = floor;
   }
 
   // Draws an edge
-  public void drawEdge(Edge edge) {
-    GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+  private void drawEdge(Edge edge) {
+    GraphicsContext graphicsContext = getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
     Point2D end = graphToCanvas(new Point2D(edge.getEnd().getX(), edge.getEnd().getY()));
@@ -164,8 +179,8 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws a node on the map
-  public void drawNode(Node node) {
-    GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
+  private void drawNode(Node node) {
+    GraphicsContext graphicsContext = getGraphicsContext2D();
 
     graphicsContext.setFill(Color.DARKTURQUOISE);
 
@@ -174,7 +189,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws the path found
-  public void drawPath(Path path) {
+  private void drawPath(Path path) {
     for (Node node : path.getPathNodes()) {
       drawNode(node);
     }
@@ -184,11 +199,19 @@ public class MapCanvas extends Canvas {
     }
   }
 
+  public void setPath(Path path) {
+    this.path = path;
+  }
+
+  public void clearPath(Path path) {
+    this.path = null;
+  }
+
   @Override
   public void resize(double width, double height) {
     super.resize(width, height);
 
-    drawFloorBackground(lastDrawnFloor);
+    draw(lastDrawnFloor);
   }
 
   public double getZoom() {

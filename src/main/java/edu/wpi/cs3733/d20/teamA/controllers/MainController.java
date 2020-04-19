@@ -1,19 +1,24 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXSlider;
 import edu.wpi.cs3733.d20.teamA.App;
-import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.graph.Graph;
+import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.graph.Path;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
+import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -21,17 +26,16 @@ import javafx.stage.Stage;
 
 public class MainController {
   @FXML private VBox searchFields;
-  @FXML private ComboBox<Node> startLocation;
-  @FXML private ComboBox<Node> destination;
+  @FXML private JFXComboBox<Node> startingLocationBox;
+  @FXML private JFXComboBox<Node> destinationBox;
   @FXML private AnchorPane canvasPane;
   @FXML private Label textualDirectionsLabel;
   @FXML private JFXSlider zoomSlider;
-
-  private ObservableList<Node> mapNodes = FXCollections.observableArrayList();
+  @FXML private JFXButton goButton;
 
   private MapCanvas canvas;
-  private Path path;
 
+  @SuppressWarnings("DuplicatedCode")
   public void initialize() {
     searchFields.setVisible(false);
 
@@ -42,7 +46,7 @@ public class MainController {
     canvas.heightProperty().bind(canvasPane.heightProperty());
 
     // Draw background asap
-    Platform.runLater(() -> canvas.drawFloorBackground(1));
+    Platform.runLater(() -> canvas.draw(1));
 
     // Setup zoom slider hook
     zoomSlider
@@ -50,28 +54,30 @@ public class MainController {
         .addListener(
             (observable, oldValue, newValue) -> {
               canvas.setZoom(1.0 + (newValue.doubleValue() / 100));
-              canvas.drawFloorBackground(1);
+              canvas.draw(1);
             });
 
-    path = new Path(Graph.getInstance());
-    // Create the dropdown observable list
-    for (Node node : Graph.getInstance().getNodes().values()) {
-      mapNodes.add(node);
-    }
+    ArrayList<Node> nodeList = new ArrayList<>(Graph.getInstance().getNodes().values());
+    ObservableList<Node> allNodeList = FXCollections.observableArrayList(nodeList);
+    startingLocationBox.setItems(allNodeList);
+    startingLocationBox
+        .focusedProperty()
+        .addListener(observable -> startingLocationBox.setItems(allNodeList));
+    startingLocationBox
+        .getEditor()
+        .setOnKeyTyped(new NodeAutoCompleteHandler(startingLocationBox, destinationBox, nodeList));
 
-    Node one = new Node("Test node", 1208, 600, 1, "", NodeType.DEPT, "long name", "short", "A");
-    Node two = new Node("Test node 2", 1000, 600, 1, "", NodeType.DEPT, "long name", "short", "A");
-    Edge oneEdge = new Edge(one, two, 1);
-    mapNodes.add(one);
-    mapNodes.add(two);
-
-    startLocation.setItems(mapNodes);
-    startLocation.setValue(one);
-    destination.setItems(mapNodes);
+    destinationBox.setItems(allNodeList);
+    destinationBox
+        .focusedProperty()
+        .addListener(observable -> destinationBox.setItems(allNodeList));
+    destinationBox
+        .getEditor()
+        .setOnKeyTyped(new NodeAutoCompleteHandler(destinationBox, goButton, nodeList));
   }
 
   @FXML
-  public void toggleSearch(ActionEvent actionEvent) {
+  public void toggleSearch() {
     searchFields.setVisible(!searchFields.isVisible());
   }
 
@@ -96,11 +102,20 @@ public class MainController {
   }
 
   @FXML
-  public void pressedGo(ActionEvent actionEvent) {
-    path.findPath(mapNodes.get(0), mapNodes.get(1));
-    canvas.drawPath(path);
-    textualDirectionsLabel.setText(path.textualDirections());
-    textualDirectionsLabel.setText(
-        "Here is where the path would go.\n if the path existed it would go here \n hi");
+  public void pressedGo() {
+    Optional<Node> start =
+        startingLocationBox.getItems().stream()
+            .filter(node -> node.getShortName().contains(startingLocationBox.getEditor().getText()))
+            .findFirst();
+    Optional<Node> end =
+        destinationBox.getItems().stream()
+            .filter(node -> node.getShortName().contains(destinationBox.getEditor().getText()))
+            .findFirst();
+    if (start.isPresent() && end.isPresent()) {
+      Path path = new Path(Graph.getInstance());
+      path.findPath(start.get(), end.get());
+      canvas.setPath(path);
+      canvas.draw(1);
+    }
   }
 }
