@@ -3,16 +3,38 @@ package edu.wpi.cs3733.d20.teamA.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestFlowerDatabase {
-  FlowerDatabase fDB = new FlowerDatabase();
-  GraphDatabase DB = new GraphDatabase();
+
+  private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
+  private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
+  private Connection conn;
+  FlowerDatabase fDB;
+  GraphDatabase DB;
 
   public TestFlowerDatabase() throws SQLException {}
 
-  @Test
+  @BeforeEach
+  public void init() throws SQLException {
+    conn = DriverManager.getConnection(jdbcUrl);
+    fDB = new FlowerDatabase(conn);
+    DB = new GraphDatabase(conn);
+  }
+
+  @AfterEach
+  public void teardown() {
+    try {
+      conn.close();
+      DriverManager.getConnection(closeUrl);
+    } catch (SQLException ignored) {
+    }
+  }
+
+  // @Test
   public void testDB() throws SQLException {
     boolean test = false;
     try {
@@ -26,6 +48,7 @@ public class TestFlowerDatabase {
 
   @Test
   public void testTables() throws SQLException {
+    DB.createTables();
     fDB.dropTables();
     boolean dropTables = fDB.dropTables();
     Assertions.assertFalse(dropTables);
@@ -38,6 +61,7 @@ public class TestFlowerDatabase {
 
   @Test
   public void testAddFlower() throws SQLException {
+    fDB.createTables();
     fDB.removeAllFlowers();
     boolean a = fDB.addFlower("Rose", "Yellow", 6, 2.45);
     Assertions.assertTrue(a);
@@ -49,13 +73,13 @@ public class TestFlowerDatabase {
     Assertions.assertTrue(e);
     boolean c = fDB.addFlower("Lily", "Green", 1, 567.323);
     Assertions.assertFalse(c);
-    boolean w = fDB.helperEmpty("SELECT * FROM Flowers");
-    Assertions.assertTrue(w);
+    Assertions.assertEquals(3, fDB.getSizeFlowers());
     fDB.removeAllFlowers();
   }
 
   @Test
   public void testUpdatePrice() throws SQLException {
+    fDB.createTables();
     fDB.removeAllFlowers();
     fDB.addFlower("Rose", "Yellow", 6, 2.45);
     boolean a = fDB.updatePrice("Rose", "Yellow", 2.88);
@@ -68,6 +92,7 @@ public class TestFlowerDatabase {
 
   @Test
   public void testUpdateQty() throws SQLException {
+    fDB.createTables();
     fDB.removeAllFlowers();
     fDB.addFlower("Rose", "Yellow", 6, 2.45);
     boolean a = fDB.updateQTY("Rose", "Yellow", 3);
@@ -80,53 +105,60 @@ public class TestFlowerDatabase {
 
   @Test
   public void testDeleteFlower() throws SQLException {
+    fDB.createTables();
     fDB.removeAllFlowers();
     fDB.addFlower("Rose", "Yellow", 6, 2.45);
     fDB.deleteFlower("Rose", "Yellow");
-    boolean w = fDB.helperEmpty("SELECT * FROM Flowers");
-    Assertions.assertFalse(w);
+    Assertions.assertEquals(0, fDB.getSizeFlowers());
     fDB.removeAllFlowers();
   }
 
   @Test
   public void testAddOrder() throws SQLException {
+    DB.createTables();
+    fDB.createTables();
     fDB.removeAllOrders();
+    DB.removeAll();
+    Assertions.assertEquals(0, fDB.getSizeOrders());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     fDB.addFlower("Daisy", "Blue", 10, 1.20);
     boolean a = fDB.addOrder(5, "Daisy", "Blue", "biscuit");
     Assertions.assertTrue(a);
-    boolean b = fDB.addOrder(-1, "Daisy", "Blue", "buiscuit");
+    Assertions.assertEquals(1, fDB.getSizeOrders());
+    boolean b = fDB.addOrder(-1, "Rose", "Blue", "biscuit");
     Assertions.assertFalse(b);
-    boolean c = fDB.addOrder(1, "Daisy", "Blue", "butter");
+    boolean c = fDB.addOrder(1, "Tulip", "Blue", "butter");
     Assertions.assertFalse(c);
-    boolean e = fDB.helperEmpty("SELECT * FROM Orders");
-    Assertions.assertTrue(e);
+    Assertions.assertEquals(1, fDB.getSizeOrders());
     fDB.removeAllOrders();
   }
 
   @Test
   public void testDeleteOrder() throws SQLException {
-
+    DB.createTables();
+    fDB.createTables();
     fDB.removeAllOrders();
+    DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     fDB.addFlower("Daisy", "Blue", 20, 1.20);
     fDB.addOrder(5, "Daisy", "Blue", "biscuit");
     boolean a = fDB.deleteOrder(1);
     Assertions.assertTrue(a);
-    boolean b = fDB.helperEmpty("SELECT * FROM Orders");
-    Assertions.assertFalse(b);
-    fDB.addOrder(2, "Daisy", "Blue", "buiscuit");
-    fDB.addOrder(6, "Daisy", "Blue", "biscuit");
+    Assertions.assertEquals(0, fDB.getSizeOrders());
+    boolean d = fDB.addOrder(2, "Daisy", "Blue", "biscuit");
+    boolean e = fDB.addOrder(6, "Daisy", "Blue", "biscuit");
     boolean r = fDB.deleteOrder(2);
     Assertions.assertTrue(r);
-    boolean s = fDB.helperEmpty("SELECT * FROM Orders");
-    Assertions.assertTrue(s);
+    Assertions.assertEquals(1, fDB.getSizeOrders());
     fDB.removeAllOrders();
   }
 
   @Test
   public void testUpdateStatus() throws SQLException {
+    DB.createTables();
+    fDB.createTables();
     fDB.removeAllOrders();
+    DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     fDB.addOrder(5, "Daisy", "Blue", "biscuit");
     boolean a = fDB.changeOrderStatus(5, "Order Received");
