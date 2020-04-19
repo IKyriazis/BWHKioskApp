@@ -9,6 +9,16 @@
     -fx-background-color: #607D8B;
 }
 
+.jfx-tab-pane .headers-region > .tab > .jfx-rippler {
+    -jfx-rippler-fill: BLACK;
+}
+
+.jfx-tab-pane .headers-region > .tab-selected-line{
+    -fx-background-color: black;
+    -fx-pref-width: 1px !important;
+    -fx-pref-height: 2px;
+}
+
 .jfx-slider .thumb, .jfx-slider .colored-track{
     -fx-background-color: black;
 }
