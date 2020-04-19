@@ -25,12 +25,12 @@
                <children>
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
                   <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="69.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" resizeContent="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="95.0">
-                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="177.0" prefWidth="265.0" spacing="25.0">
+                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="195.0" prefWidth="258.0" spacing="25.0">
                         <padding>
                            <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                         </padding>
                         <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" promptText="Starting Location" />
-                        <JFXButton fx:id="swapBtn" buttonType="RAISED" prefHeight="25.0" prefWidth="39.0" />
+                        <JFXButton fx:id="swapBtn" buttonType="RAISED" prefHeight="25.0" prefWidth="143.0" />
                         <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" promptText="Destination" />
                         <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
                      </VBox>
