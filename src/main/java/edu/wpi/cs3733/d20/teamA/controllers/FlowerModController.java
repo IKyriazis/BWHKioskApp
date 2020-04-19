@@ -2,15 +2,15 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
-import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import lombok.SneakyThrows;
 
-public class FlowerModController {
-  private FlowerDatabase d;
-
+public class FlowerModController extends AbstractController {
   private boolean modify;
 
   @FXML private JFXTextField txtName;
@@ -18,18 +18,23 @@ public class FlowerModController {
   @FXML private JFXTextField txtQty;
   @FXML private JFXTextField txtCost;
 
+  @FXML private GridPane modPane;
+
   private Flower myFlower;
   private FlowerAdminController lastController;
 
-  public FlowerModController(FlowerDatabase database, FlowerAdminController flowerAdminController) {
-    d = database;
+  private GaussianBlur myBlur;
+
+  @SneakyThrows
+  public FlowerModController(FlowerAdminController flowerAdminController) {
+    super();
     modify = false;
     lastController = flowerAdminController;
   }
 
-  public FlowerModController(
-      FlowerDatabase database, FlowerAdminController flowerAdminController, Flower f) {
-    d = database;
+  @SneakyThrows
+  public FlowerModController(FlowerAdminController flowerAdminController, Flower f) {
+    super();
     modify = true;
     lastController = flowerAdminController;
     myFlower = f;
@@ -47,6 +52,12 @@ public class FlowerModController {
       txtName.setEditable(true);
       txtColor.setEditable(true);
     }
+
+    // Blur everything in background
+    myBlur = new GaussianBlur();
+    myBlur.setRadius(7.5);
+
+    lastController.getPane().setEffect(myBlur);
   }
 
   // Scene switch & database addNode
@@ -57,16 +68,17 @@ public class FlowerModController {
     int qty = Integer.parseInt(txtQty.getText());
     double price = Double.parseDouble(txtCost.getText());
 
-    if (!modify) d.addFlower(name, color, qty, price);
+    if (!modify) super.flDatabase.addFlower(name, color, qty, price);
     else {
-      d.updatePrice(name, color, price);
-      d.updateQTY(name, color, qty);
+      super.flDatabase.updatePrice(name, color, price);
+      super.flDatabase.updateQTY(name, color, qty);
     }
 
     Stage stage;
     stage =
         (Stage) this.txtColor.getScene().getWindow(); // Get the stage from an arbitrary component
     lastController.update();
+    lastController.getPane().setEffect(null);
     stage.close();
   }
 }

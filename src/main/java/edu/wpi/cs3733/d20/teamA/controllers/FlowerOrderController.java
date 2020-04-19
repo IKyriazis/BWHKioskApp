@@ -3,11 +3,8 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.App;
-import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
-import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.SQLException;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,22 +17,15 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import javax.swing.*;
 
-public class FlowerOrderController {
+public class FlowerOrderController extends AbstractController {
 
   @FXML private JFXComboBox<String> choiceFlower;
   @FXML private JFXTextField txtNumber;
 
-  private DatabaseServiceProvider provider = new DatabaseServiceProvider();
-  private Connection conn = provider.provideConnection();
-  private FlowerDatabase data;
-
-  public FlowerOrderController() throws SQLException {
-    data = new FlowerDatabase(conn);
-    data.createTables();
-  }
+  public FlowerOrderController() throws SQLException {}
 
   public void initialize() throws SQLException {
-    ObservableList<Flower> list = data.flowerOl(); // Get from FlowerDatabase @TODO
+    ObservableList<Flower> list = super.flDatabase.flowerOl(); // Get from FlowerDatabase @TODO
     for (Flower f : list) {
       choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
     }
@@ -71,7 +61,7 @@ public class FlowerOrderController {
       System.out.println(color);
       System.out.println("" + num);
 
-      int i = data.addOrder(num, type, color, "LOACTION ADD LATER");
+      int i = super.flDatabase.addOrder(num, type, color, "LOACTION ADD LATER");
 
       if (i == 0) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

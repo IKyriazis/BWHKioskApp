@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.LoginController">
+   <center>
+      <StackPane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <JFXTabPane fx:id="tabPane" mouseTransparent="true" side="RIGHT" tabClosingPolicy="UNAVAILABLE">
+            <Tab closable="false" text="Map Editor">
+               <fx:include source="MapEditor.fxml" />
+            </Tab>
+            <Tab closable="false" text="Flowers">
+               <fx:include source="FlowerAdmin.fxml" />
+            </Tab>
+         </JFXTabPane>
+         <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
+            <padding>
+               <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </padding>
+            <StackPane.margin>
+               <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+            </StackPane.margin>
+            <JFXTextField fx:id="usernameBox" labelFloat="true" promptText="Username" />
+            <JFXPasswordField fx:id="passwordBox" labelFloat="true" promptText="Password" />
+            <JFXButton fx:id="loginButton" buttonType="RAISED" onAction="#loginButtonPressed" text="Login" />
+         </VBox>
+      </StackPane>
+   </center>
+</BorderPane>

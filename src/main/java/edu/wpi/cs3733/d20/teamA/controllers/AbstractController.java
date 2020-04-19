@@ -11,9 +11,14 @@ public abstract class AbstractController {
   private Connection conn;
   protected FlowerDatabase flDatabase;
 
-  public AbstractController() throws SQLException {
+  public AbstractController() {
     provider = new DatabaseServiceProvider();
-    conn = provider.provideConnection();
-    flDatabase.createTables();
+    try {
+      conn = provider.provideConnection();
+      flDatabase = new FlowerDatabase(conn);
+      flDatabase.createTables();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace(); // All is lost
+    }
   }
 }
