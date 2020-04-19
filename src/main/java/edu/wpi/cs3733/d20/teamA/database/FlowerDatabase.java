@@ -7,7 +7,9 @@ import javafx.collections.ObservableList;
 public class FlowerDatabase extends Database {
   private int orderNum = 1;
 
-  public FlowerDatabase() throws SQLException {}
+  public FlowerDatabase(Connection connection) throws SQLException {
+    super(connection);
+  }
 
   /**
    * Drops the graph tables so we can start fresh
@@ -55,7 +57,6 @@ public class FlowerDatabase extends Database {
       return false;
     }
   }
-
   /**
    * @param type
    * @param color
@@ -75,17 +76,16 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "INSERT INTO Flowers (typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Flowers (typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?)");
       pstmt.setString(1, type);
       pstmt.setString(2, color);
       pstmt.setInt(3, qty);
       pstmt.setDouble(4, pricePer);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -109,19 +109,18 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "UPDATE Flowers SET pricePer = "
-                  + newPrice
-                  + " WHERE typeFlower = '"
-                  + type
-                  + "' AND color = '"
-                  + color
-                  + "'");
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Flowers SET pricePer = "
+                      + newPrice
+                      + " WHERE typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -141,19 +140,18 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "UPDATE Flowers SET qty = "
-                  + newNum
-                  + " WHERE typeFlower = '"
-                  + type
-                  + "' AND color = '"
-                  + color
-                  + "'");
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Flowers SET qty = "
+                      + newNum
+                      + " WHERE typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -169,13 +167,16 @@ public class FlowerDatabase extends Database {
    */
   public boolean deleteFlower(String type, String color) throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "DELETE From Flowers WHERE typeFlower = '" + type + "' AND color = '" + color + "'");
+          getConnection()
+              .prepareStatement(
+                  "DELETE From Flowers WHERE typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -185,11 +186,9 @@ public class FlowerDatabase extends Database {
   /** @return */
   public int addOrder(int numFlowers, String flowerType, String flowerColor, String location)
       throws SQLException {
-
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       double price;
-      Statement priceStmt = conn.createStatement();
+      Statement priceStmt = getConnection().createStatement();
       ResultSet rst =
           priceStmt.executeQuery(
               "SELECT * FROM Flowers WHERE typeFlower = '"
@@ -206,8 +205,9 @@ public class FlowerDatabase extends Database {
       String status = "Order Sent";
 
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
       pstmt.setInt(1, orderNum);
       pstmt.setInt(2, numFlowers);
       pstmt.setString(3, flowerType);
@@ -215,10 +215,8 @@ public class FlowerDatabase extends Database {
       pstmt.setDouble(5, price);
       pstmt.setString(6, status);
       pstmt.setString(7, location);
-      orderNum++;
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       orderNum++;
       return orderNum - 1;
     } catch (SQLException e) {
@@ -229,13 +227,12 @@ public class FlowerDatabase extends Database {
   public boolean changeOrderStatus(int orderNum, String newStat) {
 
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "UPDATE Orders Set status = '" + newStat + "' WHERE orderNumber = " + orderNum);
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Orders Set status = '" + newStat + "' WHERE orderNumber = " + orderNum);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -251,15 +248,46 @@ public class FlowerDatabase extends Database {
    */
   public boolean deleteOrder(int orderNumber) throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt = conn.prepareStatement("DELETE From Orders Where orderNumber = ?");
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("DELETE From Orders Where orderNumber = ?");
       pstmt.setInt(1, orderNumber);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
+    }
+  }
+
+  public int getSizeFlowers() throws SQLException {
+    int count = 0;
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Flowers ");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        count++;
+      }
+      rset.close();
+      pstmt.close();
+      return count;
+    } catch (SQLException e) {
+      return -1;
+    }
+  }
+
+  public int getSizeOrders() throws SQLException {
+    int count = 0;
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Orders ");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        count++;
+      }
+      rset.close();
+      pstmt.close();
+      return count;
+    } catch (SQLException e) {
+      return -1;
     }
   }
 
