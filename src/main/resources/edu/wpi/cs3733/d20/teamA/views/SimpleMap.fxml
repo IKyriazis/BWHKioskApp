@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXRadioButton?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SimpleMapController">
+   <center>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0">
+         <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
+               <children>
+                  <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
+                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="69.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" resizeContent="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="95.0">
+                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
+                        <padding>
+                           <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                        </padding>
+                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" promptText="Starting Location" />
+                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" promptText="Destination" />
+                        <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
+                     </VBox>
+                  </JFXDrawer>
+                  <VBox layoutY="4.0" pickOnBounds="false" spacing="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                     <children>
+                        <GridPane pickOnBounds="false">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="-Infinity" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <JFXRadioButton fx:id="drawAllNodesButton" text="Draw All Nodes" GridPane.columnIndex="1" />
+                              <JFXRadioButton fx:id="drawPathButton" selected="true" text="Draw Path Only" />
+                           </children>
+                        </GridPane>
+                        <HBox pickOnBounds="false" spacing="25.0">
+                           <children>
+                              <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
+         </StackPane>
+      </AnchorPane>
+   </center>
+</BorderPane>
