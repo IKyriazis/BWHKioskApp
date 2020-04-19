@@ -14,8 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class MapCanvas extends Canvas {
-  private Image[] floorImages;
-  private Canvas canvas;
+  private final Image[] floorImages;
 
   private int lastDrawnFloor = 1;
   private boolean drawAllNodes;
@@ -47,10 +46,7 @@ public class MapCanvas extends Canvas {
             (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
 
     // Drag to change center
-    setOnMousePressed(
-        event -> {
-          dragLast = new Point2D(event.getX(), event.getY());
-        });
+    setOnMousePressed(event -> dragLast = new Point2D(event.getX(), event.getY()));
     setOnMouseDragged(
         event -> {
           Point2D startGraphPos = canvasToGraph(dragLast);
@@ -250,14 +246,6 @@ public class MapCanvas extends Canvas {
 
   public SimpleDoubleProperty getZoomProperty() {
     return zoom;
-  }
-
-  public void setZoom(double zoom) {
-    this.zoom.set(zoom);
-  }
-
-  public boolean isDrawAllNodes() {
-    return drawAllNodes;
   }
 
   public void setDrawAllNodes(boolean drawAllNodes) {

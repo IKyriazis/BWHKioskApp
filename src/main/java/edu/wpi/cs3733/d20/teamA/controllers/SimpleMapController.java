@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class MainController {
+public class SimpleMapController {
   @FXML private JFXDrawer directionsDrawer;
   @FXML private VBox directionsBox;
   @FXML private JFXComboBox<Node> startingLocationBox;
