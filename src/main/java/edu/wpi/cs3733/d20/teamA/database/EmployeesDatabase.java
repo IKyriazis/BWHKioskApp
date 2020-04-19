@@ -15,7 +15,7 @@ public class EmployeesDatabase extends Database {
   public boolean dropTables() throws SQLException {
 
     // Drop the tables
-    if (!helperPrepared("DROP TABLE Employees")) {
+    if (!helperPrepared("DROP TABLE Janitors")) {
       return false;
     }
 
