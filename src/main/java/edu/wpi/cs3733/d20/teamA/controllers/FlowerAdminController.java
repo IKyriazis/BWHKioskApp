@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
+import edu.wpi.cs3733.d20.teamA.database.Order;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
@@ -20,6 +21,8 @@ import javafx.stage.Stage;
 
 public class FlowerAdminController extends AbstractController {
   @FXML private TableView<Flower> tblFlowerView;
+  @FXML private TableView<Order> tblOrderView;
+
   @FXML private AnchorPane flowerPane;
 
   public FlowerAdminController() throws SQLException {}
@@ -45,6 +48,33 @@ public class FlowerAdminController extends AbstractController {
 
     tblFlowerView.setItems(super.flDatabase.flowerOl());
     tblFlowerView.getColumns().addAll(column1, column2, column3, column4);
+
+    // Setup columns in order table
+    TableColumn columnO1 = new TableColumn("Order Number");
+    columnO1.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
+
+    TableColumn columnO2 = new TableColumn("Number of Flowers");
+    columnO2.setCellValueFactory(new PropertyValueFactory<>("numFlowers"));
+
+    TableColumn columnO3 = new TableColumn("Type");
+    columnO1.setCellValueFactory(new PropertyValueFactory<>("flowerType"));
+
+    TableColumn columnO4 = new TableColumn("Color");
+    columnO4.setCellValueFactory(new PropertyValueFactory<>("flowerColor"));
+
+    TableColumn columnO5 = new TableColumn("Price");
+    columnO5.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+    TableColumn columnO6 = new TableColumn("Status");
+    columnO6.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+    TableColumn columnO7 = new TableColumn("Location");
+    columnO7.setCellValueFactory(new PropertyValueFactory<>("location"));
+
+    tblOrderView.setItems(super.flDatabase.orderOl());
+    tblOrderView
+        .getColumns()
+        .addAll(columnO1, columnO2, columnO3, columnO4, columnO5, columnO6, columnO7);
   }
 
   public void addFlower(ActionEvent actionEvent) throws IOException {

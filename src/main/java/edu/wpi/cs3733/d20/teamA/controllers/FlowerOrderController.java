@@ -61,7 +61,7 @@ public class FlowerOrderController extends AbstractController {
       System.out.println(color);
       System.out.println("" + num);
 
-      int i = super.flDatabase.addOrder(num, type, color, "LOACTION ADD LATER");
+      int i = super.flDatabase.addOrder(num, type, color, "ID");
 
       if (i == 0) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

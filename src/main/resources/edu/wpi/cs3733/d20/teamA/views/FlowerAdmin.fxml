@@ -64,7 +64,7 @@
                                         </font>
                                     </Label>
                               <Separator prefWidth="200.0" />
-                              <TableView prefWidth="500.0">
+                              <TableView fx:id="tblOrderView" prefWidth="500.0">
                                  <VBox.margin>
                                     <Insets bottom="25.0" left="25.0" right="25.0" top="10.0" />
                                  </VBox.margin>
