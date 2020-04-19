@@ -329,8 +329,4 @@ public class FlowerDatabase extends Database {
     }
   }
 
-  // public Flower getFlowerInfo(String type, String ){
-
-  // }
-
 }
