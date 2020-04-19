@@ -15,7 +15,7 @@ public class EmployeesDatabase extends Database {
   public boolean dropTables() throws SQLException {
 
     // Drop the tables
-    if (!helperPrepared("DROP TABLE Janitors")) {
+    if (!helperPrepared("DROP TABLE Employees")) {
       return false;
     }
 
@@ -33,7 +33,7 @@ public class EmployeesDatabase extends Database {
     // Create the graph tables
     boolean a =
         helperPrepared(
-            "CREATE TABLE Janitors (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25)");
+            "CREATE TABLE Janitors (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25))");
 
     if (a) {
       return true;
@@ -55,10 +55,30 @@ public class EmployeesDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Flowers (employeeID, nameFirst, nameLast) VALUES (?, ?, ?)");
+                  "INSERT INTO Janitors (employeeID, nameFirst, nameLast) VALUES (?, ?, ?)");
       pstmt.setString(1, empID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  /**
+   * Removes a janitor of empID from the Janitor's table
+   *
+   * @param empID
+   * @return true if the Janitor was successfully deleted
+   * @throws SQLException
+   */
+  public boolean deleteJanitor(String empID) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("DELETE From Janitors Where employeeID = ?");
+      pstmt.setString(1, empID);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
