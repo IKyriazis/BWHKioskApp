@@ -1,7 +1,7 @@
 .tab .tab-label {
     -fx-background-color: transparent;
     -fx-alignment: CENTER;
-    -fx-text-fill: -fx-text-base-color;
+    -fx-text-fill: black;
     -fx-font-size: 18pt; /* all the same except this newly added one */
 }
 
@@ -21,6 +21,7 @@
 }
 
 #loginButton {
+    -fx-text-fill: black;
     -fx-background-color: #607D8B;
     -fx-padding: 0 5 0 5;
     -fx-font-size: 18pt;
