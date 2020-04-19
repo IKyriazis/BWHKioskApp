@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -221,14 +221,64 @@ public class Graph {
         .collect(Collectors.toList());
   }
 
+  private int calcWeight(Node start, Node end) {
+    int side1 = Math.abs(start.getX() - end.getX());
+    int side2 = Math.abs(start.getY() - end.getY());
+    double weight = Math.sqrt(Math.pow(side1, 2) + Math.pow(side2, 2));
+    return (int) Math.round(weight);
+  }
+
   /**
    * Updates the graph with any new data in the database
    *
    * @return Success / Failure
    */
-  public boolean update() {
-    // TODO; Pull any new data in from database
-
+  public boolean update() throws SQLException {
+    HashMap<String, Node> newNodes = new HashMap<>();
+    Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+    try {
+      PreparedStatement pstmtNode = conn.prepareStatement("SELECT * FROM Node");
+      ResultSet rsetNode = pstmtNode.executeQuery();
+      while (rsetNode.next()) {
+        String nodeID = rsetNode.getString("nodeID");
+        int xcoord = rsetNode.getInt("xcoord");
+        int ycoord = rsetNode.getInt("ycoord");
+        int floor = rsetNode.getInt("floor");
+        String building = rsetNode.getString("building");
+        String nodeType = rsetNode.getString("nodeType");
+        NodeType type = NodeType.valueOf(nodeType);
+        String longName = rsetNode.getString("longName");
+        String shortName = rsetNode.getString("shortName");
+        String teamAssigned = rsetNode.getString("teamAssigned");
+        Node node =
+            new Node(
+                nodeID, xcoord, ycoord, floor, building, type, longName, shortName, teamAssigned);
+        newNodes.put(nodeID, node);
+      }
+      rsetNode.close();
+      pstmtNode.close();
+    } catch (SQLException e) {
+      return false;
+    }
+    try {
+      PreparedStatement pstmtEdge = conn.prepareStatement("SELECT * FROM Edge");
+      ResultSet rsetEdge = pstmtEdge.executeQuery();
+      while (rsetEdge.next()) {
+        String startNode = rsetEdge.getString("startNode");
+        String endNode = rsetEdge.getString("endNode");
+        Node start = newNodes.get(startNode);
+        Node end = newNodes.get(endNode);
+        int w = calcWeight(start, end);
+        Edge forward = new Edge(start, end, w);
+        start.addEdge(forward);
+      }
+      rsetEdge.close();
+      pstmtEdge.close();
+    } catch (SQLException e) {
+      return false;
+    }
+    nodes = newNodes;
+    conn.close();
     return true;
   }
 

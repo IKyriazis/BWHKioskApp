@@ -1,6 +1,15 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.opencsv.exceptions.CsvException;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 
 public class GraphDatabase extends Database {
 
@@ -178,6 +187,142 @@ public class GraphDatabase extends Database {
       return true;
     } catch (SQLException e) {
       return false;
+    }
+  }
+
+  public boolean editNode(String nodeID,
+                          int xcoord,
+                          int ycoord,
+                          int floor,
+                          String building,
+                          String nodeType,
+                          String longName,
+                          String shortName,
+                          String teamAssigned) throws SQLException {
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("UPDATE Node SET xcoord = ?, ycoord = ?, floor = ?, building = ?, nodeType = ?, longName = ?, shortName = ?, teamAssigned = ? WHERE nodeID = ?");
+      pstmt.setInt(1, xcoord);
+      pstmt.setInt(2, ycoord);
+      pstmt.setInt(3, floor);
+      pstmt.setString(4, building);
+      pstmt.setString(5, nodeType);
+      pstmt.setString(6, longName);
+      pstmt.setString(7, shortName);
+      pstmt.setString(8, teamAssigned);
+      pstmt.setString(9, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      conn.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public void readNodeCSV(String fileName) throws IOException, CsvException, SQLException {
+    FileReader reads = new FileReader(fileName);
+    CSVReader reader = new CSVReader(reads);
+    List<String[]> data = reader.readAll();
+    for (int i = 1; i < data.size(); i++) {
+      String nID, Bu, nodeT, longN, shortN, teamA;
+      int xCo, yCo, Fl;
+      nID = data.get(i)[0];
+      xCo = Integer.parseInt(data.get(i)[1]);
+      yCo = Integer.parseInt(data.get(i)[2]);
+      Fl = Integer.parseInt(data.get(i)[3]);
+      Bu = data.get(i)[4];
+      nodeT = data.get(i)[5];
+      longN = data.get(i)[6];
+      shortN = data.get(i)[7];
+      teamA = data.get(i)[8];
+      addNode(nID, xCo, yCo, Fl, Bu, nodeT, longN, shortN, teamA);
+    }
+  }
+
+  public void readEdgeCSV(String fileName) throws IOException, CsvException, SQLException {
+    FileReader reads = new FileReader(fileName);
+    CSVReader reader = new CSVReader(reads);
+    List<String[]> data = reader.readAll();
+    for (int i = 1; i < data.size(); i++) {
+      String eID, sNode, eNode;
+      eID = data.get(i)[0];
+      sNode = data.get(i)[1];
+      eNode = data.get(i)[2];
+      addEdge(eID, sNode, eNode);
+    }
+  }
+
+  public void writeNodeCSV(String filePath) throws SQLException {
+    File file = new File(filePath);
+    try {
+      FileWriter outputfile = new FileWriter(file);
+      CSVWriter writer = new CSVWriter(outputfile);
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Node");
+      ResultSet rset = pstmt.executeQuery();
+      String[] header = {
+              "nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName", "teamAssigned"
+      };
+      writer.writeNext(header);
+      while (rset.next()) {
+        String ID = rset.getString("nodeID");
+        int x = rset.getInt("xcoord");
+        String xs = Integer.toString(x);
+        int y = rset.getInt("ycoord");
+        String ys = Integer.toString(y);
+        int f = rset.getInt("floor");
+        String fs = Integer.toString(f);
+        String build = rset.getString("building");
+        String type = rset.getString("nodeType");
+        String lName = rset.getString("longName");
+        String sName = rset.getString("shortName");
+        String teamA = rset.getString("teamAssigned");
+        String[] row = {ID, xs, ys, fs, build, type, lName, sName, teamA};
+        writer.writeNext(row);
+      }
+      writer.close();
+      rset.close();
+      pstmt.close();
+      conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return;
+    } catch (IOException i) {
+      i.printStackTrace();
+      return;
+    }
+  }
+
+  public void writeEdgeCSV(String filePath) throws SQLException {
+    File file = new File(filePath);
+    try {
+      FileWriter outputfile = new FileWriter(file);
+      CSVWriter writer = new CSVWriter(outputfile);
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Edge");
+      ResultSet rset = pstmt.executeQuery();
+      String[] header = {
+              "edgeID", "startNode", "endNode"
+      };
+      writer.writeNext(header);
+      while (rset.next()) {
+        String ID = rset.getString("edgeID");
+        String sNode = rset.getString("startNode");
+        String eNode = rset.getString("endNode");
+        String[] row = {ID, sNode, eNode};
+        writer.writeNext(row);
+      }
+      writer.close();
+      rset.close();
+      pstmt.close();
+      conn.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return;
+    } catch (IOException i) {
+      i.printStackTrace();
+      return;
     }
   }
 }

@@ -115,4 +115,9 @@ public class TestGraph {
     graph.addEdge(node2, node3, 6);
     Assertions.assertEquals(1, graph.getEdgeCount());
   }
+
+  @Test
+  public void testUpdate() throws SQLException {
+
+  }
 }
