@@ -1,33 +1,71 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import edu.wpi.cs3733.d20.teamA.App;
-import java.io.IOException;
-import javafx.event.ActionEvent;
+import com.jfoenix.controls.JFXTabPane;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class LoginController {
+  @FXML private VBox loginBox;
+  @FXML private Button loginButton;
+  @FXML private JFXTabPane tabPane;
 
-  // Do whatever validation
+  private GaussianBlur currentBlur;
+
   @FXML
-  public void login(ActionEvent event) throws IOException {
-    Stage stage;
-    Parent root;
-    // putting the event's source in src var so it doesn't have to check it every time
-    Object src = event.getSource();
+  public void initialize() {
+    // Add drop shadow to login box.
+    DropShadow dropShadow = new DropShadow();
+    dropShadow.setRadius(12.0);
+    dropShadow.setOffsetX(5.0);
+    dropShadow.setOffsetY(5.0);
+    dropShadow.setColor(Color.GREY);
+    loginBox.setEffect(dropShadow);
 
-    stage =
-        (Stage)
-            ((Button) (src)).getScene().getWindow(); // use existing stage to close current window
+    // Setup login button icon
+    loginButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCK));
 
-    root = FXMLLoader.load(App.class.getResource("views/AdminFeatures.fxml"));
-    Scene scene = new Scene(root);
+    // Blur everything in background
+    currentBlur = new GaussianBlur();
+    currentBlur.setRadius(7.5);
 
-    stage.setScene(scene);
-    stage.show();
+    tabPane.setEffect(currentBlur);
+  }
+
+  @FXML
+  public void loginButtonPressed() {
+    // TODO; Real login
+
+    // Chuck the login box way off screen
+    TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
+    translate.setByY(-2000f);
+    translate.play();
+
+    // Fade away background blur
+    Timeline blurFader = new Timeline();
+    blurFader.setCycleCount(5);
+    blurFader.setAutoReverse(false);
+    blurFader
+        .getKeyFrames()
+        .add(
+            new KeyFrame(
+                Duration.millis(100),
+                event -> {
+                  currentBlur.setRadius(currentBlur.getRadius() - 1.5);
+                  if (currentBlur.getRadius() == 0) {
+                    tabPane.setEffect(null);
+                    tabPane.setMouseTransparent(false);
+                  }
+                }));
+    blurFader.play();
   }
 }
