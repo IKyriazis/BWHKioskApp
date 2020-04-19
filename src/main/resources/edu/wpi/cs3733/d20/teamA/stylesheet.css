@@ -1,0 +1,14 @@
+.tab .tab-label {
+    -fx-skin: "com.sun.javafx.scene.control.skin.LabelSkin";
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-font-size: 18pt; /* all the same except this newly added one */
+}
+
+#settingsButton {
+    -fx-padding: 0 10 0 10;
+    -fx-alignment: CENTER;
+    -fx-font-size: 21pt;
+    -fx-background-color: white;
+}

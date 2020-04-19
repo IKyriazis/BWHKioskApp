@@ -40,8 +40,6 @@ public class MainController {
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton directionsButton;
-  @FXML private JFXButton serviceButton;
-  @FXML private JFXButton loginButton;
 
   private MapCanvas canvas;
   private Graph graph;
@@ -71,9 +69,7 @@ public class MainController {
 
     // Set button icons
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
-    directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP));
-    serviceButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BELL));
-    loginButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN));
+    directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
 
     try {
       // Load graph info
