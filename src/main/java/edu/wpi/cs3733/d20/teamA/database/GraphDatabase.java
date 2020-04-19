@@ -4,7 +4,9 @@ import java.sql.*;
 
 public class GraphDatabase extends Database {
 
-  public GraphDatabase() throws SQLException {}
+  public GraphDatabase(Connection connection) throws SQLException {
+    super(connection);
+  }
 
   /**
    * Drops the graph tables so we can start fresh
@@ -69,15 +71,13 @@ public class GraphDatabase extends Database {
   public int getSizeNode() throws SQLException {
     int count = 0;
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt = conn.prepareStatement("Select * From Node");
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Node");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         count++;
       }
       rset.close();
       pstmt.close();
-      conn.close();
       return count;
     } catch (SQLException e) {
       return -1;
@@ -87,15 +87,13 @@ public class GraphDatabase extends Database {
   public int getSizeEdge() throws SQLException {
     int count = 0;
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt = conn.prepareStatement("Select * From Edge");
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Edge");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         count++;
       }
       rset.close();
       pstmt.close();
-      conn.close();
       return count;
     } catch (SQLException e) {
       return -1;
@@ -114,10 +112,10 @@ public class GraphDatabase extends Database {
       String teamAssigned)
       throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "INSERT INTO Node (nodeID, xcoord, ycoord, floor, building, nodeType, longName, shortName, teamAssigned) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Node (nodeID, xcoord, ycoord, floor, building, nodeType, longName, shortName, teamAssigned) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
       pstmt.setString(1, nodeID);
       pstmt.setInt(2, xcoord);
       pstmt.setInt(3, ycoord);
@@ -129,7 +127,6 @@ public class GraphDatabase extends Database {
       pstmt.setString(9, teamAssigned);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -138,15 +135,14 @@ public class GraphDatabase extends Database {
 
   public boolean addEdge(String edgeID, String startNode, String endNode) throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement("INSERT INTO Edge (edgeID, startNode, endNode) VALUES (?, ?, ?)");
+          getConnection()
+              .prepareStatement("INSERT INTO Edge (edgeID, startNode, endNode) VALUES (?, ?, ?)");
       pstmt.setString(1, edgeID);
       pstmt.setString(2, startNode);
       pstmt.setString(3, endNode);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -155,12 +151,11 @@ public class GraphDatabase extends Database {
 
   public boolean deleteEdge(String edgeID) throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt = conn.prepareStatement("DELETE From Edge Where edgeID = ?");
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("DELETE From Edge Where edgeID = ?");
       pstmt.setString(1, edgeID);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -169,12 +164,11 @@ public class GraphDatabase extends Database {
 
   public boolean deleteNode(String nodeID) throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt = conn.prepareStatement("DELETE From Node Where nodeID = ?");
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("DELETE From Node Where nodeID = ?");
       pstmt.setString(1, nodeID);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;

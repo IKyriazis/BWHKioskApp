@@ -23,7 +23,7 @@ public class FlowerAdminController {
   @FXML private TableView<Flower> tblFlowerView;
 
   public void initialize() throws SQLException {
-    database = new FlowerDatabase();
+    database = new FlowerDatabase(database.getConnection());
     database.createTables();
     database.addFlower("Flower1", "Red", 8, 1.25);
 
