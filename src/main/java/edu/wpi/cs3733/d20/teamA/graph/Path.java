@@ -20,16 +20,16 @@ public class Path {
     ArrayList<Node> visited = new ArrayList<>();
     PriorityQueue<Node> minPQ = new PriorityQueue<>();
 
+    // For every node in the graph (excluding the start node) set their total cost infinity
+    for (Node a : graph.getNodes().values()) {
+      a.setCost(Integer.MAX_VALUE);
+    }
+
     // Sets the cost to go from the start to 0
     start.setCost(0);
 
     // Add start node to the minimum priority queue
     minPQ.add(start);
-
-    // For every node in the graph (excluding the start node) set their total cost infinity
-    for (Node a : graph.getNodes().values()) {
-      a.setCost(Integer.MAX_VALUE);
-    }
 
     // While the priority queue is not empty
     while (!minPQ.isEmpty()) {
@@ -43,6 +43,11 @@ public class Path {
       // Look at all of that nodes neighbors
       for (Edge edge : current.getEdges().values()) {
         Node neighbor = edge.getEnd();
+
+        // Only consider nodes on this floor for now.
+        if (neighbor.getFloor() != start.getFloor()) {
+          continue;
+        }
 
         // if the neighbor hasn't been visited
         if (!visited.contains(neighbor)) {

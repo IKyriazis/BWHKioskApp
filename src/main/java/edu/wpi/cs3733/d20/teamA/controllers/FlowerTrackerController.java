@@ -13,29 +13,33 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javax.swing.*;
 
 public class FlowerTrackerController {
+
   @FXML private JFXTextField txtNumber;
   @FXML private JFXProgressBar progress;
   @FXML private Label lblOutput;
+
+  public void initialize() {
+    progress.setProgress(0);
+    lblOutput.setText("Input an order number");
+  }
 
   @FXML
   public void checkNum(Event e) {
     // Send text to database and get back the status
     String s = txtNumber.getText();
     if (s.equals("1")) {
-      progress.setProgress(.20);
+      progress.setProgress(.1);
       lblOutput.setText("Order sent");
     } else if (s.equals("2")) {
-      progress.setProgress(.4);
+      progress.setProgress(.35);
       lblOutput.setText("Order received");
     } else if (s.equals("3")) {
-      progress.setProgress(.6);
-      lblOutput.setText("Flower collected");
+      progress.setProgress(.7);
+      lblOutput.setText("Flower sent");
     } else if (s.equals("4")) {
-      progress.setProgress(.8);
-      lblOutput.setText("Flower received");
-    } else if (s.equals("5")) {
       progress.setProgress(1);
       lblOutput.setText("Flower delivered");
     } else {

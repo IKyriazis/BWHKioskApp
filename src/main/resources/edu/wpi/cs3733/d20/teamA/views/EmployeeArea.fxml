@@ -20,6 +20,9 @@
             <Tab closable="false" text="Map Editor">
                <fx:include source="MapEditor.fxml" />
             </Tab>
+            <Tab closable="false" text="Flowers">
+               <fx:include source="FlowerAdmin.fxml" />
+            </Tab>
          </JFXTabPane>
          <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
             <padding>

@@ -38,10 +38,11 @@ public class AdminController {
         (Stage)
             ((Button) (src)).getScene().getWindow(); // use existing stage to close current window
 
-    root = FXMLLoader.load(App.class.getResource("views/ADDFLOWERORDERFULFILMENTPAGE.fxml"));
+    root = FXMLLoader.load(App.class.getResource("views/FlowerAdmin.fxml"));
     Scene scene = new Scene(root);
 
     stage.setScene(scene);
+    stage.centerOnScreen();
     stage.show();
   }
 
