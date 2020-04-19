@@ -4,6 +4,11 @@ import java.sql.*;
 
 public class JanitorDatabase extends Database {
   private int requestCount = 0;
+
+  public JanitorDatabase(Connection connection) throws SQLException {
+    super(connection);
+  }
+
   /**
    * Drops the janitor tables so we can start fresh
    *
@@ -34,18 +39,19 @@ public class JanitorDatabase extends Database {
    */
   public boolean createTables() throws SQLException {
 
-    // Create the janitorrequest table
-    boolean a =
-        helperPrepared(
-            "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
-    if (a) {
+    try {
+      // Create the janitorrequest table
+      helperPrepared(
+          "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
       return true;
-    } else {
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
       return false;
     }
   }
 
   public boolean removeAll() throws SQLException {
+    requestCount = 0;
     return helperPrepared("DELETE From JanitorRequest");
   }
 
@@ -59,10 +65,10 @@ public class JanitorDatabase extends Database {
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     String progress = "Reported";
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "INSERT INTO JanitorRequest (time, location, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO JanitorRequest (time, location, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?)");
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, location);
       pstmt.setString(3, progress);
@@ -70,7 +76,6 @@ public class JanitorDatabase extends Database {
       pstmt.setInt(5, ++requestCount);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       //      System.out.println("Add request failed");
@@ -81,13 +86,11 @@ public class JanitorDatabase extends Database {
 
   public boolean deleteRequest(int rn) throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement("DELETE From JanitorRequest Where requestNumber = ?");
+          getConnection().prepareStatement("DELETE From JanitorRequest Where requestNumber = ?");
       pstmt.setInt(1, rn);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -96,12 +99,10 @@ public class JanitorDatabase extends Database {
 
   public boolean deleteDoneRequests() throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement("DELETE From JanitorRequest Where progress = 'Done'");
+          getConnection().prepareStatement("DELETE From JanitorRequest Where progress = 'Done'");
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
@@ -110,30 +111,56 @@ public class JanitorDatabase extends Database {
 
   public boolean updateRequest(int rn, String name, String progress) throws SQLException {
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement(
-              "UPDATE JanitorRequest SET name = ?, progress = ? Where requestNumber = ?");
+          getConnection()
+              .prepareStatement(
+                  "UPDATE JanitorRequest SET name = ?, progress = ? Where requestNumber = ?");
       pstmt.setString(1, name);
       pstmt.setString(2, progress);
       pstmt.setInt(3, rn);
       pstmt.executeUpdate();
       pstmt.close();
-      conn.close();
       return true;
     } catch (SQLException e) {
       return false;
     }
   }
 
+  public void printTable() throws SQLException {
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * FROM JanitorRequest ");
+      ResultSet rset = pstmt.executeQuery();
+      String request;
+      while (rset.next()) {
+        request =
+            "requestNumber: "
+                + rset.getInt("requestNumber")
+                + ", location: "
+                + rset.getString("location")
+                + ", time: "
+                + rset.getTimestamp("time")
+                + ", name: "
+                + rset.getString("name")
+                + ", progress: "
+                + rset.getString("progress")
+                + ", priority: "
+                + rset.getString("priority");
+        System.out.println(request);
+      }
+      rset.close();
+      pstmt.close();
+    } catch (SQLException e) {
+    }
+  }
+
   public String printRequest(int rn) throws SQLException {
     String request = "";
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt =
-          conn.prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = ?");
+          getConnection().prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = ?");
       pstmt.setInt(1, rn);
       ResultSet rset = pstmt.executeQuery();
+      rset.next();
       request =
           "requestNumber: "
               + rset.getInt("requestNumber")
@@ -146,11 +173,26 @@ public class JanitorDatabase extends Database {
               + ", priority: "
               + rset.getString("priority");
       pstmt.close();
-      conn.close();
       return request;
     } catch (SQLException e) {
       System.out.println(e.getMessage());
       return null;
+    }
+  }
+
+  public int getRequestSize() throws SQLException {
+    int count = 0;
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * From JanitorRequest ");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        count++;
+      }
+      rset.close();
+      pstmt.close();
+      return count;
+    } catch (SQLException e) {
+      return -1;
     }
   }
 
