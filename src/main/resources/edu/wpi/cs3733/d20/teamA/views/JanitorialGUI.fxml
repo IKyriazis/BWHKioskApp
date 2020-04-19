@@ -19,15 +19,15 @@
                   <Separator halignment="RIGHT" layoutX="198.0" orientation="VERTICAL" prefHeight="500.0" prefWidth="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                   <Label layoutX="86.0" layoutY="198.0" text="Priority" />
                   <Label layoutX="82.0" layoutY="103.0" text="Location" />
-                  <Label fx:id="confirmationTextBox" alignment="CENTER" layoutX="57.0" layoutY="434.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Label fx:id="labelSubmitRequest" alignment="CENTER" layoutX="57.0" layoutY="434.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <Label layoutX="21.0" layoutY="28.0" text="Submit Request" wrapText="true">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
                   <JFXButton fx:id="btnSubmitRequest" buttonType="RAISED" layoutX="55.0" layoutY="358.0" onAction="#addServiceRequest" text="Submit Request" />
-                  <JFXTextField fx:id="textfieldLocation" layoutX="31.0" layoutY="120.0" prefHeight="25.0" prefWidth="147.0" />
-                  <JFXTextField fx:id="textfieldPriority" layoutX="31.0" layoutY="250.0" prefHeight="25.0" prefWidth="147.0" />
+                  <JFXTextField fx:id="textfieldLocation" layoutX="31.0" layoutY="120.0" onAction="#disableSubmitButton" prefHeight="25.0" prefWidth="147.0" />
+                  <JFXTextField fx:id="textfieldPriority" layoutX="31.0" layoutY="250.0" onAction="#disableSubmitButton" prefHeight="25.0" prefWidth="147.0" />
                </children>
             </AnchorPane>
          </left>
@@ -42,6 +42,7 @@
                   </Label>
                   <JFXComboBox fx:id="comboboxActiveRequests" layoutX="12.0" layoutY="172.0" onAction="#refreshActiveRequests" promptText="Choose an Active Request" />
                   <JFXButton fx:id="btnClearRequest" buttonType="RAISED" layoutX="58.0" layoutY="303.0" onAction="#removeServiceRequest" text="Clear Request" />
+                  <Label fx:id="labelClearRequest" alignment="CENTER" layoutX="57.0" layoutY="434.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
          </right>
