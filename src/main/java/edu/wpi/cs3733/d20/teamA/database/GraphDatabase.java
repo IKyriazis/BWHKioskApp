@@ -3,7 +3,6 @@ package edu.wpi.cs3733.d20.teamA.database;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
-
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -190,18 +189,22 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean editNode(String nodeID,
-                          int xcoord,
-                          int ycoord,
-                          int floor,
-                          String building,
-                          String nodeType,
-                          String longName,
-                          String shortName,
-                          String teamAssigned) throws SQLException {
+  public boolean editNode(
+      String nodeID,
+      int xcoord,
+      int ycoord,
+      int floor,
+      String building,
+      String nodeType,
+      String longName,
+      String shortName,
+      String teamAssigned)
+      throws SQLException {
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt = conn.prepareStatement("UPDATE Node SET xcoord = ?, ycoord = ?, floor = ?, building = ?, nodeType = ?, longName = ?, shortName = ?, teamAssigned = ? WHERE nodeID = ?");
+      PreparedStatement pstmt =
+          conn.prepareStatement(
+              "UPDATE Node SET xcoord = ?, ycoord = ?, floor = ?, building = ?, nodeType = ?, longName = ?, shortName = ?, teamAssigned = ? WHERE nodeID = ?");
       pstmt.setInt(1, xcoord);
       pstmt.setInt(2, ycoord);
       pstmt.setInt(3, floor);
@@ -262,7 +265,15 @@ public class GraphDatabase extends Database {
       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Node");
       ResultSet rset = pstmt.executeQuery();
       String[] header = {
-              "nodeID", "xcoord", "ycoord", "floor", "building", "nodeType", "longName", "shortName", "teamAssigned"
+        "nodeID",
+        "xcoord",
+        "ycoord",
+        "floor",
+        "building",
+        "nodeType",
+        "longName",
+        "shortName",
+        "teamAssigned"
       };
       writer.writeNext(header);
       while (rset.next()) {
@@ -302,9 +313,7 @@ public class GraphDatabase extends Database {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Edge");
       ResultSet rset = pstmt.executeQuery();
-      String[] header = {
-              "edgeID", "startNode", "endNode"
-      };
+      String[] header = {"edgeID", "startNode", "endNode"};
       writer.writeNext(header);
       while (rset.next()) {
         String ID = rset.getString("edgeID");

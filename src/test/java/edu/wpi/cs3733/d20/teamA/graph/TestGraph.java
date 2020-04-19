@@ -117,7 +117,5 @@ public class TestGraph {
   }
 
   @Test
-  public void testUpdate() throws SQLException {
-
-  }
+  public void testUpdate() throws SQLException {}
 }
