@@ -46,8 +46,6 @@ public class TestEmployeeDatabase {
 
   @Test
   public void testTables() throws SQLException {
-    eDB.createTables();
-    eDB.dropTables();
     boolean dropTables = eDB.dropTables();
     Assertions.assertFalse(dropTables);
     boolean makeTables = eDB.createTables();
