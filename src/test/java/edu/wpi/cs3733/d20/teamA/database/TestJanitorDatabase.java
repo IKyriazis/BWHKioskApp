@@ -68,6 +68,22 @@ public class TestJanitorDatabase {
   }
 
   @Test
+  public void testDeleteRequest() throws SQLException {
+    gDB.removeAllNodes();
+
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.removeAll();
+    jDB.addRequest("biscuit", "Medium");
+
+    boolean a = jDB.deleteRequest(1);
+    Assertions.assertTrue(a);
+
+    jDB.removeAll();
+    gDB.removeAllNodes();
+  }
+
+  @Test
   public void testDeleteDoneRequests() throws SQLException {
     gDB.removeAllNodes();
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -78,9 +94,6 @@ public class TestJanitorDatabase {
     jDB.addRequest("biscuit", "Medium");
     jDB.addRequest("yoyoyo", "Medium");
     jDB.addRequest("hihihi", "Medium");
-
-    boolean a = jDB.deleteDoneRequests();
-    // Assertions.assertFalse(a);
 
     jDB.updateRequest(1, "harry", "Done");
     jDB.updateRequest(2, "harry", "Done");
@@ -93,6 +106,23 @@ public class TestJanitorDatabase {
     gDB.removeAllNodes();
   }
 
+  @Test
+  public void testPrintRequest() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.createTables();
+    jDB.removeAll();
+    jDB.addRequest("biscuit", "Medium");
+    jDB.updateRequest(1, "harry", "Dispatched");
+    Assertions.assertEquals(
+        "requestNumber: 1, location: biscuit, name: harry, progress: Dispatched, priority: Medium",
+        jDB.printRequest(1));
+
+    jDB.removeAll();
+    jDB.dropTables();
+    gDB.removeAllNodes();
+  }
   //  @Test
   //  public void testGetTimestamp() throws SQLException {
   //    gDB.removeAllNodes();
@@ -109,16 +139,5 @@ public class TestJanitorDatabase {
   //    System.out.println(jDB.getTimestamp("biscuit"));
   //    jDB.removeAll();
   //    gDB.removeAllNodes();
-  //  }
-
-  //  Unsure on how to test deleteRequest() because we need the request timestamp to delete it but
-  // that is stored in
-  //  the database
-  //  @Test
-  //  public void testDeleteRequest() throws SQLException {
-  //    jDB.removeAll();
-  //    boolean a = jDB.addRequest("Lobby", "High");
-  //    boolean b = jDB.addRequest("Main A", "Medium");
-  //    boolean c = jDB.deleteRequest("Main A", )
   //  }
 }

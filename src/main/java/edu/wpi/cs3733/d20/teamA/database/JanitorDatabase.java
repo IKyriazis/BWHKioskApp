@@ -73,8 +73,8 @@ public class JanitorDatabase extends Database {
       conn.close();
       return true;
     } catch (SQLException e) {
-//      System.out.println("Add request failed");
-//      System.out.println(e.getMessage());
+      //      System.out.println("Add request failed");
+      //      System.out.println(e.getMessage());
       return false;
     }
   }
@@ -123,6 +123,34 @@ public class JanitorDatabase extends Database {
       return true;
     } catch (SQLException e) {
       return false;
+    }
+  }
+
+  public String printRequest(int rn) throws SQLException {
+    String request = "";
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt =
+          conn.prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      request =
+          "requestNumber: "
+              + rset.getInt("requestNumber")
+              + ", location: "
+              + rset.getString("location")
+              + ", name: "
+              + rset.getString("name")
+              + ", progress: "
+              + rset.getString("progress")
+              + ", priority: "
+              + rset.getString("priority");
+      pstmt.close();
+      conn.close();
+      return request;
+    } catch (SQLException e) {
+      System.out.println(e.getMessage());
+      return null;
     }
   }
 
