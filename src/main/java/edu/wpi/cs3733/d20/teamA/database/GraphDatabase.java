@@ -297,10 +297,8 @@ public class GraphDatabase extends Database {
       pstmt.close();
       conn.close();
     } catch (SQLException e) {
-      e.printStackTrace();
       return;
     } catch (IOException i) {
-      i.printStackTrace();
       return;
     }
   }
@@ -327,10 +325,8 @@ public class GraphDatabase extends Database {
       pstmt.close();
       conn.close();
     } catch (SQLException e) {
-      e.printStackTrace();
       return;
     } catch (IOException i) {
-      i.printStackTrace();
       return;
     }
   }
