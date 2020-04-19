@@ -46,6 +46,7 @@ public class TestEmployeeDatabase {
 
   @Test
   public void testTables() throws SQLException {
+    eDB.dropTables();
     boolean dropTables = eDB.dropTables();
     Assertions.assertFalse(dropTables);
     boolean makeTables = eDB.createTables();
@@ -64,12 +65,29 @@ public class TestEmployeeDatabase {
     boolean d = eDB.addJanitor("abcd", "chad", "lad");
     Assertions.assertTrue(d);
     boolean b = eDB.addJanitor("ab", "kassy", "lassy");
-    Assertions.assertFalse(b);
+    Assertions.assertTrue(b);
     boolean e = eDB.addJanitor("bacd", "ray", "jay");
     Assertions.assertTrue(e);
-    boolean c = eDB.addJanitor("cdba", "bailey", "kaylee");
+    boolean c = eDB.addJanitor("abcd", "bailey", "kaylee");
     Assertions.assertFalse(c);
-    Assertions.assertEquals(3, eDB.getSizeJanitors());
+    Assertions.assertEquals(4, eDB.getSizeJanitors());
     eDB.removeAllJanitors();
+  }
+
+  @Test
+  public void testDeleteJanitor() throws SQLException {
+    eDB.createTables();
+    eDB.removeAllJanitors();
+    boolean a = eDB.addJanitor("abc", "brad", "bad");
+    Assertions.assertTrue(a);
+    boolean b = eDB.deleteJanitor("abc");
+    Assertions.assertTrue(b);
+    Assertions.assertEquals(0, eDB.getSizeJanitors());
+    eDB.addJanitor("abc", "brad", "bad");
+    eDB.addJanitor("dyi", "brad", "bad");
+    Assertions.assertEquals(2, eDB.getSizeJanitors());
+    boolean c = eDB.deleteJanitor("abc");
+    Assertions.assertTrue(c);
+    Assertions.assertEquals(1, eDB.getSizeJanitors());
   }
 }
