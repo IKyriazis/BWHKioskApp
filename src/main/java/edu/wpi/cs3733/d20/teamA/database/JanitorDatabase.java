@@ -228,20 +228,54 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  //  public String getName(int rn) throws SQLException {
-  //    String n;
-  //    try {
-  //      PreparedStatement pstmt =
-  //          getConnection()
-  //              .prepareStatement("SELECT name FROM JanitorRequest WHERE requestNumber = ?");
-  //      pstmt.setInt(1, rn);
-  //      ResultSet rset = pstmt.executeQuery();
-  //      rset.next();
-  //      n = rset.getString("name");
-  //      pstmt.close();
-  //      return n;
-  //    } catch (SQLException e) {
-  //      return null;
-  //    }
-  //  }
+    public String getName(int rn) throws SQLException {
+      String n;
+      try {
+        PreparedStatement pstmt =
+            getConnection()
+                .prepareStatement("SELECT name FROM JanitorRequest WHERE requestNumber = ?");
+        pstmt.setInt(1, rn);
+        ResultSet rset = pstmt.executeQuery();
+        rset.next();
+        n = rset.getString("name");
+        pstmt.close();
+        return n;
+      } catch (SQLException e) {
+        return null;
+      }
+    }
+
+  public String getLocation(int rn) throws SQLException {
+    String n;
+    try {
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement("SELECT name FROM JanitorRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      n = rset.getString("location");
+      pstmt.close();
+      return n;
+    } catch (SQLException e) {
+      return null;
+    }
+  }
+
+  public String getProgress(int rn) throws SQLException {
+    String n;
+    try {
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement("SELECT name FROM JanitorRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      n = rset.getString("progress");
+      pstmt.close();
+      return n;
+    } catch (SQLException e) {
+      return null;
+    }
+  }
 }
