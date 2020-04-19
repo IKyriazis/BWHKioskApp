@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GraphDatabase extends Database {
@@ -340,11 +341,13 @@ public class GraphDatabase extends Database {
     CSVReader reader = new CSVReader(reads);
     List<String[]> data = reader.readAll();
     for (int i = 1; i < data.size(); i++) {
-      String eID, sNode, eNode;
+      String eID, sNode, eNode, eID2, sNode2, eNode2;
       eID = data.get(i)[0];
       sNode = data.get(i)[1];
       eNode = data.get(i)[2];
       addEdge(eID, sNode, eNode);
+      eID2 = eNode + "_" + sNode;
+      addEdge(eID2, eNode, sNode);
     }
   }
 
@@ -414,12 +417,16 @@ public class GraphDatabase extends Database {
       ResultSet rset = pstmt.executeQuery();
       String[] header = {"edgeID", "startNode", "endNode"};
       writer.writeNext(header);
+      ArrayList<String> doNotAdd = new ArrayList<String>();
       while (rset.next()) {
         String ID = rset.getString("edgeID");
         String sNode = rset.getString("startNode");
         String eNode = rset.getString("endNode");
-        String[] row = {ID, sNode, eNode};
-        writer.writeNext(row);
+        if (!doNotAdd.contains(ID)) {
+          String[] row = {ID, sNode, eNode};
+          writer.writeNext(row);
+          doNotAdd.add(eNode + "_" + sNode);
+        }
       }
       writer.close();
       rset.close();
