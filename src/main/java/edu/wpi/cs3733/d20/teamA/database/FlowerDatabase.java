@@ -5,7 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class FlowerDatabase extends Database {
-  private int orderNum = 1;
+  private int orderNum = getSizeOrders() + 1;
 
   public FlowerDatabase(Connection connection) throws SQLException {
     super(connection);
@@ -328,4 +328,34 @@ public class FlowerDatabase extends Database {
       return oList;
     }
   }
+
+  public ObservableList<Order> orderOl() throws SQLException {
+    ObservableList<Order> oList = FXCollections.observableArrayList();
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Orders");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int orderNumber = rset.getInt("orderNumber");
+        int numFlowers = rset.getInt("numFlowers");
+        String flowerType = rset.getString("flowerType");
+        String flowerColor = rset.getString("flowerColor");
+        double price = rset.getDouble("price");
+        String status = rset.getString("status");
+        String location = rset.getString("location");
+
+        Order node =
+            new Order(orderNumber, numFlowers, flowerType, flowerColor, price, status, location);
+        oList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      conn.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
+    }
+  }
+
 }
