@@ -20,16 +20,16 @@ public class Path {
     ArrayList<Node> visited = new ArrayList<>();
     PriorityQueue<Node> minPQ = new PriorityQueue<>();
 
+    // For every node in the graph (excluding the start node) set their total cost infinity
+    for (Node a : graph.getNodes().values()) {
+      a.setCost(Integer.MAX_VALUE);
+    }
+
     // Sets the cost to go from the start to 0
     start.setCost(0);
 
     // Add start node to the minimum priority queue
     minPQ.add(start);
-
-    // For every node in the graph (excluding the start node) set their total cost infinity
-    for (Node a : graph.getNodes().values()) {
-      a.setCost(Integer.MAX_VALUE);
-    }
 
     // While the priority queue is not empty
     while (!minPQ.isEmpty()) {
