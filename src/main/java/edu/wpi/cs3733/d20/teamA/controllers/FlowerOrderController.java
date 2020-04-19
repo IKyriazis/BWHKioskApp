@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.App;
 import java.io.IOException;
 import javafx.event.ActionEvent;
@@ -11,6 +12,13 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class FlowerOrderController {
+  @FXML private JFXComboBox choiceFlower;
+
+  public void initialize() {
+    choiceFlower.getItems().add("Flower1");
+    choiceFlower.getItems().add("Flower2");
+  }
+
   @FXML
   public void cancel(ActionEvent event) throws IOException {
     Stage stage;
