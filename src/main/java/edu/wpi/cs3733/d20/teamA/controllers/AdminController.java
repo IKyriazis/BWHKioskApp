@@ -21,7 +21,7 @@ public class AdminController {
         (Stage)
             ((Button) (src)).getScene().getWindow(); // use existing stage to close current window
 
-    root = FXMLLoader.load(App.class.getResource("views/JanitorialMockup.fxml"));
+    root = FXMLLoader.load(App.class.getResource("views/JanitorialGUI.fxml"));
     Scene scene = new Scene(root);
 
     stage.setScene(scene);
