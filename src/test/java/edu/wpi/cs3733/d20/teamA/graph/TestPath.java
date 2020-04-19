@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import com.opencsv.exceptions.CsvException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +26,7 @@ public class TestPath {
   Node nodeH = new Node("NodeH", 3, 8, 0, "", NodeType.HALL, "", "", "");
   Node nodeI = new Node("NodeI", 6, 8, 0, "", NodeType.HALL, "", "", "");
 
-  public TestPath() throws SQLException {}
+  public TestPath() throws SQLException, IOException, CsvException {}
 
   public void setupFirstGraph() throws SQLException {
     graph.clearGraph();
