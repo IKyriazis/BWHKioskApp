@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.JanitorialController">
    <children>
       <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
@@ -25,7 +25,7 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <JFXButton buttonType="RAISED" layoutX="55.0" layoutY="358.0" text="Submit Request" />
+                  <JFXButton fx:id="btnSubmitRequest" buttonType="RAISED" layoutX="55.0" layoutY="358.0" text="Submit Request" />
                   <JFXTextField fx:id="textfieldLocation" layoutX="31.0" layoutY="120.0" prefHeight="25.0" prefWidth="147.0" />
                   <JFXTextField fx:id="textfieldPriority" layoutX="31.0" layoutY="250.0" prefHeight="25.0" prefWidth="147.0" />
                </children>
