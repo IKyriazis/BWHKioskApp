@@ -199,6 +199,10 @@ public class MapCanvas extends Canvas {
     }
   }
 
+  public Path getPath() {
+    return this.path;
+  }
+
   public void setPath(Path path) {
     this.path = path;
   }
