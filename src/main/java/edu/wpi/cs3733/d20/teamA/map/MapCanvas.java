@@ -3,8 +3,10 @@ package edu.wpi.cs3733.d20.teamA.map;
 import edu.wpi.cs3733.d20.teamA.graph.Edge;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
+import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -15,7 +17,7 @@ public class MapCanvas extends Canvas {
   private Canvas canvas;
 
   private int lastDrawnFloor = 1;
-  private double zoom = 1.0;
+  private SimpleDoubleProperty zoom;
 
   private BoundingBox viewSpace;
   private Point2D center;
@@ -61,6 +63,18 @@ public class MapCanvas extends Canvas {
 
           dragLast = new Point2D(event.getX(), event.getY());
         });
+    setOnScroll(
+        event -> {
+          double diff = event.getDeltaY() / 10.0;
+          zoom.set(Math.min(100, Math.max(0, zoom.getValue() + diff)));
+        });
+
+    // Set cursor to indicate panning possibility
+    setCursor(Cursor.MOVE);
+
+    // Setup zoom property
+    zoom = new SimpleDoubleProperty(0.0);
+    zoom.addListener(observable -> draw(lastDrawnFloor));
   }
 
   // graphToCanvas() projects a point from graph coordinates onto canvas coordinates
@@ -95,8 +109,9 @@ public class MapCanvas extends Canvas {
 
     double aspectRatio = (imageWidth / getWidth()) / (imageHeight / getHeight());
 
-    double width = ((aspectRatio < 1.0) ? imageWidth : (imageWidth / aspectRatio)) / zoom;
-    double height = ((aspectRatio > 1.0) ? imageHeight : (imageHeight * aspectRatio)) / zoom;
+    double zoomFactor = (1.0 + (zoom.getValue() / 100));
+    double width = ((aspectRatio < 1.0) ? imageWidth : (imageWidth / aspectRatio)) / zoomFactor;
+    double height = ((aspectRatio > 1.0) ? imageHeight : (imageHeight * aspectRatio)) / zoomFactor;
 
     double startX = center.getX() - (width / 2);
     double startY = center.getY() - (height / 2);
@@ -214,11 +229,11 @@ public class MapCanvas extends Canvas {
     draw(lastDrawnFloor);
   }
 
-  public double getZoom() {
+  public SimpleDoubleProperty getZoomProperty() {
     return zoom;
   }
 
   public void setZoom(double zoom) {
-    this.zoom = zoom;
+    this.zoom.set(zoom);
   }
 }

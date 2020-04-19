@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXSlider;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
@@ -17,6 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -26,7 +28,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainController {
-  @FXML private VBox searchFields;
+  @FXML private JFXDrawer directionsDrawer;
+  @FXML private VBox directionsBox;
   @FXML private JFXComboBox<Node> startingLocationBox;
   @FXML private JFXComboBox<Node> destinationBox;
   @FXML private AnchorPane canvasPane;
@@ -38,7 +41,7 @@ public class MainController {
   private Graph graph;
 
   public void initialize() {
-    searchFields.setVisible(false);
+    directionsDrawer.close();
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
     canvas = new MapCanvas();
@@ -50,13 +53,15 @@ public class MainController {
     Platform.runLater(() -> canvas.draw(1));
 
     // Setup zoom slider hook
-    zoomSlider
-        .valueProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              canvas.setZoom(1.0 + (newValue.doubleValue() / 100));
-              canvas.draw(1);
-            });
+    canvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
+
+    // Setup zoom slider cursor
+    zoomSlider.setCursor(Cursor.H_RESIZE);
+
+    // Setup directions drawer
+    directionsDrawer.setSidePane(directionsBox);
+    directionsDrawer.close();
+    directionsDrawer.setMouseTransparent(true);
 
     try {
       graph = Graph.getInstance();
@@ -91,7 +96,9 @@ public class MainController {
 
   @FXML
   public void toggleSearch() {
-    searchFields.setVisible(!searchFields.isVisible());
+    directionsDrawer.toggle();
+    directionsDrawer.setMouseTransparent(
+        directionsDrawer.isClosed() || directionsDrawer.isClosing());
   }
 
   @FXML

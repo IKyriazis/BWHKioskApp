@@ -29,8 +29,10 @@ public class NodeAutoCompleteHandler implements EventHandler<KeyEvent> {
     if (event.getCode() == KeyCode.ENTER
         || event.getCharacter().equals("\r")
         || event.getCharacter().equals("\n")) {
-      box.setValue(box.getItems().get(0));
-      box.setItems(FXCollections.observableArrayList(box.getItems().get(0)));
+      if (!box.getItems().isEmpty()) {
+        box.setValue(box.getItems().get(0));
+        box.setItems(FXCollections.observableArrayList(box.getItems().get(0)));
+      }
       toFocus.requestFocus();
     } else {
       List<Node> matches =

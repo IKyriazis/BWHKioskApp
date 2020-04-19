@@ -1,67 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDrawer?>
+<?import com.jfoenix.controls.JFXSlider?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.MainController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.MainController">
    <center>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0">
          <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
                <children>
-                  <JFXSlider layoutX="846.0" layoutY="672.0" value="-1.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
-                  <JFXSlider fx:id="zoomSlider" layoutX="846.0" layoutY="672.0" value="-1.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                  <JFXSlider fx:id="zoomSlider" layoutX="846.0" layoutY="672.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="150.0" direction="TOP" resizeContent="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
+                           <children>
+                              <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Starting Location" />
+                              <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Destination" />
+                              <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                           </padding>
+                        </VBox>
+                     </children></JFXDrawer>
                </children></AnchorPane>
-            <VBox fx:id="searchFields" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0" style="-fx-background-color: #d0d0d0; -fx-background-radius: 0 0 25 0; -fx-border-radius: 25; -fx-border-color: #d0d0d0; -fx-border-width: 0 25 25 0;" StackPane.alignment="TOP_LEFT">
-               <children>
-                  <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Starting Location" />
-                  <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Destination" />
-                  <JFXButton fx:id="goButton" mnemonicParsing="false" onAction="#pressedGo" text="Go" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
-               </padding>
-               <StackPane.margin>
-                  <Insets />
-               </StackPane.margin>
-            </VBox>
          </StackPane>
       </AnchorPane>
    </center>
    <top>
-      <VBox BorderPane.alignment="CENTER">
+      <VBox style="-fx-background-color: #9E9E9E;" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="52.0" prefWidth="1000.0">
-               <JFXButton mnemonicParsing="false" onAction="#toggleSearch" text="Get Directions">
-                  <HBox.margin>
-                     <Insets right="40.0" />
-                  </HBox.margin>
-                  <font>
-                     <Font size="16.0" />
-                  </font>
-               </JFXButton>
-               <JFXButton mnemonicParsing="false" onAction="#showServices" text="Delivery Services">
-                  <HBox.margin>
-                     <Insets right="40.0" />
-                  </HBox.margin>
-                  <font>
-                     <Font size="16.0" />
-                  </font>
-               </JFXButton>
-               <JFXButton mnemonicParsing="false" onAction="#login" text="Employee Login">
-                  <HBox.margin>
-                     <Insets left="70.0" />
-                  </HBox.margin>
-                  <font>
-                     <Font size="16.0" />
-                  </font>
-               </JFXButton>
-            </HBox>
-            <Separator prefWidth="200.0" />
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#login" style="-fx-background-color: #42A5F5;" text="Employee Login" GridPane.columnIndex="2">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#showServices" style="-fx-background-color: white;" text="Delivery Services" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </JFXButton>
+                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </VBox.margin>
+            </GridPane>
          </children>
       </VBox>
    </top>

@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA;
 
+import com.jfoenix.controls.JFXDecorator;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,10 +26,11 @@ public class App extends Application {
     BorderPane borderPane = loader.load();
 
     // Set up the stage
-    Scene scene = new Scene(borderPane);
+    JFXDecorator decorator = new JFXDecorator(primaryStage, borderPane);
+    decorator.setCustomMaximize(true);
 
-    primaryStage.setScene(scene);
-    primaryStage.setTitle("Hospital GUI");
+    primaryStage.setScene(new Scene(decorator));
+    primaryStage.setTitle("Hospital App");
     primaryStage.setMinWidth(1000);
     primaryStage.setMinHeight(755);
     // primaryStage.setFullScreen(true);
