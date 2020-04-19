@@ -24,18 +24,15 @@
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
                   <JFXSlider fx:id="zoomSlider" layoutX="846.0" layoutY="672.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
                   <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="150.0" direction="TOP" resizeContent="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
-                           <children>
-                              <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Starting Location" />
-                              <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Destination" />
-                              <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
-                           </children>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
-                           </padding>
-                        </VBox>
-                     </children></JFXDrawer>
+                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
+                        <padding>
+                           <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                        </padding>
+                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Starting Location" />
+                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Destination" />
+                        <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
+                     </VBox>
+                  </JFXDrawer>
                </children></AnchorPane>
          </StackPane>
       </AnchorPane>
@@ -53,17 +50,17 @@
                 <RowConstraints vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#login" style="-fx-background-color: #42A5F5;" text="Employee Login" GridPane.columnIndex="2">
+                  <JFXButton fx:id="loginButton" buttonType="RAISED" mnemonicParsing="false" onAction="#login" style="-fx-background-color: #42A5F5;" text="Employee Login" GridPane.columnIndex="2">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#showServices" style="-fx-background-color: white;" text="Delivery Services" GridPane.columnIndex="1">
+                  <JFXButton fx:id="serviceButton" buttonType="RAISED" mnemonicParsing="false" onAction="#showServices" style="-fx-background-color: white;" text="Delivery Services" GridPane.columnIndex="1">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </JFXButton>
-                  <JFXButton buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions">
+                  <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions">
                      <font>
                         <Font size="16.0" />
                      </font>

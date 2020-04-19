@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXSlider;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
@@ -35,7 +37,11 @@ public class MainController {
   @FXML private AnchorPane canvasPane;
   @FXML private Label textualDirectionsLabel;
   @FXML private JFXSlider zoomSlider;
+
   @FXML private JFXButton goButton;
+  @FXML private JFXButton directionsButton;
+  @FXML private JFXButton serviceButton;
+  @FXML private JFXButton loginButton;
 
   private MapCanvas canvas;
   private Graph graph;
@@ -63,7 +69,14 @@ public class MainController {
     directionsDrawer.close();
     directionsDrawer.setMouseTransparent(true);
 
+    // Set button icons
+    goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
+    directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP));
+    serviceButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BELL));
+    loginButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN));
+
     try {
+      // Load graph info
       graph = Graph.getInstance();
       ArrayList<Node> nodeList = new ArrayList<>(graph.getNodes().values());
       ObservableList<Node> allNodeList = FXCollections.observableArrayList(nodeList);
