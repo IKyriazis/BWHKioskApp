@@ -27,6 +27,7 @@ dependencies {
 
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
+            'com.google.inject:guice:4.2.2',
     )
 
     testImplementation(
@@ -39,7 +40,7 @@ dependencies {
 }
 
 javafx {
-    version = "11"
+    version = "11.0.2"
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
