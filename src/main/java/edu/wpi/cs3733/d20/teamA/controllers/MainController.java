@@ -6,28 +6,22 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXSlider;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Optional;
 import javafx.application.Platform;
+import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class MainController {
   @FXML private JFXDrawer directionsDrawer;
@@ -43,6 +37,8 @@ public class MainController {
 
   private MapCanvas canvas;
   private Graph graph;
+
+  private ObservableList<Node> allNodeList;
 
   public void initialize() {
     directionsDrawer.close();
@@ -74,24 +70,30 @@ public class MainController {
     try {
       // Load graph info
       graph = Graph.getInstance();
-      ArrayList<Node> nodeList = new ArrayList<>(graph.getNodes().values());
-      ObservableList<Node> allNodeList = FXCollections.observableArrayList(nodeList);
+
+      allNodeList = FXCollections.observableArrayList(graph.getNodes().values());
+
+      InvalidationListener focusListener =
+          observable -> {
+            allNodeList.clear();
+            allNodeList.addAll(graph.getNodes().values());
+            startingLocationBox.setItems(allNodeList);
+            destinationBox.setItems(allNodeList);
+            startingLocationBox.setVisibleRowCount(12);
+            destinationBox.setVisibleRowCount(12);
+          };
       startingLocationBox.setItems(allNodeList);
-      startingLocationBox
-          .focusedProperty()
-          .addListener(observable -> startingLocationBox.setItems(allNodeList));
+      startingLocationBox.focusedProperty().addListener(focusListener);
       startingLocationBox
           .getEditor()
           .setOnKeyTyped(
-              new NodeAutoCompleteHandler(startingLocationBox, destinationBox, nodeList));
+              new NodeAutoCompleteHandler(startingLocationBox, destinationBox, allNodeList));
 
       destinationBox.setItems(allNodeList);
-      destinationBox
-          .focusedProperty()
-          .addListener(observable -> destinationBox.setItems(allNodeList));
+      destinationBox.focusedProperty().addListener(focusListener);
       destinationBox
           .getEditor()
-          .setOnKeyTyped(new NodeAutoCompleteHandler(destinationBox, goButton, nodeList));
+          .setOnKeyTyped(new NodeAutoCompleteHandler(destinationBox, goButton, allNodeList));
     } catch (Exception e) {
       e.printStackTrace();
 
@@ -106,39 +108,17 @@ public class MainController {
   @FXML
   public void toggleSearch() {
     directionsDrawer.toggle();
-    // directionsDrawer.setMouseTransparent(
-    // directionsDrawer.isClosed() || directionsDrawer.isClosing());
-  }
-
-  @FXML
-  public void showServices() throws IOException {
-    Stage stage = new Stage();
-    Parent root = FXMLLoader.load(App.class.getResource("views/FlowerDeliveryServiceHome.fxml"));
-
-    Scene scene = new Scene(root);
-    stage.setScene(scene);
-    stage.show();
-  }
-
-  @FXML
-  public void login() throws IOException {
-    Stage stage = new Stage();
-    Parent root = FXMLLoader.load(App.class.getResource("views/Login.fxml"));
-
-    Scene scene = new Scene(root);
-    stage.setScene(scene);
-    stage.show();
   }
 
   @FXML
   public void pressedGo() {
     Optional<Node> start =
         startingLocationBox.getItems().stream()
-            .filter(node -> node.getShortName().contains(startingLocationBox.getEditor().getText()))
+            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
             .findFirst();
     Optional<Node> end =
         destinationBox.getItems().stream()
-            .filter(node -> node.getShortName().contains(destinationBox.getEditor().getText()))
+            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
             .findFirst();
     if (start.isPresent() && end.isPresent()) {
       Path path = new Path(graph);

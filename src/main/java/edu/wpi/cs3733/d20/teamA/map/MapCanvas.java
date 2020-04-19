@@ -187,7 +187,7 @@ public class MapCanvas extends Canvas {
 
     // Set the color to blue for the edge
     graphicsContext.setLineWidth(5);
-    graphicsContext.setStroke(Color.BLUE);
+    graphicsContext.setStroke(Color.RED);
 
     // Draw the line in between the points
     graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
@@ -197,10 +197,10 @@ public class MapCanvas extends Canvas {
   private void drawNode(Node node) {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
-    graphicsContext.setFill(Color.DARKTURQUOISE);
+    graphicsContext.setFill(Color.BLACK);
 
     Point2D nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
-    graphicsContext.fillOval(nodePoint.getX() - 4, nodePoint.getY() - 4, 8, 8);
+    graphicsContext.fillOval(nodePoint.getX() - 5, nodePoint.getY() - 5, 10, 10);
   }
 
   // Draws the path found
