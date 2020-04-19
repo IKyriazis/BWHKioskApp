@@ -153,7 +153,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public String printRequest(int rn) throws SQLException {
+  public String getRequest(int rn) throws SQLException {
     String request = "";
     try {
       PreparedStatement pstmt =
@@ -175,7 +175,6 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return request;
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
       return null;
     }
   }
@@ -196,23 +195,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  // this function is for testing purposes,
-  // since we need to use a timestamp to use the deleterequest method
-  // and update request method
-  //  public Timestamp getTimestamp(String location) throws SQLException {
-  //    try {
-  //      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-  //      PreparedStatement pstmt =
-  //          conn.prepareStatement("SELECT time FROM JanitorRequest WHERE location = ?");
-  //      pstmt.setString(1, location);
-  //      ResultSet rset = pstmt.executeQuery();
-  //      Timestamp time = rset.getTimestamp("time");
-  //      pstmt.close();
-  //      conn.close();
-  //      return time;
-  //    } catch (SQLException e) {
-  //      System.out.println(e.getMessage());
-  //      return null;
-  //    }
-  //  }
+  public Timestamp getField(int rn, String field) throws SQLException{
+
+  }
 }

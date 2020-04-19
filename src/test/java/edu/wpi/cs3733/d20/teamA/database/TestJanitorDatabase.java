@@ -127,12 +127,14 @@ public class TestJanitorDatabase {
     jDB.addRequest("biscuit", "Medium");
     jDB.addRequest("yoyoyo", "Medium");
     jDB.addRequest("hihihi", "Medium");
+    Assertions.assertEquals(3, jDB.getRequestSize());
 
     jDB.updateRequest(1, "harry", "Done");
     jDB.updateRequest(2, "harry", "Done");
     jDB.updateRequest(3, "harry", "Done");
 
     boolean b = jDB.deleteDoneRequests();
+    Assertions.assertEquals(0, jDB.getRequestSize());
     Assertions.assertTrue(b);
 
     jDB.removeAll();
@@ -140,7 +142,7 @@ public class TestJanitorDatabase {
   }
 
   @Test
-  public void testPrintRequest() throws SQLException {
+  public void testGetRequest() throws SQLException {
     gDB.removeAllNodes();
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
 
@@ -155,7 +157,7 @@ public class TestJanitorDatabase {
     Assertions.assertTrue(b);
     Assertions.assertEquals(
         "requestNumber: 1, location: biscuit, name: harry, progress: Dispatched, priority: Medium",
-        jDB.printRequest(1));
+        jDB.getRequest(1));
 
     jDB.removeAll();
     jDB.dropTables();
