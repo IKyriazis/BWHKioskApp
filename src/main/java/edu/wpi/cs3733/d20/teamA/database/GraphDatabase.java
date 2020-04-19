@@ -64,18 +64,42 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Removes all the nodes from the database
+   *
+   * @return True if this was successful
+   * @throws SQLException
+   */
   public boolean removeAllNodes() throws SQLException {
     return helperPrepared("DELETE From Node");
   }
 
+  /**
+   * Removes all the edges from the database
+   *
+   * @return True if this was successful
+   * @throws SQLException
+   */
   public boolean removeAllEdges() throws SQLException {
     return helperPrepared("DELETE From Edge");
   }
 
+  /**
+   * Removes all the edge and node data from the database
+   *
+   * @return True if this was successful
+   * @throws SQLException
+   */
   public boolean removeAll() throws SQLException {
     return removeAllEdges() && removeAllNodes();
   }
 
+  /**
+   * Loops thru the table to find the number of nodes
+   *
+   * @return The size of the node table
+   * @throws SQLException
+   */
   public int getSizeNode() throws SQLException {
     int count = 0;
     try {
@@ -92,6 +116,12 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Loops thru the table to find the number of edges
+   *
+   * @return The size of the edge table
+   * @throws SQLException
+   */
   public int getSizeEdge() throws SQLException {
     int count = 0;
     try {
@@ -108,6 +138,21 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Adds a node to the database
+   *
+   * @param nodeID - The node's ID
+   * @param xcoord - The x-coordinate on the map
+   * @param ycoord - The y-coordinate on the map
+   * @param floor - The floor in the building that the node is on
+   * @param building - The building that the node is located in
+   * @param nodeType - The type of node (4-letters, i.e. HALL, LABS, SERV...)
+   * @param longName - The long name that describes the node
+   * @param shortName - Shorthand name for the long name
+   * @param teamAssigned - The team that made the node
+   * @return True if the add was successful
+   * @throws SQLException
+   */
   public boolean addNode(
       String nodeID,
       int xcoord,
@@ -141,6 +186,15 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Adds an edge to the database
+   *
+   * @param edgeID - The edge's ID
+   * @param startNode - The node that the edge starts on
+   * @param endNode - The node that the edge ends on
+   * @return True if the add was successful
+   * @throws SQLException
+   */
   public boolean addEdge(String edgeID, String startNode, String endNode) throws SQLException {
     try {
       PreparedStatement pstmt =
@@ -157,6 +211,13 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Removes an edge from the database
+   *
+   * @param edgeID - The ID of the edge to delete
+   * @return True if the deletion was successful
+   * @throws SQLException
+   */
   public boolean deleteEdge(String edgeID) throws SQLException {
     try {
       PreparedStatement pstmt =
@@ -170,6 +231,13 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Removes the node from the database
+   *
+   * @param nodeID - The ID of the node to be deleted
+   * @return True if the deletion was successful
+   * @throws SQLException
+   */
   public boolean deleteNode(String nodeID) throws SQLException {
     try {
       PreparedStatement pstmt =
@@ -183,6 +251,21 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Changes a node with the given ID to the new values
+   *
+   * @param nodeID - The ID of the node to be edited
+   * @param xcoord - The new or unchanged x coordinate
+   * @param ycoord - The new or unchanged y coordinate
+   * @param floor - The new or unchanged floor
+   * @param building - The new or unchanged building
+   * @param nodeType - The new or unchanged node type
+   * @param longName - The new or unchanged long name
+   * @param shortName - The new or unchanged short name
+   * @param teamAssigned - The new or unchanged team that made the node
+   * @return True if the edits were successful
+   * @throws SQLException
+   */
   public boolean editNode(
       String nodeID,
       int xcoord,
@@ -216,6 +299,14 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Reads in a csv file of nodes
+   *
+   * @param fileName - The name of the file to be read
+   * @throws IOException
+   * @throws CsvException
+   * @throws SQLException
+   */
   public void readNodeCSV(String fileName) throws IOException, CsvException, SQLException {
     FileReader reads = new FileReader(fileName);
     CSVReader reader = new CSVReader(reads);
@@ -236,6 +327,14 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Reads in a csv file of edges
+   *
+   * @param fileName - The name of the file to be read
+   * @throws IOException
+   * @throws CsvException
+   * @throws SQLException
+   */
   public void readEdgeCSV(String fileName) throws IOException, CsvException, SQLException {
     FileReader reads = new FileReader(fileName);
     CSVReader reader = new CSVReader(reads);
@@ -249,6 +348,12 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Writes out a csv file for the node table
+   *
+   * @param filePath - Where the csv file should be saved (including fileName.csv)
+   * @throws SQLException
+   */
   public void writeNodeCSV(String filePath) throws SQLException {
     File file = new File(filePath);
     try {
@@ -294,6 +399,12 @@ public class GraphDatabase extends Database {
     }
   }
 
+  /**
+   * Writes out a csv file for the edge table
+   *
+   * @param filePath - Where the csv file should be saved (including fileName.csv)
+   * @throws SQLException
+   */
   public void writeEdgeCSV(String filePath) throws SQLException {
     File file = new File(filePath);
     try {
@@ -317,6 +428,255 @@ public class GraphDatabase extends Database {
       return;
     } catch (IOException i) {
       return;
+    }
+  }
+
+  /**
+   * Removes all the edges connected to a certain node
+   *
+   * @param nodeID - The node to delete edges from
+   * @return
+   * @throws SQLException
+   */
+  public boolean removeEdgeByNode(String nodeID) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("DELETE FROM Edge WHERE startNode = ? OR endNode = ?");
+      pstmt.setString(1, nodeID);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public int helperGetInt(String nodeID, String col) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
+      pstmt.setString(1, nodeID);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      int i = rset.getInt(col);
+      rset.close();
+      pstmt.close();
+      return i;
+    } catch (SQLException e) {
+      return -1;
+    }
+  }
+
+  public String helperGetString(String nodeID, String col) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
+      pstmt.setString(1, nodeID);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String s = rset.getString(col);
+      rset.close();
+      pstmt.close();
+      return s;
+    } catch (SQLException e) {
+      return "";
+    }
+  }
+
+  public String helperGetStringEdge(String edgeID, String col) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Edge WHERE nodeID = ?");
+      pstmt.setString(1, edgeID);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String s = rset.getString(col);
+      rset.close();
+      pstmt.close();
+      return s;
+    } catch (SQLException e) {
+      return "";
+    }
+  }
+
+  public int getX(String nodeID) throws SQLException {
+    return helperGetInt(nodeID, "xcoord");
+  }
+
+  public int getY(String nodeID) throws SQLException {
+    return helperGetInt(nodeID, "ycoord");
+  }
+
+  public int getFloor(String nodeID) throws SQLException {
+    return helperGetInt(nodeID, "floor");
+  }
+
+  public String getBuilding(String nodeID) throws SQLException {
+    return helperGetString(nodeID, "building");
+  }
+
+  public String getNodeType(String nodeID) throws SQLException {
+    return helperGetString(nodeID, "nodeType");
+  }
+
+  public String getLongName(String nodeID) throws SQLException {
+    return helperGetString(nodeID, "longName");
+  }
+
+  public String getShortName(String nodeID) throws SQLException {
+    return helperGetString(nodeID, "shortName");
+  }
+
+  public String getTeamAssigned(String nodeID) throws SQLException {
+    return helperGetString(nodeID, "teamAssigned");
+  }
+
+  public String getStartNode(String edgeID) throws SQLException {
+    return helperGetStringEdge(edgeID, "startNode");
+  }
+
+  public String getEndNode(String edgeID) throws SQLException {
+    return helperGetStringEdge(edgeID, "endNode");
+  }
+
+  public boolean setX(String nodeID, int i) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Node SET xcoord = ? WHERE nodeID = ?");
+      pstmt.setInt(1, i);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setY(String nodeID, int i) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Node SET ycoord = ? WHERE nodeID = ?");
+      pstmt.setInt(1, i);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setFloor(String nodeID, int i) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Node SET floor = ? WHERE nodeID = ?");
+      pstmt.setInt(1, i);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setBuilding(String nodeID, String s) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Node SET building = ? WHERE nodeID = ?");
+      pstmt.setString(1, s);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setNodeType(String nodeID, String s) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Node SET nodeType = ? WHERE nodeID = ?");
+      pstmt.setString(1, s);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setLongName(String nodeID, String s) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Node SET longName = ? WHERE nodeID = ?");
+      pstmt.setString(1, s);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setShortName(String nodeID, String s) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Node SET shortName = ? WHERE nodeID = ?");
+      pstmt.setString(1, s);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setTeamAssigned(String nodeID, String s) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Node SET teamAssigned = ? WHERE nodeID = ?");
+      pstmt.setString(1, s);
+      pstmt.setString(2, nodeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setStartNode(String edgeID, String s) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Edge SET startNode = ? WHERE edgeID = ?");
+      pstmt.setString(1, s);
+      pstmt.setString(2, edgeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
+    }
+  }
+
+  public boolean setEndNode(String edgeID, String s) throws SQLException {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("UPDATE Edge SET endNode = ? WHERE edgeID = ?");
+      pstmt.setString(1, s);
+      pstmt.setString(2, edgeID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      return false;
     }
   }
 }

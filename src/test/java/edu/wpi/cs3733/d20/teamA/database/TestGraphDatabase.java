@@ -134,4 +134,46 @@ public class TestGraphDatabase {
     Assertions.assertEquals(1, DB.getSizeNode());
     DB.removeAllNodes();
   }
+
+  @Test
+  public void testEditNode() throws SQLException {
+    DB.createTables();
+    DB.removeAll();
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.editNode("biscuit", 2, 7, 3, "White Hose", "CONF", "balogna", "b", "Team A");
+    Assertions.assertEquals("White Hose", DB.getBuilding("biscuit"));
+    DB.removeAll();
+  }
+
+  @Test
+  public void testGetters() throws SQLException {
+    DB.createTables();
+    DB.removeAll();
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    Assertions.assertEquals(2, DB.getX("biscuit"));
+    Assertions.assertEquals(5, DB.getY("biscuit"));
+    Assertions.assertEquals(2, DB.getFloor("biscuit"));
+    Assertions.assertEquals("White House", DB.getBuilding("biscuit"));
+    Assertions.assertEquals("CONF", DB.getNodeType("biscuit"));
+    Assertions.assertEquals("balogna", DB.getLongName("biscuit"));
+    Assertions.assertEquals("b", DB.getShortName("biscuit"));
+    Assertions.assertEquals("Team A", DB.getTeamAssigned("biscuit"));
+    DB.removeAll();
+  }
+
+  @Test
+  public void testSetters() throws SQLException {
+    DB.createTables();
+    DB.removeAll();
+    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    Assertions.assertTrue(DB.setX("biscuit", 3));
+    Assertions.assertTrue(DB.setY("biscuit", 6));
+    Assertions.assertTrue(DB.setFloor("biscuit", 3));
+    Assertions.assertTrue(DB.setBuilding("biscuit", "White Hose"));
+    Assertions.assertTrue(DB.setNodeType("biscuit", "HALL"));
+    Assertions.assertTrue(DB.setLongName("biscuit", "ham"));
+    Assertions.assertTrue(DB.setShortName("biscuit", "h"));
+    Assertions.assertTrue(DB.setTeamAssigned("biscuit", "Asgardians"));
+    DB.removeAll();
+  }
 }

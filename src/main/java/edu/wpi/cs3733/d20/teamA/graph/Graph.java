@@ -1,7 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,10 +26,15 @@ public class Graph {
   private int edgeCount = 0;
 
   /** Create a new empty graph, private b/c this is a singleton */
-  private Graph() throws SQLException {
+  private Graph() throws SQLException, IOException, CsvException {
     nodes = new HashMap<>();
     DB.dropTables();
     DB.createTables();
+    DB.readNodeCSV(
+        "src\\main\\resources\\edu\\wpi\\cs3733\\d20\\teamA\\csvfiles\\MapAAllNodes.csv");
+    DB.readEdgeCSV(
+        "src\\main\\resources\\edu\\wpi\\cs3733\\d20\\teamA\\csvfiles\\MapAAllEdges.csv");
+    update();
   }
 
   /**
@@ -35,7 +42,7 @@ public class Graph {
    *
    * @return instance
    */
-  public static Graph getInstance() throws SQLException {
+  public static Graph getInstance() throws SQLException, IOException, CsvException {
     return (instance == null) ? (instance = new Graph()) : instance;
   }
 
@@ -144,6 +151,7 @@ public class Graph {
     // Delete node
     nodes.remove(node.getNodeID());
 
+    DB.removeEdgeByNode(node.getNodeID());
     DB.deleteNode(node.getNodeID());
 
     return true;
@@ -242,7 +250,7 @@ public class Graph {
   }
 
   /**
-   * Updates the graph with any new data in the database
+   * Updates the graph to match the database
    *
    * @return Success / Failure
    */
