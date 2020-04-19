@@ -176,27 +176,107 @@ public class TestJanitorDatabase {
     Assertions.assertEquals(1, jDB.getRequestSize());
     boolean b = jDB.updateRequest(1, "harry", "Dispatched");
 
-    System.out.println(jDB.getTimestamp(1));
+    Assertions.assertNotNull(jDB.getTimestamp(1));
+    Assertions.assertNull(jDB.getTimestamp(2));
 
     jDB.removeAll();
     jDB.dropTables();
     gDB.removeAllNodes();
   }
-  //  @Test
-  //  public void testGetTimestamp() throws SQLException {
-  //    gDB.removeAllNodes();
-  //    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-  //    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-  //    gDB.addNode("hihihi", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-  //
-  //    jDB.removeAll();
-  //    jDB.addRequest("biscuit", "Medium");
-  //    jDB.addRequest("yoyoyo", "Medium");
-  //    jDB.addRequest("hihihi", "Medium");
-  //
-  //    Assertions.assertNotNull(jDB.getTimestamp("biscuit"));
-  //    System.out.println(jDB.getTimestamp("biscuit"));
-  //    jDB.removeAll();
-  //    gDB.removeAllNodes();
-  //  }
+
+  @Test
+  public void testGetName() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.createTables();
+    jDB.removeAll();
+    boolean a = jDB.addRequest("biscuit", "Medium");
+    Assertions.assertTrue(a);
+    Assertions.assertEquals(1, jDB.getRequestSize());
+    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+
+    Assertions.assertEquals("harry", jDB.getName(1));
+    Assertions.assertNull(jDB.getName(2));
+
+    Assertions.assertTrue(jDB.addRequest("biscuit", "Medium"));
+    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Dispatched"));
+    Assertions.assertEquals("boris", jDB.getName(2));
+
+    jDB.removeAll();
+    jDB.dropTables();
+    gDB.removeAllNodes();
+  }
+
+  @Test
+  public void testGetLocation() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.createTables();
+    jDB.removeAll();
+    boolean a = jDB.addRequest("biscuit", "Medium");
+    Assertions.assertTrue(a);
+    Assertions.assertEquals(1, jDB.getRequestSize());
+    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+
+    Assertions.assertEquals("biscuit", jDB.getLocation(1));
+    Assertions.assertNull(jDB.getLocation(2));
+
+    Assertions.assertTrue(jDB.addRequest("biscuit", "Medium"));
+    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Dispatched"));
+    Assertions.assertEquals("biscuit", jDB.getLocation(2));
+
+    jDB.removeAll();
+    jDB.dropTables();
+    gDB.removeAllNodes();
+  }
+
+  @Test
+  public void testGetProgress() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.createTables();
+    jDB.removeAll();
+    boolean a = jDB.addRequest("biscuit", "Medium");
+    Assertions.assertTrue(a);
+    Assertions.assertEquals(1, jDB.getRequestSize());
+    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+
+    Assertions.assertEquals("Dispatched", jDB.getProgress(1));
+    Assertions.assertNull(jDB.getProgress(2));
+
+    Assertions.assertTrue(jDB.addRequest("biscuit", "Medium"));
+    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Done"));
+    Assertions.assertEquals("Done", jDB.getProgress(2));
+
+    jDB.removeAll();
+    jDB.dropTables();
+    gDB.removeAllNodes();
+  }
+
+  @Test
+  public void testGetPriority() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    jDB.createTables();
+    jDB.removeAll();
+    boolean a = jDB.addRequest("biscuit", "Medium");
+    Assertions.assertTrue(a);
+    Assertions.assertEquals(1, jDB.getRequestSize());
+    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+
+    Assertions.assertEquals("Medium", jDB.getPriority(1));
+    Assertions.assertNull(jDB.getPriority(2));
+
+    Assertions.assertTrue(jDB.addRequest("biscuit", "High"));
+    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Done"));
+    Assertions.assertEquals("High", jDB.getPriority(2));
+
+    jDB.removeAll();
+    jDB.dropTables();
+    gDB.removeAllNodes();
+  }
 }

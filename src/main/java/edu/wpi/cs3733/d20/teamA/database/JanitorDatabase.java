@@ -216,7 +216,8 @@ public class JanitorDatabase extends Database {
     Timestamp ts;
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = ?");
+          getConnection()
+              .prepareStatement("SELECT time FROM JanitorRequest WHERE requestNumber = ?");
       pstmt.setInt(1, rn);
       ResultSet rset = pstmt.executeQuery();
       rset.next();
@@ -250,7 +251,7 @@ public class JanitorDatabase extends Database {
     try {
       PreparedStatement pstmt =
           getConnection()
-              .prepareStatement("SELECT name FROM JanitorRequest WHERE requestNumber = ?");
+              .prepareStatement("SELECT location FROM JanitorRequest WHERE requestNumber = ?");
       pstmt.setInt(1, rn);
       ResultSet rset = pstmt.executeQuery();
       rset.next();
@@ -267,11 +268,28 @@ public class JanitorDatabase extends Database {
     try {
       PreparedStatement pstmt =
           getConnection()
-              .prepareStatement("SELECT name FROM JanitorRequest WHERE requestNumber = ?");
+              .prepareStatement("SELECT progress FROM JanitorRequest WHERE requestNumber = ?");
       pstmt.setInt(1, rn);
       ResultSet rset = pstmt.executeQuery();
       rset.next();
       n = rset.getString("progress");
+      pstmt.close();
+      return n;
+    } catch (SQLException e) {
+      return null;
+    }
+  }
+
+  public String getPriority(int rn) throws SQLException {
+    String n;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("SELECT priority FROM JanitorRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      n = rset.getString("priority");
       pstmt.close();
       return n;
     } catch (SQLException e) {
