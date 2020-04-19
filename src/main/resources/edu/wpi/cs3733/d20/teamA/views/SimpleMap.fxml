@@ -8,6 +8,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -19,22 +20,26 @@
             <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
                <children>
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
-                  <JFXSlider fx:id="zoomSlider" layoutX="846.0" layoutY="672.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
-                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="150.0" direction="TOP" resizeContent="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
+                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="200.0" layoutY="69.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" resizeContent="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="65.0">
+                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
                         <padding>
-                           <Insets bottom="10.0" left="10.0" right="10.0" top="20.0" />
+                           <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
                         </padding>
-                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Starting Location" />
-                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Destination" />
+                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" promptText="Starting Location" />
+                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" promptText="Destination" />
                         <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
                      </VBox>
                   </JFXDrawer>
-                  <JFXButton fx:id="directionsButton" buttonType="RAISED" layoutX="170.0" layoutY="14.0" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions" AnchorPane.leftAnchor="185.0" AnchorPane.topAnchor="15.0">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </JFXButton>
+                  <HBox layoutY="4.0" pickOnBounds="false" spacing="25.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                     <children>
+                        <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" />
+                     </children>
+                  </HBox>
                </children></AnchorPane>
          </StackPane>
       </AnchorPane>

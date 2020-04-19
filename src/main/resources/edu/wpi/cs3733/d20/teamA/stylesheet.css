@@ -9,6 +9,14 @@
     -fx-background-color: #607D8B;
 }
 
+.jfx-slider .thumb, .jfx-slider .colored-track{
+    -fx-background-color: black;
+}
+
+.jfx-slider .animated-thumb {
+    -fx-background-color: black;
+}
+
 #settingsButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
