@@ -31,7 +31,7 @@
     -jfx-selected-color: black;
 }
 
-#settingsButton {
+#informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
     -fx-font-size: 21pt;
