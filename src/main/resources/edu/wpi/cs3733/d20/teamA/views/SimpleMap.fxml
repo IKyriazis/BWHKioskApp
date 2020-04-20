@@ -61,6 +61,11 @@
                         </HBox>
                      </children>
                   </VBox>
+                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="250.0" layoutX="10.0" layoutY="262.0" prefHeight="147.0" prefWidth="230.0">
+                     <children>
+                        <Label fx:id="textualDirectionsLabel" prefHeight="132.0" prefWidth="219.0" />
+                     </children>
+                  </JFXDrawer>
                </children></AnchorPane>
          </StackPane>
       </AnchorPane>

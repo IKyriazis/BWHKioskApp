@@ -5,6 +5,13 @@ import java.util.*;
 
 /** Represents a path along the graph */
 public class Path {
+  private enum cardinalDirections {
+    NORTH,
+    SOUTH,
+    EAST,
+    WEST
+  };
+
   private ArrayList<Node> pathNodes; // List of nodes along path
   private ArrayList<Edge> pathEdges; // List of forward & reverse edges along path
   private Graph graph;
@@ -125,6 +132,15 @@ public class Path {
   }
 
   public String textualDirections() {
+    if (pathNodes.get(0).getY() > pathNodes.get(pathNodes.size() - 1).getY())
+      return textualDirectionsFromOrientation(Direction.LEFT, Direction.RIGHT);
+    else return textualDirectionsFromOrientation(Direction.RIGHT, Direction.LEFT);
+  }
+
+  // If the start node is closer to the bottom on the graph than the end node, first = LEFT second =
+  // RIGHT
+  // else first = RIGHT second = LEFT
+  public String textualDirectionsFromOrientation(Direction first, Direction second) {
     double currentAngle = 0;
     String textPath = "";
     ArrayList<Direction> directions = new ArrayList<>();
@@ -135,23 +151,30 @@ public class Path {
       int nextX = pathNodes.get(i + 1).getX();
       int nextY = pathNodes.get(i + 1).getY();
       double angle = 0;
-      if (nextX != currX) {
-        angle = Math.atan((nextY - currY) / (nextX - currX));
+      int diffX = nextX - currX;
+      int diffY = nextY - currY;
+      if (diffX != 0) {
+
+        angle = Math.atan((diffY) / (diffX));
+        if (angle == 0 && diffX < 0) angle = Math.PI;
+
       } else {
-        angle = currentAngle;
+
+        if (diffY < 0) angle = Math.PI / 2;
+        else if (diffY < 0) angle = -Math.PI / 2;
+        else angle = currentAngle;
       }
 
       // Set the first angle to the angle between the first two nodes for comparison
       if (i == 0) {
         currentAngle = angle;
       }
-
       if (angle - currentAngle > Math.PI / 8) {
-        // Turn Right
-        directions.add(Direction.RIGHT);
+        // Turn Left if the starting node is lower and turn right if start is higher
+        directions.add(first);
       } else if (angle - currentAngle < -Math.PI / 8) {
-        // Turn Left
-        directions.add(Direction.LEFT);
+        // Turn Right
+        directions.add(second);
       } else {
         // Go straight
         directions.add(Direction.UP);

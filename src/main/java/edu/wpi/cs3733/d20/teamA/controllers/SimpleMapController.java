@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 
 public class SimpleMapController {
   @FXML private JFXDrawer directionsDrawer;
+  @FXML private JFXDrawer textDirectionsDrawer;
   @FXML private VBox directionsBox;
   @FXML private JFXComboBox<Node> startingLocationBox;
   @FXML private JFXComboBox<Node> destinationBox;
@@ -44,6 +45,7 @@ public class SimpleMapController {
 
   public void initialize() {
     directionsDrawer.close();
+    textDirectionsDrawer.close();
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
     canvas = new MapCanvas();
@@ -64,6 +66,12 @@ public class SimpleMapController {
     directionsDrawer.setSidePane(directionsBox);
     directionsDrawer.setOnDrawerClosed(event -> directionsDrawer.setMouseTransparent(true));
     directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
+
+    // Setup text directions drawer
+    textDirectionsDrawer.setSidePane(textualDirectionsLabel);
+    textDirectionsDrawer.setOnDrawerClosed(event -> textDirectionsDrawer.setMouseTransparent(true));
+    textDirectionsDrawer.setOnDrawerOpened(
+        event -> textDirectionsDrawer.setMouseTransparent(false));
 
     // Set button icons
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
@@ -134,6 +142,9 @@ public class SimpleMapController {
   @FXML
   public void toggleSearch() {
     directionsDrawer.toggle();
+    if (textDirectionsDrawer.isOpened()) {
+      textDirectionsDrawer.toggle();
+    }
   }
 
   @FXML
@@ -151,6 +162,12 @@ public class SimpleMapController {
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
       canvas.draw(1);
+
+      if (textDirectionsDrawer.isClosed()) {
+        textDirectionsDrawer.toggle();
+      }
+
+      textualDirectionsLabel.setText(path.textualDirections());
     }
   }
 }
