@@ -26,8 +26,8 @@
                      </font>
                   </Label>
                   <JFXButton fx:id="btnSubmitRequest" buttonType="RAISED" layoutX="55.0" layoutY="358.0" onAction="#addServiceRequest" text="Submit Request" />
-                  <JFXTextField fx:id="textfieldLocation" layoutX="31.0" layoutY="120.0" onAction="#disableSubmitButton" prefHeight="25.0" prefWidth="147.0" />
-                  <JFXTextField fx:id="textfieldPriority" layoutX="31.0" layoutY="250.0" onAction="#disableSubmitButton" prefHeight="25.0" prefWidth="147.0" />
+                  <JFXTextField fx:id="textfieldLocation" layoutX="31.0" layoutY="120.0" prefHeight="25.0" prefWidth="147.0" />
+                  <JFXTextField fx:id="textfieldPriority" layoutX="31.0" layoutY="250.0" prefHeight="25.0" prefWidth="147.0" />
                </children>
             </AnchorPane>
          </left>
