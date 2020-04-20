@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXProgressBar?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -29,7 +28,7 @@
                           <children>
                               <HBox spacing="10.0">
                                  <children>
-                                    <JFXTextField fx:id="txtNumber" labelFloat="true" maxWidth="-Infinity" promptText="Order Number" />
+                                    <JFXTextField fx:id="txtNumber" labelFloat="true" maxWidth="-Infinity" onAction="#checkNum" promptText="Order Number" />
                                     <JFXProgressBar fx:id="progress" prefHeight="30.0" prefWidth="363.0" />
                                  </children>
                               </HBox>
@@ -48,7 +47,7 @@
                       </VBox>
                      </children>
                   </JFXDrawer>
-                  <JFXDrawer fx:id="orderDrawer" defaultDrawerSize="150.0" direction="TOP" minHeight="175.0" minWidth="528.0"/>
+                  <JFXDrawer fx:id="orderDrawer" defaultDrawerSize="150.0" direction="TOP" minHeight="175.0" minWidth="528.0" />
                 <GridPane fx:id="centerPane" hgap="50.0" minHeight="-Infinity" prefHeight="250.0" prefWidth="516.0" vgap="50.0">
                     <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
