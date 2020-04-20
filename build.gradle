@@ -17,6 +17,17 @@ repositories {
     }
 }
 
+run {
+    jvmArgs = ['--add-opens=javafx.base/com.sun.javafx.runtime=ALL-UNNAMED',
+               '--add-opens=javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED',
+               '--add-opens=javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED',
+               '--add-opens=javafx.base/com.sun.javafx.binding=ALL-UNNAMED',
+               '--add-opens=javafx.base/com.sun.javafx.event=ALL-UNNAMED',
+               '--add-opens=javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED',
+               '--add-opens=javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED'
+    ]
+}
+
 dependencies {
     implementation(
             'com.jfoenix:jfoenix:9.0.9',
@@ -27,6 +38,8 @@ dependencies {
 
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
+
+            'com.opencsv:opencsv:5.1',
 
             'de.jensd:fontawesomefx-commons:11.0',
             'de.jensd:fontawesomefx-fontawesome:4.7.0-11',
@@ -114,4 +127,14 @@ spotless {
     java {
         googleJavaFormat()
     }
+}
+run {
+    jvmArgs = ['--add-opens=javafx.base/com.sun.javafx.runtime=ALL-UNNAMED',
+               '--add-opens=javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED',
+               '--add-opens=javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED',
+               '--add-opens=javafx.base/com.sun.javafx.binding=ALL-UNNAMED',
+               '--add-opens=javafx.base/com.sun.javafx.event=ALL-UNNAMED',
+               '--add-opens=javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED',
+               '--add-opens=javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED'
+    ]
 }

@@ -122,13 +122,9 @@ public class TestFlowerDatabase {
     Assertions.assertEquals(0, fDB.getSizeOrders());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     fDB.addFlower("Daisy", "Blue", 10, 1.20);
-    boolean a = fDB.addOrder(5, "Daisy", "Blue", "biscuit");
-    Assertions.assertTrue(a);
-    Assertions.assertEquals(1, fDB.getSizeOrders());
-    boolean b = fDB.addOrder(-1, "Rose", "Blue", "biscuit");
-    Assertions.assertFalse(b);
-    boolean c = fDB.addOrder(1, "Tulip", "Blue", "butter");
-    Assertions.assertFalse(c);
+    fDB.addOrder(5, "Daisy", "Blue", "biscuit");
+    fDB.addOrder(-1, "Daisy", "Blue", "buiscuit");
+    fDB.addOrder(1, "Daisy", "Blue", "butter");
     Assertions.assertEquals(1, fDB.getSizeOrders());
     fDB.removeAllOrders();
   }
@@ -145,8 +141,8 @@ public class TestFlowerDatabase {
     boolean a = fDB.deleteOrder(1);
     Assertions.assertTrue(a);
     Assertions.assertEquals(0, fDB.getSizeOrders());
-    boolean d = fDB.addOrder(2, "Daisy", "Blue", "biscuit");
-    boolean e = fDB.addOrder(6, "Daisy", "Blue", "biscuit");
+    fDB.addOrder(2, "Daisy", "Blue", "biscuit");
+    fDB.addOrder(6, "Daisy", "Blue", "biscuit");
     boolean r = fDB.deleteOrder(2);
     Assertions.assertTrue(r);
     Assertions.assertEquals(1, fDB.getSizeOrders());
@@ -164,5 +160,26 @@ public class TestFlowerDatabase {
     boolean a = fDB.changeOrderStatus(5, "Order Received");
     Assertions.assertTrue(a);
     fDB.removeAllOrders();
+  }
+
+  @Test
+  public void testFlowers() {
+    Flower flr = new Flower("Daisy", "Blue", 9, 9.20);
+    Assertions.assertEquals("Daisy", flr.getTypeFlower());
+    Assertions.assertEquals("Blue", flr.getColor());
+    Assertions.assertEquals(9, flr.getQty());
+    Assertions.assertEquals(9.20, flr.getPricePer());
+  }
+
+  @Test
+  public void testOrders() {
+    Order flr = new Order(1, 4, "Daisy", "Yellow", 9.88, "Order Sent", "dsss");
+    Assertions.assertEquals(1, flr.getOrderNumber());
+    Assertions.assertEquals(4, flr.getNumFlowers());
+    Assertions.assertEquals("Daisy", flr.getFlowerType());
+    Assertions.assertEquals("Yellow", flr.getFlowerColor());
+    Assertions.assertEquals(9.88, flr.getPrice());
+    Assertions.assertEquals("Order Sent", flr.getStatus());
+    Assertions.assertEquals("dsss", flr.getLocation());
   }
 }
