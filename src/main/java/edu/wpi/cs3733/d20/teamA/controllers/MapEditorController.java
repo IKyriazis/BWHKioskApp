@@ -18,6 +18,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class MapEditorController {
@@ -34,7 +35,9 @@ public class MapEditorController {
   @FXML private JFXButton addEdgeButton;
   @FXML private JFXButton deleteEdgeButton;
 
+  @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
+  private JFXRippler infoRippler;
 
   private MapCanvas canvas;
   private Graph graph;
@@ -70,8 +73,18 @@ public class MapEditorController {
     // Setup zoom slider cursor
     zoomSlider.setCursor(Cursor.H_RESIZE);
 
+    // Setup info pane rippler
+    infoRippler = new JFXRippler(infoPane, JFXRippler.RipplerMask.RECT);
+    infoRippler.setRipplerFill(Color.web("#78909C"));
+    infoRippler.setEnabled(true);
+
+    // Trigger ripple when label is updated
+    editorTipLabel
+        .textProperty()
+        .addListener(observable -> Platform.runLater(infoRippler.createManualRipple()));
+
     // Setup info drawer
-    infoDrawer.setSidePane(editorTipLabel);
+    infoDrawer.setSidePane(infoRippler);
 
     // Set up drawer transparency hooks
     infoDrawer.setOnDrawerOpened(event -> infoDrawer.setMouseTransparent(false));
