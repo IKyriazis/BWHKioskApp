@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
@@ -10,11 +12,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -22,6 +22,9 @@ import javafx.stage.Stage;
 public class FlowerAdminController extends AbstractController {
   @FXML private TableView<Flower> tblFlowerView;
   @FXML private TableView<Order> tblOrderView;
+
+  @FXML private JFXTextField txtPrev;
+  @FXML private JFXComboBox<String> txtNext;
 
   @FXML private AnchorPane flowerPane;
 
@@ -57,7 +60,7 @@ public class FlowerAdminController extends AbstractController {
     columnO2.setCellValueFactory(new PropertyValueFactory<>("numFlowers"));
 
     TableColumn columnO3 = new TableColumn("Type");
-    columnO1.setCellValueFactory(new PropertyValueFactory<>("flowerType"));
+    columnO3.setCellValueFactory(new PropertyValueFactory<>("flowerType"));
 
     TableColumn columnO4 = new TableColumn("Color");
     columnO4.setCellValueFactory(new PropertyValueFactory<>("flowerColor"));
@@ -71,10 +74,14 @@ public class FlowerAdminController extends AbstractController {
     TableColumn columnO7 = new TableColumn("Location");
     columnO7.setCellValueFactory(new PropertyValueFactory<>("location"));
 
-    tblOrderView.setItems(super.flDatabase.orderOl());
     tblOrderView
         .getColumns()
         .addAll(columnO1, columnO2, columnO3, columnO4, columnO5, columnO6, columnO7);
+    tblOrderView.setItems(super.flDatabase.orderOl());
+    // Setup status change stuff
+    txtPrev.setText("Select an order");
+    txtNext.getItems().addAll("Order Sent", "Order Received", "Flower Sent", "Flower Delivered");
+    txtNext.getSelectionModel().select(0);
   }
 
   public void addFlower(ActionEvent actionEvent) throws IOException {
@@ -137,17 +144,37 @@ public class FlowerAdminController extends AbstractController {
 
   public void update() throws SQLException {
     tblFlowerView.setItems(super.flDatabase.flowerOl());
-  }
-
-  @FXML
-  public void cancel(ActionEvent event) throws IOException {
-    ((Button) (event.getSource()))
-        .getScene()
-        .getWindow()
-        .hide(); // use existing stage to close current window
+    tblOrderView.setItems(super.flDatabase.orderOl());
   }
 
   public Pane getPane() {
     return flowerPane;
+  }
+
+  public void setStatus(MouseEvent mouseEvent) {
+    Order o = tblOrderView.getSelectionModel().getSelectedItem();
+    if (o != null) {
+      txtPrev.setText(o.getStatus());
+      if (o.getStatus().equals("Order Sent")) txtNext.getSelectionModel().select(1);
+      else if (o.getStatus().equals("Order Received")) txtNext.getSelectionModel().select(2);
+      else if (o.getStatus().equals("Flower Sent")) txtNext.getSelectionModel().select(3);
+    } else {
+      txtPrev.setText("Select an order");
+    }
+  }
+
+  public void changeProgress(ActionEvent actionEvent) throws SQLException {
+    Order o = tblOrderView.getSelectionModel().getSelectedItem();
+    if (o != null) {
+      super.flDatabase.changeOrderStatus(
+          o.getOrderNumber(), txtNext.getSelectionModel().getSelectedItem());
+    } else {
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("No item selected");
+      alert.setContentText("Please select an item by clicking a row in the table");
+      alert.show();
+    }
+
+    tblOrderView.setItems(super.flDatabase.orderOl());
   }
 }

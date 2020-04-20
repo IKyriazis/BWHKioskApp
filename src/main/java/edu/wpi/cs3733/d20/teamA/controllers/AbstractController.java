@@ -21,10 +21,7 @@ public abstract class AbstractController {
       flDatabase.createTables();
       graphDatabase = new GraphDatabase(conn);
       graphDatabase.createTables();
-      // If seeing this elsewhere,delete it
-      if (graphDatabase.getSizeNode() == 0) {
-        graphDatabase.addNode("ID", 12, 32, 4, "qwe", "HALL", "LongName", "qwq", "asdth");
-      }
+      graphDatabase.deleteNode("ID");
     } catch (SQLException throwables) {
       throwables.printStackTrace(); // All is lost
     }

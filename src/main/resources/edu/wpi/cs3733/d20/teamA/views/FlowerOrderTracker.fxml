@@ -44,14 +44,6 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="125.0" prefWidth="600.0">
-               <children>
-                  <JFXButton onAction="#cancel" text="Return to Previous Screen">
-                     <font>
-                        <Font size="16.0" />
-                     </font></JFXButton>
-               </children>
-            </HBox>
          </children>
       </VBox>
    </children>

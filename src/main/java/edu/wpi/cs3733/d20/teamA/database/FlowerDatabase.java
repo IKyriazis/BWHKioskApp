@@ -9,7 +9,6 @@ public class FlowerDatabase extends Database {
 
   public FlowerDatabase(Connection connection) throws SQLException {
     super(connection);
-    System.out.println(orderNum);
   }
 
   /**
@@ -188,7 +187,6 @@ public class FlowerDatabase extends Database {
   public int addOrder(int numFlowers, String flowerType, String flowerColor, String location)
       throws SQLException {
     try {
-      System.out.println("enter add");
       double price;
       Statement priceStmt = getConnection().createStatement();
       ResultSet rst =
@@ -204,15 +202,12 @@ public class FlowerDatabase extends Database {
 
       price = Math.round(price * 100.0) / 100.0;
 
-      System.out.println("Calc price");
-
       String status = "Order Sent";
 
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
-      System.out.println("Create statement");
       pstmt.setInt(1, orderNum);
       pstmt.setInt(2, numFlowers);
       pstmt.setString(3, flowerType);
@@ -221,7 +216,6 @@ public class FlowerDatabase extends Database {
       pstmt.setString(6, status);
       pstmt.setString(7, location);
       pstmt.executeUpdate();
-      System.out.println("Update");
       pstmt.close();
       orderNum++;
       return orderNum - 1;
@@ -364,4 +358,77 @@ public class FlowerDatabase extends Database {
       return oList;
     }
   }
+
+  public double getFlowerPricePer(String type, String color) {
+    double price = -1;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "Select pricePer From Flowers Where typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        price = rset.getInt("pricePer");
+      }
+      rset.close();
+      pstmt.close();
+      return price;
+    } catch (SQLException e) {
+      return -1;
+    }
+  }
+
+  public String getOrderStatus(int orderNum) {
+    String status = null;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("Select status From Orders Where orderNumber = " + orderNum);
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        status = rset.getString("status");
+      }
+      rset.close();
+      pstmt.close();
+      return status;
+    } catch (SQLException e) {
+      return null;
+    }
+  }
+
+  /*
+  public ObservableList<Order> orderSentOl(int orderNum) throws SQLException {
+    ObservableList<Order> oList = FXCollections.observableArrayList();
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Orders WHERE orderNumber = ");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int orderNumber = rset.getInt("orderNumber");
+        int numFlowers = rset.getInt("numFlowers");
+        String flowerType = rset.getString("flowerType");
+        String flowerColor = rset.getString("flowerColor");
+        double price = rset.getDouble("price");
+        String status = rset.getString("status");
+        String location = rset.getString("location");
+
+        Order node =
+                new Order(orderNumber, numFlowers, flowerType, flowerColor, price, status, location);
+        oList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      conn.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
+    }
+  }
+
+   */
 }
