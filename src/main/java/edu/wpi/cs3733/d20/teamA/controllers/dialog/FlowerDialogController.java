@@ -1,16 +1,16 @@
-package edu.wpi.cs3733.d20.teamA.controllers;
+package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
-import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import lombok.SneakyThrows;
 
-public class FlowerModController extends AbstractController {
+public class FlowerDialogController extends AbstractController implements IDialogController {
   private boolean modify;
 
   @FXML private GridPane modPane;
@@ -20,17 +20,16 @@ public class FlowerModController extends AbstractController {
   @FXML private JFXTextField txtCost;
 
   private Flower myFlower;
-  private JFXDialog thisDialog;
+  private JFXDialog dialog;
 
   @SneakyThrows
-  public FlowerModController(JFXDialog d) {
+  public FlowerDialogController() {
     super();
     modify = false;
-    thisDialog = d;
   }
 
   @SneakyThrows
-  public FlowerModController(JFXDialog d, Flower f) {
+  public FlowerDialogController(Flower f) {
     super();
     modify = true;
     myFlower = f;
@@ -52,7 +51,7 @@ public class FlowerModController extends AbstractController {
 
   // Scene switch & database addNode
   @FXML
-  public void isDone(ActionEvent e) throws SQLException, IOException {
+  public void isDone(ActionEvent e) throws SQLException {
     String name = txtName.getText();
     String color = txtColor.getText();
     int qty = Integer.parseInt(txtQty.getText());
@@ -63,6 +62,11 @@ public class FlowerModController extends AbstractController {
       super.flDatabase.updatePrice(name, color, price);
       super.flDatabase.updateQTY(name, color, qty);
     }
-    thisDialog.close();
+    dialog.close();
+  }
+
+  @Override
+  public void setDialog(JFXDialog dialog) {
+    this.dialog = dialog;
   }
 }

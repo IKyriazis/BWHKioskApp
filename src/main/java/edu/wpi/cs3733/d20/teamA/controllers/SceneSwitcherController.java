@@ -57,7 +57,7 @@ public class SceneSwitcherController {
 
   @FXML
   public void informationButtonPressed() {
-    DialogUtil.simpleDialog(
+    DialogUtil.simpleInfoDialog(
         dialogPane,
         "Info",
         "Built by Yash Patel, Tyler Looney, Dyllan Cole, Brennan Aubuchon, Eva Labbe, Gabriel Dudlicek, Maddison Caten, Will Engdahl, Cory Helmuth, and Ioannis Kyriazis");

@@ -2,8 +2,7 @@ package edu.wpi.cs3733.d20.teamA.flower.controllers;
 
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.FlowerAdminController;
-import edu.wpi.cs3733.d20.teamA.controllers.FlowerModController;
-import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerDialogController;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
@@ -20,7 +19,7 @@ import org.testfx.framework.junit5.Start;
 @ExtendWith(ApplicationExtension.class)
 public class testFlowerAdd {
 
-  private FlowerModController controller;
+  private FlowerDialogController controller;
 
   public testFlowerAdd() throws SQLException {}
 
@@ -32,7 +31,7 @@ public class testFlowerAdd {
       loader.setControllerFactory(
           param -> {
             try {
-              return new FlowerModController(new FlowerAdminController());
+              return new FlowerDialogController(new FlowerAdminController());
             } catch (SQLException throwables) {
               System.out.println("Not able to initialize");
               return null;

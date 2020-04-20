@@ -7,9 +7,10 @@ import com.jfoenix.controls.events.JFXDialogEvent;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
-import edu.wpi.cs3733.d20.teamA.controllers.DialogController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
@@ -23,10 +24,14 @@ public class DialogUtil {
     return closeButton;
   }
 
-  public static void simpleDialog(StackPane dialogPane, String heading, String body) {
+  private static void simpleDialog(
+      StackPane dialogPane, String heading, String body, FontAwesomeIconView headingIcon) {
     try {
+      Label headingLabel = new Label(heading);
+      headingLabel.setGraphic(headingIcon);
+
       JFXDialogLayout layout = new JFXDialogLayout();
-      layout.setHeading(new Text(heading));
+      layout.setHeading(headingLabel);
       layout.setBody(new Text(body));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.TOP);
@@ -44,13 +49,22 @@ public class DialogUtil {
     }
   }
 
+  public static void simpleInfoDialog(StackPane dialogPane, String heading, String body) {
+    simpleDialog(dialogPane, heading, body, new FontAwesomeIconView(FontAwesomeIcon.INFO));
+  }
+
+  public static void simpleErrorDialog(StackPane dialogPane, String heading, String body) {
+    simpleDialog(
+        dialogPane, heading, body, new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_TRIANGLE));
+  }
+
   public static void complexDialog(
       StackPane dialogPane,
       String heading,
       String path,
       boolean includeCloseButton,
       EventHandler<? super JFXDialogEvent> closeHandler,
-      DialogController controller) {
+      IDialogController controller) {
     FXMLLoader loader = new FXMLLoader();
 
     try {
@@ -80,7 +94,8 @@ public class DialogUtil {
 
       dialog.show();
     } catch (Exception e) {
-      simpleDialog(dialogPane, "Error", "Unable to load complex dialog for: " + path);
+      e.printStackTrace();
+      simpleErrorDialog(dialogPane, "Error", "Unable to load complex dialog for: " + path);
     }
   }
 }
