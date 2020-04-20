@@ -39,20 +39,6 @@ public class JanitorialController {
     jDB.createTables();
   }
 
-  @FXML
-  private void disableSubmitButton() {
-    if (!(textfieldLocation.getText() == null) && !(textfieldPriority.getText() == null)) {
-      btnSubmitRequest.setDisable(false);
-    } else btnSubmitRequest.setDisable(true);
-  }
-
-  @FXML
-  private void disableClearButton() {
-    if (!(comboboxActiveRequests.getAccessibleText() == null)) {
-      btnSubmitRequest.setDisable(false);
-    } else btnSubmitRequest.setDisable(true);
-  }
-
   /**
    * Adds a service request to the database
    *
