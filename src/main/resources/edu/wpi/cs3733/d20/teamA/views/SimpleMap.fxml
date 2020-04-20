@@ -31,10 +31,10 @@
                         <padding>
                            <Insets bottom="25.0" left="10.0" right="10.0" top="25.0" />
                         </padding>
-
-
-                        <JFXButton fx:id="swapBtn" buttonType="RAISED" prefHeight="25.0" prefWidth="143.0" />
                         <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Starting Location" />
+
+
+                        <JFXButton fx:id="swapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedSwap" style="-fx-background-color: E0E0E0;"/>
                         <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Destination" />
 
                         <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />

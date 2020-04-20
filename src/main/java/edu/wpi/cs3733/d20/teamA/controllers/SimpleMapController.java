@@ -156,6 +156,23 @@ public class SimpleMapController {
     }
   }
 
+  @FXML
+  public void pressedSwap() {
+    Optional<Node> start =
+        startingLocationBox.getItems().stream()
+            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
+            .findFirst();
+    Optional<Node> end =
+        destinationBox.getItems().stream()
+            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
+            .findFirst();
+
+    if (start.isPresent() && end.isPresent()) {
+      startingLocationBox.setValue(end.get());
+      destinationBox.setValue(start.get());
+    }
+  }
+
   public MapCanvas getCanvas() {
     return canvas;
   }
