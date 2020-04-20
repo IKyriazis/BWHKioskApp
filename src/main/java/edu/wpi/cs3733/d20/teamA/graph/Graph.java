@@ -31,9 +31,9 @@ public class Graph {
     DB.dropTables();
     DB.createTables();
     DB.readNodeCSV(
-        "src\\main\\resources\\edu\\wpi\\cs3733\\d20\\teamA\\csvfiles\\MapAAllNodes.csv");
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv"));
     DB.readEdgeCSV(
-        "src\\main\\resources\\edu\\wpi\\cs3733\\d20\\teamA\\csvfiles\\MapAAllEdges.csv");
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv"));
     update();
   }
 
