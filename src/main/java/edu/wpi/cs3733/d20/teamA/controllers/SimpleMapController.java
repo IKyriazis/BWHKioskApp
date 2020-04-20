@@ -32,6 +32,7 @@ public class SimpleMapController {
   @FXML private JFXSlider zoomSlider;
 
   @FXML private JFXButton goButton;
+  @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
 
   @FXML private JFXRadioButton drawPathButton;
@@ -67,6 +68,7 @@ public class SimpleMapController {
 
     // Set button icons
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
+    swapBtn.setGraphic(new FontAwesomeIconView((FontAwesomeIcon.EXCHANGE)));
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
 
     // Setup radio buttons
@@ -151,6 +153,23 @@ public class SimpleMapController {
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
       canvas.draw(1);
+    }
+  }
+
+  @FXML
+  public void pressedSwap() {
+    Optional<Node> start =
+        startingLocationBox.getItems().stream()
+            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
+            .findFirst();
+    Optional<Node> end =
+        destinationBox.getItems().stream()
+            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
+            .findFirst();
+
+    if (start.isPresent() && end.isPresent()) {
+      startingLocationBox.setValue(end.get());
+      destinationBox.setValue(start.get());
     }
   }
 
