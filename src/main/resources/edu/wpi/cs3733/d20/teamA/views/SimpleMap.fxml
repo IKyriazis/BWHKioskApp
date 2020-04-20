@@ -24,13 +24,19 @@
             <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
                <children>
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
-                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="69.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" resizeContent="true" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="95.0">
-                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
+
+                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="250.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="93.0">
+                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
+
                         <padding>
-                           <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                           <Insets bottom="25.0" left="10.0" right="10.0" top="25.0" />
                         </padding>
-                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" promptText="Starting Location" />
-                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" promptText="Destination" />
+                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Starting Location" />
+
+
+                        <JFXButton fx:id="swapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedSwap" style="-fx-background-color: E0E0E0;"/>
+                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Destination" />
+
                         <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
                      </VBox>
                   </JFXDrawer>

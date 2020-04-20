@@ -159,9 +159,9 @@ public class MapCanvas extends Canvas {
     // All nodes if flag is set.
     if (drawAllNodes) {
       try {
-        Graph.getInstance()
-            .getNodes()
-            .values()
+        int finalFloor = floor;
+        Graph.getInstance().getNodes().values().stream()
+            .filter(node -> node.getFloor() == finalFloor)
             .forEach(
                 node -> {
                   drawNode(node);
@@ -203,9 +203,9 @@ public class MapCanvas extends Canvas {
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
     Point2D end = graphToCanvas(new Point2D(edge.getEnd().getX(), edge.getEnd().getY()));
 
-    // Set the color to blue for the edge
+    // Set the color to black for the edge
     graphicsContext.setLineWidth(5);
-    graphicsContext.setStroke(Color.RED);
+    graphicsContext.setStroke(Color.BLACK);
 
     // Draw the line in between the points
     graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
@@ -232,6 +232,9 @@ public class MapCanvas extends Canvas {
     }
   }
 
+  public Path getPath() {
+    return this.path;
+  }
   // Get distance between two points
   private double getDistance(Point2D p0, Point2D p1) {
     double xDiff = p1.getX() - p0.getX();

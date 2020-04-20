@@ -41,7 +41,6 @@ public abstract class Database {
 
       stmt.executeUpdate();
       stmt.close();
-      // connection.close();
       return true;
     } catch (SQLException e) {
       return false;

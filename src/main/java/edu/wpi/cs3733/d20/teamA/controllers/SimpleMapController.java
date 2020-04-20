@@ -8,7 +8,9 @@ import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
+import java.util.Comparator;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
@@ -30,6 +32,7 @@ public class SimpleMapController {
   @FXML private JFXSlider zoomSlider;
 
   @FXML private JFXButton goButton;
+  @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
 
   @FXML private JFXRadioButton drawPathButton;
@@ -65,6 +68,7 @@ public class SimpleMapController {
 
     // Set button icons
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
+    swapBtn.setGraphic(new FontAwesomeIconView((FontAwesomeIcon.EXCHANGE)));
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
 
     // Setup radio buttons
@@ -85,12 +89,22 @@ public class SimpleMapController {
       // Load graph info
       graph = Graph.getInstance();
 
-      allNodeList = FXCollections.observableArrayList(graph.getNodes().values());
+      allNodeList =
+          FXCollections.observableArrayList(
+              graph.getNodes().values().stream()
+                  .filter(node -> node.getFloor() == 1)
+                  .collect(Collectors.toList()));
+      allNodeList.sort(Comparator.comparing(Node::getLongName));
 
       InvalidationListener focusListener =
           observable -> {
             allNodeList.clear();
-            allNodeList.addAll(graph.getNodes().values());
+            allNodeList.addAll(
+                FXCollections.observableArrayList(
+                    graph.getNodes().values().stream()
+                        .filter(node -> node.getFloor() == 1)
+                        .collect(Collectors.toList())));
+            allNodeList.sort(Comparator.comparing(Node::getLongName));
             startingLocationBox.setItems(allNodeList);
             destinationBox.setItems(allNodeList);
             startingLocationBox.setVisibleRowCount(12);
@@ -140,5 +154,30 @@ public class SimpleMapController {
       canvas.setPath(path);
       canvas.draw(1);
     }
+  }
+
+  @FXML
+  public void pressedSwap() {
+    Optional<Node> start =
+        startingLocationBox.getItems().stream()
+            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
+            .findFirst();
+    Optional<Node> end =
+        destinationBox.getItems().stream()
+            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
+            .findFirst();
+
+    if (start.isPresent() && end.isPresent()) {
+      startingLocationBox.setValue(end.get());
+      destinationBox.setValue(start.get());
+    }
+  }
+
+  public MapCanvas getCanvas() {
+    return canvas;
+  }
+
+  public Graph getGraph() {
+    return graph;
   }
 }
