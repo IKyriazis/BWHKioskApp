@@ -86,7 +86,6 @@ public class FlowerOrderController extends AbstractController {
     // Setup button icons
     orderButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ADDRESS_CARD));
     trackButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRUCK));
-
   }
 
   /**
