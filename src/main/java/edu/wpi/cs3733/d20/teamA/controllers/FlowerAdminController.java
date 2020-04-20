@@ -7,7 +7,6 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerDialogController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -157,54 +156,30 @@ public class FlowerAdminController extends AbstractController {
     DialogUtil.complexDialog(
         dialogStackPane,
         "Add Flower",
-        "views/addFlowerPopup.fxml",
+        "views/AddFlowerPopup.fxml",
         false,
-        event -> {
-          update();
-        },
+        event -> update(),
         new FlowerDialogController());
   }
 
-  public void editFlower(ActionEvent actionEvent) throws IOException {
-    /*Flower f = tblFlowerView.getSelectionModel().getSelectedItem().getValue();
-    if (f == null) {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("No item selected");
-      alert.setContentText("Please select an item by clicking a row in the table");
-      alert.show();
+  public void editFlower(ActionEvent actionEvent) {
+    TreeItem<Flower> selection = tblFlowerView.getSelectionModel().getSelectedItem();
+    if (selection != null) {
+      Flower flower = selection.getValue();
+      FlowerDialogController controller = new FlowerDialogController(flower);
+      DialogUtil.complexDialog(
+          dialogStackPane,
+          "Edit Flower",
+          "views/AddFlowerPopup.fxml",
+          false,
+          event -> update(),
+          controller);
     } else {
-      FXMLLoader loader = new FXMLLoader();
-
-      try {
-        loader.setLocation(App.class.getResource("views/AddFlowerPopup.fxml"));
-
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Text("Add Flower"));
-
-        JFXDialog dialog =
-            new JFXDialog(dialogStackPane, layout, JFXDialog.DialogTransition.BOTTOM);
-        contentBox.setEffect(blur);
-        dialog.setOnDialogClosed(
-            event -> {
-              contentBox.setEffect(null);
-              try {
-                update();
-              } catch (SQLException throwables) {
-                throwables.printStackTrace();
-              }
-            });
-
-        loader.setControllerFactory(param -> new FlowerModController(dialog, f));
-
-        // loader.setController(new FlowerModController(this));
-        javafx.scene.Node rootPane = loader.load();
-        layout.setBody(rootPane);
-
-        dialog.show();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }*/
+      DialogUtil.simpleInfoDialog(
+          dialogStackPane,
+          "No Flower Selected",
+          "Please select a flower by clicking a row in the table");
+    }
   }
 
   public void deleteFlower(ActionEvent actionEvent) throws SQLException {
