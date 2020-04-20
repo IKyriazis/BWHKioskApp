@@ -28,13 +28,24 @@ public class Graph {
   /** Create a new empty graph, private b/c this is a singleton */
   private Graph() throws SQLException, IOException, CsvException {
     nodes = new HashMap<>();
-    DB.dropTables();
-    DB.createTables();
-    DB.readNodeCSV(
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv"));
-    DB.readEdgeCSV(
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv"));
-    update();
+    if (DB.getSizeNode() == -1 || DB.getSizeEdge() == -1) {
+      DB.dropTables();
+      DB.createTables();
+      DB.readNodeCSV(
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv"));
+      DB.readEdgeCSV(
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv"));
+      update();
+    } else if (DB.getSizeNode() == 0 || DB.getSizeEdge() == 0) {
+      DB.removeAll();
+      DB.readNodeCSV(
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv"));
+      DB.readEdgeCSV(
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv"));
+      update();
+    } else {
+      update();
+    }
   }
 
   /**
