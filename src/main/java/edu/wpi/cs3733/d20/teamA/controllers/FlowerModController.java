@@ -2,11 +2,13 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
+import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import lombok.SneakyThrows;
 
@@ -57,12 +59,13 @@ public class FlowerModController extends AbstractController {
     myBlur = new GaussianBlur();
     myBlur.setRadius(7.5);
 
-    lastController.getPane().setEffect(myBlur);
+    Pane p = lastController.getPane();
+    if (p != null) p.setEffect(myBlur);
   }
 
   // Scene switch & database addNode
   @FXML
-  private void isDone(ActionEvent e) throws SQLException {
+  public void isDone(ActionEvent e) throws SQLException, IOException {
     String name = txtName.getText();
     String color = txtColor.getText();
     int qty = Integer.parseInt(txtQty.getText());
@@ -74,11 +77,7 @@ public class FlowerModController extends AbstractController {
       super.flDatabase.updateQTY(name, color, qty);
     }
 
-    Stage stage;
-    stage =
-        (Stage) this.txtColor.getScene().getWindow(); // Get the stage from an arbitrary component
-    lastController.update();
     lastController.getPane().setEffect(null);
-    stage.close();
+    ((Stage) (txtName.getScene().getWindow())).close(); // Get the stage from an arbitrary component
   }
 }

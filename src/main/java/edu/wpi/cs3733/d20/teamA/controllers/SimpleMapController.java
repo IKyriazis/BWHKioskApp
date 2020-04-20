@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,9 +21,11 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
 public class SimpleMapController {
+  @FXML private BorderPane rootPane;
   @FXML private JFXDrawer directionsDrawer;
   @FXML private VBox directionsBox;
   @FXML private JFXComboBox<Node> startingLocationBox;
@@ -32,6 +35,7 @@ public class SimpleMapController {
   @FXML private JFXSlider zoomSlider;
 
   @FXML private JFXButton goButton;
+  @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
 
   @FXML private JFXRadioButton drawPathButton;
@@ -46,7 +50,7 @@ public class SimpleMapController {
     directionsDrawer.close();
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
-    canvas = new MapCanvas();
+    canvas = new MapCanvas(true);
     canvasPane.getChildren().add(0, canvas);
     canvas.widthProperty().bind(canvasPane.widthProperty());
     canvas.heightProperty().bind(canvasPane.heightProperty());
@@ -67,6 +71,7 @@ public class SimpleMapController {
 
     // Set button icons
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
+    swapBtn.setGraphic(new FontAwesomeIconView((FontAwesomeIcon.EXCHANGE)));
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
 
     // Setup radio buttons
@@ -80,6 +85,13 @@ public class SimpleMapController {
         event -> {
           drawPathButton.setSelected(false);
           canvas.setDrawAllNodes(true);
+          canvas.draw(1);
+        });
+
+    // Register event handler to redraw map on tab selection
+    rootPane.addEventHandler(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
           canvas.draw(1);
         });
 
@@ -152,5 +164,30 @@ public class SimpleMapController {
       canvas.setPath(path);
       canvas.draw(1);
     }
+  }
+
+  @FXML
+  public void pressedSwap() {
+    Optional<Node> start =
+        startingLocationBox.getItems().stream()
+            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
+            .findFirst();
+    Optional<Node> end =
+        destinationBox.getItems().stream()
+            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
+            .findFirst();
+
+    if (start.isPresent() && end.isPresent()) {
+      startingLocationBox.setValue(end.get());
+      destinationBox.setValue(start.get());
+    }
+  }
+
+  public MapCanvas getCanvas() {
+    return canvas;
+  }
+
+  public Graph getGraph() {
+    return graph;
   }
 }

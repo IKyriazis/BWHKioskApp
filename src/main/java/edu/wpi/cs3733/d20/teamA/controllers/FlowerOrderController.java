@@ -49,17 +49,13 @@ public class FlowerOrderController extends AbstractController {
     stage.show();
   }
 
-  public void placeOrder(ActionEvent actionEvent) throws SQLException {
+  public void placeOrder(ActionEvent actionEvent) throws SQLException, IOException {
     if (choiceFlower.getSelectionModel().getSelectedItem() != null) {
       String s = choiceFlower.getSelectionModel().getSelectedItem();
       String type = s.substring(0, s.indexOf(','));
       String color = s.substring(s.indexOf(' ') + 1);
 
       int num = Integer.parseInt(txtNumber.getText());
-
-      System.out.println(type);
-      System.out.println(color);
-      System.out.println("" + num);
 
       int i = super.flDatabase.addOrder(num, type, color, "ID");
 
@@ -73,7 +69,8 @@ public class FlowerOrderController extends AbstractController {
         alert.setTitle("Order placed");
         alert.setContentText("Your order has been placed. Your order number is: " + i);
         alert.showAndWait();
-        choiceFlower.getScene().getWindow().hide(); // use existing stage to close current window
+        choiceFlower.getSelectionModel().clearSelection();
+        txtNumber.setText("");
       }
     }
   }

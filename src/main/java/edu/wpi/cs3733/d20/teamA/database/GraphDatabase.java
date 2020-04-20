@@ -3,10 +3,7 @@ package edu.wpi.cs3733.d20.teamA.database;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.opencsv.exceptions.CsvException;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -303,14 +300,13 @@ public class GraphDatabase extends Database {
   /**
    * Reads in a csv file of nodes
    *
-   * @param fileName - The name of the file to be read
+   * @param stream - CSV InputStream
    * @throws IOException
    * @throws CsvException
    * @throws SQLException
    */
-  public void readNodeCSV(String fileName) throws IOException, CsvException, SQLException {
-    FileReader reads = new FileReader(fileName);
-    CSVReader reader = new CSVReader(reads);
+  public void readNodeCSV(InputStream stream) throws IOException, CsvException, SQLException {
+    CSVReader reader = new CSVReader(new InputStreamReader(stream));
     List<String[]> data = reader.readAll();
     for (int i = 1; i < data.size(); i++) {
       String nID, Bu, nodeT, longN, shortN, teamA;
@@ -331,14 +327,13 @@ public class GraphDatabase extends Database {
   /**
    * Reads in a csv file of edges
    *
-   * @param fileName - The name of the file to be read
+   * @param stream - CSV InputStream
    * @throws IOException
    * @throws CsvException
    * @throws SQLException
    */
-  public void readEdgeCSV(String fileName) throws IOException, CsvException, SQLException {
-    FileReader reads = new FileReader(fileName);
-    CSVReader reader = new CSVReader(reads);
+  public void readEdgeCSV(InputStream stream) throws IOException, CsvException, SQLException {
+    CSVReader reader = new CSVReader(new InputStreamReader(stream));
     List<String[]> data = reader.readAll();
     for (int i = 1; i < data.size(); i++) {
       String eID, sNode, eNode, eID2, sNode2, eNode2;
