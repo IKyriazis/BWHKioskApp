@@ -5,7 +5,9 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
@@ -39,6 +41,19 @@ public class SceneSwitcherController {
 
               tabPane.setTabMinWidth(newWidth);
               tabPane.setTabMaxWidth(newWidth);
+            });
+
+    tabPane
+        .getTabs()
+        .forEach(
+            tab -> {
+              tab.setOnSelectionChanged(
+                  event -> {
+                    if (tab.isSelected()) {
+                      Node node = mapTab.getContent();
+                      node.fireEvent(new TabSwitchEvent());
+                    }
+                  });
             });
   }
 

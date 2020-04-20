@@ -51,7 +51,7 @@ public class LoginController {
 
     // Blur everything in background
     currentBlur = new GaussianBlur();
-    currentBlur.setRadius(7.5);
+    currentBlur.setRadius(15.0);
 
     tabPane.setEffect(currentBlur);
   }
@@ -75,7 +75,7 @@ public class LoginController {
             new KeyFrame(
                 Duration.millis(100),
                 event -> {
-                  currentBlur.setRadius(currentBlur.getRadius() - 1.5);
+                  currentBlur.setRadius(currentBlur.getRadius() - 3);
                   if (currentBlur.getRadius() == 0) {
                     tabPane.setEffect(null);
                     tabPane.setMouseTransparent(false);

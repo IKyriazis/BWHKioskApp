@@ -31,9 +31,9 @@ public class Graph {
     DB.dropTables();
     DB.createTables();
     DB.readNodeCSV(
-        "src\\main\\resources\\edu\\wpi\\cs3733\\d20\\teamA\\csvfiles\\MapAAllNodes.csv");
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv"));
     DB.readEdgeCSV(
-        "src\\main\\resources\\edu\\wpi\\cs3733\\d20\\teamA\\csvfiles\\MapAAllEdges.csv");
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv"));
     update();
   }
 
@@ -99,6 +99,18 @@ public class Graph {
         node.getTeamAssigned());
 
     return true;
+  }
+
+  /**
+   * Add a new edge (in both directions) to the graph and automatically calculate weight
+   *
+   * @param start First node of the edge
+   * @param end Second node of the edge
+   * @return Success / Failure
+   */
+  public boolean addEdge(Node start, Node end) throws SQLException {
+    int weight = calcWeight(start, end);
+    return addEdge(start, end, weight);
   }
 
   /**
