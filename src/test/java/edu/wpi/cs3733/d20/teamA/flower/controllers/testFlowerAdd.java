@@ -38,10 +38,8 @@ public class testFlowerAdd {
               return null;
             }
           });
-      System.out.println("Stuff1");
       GridPane gridPane = loader.load();
       Assertions.assertNotNull(gridPane);
-      System.out.println("Stuff");
 
       controller = loader.getController();
       Assertions.assertNotNull(controller);
