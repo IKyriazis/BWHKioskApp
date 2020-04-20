@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXDrawer;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
@@ -23,9 +24,10 @@ public class SceneSwitcherController {
   @FXML private Tab employeeLoginTab;
   @FXML private JFXButton informationButton;
   @FXML private StackPane dialogPane;
+  @FXML private JFXDrawer anouncementDrawer;
 
   @FXML
-  public void initialize() {
+  public void initialize() throws IOException {
     // Setup tab icons
     mapTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP));
     serviceTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BELL));
