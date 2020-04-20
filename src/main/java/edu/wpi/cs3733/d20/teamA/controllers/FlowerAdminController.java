@@ -1,9 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
@@ -15,27 +14,31 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class FlowerAdminController extends AbstractController {
 
-  @FXML private TableView<Flower> tblFlowerView;
-  @FXML private TableView<Order> tblOrderView;
+  @FXML private TreeTableView<Flower> tblFlowerView;
+  @FXML private TreeTableView<Order> tblOrderView;
 
   @FXML private JFXTextField txtPrev;
   @FXML private JFXComboBox<String> txtNext;
 
   @FXML private AnchorPane flowerPane;
   @FXML private StackPane dialogStackPane;
-  @FXML private HBox contentBox;
+
+  @FXML private Label flowerTblLbl;
+  @FXML private Label orderTblLbl;
+
+  @FXML private JFXButton addFlowerButton;
+  @FXML private JFXButton editFlowerButton;
+  @FXML private JFXButton deleteFlowerButton;
+  @FXML private JFXButton changeProgressButton;
 
   private GaussianBlur blur;
 
@@ -45,60 +48,109 @@ public class FlowerAdminController extends AbstractController {
     blur = new GaussianBlur();
     blur.setRadius(15.0);
 
+    // Setup label icons
+    flowerTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.FILE));
+    orderTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
+
+    // Setup button icons
+    addFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
+    editFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
+    deleteFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
+    changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
+
     // Setup columns in flower table
-    TableColumn column1 = new TableColumn("Type");
-    column1.setCellValueFactory(new PropertyValueFactory<>("typeFlower"));
-    column1.setMinWidth(100);
+    JFXTreeTableColumn<Flower, String> column1 = new JFXTreeTableColumn<>("Type");
+    column1.setCellValueFactory(param -> param.getValue().getValue().typeFlowerProperty());
 
-    TableColumn column2 = new TableColumn("Color");
-    column2.setCellValueFactory(new PropertyValueFactory<>("color"));
-    column2.setMinWidth(100);
+    JFXTreeTableColumn<Flower, String> column2 = new JFXTreeTableColumn<>("Color");
+    column2.setCellValueFactory(param -> param.getValue().getValue().colorProperty());
 
-    TableColumn column3 = new TableColumn("Quantity");
-    column3.setCellValueFactory(new PropertyValueFactory<>("qty"));
-    column3.setMinWidth(80);
+    JFXTreeTableColumn<Flower, Integer> column3 = new JFXTreeTableColumn<>("Quantity");
+    column3.setCellValueFactory(param -> param.getValue().getValue().qtyProperty().asObject());
 
-    TableColumn column4 = new TableColumn("Unit Price");
-    column4.setCellValueFactory(new PropertyValueFactory<>("pricePer"));
-    column4.setMinWidth(80);
+    JFXTreeTableColumn<Flower, Double> column4 = new JFXTreeTableColumn<>("Unit Price");
+    column4.setCellValueFactory(param -> param.getValue().getValue().pricePerProperty().asObject());
 
-    tblFlowerView.setItems(super.flDatabase.flowerOl());
+    // Add columns to table
+    //noinspection unchecked
     tblFlowerView.getColumns().addAll(column1, column2, column3, column4);
 
+    // Setup column sizing
+    tblFlowerView.setColumnResizePolicy(JFXTreeTableView.CONSTRAINED_RESIZE_POLICY);
+    tblFlowerView
+        .getColumns()
+        .forEach(
+            column -> {
+              column.setMinWidth(80.0);
+              column.setReorderable(false);
+            });
+
+    // Null root flower node
+    TreeItem<Flower> rootFlower = new TreeItem<>(new Flower("", "", 0, 0.0));
+
+    // Add other tree items below root item
+    flDatabase.flowerOl().forEach(flower -> rootFlower.getChildren().add(new TreeItem<>(flower)));
+
+    // Set root table item
+    tblFlowerView.setRoot(rootFlower);
+    tblFlowerView.setShowRoot(false);
+
     // Setup columns in order table
-    TableColumn columnO1 = new TableColumn("Order Number");
-    columnO1.setCellValueFactory(new PropertyValueFactory<>("orderNumber"));
+    JFXTreeTableColumn<Order, Integer> columnO1 = new JFXTreeTableColumn<>("Order #");
+    columnO1.setCellValueFactory(
+        param -> param.getValue().getValue().orderNumberProperty().asObject());
 
-    TableColumn columnO2 = new TableColumn("Number of Flowers");
-    columnO2.setCellValueFactory(new PropertyValueFactory<>("numFlowers"));
+    JFXTreeTableColumn<Order, Integer> columnO2 = new JFXTreeTableColumn<>("Quantity");
+    columnO2.setCellValueFactory(
+        param -> param.getValue().getValue().numFlowersProperty().asObject());
 
-    TableColumn columnO3 = new TableColumn("Type");
-    columnO3.setCellValueFactory(new PropertyValueFactory<>("flowerType"));
+    JFXTreeTableColumn<Order, String> columnO3 = new JFXTreeTableColumn<>("Type");
+    columnO3.setCellValueFactory(param -> param.getValue().getValue().flowerTypeProperty());
 
-    TableColumn columnO4 = new TableColumn("Color");
-    columnO4.setCellValueFactory(new PropertyValueFactory<>("flowerColor"));
+    JFXTreeTableColumn<Order, String> columnO4 = new JFXTreeTableColumn<>("Color");
+    columnO4.setCellValueFactory(param -> param.getValue().getValue().flowerColorProperty());
 
-    TableColumn columnO5 = new TableColumn("Price");
-    columnO5.setCellValueFactory(new PropertyValueFactory<>("price"));
+    JFXTreeTableColumn<Order, Double> columnO5 = new JFXTreeTableColumn<>("Price");
+    columnO5.setCellValueFactory(param -> param.getValue().getValue().priceProperty().asObject());
 
-    TableColumn columnO6 = new TableColumn("Status");
-    columnO6.setCellValueFactory(new PropertyValueFactory<>("status"));
+    JFXTreeTableColumn<Order, String> columnO6 = new JFXTreeTableColumn<>("Status");
+    columnO6.setCellValueFactory(param -> param.getValue().getValue().statusProperty());
 
-    TableColumn columnO7 = new TableColumn("Location");
-    columnO7.setCellValueFactory(new PropertyValueFactory<>("location"));
+    JFXTreeTableColumn<Order, String> columnO7 = new JFXTreeTableColumn<>("Location");
+    columnO7.setCellValueFactory(param -> param.getValue().getValue().locationProperty());
 
+    // Add columns to order table
+    //noinspection unchecked
     tblOrderView
         .getColumns()
         .addAll(columnO1, columnO2, columnO3, columnO4, columnO5, columnO6, columnO7);
-    tblOrderView.setItems(super.flDatabase.orderOl());
+
+    // Setup column sizing
+    tblOrderView.setColumnResizePolicy(JFXTreeTableView.CONSTRAINED_RESIZE_POLICY);
+    tblOrderView
+        .getColumns()
+        .forEach(
+            column -> {
+              column.setReorderable(false);
+            });
+
+    // Null root order node
+    TreeItem<Order> rootOrder = new TreeItem<>(new Order(0, 0, "", "", 0.0, "", ""));
+
+    // Add other tree items below root item
+    flDatabase.orderOl().forEach(order -> rootOrder.getChildren().add(new TreeItem<>(order)));
+
+    // Set root table item
+    tblOrderView.setRoot(rootOrder);
+    tblOrderView.setShowRoot(false);
+
     // Setup status change stuff
-    txtPrev.setText("Select an order");
     txtNext.getItems().addAll("Order Sent", "Order Received", "Flowers Sent", "Flowers Delivered");
     txtNext.getSelectionModel().select(0);
   }
 
-  public void addFlower(ActionEvent actionEvent) throws IOException {
-    FXMLLoader loader = new FXMLLoader();
+  public void addFlower(ActionEvent actionEvent) {
+    /*FXMLLoader loader = new FXMLLoader();
 
     try {
       loader.setLocation(App.class.getResource("views/AddFlowerPopup.fxml"));
@@ -130,11 +182,11 @@ public class FlowerAdminController extends AbstractController {
       dialog.show();
     } catch (Exception e) {
       e.printStackTrace();
-    }
+    }*/
   }
 
   public void editFlower(ActionEvent actionEvent) throws IOException {
-    Flower f = tblFlowerView.getSelectionModel().getSelectedItem();
+    /*Flower f = tblFlowerView.getSelectionModel().getSelectedItem().getValue();
     if (f == null) {
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
       alert.setTitle("No item selected");
@@ -162,10 +214,7 @@ public class FlowerAdminController extends AbstractController {
               }
             });
 
-        loader.setControllerFactory(
-            param -> {
-              return new FlowerModController(dialog, f);
-            });
+        loader.setControllerFactory(param -> new FlowerModController(dialog, f));
 
         // loader.setController(new FlowerModController(this));
         javafx.scene.Node rootPane = loader.load();
@@ -175,11 +224,11 @@ public class FlowerAdminController extends AbstractController {
       } catch (Exception e) {
         e.printStackTrace();
       }
-    }
+    }*/
   }
 
   public void deleteFlower(ActionEvent actionEvent) throws SQLException {
-    Flower f = tblFlowerView.getSelectionModel().getSelectedItem();
+    Flower f = tblFlowerView.getSelectionModel().getSelectedItem().getValue();
     if (f != null) {
       String name = f.getTypeFlower();
       String color = f.getColor();
@@ -209,8 +258,13 @@ public class FlowerAdminController extends AbstractController {
   }
 
   public void update() throws SQLException {
-    tblFlowerView.setItems(super.flDatabase.flowerOl());
-    tblOrderView.setItems(super.flDatabase.orderOl());
+    TreeItem<Flower> rootItem = tblFlowerView.getRoot();
+    rootItem.getChildren().clear();
+    flDatabase.flowerOl().forEach(flower -> rootItem.getChildren().add(new TreeItem<>(flower)));
+
+    TreeItem<Order> rootOrder = tblOrderView.getRoot();
+    rootOrder.getChildren().clear();
+    flDatabase.orderOl().forEach(order -> rootOrder.getChildren().add(new TreeItem<>(order)));
   }
 
   public Pane getPane() {
@@ -218,18 +272,18 @@ public class FlowerAdminController extends AbstractController {
   }
 
   public void setStatus(MouseEvent mouseEvent) {
-    Order o = tblOrderView.getSelectionModel().getSelectedItem();
+    Order o = tblOrderView.getSelectionModel().getSelectedItem().getValue();
     if (o != null) {
       txtPrev.setText(o.getStatus());
       int nextStatus = statusStringToValue(o.getStatus()) + 1;
       if (nextStatus <= 3) txtNext.getSelectionModel().select(nextStatus);
     } else {
-      txtPrev.setText("Select an order");
+      txtPrev.clear();
     }
   }
 
   public void changeProgress(ActionEvent actionEvent) throws SQLException {
-    Order o = tblOrderView.getSelectionModel().getSelectedItem();
+    Order o = tblOrderView.getSelectionModel().getSelectedItem().getValue();
     if (o != null) {
       String s = txtNext.getSelectionModel().getSelectedItem();
       super.flDatabase.changeOrderStatus(o.getOrderNumber(), s);
@@ -240,7 +294,9 @@ public class FlowerAdminController extends AbstractController {
       alert.show();
     }
 
-    tblOrderView.setItems(super.flDatabase.orderOl());
+    TreeItem<Order> rootOrder = tblOrderView.getRoot();
+    rootOrder.getChildren().clear();
+    flDatabase.orderOl().forEach(order -> rootOrder.getChildren().add(new TreeItem<>(order)));
   }
 
   private int statusStringToValue(String status) {
@@ -257,10 +313,9 @@ public class FlowerAdminController extends AbstractController {
         return 999; // Should never occur
     }
   }
-  /*private String statusValueToString(int status)
-  {
-    switch(status)
-    {
+
+  private String statusValueToString(int status) {
+    switch (status) {
       case 1:
         return "Order Sent";
       case 2:
@@ -270,7 +325,7 @@ public class FlowerAdminController extends AbstractController {
       case 4:
         return "Flowers Delivered";
       default:
-        return "BAD";//Should never occur
+        return "BAD"; // Should never occur
     }
-  }*/
+  }
 }
