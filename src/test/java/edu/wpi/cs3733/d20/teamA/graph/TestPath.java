@@ -8,15 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestPath {
-  static Graph graph;
-
-  static {
-    try {
-      graph = Graph.getInstance();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
+  Graph graph = Graph.getInstance();
 
   // Create nodes
   Node node1 = new Node("Node1", 0, 0, 0, "", NodeType.HALL, "", "", "");
