@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,6 +35,7 @@ public class App extends Application {
 
     primaryStage.setScene(scene);
     primaryStage.setTitle("Hospital App");
+    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("images/wonga_lisa.png")));
 
     primaryStage.setMinWidth(1000);
     primaryStage.setWidth(1000);

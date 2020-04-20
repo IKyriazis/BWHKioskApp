@@ -28,13 +28,24 @@ public class Graph {
   /** Create a new empty graph, private b/c this is a singleton */
   private Graph() throws SQLException, IOException, CsvException {
     nodes = new HashMap<>();
-    DB.dropTables();
-    DB.createTables();
-    DB.readNodeCSV(
-        "src\\main\\resources\\edu\\wpi\\cs3733\\d20\\teamA\\csvfiles\\MapAAllNodes.csv");
-    DB.readEdgeCSV(
-        "src\\main\\resources\\edu\\wpi\\cs3733\\d20\\teamA\\csvfiles\\MapAAllEdges.csv");
-    update();
+    if (DB.getSizeNode() == -1 || DB.getSizeEdge() == -1) {
+      DB.dropTables();
+      DB.createTables();
+      DB.readNodeCSV(
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv"));
+      DB.readEdgeCSV(
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv"));
+      update();
+    } else if (DB.getSizeNode() == 0 || DB.getSizeEdge() == 0) {
+      DB.removeAll();
+      DB.readNodeCSV(
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv"));
+      DB.readEdgeCSV(
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv"));
+      update();
+    } else {
+      update();
+    }
   }
 
   /**
@@ -99,6 +110,18 @@ public class Graph {
         node.getTeamAssigned());
 
     return true;
+  }
+
+  /**
+   * Add a new edge (in both directions) to the graph and automatically calculate weight
+   *
+   * @param start First node of the edge
+   * @param end Second node of the edge
+   * @return Success / Failure
+   */
+  public boolean addEdge(Node start, Node end) throws SQLException {
+    int weight = calcWeight(start, end);
+    return addEdge(start, end, weight);
   }
 
   /**

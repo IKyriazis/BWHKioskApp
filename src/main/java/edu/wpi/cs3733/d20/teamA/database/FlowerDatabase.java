@@ -9,7 +9,6 @@ public class FlowerDatabase extends Database {
 
   public FlowerDatabase(Connection connection) throws SQLException {
     super(connection);
-    System.out.println(orderNum);
   }
 
   /**
@@ -198,7 +197,6 @@ public class FlowerDatabase extends Database {
   public int addOrder(int numFlowers, String flowerType, String flowerColor, String location)
       throws SQLException {
     try {
-      System.out.println("enter add");
       double price;
       Statement priceStmt = getConnection().createStatement();
       ResultSet rst =
@@ -214,15 +212,12 @@ public class FlowerDatabase extends Database {
 
       price = Math.round(price * 100.0) / 100.0;
 
-      System.out.println("Calc price");
-
       String status = "Order Sent";
 
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
-      System.out.println("Create statement");
       pstmt.setInt(1, orderNum);
       pstmt.setInt(2, numFlowers);
       pstmt.setString(3, flowerType);
@@ -231,7 +226,6 @@ public class FlowerDatabase extends Database {
       pstmt.setString(6, status);
       pstmt.setString(7, location);
       pstmt.executeUpdate();
-      System.out.println("Update");
       pstmt.close();
       orderNum++;
       return orderNum - 1;
