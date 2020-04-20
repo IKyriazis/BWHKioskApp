@@ -95,6 +95,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
