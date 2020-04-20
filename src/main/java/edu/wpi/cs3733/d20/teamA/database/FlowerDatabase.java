@@ -1,11 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import java.io.*;
 import java.sql.*;
 import java.util.List;
-
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -20,7 +19,7 @@ public class FlowerDatabase extends Database {
    * Drops thetables so we can start fresh
    *
    * @return false if the tables don't exist and CONSTRAINT can't be dropped, true if CONSTRAINT and
-   * tables are dropped correctly
+   *     tables are dropped correctly
    * @throws SQLException
    */
   public boolean dropTables() throws SQLException {
@@ -49,12 +48,12 @@ public class FlowerDatabase extends Database {
 
     // Create the graph tables
     boolean a =
-            helperPrepared(
-                    "CREATE TABLE Flowers (typeFlower Varchar(15), color Varchar(15), qty INTEGER NOT NULL, pricePer DOUBLE NOT NULL, CONSTRAINT PK_fl PRIMARY KEY (typeFlower, color), CONSTRAINT CHK_NUMFL CHECK (qty >= 0))");
+        helperPrepared(
+            "CREATE TABLE Flowers (typeFlower Varchar(15), color Varchar(15), qty INTEGER NOT NULL, pricePer DOUBLE NOT NULL, CONSTRAINT PK_fl PRIMARY KEY (typeFlower, color), CONSTRAINT CHK_NUMFL CHECK (qty >= 0))");
 
     boolean b =
-            helperPrepared(
-                    "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flowerType Varchar(15) NOT NULL, flowerColor Varchar(15) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT FK_fT FOREIGN KEY (flowerType, flowerColor) REFERENCES Flowers(typeFlower, color), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
+        helperPrepared(
+            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flowerType Varchar(15) NOT NULL, flowerColor Varchar(15) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT FK_fT FOREIGN KEY (flowerType, flowerColor) REFERENCES Flowers(typeFlower, color), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
 
     if (a && b) {
       return true;
@@ -66,14 +65,14 @@ public class FlowerDatabase extends Database {
   /**
    * Adds a flower to the flower table
    *
-   * @param type     type of flower
+   * @param type type of flower
    * @param color
-   * @param qty      how many are available in inventory
+   * @param qty how many are available in inventory
    * @param pricePer
    * @return boolean for test purposes. True is everything goes through without an SQL exception
    */
   public boolean addFlower(String type, String color, int qty, double pricePer)
-          throws SQLException {
+      throws SQLException {
 
     String text = Double.toString(Math.abs(pricePer));
     int integerPlaces = text.indexOf('.');
@@ -85,9 +84,9 @@ public class FlowerDatabase extends Database {
 
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "INSERT INTO Flowers (typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Flowers (typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?)");
       pstmt.setString(1, type);
       pstmt.setString(2, color);
       pstmt.setInt(3, qty);
@@ -120,15 +119,15 @@ public class FlowerDatabase extends Database {
 
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "UPDATE Flowers SET pricePer = "
-                                      + newPrice
-                                      + " WHERE typeFlower = '"
-                                      + type
-                                      + "' AND color = '"
-                                      + color
-                                      + "'");
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Flowers SET pricePer = "
+                      + newPrice
+                      + " WHERE typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -153,15 +152,15 @@ public class FlowerDatabase extends Database {
 
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "UPDATE Flowers SET qty = "
-                                      + newNum
-                                      + " WHERE typeFlower = '"
-                                      + type
-                                      + "' AND color = '"
-                                      + color
-                                      + "'");
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Flowers SET qty = "
+                      + newNum
+                      + " WHERE typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -180,13 +179,13 @@ public class FlowerDatabase extends Database {
   public boolean deleteFlower(String type, String color) throws SQLException {
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "DELETE From Flowers WHERE typeFlower = '"
-                                      + type
-                                      + "' AND color = '"
-                                      + color
-                                      + "'");
+          getConnection()
+              .prepareStatement(
+                  "DELETE From Flowers WHERE typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -201,38 +200,31 @@ public class FlowerDatabase extends Database {
    * @return
    */
   public int addOrder(int numFlowers, String flowerType, String flowerColor, String location)
-          throws SQLException {
+      throws SQLException {
     try {
-      double price;
-      Statement priceStmt = getConnection().createStatement();
-      ResultSet rst =
-              priceStmt.executeQuery(
-                      "SELECT * FROM Flowers WHERE typeFlower = '"
-                              + flowerType
-                              + "' AND color = '"
-                              + flowerColor
-                              + "'");
-      ;
-      rst.next();
-      price = rst.getDouble("pricePer") * numFlowers;
+      double total;
+      double pricePer = getFlowerPricePer(flowerType, flowerColor);
+      total = pricePer * numFlowers;
 
-      price = Math.round(price * 100.0) / 100.0;
+      total = Math.round(total * 100.0) / 100.0;
 
       String status = "Order Sent";
 
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
       pstmt.setInt(1, orderNum);
       pstmt.setInt(2, numFlowers);
       pstmt.setString(3, flowerType);
       pstmt.setString(4, flowerColor);
-      pstmt.setDouble(5, price);
+      pstmt.setDouble(5, total);
       pstmt.setString(6, status);
       pstmt.setString(7, location);
       pstmt.executeUpdate();
       pstmt.close();
+      int quantity = getFlowerQuantity(flowerType, flowerColor);
+      updateQTY(flowerType, flowerColor, (quantity - numFlowers));
       orderNum++;
       return orderNum - 1;
     } catch (SQLException e) {
@@ -251,9 +243,9 @@ public class FlowerDatabase extends Database {
 
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "UPDATE Orders Set status = '" + newStat + "' WHERE orderNumber = " + orderNum);
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Orders Set status = '" + newStat + "' WHERE orderNumber = " + orderNum);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -272,7 +264,7 @@ public class FlowerDatabase extends Database {
   public boolean deleteOrder(int orderNumber) throws SQLException {
     try {
       PreparedStatement pstmt =
-              getConnection().prepareStatement("DELETE From Orders Where orderNumber = ?");
+          getConnection().prepareStatement("DELETE From Orders Where orderNumber = ?");
       pstmt.setInt(1, orderNumber);
       pstmt.executeUpdate();
       pstmt.close();
@@ -410,7 +402,7 @@ public class FlowerDatabase extends Database {
         String location = rset.getString("location");
 
         Order node =
-                new Order(orderNumber, numFlowers, flowerType, flowerColor, price, status, location);
+            new Order(orderNumber, numFlowers, flowerType, flowerColor, price, status, location);
         oList.add(node);
       }
       rset.close();
@@ -434,13 +426,13 @@ public class FlowerDatabase extends Database {
     double price = -1;
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "Select pricePer From Flowers Where typeFlower = '"
-                                      + type
-                                      + "' AND color = '"
-                                      + color
-                                      + "'");
+          getConnection()
+              .prepareStatement(
+                  "Select pricePer From Flowers Where typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         price = rset.getInt("pricePer");
@@ -453,6 +445,22 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  public int getFlowerQuantity(String typeFlower, String flowerColor) throws SQLException {
+    int quantity;
+    Statement priceStmt = getConnection().createStatement();
+    ResultSet rst =
+        priceStmt.executeQuery(
+            "SELECT * FROM Flowers WHERE typeFlower = '"
+                + typeFlower
+                + "' AND color = '"
+                + flowerColor
+                + "'");
+    ;
+    rst.next();
+    quantity = rst.getInt("qty");
+    return quantity;
+  }
+
   /**
    * gets the order status for a chosen order
    *
@@ -463,8 +471,8 @@ public class FlowerDatabase extends Database {
     String status = null;
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement("Select status From Orders Where orderNumber = " + orderNum);
+          getConnection()
+              .prepareStatement("Select status From Orders Where orderNumber = " + orderNum);
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         status = rset.getString("status");
@@ -478,33 +486,35 @@ public class FlowerDatabase extends Database {
   }
 
   public void readFlowersCSV() throws IOException, CsvException, SQLException {
-    InputStream stream = getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowersCSV.csv");
+    InputStream stream =
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowersCSV.csv");
     CSVReader reader = new CSVReader(new InputStreamReader(stream));
     List<String[]> data = reader.readAll();
     for (int i = 1; i < data.size(); i++) {
-      String typeFlower,color;
+      String typeFlower, color;
       int qty;
       double pricePer;
       typeFlower = data.get(i)[0];
       color = data.get(i)[1];
       qty = Integer.parseInt(data.get(i)[2]);
       pricePer = Double.parseDouble(data.get(i)[3]);
-      addFlower(typeFlower,color,qty,pricePer);
+      addFlower(typeFlower, color, qty, pricePer);
     }
   }
 
   public void readFlowerOrderCSV() throws IOException, CsvException, SQLException {
-    InputStream stream = getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowerOrderCSV.csv");
+    InputStream stream =
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowerOrderCSV.csv");
     CSVReader reader = new CSVReader(new InputStreamReader(stream));
     List<String[]> data = reader.readAll();
     for (int i = 1; i < data.size(); i++) {
-      String flowerType, flowerColor,location;
+      String flowerType, flowerColor, location;
       int numFlowers;
       numFlowers = Integer.parseInt(data.get(i)[0]);
       flowerType = data.get(i)[1];
       flowerColor = data.get(i)[2];
       location = data.get(i)[3];
-      addOrder(numFlowers,flowerType,flowerColor,location);
+      addOrder(numFlowers, flowerType, flowerColor, location);
     }
   }
 }
