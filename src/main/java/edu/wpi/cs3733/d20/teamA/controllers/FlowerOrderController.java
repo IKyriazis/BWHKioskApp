@@ -1,18 +1,13 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import com.google.inject.Inject;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.App;
 import java.io.IOException;
 import java.sql.SQLException;
-
-import edu.wpi.cs3733.d20.teamA.database.Flower;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -38,8 +33,8 @@ public class FlowerOrderController extends AbstractController {
   private AnchorPane flowerOrderPane;
 
   public FlowerOrderController() throws SQLException {}
-  private Scene appPrimaryScene;
 
+  private Scene appPrimaryScene;
 
   public void initialize() throws SQLException, IOException {
     // Set up drop shadow on flower order pane
@@ -61,11 +56,11 @@ public class FlowerOrderController extends AbstractController {
 
     // Place drawer directly under order gridpane
     centerPane
-            .heightProperty()
-            .addListener(
-                    observable -> {
-                      trackerDrawer.setTranslateY(centerPane.getHeight() - 50);
-                    });
+        .heightProperty()
+        .addListener(
+            observable -> {
+              trackerDrawer.setTranslateY(centerPane.getHeight() - 50);
+            });
 
     // Set up order drawer
     orderDrawer.setSidePane(flowerOrderPane);
@@ -77,16 +72,15 @@ public class FlowerOrderController extends AbstractController {
 
     // Place drawer directly under order gridpane
     centerPane
-            .heightProperty()
-            .addListener(
-                    observable -> {
-                      orderDrawer.setTranslateY(centerPane.getHeight());
-                    });
+        .heightProperty()
+        .addListener(
+            observable -> {
+              orderDrawer.setTranslateY(centerPane.getHeight());
+            });
 
     // Setup button icons
     orderButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ADDRESS_CARD));
     trackButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRUCK));
-
   }
 
   /**
@@ -99,7 +93,6 @@ public class FlowerOrderController extends AbstractController {
   public void setAppPrimaryScene(Scene appPrimaryScene) {
     this.appPrimaryScene = appPrimaryScene;
   }
-
 
   @FXML
   public void cancel(ActionEvent event) throws IOException {
