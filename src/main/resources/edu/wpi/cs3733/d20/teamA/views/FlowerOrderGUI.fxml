@@ -71,7 +71,6 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                <children>
                   <JFXButton onAction="#placeOrder" text="Submit" />
-                  <JFXButton onAction="#cancel" text="Cancel" />
                </children>
             </HBox>
          </children>
