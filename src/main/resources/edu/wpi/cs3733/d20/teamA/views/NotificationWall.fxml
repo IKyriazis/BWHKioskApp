@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.views.NotificationWall">
+<AnchorPane prefHeight="400.0" prefWidth="597.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.NotificationController">
    <children>
       <JFXListView layoutX="397.0" layoutY="28.0" prefHeight="372.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="397.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0" />
       <Label layoutX="427.0" layoutY="2.0" prefHeight="25.0" prefWidth="142.0" text="Announcements" AnchorPane.bottomAnchor="373.0" AnchorPane.leftAnchor="427.0" AnchorPane.rightAnchor="29.0" AnchorPane.topAnchor="2.0">

@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
-
 
 <StackPane fx:id="dialogPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
          <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+               <children>
+                  <JFXDrawer fx:id="anouncementDrawer" />
+               </children>
+            </Pane>
             <JFXTabPane fx:id="tabPane" prefHeight="380.0" prefWidth="479.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                 <Tab fx:id="mapTab" text="Hospital Map">
                     <fx:include source="SimpleMap.fxml" />

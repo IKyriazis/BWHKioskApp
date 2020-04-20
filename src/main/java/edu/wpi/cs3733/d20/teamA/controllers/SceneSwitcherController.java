@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXDrawer;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
@@ -13,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 
@@ -23,9 +25,10 @@ public class SceneSwitcherController {
   @FXML private Tab employeeLoginTab;
   @FXML private JFXButton informationButton;
   @FXML private StackPane dialogPane;
+  @FXML private JFXDrawer anouncementDrawer;
 
   @FXML
-  public void initialize() {
+  public void initialize() throws IOException {
     // Setup tab icons
     mapTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP));
     serviceTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BELL));
@@ -57,6 +60,22 @@ public class SceneSwitcherController {
                       node.fireEvent(new TabSwitchEvent());
                     }
                   });
+            });
+
+    // Set up announcements
+    AnchorPane p = FXMLLoader.load(App.class.getResource("views/NotificationWall.fxml"));
+    anouncementDrawer.setSidePane(p);
+    anouncementDrawer.close();
+
+    // Set up drawer opening button
+    informationButton.setOnAction(event -> anouncementDrawer.toggle());
+
+    // Place drawer directly under order gridpane
+    dialogPane
+        .heightProperty()
+        .addListener(
+            observable -> {
+              anouncementDrawer.setTranslateY(p.getHeight() - 50);
             });
   }
 
