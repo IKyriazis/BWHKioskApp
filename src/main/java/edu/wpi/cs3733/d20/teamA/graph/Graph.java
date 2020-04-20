@@ -28,11 +28,21 @@ public class Graph {
   /** Create a new empty graph, private b/c this is a singleton */
   private Graph() throws SQLException, IOException, CsvException {
     nodes = new HashMap<>();
-    DB.dropTables();
-    DB.createTables();
-    DB.readNodeCSV();
-    DB.readEdgeCSV();
-    update();
+
+    if (DB.getSizeNode() == -1 || DB.getSizeEdge() == -1) {
+      DB.dropTables();
+      DB.createTables();
+      DB.readNodeCSV();
+      DB.readEdgeCSV();
+      update();
+    } else if (DB.getSizeNode() == 0 || DB.getSizeEdge() == 0) {
+      DB.removeAll();
+      DB.readNodeCSV();
+      DB.readEdgeCSV();
+      update();
+    } else {
+      update();
+    }
   }
 
   /**
