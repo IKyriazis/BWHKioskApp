@@ -1,6 +1,13 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.*;
+import java.util.List;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -470,4 +477,23 @@ public class FlowerDatabase extends Database {
       return null;
     }
   }
+
+  public void readFlowerCSV() throws IOException, CsvException, SQLException {
+      FileReader reads = new FileReader("csv/FlowerCSV.csv");
+      CSVReader reader = new CSVReader(reads);
+      List<String[]> data = reader.readAll();
+      for (int i = 1; i < data.size(); i++) {
+        String nID, Bu, nodeT, longN, shortN, teamA;
+        int xCo, yCo, Fl;
+        nID = data.get(i)[0];
+        xCo = Integer.parseInt(data.get(i)[1]);
+        yCo = Integer.parseInt(data.get(i)[2]);
+        Fl = Integer.parseInt(data.get(i)[3]);
+        Bu = data.get(i)[4];
+        nodeT = data.get(i)[5];
+        longN = data.get(i)[6];
+        shortN = data.get(i)[7];
+        teamA = data.get(i)[8];
+      }
+    }
 }
