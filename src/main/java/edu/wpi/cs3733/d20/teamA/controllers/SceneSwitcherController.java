@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXDrawer;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -16,7 +14,6 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 
 public class SceneSwitcherController {
   @FXML private TabPane tabPane;
@@ -69,19 +66,11 @@ public class SceneSwitcherController {
 
     // Set up drawer opening button
     informationButton.setOnAction(event -> anouncementDrawer.toggle());
-
-    // Place drawer directly under order gridpane
-    dialogPane
-        .heightProperty()
-        .addListener(
-            observable -> {
-              anouncementDrawer.setTranslateY(p.getHeight() - 50);
-            });
   }
 
   @FXML
   public void informationButtonPressed() throws IOException {
-    JFXDialogLayout layout = new JFXDialogLayout();
+    /*JFXDialogLayout layout = new JFXDialogLayout();
     layout.setHeading(new Text("Announcements"));
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(App.class.getResource("views/NotificationWall.fxml"));
@@ -98,6 +87,6 @@ public class SceneSwitcherController {
         });
 
     layout.setActions(closeButton);
-    dialog.show();
+    dialog.show();*/
   }
 }

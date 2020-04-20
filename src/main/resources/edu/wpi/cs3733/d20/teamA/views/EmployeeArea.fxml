@@ -23,6 +23,9 @@
             <Tab closable="false" text="Flowers">
                <fx:include source="FlowerAdmin.fxml" />
             </Tab>
+            <Tab closable="false" text="Announcements">
+               <fx:include source="FlowerAdmin.fxml" />
+            </Tab>
          </JFXTabPane>
          <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
             <padding>
