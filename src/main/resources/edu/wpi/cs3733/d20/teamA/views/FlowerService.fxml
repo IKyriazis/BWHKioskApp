@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXProgressBar?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -48,7 +47,7 @@
                       </VBox>
                      </children>
                   </JFXDrawer>
-                  <JFXDrawer fx:id="orderDrawer" defaultDrawerSize="150.0" direction="TOP" minHeight="175.0" minWidth="528.0"/>
+                  <JFXDrawer fx:id="orderDrawer" defaultDrawerSize="150.0" direction="TOP" maxHeight="-Infinity" maxWidth="-Infinity" />
                 <GridPane fx:id="centerPane" hgap="50.0" minHeight="-Infinity" prefHeight="250.0" prefWidth="516.0" vgap="50.0">
                     <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
