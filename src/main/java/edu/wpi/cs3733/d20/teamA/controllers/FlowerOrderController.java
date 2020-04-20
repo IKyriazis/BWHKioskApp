@@ -1,7 +1,11 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import java.io.IOException;
@@ -14,6 +18,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javax.swing.*;
 
@@ -21,10 +29,42 @@ public class FlowerOrderController extends AbstractController {
 
   @FXML private JFXComboBox<String> choiceFlower;
   @FXML private JFXTextField txtNumber;
+  @FXML private JFXDrawer trackerDrawer;
+  @FXML private VBox trackerBox;
+  @FXML private JFXButton orderButton;
+  @FXML private JFXButton trackButton;
+  @FXML private GridPane flowerOrderPane;
 
   public FlowerOrderController() throws SQLException {}
 
   public void initialize() throws SQLException {
+    // Set up drop shadow on flower order pane
+    DropShadow dropShadow = new DropShadow();
+    dropShadow.setRadius(5.0);
+    dropShadow.setOffsetX(2.0);
+    dropShadow.setOffsetY(2.0);
+    dropShadow.setColor(Color.GREY);
+    flowerOrderPane.setEffect(dropShadow);
+
+    // Set up tracker drawer
+    trackerDrawer.setSidePane(trackerBox);
+    trackerDrawer.close();
+
+    // Set up drawer opening button
+    trackButton.setOnAction(event -> trackerDrawer.toggle());
+
+    // Place drawer directly under order gridpane
+    flowerOrderPane
+        .heightProperty()
+        .addListener(
+            observable -> {
+              trackerDrawer.setTranslateY(flowerOrderPane.getHeight() - 50);
+            });
+
+    // Setup button icons
+    orderButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ADDRESS_CARD));
+    trackButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRUCK));
+
     ObservableList<Flower> list = super.flDatabase.flowerOl(); // Get from FlowerDatabase @TODO
     for (Flower f : list) {
       choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
@@ -42,7 +82,7 @@ public class FlowerOrderController extends AbstractController {
         (Stage)
             ((Button) (src)).getScene().getWindow(); // use existing stage to close current window
 
-    root = FXMLLoader.load(App.class.getResource("views/FlowerDeliveryServiceHome.fxml"));
+    root = FXMLLoader.load(App.class.getResource("views/ServiceHome.fxml"));
     Scene scene = new Scene(root);
 
     stage.setScene(scene);
