@@ -32,8 +32,8 @@ public class EmployeesDatabase extends Database {
 
     // Create the graph tables
     boolean a =
-        helperPrepared(
-            "CREATE TABLE Employees (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), password Varchar(10), title Varchar(50))");
+            helperPrepared(
+                    "CREATE TABLE Employees (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), password Varchar(10), title Varchar(50))");
 
     if (a) {
       return true;
@@ -50,13 +50,13 @@ public class EmployeesDatabase extends Database {
    * @throws SQLException
    */
   public boolean addEmployee(String empID, String nameFirst, String nameLast, String title)
-      throws SQLException {
+          throws SQLException {
 
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, password, title) VALUES (?, ?, ?, ?, ?)");
+              getConnection()
+                      .prepareStatement(
+                              "INSERT INTO Employees (employeeID, nameFirst, nameLast, password, title) VALUES (?, ?, ?, ?, ?)");
       pstmt.setString(1, empID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
@@ -80,7 +80,7 @@ public class EmployeesDatabase extends Database {
   public boolean deleteEmployee(String empID) throws SQLException {
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE From Employees Where employeeID = ?");
+              getConnection().prepareStatement("DELETE From Employees Where employeeID = ?");
       pstmt.setString(1, empID);
       pstmt.executeUpdate();
       pstmt.close();
@@ -113,9 +113,9 @@ public class EmployeesDatabase extends Database {
   public boolean editTitle(String empID, String newTitle) throws SQLException {
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE Employees SET title = '" + newTitle + "' WHERE employeeID = " + empID);
+              getConnection()
+                      .prepareStatement(
+                              "UPDATE Employees SET title = '" + newTitle + "' WHERE employeeID = " + empID);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -127,9 +127,9 @@ public class EmployeesDatabase extends Database {
   public boolean editNameFirst(String empID, String newFirst) throws SQLException {
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE Employees SET title = '" + newFirst + "' WHERE employeeID = " + empID);
+              getConnection()
+                      .prepareStatement(
+                              "UPDATE Employees SET title = '" + newFirst + "' WHERE employeeID = " + empID);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -141,9 +141,9 @@ public class EmployeesDatabase extends Database {
   public boolean editNameLast(String empID, String newLast) throws SQLException {
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE Employees SET title = '" + newLast + "' WHERE employeeID = " + empID);
+              getConnection()
+                      .prepareStatement(
+                              "UPDATE Employees SET title = '" + newLast + "' WHERE employeeID = " + empID);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -157,8 +157,8 @@ public class EmployeesDatabase extends Database {
     String pass = null;
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement("Select password From Employees Where employeeID = " + empID);
+              getConnection()
+                      .prepareStatement("Select password From Employees Where employeeID = " + empID);
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         pass = rset.getString("password");
@@ -183,12 +183,12 @@ public class EmployeesDatabase extends Database {
     if (logIn(empID, oldPass) && checkSecurePass(newPass)) {
       try {
         PreparedStatement pstmt =
-            getConnection()
-                .prepareStatement(
-                    "UPDATE Employees SET password = '"
-                        + newPass
-                        + "' WHERE employeeID = "
-                        + empID);
+                getConnection()
+                        .prepareStatement(
+                                "UPDATE Employees SET password = '"
+                                        + newPass
+                                        + "' WHERE employeeID = "
+                                        + empID);
         pstmt.executeUpdate();
         pstmt.close();
         return true;
@@ -204,7 +204,7 @@ public class EmployeesDatabase extends Database {
    * @param password
    * @return
    */
-  private boolean checkSecurePass(String password) {
+  private boolean checkSecurePass(String password) throws SQLException {
     char ch;
     boolean capital = false;
     boolean lowercase = false;
@@ -221,13 +221,14 @@ public class EmployeesDatabase extends Database {
       if (number && capital && lowercase) return true;
     }
     return false;
-
-
-  /**
-   * @return
-   * @throws SQLException
-   */
-  public boolean removeAllEmployees() throws SQLException {
-    return helperPrepared("DELETE From Employees");
   }
+
+
+    /**
+     * @return
+     * @throws SQLException
+     */
+    public boolean removeAllEmployees() throws SQLException{
+      return helperPrepared("DELETE From Employees");
+    }
 }
