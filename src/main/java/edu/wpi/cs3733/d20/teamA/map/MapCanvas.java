@@ -232,7 +232,6 @@ public class MapCanvas extends Canvas {
     }
   }
 
-
   public Path getPath() {
     return this.path;
   }

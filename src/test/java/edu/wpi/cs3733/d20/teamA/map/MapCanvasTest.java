@@ -1,8 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
+import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.App;
-import edu.wpi.cs3733.d20.teamA.controllers.MainController;
+import edu.wpi.cs3733.d20.teamA.controllers.SimpleMapController;
 import edu.wpi.cs3733.d20.teamA.graph.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
@@ -17,7 +19,7 @@ import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
 public class MapCanvasTest {
-  private MainController controller = new MainController();
+  private SimpleMapController controller = new SimpleMapController();
   private Node node1 = new Node("Node1", 123, 456, 1, "Main", NodeType.HALL, "N/A", "N/A", "A");
   private Node node2 = new Node("Node2", 123, 789, 1, "Main", NodeType.HALL, "N/A", "N/A", "A");
   private Node node3 = new Node("Node3", 123, 899, 1, "Main", NodeType.HALL, "N/A", "N/A", "A");
@@ -29,14 +31,14 @@ public class MapCanvasTest {
 
   Point2D point = new Point2D(130, 140);
 
-  public MapCanvasTest() throws SQLException {}
+  public MapCanvasTest() throws SQLException, IOException, CsvException {}
 
   @Start
   private void start(Stage stage) {
     try {
 
       FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(App.class.getResource("views/MainMockup.fxml"));
+      loader.setLocation(App.class.getResource("views/SimpleMap.fxml"));
 
       BorderPane anchorPane = loader.load();
       Assertions.assertNotNull(anchorPane);
