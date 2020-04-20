@@ -5,8 +5,11 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -58,13 +61,12 @@ public class SceneSwitcherController {
   }
 
   @FXML
-  public void informationButtonPressed() {
+  public void informationButtonPressed() throws IOException {
     JFXDialogLayout layout = new JFXDialogLayout();
-    layout.setHeading(new Text("Info"));
-    layout.setBody(
-        new Text(
-            "Built by Yash Patel, Tyler Looney, Dyllan Cole, Brennan Aubuchon, Eva Labbe, Gabriel Dudlicek, Maddison Caten, Will Engdahl, Cory Helmuth, and Ioannis Kyriazis"));
-
+    layout.setHeading(new Text("Announcements"));
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(App.class.getResource("views/NotificationWall.fxml"));
+    layout.setBody(loader.load());
     JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.TOP);
 
     JFXButton closeButton = new JFXButton("Close");
