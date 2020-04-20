@@ -25,9 +25,11 @@ import org.testfx.framework.junit5.Start;
 @ExtendWith({MockitoExtension.class, ApplicationExtension.class})
 public class TestMapEditorController extends FxRobot {
 
-  @Mock FXMLLoader mockloader;
+  @Mock
+  FXMLLoader mockloader;
 
-  @InjectMocks LoginController controller;
+  @InjectMocks
+  LoginController controller;
 
   private final FXMLLoader loader = new FXMLLoader();
   private Parent sceneRoot;
@@ -65,11 +67,5 @@ public class TestMapEditorController extends FxRobot {
     Assertions.assertEquals("Select First Node", node.getText());
     clickOn("Delete Edge");
     Assertions.assertEquals("Select First Node", node.getText());
-  }
-
-  @Test
-  public void testOpenModifyDialog() {
-    clickOn("Edit Node");
-    verifyThat("#doneButton", Node::isVisible);
   }
 }
