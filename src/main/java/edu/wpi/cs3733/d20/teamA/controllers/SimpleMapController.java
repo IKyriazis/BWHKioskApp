@@ -46,7 +46,7 @@ public class SimpleMapController {
     directionsDrawer.close();
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
-    canvas = new MapCanvas();
+    canvas = new MapCanvas(true);
     canvasPane.getChildren().add(0, canvas);
     canvas.widthProperty().bind(canvasPane.widthProperty());
     canvas.heightProperty().bind(canvasPane.heightProperty());

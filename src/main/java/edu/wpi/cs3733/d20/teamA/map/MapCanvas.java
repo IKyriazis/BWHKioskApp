@@ -5,7 +5,9 @@ import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
@@ -32,6 +34,7 @@ public class MapCanvas extends Canvas {
   private boolean dragEnabled;
   private EventHandler<MouseEvent> dragStartHandler;
   private EventHandler<MouseEvent> dragHandler;
+  private Node selectedNode;
 
   private Path path;
 
@@ -94,7 +97,7 @@ public class MapCanvas extends Canvas {
   }
 
   // graphToCanvas() projects a point from graph coordinates onto canvas coordinates
-  private Point2D graphToCanvas(Point2D point) {
+  public Point2D graphToCanvas(Point2D point) {
     double xRatio = getWidth() / viewSpace.getWidth();
     double yRatio = getHeight() / viewSpace.getHeight();
 
@@ -104,7 +107,7 @@ public class MapCanvas extends Canvas {
   }
 
   // canvasToGraph() projects a point from canvas coordinates to graph coordinates
-  private Point2D canvasToGraph(Point2D point) {
+  public Point2D canvasToGraph(Point2D point) {
     // Aspect ratio adjustments
     double xRatio = viewSpace.getWidth() / getWidth();
     double yRatio = viewSpace.getHeight() / getHeight();
@@ -175,14 +178,34 @@ public class MapCanvas extends Canvas {
     if (drawAllNodes) {
       try {
         int finalFloor = floor;
-        Graph.getInstance().getNodes().values().stream()
-            .filter(node -> node.getFloor() == finalFloor)
-            .forEach(
-                node -> {
-                  drawNode(node);
+        List<Node> floorNodes =
+            Graph.getInstance().getNodes().values().stream()
+                .filter(node -> node.getFloor() == finalFloor)
+                .collect(Collectors.toList());
 
-                  node.getEdges().values().forEach(this::drawEdge);
-                });
+        // Draw all edges
+        floorNodes.forEach(
+            node -> {
+              node.getEdges()
+                  .values()
+                  .forEach(
+                      edge -> {
+                        // Skip edges that cross floors for now
+                        if (edge.getEnd().getFloor() == finalFloor) {
+                          drawEdge(edge);
+                        }
+                      });
+            });
+
+        // Draw nodes
+        floorNodes.forEach(
+            node -> {
+              if (node == selectedNode) {
+                drawNode(node, Color.web("#1E88E5"));
+              } else {
+                drawNode(node, Color.BLACK);
+              }
+            });
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -227,10 +250,10 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws a node on the map
-  private void drawNode(Node node) {
+  private void drawNode(Node node, Color color) {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
-    graphicsContext.setFill(Color.BLACK);
+    graphicsContext.setFill(color);
 
     Point2D nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
     graphicsContext.fillOval(nodePoint.getX() - 5, nodePoint.getY() - 5, 10, 10);
@@ -239,7 +262,7 @@ public class MapCanvas extends Canvas {
   // Draws the path found
   private void drawPath(Path path) {
     for (Node node : path.getPathNodes()) {
-      drawNode(node);
+      drawNode(node, Color.BLACK);
     }
 
     for (Edge edge : path.getPathEdges()) {
@@ -250,17 +273,18 @@ public class MapCanvas extends Canvas {
   // Get distance between two points
   private double getDistance(Point2D p0, Point2D p1) {
     double xDiff = p1.getX() - p0.getX();
-    double yDiff = p1.getY() - p1.getY();
+    double yDiff = p1.getY() - p0.getY();
 
     return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
   }
 
   // Get the closest node to a position on the canvas (within a given radius in canvas space)
-  public Optional<Node> getClosestNode(Point2D point, double maxDistance) {
+  public Optional<Node> getClosestNode(int floor, Point2D point, double maxDistance) {
     try {
       Stream<Node> nodeStream = Graph.getInstance().getNodes().values().stream();
 
       return nodeStream
+          .filter(node -> node.getFloor() == floor)
           .filter(
               node -> {
                 Point2D nodeCanvasPoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
@@ -313,5 +337,13 @@ public class MapCanvas extends Canvas {
     }
 
     this.dragEnabled = dragEnabled;
+  }
+
+  public void setSelectedNode(Node selectedNode) {
+    this.selectedNode = selectedNode;
+  }
+
+  public Node getSelectedNode() {
+    return selectedNode;
   }
 }
