@@ -12,7 +12,7 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * Drops thetables so we can start fresh
+   * Drops the tables so we can start fresh
    *
    * @return false if the tables don't exist and CONSTRAINT can't be dropped, true if CONSTRAINT and
    *     tables are dropped correctly

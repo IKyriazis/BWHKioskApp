@@ -1,44 +1,38 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import lombok.SneakyThrows;
 
 public class FlowerModController extends AbstractController {
   private boolean modify;
 
+  @FXML private GridPane modPane;
   @FXML private JFXTextField txtName;
   @FXML private JFXTextField txtColor;
   @FXML private JFXTextField txtQty;
   @FXML private JFXTextField txtCost;
 
-  @FXML private GridPane modPane;
-
   private Flower myFlower;
-  private FlowerAdminController lastController;
-
-  private GaussianBlur myBlur;
+  private JFXDialog thisDialog;
 
   @SneakyThrows
-  public FlowerModController(FlowerAdminController flowerAdminController) {
+  public FlowerModController(JFXDialog d) {
     super();
     modify = false;
-    lastController = flowerAdminController;
+    thisDialog = d;
   }
 
   @SneakyThrows
-  public FlowerModController(FlowerAdminController flowerAdminController, Flower f) {
+  public FlowerModController(JFXDialog d, Flower f) {
     super();
     modify = true;
-    lastController = flowerAdminController;
     myFlower = f;
   }
 
@@ -54,13 +48,6 @@ public class FlowerModController extends AbstractController {
       txtName.setEditable(true);
       txtColor.setEditable(true);
     }
-
-    // Blur everything in background
-    myBlur = new GaussianBlur();
-    myBlur.setRadius(7.5);
-
-    Pane p = lastController.getPane();
-    if (p != null) p.setEffect(myBlur);
   }
 
   // Scene switch & database addNode
@@ -76,8 +63,6 @@ public class FlowerModController extends AbstractController {
       super.flDatabase.updatePrice(name, color, price);
       super.flDatabase.updateQTY(name, color, qty);
     }
-
-    lastController.getPane().setEffect(null);
-    ((Stage) (txtName.getScene().getWindow())).close(); // Get the stage from an arbitrary component
+    thisDialog.close();
   }
 }

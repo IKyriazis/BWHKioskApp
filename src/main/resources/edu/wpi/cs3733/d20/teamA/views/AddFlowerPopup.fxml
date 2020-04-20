@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -18,14 +19,38 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Flower Name:" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-      <Label text="Flower Color:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-      <Label text="Quantity Availible" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-      <Label text="Unit Cost:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+      <Label text="Flower Name:" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="25.0" />
+         </GridPane.margin></Label>
+      <Label text="Flower Color:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="25.0" />
+         </GridPane.margin></Label>
+      <Label text="Quantity Availible" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="25.0" />
+         </GridPane.margin></Label>
+      <Label text="Unit Cost:" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+         <GridPane.margin>
+            <Insets top="25.0" />
+         </GridPane.margin></Label>
       <JFXButton onAction="#isDone" text="Done" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-      <JFXTextField fx:id="txtName" />
-      <JFXTextField fx:id="txtColor" GridPane.columnIndex="1" />
-      <JFXTextField fx:id="txtQty" GridPane.rowIndex="1" />
-      <JFXTextField fx:id="txtCost" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <JFXTextField fx:id="txtName" prefWidth="200.0">
+         <GridPane.margin>
+            <Insets left="50.0" right="50.0" />
+         </GridPane.margin></JFXTextField>
+      <JFXTextField fx:id="txtColor" GridPane.columnIndex="1">
+         <GridPane.margin>
+            <Insets left="50.0" right="50.0" />
+         </GridPane.margin></JFXTextField>
+      <JFXTextField fx:id="txtQty" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="50.0" right="50.0" />
+         </GridPane.margin></JFXTextField>
+      <JFXTextField fx:id="txtCost" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <GridPane.margin>
+            <Insets left="50.0" right="50.0" />
+         </GridPane.margin></JFXTextField>
    </children>
 </GridPane>

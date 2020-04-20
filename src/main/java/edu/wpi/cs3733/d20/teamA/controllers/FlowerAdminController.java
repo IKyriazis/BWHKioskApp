@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
@@ -14,12 +16,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class FlowerAdminController extends AbstractController {
+
   @FXML private TableView<Flower> tblFlowerView;
   @FXML private TableView<Order> tblOrderView;
 
@@ -27,10 +34,16 @@ public class FlowerAdminController extends AbstractController {
   @FXML private JFXComboBox<String> txtNext;
 
   @FXML private AnchorPane flowerPane;
+  @FXML private StackPane dialogStackPane;
+  @FXML private HBox contentBox;
+
+  private GaussianBlur blur;
 
   public FlowerAdminController() throws SQLException {}
 
   public void initialize() throws SQLException {
+    blur = new GaussianBlur();
+    blur.setRadius(15.0);
 
     // Setup columns in flower table
     TableColumn column1 = new TableColumn("Type");
@@ -80,18 +93,44 @@ public class FlowerAdminController extends AbstractController {
     tblOrderView.setItems(super.flDatabase.orderOl());
     // Setup status change stuff
     txtPrev.setText("Select an order");
-    txtNext.getItems().addAll("Order Sent", "Order Received", "Flower Sent", "Flower Delivered");
+    txtNext.getItems().addAll("Order Sent", "Order Received", "Flowers Sent", "Flowers Delivered");
     txtNext.getSelectionModel().select(0);
   }
 
   public void addFlower(ActionEvent actionEvent) throws IOException {
-    FXMLLoader load = new FXMLLoader();
-    load.setControllerFactory(
-        param -> {
-          return new FlowerModController(this);
-        });
+    FXMLLoader loader = new FXMLLoader();
 
-    toFlowerPopUp(load);
+    try {
+      loader.setLocation(App.class.getResource("views/AddFlowerPopup.fxml"));
+
+      JFXDialogLayout layout = new JFXDialogLayout();
+      layout.setHeading(new Text("Add Flower"));
+
+      JFXDialog dialog = new JFXDialog(dialogStackPane, layout, JFXDialog.DialogTransition.BOTTOM);
+      contentBox.setEffect(blur);
+      dialog.setOnDialogClosed(
+          event -> {
+            contentBox.setEffect(null);
+            try {
+              update();
+            } catch (SQLException throwables) {
+              throwables.printStackTrace();
+            }
+          });
+
+      loader.setControllerFactory(
+          param -> {
+            return new FlowerModController(dialog);
+          });
+
+      // loader.setController(new FlowerModController(this));
+      javafx.scene.Node rootPane = loader.load();
+      layout.setBody(rootPane);
+
+      dialog.show();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public void editFlower(ActionEvent actionEvent) throws IOException {
@@ -102,13 +141,40 @@ public class FlowerAdminController extends AbstractController {
       alert.setContentText("Please select an item by clicking a row in the table");
       alert.show();
     } else {
-      FXMLLoader load = new FXMLLoader();
-      load.setControllerFactory(
-          param -> {
-            return new FlowerModController(this, f);
-          });
+      FXMLLoader loader = new FXMLLoader();
 
-      toFlowerPopUp(load);
+      try {
+        loader.setLocation(App.class.getResource("views/AddFlowerPopup.fxml"));
+
+        JFXDialogLayout layout = new JFXDialogLayout();
+        layout.setHeading(new Text("Add Flower"));
+
+        JFXDialog dialog =
+            new JFXDialog(dialogStackPane, layout, JFXDialog.DialogTransition.BOTTOM);
+        contentBox.setEffect(blur);
+        dialog.setOnDialogClosed(
+            event -> {
+              contentBox.setEffect(null);
+              try {
+                update();
+              } catch (SQLException throwables) {
+                throwables.printStackTrace();
+              }
+            });
+
+        loader.setControllerFactory(
+            param -> {
+              return new FlowerModController(dialog, f);
+            });
+
+        // loader.setController(new FlowerModController(this));
+        javafx.scene.Node rootPane = loader.load();
+        layout.setBody(rootPane);
+
+        dialog.show();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     }
   }
 
@@ -155,9 +221,8 @@ public class FlowerAdminController extends AbstractController {
     Order o = tblOrderView.getSelectionModel().getSelectedItem();
     if (o != null) {
       txtPrev.setText(o.getStatus());
-      if (o.getStatus().equals("Order Sent")) txtNext.getSelectionModel().select(1);
-      else if (o.getStatus().equals("Order Received")) txtNext.getSelectionModel().select(2);
-      else if (o.getStatus().equals("Flower Sent")) txtNext.getSelectionModel().select(3);
+      int nextStatus = statusStringToValue(o.getStatus()) + 1;
+      if (nextStatus <= 3) txtNext.getSelectionModel().select(nextStatus);
     } else {
       txtPrev.setText("Select an order");
     }
@@ -166,8 +231,8 @@ public class FlowerAdminController extends AbstractController {
   public void changeProgress(ActionEvent actionEvent) throws SQLException {
     Order o = tblOrderView.getSelectionModel().getSelectedItem();
     if (o != null) {
-      super.flDatabase.changeOrderStatus(
-          o.getOrderNumber(), txtNext.getSelectionModel().getSelectedItem());
+      String s = txtNext.getSelectionModel().getSelectedItem();
+      super.flDatabase.changeOrderStatus(o.getOrderNumber(), s);
     } else {
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
       alert.setTitle("No item selected");
@@ -177,4 +242,35 @@ public class FlowerAdminController extends AbstractController {
 
     tblOrderView.setItems(super.flDatabase.orderOl());
   }
+
+  private int statusStringToValue(String status) {
+    switch (status) {
+      case "Order Sent":
+        return 0;
+      case "Order Received":
+        return 1;
+      case "Flowers Sent":
+        return 2;
+      case "Flowers Delivered":
+        return 3;
+      default:
+        return 999; // Should never occur
+    }
+  }
+  /*private String statusValueToString(int status)
+  {
+    switch(status)
+    {
+      case 1:
+        return "Order Sent";
+      case 2:
+        return "Order Received";
+      case 3:
+        return "Flowers Sent";
+      case 4:
+        return "Flowers Delivered";
+      default:
+        return "BAD";//Should never occur
+    }
+  }*/
 }
