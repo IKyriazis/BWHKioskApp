@@ -1,17 +1,15 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 
 public class SceneSwitcherController {
   @FXML private TabPane tabPane;
@@ -59,24 +57,9 @@ public class SceneSwitcherController {
 
   @FXML
   public void informationButtonPressed() {
-    JFXDialogLayout layout = new JFXDialogLayout();
-    layout.setHeading(new Text("Info"));
-    layout.setBody(
-        new Text(
-            "Built by Yash Patel, Tyler Looney, Dyllan Cole, Brennan Aubuchon, Eva Labbe, Gabriel Dudlicek, Maddison Caten, Will Engdahl, Cory Helmuth, and Ioannis Kyriazis"));
-
-    JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.TOP);
-
-    JFXButton closeButton = new JFXButton("Close");
-    closeButton.setButtonType(JFXButton.ButtonType.RAISED);
-    closeButton.setStyle("-fx-background-color: #78909C");
-    closeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
-    closeButton.setOnAction(
-        event -> {
-          dialog.close();
-        });
-
-    layout.setActions(closeButton);
-    dialog.show();
+    DialogUtil.simpleDialog(
+        dialogPane,
+        "Info",
+        "Built by Yash Patel, Tyler Looney, Dyllan Cole, Brennan Aubuchon, Eva Labbe, Gabriel Dudlicek, Maddison Caten, Will Engdahl, Cory Helmuth, and Ioannis Kyriazis");
   }
 }

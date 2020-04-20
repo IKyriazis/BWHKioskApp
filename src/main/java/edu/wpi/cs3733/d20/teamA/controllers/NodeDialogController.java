@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
@@ -13,7 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class NodePopupController {
+public class NodeDialogController extends DialogController {
   @FXML private JFXTextField nodeIDField;
   @FXML private JFXComboBox<Integer> floorBox;
   @FXML private JFXComboBox<NodeType> typeBox;
@@ -23,13 +22,11 @@ public class NodePopupController {
   @FXML private JFXComboBox<String> teamBox;
   @FXML private JFXButton doneButton;
 
-  private JFXDialog dialog;
-
   private int x, y;
   private Node oldNode;
   private Graph graph;
 
-  public NodePopupController(JFXDialog dialog, Node node, int x, int y) {
+  public NodeDialogController(Node node, int x, int y) {
     this.oldNode = node;
     // Use existing node coordinates if set
     if (oldNode != null) {
@@ -39,7 +36,6 @@ public class NodePopupController {
       this.x = x;
       this.y = y;
     }
-    this.dialog = dialog;
 
     try {
       graph = Graph.getInstance();
@@ -91,12 +87,12 @@ public class NodePopupController {
     }
 
     String nodeID = nodeIDField.getText();
-    int floor = ((Integer) floorBox.getValue());
-    NodeType type = ((NodeType) typeBox.getValue());
+    int floor = floorBox.getValue();
+    NodeType type = typeBox.getValue();
     String longName = longNameField.getText();
     String shortName = shortNameField.getText();
-    String building = ((String) buildingBox.getValue());
-    String team = ((String) teamBox.getValue());
+    String building = buildingBox.getValue();
+    String team = teamBox.getValue();
 
     Node newNode = new Node(nodeID, x, y, floor, building, type, longName, shortName, team);
 
@@ -125,6 +121,6 @@ public class NodePopupController {
       e.printStackTrace();
     }
 
-    dialog.close();
+    getDialog().close();
   }
 }
