@@ -7,7 +7,11 @@ import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
+import javafx.util.converter.DoubleStringConverter;
+import javafx.util.converter.IntegerStringConverter;
 import lombok.SneakyThrows;
 
 public class FlowerDialogController extends AbstractController implements IDialogController {
@@ -51,6 +55,9 @@ public class FlowerDialogController extends AbstractController implements IDialo
     }
 
     doneButton.setOnAction(this::isDone);
+
+    txtQty.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+    txtCost.setTextFormatter(new TextFormatter<>(new DoubleStringConverter()));
   }
 
   // Scene switch & database addNode
@@ -64,8 +71,9 @@ public class FlowerDialogController extends AbstractController implements IDialo
     }
 
     try {
-      String name = txtName.getText();
-      String color = txtColor.getText();
+      String name = txtName.getText().substring(0, Math.min(15, txtName.getText().length() - 1));
+      String color = txtColor.getText().substring(0, Math.min(15, txtColor.getText().length() - 1));
+      ;
       int qty = Integer.parseInt(txtQty.getText());
       double price = Double.parseDouble(txtCost.getText());
 
@@ -74,11 +82,11 @@ public class FlowerDialogController extends AbstractController implements IDialo
         super.flDatabase.updatePrice(name, color, price);
         super.flDatabase.updateQTY(name, color, qty);
       }
+
+      dialog.close();
     } catch (Exception exception) {
       exception.printStackTrace();
     }
-
-    dialog.close();
   }
 
   @Override
