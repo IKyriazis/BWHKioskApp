@@ -446,6 +446,35 @@ public class FlowerDatabase extends Database {
       return -1;
     }
   }
+  /**
+   * returns the number of a given flower availible
+   *
+   * @param type
+   * @param color
+   * @return
+   */
+  public int getFlowerNumber(String type, String color) {
+    int num = -1;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "Select qty From Flowers Where typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        num = rset.getInt("qty");
+      }
+      rset.close();
+      pstmt.close();
+      return num;
+    } catch (SQLException e) {
+      return -1;
+    }
+  }
 
   /**
    * gets the order status for a chosen order
