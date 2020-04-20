@@ -336,7 +336,7 @@ public class GraphDatabase extends Database {
     CSVReader reader = new CSVReader(new InputStreamReader(stream));
     List<String[]> data = reader.readAll();
     for (int i = 1; i < data.size(); i++) {
-      String eID, sNode, eNode, eID2, sNode2, eNode2;
+      String eID, sNode, eNode, eID2;
       eID = data.get(i)[0];
       sNode = data.get(i)[1];
       eNode = data.get(i)[2];
