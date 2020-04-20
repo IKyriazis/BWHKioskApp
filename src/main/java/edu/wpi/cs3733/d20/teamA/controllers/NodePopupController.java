@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -12,6 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextFormatter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class NodePopupController {
   @FXML private JFXTextField nodeIDField;
@@ -22,6 +21,8 @@ public class NodePopupController {
   @FXML private JFXComboBox<String> buildingBox;
   @FXML private JFXComboBox<String> teamBox;
   @FXML private JFXButton doneButton;
+  @FXML private JFXTextField xField;
+  @FXML private JFXTextField yField;
 
   private JFXDialog dialog;
 
@@ -51,8 +52,11 @@ public class NodePopupController {
   @FXML
   public void initialize() {
     // Setup floor combobox
-    ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    // ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    ObservableList<Integer> floors = FXCollections.observableArrayList(1);
     floorBox.setItems(floors);
+    floorBox.setValue(1);
+    floorBox.setEditable(false);
 
     ObservableList<NodeType> types = FXCollections.observableArrayList(NodeType.values());
     typeBox.setItems(types);
@@ -62,6 +66,10 @@ public class NodePopupController {
 
     ObservableList<String> teams = FXCollections.observableArrayList("Team A");
     teamBox.setItems(teams);
+
+    // Setup coordinate formatters
+    xField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+    yField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
     // Button hook
     doneButton.setOnAction(this::pressedDone);
@@ -75,6 +83,11 @@ public class NodePopupController {
       shortNameField.setText(oldNode.getShortName());
       buildingBox.setValue(oldNode.getBuilding());
       teamBox.setValue(oldNode.getTeamAssigned());
+      xField.setText(String.valueOf(oldNode.getX()));
+      yField.setText(String.valueOf(oldNode.getY()));
+    } else {
+      xField.setText(String.valueOf(x));
+      yField.setText(String.valueOf(y));
     }
   }
 
@@ -86,7 +99,9 @@ public class NodePopupController {
         || longNameField.getText().isEmpty()
         || shortNameField.getText().isEmpty()
         || buildingBox.getSelectionModel().isEmpty()
-        || teamBox.getSelectionModel().isEmpty()) {
+        || teamBox.getSelectionModel().isEmpty()
+        || xField.getText().isEmpty()
+        || yField.getText().isEmpty()) {
       return;
     }
 
@@ -97,8 +112,10 @@ public class NodePopupController {
     String shortName = shortNameField.getText();
     String building = ((String) buildingBox.getValue());
     String team = ((String) teamBox.getValue());
+    int newX = Integer.parseInt(xField.getText());
+    int newY = Integer.parseInt(yField.getText());
 
-    Node newNode = new Node(nodeID, x, y, floor, building, type, longName, shortName, team);
+    Node newNode = new Node(nodeID, newX, newY, floor, building, type, longName, shortName, team);
 
     ArrayList<Node> edgesTo = new ArrayList<>();
     if (oldNode != null) {
