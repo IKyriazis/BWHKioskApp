@@ -102,6 +102,18 @@ public class Graph {
   }
 
   /**
+   * Add a new edge (in both directions) to the graph and automatically calculate weight
+   *
+   * @param start First node of the edge
+   * @param end Second node of the edge
+   * @return Success / Failure
+   */
+  public boolean addEdge(Node start, Node end) throws SQLException {
+    int weight = calcWeight(start, end);
+    return addEdge(start, end, weight);
+  }
+
+  /**
    * Add a new edge (in both directions) to the graph
    *
    * @param start First node of edge
