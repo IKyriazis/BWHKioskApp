@@ -300,12 +300,12 @@ public class GraphDatabase extends Database {
   /**
    * Reads in a csv file of nodes
    *
-   * @param stream - CSV InputStream
    * @throws IOException
    * @throws CsvException
    * @throws SQLException
    */
-  public void readNodeCSV(InputStream stream) throws IOException, CsvException, SQLException {
+  public void readNodeCSV() throws IOException, CsvException, SQLException {
+    InputStream stream = getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv");
     CSVReader reader = new CSVReader(new InputStreamReader(stream));
     List<String[]> data = reader.readAll();
     for (int i = 1; i < data.size(); i++) {
@@ -327,12 +327,12 @@ public class GraphDatabase extends Database {
   /**
    * Reads in a csv file of edges
    *
-   * @param stream - CSV InputStream
    * @throws IOException
    * @throws CsvException
    * @throws SQLException
    */
-  public void readEdgeCSV(InputStream stream) throws IOException, CsvException, SQLException {
+  public void readEdgeCSV() throws IOException, CsvException, SQLException {
+    InputStream stream = getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv");
     CSVReader reader = new CSVReader(new InputStreamReader(stream));
     List<String[]> data = reader.readAll();
     for (int i = 1; i < data.size(); i++) {

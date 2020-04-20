@@ -30,10 +30,8 @@ public class Graph {
     nodes = new HashMap<>();
     DB.dropTables();
     DB.createTables();
-    DB.readNodeCSV(
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv"));
-    DB.readEdgeCSV(
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv"));
+    DB.readNodeCSV();
+    DB.readEdgeCSV();
     update();
   }
 

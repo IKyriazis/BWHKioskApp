@@ -1,6 +1,6 @@
-﻿orderNumber,numFlowers,flowerType,flowerColor,price,status,location
-1,3,Magnolia,Cream,3.96,Order Sent,ADEPT00101
-2,1,Rose,Red,2,Order Received,ALABS00501
-3,2,Tulip,White,8.5,Order Received,AREST00301
-4,12,Rose,Red,24,Order Received,ADEPT00401
-5,4,Daisy,Yellow,6,Flowers Sent,ALABS00501
+numFlowers,flowerType,flowerColor,location
+3,Magnolia,Cream,ADEPT00101
+1,Rose,Red,ALABS00501
+2,Tulip,White,AREST00301
+12,Rose,Red,ADEPT00401
+4,Daisy,Yellow,ALABS00501
