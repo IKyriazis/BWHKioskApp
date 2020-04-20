@@ -1,9 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.controller;
 
+import static org.testfx.api.FxAssert.verifyThat;
+
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.LoginController;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -62,5 +65,11 @@ public class TestMapEditorController extends FxRobot {
     Assertions.assertEquals("Select First Node", node.getText());
     clickOn("Delete Edge");
     Assertions.assertEquals("Select First Node", node.getText());
+  }
+
+  @Test
+  public void testOpenModifyDialog() {
+    clickOn("Edit Node");
+    verifyThat("#doneButton", Node::isVisible);
   }
 }
