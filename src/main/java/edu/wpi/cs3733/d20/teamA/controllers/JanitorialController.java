@@ -31,12 +31,13 @@ public class JanitorialController {
   ObservableList dropdownMenuItems = FXCollections.observableArrayList();
   Hashtable<String, Integer> activeRequestHash = new Hashtable<>();
 
-  public void init() throws SQLException {
+  public void initialize() throws SQLException {
     conn = DriverManager.getConnection(jdbcUrl);
     gDB = new GraphDatabase(conn);
     jDB = new JanitorDatabase(conn);
     gDB.createTables();
     jDB.createTables();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
   }
 
   /**
@@ -46,8 +47,9 @@ public class JanitorialController {
    */
   @FXML
   private void addServiceRequest() throws SQLException {
-    jDB.addRequest(textfieldLocation.getText(), textfieldPriority.getText());
+
     labelSubmitRequest.setText("Request Submitted Successfully");
+    System.out.println(jDB.addRequest(textfieldLocation.getText(), textfieldPriority.getText()));
   }
 
   /**
@@ -72,14 +74,18 @@ public class JanitorialController {
     dropdownMenuItems.removeAll(dropdownMenuItems);
     activeRequestHash.clear();
     String Request;
+    System.out.println(jDB.getLocation(1));
     int size = jDB.getRequestSize();
-    for (int i = 0; i < size; i++) {
-      Request = jDB.getName(i);
+    for (int i = 1; i < size; i++) {
+      Request = jDB.getLocation(i);
       if (Request == null) {
+        System.out.println("null");
         continue;
       } else {
-        dropdownMenuItems.addAll(Request);
+        System.out.println("worked");
+        dropdownMenuItems.add(Request);
         activeRequestHash.put(Request, i);
+        System.out.println(Request);
       }
     }
     comboboxActiveRequests.getItems().addAll(dropdownMenuItems);
