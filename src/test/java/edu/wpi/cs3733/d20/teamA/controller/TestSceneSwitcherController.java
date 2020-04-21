@@ -14,7 +14,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class TestSceneSwitcherController {
+public class TestSceneSwitcherController extends FxRobot {
   @Start
   private void start(Stage stage) {
     try {
@@ -62,6 +62,8 @@ public class TestSceneSwitcherController {
     robot.clickOn("#serviceTab");
     robot.clickOn("#mapTab");
     robot.clickOn("#serviceTab");
+    // robot.
+    // Node node = lookup("#serviceTab").query();
     // If we got to here without crashing then we probably did something right.
     Assertions.assertTrue(true);
   }
