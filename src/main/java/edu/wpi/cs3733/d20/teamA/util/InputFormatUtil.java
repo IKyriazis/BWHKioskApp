@@ -14,7 +14,7 @@ public class InputFormatUtil {
   private static final UnaryOperator<TextFormatter.Change> filterDouble =
       c -> {
         String text = c.getControlNewText();
-        if (doubleState.matcher(text).matches()) {
+        if (doubleState.matcher(text).matches() || text.isEmpty()) {
           return c;
         } else {
           return null;
@@ -23,7 +23,7 @@ public class InputFormatUtil {
   private static final UnaryOperator<TextFormatter.Change> filterInt =
       c -> {
         String text = c.getControlNewText();
-        if (integerState.matcher(text).matches()) {
+        if (integerState.matcher(text).matches() || text.isEmpty()) {
           return c;
         } else {
           return null;
