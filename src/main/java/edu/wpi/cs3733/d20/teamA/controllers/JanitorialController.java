@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
@@ -29,8 +30,9 @@ public class JanitorialController {
   @FXML private JFXTextField textfieldPriority;
   @FXML private Label labelClearRequest;
   @FXML private Label labelSubmitRequest;
+  @FXML private JFXListView<String> listviewActiveRequests;
 
-  ObservableList dropdownMenuItems = FXCollections.observableArrayList();
+  ObservableList activeItems = FXCollections.observableArrayList();
   Hashtable<String, Integer> activeRequestHash = new Hashtable<>();
 
   public void initialize() throws SQLException, IOException, CsvException {
@@ -41,6 +43,8 @@ public class JanitorialController {
     jDB.createTables();
     jDB.readFromCSV();
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    gDB.addNode("biscuit1", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    refreshActiveRequests();
   }
 
   /**
@@ -50,11 +54,19 @@ public class JanitorialController {
    */
   @FXML
   private void addServiceRequest() throws SQLException {
-
-    labelSubmitRequest.setText("Request Submitted Successfully");
-    jDB.addRequest(textfieldLocation.getText(), textfieldPriority.getText());
-    textfieldPriority.clear();
-    textfieldLocation.clear();
+    if ((!textfieldLocation.getText().equals("")) && !textfieldPriority.getText().equals("")) {
+      jDB.addRequest(textfieldLocation.getText(), textfieldPriority.getText());
+      textfieldPriority.clear();
+      textfieldLocation.clear();
+      labelSubmitRequest.setText("Request Submitted Successfully");
+    } else if (!textfieldPriority.getText().equals("") && textfieldLocation.getText().equals("")) {
+      labelSubmitRequest.setText("Please enter a location");
+    } else if (textfieldPriority.getText().equals("") && !textfieldLocation.getText().equals("")) {
+      labelSubmitRequest.setText("Please enter a priority");
+    } else if (textfieldPriority.getText().equals("") && textfieldLocation.getText().equals("")) {
+      labelSubmitRequest.setText("Please enter data");
+    }
+    refreshActiveRequests();
   }
 
   /**
@@ -64,10 +76,16 @@ public class JanitorialController {
    */
   @FXML
   private void removeServiceRequest() throws SQLException {
-    String request = comboboxActiveRequests.getValue();
-    System.out.println(jDB.deleteRequest(activeRequestHash.get(request)));
-    labelClearRequest.setText("Service Removed Successfully");
-    comboboxActiveRequests.getItems().removeAll(dropdownMenuItems);
+    String request = listviewActiveRequests.getSelectionModel().getSelectedItem();
+    if (request != null) {
+      if (jDB.deleteRequest(activeRequestHash.get(request))) {
+        labelClearRequest.setText("Service Removed Successfully");
+        listviewActiveRequests.getItems().removeAll(activeItems);
+      } else {
+        labelClearRequest.setText("Please select an active request");
+      }
+    }
+    refreshActiveRequests();
   }
 
   /**
@@ -77,24 +95,20 @@ public class JanitorialController {
    */
   @FXML
   private void refreshActiveRequests() throws SQLException {
-    dropdownMenuItems.removeAll(dropdownMenuItems);
+    listviewActiveRequests.getItems().clear();
+    activeItems.clear();
     activeRequestHash.clear();
     String Request;
-    System.out.println(jDB.getLocation(1));
     int size = jDB.getRequestSize();
-    System.out.println(jDB.getRequestSize());
     for (int i = 1; i < size + 1; i++) {
       Request = jDB.getLocation(i);
       if (Request == null) {
-        System.out.println("null");
         continue;
       } else {
-        System.out.println("worked");
-        dropdownMenuItems.add(Request);
+        activeItems.add(Request);
         activeRequestHash.put(Request, i);
-        System.out.println(Request);
       }
     }
-    comboboxActiveRequests.getItems().addAll(dropdownMenuItems);
+    listviewActiveRequests.getItems().addAll(activeItems);
   }
 }
