@@ -1,7 +1,8 @@
-package edu.wpi.cs3733.d20.teamA.controllers;
+package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
@@ -12,7 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class NodeDialogController extends DialogController {
+public class NodeDialogController implements IDialogController {
   @FXML private JFXTextField nodeIDField;
   @FXML private JFXComboBox<Integer> floorBox;
   @FXML private JFXComboBox<NodeType> typeBox;
@@ -25,6 +26,7 @@ public class NodeDialogController extends DialogController {
   private int x, y;
   private Node oldNode;
   private Graph graph;
+  private JFXDialog dialog;
 
   public NodeDialogController(Node node, int x, int y) {
     this.oldNode = node;
@@ -121,6 +123,11 @@ public class NodeDialogController extends DialogController {
       e.printStackTrace();
     }
 
-    getDialog().close();
+    dialog.close();
+  }
+
+  @Override
+  public void setDialog(JFXDialog dialog) {
+    this.dialog = dialog;
   }
 }

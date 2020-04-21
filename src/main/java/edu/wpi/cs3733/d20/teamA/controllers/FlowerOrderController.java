@@ -2,26 +2,28 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXProgressBar;
+import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
 import java.io.IOException;
 import java.sql.SQLException;
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 import javax.swing.*;
 
 public class FlowerOrderController extends AbstractController {
+  @FXML private JFXTextField txtNumber;
+  @FXML private JFXProgressBar progress;
+  @FXML private Label lblOutput;
 
   @FXML private JFXDrawer trackerDrawer;
   @FXML private JFXDrawer orderDrawer;
@@ -42,14 +44,19 @@ public class FlowerOrderController extends AbstractController {
     dropShadow.setColor(Color.GREY);
     centerPane.setEffect(dropShadow);
     flowerOrderPane = FXMLLoader.load(App.class.getResource("views/FlowerOrder.fxml"));
-    flowerOrderPane.setEffect(dropShadow);
 
     // Set up tracker drawer
     trackerDrawer.setSidePane(trackerBox);
     trackerDrawer.close();
 
     // Set up drawer opening button
-    trackButton.setOnAction(event -> trackerDrawer.toggle());
+    trackButton.setOnAction(
+        event -> {
+          trackerDrawer.toggle();
+          if (orderDrawer.isOpened()) orderDrawer.close();
+          if (orderDrawer.isVisible())
+            orderDrawer.setVisible(false); // Necessary because weird reasons
+        });
 
     // Place drawer directly under order gridpane
     centerPane
@@ -65,7 +72,13 @@ public class FlowerOrderController extends AbstractController {
     orderDrawer.setDefaultDrawerSize(175);
 
     // Set up drawer opening button
-    orderButton.setOnAction(event -> orderDrawer.toggle());
+    orderButton.setOnAction(
+        event -> {
+          orderDrawer.toggle();
+          if (trackerDrawer.isOpened()) trackerDrawer.close();
+          if (!orderDrawer.isVisible())
+            orderDrawer.setVisible(true); // Necessary because weird reasons
+        });
 
     // Place drawer directly under order gridpane
     centerPane
@@ -81,20 +94,30 @@ public class FlowerOrderController extends AbstractController {
   }
 
   @FXML
-  public void cancel(ActionEvent event) throws IOException {
-    Stage stage;
-    Parent root;
-    // putting the event's source in src var so it doesn't have to check it every time
-    Object src = event.getSource();
+  public void checkNum(Event e) {
+    // Send text to database and get back the status
+    String s = super.flDatabase.getOrderStatus(Integer.parseInt(txtNumber.getText()));
+    if (s == null) {
+      progress.setProgress(0);
+      lblOutput.setText("Input an order number");
+      return;
+    }
 
-    stage =
-        (Stage)
-            ((Button) (src)).getScene().getWindow(); // use existing stage to close current window
-
-    root = FXMLLoader.load(App.class.getResource("views/ServiceHome.fxml"));
-    Scene scene = new Scene(root);
-
-    stage.setScene(scene);
-    stage.show();
+    if (s.equals("Order Sent")) {
+      progress.setProgress(.1);
+      lblOutput.setText("Order Sent");
+    } else if (s.equals("Order Received")) {
+      progress.setProgress(.35);
+      lblOutput.setText("Order Received");
+    } else if (s.equals("Flowers Sent")) {
+      progress.setProgress(.7);
+      lblOutput.setText("Flower Sent");
+    } else if (s.equals("Flowers Delivered")) {
+      progress.setProgress(1);
+      lblOutput.setText("Flowers Delivered");
+    } else {
+      progress.setProgress(0);
+      lblOutput.setText("Input an order number");
+    }
   }
 }
