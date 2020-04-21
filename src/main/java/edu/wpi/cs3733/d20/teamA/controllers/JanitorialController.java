@@ -37,7 +37,6 @@ public class JanitorialController {
     jDB = new JanitorDatabase(conn);
     gDB.createTables();
     jDB.createTables();
-    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
   }
 
   /**

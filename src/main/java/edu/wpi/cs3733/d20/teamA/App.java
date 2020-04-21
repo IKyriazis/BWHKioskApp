@@ -23,7 +23,7 @@ public class App extends Application {
     // Load FXML file
     FXMLLoader loader = new FXMLLoader();
 
-    loader.setLocation(App.class.getResource("views/SimpleMap.fxml"));
+    loader.setLocation(App.class.getResource("views/SceneSwitcher.fxml"));
     Node rootPane = loader.load();
 
     // Set up the stage
