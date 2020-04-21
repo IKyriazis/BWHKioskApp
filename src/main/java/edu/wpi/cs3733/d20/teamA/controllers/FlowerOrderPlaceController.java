@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.stream.Collectors;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -114,7 +112,7 @@ public class FlowerOrderPlaceController extends AbstractController {
             dialogPane, "Order Placed", "Your order has been placed. Your order number is: " + i);
         choiceFlower.getSelectionModel().clearSelection();
         txtNumber.setText("");
-        lblMax.setText("X are available at X per flower");
+        lblMax.setText("X are in stock at X each");
         roomList.getSelectionModel().clearSelection();
         txtTotal.clear();
       }
@@ -129,11 +127,11 @@ public class FlowerOrderPlaceController extends AbstractController {
 
       int i = super.flDatabase.getFlowerNumber(type, color);
       double d = super.flDatabase.getFlowerPricePer(type, color);
-      lblMax.setText(i + " are available at " + d + " per flower");
+      lblMax.setText(i + " are in stock at " + String.format("$%.2f", d) + " each");
 
       updateCost();
     } catch (Exception e) {
-      lblMax.setText("X are available at X per flower");
+      lblMax.setText("X are in stock at X each");
     }
   }
 

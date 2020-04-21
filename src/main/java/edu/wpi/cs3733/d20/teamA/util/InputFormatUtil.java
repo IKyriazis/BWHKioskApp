@@ -6,7 +6,7 @@ import javafx.scene.control.TextFormatter;
 import javafx.util.StringConverter;
 
 // Returns a formatter that limits a text field to double or integer input
-//Just set text formatter to InputFormatUtil.get(Double/Int)Filter()
+// Just set text formatter to InputFormatUtil.get(Double/Int)Filter()
 public class InputFormatUtil {
   private static final Pattern doubleState = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
   private static final Pattern integerState = Pattern.compile("^\\d+$");
