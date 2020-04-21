@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-<<<<<<< HEAD
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
