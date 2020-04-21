@@ -1,6 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
+import java.io.*;
 import java.sql.*;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,7 +16,7 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * Drops thetables so we can start fresh
+   * Drops the tables so we can start fresh
    *
    * @return false if the tables don't exist and CONSTRAINT can't be dropped, true if CONSTRAINT and
    *     tables are dropped correctly
@@ -57,6 +61,7 @@ public class FlowerDatabase extends Database {
       return false;
     }
   }
+
   /**
    * Adds a flower to the flower table
    *
@@ -90,6 +95,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -197,20 +203,11 @@ public class FlowerDatabase extends Database {
   public int addOrder(int numFlowers, String flowerType, String flowerColor, String location)
       throws SQLException {
     try {
-      double price;
-      Statement priceStmt = getConnection().createStatement();
-      ResultSet rst =
-          priceStmt.executeQuery(
-              "SELECT * FROM Flowers WHERE typeFlower = '"
-                  + flowerType
-                  + "' AND color = '"
-                  + flowerColor
-                  + "'");
-      ;
-      rst.next();
-      price = rst.getDouble("pricePer") * numFlowers;
+      double total;
+      double pricePer = getFlowerPricePer(flowerType, flowerColor);
+      total = pricePer * numFlowers;
 
-      price = Math.round(price * 100.0) / 100.0;
+      total = Math.round(total * 100.0) / 100.0;
 
       String status = "Order Sent";
 
@@ -222,11 +219,13 @@ public class FlowerDatabase extends Database {
       pstmt.setInt(2, numFlowers);
       pstmt.setString(3, flowerType);
       pstmt.setString(4, flowerColor);
-      pstmt.setDouble(5, price);
+      pstmt.setDouble(5, total);
       pstmt.setString(6, status);
       pstmt.setString(7, location);
       pstmt.executeUpdate();
       pstmt.close();
+      int quantity = getFlowerQuantity(flowerType, flowerColor);
+      updateQTY(flowerType, flowerColor, (quantity - numFlowers));
       orderNum++;
       return orderNum - 1;
     } catch (SQLException e) {
@@ -446,6 +445,51 @@ public class FlowerDatabase extends Database {
       return -1;
     }
   }
+  /**
+   * returns the number of a given flower availible
+   *
+   * @param type
+   * @param color
+   * @return
+   */
+  public int getFlowerNumber(String type, String color) {
+    int num = -1;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "Select qty From Flowers Where typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        num = rset.getInt("qty");
+      }
+      rset.close();
+      pstmt.close();
+      return num;
+    } catch (SQLException e) {
+      return -1;
+    }
+  }
+
+  public int getFlowerQuantity(String typeFlower, String flowerColor) throws SQLException {
+    int quantity;
+    Statement priceStmt = getConnection().createStatement();
+    ResultSet rst =
+        priceStmt.executeQuery(
+            "SELECT * FROM Flowers WHERE typeFlower = '"
+                + typeFlower
+                + "' AND color = '"
+                + flowerColor
+                + "'");
+    ;
+    rst.next();
+    quantity = rst.getInt("qty");
+    return quantity;
+  }
 
   /**
    * gets the order status for a chosen order
@@ -468,6 +512,39 @@ public class FlowerDatabase extends Database {
       return status;
     } catch (SQLException e) {
       return null;
+    }
+  }
+
+  public void readFlowersCSV() throws IOException, CsvException, SQLException {
+    InputStream stream =
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowersCSV.csv");
+    CSVReader reader = new CSVReader(new InputStreamReader(stream));
+    List<String[]> data = reader.readAll();
+    for (int i = 1; i < data.size(); i++) {
+      String typeFlower, color;
+      int qty;
+      double pricePer;
+      typeFlower = data.get(i)[0];
+      color = data.get(i)[1];
+      qty = Integer.parseInt(data.get(i)[2]);
+      pricePer = Double.parseDouble(data.get(i)[3]);
+      addFlower(typeFlower, color, qty, pricePer);
+    }
+  }
+
+  public void readFlowerOrderCSV() throws IOException, CsvException, SQLException {
+    InputStream stream =
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowerOrderCSV.csv");
+    CSVReader reader = new CSVReader(new InputStreamReader(stream));
+    List<String[]> data = reader.readAll();
+    for (int i = 1; i < data.size(); i++) {
+      String flowerType, flowerColor, location;
+      int numFlowers;
+      numFlowers = Integer.parseInt(data.get(i)[0]);
+      flowerType = data.get(i)[1];
+      flowerColor = data.get(i)[2];
+      location = data.get(i)[3];
+      addOrder(numFlowers, flowerType, flowerColor, location);
     }
   }
 }

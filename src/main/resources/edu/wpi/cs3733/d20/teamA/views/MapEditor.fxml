@@ -14,7 +14,7 @@
       <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
          <children>
             <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" layoutX="15.0" layoutY="15.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
-            <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="53.0" pickOnBounds="false" spacing="10.0">
+            <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="53.0" pickOnBounds="false" prefHeight="320.0" prefWidth="100.0" spacing="10.0">
                <children>
                   <Label fx:id="modeLabel" />
                   <JFXButton fx:id="panMapButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Pan Map" />
@@ -24,6 +24,8 @@
                   <JFXButton fx:id="deleteNodeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Delete Node" />
                   <JFXButton fx:id="addEdgeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Add Edge" />
                   <JFXButton fx:id="deleteEdgeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Delete Edge" textAlignment="CENTER" />
+                  <JFXButton fx:id="exportNodesButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Export Nodes To CSV" />
+                  <JFXButton fx:id="exportEdgesButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Export Edges To CSV" />
                </children>
             </VBox>
             <JFXDrawer fx:id="infoDrawer" alignment="CENTER_LEFT" defaultDrawerSize="250.0" layoutY="259.0" mouseTransparent="true" resizeContent="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">

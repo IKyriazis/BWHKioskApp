@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.controllers;
+package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
@@ -12,7 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
 
-public class NodePopupController {
+public class NodeDialogController implements IDialogController {
   @FXML private JFXTextField nodeIDField;
   @FXML private JFXComboBox<Integer> floorBox;
   @FXML private JFXComboBox<NodeType> typeBox;
@@ -24,13 +24,12 @@ public class NodePopupController {
   @FXML private JFXTextField xField;
   @FXML private JFXTextField yField;
 
-  private JFXDialog dialog;
-
   private int x, y;
   private Node oldNode;
   private Graph graph;
+  private JFXDialog dialog;
 
-  public NodePopupController(JFXDialog dialog, Node node, int x, int y) {
+  public NodeDialogController(Node node, int x, int y) {
     this.oldNode = node;
     // Use existing node coordinates if set
     if (oldNode != null) {
@@ -40,7 +39,6 @@ public class NodePopupController {
       this.x = x;
       this.y = y;
     }
-    this.dialog = dialog;
 
     try {
       graph = Graph.getInstance();
@@ -106,8 +104,8 @@ public class NodePopupController {
     }
 
     String nodeID = nodeIDField.getText();
-    int floor = ((Integer) floorBox.getValue());
-    NodeType type = ((NodeType) typeBox.getValue());
+    int floor = floorBox.getValue();
+    NodeType type = typeBox.getValue();
     String longName = longNameField.getText();
     String shortName = shortNameField.getText();
     String building = ((String) buildingBox.getValue());
@@ -143,5 +141,10 @@ public class NodePopupController {
     }
 
     dialog.close();
+  }
+
+  @Override
+  public void setDialog(JFXDialog dialog) {
+    this.dialog = dialog;
   }
 }
