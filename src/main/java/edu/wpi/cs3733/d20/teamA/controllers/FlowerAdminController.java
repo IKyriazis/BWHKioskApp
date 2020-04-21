@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.google.inject.Inject;
 import com.jfoenix.controls.*;
 import com.opencsv.exceptions.CsvException;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -11,6 +12,7 @@ import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
@@ -41,7 +43,20 @@ public class FlowerAdminController extends AbstractController {
 
   private Order lastOrder;
 
+  private Scene appPrimaryScene;
+
   public FlowerAdminController() {}
+
+  /**
+   * This method allows the tests to inject the scene at a later time, since it must be done on the
+   * JavaFX thread
+   *
+   * @param appPrimaryScene Primary scene of the app whose root will be changed
+   */
+  @Inject
+  public void setAppPrimaryScene(Scene appPrimaryScene) {
+    this.appPrimaryScene = appPrimaryScene;
+  }
 
   public void initialize() throws SQLException, IOException, CsvException {
     if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {

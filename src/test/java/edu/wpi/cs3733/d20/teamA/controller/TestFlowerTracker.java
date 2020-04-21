@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.flower.controllers;
+package edu.wpi.cs3733.d20.teamA.controller;
 
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.FlowerTrackerController;
@@ -16,11 +16,11 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class testFlowerTracker extends FxRobot {
+public class TestFlowerTracker extends FxRobot {
 
   private FlowerTrackerController controller = new FlowerTrackerController();
 
-  public testFlowerTracker() throws SQLException {}
+  public TestFlowerTracker() throws SQLException {}
 
   @Start
   private void start(Stage stage) {
@@ -48,16 +48,6 @@ public class testFlowerTracker extends FxRobot {
 
   @Test
   public void testView() {
-    /*clickOn("txtNumber", Motion.DEFAULT, MouseButton.PRIMARY);
 
-    type(KeyCode.DIGIT1);
-    type(KeyCode.ENTER);*/
-    try {
-      controller.checkNum(new ActionEvent());
-    } catch (Exception e) {
-      // Fix this later, giving code coverage this way for now
-    }
-    // Manually tested
-    Assertions.assertTrue(true);
   }
 }
