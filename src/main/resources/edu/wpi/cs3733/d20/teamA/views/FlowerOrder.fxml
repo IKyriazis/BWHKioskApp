@@ -23,7 +23,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXTextField fx:id="txtNumber" labelFloat="true" maxWidth="-Infinity" onAction="#updateCost" prefWidth="150.0" promptText="Flower Quantity" GridPane.columnIndex="1">
+            <JFXTextField fx:id="txtNumber" labelFloat="true" maxWidth="-Infinity" onAction="#updateCost" onKeyTyped="#updateCost" prefWidth="150.0" promptText="Flower Quantity" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
@@ -43,7 +43,7 @@
                   <Insets left="10.0" right="10.0" />
                </GridPane.margin>
             </JFXComboBox>
-            <JFXButton buttonType="RAISED" onAction="#placeOrder" prefWidth="100.0" style="-fx-background-color: #78909C;" text="Confiirm Order" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <JFXButton buttonType="RAISED" onAction="#placeOrder" prefWidth="100.0" style="-fx-background-color: #78909C;" text="Confirm Order" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Label fx:id="lblMax" text="X availible" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>

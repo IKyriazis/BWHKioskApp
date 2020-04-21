@@ -1,32 +1,33 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.google.inject.Inject;
+import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import java.sql.SQLException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-import java.sql.SQLException;
-
-public class LoginController extends AbstractController{
+public class LoginController extends AbstractController {
   @FXML private VBox loginBox;
   @FXML private Button loginButton;
   @FXML private JFXTabPane tabPane;
   @FXML private JFXTextField usernameBox;
-  @FXML private JFXTextField passwordBox;
+  @FXML private JFXPasswordField passwordBox;
+  @FXML private StackPane dialogPane;
 
   private GaussianBlur currentBlur;
 
@@ -44,7 +45,7 @@ public class LoginController extends AbstractController{
   }
 
   @FXML
-  public void initialize() {
+  public void initialize() throws SQLException {
     eDB.addEmployee("Admin", "Eva", "Labbe", "Janitor");
     // Add drop shadow to login box.
     DropShadow dropShadow = new DropShadow();
@@ -66,14 +67,14 @@ public class LoginController extends AbstractController{
 
   @FXML
   public void loginButtonPressed() throws SQLException {
-    // TODO; Real login
-
-    if(!eDB.logIn(usernameBox.getText(), passwordBox.getText())){
-
-      //Doesn't pass
-
+    if (((usernameBox.getText().isEmpty()) || (passwordBox.getText().isEmpty()))
+        || !eDB.logIn(usernameBox.getText(), passwordBox.getText())) {
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "Incorrect Login", "Please reenter your credentials and try again");
+      usernameBox.setText("");
+      passwordBox.setText("");
+      return;
     }
-
 
     // Chuck the login box way off screen
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
@@ -98,6 +99,4 @@ public class LoginController extends AbstractController{
                 }));
     blurFader.play();
   }
-
-
 }

@@ -48,8 +48,13 @@
     -fx-padding: 0 5 0 5;
     -fx-font-size: 18pt;
 }
+
 #loginBox, #centerPane {
     -fx-background-color: #F5F5F5;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
+}
+
+#orderButton, #trackButton {
+    -fx-font-size: 22pt;
 }
