@@ -7,6 +7,7 @@ import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -47,7 +48,7 @@ public class FlowerOrderPlaceController extends AbstractController {
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     }
-    ObservableList<Flower> list = super.flDatabase.flowerOl(); // Get from FlowerDatabase @TODO
+    ObservableList<Flower> list = super.flDatabase.flowerOl();
     for (Flower f : list) {
       choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
     }
@@ -64,6 +65,8 @@ public class FlowerOrderPlaceController extends AbstractController {
     roomList
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
+    // Limit input to integer values
+    txtNumber.setTextFormatter(InputFormatUtil.getIntFilter());
   }
 
   public void placeOrder(ActionEvent actionEvent) throws SQLException, IOException {
@@ -105,14 +108,11 @@ public class FlowerOrderPlaceController extends AbstractController {
         DialogUtil.simpleErrorDialog(
             dialogPane, "Order Error", "Order not placed successfully, please try again");
       } else {
-        // Update number of flowers in database
-        super.flDatabase.updateQTY(type, color, max - num);
-
         DialogUtil.simpleInfoDialog(
             dialogPane, "Order Placed", "Your order has been placed. Your order number is: " + i);
         choiceFlower.getSelectionModel().clearSelection();
         txtNumber.setText("");
-        lblMax.setText("X are available");
+        lblMax.setText("X are in stock at X each");
         roomList.getSelectionModel().clearSelection();
         txtTotal.clear();
       }
@@ -126,11 +126,12 @@ public class FlowerOrderPlaceController extends AbstractController {
       String color = s.substring(s.indexOf(' ') + 1);
 
       int i = super.flDatabase.getFlowerNumber(type, color);
-      lblMax.setText(i + " are available");
+      double d = super.flDatabase.getFlowerPricePer(type, color);
+      lblMax.setText(i + " are in stock at " + String.format("$%.2f", d) + " each");
 
       updateCost();
     } catch (Exception e) {
-      lblMax.setText("X are available");
+      lblMax.setText("X are in stock at X each");
     }
   }
 

@@ -437,7 +437,7 @@ public class FlowerDatabase extends Database {
                       + "'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
-        price = rset.getInt("pricePer");
+        price = rset.getDouble("pricePer");
       }
       rset.close();
       pstmt.close();

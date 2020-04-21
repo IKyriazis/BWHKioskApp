@@ -44,7 +44,7 @@
                </GridPane.margin>
             </JFXComboBox>
             <JFXButton buttonType="RAISED" onAction="#placeOrder" prefWidth="100.0" style="-fx-background-color: #78909C;" text="Confirm Order" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Label fx:id="lblMax" text="X availible" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
+            <Label fx:id="lblMax" text="X are in stock at X each" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>
