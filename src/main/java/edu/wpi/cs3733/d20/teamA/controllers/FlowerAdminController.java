@@ -10,7 +10,6 @@ import edu.wpi.cs3733.d20.teamA.database.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.io.IOException;
 import java.sql.SQLException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
@@ -42,7 +41,7 @@ public class FlowerAdminController extends AbstractController {
 
   private Order lastOrder;
 
-  public FlowerAdminController() throws Exception {}
+  public FlowerAdminController() {}
 
   public void initialize() throws SQLException, IOException, CsvException {
     if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
@@ -166,7 +165,7 @@ public class FlowerAdminController extends AbstractController {
     txtNext.getSelectionModel().select(0);
   }
 
-  public void addFlower() throws Exception {
+  public void addFlower() {
     DialogUtil.complexDialog(
         dialogStackPane,
         "Add Flower",
@@ -263,7 +262,7 @@ public class FlowerAdminController extends AbstractController {
     }
   }
 
-  public void changeProgress(ActionEvent actionEvent) throws SQLException {
+  public void changeProgress() {
     if (lastOrder != null) {
       String s = txtNext.getSelectionModel().getSelectedItem();
       super.flDatabase.changeOrderStatus(lastOrder.getOrderNumber(), s);

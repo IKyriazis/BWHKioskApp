@@ -38,7 +38,7 @@ public class FlowerOrderController extends AbstractController {
   private AnchorPane flowerOrderPane;
   private Scene appPrimaryScene;
 
-  public FlowerOrderController() throws Exception {}
+  public FlowerOrderController() {}
 
   public void initialize() throws Exception {
     if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
