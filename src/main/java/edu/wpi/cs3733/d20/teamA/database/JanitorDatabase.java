@@ -1,6 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.List;
 
 public class JanitorDatabase extends Database {
   private int requestCount = 0;
@@ -195,23 +201,6 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  //  public Timestamp getTimestamp(int rn) throws SQLException {
-  //    Timestamp ts;
-  //    try {
-  //      PreparedStatement pstmt =
-  //          getConnection()
-  //              .prepareStatement("SELECT time FROM JanitorRequest WHERE requestNumber = ?");
-  //      pstmt.setInt(1, rn);
-  //      ResultSet rset = pstmt.executeQuery();
-  //      rset.next();
-  //      ts = rset.getTimestamp("time");
-  //      pstmt.close();
-  //      return ts;
-  //    } catch (SQLException e) {
-  //      return null;
-  //    }
-  //  }
-
   public Timestamp getTimestamp(int rn) throws SQLException {
     Timestamp ts;
     try {
@@ -294,6 +283,19 @@ public class JanitorDatabase extends Database {
       return n;
     } catch (SQLException e) {
       return null;
+    }
+  }
+
+  public void readFromCSV() throws IOException, CsvException, SQLException {
+    InputStream stream =
+        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/JanitorRequest.csv");
+    CSVReader reader = new CSVReader(new InputStreamReader(stream));
+    List<String[]> data = reader.readAll();
+    for (int i = 1; i < data.size(); i++) {
+      String location, priority;
+      location = data.get(i)[0];
+      priority = data.get(i)[1];
+      addRequest(location, priority);
     }
   }
 }

@@ -3,8 +3,10 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.JanitorDatabase;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Hashtable;
 import javafx.collections.FXCollections;
@@ -31,12 +33,13 @@ public class JanitorialController {
   ObservableList dropdownMenuItems = FXCollections.observableArrayList();
   Hashtable<String, Integer> activeRequestHash = new Hashtable<>();
 
-  public void initialize() throws SQLException {
+  public void initialize() throws SQLException, IOException, CsvException {
     conn = DriverManager.getConnection(jdbcUrl);
     gDB = new GraphDatabase(conn);
     jDB = new JanitorDatabase(conn);
     gDB.createTables();
     jDB.createTables();
+    jDB.readFromCSV();
   }
 
   /**
