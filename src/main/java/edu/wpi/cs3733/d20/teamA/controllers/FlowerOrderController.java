@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.google.inject.Inject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXProgressBar;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
@@ -33,6 +35,7 @@ public class FlowerOrderController extends AbstractController {
   @FXML private JFXButton trackButton;
   @FXML private GridPane centerPane;
   private AnchorPane flowerOrderPane;
+  private Scene appPrimaryScene;
 
   public FlowerOrderController() throws SQLException {}
 
@@ -47,6 +50,7 @@ public class FlowerOrderController extends AbstractController {
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     }
+
     // Set up drop shadow on flower order pane
     DropShadow dropShadow = new DropShadow();
     dropShadow.setRadius(5.0);
@@ -102,6 +106,17 @@ public class FlowerOrderController extends AbstractController {
     // Setup button icons
     orderButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ADDRESS_CARD));
     trackButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRUCK));
+  }
+
+  /**
+   * This method allows the tests to inject the scene at a later time, since it must be done on the
+   * JavaFX thread
+   *
+   * @param appPrimaryScene Primary scene of the app whose root will be changed
+   */
+  @Inject
+  public void setAppPrimaryScene(Scene appPrimaryScene) {
+    this.appPrimaryScene = appPrimaryScene;
   }
 
   @FXML
