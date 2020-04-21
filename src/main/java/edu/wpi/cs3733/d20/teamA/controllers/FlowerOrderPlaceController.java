@@ -28,6 +28,16 @@ public class FlowerOrderPlaceController extends AbstractController {
   @FXML private Label lblMax;
 
   public void initialize() throws SQLException, IOException, CsvException {
+    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
+      flDatabase.dropTables();
+      flDatabase.createTables();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    } else if (flDatabase.getSizeFlowers() == 0 || flDatabase.getSizeOrders() == 0) {
+      flDatabase.removeAll();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    }
     ObservableList<Flower> list = super.flDatabase.flowerOl(); // Get from FlowerDatabase @TODO
     for (Flower f : list) {
       choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
