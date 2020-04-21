@@ -39,12 +39,17 @@ public class MapEditorController {
   @FXML private JFXButton exportNodesButton;
   @FXML private JFXButton exportEdgesButton;
 
+  @FXML private JFXButton floorUpButton;
+  @FXML private JFXButton floorDownButton;
+  @FXML private JFXTextField floorField;
+
   @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
   private JFXRippler infoRippler;
 
   private MapCanvas canvas;
   private Graph graph;
+  private int floor = 1;
 
   enum Mode {
     INFO,
@@ -110,6 +115,8 @@ public class MapEditorController {
     deleteNodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRASH));
     addEdgeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS));
     deleteEdgeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRASH_ALT));
+    floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
+    floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
 
     // Setup tool button press handler
     nodeInfoButton.setOnAction(this::toolPressed);
@@ -129,7 +136,7 @@ public class MapEditorController {
       e.printStackTrace();
     }
 
-    Platform.runLater(() -> canvas.draw(1));
+    Platform.runLater(() -> canvas.draw(floor));
   }
 
   public void toolPressed(ActionEvent event) {
@@ -169,14 +176,14 @@ public class MapEditorController {
 
     if (mode != startMode) {
       canvas.setSelectedNode(null);
-      canvas.draw(1);
+      canvas.draw(floor);
     }
   }
 
   public void canvasClicked(MouseEvent mouse) {
     Point2D mousePos = new Point2D(mouse.getX(), mouse.getY());
     Point2D mouseGraphPos = canvas.canvasToGraph(mousePos);
-    Optional<Node> optionalNode = canvas.getClosestNode(1, mousePos, 15);
+    Optional<Node> optionalNode = canvas.getClosestNode(floor, mousePos, 15);
     Node lastSelected = canvas.getSelectedNode();
 
     switch (mode) {
@@ -206,12 +213,13 @@ public class MapEditorController {
             });
         break;
       case ADD_NODE:
-        openNodeModifyDialog(null, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY());
+        openNodeModifyDialog(null, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY(), floor);
         break;
       case EDIT_NODE:
         optionalNode.ifPresent(
             node ->
-                openNodeModifyDialog(node, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY()));
+                openNodeModifyDialog(
+                    node, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY(), floor));
         break;
       case DELETE_NODE:
         optionalNode.ifPresent(
@@ -257,18 +265,18 @@ public class MapEditorController {
         break;
     }
 
-    canvas.draw(1);
+    canvas.draw(floor);
   }
 
-  private void openNodeModifyDialog(Node node, int x, int y) {
+  private void openNodeModifyDialog(Node node, int x, int y, int floor) {
     String heading = (node == null) ? "Add Node" : "Edit Node";
-    NodeDialogController nodeDialogController = new NodeDialogController(node, x, y);
+    NodeDialogController nodeDialogController = new NodeDialogController(node, x, y, floor);
     DialogUtil.complexDialog(
         dialogPane,
         heading,
         "views/NodeModifyPopup.fxml",
         false,
-        event -> canvas.draw(1),
+        event -> canvas.draw(floor),
         nodeDialogController);
   }
 
@@ -291,5 +299,19 @@ public class MapEditorController {
     if (file != null) {
       CSVLoader.exportNodes(graph, file);
     }
+  }
+
+  @FXML
+  public void floorUp() {
+    floor = Math.min(5, floor + 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
+  }
+
+  @FXML
+  public void floorDown() {
+    floor = Math.max(1, floor - 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
   }
 }

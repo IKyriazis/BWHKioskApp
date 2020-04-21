@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXSlider?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -41,6 +42,13 @@
                   </AnchorPane>
                </children>
             </JFXDrawer>
+            <VBox layoutX="837.0" layoutY="15.0" spacing="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+               <children>
+                  <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" style="-fx-background-color: white;" />
+                  <JFXTextField fx:id="floorField" alignment="CENTER" editable="false" prefColumnCount="1" text="1" />
+                  <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" style="-fx-background-color: white;" />
+               </children>
+            </VBox>
          </children>
       </AnchorPane>
    </children>
