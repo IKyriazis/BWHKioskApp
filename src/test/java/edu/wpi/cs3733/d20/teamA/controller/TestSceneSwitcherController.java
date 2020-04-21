@@ -1,37 +1,42 @@
 package edu.wpi.cs3733.d20.teamA.controller;
 
 import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.controllers.LoginController;
+import java.io.IOException;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
 public class TestSceneSwitcherController extends TestAbstractController {
+
+  @InjectMocks LoginController controller;
+
+  private final FXMLLoader loader = new FXMLLoader();
+  private Parent sceneRoot;
+
   @Start
   private void start(Stage stage) {
     try {
-      FXMLLoader loader = new FXMLLoader();
-      loader.setLocation(App.class.getResource("views/SceneSwitcher.fxml"));
+      loader.setControllerFactory((i) -> controller);
+      sceneRoot = loader.load(App.class.getResource("views/SceneSwitcher.fxml"));
+      var primaryScene = new Scene(sceneRoot);
+      // We are forced to inject this object afterward, since it must be created on the JavaFX
+      // thread
+      // controller.setAppPrimaryScene(primaryScene);
 
-      Node rootNode = loader.load();
-      Assertions.assertNotNull(rootNode);
-
-      Scene scene = new Scene((Parent) rootNode);
-      stage.setScene(scene);
-      stage.show();
+      stage.setScene(primaryScene);
       stage.setAlwaysOnTop(true);
-
-    } catch (Exception e) {
+      stage.show();
+    } catch (IOException e) {
       e.printStackTrace();
-
-      Assertions.fail();
     }
   }
 
