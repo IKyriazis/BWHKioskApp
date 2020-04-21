@@ -5,8 +5,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.opencsv.exceptions.CsvException;
-import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
-import edu.wpi.cs3733.d20.teamA.database.JanitorDatabase;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Hashtable;
@@ -41,6 +39,8 @@ public class JanitorialController extends AbstractController {
   Hashtable<String, Integer> activeRequestHash = new Hashtable<>();
   Hashtable<String, String> statusHash = new Hashtable<>();
 
+  public JanitorialController() throws IOException, CsvException, SQLException {}
+
   public void initialize() throws SQLException, IOException, CsvException {
     refreshActiveRequests();
     statusHash.clear();
@@ -50,6 +50,10 @@ public class JanitorialController extends AbstractController {
     String c = "Low";
     priorityItems.addAll(a, b, c);
     comboboxPriority.getItems().addAll(priorityItems);
+    try {
+      janitorDatabase.readFromCSV();
+    } catch (SQLException bruhBoi) {
+    }
   }
 
   /**

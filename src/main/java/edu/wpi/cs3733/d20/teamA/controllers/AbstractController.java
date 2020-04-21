@@ -25,6 +25,10 @@ public abstract class AbstractController {
       graphDatabase.createTables();
       flDatabase = new FlowerDatabase(conn);
       graphDatabase.deleteNode("ID");
+      janitorDatabase = new JanitorDatabase(conn);
+      janitorDatabase.createTables();
+      eDB = new EmployeesDatabase(conn);
+      eDB.createTables();
     } catch (SQLException throwables) {
       throwables.printStackTrace(); // All is lost
     }

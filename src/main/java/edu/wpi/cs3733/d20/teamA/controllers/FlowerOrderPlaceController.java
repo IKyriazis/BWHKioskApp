@@ -31,7 +31,7 @@ public class FlowerOrderPlaceController extends AbstractController {
 
   private StackPane dialogPane;
 
-  public FlowerOrderPlaceController(StackPane dialogPane) {
+  public FlowerOrderPlaceController(StackPane dialogPane) throws Exception {
     super();
 
     this.dialogPane = dialogPane;
