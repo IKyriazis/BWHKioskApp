@@ -17,12 +17,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith({MockitoExtension.class, ApplicationExtension.class})
-public class TestLoginController extends FxRobot {
+public class TestLoginController extends TestAbstractController {
 
   @Mock FXMLLoader mockloader;
 
@@ -51,12 +50,14 @@ public class TestLoginController extends FxRobot {
 
   @Test
   public void testPressLoginButton() {
+    clickOn("#usernameBox");
+    writeString("Admin");
+    clickOn("#passwordBox");
+    writeString("Admin");
     Node node = lookup("#loginBox").query();
     double originalY = node.getTranslateY();
     clickOn("Login");
     double newY = node.getTranslateY();
-    System.out.println("New" + newY);
-    System.out.println("Orig" + originalY);
     Assertions.assertTrue(newY < originalY);
     verifyThat("#loginBox", Node::isVisible);
   }

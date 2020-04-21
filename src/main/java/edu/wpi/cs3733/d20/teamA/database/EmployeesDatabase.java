@@ -178,11 +178,7 @@ public class EmployeesDatabase extends Database {
       rset.close();
       pstmt.close();
 
-      if (pass.equals(enteredPass)) {
-        return true;
-      } else {
-        return false;
-      }
+      return (pass != null) && pass.equals(enteredPass);
     } catch (SQLException e) {
       return false;
     }

@@ -12,7 +12,7 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class TestNotifController {
+public class TestNotifController extends TestAbstractController {
 
   @Start
   private void start(Stage stage) {
