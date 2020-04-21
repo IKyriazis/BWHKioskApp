@@ -25,7 +25,7 @@ public class JanitorialController extends AbstractController {
   @FXML private JFXButton btnInProgress;
 
   @FXML private JFXTextField textfieldLocation;
-  @FXML private JFXTextField textfieldPriority;
+  @FXML private JFXTextField textfieldEmployeeName;
 
   @FXML private Label labelClearRequest;
   @FXML private Label labelSubmitRequest;
@@ -136,6 +136,7 @@ public class JanitorialController extends AbstractController {
       btnNotStarted.setVisible(true);
       labelStatus.setText(statusHash.get(Request));
       labelStatus.setVisible(true);
+      textfieldEmployeeName.setVisible(true);
     }
   }
 
@@ -144,10 +145,15 @@ public class JanitorialController extends AbstractController {
     if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
       return;
     }
-
-    statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "In Progress");
-    labelStatus.setText(
-        statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+    if (textfieldEmployeeName.getText().equals("")) {
+      labelStatus.setText("Please enter the employee name below");
+    } else if (!textfieldEmployeeName.getText().equals("")) {
+      statusHash.replace(
+          listviewActiveRequests.getSelectionModel().getSelectedItem(),
+          textfieldEmployeeName.getText() + " is currently working");
+      labelStatus.setText(
+          statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+    }
   }
 
   @FXML
@@ -155,10 +161,14 @@ public class JanitorialController extends AbstractController {
     if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
       return;
     }
-
-    statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "Not Started");
-    labelStatus.setText(
-        statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+    if (textfieldEmployeeName.getText().equals("")) {
+      labelStatus.setText("Please enter the employee name below");
+    } else if (!textfieldEmployeeName.getText().equals("")) {
+      statusHash.replace(
+          listviewActiveRequests.getSelectionModel().getSelectedItem(), "Not Started");
+      labelStatus.setText(
+          statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+    }
   }
 
   @FXML
@@ -166,9 +176,14 @@ public class JanitorialController extends AbstractController {
     if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
       return;
     }
-
-    statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "Completed");
-    labelStatus.setText(
-        statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+    if (textfieldEmployeeName.getText().equals("")) {
+      labelStatus.setText("Please enter the employee name below");
+    } else if (!textfieldEmployeeName.getText().equals("")) {
+      statusHash.replace(
+          listviewActiveRequests.getSelectionModel().getSelectedItem(),
+          "Completed by " + textfieldEmployeeName.getText());
+      labelStatus.setText(
+          statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+    }
   }
 }

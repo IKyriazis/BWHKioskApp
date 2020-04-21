@@ -1,12 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.controller;
 
-import static org.testfx.api.FxAssert.verifyThat;
-
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.LoginController;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -25,11 +22,9 @@ import org.testfx.framework.junit5.Start;
 @ExtendWith({MockitoExtension.class, ApplicationExtension.class})
 public class TestMapEditorController extends FxRobot {
 
-  @Mock
-  FXMLLoader mockloader;
+  @Mock FXMLLoader mockloader;
 
-  @InjectMocks
-  LoginController controller;
+  @InjectMocks LoginController controller;
 
   private final FXMLLoader loader = new FXMLLoader();
   private Parent sceneRoot;
