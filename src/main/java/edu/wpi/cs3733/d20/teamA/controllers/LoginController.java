@@ -33,6 +33,7 @@ public class LoginController extends AbstractController {
   private GaussianBlur currentBlur;
   private Scene appPrimaryScene;
   private boolean loggedIn = false;
+  private boolean transitioning = false;
 
   /**
    * This method allows the tests to inject the scene at a later time, since it must be done on the
@@ -87,13 +88,17 @@ public class LoginController extends AbstractController {
       return;
     }
 
-    // Clear username / password
-    usernameBox.setText("");
-    passwordBox.setText("");
-
     // Chuck the login box way off screen
+    transitioning = true;
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
     translate.setByY(-2000f);
+    translate.setOnFinished(
+        event -> {
+          // Clear username / password once they're off screen
+          usernameBox.setText("");
+          passwordBox.setText("");
+          transitioning = false;
+        });
     translate.play();
 
     // Fade away background blur
@@ -118,7 +123,7 @@ public class LoginController extends AbstractController {
 
   @FXML
   public void logoutButtonPressed() {
-    if (!loggedIn) {
+    if (!loggedIn || transitioning) {
       return;
     }
 
@@ -140,6 +145,7 @@ public class LoginController extends AbstractController {
                 Duration.millis(100),
                 event -> {
                   currentBlur.setRadius(currentBlur.getRadius() + 3);
+                  tabPane.setMouseTransparent(true);
                 }));
     blurFader.play();
 

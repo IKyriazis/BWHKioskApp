@@ -51,6 +51,26 @@ public class NodeDialogController implements IDialogController {
 
   @FXML
   public void initialize() {
+    // Setup string limit lengths
+    nodeIDField.textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.length() > 15) {
+                nodeIDField.setText(newValue.substring(0, 15));
+              }
+            });
+    shortNameField.textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.length() > 25) {
+                shortNameField.setText(newValue.substring(0, 25));
+              }
+            });
+    longNameField.textProperty().addListener((observable, oldValue, newValue) -> {
+      if (newValue.length() > 50) {
+        longNameField.setText(newValue.substring(0, 50));
+      }
+    });
     // Setup floor combobox
     // ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
     ObservableList<Integer> floors = FXCollections.observableArrayList(1);

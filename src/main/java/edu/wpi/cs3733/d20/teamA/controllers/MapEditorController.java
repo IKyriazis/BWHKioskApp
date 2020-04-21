@@ -79,7 +79,7 @@ public class MapEditorController {
 
     // Setup info pane rippler
     infoRippler = new JFXRippler(infoPane, JFXRippler.RipplerMask.RECT);
-    infoRippler.setRipplerFill(Color.web("#78909C"));
+    infoRippler.setRipplerFill(Color.web("#607D8B"));
     infoRippler.setEnabled(true);
 
     // Trigger ripple when label is updated

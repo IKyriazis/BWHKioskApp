@@ -14,7 +14,7 @@ import javafx.scene.layout.GridPane;
 import lombok.SneakyThrows;
 
 public class FlowerDialogController extends AbstractController implements IDialogController {
-  private boolean modify;
+  private final boolean modify;
 
   @FXML private GridPane modPane;
   @FXML private JFXTextField txtName;
@@ -45,6 +45,23 @@ public class FlowerDialogController extends AbstractController implements IDialo
   }
 
   public void initialize() {
+    // Set formatters to restrict input in boxes
+    txtName
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.length() > 15) {
+                txtName.setText(newValue.substring(0, 15));
+              }
+            });
+    txtColor
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.length() > 15) {
+                txtColor.setText(newValue.substring(0, 15));
+              }
+            });
     txtQty.setTextFormatter(InputFormatUtil.getIntFilter());
     txtCost.setTextFormatter(InputFormatUtil.getDoubleFilter());
 
@@ -77,8 +94,8 @@ public class FlowerDialogController extends AbstractController implements IDialo
     }
 
     try {
-      String name = txtName.getText().substring(0, Math.min(15, txtName.getText().length()));
-      String color = txtColor.getText().substring(0, Math.min(15, txtColor.getText().length()));
+      String name = txtName.getText();
+      String color = txtColor.getText();
       int qty = Integer.parseInt(txtQty.getText());
       double price = Double.parseDouble(txtCost.getText());
 
