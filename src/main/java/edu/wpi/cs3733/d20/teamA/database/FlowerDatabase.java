@@ -16,7 +16,7 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * Drops thetables so we can start fresh
+   * Drops the tables so we can start fresh
    *
    * @return false if the tables don't exist and CONSTRAINT can't be dropped, true if CONSTRAINT and
    *     tables are dropped correctly
@@ -95,6 +95,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -440,6 +441,35 @@ public class FlowerDatabase extends Database {
       rset.close();
       pstmt.close();
       return price;
+    } catch (SQLException e) {
+      return -1;
+    }
+  }
+  /**
+   * returns the number of a given flower availible
+   *
+   * @param type
+   * @param color
+   * @return
+   */
+  public int getFlowerNumber(String type, String color) {
+    int num = -1;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "Select qty From Flowers Where typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        num = rset.getInt("qty");
+      }
+      rset.close();
+      pstmt.close();
+      return num;
     } catch (SQLException e) {
       return -1;
     }
