@@ -10,49 +10,49 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane focusTraversable="true" prefHeight="400" prefWidth="800" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.JanitorialController">
+<AnchorPane focusTraversable="true" prefHeight="400" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.JanitorialController">
    <children>
       <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <left>
-            <AnchorPane prefHeight="350.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="400.0" prefWidth="175.0" BorderPane.alignment="CENTER">
                <children>
-                  <Separator halignment="RIGHT" layoutX="198.0" orientation="VERTICAL" prefHeight="500.0" prefWidth="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <Label layoutX="86.0" layoutY="198.0" text="Priority" />
-                  <Label layoutX="82.0" layoutY="103.0" text="Location" />
-                  <Label fx:id="labelSubmitRequest" alignment="CENTER" layoutX="57.0" layoutY="434.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Label layoutX="21.0" layoutY="28.0" text="Submit Request" wrapText="true">
+                  <Separator halignment="RIGHT" layoutX="198.0" orientation="VERTICAL" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <Label alignment="CENTER" layoutX="86.0" layoutY="198.0" text="Priority" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Label alignment="CENTER" layoutX="82.0" layoutY="103.0" text="Location" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Label fx:id="labelSubmitRequest" alignment="CENTER" layoutY="360.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <Label alignment="CENTER" layoutX="21.0" layoutY="28.0" text="Submit Request" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="22.0" />
                      </font>
                   </Label>
-                  <JFXButton fx:id="btnSubmitRequest" buttonType="RAISED" layoutX="55.0" layoutY="358.0" onAction="#addServiceRequest" text="Submit Request" />
-                  <JFXTextField fx:id="textfieldLocation" layoutX="31.0" layoutY="120.0" prefHeight="25.0" prefWidth="147.0" />
-                  <JFXTextField fx:id="textfieldPriority" layoutX="31.0" layoutY="250.0" prefHeight="25.0" prefWidth="147.0" />
+                  <JFXButton fx:id="btnSubmitRequest" buttonType="RAISED" layoutX="38.0" layoutY="300.0" onAction="#addServiceRequest" text="Submit Request" />
+                  <JFXTextField fx:id="textfieldLocation" layoutX="31.0" layoutY="120.0" prefHeight="25.0" prefWidth="147.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
+                  <JFXTextField fx:id="textfieldPriority" layoutX="31.0" layoutY="250.0" prefHeight="25.0" prefWidth="126.0" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.0" />
                </children>
             </AnchorPane>
          </left>
          <right>
-            <AnchorPane prefHeight="500.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="400.0" prefWidth="175.0" BorderPane.alignment="CENTER">
                <children>
-                  <Separator layoutX="-3.0" orientation="VERTICAL" prefHeight="500.0" />
-                  <Label layoutX="28.0" layoutY="33.0" text="Clear Request" wrapText="true">
+                  <Separator layoutX="-3.0" orientation="VERTICAL" prefHeight="400.0" />
+                  <Label alignment="CENTER" layoutX="28.0" layoutY="33.0" text="Clear Request" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <JFXComboBox fx:id="comboboxActiveRequests" layoutX="12.0" layoutY="172.0" onAction="#refreshActiveRequests" onMouseEntered="#refreshActiveRequests" onTouchMoved="#refreshActiveRequests" onTouchPressed="#refreshActiveRequests" promptText="Choose an Active Request" />
-                  <JFXButton fx:id="btnClearRequest" buttonType="RAISED" layoutX="58.0" layoutY="303.0" onAction="#removeServiceRequest" text="Clear Request" />
-                  <Label fx:id="labelClearRequest" alignment="CENTER" layoutX="57.0" layoutY="434.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                  <JFXComboBox fx:id="comboboxActiveRequests" layoutX="25.0" layoutY="162.0" onAction="#refreshActiveRequests" onMouseEntered="#refreshActiveRequests" onTouchMoved="#refreshActiveRequests" onTouchPressed="#refreshActiveRequests" promptText="Active Requests" />
+                  <JFXButton fx:id="btnClearRequest" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="43.0" layoutY="300.0" onAction="#removeServiceRequest" text="Clear Request" />
+                  <Label fx:id="labelClearRequest" alignment="CENTER" layoutY="360.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
          </right>
          <center>
-            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <AnchorPane prefHeight="400.0" prefWidth="450.0" BorderPane.alignment="CENTER">
                <children>
-                  <Canvas height="400.0" layoutY="100.0" width="600.0" />
-                  <Label layoutX="37.0" layoutY="14.0" text="Map of Active Janitorial Requests" wrapText="true">
+                  <Canvas height="300.0" layoutY="100.0" width="450.0" />
+                  <Label alignment="CENTER" layoutX="37.0" layoutY="14.0" text="Map of Active Janitorial Requests" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                      <font>
-                        <Font size="36.0" />
+                        <Font size="30.0" />
                      </font>
                   </Label>
                </children>
