@@ -24,7 +24,7 @@ public class SceneSwitcherController {
     // Setup tab icons
     mapTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP));
     serviceTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BELL));
-    employeeLoginTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN));
+    employeeLoginTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE));
 
     // Settings button icon
     informationButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.INFO_CIRCLE));

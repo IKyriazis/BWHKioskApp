@@ -2,13 +2,16 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.google.inject.Inject;
 import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
@@ -16,10 +19,14 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
-public class LoginController {
+import java.sql.SQLException;
+
+public class LoginController extends AbstractController{
   @FXML private VBox loginBox;
   @FXML private Button loginButton;
   @FXML private JFXTabPane tabPane;
+  @FXML private JFXTextField usernameBox;
+  @FXML private JFXTextField passwordBox;
 
   private GaussianBlur currentBlur;
 
@@ -57,8 +64,15 @@ public class LoginController {
   }
 
   @FXML
-  public void loginButtonPressed() {
+  public void loginButtonPressed() throws SQLException {
     // TODO; Real login
+
+    if(!eDB.logIn(usernameBox.getText(), passwordBox.getText())){
+
+      //Doesn't pass
+
+    }
+
 
     // Chuck the login box way off screen
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
@@ -83,4 +97,6 @@ public class LoginController {
                 }));
     blurFader.play();
   }
+
+
 }
