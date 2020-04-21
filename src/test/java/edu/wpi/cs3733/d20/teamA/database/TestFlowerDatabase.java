@@ -126,6 +126,7 @@ public class TestFlowerDatabase {
     fDB.addOrder(-1, "Daisy", "Blue", "buiscuit");
     fDB.addOrder(1, "Daisy", "Blue", "butter");
     Assertions.assertEquals(1, fDB.getSizeOrders());
+    Assertions.assertEquals(5, fDB.getFlowerQuantity("Daisy", "Blue"));
     fDB.removeAllOrders();
   }
 

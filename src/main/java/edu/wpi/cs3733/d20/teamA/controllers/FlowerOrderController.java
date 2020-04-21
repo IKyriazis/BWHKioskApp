@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.google.inject.Inject;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.App;
@@ -23,6 +24,19 @@ public class FlowerOrderController extends AbstractController {
   @FXML private JFXTextField txtNumber;
 
   public FlowerOrderController() throws SQLException {}
+
+  private Scene appPrimaryScene;
+
+  /**
+   * This method allows the tests to inject the scene at a later time, since it must be done on the
+   * JavaFX thread
+   *
+   * @param appPrimaryScene Primary scene of the app whose root will be changed
+   */
+  @Inject
+  public void setAppPrimaryScene(Scene appPrimaryScene) {
+    this.appPrimaryScene = appPrimaryScene;
+  }
 
   public void initialize() throws SQLException {
     ObservableList<Flower> list = super.flDatabase.flowerOl(); // Get from FlowerDatabase @TODO
