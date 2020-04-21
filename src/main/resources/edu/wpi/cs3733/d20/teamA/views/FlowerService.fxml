@@ -28,7 +28,7 @@
                           <children>
                               <HBox spacing="10.0">
                                  <children>
-                                    <JFXTextField fx:id="txtNumber" labelFloat="true" maxWidth="-Infinity" promptText="Order Number" />
+                                    <JFXTextField fx:id="txtNumber" labelFloat="true" maxWidth="-Infinity" onAction="#checkNum" promptText="Order Number" />
                                     <JFXProgressBar fx:id="progress" prefHeight="30.0" prefWidth="363.0" />
                                  </children>
                               </HBox>
