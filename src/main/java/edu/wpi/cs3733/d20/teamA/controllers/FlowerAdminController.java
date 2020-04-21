@@ -190,6 +190,7 @@ public class FlowerAdminController extends AbstractController {
       Flower f = selected.getValue();
       String name = f.getTypeFlower();
       String color = f.getColor();
+      System.out.println("Type: " + name + " Color: " + color);
 
       try {
         super.flDatabase.deleteFlower(name, color);
@@ -206,6 +207,7 @@ public class FlowerAdminController extends AbstractController {
           "No Flower Selected",
           "Please select a flower by clicking a row in the table");
     }
+    update();
   }
 
   public void update() {
@@ -227,7 +229,6 @@ public class FlowerAdminController extends AbstractController {
   public void changeProgress(ActionEvent actionEvent) throws SQLException {
     if (lastOrder != null) {
       String s = txtNext.getSelectionModel().getSelectedItem();
-      System.out.println(s);
       super.flDatabase.changeOrderStatus(lastOrder.getOrderNumber(), s);
       lastOrder = null;
       update();
