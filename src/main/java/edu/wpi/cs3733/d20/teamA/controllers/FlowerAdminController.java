@@ -42,7 +42,7 @@ public class FlowerAdminController extends AbstractController {
 
   private Order lastOrder;
 
-  public FlowerAdminController() throws SQLException {}
+  public FlowerAdminController() throws Exception {}
 
   public void initialize() throws SQLException, IOException, CsvException {
     if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
@@ -166,7 +166,7 @@ public class FlowerAdminController extends AbstractController {
     txtNext.getSelectionModel().select(0);
   }
 
-  public void addFlower() {
+  public void addFlower() throws Exception {
     DialogUtil.complexDialog(
         dialogStackPane,
         "Add Flower",
@@ -196,7 +196,7 @@ public class FlowerAdminController extends AbstractController {
     return constrained;
   }
 
-  public void editFlower() {
+  public void editFlower() throws Exception {
     TreeItem<Flower> selection = tblFlowerView.getSelectionModel().getSelectedItem();
     if (selection != null) {
       Flower flower = selection.getValue();

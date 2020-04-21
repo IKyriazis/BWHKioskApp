@@ -31,14 +31,14 @@ public class FlowerDialogController extends AbstractController implements IDialo
   private boolean hasOrder;
 
   @SneakyThrows
-  public FlowerDialogController() {
+  public FlowerDialogController() throws Exception {
     super();
 
     modify = false;
   }
 
   @SneakyThrows
-  public FlowerDialogController(Flower f, boolean hasOrder) {
+  public FlowerDialogController(Flower f, boolean hasOrder) throws Exception {
     super();
 
     this.modify = true;
