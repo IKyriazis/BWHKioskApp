@@ -36,8 +36,7 @@ public class MapEditorController {
   @FXML private JFXButton deleteNodeButton;
   @FXML private JFXButton addEdgeButton;
   @FXML private JFXButton deleteEdgeButton;
-  @FXML private JFXButton exportNodesButton;
-  @FXML private JFXButton exportEdgesButton;
+  @FXML private JFXButton exportButton;
 
   @FXML private JFXButton floorUpButton;
   @FXML private JFXButton floorDownButton;
@@ -117,6 +116,7 @@ public class MapEditorController {
     deleteEdgeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRASH_ALT));
     floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
     floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
+    exportButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SAVE));
 
     // Setup tool button press handler
     nodeInfoButton.setOnAction(this::toolPressed);
@@ -126,8 +126,6 @@ public class MapEditorController {
     deleteNodeButton.setOnAction(this::toolPressed);
     addEdgeButton.setOnAction(this::toolPressed);
     deleteEdgeButton.setOnAction(this::toolPressed);
-    exportEdgesButton.setOnAction(this::exportEdgeCSVClicked);
-    exportNodesButton.setOnAction(this::exportNodeCSVClicked);
 
     // Try to get graph
     try {
@@ -280,24 +278,27 @@ public class MapEditorController {
         nodeDialogController);
   }
 
-  public void exportEdgeCSVClicked(ActionEvent actionEvent) {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Save Edge CSV");
-
-    File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
-    if (file != null) {
-      CSVLoader.exportEdges(graph, file);
-    }
-  }
-
-  // exportNodeCSVClicked() handles clicks from the 'Export Node CSV' button
-  public void exportNodeCSVClicked(ActionEvent actionEvent) {
+  @FXML
+  public void exportClicked(ActionEvent actionEvent) {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save Node CSV");
 
-    File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
-    if (file != null) {
-      CSVLoader.exportNodes(graph, file);
+    File nodeFile = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+    if (nodeFile != null) {
+      CSVLoader.exportNodes(graph, nodeFile);
+    } else {
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "Export Error", "No file / invalid file selected for node export");
+      return;
+    }
+
+    fileChooser.setTitle("Save Edge CSV");
+    File edgeFile = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+    if (edgeFile != null) {
+      CSVLoader.exportEdges(graph, edgeFile);
+    } else {
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "Export Error", "No file / invalid file selected for edge export");
     }
   }
 

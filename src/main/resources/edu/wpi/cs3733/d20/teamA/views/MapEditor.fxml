@@ -25,8 +25,7 @@
                   <JFXButton fx:id="deleteNodeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Delete Node" />
                   <JFXButton fx:id="addEdgeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Add Edge" />
                   <JFXButton fx:id="deleteEdgeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Delete Edge" textAlignment="CENTER" />
-                  <JFXButton fx:id="exportNodesButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Export Nodes To CSV" />
-                  <JFXButton fx:id="exportEdgesButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Export Edges To CSV" />
+                  <JFXButton fx:id="exportButton" buttonType="RAISED" onAction="#exportClicked" prefWidth="100.0" style="-fx-background-color: white;" text="Export CSV" />
                </children>
             </VBox>
             <JFXDrawer fx:id="infoDrawer" alignment="CENTER_LEFT" defaultDrawerSize="250.0" layoutY="259.0" mouseTransparent="true" resizeContent="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
