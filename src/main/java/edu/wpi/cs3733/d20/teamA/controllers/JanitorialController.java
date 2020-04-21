@@ -2,9 +2,10 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
-import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
-import edu.wpi.cs3733.d20.teamA.database.JanitorDatabase;
+import com.opencsv.exceptions.CsvException;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Hashtable;
 import javafx.collections.FXCollections;
@@ -12,45 +13,47 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class JanitorialController {
+public class JanitorialController extends AbstractController {
 
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
-  private Connection conn;
-  GraphDatabase gDB;
-  JanitorDatabase jDB;
 
-  @FXML private JFXComboBox<String> comboboxActiveRequests;
   @FXML private JFXButton btnClearRequest;
   @FXML private JFXButton btnSubmitRequest;
+  @FXML private JFXButton btnNotStarted;
+  @FXML private JFXButton btnCompleted;
+  @FXML private JFXButton btnInProgress;
+
   @FXML private JFXTextField textfieldLocation;
   @FXML private JFXTextField textfieldPriority;
+
   @FXML private Label labelClearRequest;
   @FXML private Label labelSubmitRequest;
+  @FXML private Label labelStatus;
 
-  ObservableList dropdownMenuItems = FXCollections.observableArrayList();
+  @FXML private JFXListView<String> listviewActiveRequests;
+  @FXML private JFXComboBox<String> comboboxPriority;
+
+  ObservableList priorityItems = FXCollections.observableArrayList();
+  ObservableList activeItems = FXCollections.observableArrayList();
   Hashtable<String, Integer> activeRequestHash = new Hashtable<>();
+  Hashtable<String, String> statusHash = new Hashtable<>();
 
-  public void init() throws SQLException {
-    conn = DriverManager.getConnection(jdbcUrl);
-    gDB = new GraphDatabase(conn);
-    jDB = new JanitorDatabase(conn);
-    gDB.createTables();
-    jDB.createTables();
-  }
+  public JanitorialController() throws IOException, CsvException, SQLException {}
 
-  @FXML
-  private void disableSubmitButton() {
-    if (!(textfieldLocation.getText() == null) && !(textfieldPriority.getText() == null)) {
-      btnSubmitRequest.setDisable(false);
-    } else btnSubmitRequest.setDisable(true);
-  }
-
-  @FXML
-  private void disableClearButton() {
-    if (!(comboboxActiveRequests.getAccessibleText() == null)) {
-      btnSubmitRequest.setDisable(false);
-    } else btnSubmitRequest.setDisable(true);
+  public void initialize() throws SQLException, IOException, CsvException {
+    refreshActiveRequests();
+    statusHash.clear();
+    priorityItems.clear();
+    String a = "High";
+    String b = "Medium";
+    String c = "Low";
+    priorityItems.addAll(a, b, c);
+    comboboxPriority.getItems().addAll(priorityItems);
+    try {
+      janitorDatabase.readFromCSV();
+    } catch (SQLException bruhBoi) {
+    }
   }
 
   /**
@@ -60,8 +63,20 @@ public class JanitorialController {
    */
   @FXML
   private void addServiceRequest() throws SQLException {
-    jDB.addRequest(textfieldLocation.getText(), textfieldPriority.getText());
-    labelSubmitRequest.setText("Request Submitted Successfully");
+    if ((!textfieldLocation.getText().equals("")) && !comboboxPriority.getValue().equals("")) {
+      janitorDatabase.addRequest(textfieldLocation.getText(), comboboxPriority.getValue());
+      statusHash.put(textfieldLocation.getText(), "Not Started");
+      comboboxPriority.getSelectionModel().clearSelection();
+      textfieldLocation.clear();
+      labelSubmitRequest.setText("Request Submitted Successfully");
+    } else if (comboboxPriority.getValue() != null && textfieldLocation.getText().equals("")) {
+      labelSubmitRequest.setText("Please enter a location");
+    } else if (comboboxPriority.getValue() == null && !textfieldLocation.getText().equals("")) {
+      labelSubmitRequest.setText("Please enter a priority");
+    } else if (comboboxPriority.getValue() == null && textfieldLocation.getText().equals("")) {
+      labelSubmitRequest.setText("Please enter data");
+    }
+    refreshActiveRequests();
   }
 
   /**
@@ -71,9 +86,17 @@ public class JanitorialController {
    */
   @FXML
   private void removeServiceRequest() throws SQLException {
-    String request = comboboxActiveRequests.getAccessibleText();
-    jDB.deleteRequest(activeRequestHash.get(request));
-    labelClearRequest.setText("Service Removed Successfully");
+    String request = listviewActiveRequests.getSelectionModel().getSelectedItem();
+    if (request != null) {
+      if (janitorDatabase.deleteRequest(activeRequestHash.get(request))) {
+        labelClearRequest.setText("Service Removed Successfully");
+        listviewActiveRequests.getItems().removeAll(activeItems);
+      } else {
+        labelClearRequest.setText("Please select an active request");
+      }
+    }
+    refreshActiveRequests();
+    statusHash.remove(request);
   }
 
   /**
@@ -83,19 +106,53 @@ public class JanitorialController {
    */
   @FXML
   private void refreshActiveRequests() throws SQLException {
-    dropdownMenuItems.removeAll(dropdownMenuItems);
+    listviewActiveRequests.getItems().clear();
+    activeItems.clear();
     activeRequestHash.clear();
     String Request;
-    int size = jDB.getRequestSize();
-    for (int i = 0; i < size; i++) {
-      Request = jDB.getName(i);
+    int size = janitorDatabase.getRequestSize();
+    for (int i = 3; i < size + 3; i++) {
+      Request = janitorDatabase.getLocation(i);
       if (Request == null) {
         continue;
       } else {
-        dropdownMenuItems.addAll(Request);
+        activeItems.add(Request);
         activeRequestHash.put(Request, i);
       }
     }
-    comboboxActiveRequests.getItems().addAll(dropdownMenuItems);
+    listviewActiveRequests.getItems().addAll(activeItems);
+  }
+
+  @FXML
+  private void elementSelect() throws SQLException {
+    String Request = listviewActiveRequests.getSelectionModel().getSelectedItem();
+    if (Request != null) {
+      btnCompleted.setVisible(true);
+      btnInProgress.setVisible(true);
+      btnNotStarted.setVisible(true);
+      labelStatus.setText(statusHash.get(Request));
+      labelStatus.setVisible(true);
+    }
+  }
+
+  @FXML
+  private void markInProgress() {
+    statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "In Progress");
+    labelStatus.setText(
+        statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+  }
+
+  @FXML
+  private void markNotStarted() {
+    statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "Not Started");
+    labelStatus.setText(
+        statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+  }
+
+  @FXML
+  private void markCompleted() {
+    statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "Completed");
+    labelStatus.setText(
+        statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
   }
 }

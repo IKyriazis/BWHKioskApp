@@ -27,6 +27,9 @@
             <Tab closable="false" text="Announcements">
                <fx:include source="AnnouncementAdmin.fxml" />
             </Tab>
+            <Tab closable="false" text="Janitorial">
+               <fx:include source="JanitorialGUI.fxml" />
+            </Tab>
          </JFXTabPane>
          <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
             <padding>

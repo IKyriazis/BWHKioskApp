@@ -5,12 +5,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
-import com.opencsv.exceptions.CsvException;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
-import java.io.IOException;
-import java.sql.SQLException;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,9 +38,9 @@ public class FlowerOrderController extends AbstractController {
   private AnchorPane flowerOrderPane;
   private Scene appPrimaryScene;
 
-  public FlowerOrderController() throws SQLException {}
+  public FlowerOrderController() throws Exception {}
 
-  public void initialize() throws SQLException, IOException, CsvException {
+  public void initialize() throws Exception {
     if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
       flDatabase.dropTables();
       flDatabase.createTables();
@@ -66,7 +63,16 @@ public class FlowerOrderController extends AbstractController {
     // Load flower order fxml
     FXMLLoader loader = new FXMLLoader();
     loader.setLocation(App.class.getResource("views/FlowerOrder.fxml"));
-    loader.setControllerFactory(param -> new FlowerOrderPlaceController(dialogPane));
+    loader.setControllerFactory(
+        param -> {
+          try {
+
+            return new FlowerOrderPlaceController(dialogPane);
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+          return null;
+        });
     flowerOrderPane = loader.load();
 
     // Set up tracker drawer
