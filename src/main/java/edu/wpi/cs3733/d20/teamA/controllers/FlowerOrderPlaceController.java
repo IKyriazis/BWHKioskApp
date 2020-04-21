@@ -6,6 +6,7 @@ import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class FlowerOrderPlaceController extends AbstractController {
   @FXML private GridPane flowerOrderPane;
@@ -27,7 +29,25 @@ public class FlowerOrderPlaceController extends AbstractController {
   @FXML private JFXTextField txtTotal;
   @FXML private Label lblMax;
 
+  private StackPane dialogPane;
+
+  public FlowerOrderPlaceController(StackPane dialogPane) {
+    super();
+
+    this.dialogPane = dialogPane;
+  }
+
   public void initialize() throws SQLException, IOException, CsvException {
+    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
+      flDatabase.dropTables();
+      flDatabase.createTables();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    } else if (flDatabase.getSizeFlowers() == 0 || flDatabase.getSizeOrders() == 0) {
+      flDatabase.removeAll();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    }
     ObservableList<Flower> list = super.flDatabase.flowerOl(); // Get from FlowerDatabase @TODO
     for (Flower f : list) {
       choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
@@ -60,11 +80,15 @@ public class FlowerOrderPlaceController extends AbstractController {
       try {
         num = Integer.parseInt(txtNumber.getText());
         if (num > max || num <= 0) {
-          alertFail("Please input a number of flowers to order between 0 and the maximum in stock");
+          DialogUtil.simpleInfoDialog(
+              dialogPane,
+              "Select Number",
+              "Please input a number of flowers to order between 0 and the maximum in stock");
           return;
         }
       } catch (NumberFormatException e) {
-        alertFail("Please input a numeric value for number of flowers");
+        DialogUtil.simpleInfoDialog(
+            dialogPane, "Invalid Number", "Please input a numeric value for number of flowers");
         return;
       }
       Node node = roomList.getSelectionModel().getSelectedItem();
@@ -72,14 +96,15 @@ public class FlowerOrderPlaceController extends AbstractController {
       if (node != null) {
         loc = node.getNodeID();
       } else {
-        alertFail("Please select a room");
+        DialogUtil.simpleInfoDialog(dialogPane, "Select Room", "Please select a flower room");
         return;
       }
 
       int i = super.flDatabase.addOrder(num, type, color, loc);
 
       if (i == 0) {
-        alertFail("Order not placed successfully, please try again");
+        DialogUtil.simpleErrorDialog(
+            dialogPane, "Order Error", "Order not placed successfully, please try again");
       } else {
         // Update number of flowers in database
         super.flDatabase.updateQTY(type, color, max - num);
@@ -94,13 +119,6 @@ public class FlowerOrderPlaceController extends AbstractController {
         txtTotal.clear();
       }
     }
-  }
-
-  private void alertFail(String s) {
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Unable to place order");
-    alert.setContentText(s);
-    alert.showAndWait();
   }
 
   public void setMaxNumber(ActionEvent actionEvent) {

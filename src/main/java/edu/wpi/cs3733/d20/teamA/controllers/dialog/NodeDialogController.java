@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -71,6 +73,9 @@ public class NodeDialogController implements IDialogController {
 
     // Button hook
     doneButton.setOnAction(this::pressedDone);
+
+    // Set button icon
+    doneButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
 
     // Populate fields if modifying
     if (oldNode != null) {

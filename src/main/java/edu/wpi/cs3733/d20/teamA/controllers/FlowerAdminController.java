@@ -1,12 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
+import com.opencsv.exceptions.CsvException;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerDialogController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,7 +44,17 @@ public class FlowerAdminController extends AbstractController {
 
   public FlowerAdminController() throws SQLException {}
 
-  public void initialize() throws SQLException {
+  public void initialize() throws SQLException, IOException, CsvException {
+    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
+      flDatabase.dropTables();
+      flDatabase.createTables();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    } else if (flDatabase.getSizeFlowers() == 0 || flDatabase.getSizeOrders() == 0) {
+      flDatabase.removeAll();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    }
     // Setup label icons
     flowerTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.FILE));
     orderTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
@@ -164,11 +176,36 @@ public class FlowerAdminController extends AbstractController {
         new FlowerDialogController());
   }
 
+  private boolean hasDependentOrder(Flower flower) {
+    boolean constrained = false;
+    try {
+      for (Order order : flDatabase.orderOl()) {
+        if ((order.getFlowerType().equals(flower.getTypeFlower()))
+            && (order.getFlowerColor().equals(flower.getColor()))) {
+          constrained = true;
+        }
+      }
+    } catch (Exception e) {
+      DialogUtil.simpleErrorDialog(
+          dialogStackPane,
+          "Database Failure",
+          "Failed to verify that there were no outstanding orders for flower: "
+              + flower.toString());
+    }
+
+    return constrained;
+  }
+
   public void editFlower() {
     TreeItem<Flower> selection = tblFlowerView.getSelectionModel().getSelectedItem();
     if (selection != null) {
       Flower flower = selection.getValue();
-      FlowerDialogController controller = new FlowerDialogController(flower);
+
+      // Figure out whether any outstanding orders depend on this flower type, in which case we
+      // can't change the name / type
+      boolean constrained = hasDependentOrder(flower);
+
+      FlowerDialogController controller = new FlowerDialogController(flower, constrained);
       DialogUtil.complexDialog(
           dialogStackPane,
           "Edit Flower",
@@ -188,25 +225,26 @@ public class FlowerAdminController extends AbstractController {
     TreeItem<Flower> selected = tblFlowerView.getSelectionModel().getSelectedItem();
     if (selected != null) {
       Flower f = selected.getValue();
-      String name = f.getTypeFlower();
-      String color = f.getColor();
+      if (!hasDependentOrder(f)) {
+        String name = f.getTypeFlower();
+        String color = f.getColor();
 
-      try {
-        super.flDatabase.deleteFlower(name, color);
-      } catch (Exception e) {
-        e.printStackTrace();
-        DialogUtil.simpleErrorDialog(
-            dialogStackPane, "Error Deleting Flower", "Could not delete flower: " + f);
+        try {
+          super.flDatabase.deleteFlower(name, color);
+        } catch (Exception e) {
+          e.printStackTrace();
+          DialogUtil.simpleErrorDialog(
+              dialogStackPane, "Error Deleting Flower", "Could not delete flower: " + f);
+        }
+
+        update();
       }
-
-      update();
     } else {
       DialogUtil.simpleInfoDialog(
           dialogStackPane,
           "No Flower Selected",
           "Please select a flower by clicking a row in the table");
     }
-    update();
   }
 
   public void update() {
