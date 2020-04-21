@@ -16,7 +16,6 @@ public abstract class AbstractController {
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
   protected JanitorDatabase janitorDatabase;
-  protected EmployeesDatabase employeesDatabase;
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
