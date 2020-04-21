@@ -220,207 +220,52 @@ public class Path {
   public String newTextualDirections() {
     String textPath = "";
     ArrayList<Direction> directions = new ArrayList<>();
-    cardinalDirections currentHeading = cardinalDirections.NORTH;
-    cardinalDirections desiredHeading = cardinalDirections.NORTH;
-
+    double lastAngle = 0.0;
     // For every node in the path
     for (int i = 0; i < pathNodes.size() - 1; i++) {
       int currX = pathNodes.get(i).getX();
       int currY = pathNodes.get(i).getY();
       int nextX = pathNodes.get(i + 1).getX();
       int nextY = pathNodes.get(i + 1).getY();
-      int diffX = nextX - currX;
-      int diffY = nextY - currY;
+      double diffX = Math.abs(nextX - currX);
+      double diffY = Math.abs(nextY - currY);
 
-      // if either of the differences are zero it is moving in a true cardinal direction
-      if (Math.abs(diffX) == 0 || Math.abs(diffY) == 0) {
-        if (diffY < 0) desiredHeading = cardinalDirections.NORTH;
-        else if (diffY > 0) desiredHeading = cardinalDirections.SOUTH;
-        else if (diffX > 0) desiredHeading = cardinalDirections.EAST;
-        else if (diffX < 0) desiredHeading = cardinalDirections.WEST;
-      } else { // it is moving in an in-between direction
-        // +x  +y
-        if (diffX > 0 && diffY > 0) desiredHeading = cardinalDirections.SOUTHEAST;
+      double angle = Math.atan(diffY / diffX);
 
-        // +x  -y
-        else if (diffX > 0 && diffY < 0) desiredHeading = cardinalDirections.NORTHEAST;
-
-        // -x  +y
-        else if (diffX < 0 && diffY > 0) desiredHeading = cardinalDirections.SOUTHWEST;
-
-        // -x  -y
-        else desiredHeading = cardinalDirections.NORTHWEST;
+      if (nextX > currX && nextY < currY) { // Quadrant 1
+        // angle = angle;
+      } else if (nextX < currX && nextY < currY) { // Quadrant 2
+        angle = Math.PI - angle;
+      } else if (nextX < currX && nextY > currY) { // Quadrant 3
+        angle = Math.PI + angle;
+      } else if (nextX > currX && nextY > currY) { // Quadrant 4
+        angle = (2 * Math.PI) - angle;
+      } else if (nextX == currX && nextY < currY) { // +Y
+        angle = Math.PI / 2;
+      } else if (nextX == currX && nextY > currY) { // -Y
+        angle = (3 * Math.PI) / 2;
+      } else if (nextX > currX && nextY == currY) { // +X
+        angle = 0;
+      } else if (nextX < currX && nextY == currY) { // -X
+        angle = Math.PI;
       }
 
-      if (i == 0) currentHeading = desiredHeading;
-
-      if (currentHeading == desiredHeading) directions.add(Direction.UP);
-      else {
-
-        switch (currentHeading) {
-          case NORTH:
-            switch (desiredHeading) {
-              case NORTH:
-                directions.add(Direction.UP);
-                break;
-              case NORTHEAST:
-              case EAST:
-              case SOUTHEAST:
-              case SOUTH:
-                directions.add(Direction.RIGHT);
-                break;
-              case SOUTHWEST:
-              case WEST:
-              case NORTHWEST:
-                directions.add(Direction.LEFT);
-                break;
-              default:
-                System.out.println("Hi Yash");
-            }
-            break;
-          case SOUTH:
-            switch (desiredHeading) {
-              case NORTH:
-              case NORTHEAST:
-              case EAST:
-              case SOUTHEAST:
-                directions.add(Direction.LEFT);
-                break;
-              case SOUTH:
-                directions.add(Direction.UP);
-                break;
-              case SOUTHWEST:
-              case WEST:
-              case NORTHWEST:
-                directions.add(Direction.RIGHT);
-                break;
-              default:
-                System.out.println("Hi Yash");
-            }
-            break;
-          case EAST:
-            switch (desiredHeading) {
-              case NORTH:
-              case NORTHEAST:
-              case NORTHWEST:
-              case WEST:
-                directions.add(Direction.LEFT);
-                break;
-              case EAST:
-                directions.add(Direction.UP);
-                break;
-              case SOUTHEAST:
-              case SOUTH:
-              case SOUTHWEST:
-                directions.add(Direction.RIGHT);
-                break;
-              default:
-                System.out.println("Hi Yash");
-            }
-            break;
-          case WEST:
-            switch (desiredHeading) {
-              case NORTH:
-              case NORTHEAST:
-              case NORTHWEST:
-              case EAST:
-                directions.add(Direction.RIGHT);
-                break;
-              case WEST:
-                directions.add(Direction.UP);
-                break;
-              case SOUTHEAST:
-              case SOUTH:
-              case SOUTHWEST:
-                directions.add(Direction.LEFT);
-                break;
-              default:
-                System.out.println("Hi Yash");
-            }
-            break;
-          case NORTHWEST:
-            switch (desiredHeading) {
-              case NORTH:
-              case NORTHEAST:
-              case EAST:
-              case SOUTHEAST:
-                directions.add(Direction.RIGHT);
-                break;
-              case SOUTH:
-              case SOUTHWEST:
-              case WEST:
-                directions.add(Direction.LEFT);
-                break;
-              case NORTHWEST:
-                directions.add(Direction.UP);
-                break;
-              default:
-                System.out.println("Hi Yash");
-            }
-            break;
-          case NORTHEAST:
-            switch (desiredHeading) {
-              case NORTHEAST:
-                directions.add(Direction.UP);
-                break;
-              case EAST:
-              case SOUTHEAST:
-              case SOUTH:
-              case SOUTHWEST:
-                directions.add(Direction.RIGHT);
-                break;
-              case NORTH:
-              case WEST:
-              case NORTHWEST:
-                directions.add(Direction.LEFT);
-                break;
-              default:
-                System.out.println("Hi Yash");
-            }
-            break;
-          case SOUTHWEST:
-            switch (desiredHeading) {
-              case SOUTHWEST:
-                directions.add(Direction.UP);
-                break;
-              case EAST:
-              case SOUTHEAST:
-              case SOUTH:
-              case NORTHEAST:
-                directions.add(Direction.LEFT);
-                break;
-              case NORTH:
-              case WEST:
-              case NORTHWEST:
-                directions.add(Direction.RIGHT);
-                break;
-              default:
-                System.out.println("Hi Yash");
-            }
-            break;
-          case SOUTHEAST:
-            switch (desiredHeading) {
-              case NORTH:
-              case NORTHEAST:
-              case EAST:
-              case NORTHWEST:
-                directions.add(Direction.LEFT);
-                break;
-              case SOUTH:
-              case SOUTHWEST:
-              case WEST:
-                directions.add(Direction.RIGHT);
-                break;
-              case SOUTHEAST:
-                directions.add(Direction.UP);
-                break;
-              default:
-                System.out.println("Hi Yash");
-            }
-            break;
-        }
+      if (i == 0) {
+        lastAngle = angle;
       }
-      currentHeading = desiredHeading;
+
+      double angleDiff = angle - lastAngle;
+
+      if ((angleDiff <= (-3 * Math.PI / 2))
+          || (angleDiff >= Math.PI / 4) && (angleDiff <= (3 * Math.PI / 4))) {
+        directions.add(Direction.LEFT);
+      } else if (angleDiff <= (-Math.PI / 4) || (angleDiff >= (3 * Math.PI / 2))) {
+        directions.add(Direction.RIGHT);
+      } else {
+        directions.add(Direction.UP);
+      }
+
+      lastAngle = angle;
     }
 
     // Formulate the string of directions
