@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javax.swing.*;
@@ -34,6 +35,9 @@ public class FlowerOrderController extends AbstractController {
   @FXML private JFXButton orderButton;
   @FXML private JFXButton trackButton;
   @FXML private GridPane centerPane;
+
+  @FXML private StackPane dialogPane;
+
   private AnchorPane flowerOrderPane;
   private Scene appPrimaryScene;
 
@@ -58,7 +62,12 @@ public class FlowerOrderController extends AbstractController {
     dropShadow.setOffsetY(2.0);
     dropShadow.setColor(Color.GREY);
     centerPane.setEffect(dropShadow);
-    flowerOrderPane = FXMLLoader.load(App.class.getResource("views/FlowerOrder.fxml"));
+
+    // Load flower order fxml
+    FXMLLoader loader = new FXMLLoader();
+    loader.setLocation(App.class.getResource("views/FlowerOrder.fxml"));
+    loader.setControllerFactory(param -> new FlowerOrderPlaceController(dialogPane));
+    flowerOrderPane = loader.load();
 
     // Set up tracker drawer
     trackerDrawer.setSidePane(trackerBox);
@@ -78,7 +87,7 @@ public class FlowerOrderController extends AbstractController {
         .heightProperty()
         .addListener(
             observable -> {
-              trackerDrawer.setTranslateY(centerPane.getHeight() - 50);
+              trackerDrawer.setTranslateY(centerPane.getHeight() - 65);
             });
 
     // Set up order drawer
@@ -100,7 +109,7 @@ public class FlowerOrderController extends AbstractController {
         .heightProperty()
         .addListener(
             observable -> {
-              orderDrawer.setTranslateY(centerPane.getHeight());
+              orderDrawer.setTranslateY(centerPane.getHeight() - 50);
             });
 
     // Setup button icons

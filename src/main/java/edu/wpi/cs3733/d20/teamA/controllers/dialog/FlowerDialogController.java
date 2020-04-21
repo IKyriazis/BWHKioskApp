@@ -3,6 +3,8 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import javafx.event.ActionEvent;
@@ -26,37 +28,44 @@ public class FlowerDialogController extends AbstractController implements IDialo
 
   private Flower myFlower;
   private JFXDialog dialog;
+  private boolean hasOrder;
 
   @SneakyThrows
   public FlowerDialogController() {
     super();
+
     modify = false;
   }
 
   @SneakyThrows
-  public FlowerDialogController(Flower f) {
+  public FlowerDialogController(Flower f, boolean hasOrder) {
     super();
-    modify = true;
-    myFlower = f;
+
+    this.modify = true;
+    this.myFlower = f;
+    this.hasOrder = hasOrder;
   }
 
   public void initialize() {
+    txtQty.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+    txtCost.setTextFormatter(new TextFormatter<>(new DoubleStringConverter()));
+
     if (modify) {
-      txtName.setEditable(false);
-      txtColor.setEditable(false);
       txtName.setText(myFlower.getTypeFlower());
       txtColor.setText(myFlower.getColor());
-      txtQty.setText("" + myFlower.getQty());
-      txtCost.setText("" + myFlower.getPricePer());
-    } else {
-      txtName.setEditable(true);
-      txtColor.setEditable(true);
+      txtQty.setText(String.valueOf(myFlower.getQty()));
+      txtCost.setText(String.valueOf(myFlower.getPricePer()));
+    }
+
+    if (hasOrder) {
+      txtName.setEditable(false);
+      txtColor.setEditable(false);
     }
 
     doneButton.setOnAction(this::isDone);
 
-    txtQty.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-    txtCost.setTextFormatter(new TextFormatter<>(new DoubleStringConverter()));
+    // Set button icon
+    doneButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
   }
 
   // Scene switch & database addNode
@@ -70,16 +79,21 @@ public class FlowerDialogController extends AbstractController implements IDialo
     }
 
     try {
-      String name = txtName.getText().substring(0, Math.min(15, txtName.getText().length() - 1));
-      String color = txtColor.getText().substring(0, Math.min(15, txtColor.getText().length() - 1));
-      ;
+      String name = txtName.getText().substring(0, Math.min(15, txtName.getText().length()));
+      String color = txtColor.getText().substring(0, Math.min(15, txtColor.getText().length()));
       int qty = Integer.parseInt(txtQty.getText());
       double price = Double.parseDouble(txtCost.getText());
 
-      if (!modify) super.flDatabase.addFlower(name, color, qty, price);
-      else {
-        super.flDatabase.updatePrice(name, color, price);
-        super.flDatabase.updateQTY(name, color, qty);
+      if (!modify) {
+        super.flDatabase.addFlower(name, color, qty, price);
+      } else {
+        if (hasOrder) {
+          super.flDatabase.updatePrice(myFlower.getTypeFlower(), myFlower.getColor(), price);
+          super.flDatabase.updateQTY(myFlower.getTypeFlower(), myFlower.getColor(), qty);
+        } else {
+          super.flDatabase.deleteFlower(myFlower.getTypeFlower(), myFlower.getColor());
+          super.flDatabase.addFlower(name, color, qty, price);
+        }
       }
 
       dialog.close();
