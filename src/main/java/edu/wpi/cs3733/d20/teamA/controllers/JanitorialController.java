@@ -19,9 +19,6 @@ public class JanitorialController extends AbstractController {
 
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
-  private Connection conn;
-  GraphDatabase gDB;
-  JanitorDatabase jDB;
 
   @FXML private JFXButton btnClearRequest;
   @FXML private JFXButton btnSubmitRequest;
@@ -45,14 +42,6 @@ public class JanitorialController extends AbstractController {
   Hashtable<String, String> statusHash = new Hashtable<>();
 
   public void initialize() throws SQLException, IOException, CsvException {
-    conn = DriverManager.getConnection(jdbcUrl);
-    gDB = new GraphDatabase(conn);
-    jDB = new JanitorDatabase(conn);
-    gDB.createTables();
-    jDB.createTables();
-    jDB.readFromCSV();
-    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("biscuit1", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     refreshActiveRequests();
     statusHash.clear();
     priorityItems.clear();
@@ -71,7 +60,7 @@ public class JanitorialController extends AbstractController {
   @FXML
   private void addServiceRequest() throws SQLException {
     if ((!textfieldLocation.getText().equals("")) && !comboboxPriority.getValue().equals("")) {
-      jDB.addRequest(textfieldLocation.getText(), comboboxPriority.getValue());
+      janitorDatabase.addRequest(textfieldLocation.getText(), comboboxPriority.getValue());
       statusHash.put(textfieldLocation.getText(), "Not Started");
       comboboxPriority.getSelectionModel().clearSelection();
       textfieldLocation.clear();
@@ -95,7 +84,7 @@ public class JanitorialController extends AbstractController {
   private void removeServiceRequest() throws SQLException {
     String request = listviewActiveRequests.getSelectionModel().getSelectedItem();
     if (request != null) {
-      if (jDB.deleteRequest(activeRequestHash.get(request))) {
+      if (janitorDatabase.deleteRequest(activeRequestHash.get(request))) {
         labelClearRequest.setText("Service Removed Successfully");
         listviewActiveRequests.getItems().removeAll(activeItems);
       } else {
@@ -117,9 +106,9 @@ public class JanitorialController extends AbstractController {
     activeItems.clear();
     activeRequestHash.clear();
     String Request;
-    int size = jDB.getRequestSize();
+    int size = janitorDatabase.getRequestSize();
     for (int i = 3; i < size + 3; i++) {
-      Request = jDB.getLocation(i);
+      Request = janitorDatabase.getLocation(i);
       if (Request == null) {
         continue;
       } else {
