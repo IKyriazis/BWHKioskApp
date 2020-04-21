@@ -1,12 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
+import com.opencsv.exceptions.CsvException;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerDialogController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import java.io.IOException;
 import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -42,7 +44,17 @@ public class FlowerAdminController extends AbstractController {
 
   public FlowerAdminController() throws SQLException {}
 
-  public void initialize() throws SQLException {
+  public void initialize() throws SQLException, IOException, CsvException {
+    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
+      flDatabase.dropTables();
+      flDatabase.createTables();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    } else if (flDatabase.getSizeFlowers() == 0 || flDatabase.getSizeOrders() == 0) {
+      flDatabase.removeAll();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    }
     // Setup label icons
     flowerTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.FILE));
     orderTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));

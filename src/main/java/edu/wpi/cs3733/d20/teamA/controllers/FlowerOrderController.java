@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
+import com.opencsv.exceptions.CsvException;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
@@ -35,7 +36,17 @@ public class FlowerOrderController extends AbstractController {
 
   public FlowerOrderController() throws SQLException {}
 
-  public void initialize() throws SQLException, IOException {
+  public void initialize() throws SQLException, IOException, CsvException {
+    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
+      flDatabase.dropTables();
+      flDatabase.createTables();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    } else if (flDatabase.getSizeFlowers() == 0 || flDatabase.getSizeOrders() == 0) {
+      flDatabase.removeAll();
+      flDatabase.readFlowersCSV();
+      flDatabase.readFlowerOrderCSV();
+    }
     // Set up drop shadow on flower order pane
     DropShadow dropShadow = new DropShadow();
     dropShadow.setRadius(5.0);
