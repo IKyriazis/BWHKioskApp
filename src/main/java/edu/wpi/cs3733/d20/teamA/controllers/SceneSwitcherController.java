@@ -23,11 +23,11 @@ public class SceneSwitcherController {
   public void initialize() {
     // Setup tab icons
     mapTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP));
-    serviceTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BELL));
-    employeeLoginTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_CIRCLE));
+    serviceTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CUBES));
+    employeeLoginTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN));
 
     // Settings button icon
-    informationButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.INFO_CIRCLE));
+    informationButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BELL));
 
     // Setup dynamic tab resizing
     tabPane
