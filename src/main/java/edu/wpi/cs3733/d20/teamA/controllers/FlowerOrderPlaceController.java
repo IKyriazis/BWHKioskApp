@@ -7,6 +7,7 @@ import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -67,18 +68,7 @@ public class FlowerOrderPlaceController extends AbstractController {
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
     // Limit input to integer values
-    txtNumber
-        .textProperty()
-        .addListener(
-            new ChangeListener<String>() {
-              @Override
-              public void changed(
-                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                  txtNumber.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-              }
-            });
+    txtNumber.setTextFormatter(InputFormatUtil.getIntFilter());
   }
 
   public void placeOrder(ActionEvent actionEvent) throws SQLException, IOException {

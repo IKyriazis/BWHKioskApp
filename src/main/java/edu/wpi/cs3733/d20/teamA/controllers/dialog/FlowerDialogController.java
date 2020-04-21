@@ -7,12 +7,10 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
+import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.GridPane;
-import javafx.util.converter.DoubleStringConverter;
-import javafx.util.converter.IntegerStringConverter;
 import lombok.SneakyThrows;
 
 public class FlowerDialogController extends AbstractController implements IDialogController {
@@ -47,8 +45,8 @@ public class FlowerDialogController extends AbstractController implements IDialo
   }
 
   public void initialize() {
-    txtQty.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
-    txtCost.setTextFormatter(new TextFormatter<>(new DoubleStringConverter()));
+    txtQty.setTextFormatter(InputFormatUtil.getIntFilter());
+    txtCost.setTextFormatter(InputFormatUtil.getDoubleFilter());
 
     if (modify) {
       txtName.setText(myFlower.getTypeFlower());
