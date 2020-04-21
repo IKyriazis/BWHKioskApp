@@ -24,7 +24,7 @@
                <fx:include source="FlowerAdmin.fxml" />
             </Tab>
             <Tab closable="false" text="Announcements">
-               <fx:include source="FlowerAdmin.fxml" />
+               <fx:include source="AnnouncementAdmin.fxml" />
             </Tab>
             <Tab closable="false" text="Janitorial">
                <fx:include source="JanitorialGUI.fxml" />

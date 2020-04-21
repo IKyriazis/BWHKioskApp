@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -12,6 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextFormatter;
+import javafx.util.converter.IntegerStringConverter;
 
 public class NodeDialogController implements IDialogController {
   @FXML private JFXTextField nodeIDField;
@@ -22,6 +21,8 @@ public class NodeDialogController implements IDialogController {
   @FXML private JFXComboBox<String> buildingBox;
   @FXML private JFXComboBox<String> teamBox;
   @FXML private JFXButton doneButton;
+  @FXML private JFXTextField xField;
+  @FXML private JFXTextField yField;
 
   private int x, y;
   private Node oldNode;
@@ -49,8 +50,11 @@ public class NodeDialogController implements IDialogController {
   @FXML
   public void initialize() {
     // Setup floor combobox
-    ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    // ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    ObservableList<Integer> floors = FXCollections.observableArrayList(1);
     floorBox.setItems(floors);
+    floorBox.setValue(1);
+    floorBox.setEditable(false);
 
     ObservableList<NodeType> types = FXCollections.observableArrayList(NodeType.values());
     typeBox.setItems(types);
@@ -60,6 +64,10 @@ public class NodeDialogController implements IDialogController {
 
     ObservableList<String> teams = FXCollections.observableArrayList("Team A");
     teamBox.setItems(teams);
+
+    // Setup coordinate formatters
+    xField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
+    yField.setTextFormatter(new TextFormatter<>(new IntegerStringConverter()));
 
     // Button hook
     doneButton.setOnAction(this::pressedDone);
@@ -73,6 +81,11 @@ public class NodeDialogController implements IDialogController {
       shortNameField.setText(oldNode.getShortName());
       buildingBox.setValue(oldNode.getBuilding());
       teamBox.setValue(oldNode.getTeamAssigned());
+      xField.setText(String.valueOf(oldNode.getX()));
+      yField.setText(String.valueOf(oldNode.getY()));
+    } else {
+      xField.setText(String.valueOf(x));
+      yField.setText(String.valueOf(y));
     }
   }
 
@@ -84,7 +97,9 @@ public class NodeDialogController implements IDialogController {
         || longNameField.getText().isEmpty()
         || shortNameField.getText().isEmpty()
         || buildingBox.getSelectionModel().isEmpty()
-        || teamBox.getSelectionModel().isEmpty()) {
+        || teamBox.getSelectionModel().isEmpty()
+        || xField.getText().isEmpty()
+        || yField.getText().isEmpty()) {
       return;
     }
 
@@ -93,10 +108,12 @@ public class NodeDialogController implements IDialogController {
     NodeType type = typeBox.getValue();
     String longName = longNameField.getText();
     String shortName = shortNameField.getText();
-    String building = buildingBox.getValue();
-    String team = teamBox.getValue();
+    String building = ((String) buildingBox.getValue());
+    String team = ((String) teamBox.getValue());
+    int newX = Integer.parseInt(xField.getText());
+    int newY = Integer.parseInt(yField.getText());
 
-    Node newNode = new Node(nodeID, x, y, floor, building, type, longName, shortName, team);
+    Node newNode = new Node(nodeID, newX, newY, floor, building, type, longName, shortName, team);
 
     ArrayList<Node> edgesTo = new ArrayList<>();
     if (oldNode != null) {

@@ -7,6 +7,8 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.NodeDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
+import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
+import java.io.File;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.util.Optional;
 import javafx.application.Platform;
@@ -19,6 +21,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+
 
 public class MapEditorController {
   @FXML private AnchorPane canvasPane;
@@ -33,6 +38,8 @@ public class MapEditorController {
   @FXML private JFXButton deleteNodeButton;
   @FXML private JFXButton addEdgeButton;
   @FXML private JFXButton deleteEdgeButton;
+  @FXML private JFXButton exportNodesButton;
+  @FXML private JFXButton exportEdgesButton;
 
   @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
@@ -114,6 +121,8 @@ public class MapEditorController {
     deleteNodeButton.setOnAction(this::toolPressed);
     addEdgeButton.setOnAction(this::toolPressed);
     deleteEdgeButton.setOnAction(this::toolPressed);
+    exportEdgesButton.setOnAction(this::exportEdgeCSVClicked);
+    exportNodesButton.setOnAction(this::exportNodeCSVClicked);
 
     // Try to get graph
     try {
@@ -263,5 +272,26 @@ public class MapEditorController {
         false,
         event -> canvas.draw(1),
         nodeDialogController);
+  }
+
+  public void exportEdgeCSVClicked(ActionEvent actionEvent) {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Save Edge CSV");
+
+    File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+    if (file != null) {
+      CSVLoader.exportEdges(graph, file);
+    }
+  }
+
+  // exportNodeCSVClicked() handles clicks from the 'Export Node CSV' button
+  public void exportNodeCSVClicked(ActionEvent actionEvent) {
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Save Node CSV");
+
+    File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+    if (file != null) {
+      CSVLoader.exportNodes(graph, file);
+    }
   }
 }
