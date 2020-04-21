@@ -6,7 +6,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 
-
 <StackPane fx:id="dialogPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController">
    <children>
       <AnchorPane prefHeight="400.0" prefWidth="600.0">
@@ -16,7 +15,7 @@
                     <fx:include source="SimpleMap.fxml" />
                 </Tab>
                 <Tab fx:id="serviceTab" text="Delivery Services">
-                    <fx:include source="FlowerDeliveryServiceHome.fxml" />
+                    <fx:include source="ServiceHome.fxml" />
                 </Tab>
                 <Tab fx:id="employeeLoginTab" text="Employee Login">
                     <fx:include source="EmployeeArea.fxml" />

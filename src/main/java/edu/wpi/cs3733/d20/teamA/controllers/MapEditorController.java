@@ -3,17 +3,17 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.NodeDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import java.io.File;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -23,6 +23,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+
 
 public class MapEditorController {
   @FXML private AnchorPane canvasPane;
@@ -262,24 +263,15 @@ public class MapEditorController {
   }
 
   private void openNodeModifyDialog(Node node, int x, int y) {
-    FXMLLoader loader = new FXMLLoader();
-
-    try {
-      loader.setLocation(App.class.getResource("views/NodeModifyPopup.fxml"));
-
-      JFXDialogLayout layout = new JFXDialogLayout();
-      layout.setHeading((node == null) ? new Text("Add Node") : new Text("Edit Node"));
-
-      JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.BOTTOM);
-      dialog.setOnDialogClosed(event -> canvas.draw(1));
-      loader.setController(new NodePopupController(dialog, node, x, y));
-      javafx.scene.Node rootPane = loader.load();
-      layout.setBody(rootPane);
-
-      dialog.show();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+    String heading = (node == null) ? "Add Node" : "Edit Node";
+    NodeDialogController nodeDialogController = new NodeDialogController(node, x, y);
+    DialogUtil.complexDialog(
+        dialogPane,
+        heading,
+        "views/NodeModifyPopup.fxml",
+        false,
+        event -> canvas.draw(1),
+        nodeDialogController);
   }
 
   public void exportEdgeCSVClicked(ActionEvent actionEvent) {
