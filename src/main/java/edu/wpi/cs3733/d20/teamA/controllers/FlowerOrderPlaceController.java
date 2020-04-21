@@ -16,7 +16,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -108,10 +107,9 @@ public class FlowerOrderPlaceController extends AbstractController {
       } else {
         // Update number of flowers in database
         super.flDatabase.updateQTY(type, color, max - num);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Order placed");
-        alert.setContentText("Your order has been placed. Your order number is: " + i);
-        alert.showAndWait();
+
+        DialogUtil.simpleInfoDialog(
+            dialogPane, "Order Placed", "Your order has been placed. Your order number is: " + i);
         choiceFlower.getSelectionModel().clearSelection();
         txtNumber.setText("");
         lblMax.setText("X are available");

@@ -13,12 +13,20 @@ public class AnnouncementsAdminController {
   @FXML private JFXTextField textAnn;
 
   public void addAnn(ActionEvent actionEvent) {
+    if (textAnn.getText().isEmpty()) {
+      return;
+    }
+
     AnnouncementList.addToList(textAnn.getText());
     textAnn.setText("");
     update();
   }
 
   public void deleteAnn(ActionEvent actionEvent) {
+    if (editAnn.getSelectionModel().getSelectedIndex() == -1) {
+      return;
+    }
+
     AnnouncementList.deleteFromList(editAnn.getSelectionModel().getSelectedIndex());
     update();
   }

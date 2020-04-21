@@ -65,6 +65,10 @@ public class LoginController extends AbstractController {
     currentBlur.setRadius(15.0);
 
     tabPane.setEffect(currentBlur);
+
+    // Setup enter key to go from Username -> Password -> Login
+    usernameBox.setOnAction(event -> passwordBox.requestFocus());
+    passwordBox.setOnAction(event -> loginButton.requestFocus());
   }
 
   @FXML

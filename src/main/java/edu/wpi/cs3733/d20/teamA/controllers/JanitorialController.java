@@ -86,6 +86,10 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void removeServiceRequest() throws SQLException {
+    if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
+      return;
+    }
+
     String request = listviewActiveRequests.getSelectionModel().getSelectedItem();
     if (request != null) {
       if (janitorDatabase.deleteRequest(activeRequestHash.get(request))) {
@@ -137,6 +141,10 @@ public class JanitorialController extends AbstractController {
 
   @FXML
   private void markInProgress() {
+    if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
+      return;
+    }
+
     statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "In Progress");
     labelStatus.setText(
         statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
@@ -144,6 +152,10 @@ public class JanitorialController extends AbstractController {
 
   @FXML
   private void markNotStarted() {
+    if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
+      return;
+    }
+
     statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "Not Started");
     labelStatus.setText(
         statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
@@ -151,6 +163,10 @@ public class JanitorialController extends AbstractController {
 
   @FXML
   private void markCompleted() {
+    if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
+      return;
+    }
+
     statusHash.replace(listviewActiveRequests.getSelectionModel().getSelectedItem(), "Completed");
     labelStatus.setText(
         statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));

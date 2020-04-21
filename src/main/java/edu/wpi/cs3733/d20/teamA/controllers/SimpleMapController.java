@@ -179,7 +179,9 @@ public class SimpleMapController {
         textDirectionsDrawer.toggle();
       }
 
-      textualDirectionsLabel.setText(path.textualDirections());
+      if (path.getPathNodes().size() != 0) {
+        textualDirectionsLabel.setText(path.textualDirections());
+      }
     }
   }
 
