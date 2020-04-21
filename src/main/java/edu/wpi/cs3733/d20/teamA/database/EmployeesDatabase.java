@@ -165,7 +165,6 @@ public class EmployeesDatabase extends Database {
   }
 
   public boolean logIn(String empID, String enteredPass) throws SQLException {
-
     String pass = null;
     try {
       PreparedStatement pstmt =

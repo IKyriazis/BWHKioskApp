@@ -55,6 +55,10 @@
     -fx-background-radius: 5px;
 }
 
+#logoutButton {
+    -fx-font-size: 12pt;
+}
+
 #orderButton, #trackButton {
     -fx-font-size: 22pt;
 }

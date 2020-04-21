@@ -6,6 +6,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Tab?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -38,6 +39,11 @@
             <JFXPasswordField fx:id="passwordBox" labelFloat="true" promptText="Password" />
             <JFXButton fx:id="loginButton" buttonType="RAISED" onAction="#loginButtonPressed" text="Login" />
          </VBox>
+         <AnchorPane pickOnBounds="false">
+            <children>
+               <JFXButton fx:id="logoutButton" buttonType="RAISED" onAction="#logoutButtonPressed" style="-fx-background-color: white;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+            </children>
+         </AnchorPane>
       </StackPane>
    </center>
 </BorderPane>
