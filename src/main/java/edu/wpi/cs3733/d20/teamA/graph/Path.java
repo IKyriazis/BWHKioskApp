@@ -427,10 +427,10 @@ public class Path {
     for (int j = 0; j < directions.size(); j++) {
       if (directions.get(j) == Direction.RIGHT) {
         textPath +=
-            " Turn Right at:" + pathNodes.get(j).getNodeID() + "\n" + "Continue Straight" + "\n";
+            " Turn Right at:" + pathNodes.get(j).getNodeID() + "\n" + " Continue Straight" + "\n";
       } else if (directions.get(j) == Direction.LEFT) {
         textPath +=
-            " Turn Left at:" + pathNodes.get(j).getNodeID() + "\n" + "Continue Straight" + "\n";
+            " Turn Left at:" + pathNodes.get(j).getNodeID() + "\n" + " Continue Straight" + "\n";
       } else {
         // else if it's straight keep track of how many nodes it is straight for
         String end = "";
@@ -445,7 +445,7 @@ public class Path {
         j = nextNotStraight - 1;
         // If end is empty then there were no other turns
         if (end.isEmpty()) {
-          textPath += "Continue straight until destination." + "\n";
+          textPath += " Continue straight until destination." + "\n";
           break;
         } else {
           textPath += " Go straight until:" + end + "\n";
@@ -453,7 +453,7 @@ public class Path {
       }
     }
 
-    textPath += "You have reached " + pathNodes.get(pathNodes.size() - 1).getNodeID();
+    textPath += " You have reached " + pathNodes.get(pathNodes.size() - 1).getNodeID();
 
     return textPath;
   }
