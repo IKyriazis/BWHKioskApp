@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Comparator;
 import java.util.stream.Collectors;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -47,7 +49,7 @@ public class FlowerOrderPlaceController extends AbstractController {
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     }
-    ObservableList<Flower> list = super.flDatabase.flowerOl(); // Get from FlowerDatabase @TODO
+    ObservableList<Flower> list = super.flDatabase.flowerOl();
     for (Flower f : list) {
       choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
     }
@@ -64,6 +66,19 @@ public class FlowerOrderPlaceController extends AbstractController {
     roomList
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
+    // Limit input to integer values
+    txtNumber
+        .textProperty()
+        .addListener(
+            new ChangeListener<String>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                if (!newValue.matches("\\d*")) {
+                  txtNumber.setText(newValue.replaceAll("[^\\d]", ""));
+                }
+              }
+            });
   }
 
   public void placeOrder(ActionEvent actionEvent) throws SQLException, IOException {
@@ -105,14 +120,11 @@ public class FlowerOrderPlaceController extends AbstractController {
         DialogUtil.simpleErrorDialog(
             dialogPane, "Order Error", "Order not placed successfully, please try again");
       } else {
-        // Update number of flowers in database
-        super.flDatabase.updateQTY(type, color, max - num);
-
         DialogUtil.simpleInfoDialog(
             dialogPane, "Order Placed", "Your order has been placed. Your order number is: " + i);
         choiceFlower.getSelectionModel().clearSelection();
         txtNumber.setText("");
-        lblMax.setText("X are available");
+        lblMax.setText("X are available at X per flower");
         roomList.getSelectionModel().clearSelection();
         txtTotal.clear();
       }
@@ -126,11 +138,12 @@ public class FlowerOrderPlaceController extends AbstractController {
       String color = s.substring(s.indexOf(' ') + 1);
 
       int i = super.flDatabase.getFlowerNumber(type, color);
-      lblMax.setText(i + " are available");
+      double d = super.flDatabase.getFlowerPricePer(type, color);
+      lblMax.setText(i + " are available at " + d + " per flower");
 
       updateCost();
     } catch (Exception e) {
-      lblMax.setText("X are available");
+      lblMax.setText("X are available at X per flower");
     }
   }
 
