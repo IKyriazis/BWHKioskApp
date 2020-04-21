@@ -19,6 +19,22 @@ public class Flower {
     this.pricePer = new SimpleDoubleProperty(pricePer);
   }
 
+  public SimpleStringProperty typeFlowerProperty() {
+    return typeFlower;
+  }
+
+  public SimpleStringProperty colorProperty() {
+    return color;
+  }
+
+  public SimpleIntegerProperty qtyProperty() {
+    return qty;
+  }
+
+  public SimpleDoubleProperty pricePerProperty() {
+    return pricePer;
+  }
+
   public String getTypeFlower() {
     return typeFlower.get();
   }

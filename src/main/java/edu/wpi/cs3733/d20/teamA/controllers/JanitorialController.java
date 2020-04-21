@@ -40,6 +40,7 @@ public class JanitorialController {
     gDB.createTables();
     jDB.createTables();
     jDB.readFromCSV();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
   }
 
   /**
@@ -51,7 +52,9 @@ public class JanitorialController {
   private void addServiceRequest() throws SQLException {
 
     labelSubmitRequest.setText("Request Submitted Successfully");
-    System.out.println(jDB.addRequest(textfieldLocation.getText(), textfieldPriority.getText()));
+    jDB.addRequest(textfieldLocation.getText(), textfieldPriority.getText());
+    textfieldPriority.clear();
+    textfieldLocation.clear();
   }
 
   /**
@@ -61,9 +64,10 @@ public class JanitorialController {
    */
   @FXML
   private void removeServiceRequest() throws SQLException {
-    String request = comboboxActiveRequests.getAccessibleText();
-    jDB.deleteRequest(activeRequestHash.get(request));
+    String request = comboboxActiveRequests.getValue();
+    System.out.println(jDB.deleteRequest(activeRequestHash.get(request)));
     labelClearRequest.setText("Service Removed Successfully");
+    comboboxActiveRequests.getItems().removeAll(dropdownMenuItems);
   }
 
   /**
@@ -78,7 +82,8 @@ public class JanitorialController {
     String Request;
     System.out.println(jDB.getLocation(1));
     int size = jDB.getRequestSize();
-    for (int i = 1; i < size; i++) {
+    System.out.println(jDB.getRequestSize());
+    for (int i = 1; i < size + 1; i++) {
       Request = jDB.getLocation(i);
       if (Request == null) {
         System.out.println("null");

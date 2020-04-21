@@ -3,9 +3,7 @@ package edu.wpi.cs3733.d20.teamA.flower.controllers;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.FlowerAdminController;
 import edu.wpi.cs3733.d20.teamA.graph.*;
-import java.io.IOException;
 import java.sql.SQLException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -48,9 +46,9 @@ public class testFlowerAdmin {
   }
 
   @Test
-  public void testAdd() throws IOException {
+  public void testAdd() {
     try {
-      controller.addFlower(new ActionEvent());
+      controller.addFlower();
     } catch (Exception e) {
       // Wont run in isolation
     }
@@ -59,9 +57,9 @@ public class testFlowerAdmin {
   }
 
   @Test
-  public void testEdit() throws IOException {
+  public void testEdit() {
     try {
-      controller.editFlower(new ActionEvent());
+      controller.editFlower();
     } catch (Exception e) {
       // Wont run in isolation
     }
@@ -70,9 +68,9 @@ public class testFlowerAdmin {
   }
 
   @Test
-  public void testDelete() throws IOException {
+  public void testDelete() {
     try {
-      controller.deleteFlower(new ActionEvent());
+      controller.deleteFlower();
     } catch (Exception e) {
       // Wont run in isolation
     }
@@ -81,9 +79,9 @@ public class testFlowerAdmin {
   }
 
   @Test
-  public void testChangeStatus() throws IOException {
+  public void testChangeStatus() {
     try {
-      controller.changeProgress(new ActionEvent());
+      controller.changeProgress();
     } catch (Exception e) {
       // Wont run in isolation
     }
