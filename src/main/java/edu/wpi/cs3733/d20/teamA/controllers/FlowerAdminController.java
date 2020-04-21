@@ -190,7 +190,6 @@ public class FlowerAdminController extends AbstractController {
       Flower f = selected.getValue();
       String name = f.getTypeFlower();
       String color = f.getColor();
-      System.out.println("Type: " + name + " Color: " + color);
 
       try {
         super.flDatabase.deleteFlower(name, color);
