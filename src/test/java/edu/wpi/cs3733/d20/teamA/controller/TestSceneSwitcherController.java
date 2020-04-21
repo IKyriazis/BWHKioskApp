@@ -9,12 +9,11 @@ import javafx.stage.Stage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class TestSceneSwitcherController extends FxRobot {
+public class TestSceneSwitcherController extends TestAbstractController {
   @Start
   private void start(Stage stage) {
     try {
@@ -37,31 +36,31 @@ public class TestSceneSwitcherController extends FxRobot {
   }
 
   @Test
-  public void testClickDeliveryServices(FxRobot robot) {
-    robot.clickOn("#serviceTab");
+  public void testClickDeliveryServices() {
+    clickOn("#serviceTab");
     // If we got to here without crashing then we probably did something right.
     Assertions.assertTrue(true);
   }
 
   @Test
-  public void testClickEmployeeTab(FxRobot robot) {
-    robot.clickOn("#employeeLoginTab");
+  public void testClickEmployeeTab() {
+    clickOn("#employeeLoginTab");
     // If we got to here without crashing then we probably did something right.
     Assertions.assertTrue(true);
   }
 
   @Test
-  public void testClickMapTab(FxRobot robot) {
-    robot.clickOn("#mapTab");
+  public void testClickMapTab() {
+    clickOn("#mapTab");
     // If we got to here without crashing then we probably did something right.
     Assertions.assertTrue(true);
   }
 
   @Test
-  public void testClickMultiTabs(FxRobot robot) {
-    robot.clickOn("#serviceTab");
-    robot.clickOn("#mapTab");
-    robot.clickOn("#serviceTab");
+  public void testClickMultiTabs() {
+    clickOn("#serviceTab");
+    clickOn("#mapTab");
+    clickOn("#serviceTab");
     // robot.
     // Node node = lookup("#serviceTab").query();
     // If we got to here without crashing then we probably did something right.
@@ -69,8 +68,8 @@ public class TestSceneSwitcherController extends FxRobot {
   }
 
   @Test
-  public void testClickInfo(FxRobot robot) {
-    robot.clickOn("#informationButton");
+  public void testClickInfo() {
+    clickOn("#informationButton");
     // If we got to here without crashing then we probably did something right.
     Assertions.assertTrue(true);
   }

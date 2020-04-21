@@ -13,12 +13,11 @@ import javafx.stage.Stage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class TestSimpleMapController {
+public class TestSimpleMapController extends TestAbstractController {
 
   @Start
   private void start(Stage stage) {
@@ -42,22 +41,22 @@ public class TestSimpleMapController {
   }
 
   @Test
-  public void checkGetDirections(FxRobot robot) {
-    robot.clickOn("#drawAllNodesButton");
-    robot.clickOn("#drawPathButton");
+  public void checkGetDirections() {
+    clickOn("#drawAllNodesButton");
+    clickOn("#drawPathButton");
 
-    robot.clickOn("#directionsButton");
+    clickOn("#directionsButton");
     sleep(1, SECONDS);
 
-    robot.clickOn("#startingLocationBox");
-    robot.type(KeyCode.A);
-    robot.type(KeyCode.ENTER);
-    robot.type(KeyCode.H);
-    robot.type(KeyCode.ENTER);
-    robot.clickOn("#goButton");
+    clickOn("#startingLocationBox");
+    type(KeyCode.A);
+    type(KeyCode.ENTER);
+    type(KeyCode.H);
+    type(KeyCode.ENTER);
+    clickOn("#goButton");
 
-    robot.clickOn("#swapBtn");
-    robot.clickOn("#goButton");
+    clickOn("#swapBtn");
+    clickOn("#goButton");
 
     // If we got to here without crashing then we probably did something right.
     Assertions.assertTrue(true);

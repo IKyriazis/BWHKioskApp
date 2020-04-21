@@ -7,17 +7,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class TestAnnAdminController {
+public class TestAnnAdminController extends TestAbstractController {
 
   @Start
   private void start(Stage stage) {
@@ -40,23 +38,21 @@ public class TestAnnAdminController {
     }
   }
 
-  @Test
-  public void testAddAnn(FxRobot robot) {
+  // @Test
+  public void testAddAnn() {
 
-    robot.clickOn("#textAnn");
-    robot.type(KeyCode.H);
-    robot.type(KeyCode.I);
-    robot.clickOn("#addA");
+    clickOn("#textAnn");
+    writeString("Hi");
+    clickOn("#addA");
     // If we got to here without crashing then we probably did something right.
     Assertions.assertTrue(true);
   }
 
-  @Test
+  // @Test
   public void testDeleteAnn(FxRobot robot) {
 
     robot.clickOn("#textAnn");
-    robot.type(KeyCode.H);
-    robot.type(KeyCode.I);
+    writeString("Hi");
     robot.clickOn("#addA");
     robot.clickOn("#editAnn");
     robot.clickOn("#deleteA");

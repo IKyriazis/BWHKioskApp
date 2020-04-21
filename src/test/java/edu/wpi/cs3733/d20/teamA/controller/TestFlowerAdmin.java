@@ -1,24 +1,29 @@
-package edu.wpi.cs3733.d20.teamA.flower.controllers;
+package edu.wpi.cs3733.d20.teamA.controller;
 
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.FlowerAdminController;
 import java.sql.SQLException;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
 @ExtendWith(ApplicationExtension.class)
-public class testFlowerAdmin {
+public class TestFlowerAdmin extends TestAbstractController {
 
-  private FlowerAdminController controller = new FlowerAdminController();
+  @InjectMocks FlowerAdminController controller;
 
-  public testFlowerAdmin() throws SQLException {}
+  private final FXMLLoader loader = new FXMLLoader();
+  private Parent sceneRoot;
+
+  public TestFlowerAdmin() throws SQLException {}
 
   @Start
   private void start(Stage stage) {
@@ -46,45 +51,24 @@ public class testFlowerAdmin {
 
   @Test
   public void testAdd() {
-    try {
-      controller.addFlower();
-    } catch (Exception e) {
-      // Wont run in isolation
-    }
-    // Manually tested
-    Assertions.assertTrue(true);
+    clickOn("#addFlowerButton");
+    sleep(1000);
+    clickOn("#txtName");
+    writeString("Poppy");
+    clickOn("#txtColor");
+    writeString("Red");
+    clickOn("#txtQty");
+    writeInt("60");
+    clickOn("#txtCost");
+    writeInt("5");
   }
 
   @Test
-  public void testEdit() {
-    try {
-      controller.editFlower();
-    } catch (Exception e) {
-      // Wont run in isolation
-    }
-    // Manually tested
-    Assertions.assertTrue(true);
-  }
+  public void testEdit() {}
 
   @Test
-  public void testDelete() {
-    try {
-      controller.deleteFlower();
-    } catch (Exception e) {
-      // Wont run in isolation
-    }
-    // Manually tested
-    Assertions.assertTrue(true);
-  }
+  public void testDelete() {}
 
   @Test
-  public void testChangeStatus() {
-    try {
-      controller.changeProgress();
-    } catch (Exception e) {
-      // Wont run in isolation
-    }
-    // Manually tested
-    Assertions.assertTrue(true);
-  }
+  public void testChangeStatus() {}
 }
