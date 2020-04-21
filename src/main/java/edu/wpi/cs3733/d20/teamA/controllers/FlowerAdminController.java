@@ -7,13 +7,11 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerDialogController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import java.io.IOException;
 import java.sql.SQLException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.layout.StackPane;
 
 public class FlowerAdminController extends AbstractController {
@@ -24,7 +22,6 @@ public class FlowerAdminController extends AbstractController {
   @FXML private JFXTextField txtPrev;
   @FXML private JFXComboBox<String> txtNext;
 
-  @FXML private AnchorPane flowerPane;
   @FXML private StackPane dialogStackPane;
 
   @FXML private Label flowerTblLbl;
@@ -35,14 +32,9 @@ public class FlowerAdminController extends AbstractController {
   @FXML private JFXButton deleteFlowerButton;
   @FXML private JFXButton changeProgressButton;
 
-  private GaussianBlur blur;
-
-  public FlowerAdminController() throws SQLException {}
+  public FlowerAdminController() {}
 
   public void initialize() throws SQLException {
-    blur = new GaussianBlur();
-    blur.setRadius(15.0);
-
     // Setup label icons
     flowerTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.FILE));
     orderTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
@@ -122,12 +114,7 @@ public class FlowerAdminController extends AbstractController {
 
     // Setup column sizing
     tblOrderView.setColumnResizePolicy(JFXTreeTableView.CONSTRAINED_RESIZE_POLICY);
-    tblOrderView
-        .getColumns()
-        .forEach(
-            column -> {
-              column.setReorderable(false);
-            });
+    tblOrderView.getColumns().forEach(column -> column.setReorderable(false));
 
     // Null root order node
     TreeItem<Order> rootOrder = new TreeItem<>(new Order(0, 0, "", "", 0.0, "", ""));
@@ -144,76 +131,58 @@ public class FlowerAdminController extends AbstractController {
         .getSelectionModel()
         .selectedItemProperty()
         .addListener(
-            (observable, oldValue, newValue) -> {
-              txtPrev.setText(newValue.getValue().toString());
-            });
+            (observable, oldValue, newValue) -> txtPrev.setText(newValue.getValue().toString()));
 
     // Setup status change stuff
     txtNext.getItems().addAll("Order Sent", "Order Received", "Flowers Sent", "Flowers Delivered");
     txtNext.getSelectionModel().select(0);
   }
 
-  public void addFlower(ActionEvent actionEvent) {
+  public void addFlower() {
     DialogUtil.complexDialog(
         dialogStackPane,
         "Add Flower",
-        "views/addFlowerPopup.fxml",
+        "views/AddFlowerPopup.fxml",
         false,
-        event -> {
-          update();
-        },
+        event -> update(),
         new FlowerDialogController());
   }
 
-  public void editFlower(ActionEvent actionEvent) throws IOException {
-    /*Flower f = tblFlowerView.getSelectionModel().getSelectedItem().getValue();
-    if (f == null) {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("No item selected");
-      alert.setContentText("Please select an item by clicking a row in the table");
-      alert.show();
+  public void editFlower() {
+    TreeItem<Flower> selection = tblFlowerView.getSelectionModel().getSelectedItem();
+    if (selection != null) {
+      Flower flower = selection.getValue();
+      FlowerDialogController controller = new FlowerDialogController(flower);
+      DialogUtil.complexDialog(
+          dialogStackPane,
+          "Edit Flower",
+          "views/AddFlowerPopup.fxml",
+          false,
+          event -> update(),
+          controller);
     } else {
-      FXMLLoader loader = new FXMLLoader();
-
-      try {
-        loader.setLocation(App.class.getResource("views/AddFlowerPopup.fxml"));
-
-        JFXDialogLayout layout = new JFXDialogLayout();
-        layout.setHeading(new Text("Add Flower"));
-
-        JFXDialog dialog =
-            new JFXDialog(dialogStackPane, layout, JFXDialog.DialogTransition.BOTTOM);
-        contentBox.setEffect(blur);
-        dialog.setOnDialogClosed(
-            event -> {
-              contentBox.setEffect(null);
-              try {
-                update();
-              } catch (SQLException throwables) {
-                throwables.printStackTrace();
-              }
-            });
-
-        loader.setControllerFactory(param -> new FlowerModController(dialog, f));
-
-        // loader.setController(new FlowerModController(this));
-        javafx.scene.Node rootPane = loader.load();
-        layout.setBody(rootPane);
-
-        dialog.show();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-    }*/
+      DialogUtil.simpleInfoDialog(
+          dialogStackPane,
+          "No Flower Selected",
+          "Please select a flower by clicking a row in the table");
+    }
   }
 
-  public void deleteFlower(ActionEvent actionEvent) throws SQLException {
+  public void deleteFlower() {
     TreeItem<Flower> selected = tblFlowerView.getSelectionModel().getSelectedItem();
     if (selected != null) {
       Flower f = selected.getValue();
       String name = f.getTypeFlower();
       String color = f.getColor();
-      super.flDatabase.deleteFlower(name, color);
+
+      try {
+        super.flDatabase.deleteFlower(name, color);
+      } catch (Exception e) {
+        e.printStackTrace();
+        DialogUtil.simpleErrorDialog(
+            dialogStackPane, "Error Deleting Flower", "Could not delete flower: " + f);
+      }
+
       update();
     } else {
       DialogUtil.simpleInfoDialog(
@@ -239,51 +208,18 @@ public class FlowerAdminController extends AbstractController {
     }
   }
 
-  public void changeProgress(ActionEvent actionEvent) throws SQLException {
+  public void changeProgress() {
     TreeItem<Order> selected = tblOrderView.getSelectionModel().getSelectedItem();
     if (selected != null) {
       Order o = selected.getValue();
       String s = txtNext.getSelectionModel().getSelectedItem();
       super.flDatabase.changeOrderStatus(o.getOrderNumber(), s);
+      update();
     } else {
       DialogUtil.simpleInfoDialog(
           dialogStackPane,
           "No Order Selected",
           "Please select an order by clicking a row in the table");
-    }
-
-    TreeItem<Order> rootOrder = tblOrderView.getRoot();
-    rootOrder.getChildren().clear();
-    flDatabase.orderOl().forEach(order -> rootOrder.getChildren().add(new TreeItem<>(order)));
-  }
-
-  private int statusStringToValue(String status) {
-    switch (status) {
-      case "Order Sent":
-        return 0;
-      case "Order Received":
-        return 1;
-      case "Flowers Sent":
-        return 2;
-      case "Flowers Delivered":
-        return 3;
-      default:
-        return 999; // Should never occur
-    }
-  }
-
-  private String statusValueToString(int status) {
-    switch (status) {
-      case 1:
-        return "Order Sent";
-      case 2:
-        return "Order Received";
-      case 3:
-        return "Flowers Sent";
-      case 4:
-        return "Flowers Delivered";
-      default:
-        return "BAD"; // Should never occur
     }
   }
 }

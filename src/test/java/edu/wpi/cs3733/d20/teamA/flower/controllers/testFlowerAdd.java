@@ -1,10 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.flower.controllers;
 
 import edu.wpi.cs3733.d20.teamA.App;
-import edu.wpi.cs3733.d20.teamA.controllers.FlowerAdminController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerDialogController;
 import java.io.IOException;
-import java.sql.SQLException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,22 +19,14 @@ public class testFlowerAdd {
 
   private FlowerDialogController controller;
 
-  public testFlowerAdd() throws SQLException {}
+  public testFlowerAdd() {}
 
   @Start
   private void start(Stage stage) {
     try {
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(App.class.getResource("views/AddFlowerPopup.fxml"));
-      loader.setControllerFactory(
-          param -> {
-            try {
-              return new FlowerDialogController(new FlowerAdminController());
-            } catch (SQLException throwables) {
-              System.out.println("Not able to initialize");
-              return null;
-            }
-          });
+      loader.setControllerFactory(param -> new FlowerDialogController());
       GridPane gridPane = loader.load();
       Assertions.assertNotNull(gridPane);
 

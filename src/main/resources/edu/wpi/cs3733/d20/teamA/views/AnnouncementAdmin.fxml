@@ -7,20 +7,20 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.AnnouncementsAdminController">
+<AnchorPane prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.AnnouncementsAdminController">
    <children>
       <HBox alignment="CENTER" layoutY="70.0" prefHeight="100.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="50.0">
                <children>
-                  <JFXButton buttonType="RAISED" onAction="#addAnn" prefWidth="75.0" style="-fx-background-color: #91A5D1;" text="Add" />
-                  <JFXButton buttonType="RAISED" onAction="#deleteAnn" prefWidth="75.0" style="-fx-background-color: #91A5D1;" text="Delete" />
+                  <JFXButton fx:id="addA" buttonType="RAISED" onAction="#addAnn" prefWidth="75.0" style="-fx-background-color: #91A5D1;" text="Add" />
+                  <JFXButton fx:id="deleteA" buttonType="RAISED" onAction="#deleteAnn" prefWidth="75.0" style="-fx-background-color: #91A5D1;" text="Delete" />
                </children>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="300.0">
+            <VBox prefHeight="500.0" prefWidth="300.0">
                <children>
-                  <JFXListView fx:id="editAnn" prefHeight="229.0" prefWidth="300.0" />
-                  <JFXTextField fx:id="textAnn" prefHeight="157.0" prefWidth="300.0" />
+                  <JFXListView fx:id="editAnn" prefHeight="300.0" prefWidth="300.0" />
+                  <JFXTextField fx:id="textAnn" prefHeight="200.0" prefWidth="300.0" />
                </children>
             </VBox>
          </children>
