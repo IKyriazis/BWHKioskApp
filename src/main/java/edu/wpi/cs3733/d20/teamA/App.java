@@ -35,7 +35,7 @@ public class App extends Application {
 
     primaryStage.setScene(scene);
     primaryStage.setTitle("Hospital App");
-    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("images/wonga_lisa.png")));
+    primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("images/icon.png")));
 
     primaryStage.setMinWidth(1000);
     primaryStage.setWidth(1000);
