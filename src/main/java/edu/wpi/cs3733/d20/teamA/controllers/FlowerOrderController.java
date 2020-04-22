@@ -9,7 +9,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
-import javafx.event.Event;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,8 +17,8 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javax.swing.*;
 
@@ -29,7 +29,7 @@ public class FlowerOrderController extends AbstractController {
 
   @FXML private JFXDrawer trackerDrawer;
   @FXML private JFXDrawer orderDrawer;
-  @FXML private VBox trackerBox;
+  @FXML private HBox trackerBox;
   @FXML private JFXButton orderButton;
   @FXML private JFXButton trackButton;
   @FXML private GridPane centerPane;
@@ -138,7 +138,7 @@ public class FlowerOrderController extends AbstractController {
   }
 
   @FXML
-  public void checkNum(Event e) {
+  public void viewStatus(ActionEvent actionEvent) {
     // Send text to database and get back the status
     String s = super.flDatabase.getOrderStatus(Integer.parseInt(txtNumber.getText()));
     if (s == null) {
