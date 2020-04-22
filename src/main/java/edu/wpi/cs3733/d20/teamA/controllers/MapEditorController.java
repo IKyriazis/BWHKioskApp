@@ -232,6 +232,7 @@ public class MapEditorController {
       case ADD_EDGE:
         if (lastSelected == null) {
           optionalNode.ifPresent(canvas::setSelectedNode);
+          editorTipLabel.setText("Select Second Node");
         } else {
           optionalNode.ifPresent(
               node -> {
@@ -241,12 +242,14 @@ public class MapEditorController {
                   e.printStackTrace();
                 }
                 canvas.setSelectedNode(null);
+                editorTipLabel.setText("Select First Node");
               });
         }
         break;
       case DELETE_EDGE:
         if (lastSelected == null) {
           optionalNode.ifPresent(canvas::setSelectedNode);
+          editorTipLabel.setText("Select Second Node");
         } else {
           optionalNode.ifPresent(
               node -> {
@@ -256,6 +259,7 @@ public class MapEditorController {
                   e.printStackTrace();
                 }
                 canvas.setSelectedNode(null);
+                editorTipLabel.setText("Select First Node");
               });
         }
         break;

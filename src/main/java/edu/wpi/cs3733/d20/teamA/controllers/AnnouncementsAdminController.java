@@ -6,9 +6,11 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.database.AnnouncementList;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.StackPane;
 
 public class AnnouncementsAdminController {
   @FXML private JFXListView editAnn;
@@ -16,6 +18,8 @@ public class AnnouncementsAdminController {
 
   @FXML private JFXButton addButton;
   @FXML private JFXButton deleteButton;
+
+  @FXML private StackPane dialogPane;
 
   @FXML
   public void initialize() {
@@ -27,6 +31,8 @@ public class AnnouncementsAdminController {
 
   public void addAnn(ActionEvent actionEvent) {
     if (textAnn.getText().isEmpty()) {
+      DialogUtil.simpleInfoDialog(
+          dialogPane, "No Text", "Please enter in the text of the announcement to add");
       return;
     }
 
@@ -37,6 +43,8 @@ public class AnnouncementsAdminController {
 
   public void deleteAnn(ActionEvent actionEvent) {
     if (editAnn.getSelectionModel().getSelectedIndex() == -1) {
+      DialogUtil.simpleInfoDialog(
+          dialogPane, "No Selection", "Please select an announcement to delete");
       return;
     }
 
