@@ -70,7 +70,23 @@
                   </VBox>
                   <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="250.0" layoutY="308.0" prefHeight="353.0" prefWidth="254.0">
                      <children>
-                        <JFXListView fx:id="directionsList" />
+                        <GridPane fx:id="directionsPane">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <JFXListView fx:id="directionsList" />
+                              <JFXButton fx:id="qrCodeButton" buttonType="RAISED" onAction="#pressedQRButton" style="-fx-background-color: #78909C;" text="Generate QR Code" GridPane.rowIndex="1">
+                                 <GridPane.margin>
+                                    <Insets bottom="10.0" top="10.0" />
+                                 </GridPane.margin>
+                              </JFXButton>
+                           </children>
+                        </GridPane>
                      </children>
                   </JFXDrawer>
                </children></AnchorPane>

@@ -207,7 +207,7 @@ public class Path {
         int nextNotStraight = j;
         for (int k = j + 1; k < directions.size(); k++) {
           if (directions.get(k) != Direction.UP) {
-            end = pathNodes.get(k).getNodeID();
+            end = pathNodes.get(k).getLongName();
             nextNotStraight = k;
             break;
           }

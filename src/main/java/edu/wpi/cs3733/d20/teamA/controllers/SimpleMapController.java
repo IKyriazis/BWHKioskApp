@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
@@ -22,10 +23,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 public class SimpleMapController {
   @FXML private BorderPane rootPane;
@@ -37,17 +35,20 @@ public class SimpleMapController {
   @FXML private AnchorPane canvasPane;
   @FXML private JFXSlider zoomSlider;
   @FXML private JFXListView<Label> directionsList;
+  @FXML private GridPane directionsPane;
   @FXML private StackPane dialogPane;
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
+  @FXML private JFXButton qrCodeButton;
 
   @FXML private JFXRadioButton drawPathButton;
   @FXML private JFXRadioButton drawAllNodesButton;
 
   private MapCanvas canvas;
   private Graph graph;
+  private String lastDirs;
 
   private ObservableList<Node> allNodeList;
 
@@ -79,7 +80,7 @@ public class SimpleMapController {
     directionsList.setMouseTransparent(true);
     directionsList.setFocusTraversable(false);
     // Setup text directions drawer
-    textDirectionsDrawer.setSidePane(directionsList);
+    textDirectionsDrawer.setSidePane(directionsPane);
     textDirectionsDrawer.setOnDrawerClosed(event -> textDirectionsDrawer.setMouseTransparent(true));
     textDirectionsDrawer.setOnDrawerOpened(
         event -> textDirectionsDrawer.setMouseTransparent(false));
@@ -88,6 +89,7 @@ public class SimpleMapController {
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
     swapBtn.setGraphic(new FontAwesomeIconView((FontAwesomeIcon.EXCHANGE)));
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
+    qrCodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QRCODE));
 
     // Setup radio buttons
     drawPathButton.setOnAction(
@@ -190,6 +192,11 @@ public class SimpleMapController {
               directionsList.getItems().add(l);
             });
 
+        // Generate QR code
+        StringBuilder dirs = new StringBuilder();
+        directions.forEach(l -> dirs.append(l.getText()).append('\n'));
+        lastDirs = dirs.toString();
+
         if (textDirectionsDrawer.isClosed()) {
           textDirectionsDrawer.open();
         }
@@ -229,5 +236,20 @@ public class SimpleMapController {
 
   public Graph getGraph() {
     return graph;
+  }
+
+  public void pressedQRButton() {
+    if (!lastDirs.isEmpty()) {
+      DialogUtil.complexDialog(
+          dialogPane,
+          "Direction QR Code",
+          "views/QRCodePopup.fxml",
+          true,
+          null,
+          new QRDialogController(lastDirs));
+    } else {
+      DialogUtil.simpleInfoDialog(
+          dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
+    }
   }
 }
