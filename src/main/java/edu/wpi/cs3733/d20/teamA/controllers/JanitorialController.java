@@ -5,9 +5,14 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.opencsv.exceptions.CsvException;
+import edu.wpi.cs3733.d20.teamA.graph.Graph;
+import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,7 +29,11 @@ public class JanitorialController extends AbstractController {
   @FXML private JFXButton btnCompleted;
   @FXML private JFXButton btnInProgress;
 
-  @FXML private JFXTextField textfieldLocation;
+  @FXML private JFXComboBox<Node> roomList;
+
+  // @FXML private JFXTextField textfieldLocation;
+  @FXML private JFXTextField textfieldPriority;
+
   @FXML private JFXTextField textfieldEmployeeName;
 
   @FXML private Label labelClearRequest;
@@ -50,6 +59,20 @@ public class JanitorialController extends AbstractController {
     String c = "Low";
     priorityItems.addAll(a, b, c);
     comboboxPriority.getItems().addAll(priorityItems);
+
+    // Set up autofill for nodes
+    ObservableList<Node> allNodeList =
+        FXCollections.observableArrayList(
+            Graph.getInstance().getNodes().values().stream()
+                .filter(node -> node.getFloor() == 1)
+                .collect(Collectors.toList()));
+    allNodeList.sort(Comparator.comparing(Node::getLongName));
+
+    roomList.setItems(allNodeList);
+
+    roomList
+        .getEditor()
+        .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
     try {
       janitorDatabase.readFromCSV();
     } catch (SQLException bruhBoi) {
@@ -63,17 +86,19 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void addServiceRequest() throws SQLException {
-    if ((!textfieldLocation.getText().equals("")) && !comboboxPriority.getValue().equals("")) {
-      janitorDatabase.addRequest(textfieldLocation.getText(), comboboxPriority.getValue());
-      statusHash.put(textfieldLocation.getText(), "Not Started");
+    Node node = roomList.getSelectionModel().getSelectedItem();
+    String loc = "";
+    if (node != null && !comboboxPriority.getValue().equals("")) {
+      loc = node.getNodeID();
+      janitorDatabase.addRequest(loc, comboboxPriority.getValue());
+      statusHash.put(loc, "Not Started");
       comboboxPriority.getSelectionModel().clearSelection();
-      textfieldLocation.clear();
       labelSubmitRequest.setText("Request Submitted Successfully");
-    } else if (comboboxPriority.getValue() != null && textfieldLocation.getText().equals("")) {
+    } else if (comboboxPriority.getValue() != null && node == null) {
       labelSubmitRequest.setText("Please enter a location");
-    } else if (comboboxPriority.getValue() == null && !textfieldLocation.getText().equals("")) {
+    } else if (comboboxPriority.getValue() == null && node != null) {
       labelSubmitRequest.setText("Please enter a priority");
-    } else if (comboboxPriority.getValue() == null && textfieldLocation.getText().equals("")) {
+    } else if (comboboxPriority.getValue() == null && node == null) {
       labelSubmitRequest.setText("Please enter data");
     }
     refreshActiveRequests();
