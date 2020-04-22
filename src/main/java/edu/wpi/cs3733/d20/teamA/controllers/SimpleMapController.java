@@ -43,9 +43,6 @@ public class SimpleMapController {
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton qrCodeButton;
 
-  @FXML private JFXRadioButton drawPathButton;
-  @FXML private JFXRadioButton drawAllNodesButton;
-
   private MapCanvas canvas;
   private Graph graph;
   private String lastDirs;
@@ -90,20 +87,6 @@ public class SimpleMapController {
     swapBtn.setGraphic(new FontAwesomeIconView((FontAwesomeIcon.EXCHANGE)));
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
     qrCodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QRCODE));
-
-    // Setup radio buttons
-    drawPathButton.setOnAction(
-        event -> {
-          drawAllNodesButton.setSelected(false);
-          canvas.setDrawAllNodes(false);
-          canvas.draw(1);
-        });
-    drawAllNodesButton.setOnAction(
-        event -> {
-          drawPathButton.setSelected(false);
-          canvas.setDrawAllNodes(true);
-          canvas.draw(1);
-        });
 
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(

@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -26,7 +25,7 @@
                <children>
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
 
-                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="250.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="93.0">
+                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="250.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="75.0">
                      <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
 
                         <padding>
@@ -41,34 +40,17 @@
                         <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
                      </VBox>
                   </JFXDrawer>
-                  <VBox layoutY="4.0" pickOnBounds="false" spacing="15.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
+                  <HBox layoutX="15.0" layoutY="15.0" pickOnBounds="false" spacing="25.0">
                      <children>
-                        <GridPane pickOnBounds="false">
-                           <columnConstraints>
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="-Infinity" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
-                           </rowConstraints>
-                           <children>
-                              <JFXRadioButton fx:id="drawAllNodesButton" text="Draw All Nodes" GridPane.columnIndex="1" />
-                              <JFXRadioButton fx:id="drawPathButton" selected="true" text="Draw Path Only" />
-                           </children>
-                        </GridPane>
-                        <HBox pickOnBounds="false" spacing="25.0">
-                           <children>
-                              <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions">
-                                 <font>
-                                    <Font size="16.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" />
-                           </children>
-                        </HBox>
+                        <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" />
                      </children>
-                  </VBox>
-                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="250.0" layoutY="308.0" prefHeight="353.0" prefWidth="254.0">
+                  </HBox>
+                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="250.0" layoutY="308.0" prefHeight="353.0" prefWidth="254.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="298.0">
                      <children>
                         <GridPane fx:id="directionsPane">
                            <columnConstraints>
