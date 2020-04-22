@@ -73,9 +73,6 @@ public class SimpleMapController {
     directionsDrawer.setOnDrawerClosed(event -> directionsDrawer.setMouseTransparent(true));
     directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
 
-    // Disable selecting directions
-    directionsList.setMouseTransparent(true);
-    directionsList.setFocusTraversable(false);
     // Setup text directions drawer
     textDirectionsDrawer.setSidePane(directionsPane);
     textDirectionsDrawer.setOnDrawerClosed(event -> textDirectionsDrawer.setMouseTransparent(true));
@@ -92,6 +89,7 @@ public class SimpleMapController {
     rootPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
         event -> {
+          event.consume();
           canvas.draw(1);
         });
 

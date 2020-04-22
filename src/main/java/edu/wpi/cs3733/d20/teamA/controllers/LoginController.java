@@ -8,14 +8,17 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.sql.SQLException;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -29,6 +32,8 @@ public class LoginController extends AbstractController {
   @FXML private JFXPasswordField passwordBox;
   @FXML private StackPane dialogPane;
   @FXML private JFXButton logoutButton;
+
+  @FXML private BorderPane rootPane;
 
   private GaussianBlur currentBlur;
   private Scene appPrimaryScene;
@@ -70,6 +75,21 @@ public class LoginController extends AbstractController {
     // Setup enter key to go from Username -> Password -> Login
     usernameBox.setOnAction(event -> passwordBox.requestFocus());
     passwordBox.setOnAction(event -> loginButton.requestFocus());
+
+    // Add listener to pass tab switch event through to current pane
+    rootPane.addEventHandler(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          if (event.getTarget().equals(rootPane)) {
+            tabPane
+                .getTabs()
+                .forEach(
+                    tab -> {
+                      Node node = tab.getContent();
+                      node.fireEvent(new TabSwitchEvent());
+                    });
+          }
+        });
   }
 
   @FXML
