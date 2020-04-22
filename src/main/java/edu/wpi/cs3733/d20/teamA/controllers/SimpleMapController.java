@@ -104,7 +104,7 @@ public class SimpleMapController {
               graph.getNodes().values().stream()
                   .filter(node -> node.getFloor() == 1)
                   .collect(Collectors.toList()));
-      allNodeList.sort(Comparator.comparing(Node::getLongName));
+      allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
 
       InvalidationListener focusListener =
           observable -> {
@@ -114,7 +114,7 @@ public class SimpleMapController {
                     graph.getNodes().values().stream()
                         .filter(node -> node.getFloor() == 1)
                         .collect(Collectors.toList())));
-            allNodeList.sort(Comparator.comparing(Node::getLongName));
+            allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
             startingLocationBox.setItems(allNodeList);
             destinationBox.setItems(allNodeList);
             startingLocationBox.setVisibleRowCount(12);
