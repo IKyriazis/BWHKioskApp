@@ -58,6 +58,7 @@
                   <JFXButton fx:id="btnInProgress" layoutX="238.0" layoutY="589.0" onAction="#markInProgress" style="-fx-background-color: white;" text="In Progress" visible="false" />
                   <JFXButton fx:id="btnCompleted" layoutX="394.0" layoutY="589.0" onAction="#markCompleted" style="-fx-background-color: white;" text="Completed" visible="false" />
                   <Label fx:id="labelStatus" alignment="CENTER" layoutY="622.0" text="Label" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="55.0" />
+                  <JFXTextField fx:id="textfieldEmployeeName" alignment="CENTER" layoutX="25.0" layoutY="654.0" promptText="Enter name" style="-fx-background-color: white;" visible="false"/>
                </children>
             </AnchorPane>
          </right>

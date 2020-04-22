@@ -26,20 +26,22 @@ public class NodeDialogController implements IDialogController {
   @FXML private JFXTextField xField;
   @FXML private JFXTextField yField;
 
-  private int x, y;
+  private int x, y, floor;
   private Node oldNode;
   private Graph graph;
   private JFXDialog dialog;
 
-  public NodeDialogController(Node node, int x, int y) {
+  public NodeDialogController(Node node, int x, int y, int floor) {
     this.oldNode = node;
     // Use existing node coordinates if set
     if (oldNode != null) {
       this.x = node.getX();
       this.y = node.getY();
+      this.floor = node.getFloor();
     } else {
       this.x = x;
       this.y = y;
+      this.floor = floor;
     }
 
     try {
@@ -77,10 +79,9 @@ public class NodeDialogController implements IDialogController {
               }
             });
     // Setup floor combobox
-    // ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
-    ObservableList<Integer> floors = FXCollections.observableArrayList(1);
+    ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
     floorBox.setItems(floors);
-    floorBox.setValue(1);
+    floorBox.setValue(floor);
     floorBox.setEditable(false);
 
     ObservableList<NodeType> types = FXCollections.observableArrayList(NodeType.values());
@@ -89,7 +90,10 @@ public class NodeDialogController implements IDialogController {
     ObservableList<String> buildings = FXCollections.observableArrayList("Main");
     buildingBox.setItems(buildings);
 
-    ObservableList<String> teams = FXCollections.observableArrayList("Team A");
+    ObservableList<String> teams =
+        FXCollections.observableArrayList(
+            "Team A", "Team B", "Team C", "Team D", "Team E", "Team F", "Team K", "Team L",
+            "Team M", "Team N", "Team O", "Team P");
     teamBox.setItems(teams);
 
     // Setup coordinate formatters
@@ -109,8 +113,20 @@ public class NodeDialogController implements IDialogController {
       typeBox.setValue(oldNode.getType());
       longNameField.setText(oldNode.getLongName());
       shortNameField.setText(oldNode.getShortName());
-      buildingBox.setValue(oldNode.getBuilding());
-      teamBox.setValue(oldNode.getTeamAssigned());
+
+      // Fix b/c other teams maps are straight ass
+      if (oldNode.getBuilding().isEmpty()) {
+        buildingBox.setValue("Main");
+      } else {
+        buildingBox.setValue(oldNode.getBuilding());
+      }
+
+      if (oldNode.getTeamAssigned().isEmpty()) {
+        teamBox.setValue("Team A");
+      } else {
+        teamBox.setValue(oldNode.getTeamAssigned());
+      }
+
       xField.setText(String.valueOf(oldNode.getX()));
       yField.setText(String.valueOf(oldNode.getY()));
     } else {
