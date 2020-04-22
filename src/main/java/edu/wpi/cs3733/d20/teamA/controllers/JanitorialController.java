@@ -29,7 +29,6 @@ public class JanitorialController extends AbstractController {
   @FXML private JFXButton btnCompleted;
   @FXML private JFXButton btnInProgress;
 
-
   @FXML private JFXComboBox<Node> roomList;
 
   // @FXML private JFXTextField textfieldLocation;
