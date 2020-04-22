@@ -36,8 +36,11 @@ public class MapEditorController {
   @FXML private JFXButton deleteNodeButton;
   @FXML private JFXButton addEdgeButton;
   @FXML private JFXButton deleteEdgeButton;
-  @FXML private JFXButton exportNodesButton;
-  @FXML private JFXButton exportEdgesButton;
+  @FXML private JFXButton exportButton;
+
+  @FXML private JFXButton floorUpButton;
+  @FXML private JFXButton floorDownButton;
+  @FXML private JFXTextField floorField;
 
   @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
@@ -45,6 +48,7 @@ public class MapEditorController {
 
   private MapCanvas canvas;
   private Graph graph;
+  private int floor = 1;
 
   enum Mode {
     INFO,
@@ -110,6 +114,9 @@ public class MapEditorController {
     deleteNodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRASH));
     addEdgeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS));
     deleteEdgeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRASH_ALT));
+    floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
+    floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
+    exportButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SAVE));
 
     // Setup tool button press handler
     nodeInfoButton.setOnAction(this::toolPressed);
@@ -119,8 +126,6 @@ public class MapEditorController {
     deleteNodeButton.setOnAction(this::toolPressed);
     addEdgeButton.setOnAction(this::toolPressed);
     deleteEdgeButton.setOnAction(this::toolPressed);
-    exportEdgesButton.setOnAction(this::exportEdgeCSVClicked);
-    exportNodesButton.setOnAction(this::exportNodeCSVClicked);
 
     // Try to get graph
     try {
@@ -129,7 +134,7 @@ public class MapEditorController {
       e.printStackTrace();
     }
 
-    Platform.runLater(() -> canvas.draw(1));
+    Platform.runLater(() -> canvas.draw(floor));
   }
 
   public void toolPressed(ActionEvent event) {
@@ -169,14 +174,14 @@ public class MapEditorController {
 
     if (mode != startMode) {
       canvas.setSelectedNode(null);
-      canvas.draw(1);
+      canvas.draw(floor);
     }
   }
 
   public void canvasClicked(MouseEvent mouse) {
     Point2D mousePos = new Point2D(mouse.getX(), mouse.getY());
     Point2D mouseGraphPos = canvas.canvasToGraph(mousePos);
-    Optional<Node> optionalNode = canvas.getClosestNode(1, mousePos, 15);
+    Optional<Node> optionalNode = canvas.getClosestNode(floor, mousePos, 15);
     Node lastSelected = canvas.getSelectedNode();
 
     switch (mode) {
@@ -206,12 +211,13 @@ public class MapEditorController {
             });
         break;
       case ADD_NODE:
-        openNodeModifyDialog(null, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY());
+        openNodeModifyDialog(null, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY(), floor);
         break;
       case EDIT_NODE:
         optionalNode.ifPresent(
             node ->
-                openNodeModifyDialog(node, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY()));
+                openNodeModifyDialog(
+                    node, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY(), floor));
         break;
       case DELETE_NODE:
         optionalNode.ifPresent(
@@ -257,39 +263,56 @@ public class MapEditorController {
         break;
     }
 
-    canvas.draw(1);
+    canvas.draw(floor);
   }
 
-  private void openNodeModifyDialog(Node node, int x, int y) {
+  private void openNodeModifyDialog(Node node, int x, int y, int floor) {
     String heading = (node == null) ? "Add Node" : "Edit Node";
-    NodeDialogController nodeDialogController = new NodeDialogController(node, x, y);
+    NodeDialogController nodeDialogController = new NodeDialogController(node, x, y, floor);
     DialogUtil.complexDialog(
         dialogPane,
         heading,
         "views/NodeModifyPopup.fxml",
         false,
-        event -> canvas.draw(1),
+        event -> canvas.draw(floor),
         nodeDialogController);
   }
 
-  public void exportEdgeCSVClicked(ActionEvent actionEvent) {
-    FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Save Edge CSV");
-
-    File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
-    if (file != null) {
-      CSVLoader.exportEdges(graph, file);
-    }
-  }
-
-  // exportNodeCSVClicked() handles clicks from the 'Export Node CSV' button
-  public void exportNodeCSVClicked(ActionEvent actionEvent) {
+  @FXML
+  public void exportClicked(ActionEvent actionEvent) {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save Node CSV");
 
-    File file = fileChooser.showSaveDialog(canvas.getScene().getWindow());
-    if (file != null) {
-      CSVLoader.exportNodes(graph, file);
+    File nodeFile = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+    if (nodeFile != null) {
+      CSVLoader.exportNodes(graph, nodeFile);
+    } else {
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "Export Error", "No file / invalid file selected for node export");
+      return;
     }
+
+    fileChooser.setTitle("Save Edge CSV");
+    File edgeFile = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+    if (edgeFile != null) {
+      CSVLoader.exportEdges(graph, edgeFile);
+    } else {
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "Export Error", "No file / invalid file selected for edge export");
+    }
+  }
+
+  @FXML
+  public void floorUp() {
+    floor = Math.min(5, floor + 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
+  }
+
+  @FXML
+  public void floorDown() {
+    floor = Math.max(1, floor - 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
   }
 }
