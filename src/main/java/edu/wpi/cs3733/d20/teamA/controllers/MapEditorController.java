@@ -283,6 +283,9 @@ public class MapEditorController {
     FileChooser fileChooser = new FileChooser();
     fileChooser.setTitle("Save Node CSV");
 
+    FileChooser.ExtensionFilter filter =
+        new FileChooser.ExtensionFilter("CSV file (*.csv)", "*.csv");
+    fileChooser.getExtensionFilters().add(filter);
     File nodeFile = fileChooser.showSaveDialog(canvas.getScene().getWindow());
     if (nodeFile != null) {
       CSVLoader.exportNodes(graph, nodeFile);
