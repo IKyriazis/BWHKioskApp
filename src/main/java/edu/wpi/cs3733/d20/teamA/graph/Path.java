@@ -1,7 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
 import com.sun.javafx.scene.traversal.Direction;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.util.*;
+import javafx.scene.control.Label;
 
 /** Represents a path along the graph */
 public class Path {
@@ -135,90 +138,8 @@ public class Path {
     return (int) Math.sqrt(xDist + yDist);
   }
 
-  public String textualDirections() {
-    /*if (pathNodes.get(0).getY() > pathNodes.get(pathNodes.size() - 1).getY())
-      return textualDirectionsFromOrientation(Direction.LEFT, Direction.RIGHT);
-    else return textualDirectionsFromOrientation(Direction.RIGHT, Direction.LEFT);*/
-    return newTextualDirections();
-  }
-
-  // If the start node is closer to the bottom on the graph than the end node, first = LEFT second =
-  // RIGHT
-  // else first = RIGHT second = LEFT
-  public String textualDirectionsFromOrientation(Direction first, Direction second) {
-    double currentAngle = 0;
-    String textPath = "";
-    ArrayList<Direction> directions = new ArrayList<>();
-    for (int i = 0; i < pathNodes.size() - 1; i++) {
-
-      int currX = pathNodes.get(i).getX();
-      int currY = pathNodes.get(i).getY();
-      int nextX = pathNodes.get(i + 1).getX();
-      int nextY = pathNodes.get(i + 1).getY();
-      double angle = 0;
-      int diffX = nextX - currX;
-      int diffY = nextY - currY;
-      if (diffX != 0) {
-
-        angle = Math.atan((diffY) / (diffX));
-        if (angle == 0 && diffX < 0) angle = Math.PI;
-
-      } else {
-
-        if (diffY < 0) angle = Math.PI / 2;
-        else if (diffY < 0) angle = -Math.PI / 2;
-        else angle = currentAngle;
-      }
-
-      // Set the first angle to the angle between the first two nodes for comparison
-      if (i == 0) {
-        currentAngle = angle;
-      }
-      if (angle - currentAngle > Math.PI / 8) {
-        // Turn Left if the starting node is lower and turn right if start is higher
-        directions.add(first);
-      } else if (angle - currentAngle < -Math.PI / 8) {
-        // Turn Right
-        directions.add(second);
-      } else {
-        // Go straight
-        directions.add(Direction.UP);
-      }
-      currentAngle = angle;
-    } // for
-
-    // Convert the directions to a string
-    for (int j = 0; j < directions.size(); j++) {
-      if (directions.get(j) == Direction.RIGHT) {
-        textPath += " Turn Right at:" + pathNodes.get(j).getNodeID() + "\n";
-      } else if (directions.get(j) == Direction.LEFT) {
-        textPath += " Turn Left at:" + pathNodes.get(j).getNodeID() + "\n";
-      } else {
-        // else if it's straight keep track of how many nodes it is straight for
-        String end = "";
-        int nextNotStraight = j;
-        for (int k = j + 1; k < directions.size(); k++) {
-          if (directions.get(k) != Direction.UP) {
-            end = pathNodes.get(k).getNodeID();
-            nextNotStraight = k;
-            break;
-          }
-        }
-        j = nextNotStraight - 1;
-        // If end is empty then there were no other turns
-        if (end.isEmpty()) {
-          textPath += "Continue straight until destination." + "\n";
-          break;
-        } else {
-          textPath += " Go straight until:" + end + "\n";
-        }
-      }
-    }
-    return textPath;
-  }
-
-  public String newTextualDirections() {
-    String textPath = "";
+  public ArrayList<Label> textualDirections() {
+    ArrayList<Label> textPath = new ArrayList<>();
     ArrayList<Direction> directions = new ArrayList<>();
     double lastAngle = 0.0;
     // For every node in the path
@@ -271,11 +192,15 @@ public class Path {
     // Formulate the string of directions
     for (int j = 0; j < directions.size(); j++) {
       if (directions.get(j) == Direction.RIGHT) {
-        textPath +=
-            " Turn Right at:" + pathNodes.get(j).getNodeID() + "\n" + " Continue Straight" + "\n";
+        textPath.add(
+            new Label(
+                "Turn right at " + pathNodes.get(j).getLongName(),
+                new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_RIGHT)));
       } else if (directions.get(j) == Direction.LEFT) {
-        textPath +=
-            " Turn Left at:" + pathNodes.get(j).getNodeID() + "\n" + " Continue Straight" + "\n";
+        textPath.add(
+            new Label(
+                "Turn left at " + pathNodes.get(j).getLongName(),
+                new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_LEFT)));
       } else {
         // else if it's straight keep track of how many nodes it is straight for
         String end = "";
@@ -290,15 +215,24 @@ public class Path {
         j = nextNotStraight - 1;
         // If end is empty then there were no other turns
         if (end.isEmpty()) {
-          textPath += " Continue straight until destination." + "\n";
+          textPath.add(
+              new Label(
+                  "Continue straight until destination",
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
           break;
         } else {
-          textPath += " Go straight until:" + end + "\n";
+          textPath.add(
+              new Label(
+                  "Go straight until " + end,
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
         }
       }
     }
 
-    textPath += " You have reached " + pathNodes.get(pathNodes.size() - 1).getNodeID();
+    textPath.add(
+        new Label(
+            "You have reached " + pathNodes.get(pathNodes.size() - 1).getLongName(),
+            new FontAwesomeIconView(FontAwesomeIcon.DOT_CIRCLE_ALT)));
 
     return textPath;
   }

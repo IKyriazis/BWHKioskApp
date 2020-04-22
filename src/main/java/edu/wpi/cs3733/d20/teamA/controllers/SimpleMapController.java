@@ -7,8 +7,10 @@ import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,6 +24,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class SimpleMapController {
@@ -32,8 +35,9 @@ public class SimpleMapController {
   @FXML private JFXComboBox<Node> startingLocationBox;
   @FXML private JFXComboBox<Node> destinationBox;
   @FXML private AnchorPane canvasPane;
-  @FXML private Label textualDirectionsLabel;
   @FXML private JFXSlider zoomSlider;
+  @FXML private JFXListView<Label> directionsList;
+  @FXML private StackPane dialogPane;
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton swapBtn;
@@ -71,8 +75,11 @@ public class SimpleMapController {
     directionsDrawer.setOnDrawerClosed(event -> directionsDrawer.setMouseTransparent(true));
     directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
 
+    // Disable selecting directions
+    directionsList.setMouseTransparent(true);
+    directionsList.setFocusTraversable(false);
     // Setup text directions drawer
-    textDirectionsDrawer.setSidePane(textualDirectionsLabel);
+    textDirectionsDrawer.setSidePane(directionsList);
     textDirectionsDrawer.setOnDrawerClosed(event -> textDirectionsDrawer.setMouseTransparent(true));
     textDirectionsDrawer.setOnDrawerOpened(
         event -> textDirectionsDrawer.setMouseTransparent(false));
@@ -175,12 +182,26 @@ public class SimpleMapController {
       canvas.setPath(path);
       canvas.draw(1);
 
-      if (textDirectionsDrawer.isClosed()) {
-        textDirectionsDrawer.toggle();
-      }
-
+      directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
-        textualDirectionsLabel.setText(path.textualDirections());
+        ArrayList<Label> directions = path.textualDirections();
+        directions.forEach(
+            l -> {
+              directionsList.getItems().add(l);
+            });
+
+        if (textDirectionsDrawer.isClosed()) {
+          textDirectionsDrawer.open();
+        }
+      } else {
+        DialogUtil.simpleInfoDialog(
+            dialogPane,
+            "No Path Found",
+            "No path between the selected locations could be found. Try choosing different locations.");
+
+        if (textDirectionsDrawer.isOpened()) {
+          textDirectionsDrawer.close();
+        }
       }
     }
   }
