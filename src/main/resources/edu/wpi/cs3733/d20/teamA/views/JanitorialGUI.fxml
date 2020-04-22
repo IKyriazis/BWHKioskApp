@@ -58,10 +58,11 @@
                      </font></JFXButton>
                   <Label fx:id="labelClearRequest" alignment="CENTER" layoutY="360.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                   <JFXListView fx:id="listviewActiveRequests" layoutX="61.0" layoutY="84.0" onMouseClicked="#elementSelect" prefHeight="496.0" prefWidth="500.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="55.0" />
-                  <JFXButton style="-fx-background-color: white;" fx:id="btnNotStarted" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="589.0" onAction="#markNotStarted" text="Not Started" visible="false" AnchorPane.leftAnchor="71.0" />
-                  <JFXButton style="-fx-background-color: white;" fx:id="btnInProgress" layoutX="238.0" layoutY="589.0" onAction="#markInProgress" text="In Progress" visible="false" />
-                  <JFXButton style="-fx-background-color: white;" fx:id="btnCompleted" layoutX="394.0" layoutY="589.0" onAction="#markCompleted" text="Completed" visible="false" />
+                  <JFXButton fx:id="btnNotStarted" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="589.0" onAction="#markNotStarted" style="-fx-background-color: white;" text="Not Started" visible="false" AnchorPane.leftAnchor="71.0" />
+                  <JFXButton fx:id="btnInProgress" layoutX="238.0" layoutY="589.0" onAction="#markInProgress" style="-fx-background-color: white;" text="In Progress" visible="false" />
+                  <JFXButton fx:id="btnCompleted" layoutX="394.0" layoutY="589.0" onAction="#markCompleted" style="-fx-background-color: white;" text="Completed" visible="false" />
                   <Label fx:id="labelStatus" alignment="CENTER" layoutY="622.0" text="Label" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="55.0" />
+                  <JFXTextField fx:id="textfieldEmployeeName" alignment="CENTER" layoutX="25.0" layoutY="654.0" promptText="Enter name" style="-fx-background-color: white;" visible="false"/>
                </children>
             </AnchorPane>
          </right>
