@@ -1,3 +1,5 @@
+import com.diffplug.spotless.LineEnding
+
 plugins {
     id 'application'
     id 'java'
@@ -6,6 +8,7 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id "io.freefair.lombok" version "5.0.0-rc6"
 }
+
 mainClassName = 'edu.wpi.cs3733.d20.teamA.Main'
 
 repositories {
@@ -14,6 +17,17 @@ repositories {
     maven {
         url 'https://apisite.crmyers.dev/maven'
     }
+}
+
+run {
+    jvmArgs = ['--add-opens=javafx.base/com.sun.javafx.runtime=ALL-UNNAMED',
+               '--add-opens=javafx.controls/com.sun.javafx.scene.control.behavior=ALL-UNNAMED',
+               '--add-opens=javafx.controls/com.sun.javafx.scene.control=ALL-UNNAMED',
+               '--add-opens=javafx.base/com.sun.javafx.binding=ALL-UNNAMED',
+               '--add-opens=javafx.base/com.sun.javafx.event=ALL-UNNAMED',
+               '--add-opens=javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED',
+               '--add-opens=javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED'
+    ]
 }
 
 dependencies {
@@ -26,11 +40,23 @@ dependencies {
 
             'org.slf4j:slf4j-api:1.7.30',
             'org.slf4j:slf4j-simple:1.7.30',
+
+            'com.opencsv:opencsv:5.1',
+
+            'de.jensd:fontawesomefx-commons:11.0',
+            'de.jensd:fontawesomefx-fontawesome:4.7.0-11',
+
+            'com.google.inject:guice:4.2.2',
+
+            'com.google.zxing:core:3.4.0',
+            'com.google.zxing:javase:3.4.0'
     )
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
             'org.testfx:testfx-junit5:4.0.16-alpha',
+            'org.mockito:mockito-core:3.3.3',
+            'org.mockito:mockito-junit-jupiter:3.3.3',
     )
     testRuntimeOnly(
             'org.testfx:openjfx-monocle:jdk-11+26',
@@ -38,8 +64,8 @@ dependencies {
 }
 
 javafx {
-    version = "11"
-    modules = ['javafx.controls', 'javafx.fxml']
+    version = "11.0.2"
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing']
 }
 
 
@@ -82,7 +108,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.25
+                minimum = 0.20
             }
             excludes = codeCoverageExcludes
         }
@@ -92,7 +118,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'BRANCH'
                 value = 'COVEREDRATIO'
-                minimum = 0.25
+                minimum = 0.20
             }
             excludes = codeCoverageExcludes
         }
@@ -107,5 +133,7 @@ compileJava.dependsOn 'spotlessApply'
 spotless {
     java {
         googleJavaFormat()
+
+        lineEndings(LineEnding.PLATFORM_NATIVE)
     }
 }

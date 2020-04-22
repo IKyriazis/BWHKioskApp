@@ -1,0 +1,64 @@
+.tab .tab-label {
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER;
+    -fx-text-fill: black;
+    -fx-font-size: 18pt; /* all the same except this newly added one */
+}
+
+.jfx-tab-pane .headers-region, .jfx-tab-pane .tab-header-background {
+    -fx-background-color: #78909C;
+}
+
+.jfx-tab-pane .headers-region > .tab > .jfx-rippler {
+    -jfx-rippler-fill: BLACK;
+}
+
+.jfx-tab-pane .headers-region > .tab-selected-line{
+    -fx-background-color: black;
+    -fx-pref-width: 1px !important;
+    -fx-pref-height: 2px;
+}
+
+.jfx-slider .thumb, .jfx-slider .colored-track{
+    -fx-background-color: black;
+}
+
+.jfx-slider .animated-thumb {
+    -fx-background-color: black;
+}
+
+.jfx-radio-button {
+    -jfx-selected-color: black;
+}
+
+#informationButton {
+    -fx-padding: 0 10 0 10;
+    -fx-alignment: CENTER;
+    -fx-font-size: 20pt;
+    -fx-background-color: white;
+}
+
+#usernameBox, #passwordBox {
+    -fx-font-size: 18pt;
+}
+
+#loginButton {
+    -fx-text-fill: black;
+    -fx-background-color: #78909C;
+    -fx-padding: 0 5 0 5;
+    -fx-font-size: 18pt;
+}
+
+#loginBox, #centerPane {
+    -fx-background-color: #F5F5F5;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+
+#logoutButton {
+    -fx-font-size: 12pt;
+}
+
+#orderButton, #trackButton {
+    -fx-font-size: 22pt;
+}
