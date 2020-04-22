@@ -255,8 +255,8 @@ public class FlowerAdminController extends AbstractController {
       } else {
         DialogUtil.simpleInfoDialog(
             dialogStackPane,
-            "Flower Cannot be deleted",
-            "This flower has an active order and cannot be removed");
+            "Cannot Delete Flower",
+            "This flower has an active order depending on it and thus cannot be removed");
       }
     } else {
       DialogUtil.simpleInfoDialog(

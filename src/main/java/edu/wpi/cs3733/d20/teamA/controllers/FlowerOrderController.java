@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -121,6 +122,8 @@ public class FlowerOrderController extends AbstractController {
     // Setup button icons
     orderButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ADDRESS_CARD));
     trackButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRUCK));
+
+    txtNumber.setTextFormatter(InputFormatUtil.getIntFilter());
   }
 
   /**

@@ -16,7 +16,7 @@
             <RowConstraints vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXListView fx:id="viewAnn" prefWidth="400.0" />
+            <JFXListView fx:id="viewAnn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
          </children>
       </GridPane>
    </children>
