@@ -261,12 +261,20 @@ public class MapCanvas extends Canvas {
 
   // Draws the path found
   private void drawPath(Path path) {
-    for (Node node : path.getPathNodes()) {
-      drawNode(node, Color.BLACK);
-    }
 
     for (Edge edge : path.getPathEdges()) {
       drawEdge(edge);
+    }
+
+    for (Node node : path.getPathNodes()) {
+
+      if (path.getPathNodes().indexOf(node) == 0) {
+        drawNode(node, Color.DEEPSKYBLUE);
+      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)) {
+        drawNode(node, Color.SPRINGGREEN);
+      } else {
+        drawNode(node, Color.BLACK);
+      }
     }
   }
 
