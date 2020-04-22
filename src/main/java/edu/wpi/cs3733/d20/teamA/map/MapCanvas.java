@@ -269,9 +269,9 @@ public class MapCanvas extends Canvas {
     for (Node node : path.getPathNodes()) {
 
       if (path.getPathNodes().indexOf(node) == 0) {
-        drawNode(node, Color.DEEPSKYBLUE);
-      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)) {
         drawNode(node, Color.SPRINGGREEN);
+      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)) {
+        drawNode(node, Color.TOMATO);
       } else {
         drawNode(node, Color.BLACK);
       }
