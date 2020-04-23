@@ -13,10 +13,9 @@ public class FlowerDatabase extends Database {
 
   /**
    * Creates the Flower database with given connection
-   * @param connection
-   * @throws SQLException
+   * @param connection connection
    */
-  public FlowerDatabase(Connection connection) throws SQLException {
+  public FlowerDatabase(Connection connection){
     super(connection);
   }
 
@@ -25,9 +24,8 @@ public class FlowerDatabase extends Database {
    *
    * @return false if the tables don't exist and CONSTRAINT can't be dropped, true if CONSTRAINT and
    *     tables are dropped correctly
-   * @throws SQLException
    */
-  public boolean dropTables() throws SQLException {
+  public boolean dropTables(){
 
     // if the helper returns false this method should too
     // drop the CONSTRAINT first
@@ -47,9 +45,8 @@ public class FlowerDatabase extends Database {
    * Creates tables
    *
    * @return False if tables couldn't be created
-   * @throws SQLException
    */
-  public boolean createTables() throws SQLException {
+  public boolean createTables(){
 
     // Create the graph tables
     boolean a =
@@ -60,20 +57,16 @@ public class FlowerDatabase extends Database {
         helperPrepared(
             "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flowerType Varchar(15) NOT NULL, flowerColor Varchar(15) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT FK_fT FOREIGN KEY (flowerType, flowerColor) REFERENCES Flowers(typeFlower, color), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
 
-    if (a && b) {
-      return true;
-    } else {
-      return false;
-    }
+    return a && b;
   }
 
   /**
    * Adds a flower to the flower table
    *
    * @param type type of flower
-   * @param color
+   * @param color color
    * @param qty how many are available in inventory
-   * @param pricePer
+   * @param pricePer price per flower
    * @return boolean for test purposes. True is everything goes through without an SQL exception
    */
   public boolean addFlower(String type, String color, int qty, double pricePer) {
@@ -107,9 +100,9 @@ public class FlowerDatabase extends Database {
   /**
    * Takes in the color and type of flower and updates to a given price
    *
-   * @param type
-   * @param color
-   * @param newPrice
+   * @param type flowerType
+   * @param color color
+   * @param newPrice new price
    * @return true if the price is updated, false otherwise
    */
   public boolean updatePrice(String type, String color, double newPrice) {
@@ -145,9 +138,9 @@ public class FlowerDatabase extends Database {
   /**
    * Takes in the type and color of the flower and updates the inventory qty
    *
-   * @param type
-   * @param color
-   * @param newNum
+   * @param type typeFlower
+   * @param color color
+   * @param newNum number of flowers
    * @return true if the quantity updated, false otherwise
    */
   public boolean updateQTY(String type, String color, int newNum) {
@@ -242,8 +235,8 @@ public class FlowerDatabase extends Database {
   /**
    * Changes the order status of a selected order
    *
-   * @param orderNum
-   * @param newStat
+   * @param orderNum order Number
+   * @param newStat new Status
    * @return true if the order status was changed, false otherwise
    */
   public boolean changeOrderStatus(int orderNum, String newStat) {
@@ -265,7 +258,7 @@ public class FlowerDatabase extends Database {
   /**
    * Deletes a certain order from the table
    *
-   * @param orderNumber
+   * @param orderNumber orderNumber
    * @return true if the order was deleted, false otherwise
    */
   public boolean deleteOrder(int orderNumber) {
@@ -330,9 +323,8 @@ public class FlowerDatabase extends Database {
    * removes all flowers from the table
    *
    * @return true if all the flowers were removed, false otherwise
-   * @throws SQLException
    */
-  public boolean removeAllFlowers() throws SQLException {
+  public boolean removeAllFlowers(){
     return helperPrepared("DELETE From Flowers");
   }
 
@@ -340,9 +332,8 @@ public class FlowerDatabase extends Database {
    * Removes all orders from the table
    *
    * @return true if all the orders were removed, false otherwise
-   * @throws SQLException
    */
-  public boolean removeAllOrders() throws SQLException {
+  public boolean removeAllOrders(){
     orderNum = 1;
     return helperPrepared("DELETE From Orders");
   }
@@ -414,8 +405,8 @@ public class FlowerDatabase extends Database {
   /**
    * Get individual flower price for a given flower
    *
-   * @param type
-   * @param color
+   * @param type flowerType
+   * @param color flowerColor
    * @return the price of a specified flower in a specified color
    */
   public double getFlowerPricePer(String type, String color) {
@@ -444,8 +435,8 @@ public class FlowerDatabase extends Database {
   /**
    * Get the number of a given flower available
    *
-   * @param typeFlower
-   * @param flowerColor
+   * @param typeFlower typeFlower
+   * @param flowerColor flowerColor
    * @return the number of flowers in stock of a specified type and color
    */
   public int getFlowerQuantity(String typeFlower, String flowerColor) throws SQLException {
@@ -467,7 +458,7 @@ public class FlowerDatabase extends Database {
   /**
    * gets the order status for a chosen order
    *
-   * @param orderNum
+   * @param orderNum orderNum
    * @return the status of a specified order number as a string
    */
   public String getOrderStatus(int orderNum) {
@@ -491,46 +482,49 @@ public class FlowerDatabase extends Database {
 
   /**
    * Reads the flower csv file into the database
-   * @throws IOException
-   * @throws CsvException
-   * @throws SQLException
    */
-  public void readFlowersCSV() throws IOException, CsvException, SQLException {
-    InputStream stream =
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowersCSV.csv");
-    CSVReader reader = new CSVReader(new InputStreamReader(stream));
-    List<String[]> data = reader.readAll();
-    for (int i = 1; i < data.size(); i++) {
-      String typeFlower, color;
-      int qty;
-      double pricePer;
-      typeFlower = data.get(i)[0];
-      color = data.get(i)[1];
-      qty = Integer.parseInt(data.get(i)[2]);
-      pricePer = Double.parseDouble(data.get(i)[3]);
-      addFlower(typeFlower, color, qty, pricePer);
+  public void readFlowersCSV() {
+    try {
+      InputStream stream =
+              getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowersCSV.csv");
+      CSVReader reader = new CSVReader(new InputStreamReader(stream));
+      List<String[]> data = reader.readAll();
+      for (int i = 1; i < data.size(); i++) {
+        String typeFlower, color;
+        int qty;
+        double pricePer;
+        typeFlower = data.get(i)[0];
+        color = data.get(i)[1];
+        qty = Integer.parseInt(data.get(i)[2]);
+        pricePer = Double.parseDouble(data.get(i)[3]);
+        addFlower(typeFlower, color, qty, pricePer);
+      }
+    } catch (IOException | CsvException e){
+      e.printStackTrace();
     }
   }
 
   /**
    * Reads the flower order csv file into the order database
-   * @throws IOException
-   * @throws CsvException
-   * @throws SQLException
    */
-  public void readFlowerOrderCSV() throws IOException, CsvException, SQLException {
-    InputStream stream =
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowerOrderCSV.csv");
-    CSVReader reader = new CSVReader(new InputStreamReader(stream));
-    List<String[]> data = reader.readAll();
-    for (int i = 1; i < data.size(); i++) {
-      String flowerType, flowerColor, location;
-      int numFlowers;
-      numFlowers = Integer.parseInt(data.get(i)[0]);
-      flowerType = data.get(i)[1];
-      flowerColor = data.get(i)[2];
-      location = data.get(i)[3];
-      addOrder(numFlowers, flowerType, flowerColor, location);
+  public void readFlowerOrderCSV(){
+    try {
+      InputStream stream =
+              getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowerOrderCSV.csv");
+      CSVReader reader = new CSVReader(new InputStreamReader(stream));
+      List<String[]> data = reader.readAll();
+      for (int i = 1; i < data.size(); i++) {
+        String flowerType, flowerColor, location;
+        int numFlowers;
+        numFlowers = Integer.parseInt(data.get(i)[0]);
+        flowerType = data.get(i)[1];
+        flowerColor = data.get(i)[2];
+        location = data.get(i)[3];
+        addOrder(numFlowers, flowerType, flowerColor, location);
+      }
+    }
+    catch (IOException | CsvException e){
+      e.printStackTrace();
     }
   }
 }
