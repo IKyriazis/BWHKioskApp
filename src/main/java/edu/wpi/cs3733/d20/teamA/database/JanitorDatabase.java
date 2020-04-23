@@ -67,20 +67,27 @@ public class JanitorDatabase extends Database {
    * @return False if request couldn't be added
    */
   public boolean addRequest(String location, String priority){
+
+    // creates a timestamp of the time that the function is called
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    // default status is reported
     String progress = "Reported";
     try {
+      // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO JanitorRequest (time, location, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?)");
+      // sets all the parameters of the prepared statement string
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, location);
       pstmt.setString(3, progress);
       pstmt.setString(4, priority);
+      // first request starts at 1 and increments every time a new request is added
       pstmt.setInt(5, ++requestCount);
       pstmt.executeUpdate();
       pstmt.close();
+      // return true if the request is added
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
