@@ -17,7 +17,6 @@ public class Graph {
   GraphDatabase DB = new GraphDatabase(conn);
   /** The nodes in this graph, mapping ID to Node */
   private HashMap<String, Node> nodes;
-  // private GraphDatabase database;
 
   /** Singleton graph instance */
   private static Graph instance;
@@ -211,7 +210,7 @@ public class Graph {
       DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID());
       DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID());
     } catch (SQLException e) {
-
+      e.printStackTrace();
     }
     // Update edge count
     edgeCount--;
@@ -298,6 +297,7 @@ public class Graph {
       rsetNode.close();
       pstmtNode.close();
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
     try {
@@ -315,6 +315,7 @@ public class Graph {
       rsetEdge.close();
       pstmtEdge.close();
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
     nodes = newNodes;
