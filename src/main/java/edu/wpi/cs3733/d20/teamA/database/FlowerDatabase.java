@@ -11,6 +11,11 @@ import javafx.collections.ObservableList;
 public class FlowerDatabase extends Database {
   private int orderNum = getSizeOrders() + 1;
 
+  /**
+   * Creates the Flower database with given connection
+   * @param connection
+   * @throws SQLException
+   */
   public FlowerDatabase(Connection connection) throws SQLException {
     super(connection);
   }
@@ -71,8 +76,7 @@ public class FlowerDatabase extends Database {
    * @param pricePer
    * @return boolean for test purposes. True is everything goes through without an SQL exception
    */
-  public boolean addFlower(String type, String color, int qty, double pricePer)
-      throws SQLException {
+  public boolean addFlower(String type, String color, int qty, double pricePer) {
 
     String text = Double.toString(Math.abs(pricePer));
     int integerPlaces = text.indexOf('.');
@@ -106,9 +110,9 @@ public class FlowerDatabase extends Database {
    * @param type
    * @param color
    * @param newPrice
-   * @return
+   * @return true if the price is updated, false otherwise
    */
-  public boolean updatePrice(String type, String color, double newPrice) throws SQLException {
+  public boolean updatePrice(String type, String color, double newPrice) {
 
     String text = Double.toString(Math.abs(newPrice));
     int integerPlaces = text.indexOf('.');
@@ -133,6 +137,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -143,9 +148,9 @@ public class FlowerDatabase extends Database {
    * @param type
    * @param color
    * @param newNum
-   * @return
+   * @return true if the quantity updated, false otherwise
    */
-  public boolean updateQTY(String type, String color, int newNum) throws SQLException {
+  public boolean updateQTY(String type, String color, int newNum) {
 
     if (newNum < 0) {
       return false;
@@ -166,6 +171,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -174,10 +180,9 @@ public class FlowerDatabase extends Database {
    * Deletes a flower from the flower table
    *
    * @param type, color
-   * @return
-   * @throws SQLException
+   * @return true if the flower was deleted, false otherwise
    */
-  public boolean deleteFlower(String type, String color) throws SQLException {
+  public boolean deleteFlower(String type, String color) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -199,10 +204,9 @@ public class FlowerDatabase extends Database {
   /**
    * adds an order to the order table
    *
-   * @return
+   * @return the customer's order number
    */
-  public int addOrder(int numFlowers, String flowerType, String flowerColor, String location)
-      throws SQLException {
+  public int addOrder(int numFlowers, String flowerType, String flowerColor, String location) {
     try {
       double total;
       double pricePer = getFlowerPricePer(flowerType, flowerColor);
@@ -230,6 +234,7 @@ public class FlowerDatabase extends Database {
       orderNum++;
       return orderNum - 1;
     } catch (SQLException e) {
+      e.printStackTrace();
       return 0;
     }
   }
@@ -239,7 +244,7 @@ public class FlowerDatabase extends Database {
    *
    * @param orderNum
    * @param newStat
-   * @return
+   * @return true if the order status was changed, false otherwise
    */
   public boolean changeOrderStatus(int orderNum, String newStat) {
 
@@ -252,6 +257,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -260,10 +266,9 @@ public class FlowerDatabase extends Database {
    * Deletes a certain order from the table
    *
    * @param orderNumber
-   * @return
-   * @throws SQLException
+   * @return true if the order was deleted, false otherwise
    */
-  public boolean deleteOrder(int orderNumber) throws SQLException {
+  public boolean deleteOrder(int orderNumber) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From Orders Where orderNumber = ?");
@@ -272,6 +277,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -279,10 +285,9 @@ public class FlowerDatabase extends Database {
   /**
    * Gets how many entries are in the flower table
    *
-   * @return
-   * @throws SQLException
+   * @return the number of entries in the flower table
    */
-  public int getSizeFlowers() throws SQLException {
+  public int getSizeFlowers() {
     int count = 0;
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * From Flowers ");
@@ -294,6 +299,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return count;
     } catch (SQLException e) {
+      e.printStackTrace();
       return -1;
     }
   }
@@ -301,10 +307,9 @@ public class FlowerDatabase extends Database {
   /**
    * Gets how many entries in the order table
    *
-   * @return
-   * @throws SQLException
+   * @return the number of entries in the order table
    */
-  public int getSizeOrders() throws SQLException {
+  public int getSizeOrders() {
     int count = 0;
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * From Orders ");
@@ -316,6 +321,7 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return count;
     } catch (SQLException e) {
+      e.printStackTrace();
       return -1;
     }
   }
@@ -323,7 +329,7 @@ public class FlowerDatabase extends Database {
   /**
    * removes all flowers from the table
    *
-   * @return
+   * @return true if all the flowers were removed, false otherwise
    * @throws SQLException
    */
   public boolean removeAllFlowers() throws SQLException {
@@ -333,7 +339,7 @@ public class FlowerDatabase extends Database {
   /**
    * Removes all orders from the table
    *
-   * @return
+   * @return true if all the orders were removed, false otherwise
    * @throws SQLException
    */
   public boolean removeAllOrders() throws SQLException {
@@ -342,22 +348,11 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * Removes all orders and flowers from the database
+   * Gets all flowers in the flower table in an observable list
    *
-   * @return
-   * @throws SQLException
+   * @return an observable list containing all the flowers in the table
    */
-  public boolean removeAll() throws SQLException {
-    return removeAllFlowers() && removeAllOrders();
-  }
-
-  /**
-   * Returns all flowers in the flower table in an observable list
-   *
-   * @return
-   * @throws SQLException
-   */
-  public ObservableList<Flower> flowerOl() throws SQLException {
+  public ObservableList<Flower> flowerOl() {
     ObservableList<Flower> oList = FXCollections.observableArrayList();
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
@@ -383,12 +378,11 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * Returns an observable list containing all orders in the table
+   * Gets all orders in the table
    *
-   * @return
-   * @throws SQLException
+   * @return an observable list containing all orders in the table
    */
-  public ObservableList<Order> orderOl() throws SQLException {
+  public ObservableList<Order> orderOl() {
     ObservableList<Order> oList = FXCollections.observableArrayList();
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
@@ -418,11 +412,11 @@ public class FlowerDatabase extends Database {
   }
 
   /**
-   * returns just the individual flower price for a given flower
+   * Get individual flower price for a given flower
    *
    * @param type
    * @param color
-   * @return
+   * @return the price of a specified flower in a specified color
    */
   public double getFlowerPricePer(String type, String color) {
     double price = -1;
@@ -443,39 +437,17 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return price;
     } catch (SQLException e) {
+      e.printStackTrace();
       return -1;
     }
   }
   /**
-   * returns the number of a given flower availible
+   * Get the number of a given flower available
    *
-   * @param type
-   * @param color
-   * @return
+   * @param typeFlower
+   * @param flowerColor
+   * @return the number of flowers in stock of a specified type and color
    */
-  public int getFlowerNumber(String type, String color) {
-    int num = -1;
-    try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "Select qty From Flowers Where typeFlower = '"
-                      + type
-                      + "' AND color = '"
-                      + color
-                      + "'");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        num = rset.getInt("qty");
-      }
-      rset.close();
-      pstmt.close();
-      return num;
-    } catch (SQLException e) {
-      return -1;
-    }
-  }
-
   public int getFlowerQuantity(String typeFlower, String flowerColor) throws SQLException {
     int quantity;
     Statement priceStmt = getConnection().createStatement();
@@ -496,7 +468,7 @@ public class FlowerDatabase extends Database {
    * gets the order status for a chosen order
    *
    * @param orderNum
-   * @return
+   * @return the status of a specified order number as a string
    */
   public String getOrderStatus(int orderNum) {
     String status = null;
@@ -512,10 +484,17 @@ public class FlowerDatabase extends Database {
       pstmt.close();
       return status;
     } catch (SQLException e) {
+      e.printStackTrace();
       return null;
     }
   }
 
+  /**
+   * Reads the flower csv file into the database
+   * @throws IOException
+   * @throws CsvException
+   * @throws SQLException
+   */
   public void readFlowersCSV() throws IOException, CsvException, SQLException {
     InputStream stream =
         getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowersCSV.csv");
@@ -533,6 +512,12 @@ public class FlowerDatabase extends Database {
     }
   }
 
+  /**
+   * Reads the flower order csv file into the order database
+   * @throws IOException
+   * @throws CsvException
+   * @throws SQLException
+   */
   public void readFlowerOrderCSV() throws IOException, CsvException, SQLException {
     InputStream stream =
         getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowerOrderCSV.csv");
