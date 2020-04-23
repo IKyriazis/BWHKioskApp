@@ -13,7 +13,7 @@ public class JanitorDatabase extends Database {
 
   /**
    * Sets the connection to the database
-   * @param connection
+   * @param connection connection
    */
   public JanitorDatabase(Connection connection){
     super(connection);
@@ -33,11 +33,7 @@ public class JanitorDatabase extends Database {
       return false;
     }
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE JanitorRequest"))) {
-      return false;
-    }
-
-    return true;
+    return helperPrepared("DROP TABLE JanitorRequest");
   }
 
   /**
@@ -97,7 +93,7 @@ public class JanitorDatabase extends Database {
 
   /**
    *
-   * @param rn
+   * @param rn request number
    * @return true if the request was deleted
    */
   public boolean deleteRequest(int rn){
@@ -133,9 +129,9 @@ public class JanitorDatabase extends Database {
 
   /**
    * Updates the rn with a certain progress
-   * @param rn
-   * @param name
-   * @param progress
+   * @param rn request number
+   * @param name name
+   * @param progress progress
    * @return true if the progress has been updated
    */
   public boolean updateRequest(int rn, String name, String progress){
@@ -158,9 +154,9 @@ public class JanitorDatabase extends Database {
 
   /**
    * returns true if the progress has been updated
-   * @param rn
-   * @param progress
-   * @return
+   * @param rn request number
+   * @param progress progress
+   * @return true if the request has been updated
    */
   public boolean updateRequest(int rn, String progress){
     try {
@@ -359,9 +355,7 @@ public class JanitorDatabase extends Database {
         priority = data.get(i)[1];
         addRequest(location, priority);
       }
-    } catch(IOException e){
-      e.printStackTrace();
-    } catch(CsvException e){
+    } catch(IOException | CsvException e){
       e.printStackTrace();
     }
   }
