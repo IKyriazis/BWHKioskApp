@@ -302,7 +302,7 @@ public class FlowerAdminController extends AbstractController {
       // track the last selected order
       lastOrder = selected.getValue();
 
-      int i = statusStringToValue(lastOrder.getStatus()) + 1; // next status
+      int i = statusStringToValue(lastOrder.getStatus() + 1); // next status
 
       if (i <= 3) txtNext.getSelectionModel().select(i);
     } else {
