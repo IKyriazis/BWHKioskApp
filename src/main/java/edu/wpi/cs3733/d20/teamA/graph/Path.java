@@ -9,16 +9,29 @@ import javafx.scene.control.Label;
 /** Represents a path along the graph */
 public class Path {
 
-  private ArrayList<Node> pathNodes; // List of nodes along path
-  private ArrayList<Edge> pathEdges; // List of forward & reverse edges along path
+  /** Represents a list of nodes along path*/
+  private ArrayList<Node> pathNodes;
+
+  /** Represents a list of forward & reverse edges along path*/
+  private ArrayList<Edge> pathEdges;
+
+  /** Represents the graph the path is being calculated for*/
   private Graph graph;
 
+  /** Creates a new Path based off what graph we are trying to path find on
+   * @param graph Graph to that the path will be found on
+   * */
   public Path(Graph graph) {
     this.graph = graph;
     pathNodes = new ArrayList<>();
     pathEdges = new ArrayList<>();
   }
 
+  /** Uses the A Star algorithm to locate the optimal path between the given start and end node
+   *
+   * @param start the starting location to path find
+   * @param end the ending location/ destination
+   */
   public void findPath(Node start, Node end) {
     Map<Node, Node> path = new HashMap<>();
     ArrayList<Node> visited = new ArrayList<>();
@@ -96,14 +109,27 @@ public class Path {
     calculateEdges();
   }
 
+  /** Gets the list of nodes in the path
+   *
+   * @return pathNodes
+   *
+   * */
   public ArrayList<Node> getPathNodes() {
     return pathNodes;
   }
 
+  /**
+   * Gets the list of edges in the path
+   * @return pathEdges
+   *
+   */
   public ArrayList<Edge> getPathEdges() {
     return pathEdges;
   }
 
+  /**
+   * Gets only the forward edges for the path
+   */
   private void calculateEdges() {
     // Clear existing edge list
     pathEdges.clear();
@@ -119,8 +145,12 @@ public class Path {
     }
   }
 
-  // Calculate the Euclidean distance between the current node and goal node
-  // So that nodes closer to the end will be given a higher priority
+  /** Calculate the Euclidean distance between the current node and goal node
+   * So that nodes closer to the end will be given a higher priority
+   * @param current The node you are currently at in the path
+   * @param goal The next node you are visiting in the path
+   * @return int The Euclidean distance between the nodes
+   */
   private static int calcHeuristic(Node current, Node goal) {
     double xDist = Math.pow((goal.getX() - current.getX()), 2);
     double yDist = Math.pow((goal.getY() - current.getY()), 2);
@@ -128,6 +158,11 @@ public class Path {
     return (int) Math.sqrt(xDist + yDist);
   }
 
+  /**
+   * Creates textual directions of the path based on the perspective of the
+   * person following the path by using the angles associated between the nodes
+   * @return textPath The array of Labels that write the path out
+   */
   public ArrayList<Label> textualDirections() {
     ArrayList<Label> textPath = new ArrayList<>();
     ArrayList<Direction> directions = new ArrayList<>();
