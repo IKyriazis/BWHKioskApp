@@ -10,7 +10,6 @@ public class EmployeesDatabase extends Database {
 
   /**
    * @return
-   * @throws SQLException
    */
   public boolean dropTables() throws SQLException {
 
@@ -26,7 +25,6 @@ public class EmployeesDatabase extends Database {
    * Creates graph tables
    *
    * @return False if tables couldn't be created
-   * @throws SQLException
    */
   public boolean createTables() throws SQLException {
 
@@ -47,7 +45,6 @@ public class EmployeesDatabase extends Database {
    * @param nameFirst
    * @param nameLast
    * @return
-   * @throws SQLException
    */
   public boolean addEmployee(String empID, String nameFirst, String nameLast, String title){
 
@@ -75,7 +72,6 @@ public class EmployeesDatabase extends Database {
    *
    * @param empID
    * @return true if the Janitor was successfully deleted
-   * @throws SQLException
    */
   public boolean deleteEmployee(String empID){
     try {
@@ -93,7 +89,6 @@ public class EmployeesDatabase extends Database {
 
   /**
    * @return
-   * @throws SQLException
    */
   public int getSizeEmployees(){
     int count = 0;
@@ -240,7 +235,6 @@ public class EmployeesDatabase extends Database {
 
   /**
    * @return
-   * @throws SQLException
    */
   public boolean removeAllEmployees() throws SQLException {
     return helperPrepared("DELETE From Employees");
