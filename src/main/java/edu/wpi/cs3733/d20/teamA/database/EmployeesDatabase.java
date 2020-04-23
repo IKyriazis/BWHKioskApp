@@ -10,7 +10,6 @@ public class EmployeesDatabase extends Database {
 
   /**
    * @return
-   * @throws SQLException
    */
   public boolean dropTables() throws SQLException {
 
@@ -26,7 +25,6 @@ public class EmployeesDatabase extends Database {
    * Creates graph tables
    *
    * @return False if tables couldn't be created
-   * @throws SQLException
    */
   public boolean createTables() throws SQLException {
 
@@ -47,10 +45,8 @@ public class EmployeesDatabase extends Database {
    * @param nameFirst
    * @param nameLast
    * @return
-   * @throws SQLException
    */
-  public boolean addEmployee(String empID, String nameFirst, String nameLast, String title)
-      throws SQLException {
+  public boolean addEmployee(String empID, String nameFirst, String nameLast, String title){
 
     try {
       PreparedStatement pstmt =
@@ -66,6 +62,7 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -75,9 +72,8 @@ public class EmployeesDatabase extends Database {
    *
    * @param empID
    * @return true if the Janitor was successfully deleted
-   * @throws SQLException
    */
-  public boolean deleteEmployee(String empID) throws SQLException {
+  public boolean deleteEmployee(String empID){
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From Employees Where employeeID = ?");
@@ -86,15 +82,15 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
   /**
    * @return
-   * @throws SQLException
    */
-  public int getSizeEmployees() throws SQLException {
+  public int getSizeEmployees(){
     int count = 0;
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * From Employees ");
@@ -106,11 +102,12 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return count;
     } catch (SQLException e) {
+      e.printStackTrace();
       return -1;
     }
   }
 
-  public boolean editTitle(String empID, String newTitle) throws SQLException {
+  public boolean editTitle(String empID, String newTitle){
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -124,11 +121,12 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean editNameFirst(String empID, String newFirst) throws SQLException {
+  public boolean editNameFirst(String empID, String newFirst){
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -142,11 +140,12 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean editNameLast(String empID, String newLast) throws SQLException {
+  public boolean editNameLast(String empID, String newLast){
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -160,11 +159,12 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean logIn(String empID, String enteredPass) throws SQLException {
+  public boolean logIn(String empID, String enteredPass){
     String pass = null;
     try {
       PreparedStatement pstmt =
@@ -180,11 +180,12 @@ public class EmployeesDatabase extends Database {
 
       return (pass != null) && pass.equals(enteredPass);
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean changePassword(String empID, String oldPass, String newPass) throws SQLException {
+  public boolean changePassword(String empID, String oldPass, String newPass){
 
     if (logIn(empID, oldPass) && checkSecurePass(newPass)) {
       try {
@@ -200,6 +201,7 @@ public class EmployeesDatabase extends Database {
         pstmt.close();
         return true;
       } catch (SQLException e) {
+        e.printStackTrace();
         return false;
       }
     }
@@ -211,7 +213,7 @@ public class EmployeesDatabase extends Database {
    * @param password
    * @return
    */
-  public boolean checkSecurePass(String password) throws SQLException {
+  public boolean checkSecurePass(String password){
     char ch;
     boolean capital = false;
     boolean lowercase = false;
@@ -233,7 +235,6 @@ public class EmployeesDatabase extends Database {
 
   /**
    * @return
-   * @throws SQLException
    */
   public boolean removeAllEmployees() throws SQLException {
     return helperPrepared("DELETE From Employees");

@@ -14,13 +14,6 @@ public abstract class Database {
     // makeDatabase();
   }
 
-  // public static void makeDatabase() throws SQLException {
-  //  try {
-  //    Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase;create=true");
-  //  } catch (SQLException e) {
-  //    return;
-  //  }
-  // }
 
   public Connection getConnection() {
     return connection;
