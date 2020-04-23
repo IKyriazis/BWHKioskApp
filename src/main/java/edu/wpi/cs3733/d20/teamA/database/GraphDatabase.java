@@ -30,11 +30,7 @@ public class GraphDatabase extends Database {
       return false;
     }
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE Edge") && helperPrepared("DROP TABLE Node"))) {
-      return false;
-    }
-
-    return true;
+    return helperPrepared("DROP TABLE Edge") && helperPrepared("DROP TABLE Node");
   }
 
   /**
@@ -59,11 +55,7 @@ public class GraphDatabase extends Database {
                     "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), " +
                     "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
 
-    if (a && b) {
-      return true;
-    } else {
-      return false;
-    }
+    return a && b;
   }
 
   /**
@@ -320,12 +312,8 @@ public class GraphDatabase extends Database {
       teamA = data.get(i)[8];
       addNode(nID, xCo, yCo, Fl, Bu, nodeT, longN, shortN, teamA);
     }
-    } catch (IOException i) {
+    } catch (IOException | CsvException i) {
       i.printStackTrace();
-      return;
-    } catch (CsvException c) {
-      c.printStackTrace();
-      return;
     }
   }
 
@@ -348,12 +336,8 @@ public class GraphDatabase extends Database {
       eID2 = eNode + "_" + sNode;
       addEdge(eID2, eNode, sNode);
     }
-    } catch (IOException i) {
+    } catch (IOException | CsvException i) {
       i.printStackTrace();
-      return;
-    } catch (CsvException c) {
-      c.printStackTrace();
-      return;
     }
   }
 
@@ -400,12 +384,8 @@ public class GraphDatabase extends Database {
       writer.close();
       rset.close();
       pstmt.close();
-    } catch (SQLException e) {
+    } catch (SQLException | IOException e) {
       e.printStackTrace();
-      return;
-    } catch (IOException i) {
-      i.printStackTrace();
-      return;
     }
   }
 
@@ -437,12 +417,8 @@ public class GraphDatabase extends Database {
       writer.close();
       rset.close();
       pstmt.close();
-    } catch (SQLException e) {
+    } catch (SQLException | IOException e) {
       e.printStackTrace();
-      return;
-    } catch (IOException i) {
-      i.printStackTrace();
-      return;
     }
   }
 
