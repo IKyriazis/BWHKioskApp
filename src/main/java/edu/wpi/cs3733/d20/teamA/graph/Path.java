@@ -8,16 +8,6 @@ import javafx.scene.control.Label;
 
 /** Represents a path along the graph */
 public class Path {
-  private enum cardinalDirections {
-    NORTH,
-    SOUTH,
-    EAST,
-    WEST,
-    NORTHEAST,
-    SOUTHEAST,
-    NORTHWEST,
-    SOUTHWEST
-  };
 
   private ArrayList<Node> pathNodes; // List of nodes along path
   private ArrayList<Edge> pathEdges; // List of forward & reverse edges along path
