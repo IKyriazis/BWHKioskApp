@@ -211,7 +211,7 @@ public class Graph {
       DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID());
       DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID());
     } catch (SQLException e) {
-
+      e.printStackTrace();
     }
     // Update edge count
     edgeCount--;
