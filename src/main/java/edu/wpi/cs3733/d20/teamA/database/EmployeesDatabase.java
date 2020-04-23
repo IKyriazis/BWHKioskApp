@@ -4,21 +4,17 @@ import java.sql.*;
 
 public class EmployeesDatabase extends Database {
 
-  public EmployeesDatabase(Connection connection) throws SQLException {
+  public EmployeesDatabase(Connection connection){
     super(connection);
   }
 
   /**
    * @return
    */
-  public boolean dropTables() throws SQLException {
+  public boolean dropTables(){
 
     // Drop the tables
-    if (!helperPrepared("DROP TABLE Employees")) {
-      return false;
-    }
-
-    return true;
+    return helperPrepared("DROP TABLE Employees");
   }
 
   /**
@@ -26,25 +22,19 @@ public class EmployeesDatabase extends Database {
    *
    * @return False if tables couldn't be created
    */
-  public boolean createTables() throws SQLException {
+  public boolean createTables(){
 
     // Create the graph tables
-    boolean a =
-        helperPrepared(
-            "CREATE TABLE Employees (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), password Varchar(10), title Varchar(50))");
 
-    if (a) {
-      return true;
-    } else {
-      return false;
-    }
+    return helperPrepared(
+        "CREATE TABLE Employees (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), password Varchar(10), title Varchar(50))");
   }
 
   /**
-   * @param empID
-   * @param nameFirst
-   * @param nameLast
-   * @return
+   * @param empID employee ID
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
    */
   public boolean addEmployee(String empID, String nameFirst, String nameLast, String title){
 
@@ -70,7 +60,7 @@ public class EmployeesDatabase extends Database {
   /**
    * Removes a janitor of empID from the Janitor's table
    *
-   * @param empID
+   * @param empID employee ID
    * @return true if the Janitor was successfully deleted
    */
   public boolean deleteEmployee(String empID){
@@ -88,7 +78,7 @@ public class EmployeesDatabase extends Database {
   }
 
   /**
-   * @return
+   * @return returns the size of the table
    */
   public int getSizeEmployees(){
     int count = 0;
@@ -107,6 +97,12 @@ public class EmployeesDatabase extends Database {
     }
   }
 
+  /**
+   *
+   * @param empID employee ID
+   * @param newTitle newTitle
+   * @return true if the title is changed
+   */
   public boolean editTitle(String empID, String newTitle){
     try {
       PreparedStatement pstmt =
@@ -210,8 +206,8 @@ public class EmployeesDatabase extends Database {
   }
 
   /**
-   * @param password
-   * @return
+   * @param password password
+   * @return true if the there is a scure pass
    */
   public boolean checkSecurePass(String password){
     char ch;
@@ -234,7 +230,7 @@ public class EmployeesDatabase extends Database {
   }
 
   /**
-   * @return
+   * @return true if all all employee are removed
    */
   public boolean removeAllEmployees() throws SQLException {
     return helperPrepared("DELETE From Employees");
