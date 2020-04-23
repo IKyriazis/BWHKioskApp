@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GraphDatabase extends Database {
 
-  public GraphDatabase(Connection connection) throws SQLException {
+  public GraphDatabase(Connection connection) {
     super(connection);
   }
 
@@ -19,9 +19,8 @@ public class GraphDatabase extends Database {
    *
    * @return false if the tables don't exist and constraints can't be dropped, true if constraints
    *     and tables are dropped correctly
-   * @throws SQLException
    */
-  public boolean dropTables() throws SQLException {
+  public boolean dropTables() {
 
     // if the helper returns false this method should too
     // drop the constraints first
@@ -42,18 +41,23 @@ public class GraphDatabase extends Database {
    * Creates graph tables
    *
    * @return False if tables couldn't be created
-   * @throws SQLException
    */
-  public boolean createTables() throws SQLException {
+  public boolean createTables() {
 
     // Create the graph tables
     boolean b =
         helperPrepared(
-            "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), nodeType Varchar(4) NOT NULL, longName Varchar(200) NOT NULL, shortName Varchar(25), teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), CONSTRAINT CHK_Coords CHECK (xcoord > 0 AND ycoord > 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
+            "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, " +
+                    "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), " +
+                    "nodeType Varchar(4) NOT NULL, longName Varchar(200) NOT NULL, shortName Varchar(25), " +
+                    "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), " +
+                    "CONSTRAINT CHK_Coords CHECK (xcoord > 0 AND ycoord > 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
 
     boolean a =
         helperPrepared(
-            "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
+            "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, " +
+                    "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), " +
+                    "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
 
     if (a && b) {
       return true;
@@ -66,9 +70,8 @@ public class GraphDatabase extends Database {
    * Removes all the nodes from the database
    *
    * @return True if this was successful
-   * @throws SQLException
    */
-  public boolean removeAllNodes() throws SQLException {
+  public boolean removeAllNodes() {
     return helperPrepared("DELETE From Node");
   }
 
@@ -76,9 +79,8 @@ public class GraphDatabase extends Database {
    * Removes all the edges from the database
    *
    * @return True if this was successful
-   * @throws SQLException
    */
-  public boolean removeAllEdges() throws SQLException {
+  public boolean removeAllEdges() {
     return helperPrepared("DELETE From Edge");
   }
 
@@ -86,9 +88,8 @@ public class GraphDatabase extends Database {
    * Removes all the edge and node data from the database
    *
    * @return True if this was successful
-   * @throws SQLException
    */
-  public boolean removeAll() throws SQLException {
+  public boolean removeAll() {
     return removeAllEdges() && removeAllNodes();
   }
 
@@ -96,9 +97,8 @@ public class GraphDatabase extends Database {
    * Loops thru the table to find the number of nodes
    *
    * @return The size of the node table
-   * @throws SQLException
    */
-  public int getSizeNode() throws SQLException {
+  public int getSizeNode() {
     int count = 0;
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * From Node");
@@ -110,6 +110,7 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return count;
     } catch (SQLException e) {
+      e.printStackTrace();
       return -1;
     }
   }
@@ -118,9 +119,8 @@ public class GraphDatabase extends Database {
    * Loops thru the table to find the number of edges
    *
    * @return The size of the edge table
-   * @throws SQLException
    */
-  public int getSizeEdge() throws SQLException {
+  public int getSizeEdge() {
     int count = 0;
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * From Edge");
@@ -132,6 +132,7 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return count;
     } catch (SQLException e) {
+      e.printStackTrace();
       return -1;
     }
   }
@@ -149,7 +150,6 @@ public class GraphDatabase extends Database {
    * @param shortName - Shorthand name for the long name
    * @param teamAssigned - The team that made the node
    * @return True if the add was successful
-   * @throws SQLException
    */
   public boolean addNode(
       String nodeID,
@@ -160,8 +160,7 @@ public class GraphDatabase extends Database {
       String nodeType,
       String longName,
       String shortName,
-      String teamAssigned)
-      throws SQLException {
+      String teamAssigned) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -180,6 +179,7 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -191,9 +191,8 @@ public class GraphDatabase extends Database {
    * @param startNode - The node that the edge starts on
    * @param endNode - The node that the edge ends on
    * @return True if the add was successful
-   * @throws SQLException
    */
-  public boolean addEdge(String edgeID, String startNode, String endNode) throws SQLException {
+  public boolean addEdge(String edgeID, String startNode, String endNode) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -205,6 +204,7 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -214,9 +214,8 @@ public class GraphDatabase extends Database {
    *
    * @param edgeID - The ID of the edge to delete
    * @return True if the deletion was successful
-   * @throws SQLException
    */
-  public boolean deleteEdge(String edgeID) throws SQLException {
+  public boolean deleteEdge(String edgeID) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From Edge Where edgeID = ?");
@@ -225,6 +224,7 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -234,9 +234,8 @@ public class GraphDatabase extends Database {
    *
    * @param nodeID - The ID of the node to be deleted
    * @return True if the deletion was successful
-   * @throws SQLException
    */
-  public boolean deleteNode(String nodeID) throws SQLException {
+  public boolean deleteNode(String nodeID) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From Node Where nodeID = ?");
@@ -245,6 +244,7 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -262,7 +262,6 @@ public class GraphDatabase extends Database {
    * @param shortName - The new or unchanged short name
    * @param teamAssigned - The new or unchanged team that made the node
    * @return True if the edits were successful
-   * @throws SQLException
    */
   public boolean editNode(
       String nodeID,
@@ -273,8 +272,7 @@ public class GraphDatabase extends Database {
       String nodeType,
       String longName,
       String shortName,
-      String teamAssigned)
-      throws SQLException {
+      String teamAssigned) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -293,6 +291,7 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -300,11 +299,9 @@ public class GraphDatabase extends Database {
   /**
    * Reads in a csv file of nodes
    *
-   * @throws IOException
-   * @throws CsvException
-   * @throws SQLException
    */
-  public void readNodeCSV() throws IOException, CsvException, SQLException {
+  public void readNodeCSV() {
+    try {
     InputStream stream =
         getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv");
     CSVReader reader = new CSVReader(new InputStreamReader(stream));
@@ -323,16 +320,21 @@ public class GraphDatabase extends Database {
       teamA = data.get(i)[8];
       addNode(nID, xCo, yCo, Fl, Bu, nodeT, longN, shortN, teamA);
     }
+    } catch (IOException i) {
+      i.printStackTrace();
+      return;
+    } catch (CsvException c) {
+      c.printStackTrace();
+      return;
+    }
   }
 
   /**
    * Reads in a csv file of edges
    *
-   * @throws IOException
-   * @throws CsvException
-   * @throws SQLException
    */
-  public void readEdgeCSV() throws IOException, CsvException, SQLException {
+  public void readEdgeCSV() {
+    try {
     InputStream stream =
         getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv");
     CSVReader reader = new CSVReader(new InputStreamReader(stream));
@@ -346,15 +348,21 @@ public class GraphDatabase extends Database {
       eID2 = eNode + "_" + sNode;
       addEdge(eID2, eNode, sNode);
     }
+    } catch (IOException i) {
+      i.printStackTrace();
+      return;
+    } catch (CsvException c) {
+      c.printStackTrace();
+      return;
+    }
   }
 
   /**
    * Writes out a csv file for the node table
    *
    * @param filePath - Where the csv file should be saved (including fileName.csv)
-   * @throws SQLException
    */
-  public void writeNodeCSV(String filePath) throws SQLException {
+  public void writeNodeCSV(String filePath) {
     File file = new File(filePath);
     try {
       FileWriter outputfile = new FileWriter(file);
@@ -393,8 +401,10 @@ public class GraphDatabase extends Database {
       rset.close();
       pstmt.close();
     } catch (SQLException e) {
+      e.printStackTrace();
       return;
     } catch (IOException i) {
+      i.printStackTrace();
       return;
     }
   }
@@ -403,9 +413,8 @@ public class GraphDatabase extends Database {
    * Writes out a csv file for the edge table
    *
    * @param filePath - Where the csv file should be saved (including fileName.csv)
-   * @throws SQLException
    */
-  public void writeEdgeCSV(String filePath) throws SQLException {
+  public void writeEdgeCSV(String filePath) {
     File file = new File(filePath);
     try {
       FileWriter outputfile = new FileWriter(file);
@@ -429,8 +438,10 @@ public class GraphDatabase extends Database {
       rset.close();
       pstmt.close();
     } catch (SQLException e) {
+      e.printStackTrace();
       return;
     } catch (IOException i) {
+      i.printStackTrace();
       return;
     }
   }
@@ -439,10 +450,9 @@ public class GraphDatabase extends Database {
    * Removes all the edges connected to a certain node
    *
    * @param nodeID - The node to delete edges from
-   * @return
-   * @throws SQLException
+   * @return True if the edges were deleted successfully
    */
-  public boolean removeEdgeByNode(String nodeID) throws SQLException {
+  public boolean removeEdgeByNode(String nodeID) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE FROM Edge WHERE startNode = ? OR endNode = ?");
@@ -452,11 +462,18 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public int helperGetInt(String nodeID, String col) throws SQLException {
+  /**
+   * Helps get an integer of the specified column name
+   * @param nodeID - The node to get the int from
+   * @param col - The name of the column with the int
+   * @return The int
+   */
+  public int helperGetInt(String nodeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
@@ -468,11 +485,18 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return i;
     } catch (SQLException e) {
+      e.printStackTrace();
       return -1;
     }
   }
 
-  public String helperGetString(String nodeID, String col) throws SQLException {
+  /**
+   * Helps get a String from the specified column name
+   * @param nodeID - The node to get the String from
+   * @param col - The name of the column with the String
+   * @return The String
+   */
+  public String helperGetString(String nodeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
@@ -484,11 +508,18 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return s;
     } catch (SQLException e) {
+      e.printStackTrace();
       return "";
     }
   }
 
-  public String helperGetStringEdge(String edgeID, String col) throws SQLException {
+  /**
+   * Helps get a string from the specified column name in the edge table
+   * @param edgeID - The edge to get the STring from
+   * @param col - The column name with the String
+   * @return The String
+   */
+  public String helperGetStringEdge(String edgeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Edge WHERE nodeID = ?");
@@ -500,51 +531,52 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return s;
     } catch (SQLException e) {
+      e.printStackTrace();
       return "";
     }
   }
 
-  public int getX(String nodeID) throws SQLException {
+  public int getX(String nodeID) {
     return helperGetInt(nodeID, "xcoord");
   }
 
-  public int getY(String nodeID) throws SQLException {
+  public int getY(String nodeID) {
     return helperGetInt(nodeID, "ycoord");
   }
 
-  public int getFloor(String nodeID) throws SQLException {
+  public int getFloor(String nodeID) {
     return helperGetInt(nodeID, "floor");
   }
 
-  public String getBuilding(String nodeID) throws SQLException {
+  public String getBuilding(String nodeID) {
     return helperGetString(nodeID, "building");
   }
 
-  public String getNodeType(String nodeID) throws SQLException {
+  public String getNodeType(String nodeID) {
     return helperGetString(nodeID, "nodeType");
   }
 
-  public String getLongName(String nodeID) throws SQLException {
+  public String getLongName(String nodeID) {
     return helperGetString(nodeID, "longName");
   }
 
-  public String getShortName(String nodeID) throws SQLException {
+  public String getShortName(String nodeID) {
     return helperGetString(nodeID, "shortName");
   }
 
-  public String getTeamAssigned(String nodeID) throws SQLException {
+  public String getTeamAssigned(String nodeID) {
     return helperGetString(nodeID, "teamAssigned");
   }
 
-  public String getStartNode(String edgeID) throws SQLException {
+  public String getStartNode(String edgeID) {
     return helperGetStringEdge(edgeID, "startNode");
   }
 
-  public String getEndNode(String edgeID) throws SQLException {
+  public String getEndNode(String edgeID) {
     return helperGetStringEdge(edgeID, "endNode");
   }
 
-  public boolean setX(String nodeID, int i) throws SQLException {
+  public boolean setX(String nodeID, int i) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Node SET xcoord = ? WHERE nodeID = ?");
@@ -554,11 +586,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setY(String nodeID, int i) throws SQLException {
+  public boolean setY(String nodeID, int i) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Node SET ycoord = ? WHERE nodeID = ?");
@@ -568,11 +601,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setFloor(String nodeID, int i) throws SQLException {
+  public boolean setFloor(String nodeID, int i) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Node SET floor = ? WHERE nodeID = ?");
@@ -582,11 +616,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setBuilding(String nodeID, String s) throws SQLException {
+  public boolean setBuilding(String nodeID, String s) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Node SET building = ? WHERE nodeID = ?");
@@ -596,11 +631,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setNodeType(String nodeID, String s) throws SQLException {
+  public boolean setNodeType(String nodeID, String s) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Node SET nodeType = ? WHERE nodeID = ?");
@@ -610,11 +646,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setLongName(String nodeID, String s) throws SQLException {
+  public boolean setLongName(String nodeID, String s) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Node SET longName = ? WHERE nodeID = ?");
@@ -624,11 +661,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setShortName(String nodeID, String s) throws SQLException {
+  public boolean setShortName(String nodeID, String s) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Node SET shortName = ? WHERE nodeID = ?");
@@ -638,11 +676,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setTeamAssigned(String nodeID, String s) throws SQLException {
+  public boolean setTeamAssigned(String nodeID, String s) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Node SET teamAssigned = ? WHERE nodeID = ?");
@@ -652,11 +691,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setStartNode(String edgeID, String s) throws SQLException {
+  public boolean setStartNode(String edgeID, String s) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Edge SET startNode = ? WHERE edgeID = ?");
@@ -666,11 +706,12 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean setEndNode(String edgeID, String s) throws SQLException {
+  public boolean setEndNode(String edgeID, String s) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("UPDATE Edge SET endNode = ? WHERE edgeID = ?");
@@ -680,6 +721,7 @@ public class GraphDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
