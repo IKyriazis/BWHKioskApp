@@ -56,6 +56,12 @@ public class JanitorDatabase extends Database {
     }
   }
 
+  /**
+   * Deletes everything from the JanitorRequest table
+   *
+   * @return false if the delete fails
+   * @throws SQLException
+   */
   public boolean removeAll() throws SQLException {
     requestCount = 0;
     return helperPrepared("DELETE From JanitorRequest");
@@ -68,28 +74,41 @@ public class JanitorDatabase extends Database {
    * @throws SQLException
    */
   public boolean addRequest(String location, String priority) throws SQLException {
+    // creates a timestamp of the time that the function is called
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    // default status is reported
     String progress = "Reported";
     try {
+      // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO JanitorRequest (time, location, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?)");
+      // sets all the parameters of the prepared statement string
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, location);
       pstmt.setString(3, progress);
       pstmt.setString(4, priority);
+      // first request starts at 1 and increments every time a new request is added
       pstmt.setInt(5, ++requestCount);
       pstmt.executeUpdate();
       pstmt.close();
+      // return true if the request is added
       return true;
     } catch (SQLException e) {
       //      System.out.println("Add request failed");
       //      System.out.println(e.getMessage());
+      // return false if the request couldn't be added
       return false;
     }
   }
 
+  /**
+   *
+   * @param rn
+   * @return
+   * @throws SQLException
+   */
   public boolean deleteRequest(int rn) throws SQLException {
     try {
       PreparedStatement pstmt =
