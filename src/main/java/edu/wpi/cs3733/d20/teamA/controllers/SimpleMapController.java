@@ -3,12 +3,15 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,9 +23,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 public class SimpleMapController {
   @FXML private BorderPane rootPane;
@@ -32,18 +33,19 @@ public class SimpleMapController {
   @FXML private JFXComboBox<Node> startingLocationBox;
   @FXML private JFXComboBox<Node> destinationBox;
   @FXML private AnchorPane canvasPane;
-  @FXML private Label textualDirectionsLabel;
   @FXML private JFXSlider zoomSlider;
+  @FXML private JFXListView<Label> directionsList;
+  @FXML private GridPane directionsPane;
+  @FXML private StackPane dialogPane;
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
-
-  @FXML private JFXRadioButton drawPathButton;
-  @FXML private JFXRadioButton drawAllNodesButton;
+  @FXML private JFXButton qrCodeButton;
 
   private MapCanvas canvas;
   private Graph graph;
+  private String lastDirs;
 
   private ObservableList<Node> allNodeList;
 
@@ -72,7 +74,7 @@ public class SimpleMapController {
     directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
 
     // Setup text directions drawer
-    textDirectionsDrawer.setSidePane(textualDirectionsLabel);
+    textDirectionsDrawer.setSidePane(directionsPane);
     textDirectionsDrawer.setOnDrawerClosed(event -> textDirectionsDrawer.setMouseTransparent(true));
     textDirectionsDrawer.setOnDrawerOpened(
         event -> textDirectionsDrawer.setMouseTransparent(false));
@@ -81,25 +83,13 @@ public class SimpleMapController {
     goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
     swapBtn.setGraphic(new FontAwesomeIconView((FontAwesomeIcon.EXCHANGE)));
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
-
-    // Setup radio buttons
-    drawPathButton.setOnAction(
-        event -> {
-          drawAllNodesButton.setSelected(false);
-          canvas.setDrawAllNodes(false);
-          canvas.draw(1);
-        });
-    drawAllNodesButton.setOnAction(
-        event -> {
-          drawPathButton.setSelected(false);
-          canvas.setDrawAllNodes(true);
-          canvas.draw(1);
-        });
+    qrCodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QRCODE));
 
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
         event -> {
+          event.consume();
           canvas.draw(1);
         });
 
@@ -112,7 +102,7 @@ public class SimpleMapController {
               graph.getNodes().values().stream()
                   .filter(node -> node.getFloor() == 1)
                   .collect(Collectors.toList()));
-      allNodeList.sort(Comparator.comparing(Node::getLongName));
+      allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
 
       InvalidationListener focusListener =
           observable -> {
@@ -122,7 +112,7 @@ public class SimpleMapController {
                     graph.getNodes().values().stream()
                         .filter(node -> node.getFloor() == 1)
                         .collect(Collectors.toList())));
-            allNodeList.sort(Comparator.comparing(Node::getLongName));
+            allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
             startingLocationBox.setItems(allNodeList);
             destinationBox.setItems(allNodeList);
             startingLocationBox.setVisibleRowCount(12);
@@ -175,12 +165,31 @@ public class SimpleMapController {
       canvas.setPath(path);
       canvas.draw(1);
 
-      if (textDirectionsDrawer.isClosed()) {
-        textDirectionsDrawer.toggle();
-      }
-
+      directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
-        textualDirectionsLabel.setText(path.textualDirections());
+        ArrayList<Label> directions = path.textualDirections();
+        directions.forEach(
+            l -> {
+              directionsList.getItems().add(l);
+            });
+
+        // Generate QR code
+        StringBuilder dirs = new StringBuilder();
+        directions.forEach(l -> dirs.append(l.getText()).append('\n'));
+        lastDirs = dirs.toString();
+
+        if (textDirectionsDrawer.isClosed()) {
+          textDirectionsDrawer.open();
+        }
+      } else {
+        DialogUtil.simpleInfoDialog(
+            dialogPane,
+            "No Path Found",
+            "No path between the selected locations could be found. Try choosing different locations.");
+
+        if (textDirectionsDrawer.isOpened()) {
+          textDirectionsDrawer.close();
+        }
       }
     }
   }
@@ -208,5 +217,20 @@ public class SimpleMapController {
 
   public Graph getGraph() {
     return graph;
+  }
+
+  public void pressedQRButton() {
+    if (!lastDirs.isEmpty()) {
+      DialogUtil.complexDialog(
+          dialogPane,
+          "Direction QR Code",
+          "views/QRCodePopup.fxml",
+          true,
+          null,
+          new QRDialogController(lastDirs));
+    } else {
+      DialogUtil.simpleInfoDialog(
+          dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
+    }
   }
 }

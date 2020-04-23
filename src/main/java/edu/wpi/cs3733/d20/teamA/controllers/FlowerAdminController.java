@@ -9,6 +9,7 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerDialogController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.io.IOException;
 import java.sql.SQLException;
 import javafx.fxml.FXML;
@@ -19,6 +20,7 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
 public class FlowerAdminController extends AbstractController {
@@ -38,6 +40,8 @@ public class FlowerAdminController extends AbstractController {
   @FXML private JFXButton editFlowerButton;
   @FXML private JFXButton deleteFlowerButton;
   @FXML private JFXButton changeProgressButton;
+
+  @FXML private AnchorPane flowerPane;
 
   private GaussianBlur blur;
 
@@ -69,6 +73,7 @@ public class FlowerAdminController extends AbstractController {
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     }
+
     // Setup label icons
     flowerTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.FILE));
     orderTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
@@ -78,6 +83,14 @@ public class FlowerAdminController extends AbstractController {
     editFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
     deleteFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
     changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
+
+    // Add tab switch update listener
+    flowerPane.addEventHandler(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          update();
+        });
 
     // Setup columns in flower table
     JFXTreeTableColumn<Flower, String> column1 = new JFXTreeTableColumn<>("Type");
@@ -255,8 +268,8 @@ public class FlowerAdminController extends AbstractController {
       } else {
         DialogUtil.simpleInfoDialog(
             dialogStackPane,
-            "Flower Cannot be deleted",
-            "This flower has an active order and cannot be removed");
+            "Cannot Delete Flower",
+            "This flower has an active order depending on it and thus cannot be removed");
       }
     } else {
       DialogUtil.simpleInfoDialog(

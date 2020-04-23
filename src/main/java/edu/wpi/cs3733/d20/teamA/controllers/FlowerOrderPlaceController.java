@@ -48,10 +48,7 @@ public class FlowerOrderPlaceController extends AbstractController {
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     }
-    ObservableList<Flower> list = super.flDatabase.flowerOl();
-    for (Flower f : list) {
-      choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
-    }
+    updateList();
     // Set up autofill for nodes
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
@@ -67,6 +64,11 @@ public class FlowerOrderPlaceController extends AbstractController {
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
     // Limit input to integer values
     txtNumber.setTextFormatter(InputFormatUtil.getIntFilter());
+
+    choiceFlower.setOnMouseClicked(
+        param -> {
+          updateList();
+        });
   }
 
   public void placeOrder(ActionEvent actionEvent) throws SQLException, IOException {
@@ -148,6 +150,19 @@ public class FlowerOrderPlaceController extends AbstractController {
       txtTotal.setText(String.format("$%.2f", i));
     } catch (Exception e) {
       txtTotal.clear();
+    }
+  }
+
+  public void updateList() {
+    ObservableList<Flower> list = null;
+    try {
+      choiceFlower.getItems().clear();
+      list = super.flDatabase.flowerOl();
+      for (Flower f : list) {
+        choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
+      }
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
     }
   }
 }

@@ -48,7 +48,7 @@ public class SceneSwitcherController {
               tab.setOnSelectionChanged(
                   event -> {
                     if (tab.isSelected()) {
-                      Node node = mapTab.getContent();
+                      Node node = tab.getContent();
                       node.fireEvent(new TabSwitchEvent());
                     }
                   });

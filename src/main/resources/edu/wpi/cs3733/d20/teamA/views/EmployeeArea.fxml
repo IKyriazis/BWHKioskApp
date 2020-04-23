@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.LoginController">
+<BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.LoginController">
    <center>
       <StackPane fx:id="dialogPane" BorderPane.alignment="CENTER">
          <BorderPane.margin>
@@ -26,9 +26,6 @@
             </Tab>
             <Tab closable="false" text="Announcements">
                <fx:include source="AnnouncementAdmin.fxml" />
-            </Tab>
-            <Tab closable="false" text="Janitorial">
-               <fx:include source="JanitorialGUI.fxml" />
             </Tab>
          </JFXTabPane>
          <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
