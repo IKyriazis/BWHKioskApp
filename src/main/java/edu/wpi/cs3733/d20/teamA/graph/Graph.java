@@ -298,6 +298,7 @@ public class Graph {
       rsetNode.close();
       pstmtNode.close();
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
     try {
@@ -315,6 +316,7 @@ public class Graph {
       rsetEdge.close();
       pstmtEdge.close();
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
     nodes = newNodes;
