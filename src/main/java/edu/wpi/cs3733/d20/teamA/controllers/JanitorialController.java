@@ -76,6 +76,7 @@ public class JanitorialController extends AbstractController {
     try {
       janitorDatabase.readFromCSV();
     } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 
@@ -153,7 +154,7 @@ public class JanitorialController extends AbstractController {
   }
 
   @FXML
-  private void elementSelect() throws SQLException {
+  private void elementSelect(){
     String Request = listviewActiveRequests.getSelectionModel().getSelectedItem();
     if (Request != null) {
       btnCompleted.setVisible(true);
