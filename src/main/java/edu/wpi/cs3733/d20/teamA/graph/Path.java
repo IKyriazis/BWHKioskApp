@@ -119,7 +119,7 @@ public class Path {
     }
   }
 
-  // Calculate the "Manhattan distance" between the current node and goal node
+  // Calculate the Euclidean distance between the current node and goal node
   // So that nodes closer to the end will be given a higher priority
   private static int calcHeuristic(Node current, Node goal) {
     double xDist = Math.pow((goal.getX() - current.getX()), 2);
