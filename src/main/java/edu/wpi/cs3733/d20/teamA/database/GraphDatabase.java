@@ -11,7 +11,12 @@ import java.util.List;
 public class GraphDatabase extends Database {
 
   public GraphDatabase(Connection connection) {
+
     super(connection);
+
+    if (doesTableNotExist("NODE") && doesTableNotExist("EDGE")) {
+      createTables();
+    }
   }
 
   /**
