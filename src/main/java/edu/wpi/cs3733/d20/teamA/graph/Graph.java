@@ -15,7 +15,6 @@ public class Graph {
   GraphDatabase DB = new GraphDatabase(conn);
   /** The nodes in this graph, mapping ID to Node */
   private HashMap<String, Node> nodes;
-  // private GraphDatabase database;
 
   /** Singleton graph instance */
   private static Graph instance;
