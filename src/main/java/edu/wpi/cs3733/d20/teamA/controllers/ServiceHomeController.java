@@ -2,6 +2,8 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
@@ -16,11 +18,9 @@ public class ServiceHomeController {
   public void initialize() {
     // Setup switcher box
     VSwitcherBox vSwitcherBox =
-        new VSwitcherBox(destPane, new FontAwesomeIconView(FontAwesomeIcon.PAGELINES));
+        new VSwitcherBox(destPane, new FontAwesomeIconView(FontAwesomeIcon.FILE_TEXT));
     vSwitcherBox.addEntry(
-        "Flowers", new FontAwesomeIconView(FontAwesomeIcon.LEAF), "views/FlowerService.fxml");
-    vSwitcherBox.addEntry(
-        "Service 1", new FontAwesomeIconView(FontAwesomeIcon.CIRCLE), "views/AddFlowerPopup.fxml");
+        "Flowers", new MaterialIconView(MaterialIcon.LOCAL_FLORIST), "views/FlowerService.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
