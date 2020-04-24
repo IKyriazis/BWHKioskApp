@@ -18,6 +18,16 @@ public class JanitorDatabase extends Database {
    */
   public JanitorDatabase(Connection connection) {
     super(connection);
+    try {
+      DatabaseMetaData dbm = connection.getMetaData();
+      ResultSet janitorTables = dbm.getTables(null, null, "JANITORREQUEST", null);
+      // If table does not exist, create the table
+      if (!(janitorTables.next())) {
+        createTables();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   /**

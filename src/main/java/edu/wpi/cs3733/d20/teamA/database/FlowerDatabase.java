@@ -17,7 +17,20 @@ public class FlowerDatabase extends Database {
    * @param connection connection
    */
   public FlowerDatabase(Connection connection) {
+
     super(connection);
+
+    try {
+      DatabaseMetaData dbm = connection.getMetaData();
+      ResultSet flowerTables = dbm.getTables(null, null, "FLOWERS", null);
+      ResultSet orderTables = dbm.getTables(null, null, "ORDERS", null);
+      // If table doesn't exist create them
+      if (!(flowerTables.next() && orderTables.next())) {
+        createTables();
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   /**

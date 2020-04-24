@@ -20,13 +20,10 @@ public abstract class AbstractController {
     provider = new DatabaseServiceProvider();
     conn = provider.provideConnection();
     graphDatabase = new GraphDatabase(conn);
-    graphDatabase.createTables();
     flDatabase = new FlowerDatabase(conn);
-    flDatabase.createTables();
     eDB = new EmployeesDatabase(conn);
-    eDB.createTables();
-    graphDatabase.deleteNode("ID");
+    // Uncomment if somehow the Employee Database is corrupted and need to restart
+    // eDB.addEmployee("Arnie", "Artichoke", "admin", "admin", "Janitor");
     janitorDatabase = new JanitorDatabase(conn);
-    janitorDatabase.createTables();
   }
 }

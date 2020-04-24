@@ -53,7 +53,6 @@ public class LoginController extends AbstractController {
 
   @FXML
   public void initialize() throws SQLException {
-    eDB.addEmployee("Admin", "Eva", "Labbe", "Janitor");
     // Add drop shadow to login box.
     DropShadow dropShadow = new DropShadow();
     dropShadow.setRadius(12.0);
