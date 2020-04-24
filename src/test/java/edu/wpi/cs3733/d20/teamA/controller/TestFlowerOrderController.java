@@ -1,8 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controller;
 
 import edu.wpi.cs3733.d20.teamA.App;
-import edu.wpi.cs3733.d20.teamA.controllers.FlowerOrderController;
-import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.controllers.FlowerServiceController;
 import java.sql.SQLException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -16,7 +15,7 @@ import org.testfx.framework.junit5.Start;
 @ExtendWith(ApplicationExtension.class)
 public class TestFlowerOrderController {
 
-  private FlowerOrderController controller = new FlowerOrderController();
+  private FlowerServiceController controller = new FlowerServiceController();
 
   public TestFlowerOrderController() throws SQLException {}
 

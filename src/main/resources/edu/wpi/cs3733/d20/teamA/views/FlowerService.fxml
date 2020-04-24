@@ -1,84 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXDrawer?>
-<?import com.jfoenix.controls.JFXProgressBar?>
-<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="dialogPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.FlowerOrderController">
+<AnchorPane fx:id="rootPane" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.FlowerServiceController">
    <children>
-      <BorderPane prefHeight="700.0" prefWidth="900.0">
-         <center>
-            <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="200" prefWidth="528.0" BorderPane.alignment="TOP_CENTER">
+      <StackPane fx:id="dialogPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane vgap="25.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" />
+               </rowConstraints>
                <children>
-                  <StackPane layoutY="11.0">
+                  <Label fx:id="headerLabel" text="Flower Inventory">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+                  <JFXTreeTableView fx:id="flowerTable" GridPane.rowIndex="1" />
+                  <GridPane GridPane.rowIndex="2">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <JFXDrawer fx:id="trackerDrawer" direction="TOP" maxHeight="-Infinity" maxWidth="-Infinity">
-                           <children>
-                              <HBox fx:id="trackerBox" prefHeight="190.0" prefWidth="528.0">
-                                 <children>
-                                    <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="150.0" spacing="20.0">
-                                       <children>
-                                          <JFXTextField fx:id="txtNumber" labelFloat="true" maxWidth="-Infinity" promptText="Order Number">
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </VBox.margin></JFXTextField>
-                                          <JFXButton buttonType="RAISED" onAction="#viewStatus" prefWidth="100.0" style="-fx-background-color: #66BB6A;" text="View Status" />
-                                       </children>
-                                    </VBox>
-                                    <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="190.0" prefWidth="378.0" spacing="20.0">
-                                       <children>
-                                          <JFXProgressBar fx:id="progress" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="363.0">
-                                             <VBox.margin>
-                                                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                             </VBox.margin></JFXProgressBar>
-                                          <Label fx:id="lblOutput" text="Order Recieved">
-                                              <font>
-                                                  <Font size="14.0" />
-                                              </font>
-                                          </Label>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </JFXDrawer>
-                        <JFXDrawer fx:id="orderDrawer" defaultDrawerSize="150.0" direction="TOP" maxHeight="-Infinity" maxWidth="-Infinity" />
-                      <GridPane fx:id="centerPane" hgap="50.0" minHeight="-Infinity" prefHeight="250.0" prefWidth="516.0" vgap="50.0">
-                          <columnConstraints>
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints maxHeight="1.7976931348623157E308" prefHeight="200.0" />
-                          </rowConstraints>
-                          <children>
-                              <JFXButton fx:id="orderButton" buttonType="RAISED" style="-fx-background-color: #78909C;" text="Place Order" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-                              <JFXButton fx:id="trackButton" buttonType="RAISED" style="-fx-background-color: #66BB6A;" text="Track" GridPane.columnIndex="1" />
-                          </children>
-                           <padding>
-                              <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-                           </padding>
-                      </GridPane>
+                        <JFXButton fx:id="trackButton" buttonType="RAISED" onAction="#trackOrder" style="-fx-background-color: #66BB6A; -fx-text-fill: black;" text="Track Order" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton fx:id="orderButton" buttonType="RAISED" onAction="#placeOrder" style="-fx-background-color: #78909C; -fx-text-fill: black;" text="Place Order">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </JFXButton>
                      </children>
-                  </StackPane>
+                  </GridPane>
                </children>
-               <BorderPane.margin>
-                  <Insets top="150.0" />
-               </BorderPane.margin>
-            </AnchorPane>
-         </center>
-      </BorderPane>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </GridPane>
+         </children>
+      </StackPane>
    </children>
-</StackPane>
+</AnchorPane>

@@ -13,7 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 import lombok.SneakyThrows;
 
-public class FlowerDialogController extends AbstractController implements IDialogController {
+public class FlowerEditController extends AbstractController implements IDialogController {
   private final boolean modify;
 
   @FXML private GridPane modPane;
@@ -29,14 +29,14 @@ public class FlowerDialogController extends AbstractController implements IDialo
   private boolean hasOrder;
 
   @SneakyThrows
-  public FlowerDialogController() {
+  public FlowerEditController() {
     super();
 
     modify = false;
   }
 
   @SneakyThrows
-  public FlowerDialogController(Flower f, boolean hasOrder) {
+  public FlowerEditController(Flower f, boolean hasOrder) {
     super();
 
     this.modify = true;

@@ -5,7 +5,7 @@ import com.jfoenix.controls.*;
 import com.opencsv.exceptions.CsvException;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerDialogController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerEditController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableView;
@@ -201,7 +200,7 @@ public class FlowerAdminController extends AbstractController {
         "views/AddFlowerPopup.fxml",
         false,
         event -> update(),
-        new FlowerDialogController());
+        new FlowerEditController());
   }
 
   private boolean hasDependentOrder(Flower flower) {
@@ -233,7 +232,7 @@ public class FlowerAdminController extends AbstractController {
       // can't change the name / type
       boolean constrained = hasDependentOrder(flower);
 
-      FlowerDialogController controller = new FlowerDialogController(flower, constrained);
+      FlowerEditController controller = new FlowerEditController(flower, constrained);
       DialogUtil.complexDialog(
           dialogStackPane,
           "Edit Flower",

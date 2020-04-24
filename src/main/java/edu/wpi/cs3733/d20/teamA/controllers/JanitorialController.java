@@ -73,11 +73,8 @@ public class JanitorialController extends AbstractController {
     roomList
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
-    try {
-      janitorDatabase.readFromCSV();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+
+    janitorDatabase.readFromCSV();
   }
 
   /**
@@ -154,7 +151,7 @@ public class JanitorialController extends AbstractController {
   }
 
   @FXML
-  private void elementSelect(){
+  private void elementSelect() {
     String Request = listviewActiveRequests.getSelectionModel().getSelectedItem();
     if (Request != null) {
       btnCompleted.setVisible(true);

@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXDecorator;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -25,6 +26,8 @@ public class App extends Application {
 
     loader.setLocation(App.class.getResource("views/SceneSwitcher.fxml"));
     Node rootPane = loader.load();
+    rootPane.setCache(true);
+    rootPane.setCacheHint(CacheHint.SPEED);
 
     // Set up the stage
     JFXDecorator decorator = new JFXDecorator(primaryStage, rootPane);
