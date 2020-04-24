@@ -22,8 +22,9 @@ public abstract class AbstractController {
     graphDatabase = new GraphDatabase(conn);
     flDatabase = new FlowerDatabase(conn);
     eDB = new EmployeesDatabase(conn);
-    // Uncomment if somehow the Employee Database is corrupted and need to restart
-    // eDB.addEmployee("Arnie", "Artichoke", "admin", "admin", "Janitor");
+    // Uncomment if employee database is messed up
+    // eDB.removeAllEmployees();
+    // eDB.readEmployeeCSV();
     janitorDatabase = new JanitorDatabase(conn);
   }
 }

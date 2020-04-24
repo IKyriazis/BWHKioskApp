@@ -29,7 +29,7 @@ public class FlowerServiceController extends AbstractController {
   public FlowerServiceController() {}
 
   public void initialize() throws Exception {
-    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
+    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeOrders() == -1) {
       flDatabase.dropTables();
       flDatabase.createTables();
       flDatabase.readFlowersCSV();

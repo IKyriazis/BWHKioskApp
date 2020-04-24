@@ -37,6 +37,16 @@ public class LoginController extends AbstractController {
 
   @FXML
   public void initialize() {
+
+    if (eDB.getSizeEmployees() == -1) {
+      eDB.dropTables();
+      eDB.createTables();
+      eDB.readEmployeeCSV();
+    } else if (eDB.getSizeEmployees() == 0) {
+      eDB.removeAllEmployees();
+      eDB.readEmployeeCSV();
+    }
+
     // Setup switcher box
     VSwitcherBox vSwitcherBox =
         new VSwitcherBox(destPane, new FontAwesomeIconView(FontAwesomeIcon.COGS));
