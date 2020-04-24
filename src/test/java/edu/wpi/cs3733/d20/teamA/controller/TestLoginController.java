@@ -51,9 +51,9 @@ public class TestLoginController extends TestAbstractController {
   @Test
   public void testPressLoginButton() {
     clickOn("#usernameBox");
-    writeString("Admin");
+    writeString("admin");
     clickOn("#passwordBox");
-    writeString("Admin");
+    writeString("admin");
     Node node = lookup("#loginBox").query();
     double originalY = node.getTranslateY();
     clickOn("Login");

@@ -7,13 +7,10 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import java.sql.SQLException;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -29,20 +26,15 @@ public class LoginController extends AbstractController {
   @FXML private StackPane dialogPane;
   @FXML private JFXButton logoutButton;
 
-  @FXML private Pane rootPane;
   @FXML private Pane switcherPane;
   @FXML private Pane destPane;
   @FXML private Pane blockerPane;
 
-  private GaussianBlur currentBlur;
-  private Scene appPrimaryScene;
   private boolean loggedIn = false;
   private boolean transitioning = false;
 
   @FXML
-  public void initialize() throws SQLException {
-    eDB.addEmployee("Admin", "Eva", "Labbe", "Janitor");
-
+  public void initialize() {
     // Setup switcher box
     VSwitcherBox vSwitcherBox =
         new VSwitcherBox(destPane, new FontAwesomeIconView(FontAwesomeIcon.COGS));
@@ -78,7 +70,7 @@ public class LoginController extends AbstractController {
   }
 
   @FXML
-  public void loginButtonPressed() throws SQLException {
+  public void loginButtonPressed() {
     if (transitioning || loggedIn) {
       return;
     }
@@ -115,9 +107,7 @@ public class LoginController extends AbstractController {
     fade.setFromValue(1.0);
     fade.setToValue(0.0);
     fade.setOnFinished(
-        event -> {
-          blockerPane.setMouseTransparent(true);
-        });
+        event -> blockerPane.setMouseTransparent(true));
     fade.play();
 
     loggedIn = true;
@@ -133,9 +123,7 @@ public class LoginController extends AbstractController {
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
     translate.setByY(2000f);
     translate.setOnFinished(
-        event -> {
-          transitioning = false;
-        });
+        event -> transitioning = false);
     translate.play();
 
     // Fade in the background
@@ -143,9 +131,7 @@ public class LoginController extends AbstractController {
     fade.setFromValue(0.0);
     fade.setToValue(1.0);
     fade.setOnFinished(
-        event -> {
-          blockerPane.setMouseTransparent(false);
-        });
+        event -> blockerPane.setMouseTransparent(false));
     fade.play();
 
     loggedIn = false;

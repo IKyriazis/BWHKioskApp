@@ -18,6 +18,10 @@ public class JanitorDatabase extends Database {
    */
   public JanitorDatabase(Connection connection) {
     super(connection);
+
+    if (doesTableNotExist("JANITORREQUEST")) {
+      createTables();
+    }
   }
 
   /**

@@ -55,4 +55,24 @@ public abstract class Database {
       return -1;
     }
   }
+
+  /**
+   * @param table name of the table
+   * @return true if the table does not exist
+   */
+  public boolean doesTableNotExist(String table) {
+    try {
+      DatabaseMetaData dbm = connection.getMetaData();
+      ResultSet tables = dbm.getTables(null, null, table, null);
+      // If table doesn't exist create them
+      if (!(tables.next())) {
+        return true;
+      }
+
+      return false;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 }

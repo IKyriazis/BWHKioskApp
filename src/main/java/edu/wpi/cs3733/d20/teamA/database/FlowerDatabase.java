@@ -17,7 +17,12 @@ public class FlowerDatabase extends Database {
    * @param connection connection
    */
   public FlowerDatabase(Connection connection) {
+
     super(connection);
+
+    if (doesTableNotExist("FLOWERS") && doesTableNotExist("ORDERS")) {
+      createTables();
+    }
   }
 
   /**

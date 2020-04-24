@@ -4,8 +4,15 @@ import java.sql.*;
 
 public class EmployeesDatabase extends Database {
 
+  int employeeID = getSizeEmployees() + 1;
+
   public EmployeesDatabase(Connection connection) {
+
     super(connection);
+
+    if (doesTableNotExist("EMPLOYEES")) {
+      createTables();
+    }
   }
 
   /** @return */
@@ -25,29 +32,31 @@ public class EmployeesDatabase extends Database {
     // Create the graph tables
 
     return helperPrepared(
-        "CREATE TABLE Employees (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), password Varchar(10), title Varchar(50))");
+        "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title Varchar(50))");
   }
 
   /**
-   * @param empID employee ID
    * @param nameFirst nameFirst
    * @param nameLast last name
    * @return returns true if the employee is added
    */
-  public boolean addEmployee(String empID, String nameFirst, String nameLast, String title) {
+  public boolean addEmployee(
+      String nameFirst, String nameLast, String username, String password, String title) {
 
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, password, title) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setString(1, empID);
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title) VALUES (?, ?, ?, ?, ?, ?)");
+      pstmt.setInt(1, employeeID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
-      pstmt.setString(4, empID);
-      pstmt.setString(5, title);
+      pstmt.setString(4, username);
+      pstmt.setString(5, password);
+      pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
+      employeeID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -58,14 +67,13 @@ public class EmployeesDatabase extends Database {
   /**
    * Removes a janitor of empID from the Janitor's table
    *
-   * @param empID employee ID
    * @return true if the Janitor was successfully deleted
    */
-  public boolean deleteEmployee(String empID) {
+  public boolean deleteEmployee(String username) {
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE From Employees Where employeeID = ?");
-      pstmt.setString(1, empID);
+          getConnection().prepareStatement("DELETE From Employees Where username = ?");
+      pstmt.setString(1, username);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -81,19 +89,18 @@ public class EmployeesDatabase extends Database {
   }
 
   /**
-   * @param empID employee ID
    * @param newTitle newTitle
    * @return true if the title is changed
    */
-  public boolean editTitle(String empID, String newTitle) {
+  public boolean editTitle(String username, String newTitle) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE Employees SET title = '"
                       + newTitle
-                      + "' WHERE employeeID = '"
-                      + empID
+                      + "' WHERE username = '"
+                      + username
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
@@ -104,15 +111,15 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean editNameFirst(String empID, String newFirst) {
+  public boolean editNameFirst(String username, String newFirst) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE Employees SET title = '"
                       + newFirst
-                      + "' WHERE employeeID = '"
-                      + empID
+                      + "' WHERE username = '"
+                      + username
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
@@ -123,15 +130,15 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean editNameLast(String empID, String newLast) {
+  public boolean editNameLast(String username, String newLast) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE Employees SET title = '"
                       + newLast
-                      + "' WHERE employeeID = '"
-                      + empID
+                      + "' WHERE username = '"
+                      + username
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
@@ -142,13 +149,13 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean logIn(String empID, String enteredPass) {
+  public boolean logIn(String username, String enteredPass) {
     String pass = null;
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "Select password From Employees Where employeeID = '" + empID + "'");
+                  "Select password From Employees Where username = '" + username + "'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         pass = rset.getString("password");
@@ -163,17 +170,17 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean changePassword(String empID, String oldPass, String newPass) {
+  public boolean changePassword(String username, String oldPass, String newPass) {
 
-    if (logIn(empID, oldPass) && checkSecurePass(newPass)) {
+    if (logIn(username, oldPass) && checkSecurePass(newPass)) {
       try {
         PreparedStatement pstmt =
             getConnection()
                 .prepareStatement(
                     "UPDATE Employees SET password = '"
                         + newPass
-                        + "' WHERE employeeID = '"
-                        + empID
+                        + "' WHERE username = '"
+                        + username
                         + "'");
         pstmt.executeUpdate();
         pstmt.close();
