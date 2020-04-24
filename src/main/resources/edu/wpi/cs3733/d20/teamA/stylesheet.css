@@ -59,18 +59,6 @@
     -fx-font-size: 12pt;
 }
 
-#iconLabel {
-    -fx-font-size: 52pt;
-    -fx-border-color: #BDBDBD;
-    -fx-border-width: 0px 0px 2px 0px;
-}
-
 #flowerTable {
     -fx-font-size: 18pt;
-}
-
-.serviceButton {
-    -fx-font-size: 20pt;
-    -fx-background-radius: 0px;
-    -fx-text-fill: black;
 }

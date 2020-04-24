@@ -30,7 +30,7 @@
                         <Insets left="25.0" />
                      </padding>
                   </JFXProgressBar>
-                  <Label fx:id="orderStatusLabel" style="-fx-text-fill: black;" text="Label">
+                  <Label fx:id="orderStatusLabel" style="-fx-text-fill: black;" text="Order Status">
                      <font>
                         <Font size="18.0" />
                      </font>
