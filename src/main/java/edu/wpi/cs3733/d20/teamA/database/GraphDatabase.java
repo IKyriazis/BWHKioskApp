@@ -13,16 +13,9 @@ public class GraphDatabase extends Database {
   public GraphDatabase(Connection connection) {
 
     super(connection);
-    try {
-      DatabaseMetaData dbm = connection.getMetaData();
-      ResultSet nodeTables = dbm.getTables(null, null, "NODE", null);
-      ResultSet edgeTables = dbm.getTables(null, null, "EDGE", null);
-      // If tables don't exist, create them
-      if (!(nodeTables.next() && edgeTables.next())) {
-        createTables();
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
+
+    if (doesTableNotExist("NODE") && doesTableNotExist("EDGE")) {
+      createTables();
     }
   }
 

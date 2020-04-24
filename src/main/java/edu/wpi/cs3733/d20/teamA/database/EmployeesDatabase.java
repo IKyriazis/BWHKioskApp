@@ -10,15 +10,8 @@ public class EmployeesDatabase extends Database {
 
     super(connection);
 
-    try {
-      DatabaseMetaData dbm = connection.getMetaData();
-      ResultSet employeeTables = dbm.getTables(null, null, "EMPLOYEES", null);
-      // If table doesn't exist create them
-      if (!(employeeTables.next())) {
-        createTables();
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
+    if (doesTableNotExist("EMPLOYEES")) {
+      createTables();
     }
   }
 
