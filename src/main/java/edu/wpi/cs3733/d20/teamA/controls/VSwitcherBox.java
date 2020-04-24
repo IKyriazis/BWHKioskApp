@@ -103,7 +103,7 @@ public class VSwitcherBox extends VBox {
     // Load initial scene if this is the first button added
     if (map.size() == 0) {
       setSelected(button);
-      destPane.getChildren().add(FXMLCache.loadFXML("views/FlowerService.fxml"));
+      destPane.getChildren().add(FXMLCache.loadFXML(fxmlPath));
     }
 
     // Add button to this VBox
@@ -206,7 +206,7 @@ public class VSwitcherBox extends VBox {
     map.keySet().forEach(button -> button.setMaxWidth(getWidth()));
 
     // Fit padding on destpane for overlap only when expanded
-    destPane.setPadding(new Insets(0, 0, 0, 2 * getMaxIconWidth() + 5.0));
+    destPane.setPadding(new Insets(0, 0, 0, 2 * getMaxIconWidth() + 14.0));
   }
 
   public void setTransitionMillis(int transitionTime) {
