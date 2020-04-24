@@ -18,14 +18,15 @@ public class DatabaseServiceProvider extends AbstractModule {
   @Override
   protected void configure() {}
 
-  /**
-   * Provide single connection for database access.
-   *
-   * @throws SQLException if connection cannot be made
-   */
+  /** Provide single connection for database access. */
   @Provides
   @Singleton
-  public Connection provideConnection() throws SQLException {
-    return DriverManager.getConnection(realDbUrl);
+  public Connection provideConnection() {
+    try {
+      return DriverManager.getConnection(realDbUrl);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

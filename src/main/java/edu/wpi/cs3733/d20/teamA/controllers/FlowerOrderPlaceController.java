@@ -44,7 +44,8 @@ public class FlowerOrderPlaceController extends AbstractController {
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     } else if (flDatabase.getSizeFlowers() == 0 || flDatabase.getSizeOrders() == 0) {
-      flDatabase.removeAll();
+      flDatabase.removeAllOrders();
+      flDatabase.removeAllFlowers();
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     }
@@ -80,7 +81,7 @@ public class FlowerOrderPlaceController extends AbstractController {
 
       // Validate number of flowers is within bounds
       int num;
-      int max = super.flDatabase.getFlowerNumber(type, color);
+      int max = super.flDatabase.getFlowerQuantity(type, color);
       try {
         num = Integer.parseInt(txtNumber.getText());
         if (num > max || num <= 0) {
@@ -127,7 +128,7 @@ public class FlowerOrderPlaceController extends AbstractController {
       String type = s.substring(0, s.indexOf(','));
       String color = s.substring(s.indexOf(' ') + 1);
 
-      int i = super.flDatabase.getFlowerNumber(type, color);
+      int i = super.flDatabase.getFlowerQuantity(type, color);
       double d = super.flDatabase.getFlowerPricePer(type, color);
       lblMax.setText(i + " are in stock at " + String.format("$%.2f", d) + " each");
 
@@ -155,14 +156,10 @@ public class FlowerOrderPlaceController extends AbstractController {
 
   public void updateList() {
     ObservableList<Flower> list = null;
-    try {
-      choiceFlower.getItems().clear();
-      list = super.flDatabase.flowerOl();
-      for (Flower f : list) {
-        choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
-      }
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
+    choiceFlower.getItems().clear();
+    list = super.flDatabase.flowerOl();
+    for (Flower f : list) {
+      choiceFlower.getItems().add(f.getTypeFlower() + ", " + f.getColor());
     }
   }
 }

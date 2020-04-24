@@ -6,7 +6,6 @@ import edu.wpi.cs3733.d20.teamA.database.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public abstract class AbstractController {
 
@@ -19,19 +18,15 @@ public abstract class AbstractController {
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
-    try {
-      conn = provider.provideConnection();
-      graphDatabase = new GraphDatabase(conn);
-      graphDatabase.createTables();
-      flDatabase = new FlowerDatabase(conn);
-      flDatabase.createTables();
-      eDB = new EmployeesDatabase(conn);
-      eDB.createTables();
-      graphDatabase.deleteNode("ID");
-      janitorDatabase = new JanitorDatabase(conn);
-      janitorDatabase.createTables();
-    } catch (SQLException throwables) {
-      throwables.printStackTrace(); // All is lost
-    }
+    conn = provider.provideConnection();
+    graphDatabase = new GraphDatabase(conn);
+    graphDatabase.createTables();
+    flDatabase = new FlowerDatabase(conn);
+    flDatabase.createTables();
+    eDB = new EmployeesDatabase(conn);
+    eDB.createTables();
+    graphDatabase.deleteNode("ID");
+    janitorDatabase = new JanitorDatabase(conn);
+    janitorDatabase.createTables();
   }
 }

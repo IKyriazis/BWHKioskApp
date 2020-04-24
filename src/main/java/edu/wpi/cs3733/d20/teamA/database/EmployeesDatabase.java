@@ -4,53 +4,37 @@ import java.sql.*;
 
 public class EmployeesDatabase extends Database {
 
-  public EmployeesDatabase(Connection connection) throws SQLException {
+  public EmployeesDatabase(Connection connection) {
     super(connection);
   }
 
-  /**
-   * @return
-   * @throws SQLException
-   */
-  public boolean dropTables() throws SQLException {
+  /** @return */
+  public boolean dropTables() {
 
     // Drop the tables
-    if (!helperPrepared("DROP TABLE Employees")) {
-      return false;
-    }
-
-    return true;
+    return helperPrepared("DROP TABLE Employees");
   }
 
   /**
    * Creates graph tables
    *
    * @return False if tables couldn't be created
-   * @throws SQLException
    */
-  public boolean createTables() throws SQLException {
+  public boolean createTables() {
 
     // Create the graph tables
-    boolean a =
-        helperPrepared(
-            "CREATE TABLE Employees (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), password Varchar(10), title Varchar(50))");
 
-    if (a) {
-      return true;
-    } else {
-      return false;
-    }
+    return helperPrepared(
+        "CREATE TABLE Employees (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), password Varchar(10), title Varchar(50))");
   }
 
   /**
-   * @param empID
-   * @param nameFirst
-   * @param nameLast
-   * @return
-   * @throws SQLException
+   * @param empID employee ID
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
    */
-  public boolean addEmployee(String empID, String nameFirst, String nameLast, String title)
-      throws SQLException {
+  public boolean addEmployee(String empID, String nameFirst, String nameLast, String title) {
 
     try {
       PreparedStatement pstmt =
@@ -66,6 +50,7 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
@@ -73,11 +58,10 @@ public class EmployeesDatabase extends Database {
   /**
    * Removes a janitor of empID from the Janitor's table
    *
-   * @param empID
+   * @param empID employee ID
    * @return true if the Janitor was successfully deleted
-   * @throws SQLException
    */
-  public boolean deleteEmployee(String empID) throws SQLException {
+  public boolean deleteEmployee(String empID) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From Employees Where employeeID = ?");
@@ -86,31 +70,22 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  /**
-   * @return
-   * @throws SQLException
-   */
-  public int getSizeEmployees() throws SQLException {
-    int count = 0;
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Employees ");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      return -1;
-    }
+  /** @return returns the size of the table */
+  public int getSizeEmployees() {
+    return getSize("Employees");
   }
 
-  public boolean editTitle(String empID, String newTitle) throws SQLException {
+  /**
+   * @param empID employee ID
+   * @param newTitle newTitle
+   * @return true if the title is changed
+   */
+  public boolean editTitle(String empID, String newTitle) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -124,11 +99,12 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean editNameFirst(String empID, String newFirst) throws SQLException {
+  public boolean editNameFirst(String empID, String newFirst) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -142,11 +118,12 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean editNameLast(String empID, String newLast) throws SQLException {
+  public boolean editNameLast(String empID, String newLast) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -160,11 +137,12 @@ public class EmployeesDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean logIn(String empID, String enteredPass) throws SQLException {
+  public boolean logIn(String empID, String enteredPass) {
     String pass = null;
     try {
       PreparedStatement pstmt =
@@ -180,11 +158,12 @@ public class EmployeesDatabase extends Database {
 
       return (pass != null) && pass.equals(enteredPass);
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean changePassword(String empID, String oldPass, String newPass) throws SQLException {
+  public boolean changePassword(String empID, String oldPass, String newPass) {
 
     if (logIn(empID, oldPass) && checkSecurePass(newPass)) {
       try {
@@ -200,6 +179,7 @@ public class EmployeesDatabase extends Database {
         pstmt.close();
         return true;
       } catch (SQLException e) {
+        e.printStackTrace();
         return false;
       }
     }
@@ -208,10 +188,10 @@ public class EmployeesDatabase extends Database {
   }
 
   /**
-   * @param password
-   * @return
+   * @param password password
+   * @return true if the there is a scure pass
    */
-  public boolean checkSecurePass(String password) throws SQLException {
+  public boolean checkSecurePass(String password) {
     char ch;
     boolean capital = false;
     boolean lowercase = false;
@@ -231,10 +211,7 @@ public class EmployeesDatabase extends Database {
     return false;
   }
 
-  /**
-   * @return
-   * @throws SQLException
-   */
+  /** @return true if all all employee are removed */
   public boolean removeAllEmployees() throws SQLException {
     return helperPrepared("DELETE From Employees");
   }

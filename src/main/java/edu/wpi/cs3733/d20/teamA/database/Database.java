@@ -9,18 +9,10 @@ public abstract class Database {
 
   private final Connection connection;
 
-  public Database(Connection connection) throws SQLException {
+  public Database(Connection connection) {
     this.connection = connection;
     // makeDatabase();
   }
-
-  // public static void makeDatabase() throws SQLException {
-  //  try {
-  //    Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase;create=true");
-  //  } catch (SQLException e) {
-  //    return;
-  //  }
-  // }
 
   public Connection getConnection() {
     return connection;
@@ -31,9 +23,8 @@ public abstract class Database {
    *
    * @param str the sql statement in a string
    * @return false if anything goes wrong
-   * @throws SQLException
    */
-  public boolean helperPrepared(String str) throws SQLException {
+  public boolean helperPrepared(String str) {
 
     try {
 
@@ -43,7 +34,25 @@ public abstract class Database {
       stmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
+    }
+  }
+
+  public int getSize(String tableName) {
+    int count = 0;
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * From " + tableName);
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        count++;
+      }
+      rset.close();
+      pstmt.close();
+      return count;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return -1;
     }
   }
 }
