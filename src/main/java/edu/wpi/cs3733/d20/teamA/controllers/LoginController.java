@@ -9,6 +9,7 @@ import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -28,6 +29,7 @@ public class LoginController extends AbstractController {
   @FXML private StackPane dialogPane;
   @FXML private JFXButton logoutButton;
 
+  @FXML private Pane rootPane;
   @FXML private Pane switcherPane;
   @FXML private Pane destPane;
   @FXML private Pane blockerPane;
@@ -60,6 +62,7 @@ public class LoginController extends AbstractController {
         "Announcements",
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
+    vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
     switcherPane.getChildren().add(vSwitcherBox);
@@ -81,6 +84,15 @@ public class LoginController extends AbstractController {
     // Setup enter key to go from Username -> Password -> Login
     usernameBox.setOnAction(event -> passwordBox.requestFocus());
     passwordBox.setOnAction(event -> loginButton.requestFocus());
+
+    // Pass events through to root pane
+    rootPane.addEventFilter(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          if (event.getTarget().equals(rootPane)) {
+            destPane.getChildren().forEach(node -> node.fireEvent(new TabSwitchEvent()));
+          }
+        });
   }
 
   @FXML
