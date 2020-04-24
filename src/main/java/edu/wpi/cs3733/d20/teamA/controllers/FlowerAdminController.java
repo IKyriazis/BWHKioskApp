@@ -69,7 +69,8 @@ public class FlowerAdminController extends AbstractController {
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     } else if (flDatabase.getSizeFlowers() == 0 || flDatabase.getSizeOrders() == 0) {
-      flDatabase.removeAll();
+      flDatabase.removeAllOrders();
+      flDatabase.removeAllFlowers();
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
     }

@@ -43,17 +43,17 @@ public class GraphDatabase extends Database {
     // Create the graph tables
     boolean b =
         helperPrepared(
-            "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, " +
-                    "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), " +
-                    "nodeType Varchar(4) NOT NULL, longName Varchar(200) NOT NULL, shortName Varchar(25), " +
-                    "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), " +
-                    "CONSTRAINT CHK_Coords CHECK (xcoord > 0 AND ycoord > 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
+            "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
+                + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
+                + "nodeType Varchar(4) NOT NULL, longName Varchar(200) NOT NULL, shortName Varchar(25), "
+                + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
+                + "CONSTRAINT CHK_Coords CHECK (xcoord > 0 AND ycoord > 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
 
     boolean a =
         helperPrepared(
-            "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, " +
-                    "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), " +
-                    "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
+            "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, "
+                + "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), "
+                + "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
 
     return a && b;
   }
@@ -91,20 +91,7 @@ public class GraphDatabase extends Database {
    * @return The size of the node table
    */
   public int getSizeNode() {
-    int count = 0;
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Node");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return -1;
-    }
+    return getSize("Node");
   }
 
   /**
@@ -113,20 +100,7 @@ public class GraphDatabase extends Database {
    * @return The size of the edge table
    */
   public int getSizeEdge() {
-    int count = 0;
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Edge");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return -1;
-    }
+    return getSize("Edge");
   }
 
   /**
@@ -288,54 +262,48 @@ public class GraphDatabase extends Database {
     }
   }
 
-  /**
-   * Reads in a csv file of nodes
-   *
-   */
+  /** Reads in a csv file of nodes */
   public void readNodeCSV() {
     try {
-    InputStream stream =
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv");
-    CSVReader reader = new CSVReader(new InputStreamReader(stream));
-    List<String[]> data = reader.readAll();
-    for (int i = 1; i < data.size(); i++) {
-      String nID, Bu, nodeT, longN, shortN, teamA;
-      int xCo, yCo, Fl;
-      nID = data.get(i)[0];
-      xCo = Integer.parseInt(data.get(i)[1]);
-      yCo = Integer.parseInt(data.get(i)[2]);
-      Fl = Integer.parseInt(data.get(i)[3]);
-      Bu = data.get(i)[4];
-      nodeT = data.get(i)[5];
-      longN = data.get(i)[6];
-      shortN = data.get(i)[7];
-      teamA = data.get(i)[8];
-      addNode(nID, xCo, yCo, Fl, Bu, nodeT, longN, shortN, teamA);
-    }
+      InputStream stream =
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv");
+      CSVReader reader = new CSVReader(new InputStreamReader(stream));
+      List<String[]> data = reader.readAll();
+      for (int i = 1; i < data.size(); i++) {
+        String nID, Bu, nodeT, longN, shortN, teamA;
+        int xCo, yCo, Fl;
+        nID = data.get(i)[0];
+        xCo = Integer.parseInt(data.get(i)[1]);
+        yCo = Integer.parseInt(data.get(i)[2]);
+        Fl = Integer.parseInt(data.get(i)[3]);
+        Bu = data.get(i)[4];
+        nodeT = data.get(i)[5];
+        longN = data.get(i)[6];
+        shortN = data.get(i)[7];
+        teamA = data.get(i)[8];
+        addNode(nID, xCo, yCo, Fl, Bu, nodeT, longN, shortN, teamA);
+      }
     } catch (IOException | CsvException i) {
       i.printStackTrace();
     }
   }
 
-  /**
-   * Reads in a csv file of edges
-   *
-   */
+  /** Reads in a csv file of edges */
   public void readEdgeCSV() {
     try {
-    InputStream stream =
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv");
-    CSVReader reader = new CSVReader(new InputStreamReader(stream));
-    List<String[]> data = reader.readAll();
-    for (int i = 1; i < data.size(); i++) {
-      String eID, sNode, eNode, eID2;
-      eID = data.get(i)[0];
-      sNode = data.get(i)[1];
-      eNode = data.get(i)[2];
-      addEdge(eID, sNode, eNode);
-      eID2 = eNode + "_" + sNode;
-      addEdge(eID2, eNode, sNode);
-    }
+      InputStream stream =
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv");
+      CSVReader reader = new CSVReader(new InputStreamReader(stream));
+      List<String[]> data = reader.readAll();
+      for (int i = 1; i < data.size(); i++) {
+        String eID, sNode, eNode, eID2;
+        eID = data.get(i)[0];
+        sNode = data.get(i)[1];
+        eNode = data.get(i)[2];
+        addEdge(eID, sNode, eNode);
+        eID2 = eNode + "_" + sNode;
+        addEdge(eID2, eNode, sNode);
+      }
     } catch (IOException | CsvException i) {
       i.printStackTrace();
     }
@@ -445,6 +413,7 @@ public class GraphDatabase extends Database {
 
   /**
    * Helps get an integer of the specified column name
+   *
    * @param nodeID - The node to get the int from
    * @param col - The name of the column with the int
    * @return The int
@@ -468,6 +437,7 @@ public class GraphDatabase extends Database {
 
   /**
    * Helps get a String from the specified column name
+   *
    * @param nodeID - The node to get the String from
    * @param col - The name of the column with the String
    * @return The String
@@ -491,6 +461,7 @@ public class GraphDatabase extends Database {
 
   /**
    * Helps get a string from the specified column name in the edge table
+   *
    * @param edgeID - The edge to get the STring from
    * @param col - The column name with the String
    * @return The String

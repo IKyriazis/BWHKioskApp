@@ -14,7 +14,6 @@ public abstract class Database {
     // makeDatabase();
   }
 
-
   public Connection getConnection() {
     return connection;
   }
@@ -37,6 +36,23 @@ public abstract class Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
+    }
+  }
+
+  public int getSize(String tableName) {
+    int count = 0;
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * From " + tableName);
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        count++;
+      }
+      rset.close();
+      pstmt.close();
+      return count;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return -1;
     }
   }
 }

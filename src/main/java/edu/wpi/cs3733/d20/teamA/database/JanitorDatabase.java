@@ -13,9 +13,10 @@ public class JanitorDatabase extends Database {
 
   /**
    * Sets the connection to the database
+   *
    * @param connection connection
    */
-  public JanitorDatabase(Connection connection){
+  public JanitorDatabase(Connection connection) {
     super(connection);
   }
 
@@ -24,7 +25,7 @@ public class JanitorDatabase extends Database {
    *
    * @return false if the tables don't exist, true if table is dropped correctly
    */
-  public boolean dropTables(){
+  public boolean dropTables() {
 
     // if the helper returns false this method should too
     // drop the CONSTRAINT first
@@ -50,9 +51,10 @@ public class JanitorDatabase extends Database {
 
   /**
    * Sets the requestCount to 0
+   *
    * @return true if everything could be deleted
    */
-  public boolean removeAll(){
+  public boolean removeAll() {
     requestCount = 0;
     return helperPrepared("DELETE From JanitorRequest");
   }
@@ -62,7 +64,7 @@ public class JanitorDatabase extends Database {
    *
    * @return False if request couldn't be added
    */
-  public boolean addRequest(String location, String priority){
+  public boolean addRequest(String location, String priority) {
 
     // creates a timestamp of the time that the function is called
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -92,11 +94,10 @@ public class JanitorDatabase extends Database {
   }
 
   /**
-   *
    * @param rn request number
    * @return true if the request was deleted
    */
-  public boolean deleteRequest(int rn){
+  public boolean deleteRequest(int rn) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From JanitorRequest Where requestNumber = ?");
@@ -112,9 +113,10 @@ public class JanitorDatabase extends Database {
 
   /**
    * Deletes all the progress that have been completed
+   *
    * @return true if requests were deleted
    */
-  public boolean deleteDoneRequests(){
+  public boolean deleteDoneRequests() {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From JanitorRequest Where progress = 'Done'");
@@ -129,12 +131,13 @@ public class JanitorDatabase extends Database {
 
   /**
    * Updates the rn with a certain progress
+   *
    * @param rn request number
    * @param name name
    * @param progress progress
    * @return true if the progress has been updated
    */
-  public boolean updateRequest(int rn, String name, String progress){
+  public boolean updateRequest(int rn, String name, String progress) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -154,23 +157,23 @@ public class JanitorDatabase extends Database {
 
   /**
    * returns true if the progress has been updated
+   *
    * @param rn request number
    * @param progress progress
    * @return true if the request has been updated
    */
-  public boolean updateRequest(int rn, String progress){
+  public boolean updateRequest(int rn, String progress) {
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "SELECT * FROM JanitorRequest WHERE requestNumber = " + rn);
+          getConnection()
+              .prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = " + rn);
       pstmt.executeUpdate();
       ResultSet rset = pstmt.executeQuery();
       rset.next();
       String name = rset.getString("name");
       rset.close();
       pstmt.close();
-      updateRequest(rn,name,progress);
+      updateRequest(rn, name, progress);
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -178,10 +181,8 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  /**
-   * Prints out the table
-   */
-  public void printTable(){
+  /** Prints out the table */
+  public void printTable() {
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * FROM JanitorRequest ");
       ResultSet rset = pstmt.executeQuery();
@@ -209,7 +210,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public String getRequest(int rn){
+  public String getRequest(int rn) {
     String request = "";
     try {
       PreparedStatement pstmt =
@@ -236,7 +237,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public int getRequestSize(){
+  public int getRequestSize() {
     int count = 0;
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * From JanitorRequest ");
@@ -253,7 +254,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public Timestamp getTimestamp(int rn){
+  public Timestamp getTimestamp(int rn) {
     Timestamp ts;
     try {
       PreparedStatement pstmt =
@@ -271,7 +272,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public String getName(int rn){
+  public String getName(int rn) {
     String n;
     try {
       PreparedStatement pstmt =
@@ -289,7 +290,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public String getLocation(int rn){
+  public String getLocation(int rn) {
     String n;
     try {
       PreparedStatement pstmt =
@@ -307,7 +308,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public String getProgress(int rn){
+  public String getProgress(int rn) {
     String n;
     try {
       PreparedStatement pstmt =
@@ -325,7 +326,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public String getPriority(int rn){
+  public String getPriority(int rn) {
     String n;
     try {
       PreparedStatement pstmt =
@@ -346,7 +347,7 @@ public class JanitorDatabase extends Database {
   public void readFromCSV() {
     try {
       InputStream stream =
-              getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/JanitorRequest.csv");
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/JanitorRequest.csv");
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
@@ -355,7 +356,7 @@ public class JanitorDatabase extends Database {
         priority = data.get(i)[1];
         addRequest(location, priority);
       }
-    } catch(IOException | CsvException e){
+    } catch (IOException | CsvException e) {
       e.printStackTrace();
     }
   }

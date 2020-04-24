@@ -13,9 +13,10 @@ public class FlowerDatabase extends Database {
 
   /**
    * Creates the Flower database with given connection
+   *
    * @param connection connection
    */
-  public FlowerDatabase(Connection connection){
+  public FlowerDatabase(Connection connection) {
     super(connection);
   }
 
@@ -25,7 +26,7 @@ public class FlowerDatabase extends Database {
    * @return false if the tables don't exist and CONSTRAINT can't be dropped, true if CONSTRAINT and
    *     tables are dropped correctly
    */
-  public boolean dropTables(){
+  public boolean dropTables() {
 
     // if the helper returns false this method should too
     // drop the CONSTRAINT first
@@ -46,7 +47,7 @@ public class FlowerDatabase extends Database {
    *
    * @return False if tables couldn't be created
    */
-  public boolean createTables(){
+  public boolean createTables() {
 
     // Create the graph tables
     boolean a =
@@ -281,20 +282,7 @@ public class FlowerDatabase extends Database {
    * @return the number of entries in the flower table
    */
   public int getSizeFlowers() {
-    int count = 0;
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Flowers ");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return -1;
-    }
+    return getSize("Flowers");
   }
 
   /**
@@ -303,20 +291,7 @@ public class FlowerDatabase extends Database {
    * @return the number of entries in the order table
    */
   public int getSizeOrders() {
-    int count = 0;
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Orders ");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return -1;
-    }
+    return getSize("Orders");
   }
 
   /**
@@ -324,7 +299,7 @@ public class FlowerDatabase extends Database {
    *
    * @return true if all the flowers were removed, false otherwise
    */
-  public boolean removeAllFlowers(){
+  public boolean removeAllFlowers() {
     return helperPrepared("DELETE From Flowers");
   }
 
@@ -333,7 +308,7 @@ public class FlowerDatabase extends Database {
    *
    * @return true if all the orders were removed, false otherwise
    */
-  public boolean removeAllOrders(){
+  public boolean removeAllOrders() {
     orderNum = 1;
     return helperPrepared("DELETE From Orders");
   }
@@ -480,13 +455,11 @@ public class FlowerDatabase extends Database {
     }
   }
 
-  /**
-   * Reads the flower csv file into the database
-   */
+  /** Reads the flower csv file into the database */
   public void readFlowersCSV() {
     try {
       InputStream stream =
-              getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowersCSV.csv");
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowersCSV.csv");
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
@@ -499,18 +472,16 @@ public class FlowerDatabase extends Database {
         pricePer = Double.parseDouble(data.get(i)[3]);
         addFlower(typeFlower, color, qty, pricePer);
       }
-    } catch (IOException | CsvException e){
+    } catch (IOException | CsvException e) {
       e.printStackTrace();
     }
   }
 
-  /**
-   * Reads the flower order csv file into the order database
-   */
-  public void readFlowerOrderCSV(){
+  /** Reads the flower order csv file into the order database */
+  public void readFlowerOrderCSV() {
     try {
       InputStream stream =
-              getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowerOrderCSV.csv");
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/FlowerOrderCSV.csv");
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
@@ -522,8 +493,7 @@ public class FlowerDatabase extends Database {
         location = data.get(i)[3];
         addOrder(numFlowers, flowerType, flowerColor, location);
       }
-    }
-    catch (IOException | CsvException e){
+    } catch (IOException | CsvException e) {
       e.printStackTrace();
     }
   }

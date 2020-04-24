@@ -73,10 +73,7 @@ public class JanitorialController extends AbstractController {
     roomList
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
-    try {
-      janitorDatabase.readFromCSV();
-    } catch (SQLException bruhBoi) {
-    }
+    janitorDatabase.readFromCSV();
   }
 
   /**

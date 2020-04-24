@@ -4,14 +4,12 @@ import java.sql.*;
 
 public class EmployeesDatabase extends Database {
 
-  public EmployeesDatabase(Connection connection){
+  public EmployeesDatabase(Connection connection) {
     super(connection);
   }
 
-  /**
-   * @return
-   */
-  public boolean dropTables(){
+  /** @return */
+  public boolean dropTables() {
 
     // Drop the tables
     return helperPrepared("DROP TABLE Employees");
@@ -22,7 +20,7 @@ public class EmployeesDatabase extends Database {
    *
    * @return False if tables couldn't be created
    */
-  public boolean createTables(){
+  public boolean createTables() {
 
     // Create the graph tables
 
@@ -36,7 +34,7 @@ public class EmployeesDatabase extends Database {
    * @param nameLast last name
    * @return returns true if the employee is added
    */
-  public boolean addEmployee(String empID, String nameFirst, String nameLast, String title){
+  public boolean addEmployee(String empID, String nameFirst, String nameLast, String title) {
 
     try {
       PreparedStatement pstmt =
@@ -63,7 +61,7 @@ public class EmployeesDatabase extends Database {
    * @param empID employee ID
    * @return true if the Janitor was successfully deleted
    */
-  public boolean deleteEmployee(String empID){
+  public boolean deleteEmployee(String empID) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From Employees Where employeeID = ?");
@@ -77,33 +75,17 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  /**
-   * @return returns the size of the table
-   */
-  public int getSizeEmployees(){
-    int count = 0;
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Employees ");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return -1;
-    }
+  /** @return returns the size of the table */
+  public int getSizeEmployees() {
+    return getSize("Employees");
   }
 
   /**
-   *
    * @param empID employee ID
    * @param newTitle newTitle
    * @return true if the title is changed
    */
-  public boolean editTitle(String empID, String newTitle){
+  public boolean editTitle(String empID, String newTitle) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -122,7 +104,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean editNameFirst(String empID, String newFirst){
+  public boolean editNameFirst(String empID, String newFirst) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -141,7 +123,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean editNameLast(String empID, String newLast){
+  public boolean editNameLast(String empID, String newLast) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -160,7 +142,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean logIn(String empID, String enteredPass){
+  public boolean logIn(String empID, String enteredPass) {
     String pass = null;
     try {
       PreparedStatement pstmt =
@@ -181,7 +163,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean changePassword(String empID, String oldPass, String newPass){
+  public boolean changePassword(String empID, String oldPass, String newPass) {
 
     if (logIn(empID, oldPass) && checkSecurePass(newPass)) {
       try {
@@ -209,7 +191,7 @@ public class EmployeesDatabase extends Database {
    * @param password password
    * @return true if the there is a scure pass
    */
-  public boolean checkSecurePass(String password){
+  public boolean checkSecurePass(String password) {
     char ch;
     boolean capital = false;
     boolean lowercase = false;
@@ -229,9 +211,7 @@ public class EmployeesDatabase extends Database {
     return false;
   }
 
-  /**
-   * @return true if all all employee are removed
-   */
+  /** @return true if all all employee are removed */
   public boolean removeAllEmployees() throws SQLException {
     return helperPrepared("DELETE From Employees");
   }

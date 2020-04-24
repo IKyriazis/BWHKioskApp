@@ -18,10 +18,7 @@ public class DatabaseServiceProvider extends AbstractModule {
   @Override
   protected void configure() {}
 
-  /**
-   * Provide single connection for database access.
-   *
-   */
+  /** Provide single connection for database access. */
   @Provides
   @Singleton
   public Connection provideConnection() {
