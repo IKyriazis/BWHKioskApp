@@ -13,7 +13,6 @@ public class ServiceHomeController {
   @FXML private AnchorPane switcherPane;
   @FXML private Pane destPane;
 
-
   public void initialize() {
     // Setup switcher box
     VSwitcherBox vSwitcherBox =
@@ -21,15 +20,13 @@ public class ServiceHomeController {
     vSwitcherBox.addEntry(
         "Flowers", new FontAwesomeIconView(FontAwesomeIcon.LEAF), "views/FlowerService.fxml");
     vSwitcherBox.addEntry(
-        "Service 1", new FontAwesomeIconView(FontAwesomeIcon.CIRCLE), "views/JanitorialGUI.fxml");
+        "Service 1", new FontAwesomeIconView(FontAwesomeIcon.CIRCLE), "views/AddFlowerPopup.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
     switcherPane.getChildren().add(vSwitcherBox);
     AnchorPane.setBottomAnchor(vSwitcherBox, 0.0);
     AnchorPane.setTopAnchor(vSwitcherBox, 0.0);
-    AnchorPane.setLeftAnchor(vSwitcherBox, 0.0);
-    AnchorPane.setRightAnchor(vSwitcherBox, 0.0);
 
     // Pass tab switch events through to current view
     rootPane.addEventFilter(

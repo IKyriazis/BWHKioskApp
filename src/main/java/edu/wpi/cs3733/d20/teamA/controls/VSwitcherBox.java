@@ -3,6 +3,8 @@ package edu.wpi.cs3733.d20.teamA.controls;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import java.util.HashMap;
+import javafx.animation.Animation;
+import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -20,6 +22,8 @@ public class VSwitcherBox extends VBox {
   private final Label iconLabel;
   private JFXButton selected;
 
+  private boolean minimized = true;
+  private Animation widthTransition;
 
   private boolean transitioning = false;
   private int transitionTime = 1000;
@@ -48,6 +52,30 @@ public class VSwitcherBox extends VBox {
     iconLabel.setAlignment(Pos.CENTER);
     getChildren().add(iconLabel);
 
+    // Add mouseover listener
+    setOnMouseEntered(
+        event -> {
+          if (widthTransition != null) {
+            widthTransition.stop();
+          }
+          (widthTransition = widthTransition(getMaxContentWidth())).play();
+          widthTransition.setOnFinished(
+              e -> {
+                widthTransition = null;
+              });
+        });
+    setOnMouseExited(
+        event -> {
+          if (widthTransition != null) {
+            widthTransition.stop();
+          }
+          (widthTransition = widthTransition(getMaxIconWidth())).play();
+          widthTransition.setOnFinished(
+              e -> {
+                widthTransition = null;
+              });
+        });
+
     // Add drop shadow to self
     DropShadow dropShadow = new DropShadow();
     dropShadow.setRadius(8.0);
@@ -65,6 +93,8 @@ public class VSwitcherBox extends VBox {
 
   public void addEntry(String label, Node graphic, String fxmlPath) {
     JFXButton button = new JFXButton(label, graphic);
+    button.setEllipsisString("");
+    button.setAlignment(Pos.CENTER_LEFT);
     button.setButtonType(JFXButton.ButtonType.FLAT);
     button.setStyle(buttonStyle + "-fx-background-color: white");
     button.setOnAction(this::switchView);
@@ -80,6 +110,9 @@ public class VSwitcherBox extends VBox {
 
     // Add button to fxml mapping
     map.put(button, fxmlPath);
+
+    // Resize to fit button
+    setPrefWidth(getMaxContentWidth());
   }
 
   private void switchView(ActionEvent event) {
@@ -131,11 +164,43 @@ public class VSwitcherBox extends VBox {
     }
   }
 
+  private Animation widthTransition(double goal) {
+    final double startWidth = getWidth();
+    return new Transition() {
+      {
+        setCycleDuration(Duration.millis(250));
+      }
+
+      @Override
+      protected void interpolate(double frac) {
+        setPrefWidth(startWidth + frac * (goal - startWidth));
+      }
+    };
+  }
+
+  private double getMaxContentWidth() {
+    double maxWidth = 0.0;
+    for (Node node : getChildren()) {
+      maxWidth = Math.max(maxWidth, node.prefWidth(getHeight()));
+    }
+    return maxWidth;
+  }
+
+  private double getMaxIconWidth() {
+    double maxGraphicWidth = 0.0;
+    for (JFXButton button : map.keySet()) {
+      maxGraphicWidth = Math.max(maxGraphicWidth, button.getGraphic().prefWidth(getHeight()));
+    }
+    return maxGraphicWidth;
+  }
+
   @Override
   public void resize(double width, double height) {
     super.resize(width, height);
 
-    // Resize contents
+    System.out.println("Resizing");
+
+    // Resize contents to max
     iconLabel.setMaxWidth(getWidth());
     map.keySet().forEach(button -> button.setMaxWidth(getWidth()));
   }
