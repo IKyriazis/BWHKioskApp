@@ -18,7 +18,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
             </GridPane>
-            <AnchorPane prefHeight="200.0" prefWidth="1070.0">
+            <AnchorPane pickOnBounds="false" prefHeight="200.0" prefWidth="1070.0">
                <children>
                   <AnchorPane fx:id="switcherPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
