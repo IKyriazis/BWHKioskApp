@@ -48,7 +48,7 @@ public class JanitorialController extends AbstractController {
   Hashtable<String, Integer> activeRequestHash = new Hashtable<>();
   Hashtable<String, String> statusHash = new Hashtable<>();
 
-  public JanitorialController() throws IOException, CsvException, SQLException {}
+  public JanitorialController() {}
 
   public void initialize() throws SQLException, IOException, CsvException {
     refreshActiveRequests();
@@ -73,7 +73,11 @@ public class JanitorialController extends AbstractController {
     roomList
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
-    janitorDatabase.readFromCSV();
+    try {
+      janitorDatabase.readFromCSV();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   /**
@@ -150,7 +154,7 @@ public class JanitorialController extends AbstractController {
   }
 
   @FXML
-  private void elementSelect() throws SQLException {
+  private void elementSelect(){
     String Request = listviewActiveRequests.getSelectionModel().getSelectedItem();
     if (Request != null) {
       btnCompleted.setVisible(true);
