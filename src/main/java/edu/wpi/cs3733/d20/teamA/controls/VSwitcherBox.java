@@ -7,6 +7,7 @@ import javafx.animation.Animation;
 import javafx.animation.Transition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -203,6 +204,9 @@ public class VSwitcherBox extends VBox {
     // Resize contents to max
     iconLabel.setMaxWidth(getWidth());
     map.keySet().forEach(button -> button.setMaxWidth(getWidth()));
+
+    // Fit padding on destpane for overlap only when expanded
+    destPane.setPadding(new Insets(0, 0, 0, 2 * getMaxIconWidth() + 5.0));
   }
 
   public void setTransitionMillis(int transitionTime) {
