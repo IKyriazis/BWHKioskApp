@@ -83,10 +83,21 @@ jar {
     }
 }
 
+// Exclude trivial App / Main classes, and UI-related classes b/c Prof. Wong advised us to not waste time on lengthy and
+// convoluted TestFX tests
 def codeCoverageExcludes = [
         'edu.wpi.cs3733.d20.teamA.App',
         'edu.wpi.cs3733.d20.teamA.Main',
-        'edu.wpi.cs3733.d20.teamA.controllers.*'
+        'edu.wpi.cs3733.d20.teamA.controllers.*',
+        'edu.wpi.cs3733.d20.teamA.controls.*',
+        'edu.wpi.cs3733.d20.teamA.map.MapCanvas',
+        'edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler',
+        'edu.wpi.cs3733.d20.teamA.util.DialogUtil',
+        'edu.wpi.cs3733.d20.teamA.util.FXMLCache',
+        'edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent',
+        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil',
+        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.1',
+        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.2'
 ]
 
 jacoco {
