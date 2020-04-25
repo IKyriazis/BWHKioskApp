@@ -26,5 +26,17 @@ public enum NodeType {
    * Hospital non-medical services, interpreters, shuttles, spiritual, library, patient financial,
    * etc.
    */
-  SERV
+  SERV,
+  /** Error case */
+  NULL;
+
+  public static NodeType toNodeType(String type) {
+    for (NodeType nodeType : values()) {
+      if (type.equals(nodeType.name())) {
+        return nodeType;
+      }
+    }
+
+    return NULL;
+  }
 }

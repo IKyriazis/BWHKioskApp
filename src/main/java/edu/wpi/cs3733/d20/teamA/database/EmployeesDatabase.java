@@ -21,7 +21,11 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  /** @return */
+  /**
+   * Drop the 'Employees' table
+   *
+   * @return Success / Failure
+   */
   public boolean dropTables() {
 
     // Drop the tables
@@ -67,7 +71,6 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
-      employeeID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -75,9 +78,9 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public void addEmployee(
+  public boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
-    addEmployee(getSizeEmployees() + 1, nameFirst, nameLast, username, password, title);
+    return addEmployee(getSizeEmployees() + 1, nameFirst, nameLast, username, password, title);
   }
 
   /**

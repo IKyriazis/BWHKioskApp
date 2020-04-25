@@ -1,12 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
-import com.opencsv.exceptions.CsvException;
 import java.io.*;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class GraphDatabase extends Database {
 
@@ -14,7 +9,7 @@ public class GraphDatabase extends Database {
 
     super(connection);
 
-    if (doesTableNotExist("NODE") && doesTableNotExist("EDGE")) {
+    if (doesTableNotExist("NODE") || doesTableNotExist("EDGE")) {
       createTables();
     }
   }
@@ -52,7 +47,7 @@ public class GraphDatabase extends Database {
                 + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
                 + "nodeType Varchar(4) NOT NULL, longName Varchar(200) NOT NULL, shortName Varchar(25), "
                 + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
-                + "CONSTRAINT CHK_Coords CHECK (xcoord > 0 AND ycoord > 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
+                + "CONSTRAINT CHK_Coords CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
 
     boolean a =
         helperPrepared(
@@ -264,134 +259,6 @@ public class GraphDatabase extends Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
-    }
-  }
-
-  /** Reads in a csv file of nodes */
-  public void readNodeCSV() {
-    try {
-      InputStream stream =
-          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv");
-      CSVReader reader = new CSVReader(new InputStreamReader(stream));
-      List<String[]> data = reader.readAll();
-      for (int i = 1; i < data.size(); i++) {
-        String nID, Bu, nodeT, longN, shortN, teamA;
-        int xCo, yCo, Fl;
-        nID = data.get(i)[0];
-        xCo = Integer.parseInt(data.get(i)[1]);
-        yCo = Integer.parseInt(data.get(i)[2]);
-        Fl = Integer.parseInt(data.get(i)[3]);
-        Bu = data.get(i)[4];
-        nodeT = data.get(i)[5];
-        longN = data.get(i)[6];
-        shortN = data.get(i)[7];
-        teamA = data.get(i)[8];
-        addNode(nID, xCo, yCo, Fl, Bu, nodeT, longN, shortN, teamA);
-      }
-    } catch (IOException | CsvException i) {
-      i.printStackTrace();
-    }
-  }
-
-  /** Reads in a csv file of edges */
-  public void readEdgeCSV() {
-    try {
-      InputStream stream =
-          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv");
-      CSVReader reader = new CSVReader(new InputStreamReader(stream));
-      List<String[]> data = reader.readAll();
-      for (int i = 1; i < data.size(); i++) {
-        String eID, sNode, eNode, eID2;
-        eID = data.get(i)[0];
-        sNode = data.get(i)[1];
-        eNode = data.get(i)[2];
-        addEdge(eID, sNode, eNode);
-        eID2 = eNode + "_" + sNode;
-        addEdge(eID2, eNode, sNode);
-      }
-    } catch (IOException | CsvException i) {
-      i.printStackTrace();
-    }
-  }
-
-  /**
-   * Writes out a csv file for the node table
-   *
-   * @param filePath - Where the csv file should be saved (including fileName.csv)
-   */
-  public void writeNodeCSV(String filePath) {
-    File file = new File(filePath);
-    try {
-      FileWriter outputfile = new FileWriter(file);
-      CSVWriter writer = new CSVWriter(outputfile);
-      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Node");
-      ResultSet rset = pstmt.executeQuery();
-      String[] header = {
-        "nodeID",
-        "xcoord",
-        "ycoord",
-        "floor",
-        "building",
-        "nodeType",
-        "longName",
-        "shortName",
-        "teamAssigned"
-      };
-      writer.writeNext(header);
-      while (rset.next()) {
-        String ID = rset.getString("nodeID");
-        int x = rset.getInt("xcoord");
-        String xs = Integer.toString(x);
-        int y = rset.getInt("ycoord");
-        String ys = Integer.toString(y);
-        int f = rset.getInt("floor");
-        String fs = Integer.toString(f);
-        String build = rset.getString("building");
-        String type = rset.getString("nodeType");
-        String lName = rset.getString("longName");
-        String sName = rset.getString("shortName");
-        String teamA = rset.getString("teamAssigned");
-        String[] row = {ID, xs, ys, fs, build, type, lName, sName, teamA};
-        writer.writeNext(row);
-      }
-      writer.close();
-      rset.close();
-      pstmt.close();
-    } catch (SQLException | IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Writes out a csv file for the edge table
-   *
-   * @param filePath - Where the csv file should be saved (including fileName.csv)
-   */
-  public void writeEdgeCSV(String filePath) {
-    File file = new File(filePath);
-    try {
-      FileWriter outputfile = new FileWriter(file);
-      CSVWriter writer = new CSVWriter(outputfile);
-      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Edge");
-      ResultSet rset = pstmt.executeQuery();
-      String[] header = {"edgeID", "startNode", "endNode"};
-      writer.writeNext(header);
-      ArrayList<String> doNotAdd = new ArrayList<String>();
-      while (rset.next()) {
-        String ID = rset.getString("edgeID");
-        String sNode = rset.getString("startNode");
-        String eNode = rset.getString("endNode");
-        if (!doNotAdd.contains(ID)) {
-          String[] row = {ID, sNode, eNode};
-          writer.writeNext(row);
-          doNotAdd.add(eNode + "_" + sNode);
-        }
-      }
-      writer.close();
-      rset.close();
-      pstmt.close();
-    } catch (SQLException | IOException e) {
-      e.printStackTrace();
     }
   }
 

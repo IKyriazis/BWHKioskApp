@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.graph;
 
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,13 +30,13 @@ public class Graph {
     if (DB.getSizeNode() == -1 || DB.getSizeEdge() == -1) {
       DB.dropTables();
       DB.createTables();
-      DB.readNodeCSV();
-      DB.readEdgeCSV();
+      CSVLoader.readNodes(this);
+      CSVLoader.readEdges(this);
       update();
     } else if (DB.getSizeNode() == 0 || DB.getSizeEdge() == 0) {
       DB.removeAll();
-      DB.readNodeCSV();
-      DB.readEdgeCSV();
+      CSVLoader.readNodes(this);
+      CSVLoader.readEdges(this);
       update();
     } else {
       update();
