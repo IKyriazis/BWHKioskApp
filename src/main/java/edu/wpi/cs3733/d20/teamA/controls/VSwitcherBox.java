@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controls;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.GlyphIcon;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.HashMap;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
@@ -161,6 +162,9 @@ public class VSwitcherBox extends VBox {
 
         transitioning = true;
       }
+
+      // Fire off tab switch event to notify new tab that it was swapped in
+      newNode.fireEvent(new TabSwitchEvent());
     }
   }
 
