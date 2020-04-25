@@ -423,7 +423,7 @@ public class GraphDatabase extends Database {
    * @param col - The name of the column with the int
    * @return The int
    */
-  public int helperGetInt(String nodeID, String col) {
+  public int helperGetIntG(String nodeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
@@ -447,7 +447,7 @@ public class GraphDatabase extends Database {
    * @param col - The name of the column with the String
    * @return The String
    */
-  public String helperGetString(String nodeID, String col) {
+  public String helperGetStringG(String nodeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
@@ -471,7 +471,7 @@ public class GraphDatabase extends Database {
    * @param col - The column name with the String
    * @return The String
    */
-  public String helperGetStringEdge(String edgeID, String col) {
+  public String helperGetStringEdgeG(String edgeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Edge WHERE nodeID = ?");
@@ -489,43 +489,43 @@ public class GraphDatabase extends Database {
   }
 
   public int getX(String nodeID) {
-    return helperGetInt(nodeID, "xcoord");
+    return helperGetIntG(nodeID, "xcoord");
   }
 
   public int getY(String nodeID) {
-    return helperGetInt(nodeID, "ycoord");
+    return helperGetIntG(nodeID, "ycoord");
   }
 
   public int getFloor(String nodeID) {
-    return helperGetInt(nodeID, "floor");
+    return helperGetIntG(nodeID, "floor");
   }
 
   public String getBuilding(String nodeID) {
-    return helperGetString(nodeID, "building");
+    return helperGetStringG(nodeID, "building");
   }
 
   public String getNodeType(String nodeID) {
-    return helperGetString(nodeID, "nodeType");
+    return helperGetStringG(nodeID, "nodeType");
   }
 
   public String getLongName(String nodeID) {
-    return helperGetString(nodeID, "longName");
+    return helperGetStringG(nodeID, "longName");
   }
 
   public String getShortName(String nodeID) {
-    return helperGetString(nodeID, "shortName");
+    return helperGetStringG(nodeID, "shortName");
   }
 
   public String getTeamAssigned(String nodeID) {
-    return helperGetString(nodeID, "teamAssigned");
+    return helperGetStringG(nodeID, "teamAssigned");
   }
 
   public String getStartNode(String edgeID) {
-    return helperGetStringEdge(edgeID, "startNode");
+    return helperGetStringEdgeG(edgeID, "startNode");
   }
 
   public String getEndNode(String edgeID) {
-    return helperGetStringEdge(edgeID, "endNode");
+    return helperGetStringEdgeG(edgeID, "endNode");
   }
 
   public boolean setX(String nodeID, int i) {
