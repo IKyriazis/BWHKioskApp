@@ -16,14 +16,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ITServicesPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ITServicesController">
+<AnchorPane fx:id="ITServicesPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ITServicesController">
    <children>
       <StackPane fx:id="dialogStackPane" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane>
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="7.0" minWidth="7.0" prefWidth="7.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="405.5999755859375" minWidth="299.199951171875" prefWidth="405.5999755859375" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.00004882812499" minWidth="1.6000244140624886" prefWidth="1.6000244140624886" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" />
                </columnConstraints>
                <rowConstraints>
@@ -59,9 +59,9 @@
                               <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="50.0">
                                  <children>
                                     <JFXTextField fx:id="ITTicketName" alignment="CENTER" focusColor="#78909c" labelFloat="true" maxWidth="-Infinity" promptText="Enter your name" style="-fx-background-color: white;" />
-                                    <JFXComboBox fx:id="ITTicketLocation" editable="true" focusColor="#78909c" layoutX="114.0" layoutY="251.0" promptText="Location (not selected)" style="-fx-background-color: white;" />
-                                    <JFXComboBox fx:id="ITTicketCategory" focusColor="#78909c" promptText="Category (not selected)" style="-fx-background-color: white;" />
-                                    <JFXTextArea fx:id="ITTicketDescription" focusColor="#78909c" labelFloat="true" promptText="Description" style="-fx-background-color: white;" />
+                                    <JFXComboBox fx:id="ITTicketLocation" editable="true" focusColor="#78909c" labelFloat="true" layoutX="114.0" layoutY="251.0" promptText="Location (not selected)" style="-fx-background-color: white;" />
+                                    <JFXComboBox fx:id="ITTicketCategory" focusColor="#78909c" labelFloat="true" promptText="Category (not selected)" style="-fx-background-color: white;" />
+                                    <JFXTextArea fx:id="ITTicketDescription" focusColor="#78909c" labelFloat="true" promptText="Description (200 characters max.)" style="-fx-background-color: white;" />
                                     <JFXButton buttonType="RAISED" onAction="#submitTicket" style="-fx-background-color: #78909C;" text="Submit" textFill="WHITE">
                                        <font>
                                           <Font size="18.0" />
@@ -120,9 +120,9 @@
                                  <font>
                                     <Font size="18.0" />
                                  </font></Label>
-                              <HBox fx:id="changeStatusOptions" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" visible="false">
+                              <HBox fx:id="changeStatusOptions" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                                  <children>
-                                    <JFXComboBox fx:id="statusChangeStatus" focusColor="#78909c" prefWidth="150.0" promptText="Status (not selected)" style="-fx-background-color: white;" />
+                                    <JFXComboBox fx:id="statusChangeStatus" focusColor="#78909c" labelFloat="true" prefWidth="150.0" promptText="Status (not selected)" style="-fx-background-color: white;" />
                                     <JFXTextField fx:id="statusChangeName" alignment="CENTER" focusColor="#78909c" labelFloat="true" prefWidth="150.0" promptText="Enter your name" style="-fx-background-color: white;" />
                                     <JFXButton buttonType="RAISED" onAction="#changeStatus" prefWidth="150.0" style="-fx-background-color: #78909C;" text="Change Status" textFill="WHITE" />
                                  </children>
