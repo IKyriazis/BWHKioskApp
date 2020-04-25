@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 
 public class FlowerDatabase extends Database {
   private int orderNum = getSizeOrders() + 1;
+  private int flowerNum = getSizeFlowers() + 1;
 
   /**
    * Creates the Flower database with given connection
@@ -57,7 +58,7 @@ public class FlowerDatabase extends Database {
     // Create the graph tables
     boolean a =
         helperPrepared(
-            "CREATE TABLE Flowers (typeFlower Varchar(15), color Varchar(15), qty INTEGER NOT NULL, pricePer DOUBLE NOT NULL, CONSTRAINT PK_fl PRIMARY KEY (typeFlower, color), CONSTRAINT CHK_NUMFL CHECK (qty >= 0))");
+            "CREATE TABLE Flowers (flowerID INTEGER NOT NULL, typeFlower Varchar(15), color Varchar(15), qty INTEGER NOT NULL, pricePer DOUBLE NOT NULL, CONSTRAINT PK_fl PRIMARY KEY (typeFlower, color), CONSTRAINT CHK_NUMFL CHECK (qty >= 0))");
 
     boolean b =
         helperPrepared(
@@ -89,12 +90,14 @@ public class FlowerDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Flowers (typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?)");
-      pstmt.setString(1, type);
-      pstmt.setString(2, color);
-      pstmt.setInt(3, qty);
-      pstmt.setDouble(4, pricePer);
+                  "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
+      pstmt.setInt(1, flowerNum);
+      pstmt.setString(2, type);
+      pstmt.setString(3, color);
+      pstmt.setInt(4, qty);
+      pstmt.setDouble(5, pricePer);
       pstmt.executeUpdate();
+      flowerNum++;
       pstmt.close();
       return true;
     } catch (SQLException e) {
@@ -334,8 +337,9 @@ public class FlowerDatabase extends Database {
         String color = rset.getString("color");
         int qty = rset.getInt("qty");
         double pricePer = rset.getDouble("pricePer");
+        int idNum = rset.getInt("flowerID");
 
-        Flower node = new Flower(typeFlower, color, qty, pricePer);
+        Flower node = new Flower(typeFlower, color, qty, pricePer, idNum);
         oList.add(node);
       }
       rset.close();

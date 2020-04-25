@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,17 +10,21 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 
-public class Flower implements ITableable<Flower> {
-  @Setter private SimpleStringProperty typeFlower;
-  @Setter private SimpleStringProperty color;
-  @Setter private SimpleIntegerProperty qty;
-  @Setter private SimpleDoubleProperty pricePer;
+public class Flower extends RecursiveTreeObject<Flower> implements ITableable<Flower> {
+  @Setter protected SimpleStringProperty typeFlower;
+  @Setter protected SimpleStringProperty color;
+  @Setter protected SimpleIntegerProperty qty;
+  @Setter protected SimpleDoubleProperty pricePer;
+  @Setter protected SimpleIntegerProperty flowerID;
+  private SimpleIntegerProperty quantitySelected;
 
-  public Flower(String typeFlower, String color, int qty, double pricePer) {
+  public Flower(String typeFlower, String color, int qty, double pricePer, int flowerID) {
     this.typeFlower = new SimpleStringProperty(typeFlower);
     this.color = new SimpleStringProperty(color);
     this.qty = new SimpleIntegerProperty(qty);
     this.pricePer = new SimpleDoubleProperty(pricePer);
+    this.flowerID = new SimpleIntegerProperty(flowerID);
+    quantitySelected = new SimpleIntegerProperty(0);
   }
 
   public SimpleStringProperty typeFlowerProperty() {
@@ -54,6 +59,18 @@ public class Flower implements ITableable<Flower> {
     return pricePer.get();
   }
 
+  public int getFlowerID() {
+    return flowerID.get();
+  }
+
+  public SimpleIntegerProperty flowerIDProperty() {
+    return flowerID;
+  }
+
+  public void setQuantitySelected(int i) {
+    quantitySelected = new SimpleIntegerProperty(i);
+  }
+
   @Override
   public ArrayList<JFXTreeTableColumn<Flower, ?>> getColumns() {
     JFXTreeTableColumn<Flower, String> column1 = new JFXTreeTableColumn<>("Type");
@@ -67,7 +84,6 @@ public class Flower implements ITableable<Flower> {
 
     JFXTreeTableColumn<Flower, Double> column4 = new JFXTreeTableColumn<>("Unit Price");
     column4.setCellValueFactory(param -> param.getValue().getValue().pricePerProperty().asObject());
-
     return new ArrayList<>(List.of(column1, column2, column3, column4));
   }
 }
