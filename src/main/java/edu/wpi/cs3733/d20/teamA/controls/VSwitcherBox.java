@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controls;
 
 import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.GlyphIcon;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import java.util.HashMap;
 import javafx.animation.Animation;
@@ -30,7 +31,7 @@ public class VSwitcherBox extends VBox {
   private int transitionTime = 1000;
 
   private static final String iconStyle =
-      "-fx-font-size: 52pt;"
+      "-fx-font-size: 36pt;"
           + "    -fx-border-color: #BDBDBD;"
           + "    -fx-border-width: 0px 0px 2px 0px;";
   private static final String buttonStyle =
@@ -92,7 +93,7 @@ public class VSwitcherBox extends VBox {
     selected = newSelection;
   }
 
-  public void addEntry(String label, Node graphic, String fxmlPath) {
+  public void addEntry(String label, GlyphIcon graphic, String fxmlPath) {
     JFXButton button = new JFXButton(label, graphic);
     button.setEllipsisString("");
     button.setAlignment(Pos.CENTER_LEFT);
@@ -190,7 +191,8 @@ public class VSwitcherBox extends VBox {
   private double getMaxIconWidth() {
     double maxGraphicWidth = 0.0;
     for (JFXButton button : map.keySet()) {
-      maxGraphicWidth = Math.max(maxGraphicWidth, button.getGraphic().prefWidth(getHeight()));
+      maxGraphicWidth =
+          Math.max(maxGraphicWidth, button.getGraphic().prefWidth(button.getHeight()));
     }
     return maxGraphicWidth;
   }
@@ -205,6 +207,15 @@ public class VSwitcherBox extends VBox {
 
     // Fit padding on destpane for overlap only when expanded
     destPane.setPadding(new Insets(0, 0, 0, 2 * getMaxIconWidth() + 14.0));
+
+    // Offset labels by deviation from max icon width
+    double maxIconWidth = getMaxIconWidth();
+    map.keySet()
+        .forEach(
+            button -> {
+              double graphicWidth = button.getGraphic().prefWidth(button.getHeight());
+              button.setGraphicTextGap(2 + (maxIconWidth - graphicWidth));
+            });
   }
 
   public void setTransitionMillis(int transitionTime) {
