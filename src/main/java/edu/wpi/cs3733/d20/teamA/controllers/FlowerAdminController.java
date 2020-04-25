@@ -80,20 +80,9 @@ public class FlowerAdminController extends AbstractController {
 
     // Populate tables
     update();
+
     // Hook up txtPrev to show status of selected order
-    /*tblOrderView
-    .getSelectionModel()
-    .selectedItemProperty()
-    .addListener(
-        (observable, oldValue, newValue) -> {
-          try {
-            Order o = newValue.getValue();
-            if (o != null) txtPrev.setText(o.getStatus());
-            else txtPrev.setText("");
-          } catch (Exception e) {
-            // do nothing, this keeps throwing an exception when updating table
-          }
-        });*/
+    tblOrderView.setOnMouseClicked(this::updateStatus);
 
     // Setup status change stuff
     txtNext.getItems().addAll("Order Sent", "Order Received", "Flowers Sent", "Flowers Delivered");
@@ -185,6 +174,9 @@ public class FlowerAdminController extends AbstractController {
 
   public void update() {
     try {
+      tblFlowerView.clear();
+      tblOrderView.clear();
+
       tblFlowerView.add(flDatabase.flowerOl());
       tblOrderView.add(flDatabase.orderOl());
     } catch (Exception e) {
@@ -214,10 +206,14 @@ public class FlowerAdminController extends AbstractController {
       // track the last selected order
       lastOrder = selected;
 
-      int i = statusStringToValue(lastOrder.getStatus() + 1); // next status
+      // Update status text display
+      txtPrev.setText(lastOrder.getStatus());
 
+      // Update combobox selection (automagically select next status)
+      int i = statusStringToValue(lastOrder.getStatus()) + 1; // next status
       if (i <= 3) txtNext.getSelectionModel().select(i);
     } else {
+      txtPrev.setText("");
       txtNext.getSelectionModel().select(0);
     }
   }
