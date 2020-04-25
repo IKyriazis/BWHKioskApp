@@ -12,6 +12,12 @@ public class DepthFirst implements IStrategyPath {
     /** Represents the graph the path is being calculated for */
     private Graph graph;
 
+    public DepthFirst(Graph graph){
+        this.graph = graph;
+        pathNodes = new ArrayList<>();
+        pathEdges = new ArrayList<>();
+    }
+
 
     @Override
     public void findPath(Node start, Node end){
