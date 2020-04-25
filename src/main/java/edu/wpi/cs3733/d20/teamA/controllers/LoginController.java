@@ -5,8 +5,11 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
@@ -26,6 +29,7 @@ public class LoginController extends AbstractController {
   @FXML private StackPane dialogPane;
   @FXML private JFXButton logoutButton;
 
+  @FXML private Pane rootPane;
   @FXML private Pane switcherPane;
   @FXML private Pane destPane;
   @FXML private Pane blockerPane;
@@ -35,17 +39,30 @@ public class LoginController extends AbstractController {
 
   @FXML
   public void initialize() {
+
+    if (eDB.getSizeEmployees() == -1) {
+      eDB.dropTables();
+      eDB.createTables();
+      eDB.readEmployeeCSV();
+    } else if (eDB.getSizeEmployees() == 0) {
+      eDB.removeAllEmployees();
+      eDB.readEmployeeCSV();
+    }
+
     // Setup switcher box
     VSwitcherBox vSwitcherBox =
         new VSwitcherBox(destPane, new FontAwesomeIconView(FontAwesomeIcon.COGS));
     vSwitcherBox.addEntry(
         "Map Editor", new FontAwesomeIconView(FontAwesomeIcon.MAP_ALT), "views/MapEditor.fxml");
     vSwitcherBox.addEntry(
+        "Flowers", new MaterialIconView(MaterialIcon.LOCAL_FLORIST), "views/FlowerAdmin.fxml");
+    vSwitcherBox.addEntry(
         "Janitor GUI", new FontAwesomeIconView(FontAwesomeIcon.CAR), "views/JanitorialGUI.fxml");
     vSwitcherBox.addEntry(
         "Announcements",
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
+    vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
     switcherPane.getChildren().add(vSwitcherBox);
@@ -67,6 +84,15 @@ public class LoginController extends AbstractController {
     // Setup enter key to go from Username -> Password -> Login
     usernameBox.setOnAction(event -> passwordBox.requestFocus());
     passwordBox.setOnAction(event -> loginButton.requestFocus());
+
+    // Pass events through to root pane
+    rootPane.addEventFilter(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          if (event.getTarget().equals(rootPane)) {
+            destPane.getChildren().forEach(node -> node.fireEvent(new TabSwitchEvent()));
+          }
+        });
   }
 
   @FXML
@@ -106,8 +132,7 @@ public class LoginController extends AbstractController {
     FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
     fade.setFromValue(1.0);
     fade.setToValue(0.0);
-    fade.setOnFinished(
-        event -> blockerPane.setMouseTransparent(true));
+    fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
     fade.play();
 
     loggedIn = true;
@@ -122,16 +147,14 @@ public class LoginController extends AbstractController {
     transitioning = true;
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
     translate.setByY(2000f);
-    translate.setOnFinished(
-        event -> transitioning = false);
+    translate.setOnFinished(event -> transitioning = false);
     translate.play();
 
     // Fade in the background
     FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
     fade.setFromValue(0.0);
     fade.setToValue(1.0);
-    fade.setOnFinished(
-        event -> blockerPane.setMouseTransparent(false));
+    fade.setOnFinished(event -> blockerPane.setMouseTransparent(false));
     fade.play();
 
     loggedIn = false;

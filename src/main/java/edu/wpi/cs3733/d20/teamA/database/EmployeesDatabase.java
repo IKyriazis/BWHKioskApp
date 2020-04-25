@@ -1,6 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.List;
 
 public class EmployeesDatabase extends Database {
 
@@ -15,7 +21,11 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  /** @return */
+  /**
+   * Drop the 'Employees' table
+   *
+   * @return Success / Failure
+   */
   public boolean dropTables() {
 
     // Drop the tables
@@ -41,7 +51,12 @@ public class EmployeesDatabase extends Database {
    * @return returns true if the employee is added
    */
   public boolean addEmployee(
-      String nameFirst, String nameLast, String username, String password, String title) {
+      int employeeID,
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      String title) {
 
     try {
       PreparedStatement pstmt =
@@ -56,12 +71,17 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
-      employeeID++;
+      this.employeeID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
     }
+  }
+
+  public boolean addEmployee(
+      String nameFirst, String nameLast, String username, String password, String title) {
+    return addEmployee(employeeID, nameFirst, nameLast, username, password, title);
   }
 
   /**
@@ -219,7 +239,29 @@ public class EmployeesDatabase extends Database {
   }
 
   /** @return true if all all employee are removed */
-  public boolean removeAllEmployees() throws SQLException {
+  public boolean removeAllEmployees() {
     return helperPrepared("DELETE From Employees");
+  }
+
+  public void readEmployeeCSV() {
+    try {
+      InputStream stream =
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Employees.csv");
+      CSVReader reader = new CSVReader(new InputStreamReader(stream));
+      List<String[]> data = reader.readAll();
+      for (int i = 1; i < data.size(); i++) {
+        String nameFirst, nameLast, username, password, title;
+        int employeeID;
+        employeeID = Integer.parseInt(data.get(i)[0]);
+        nameFirst = data.get(i)[1];
+        nameLast = data.get(i)[2];
+        username = data.get(i)[3];
+        password = data.get(i)[4];
+        title = data.get(i)[5];
+        addEmployee(employeeID, nameFirst, nameLast, username, password, title);
+      }
+    } catch (IOException | CsvException e) {
+      e.printStackTrace();
+    }
   }
 }

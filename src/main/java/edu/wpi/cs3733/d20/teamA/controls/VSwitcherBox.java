@@ -199,8 +199,6 @@ public class VSwitcherBox extends VBox {
   public void resize(double width, double height) {
     super.resize(width, height);
 
-    System.out.println("Resizing");
-
     // Resize contents to max
     iconLabel.setMaxWidth(getWidth());
     map.keySet().forEach(button -> button.setMaxWidth(getWidth()));
