@@ -7,7 +7,7 @@ import java.util.*;
 import javafx.scene.control.Label;
 
 /** Represents a path along the graph */
-public class Path {
+public class Path implements IStrategyPath{
 
   /** Represents a list of nodes along path */
   private ArrayList<Node> pathNodes;
@@ -35,6 +35,7 @@ public class Path {
    * @param start the starting location to path find
    * @param end the ending location/ destination
    */
+  @Override
   public void findPath(Node start, Node end) {
     Map<Node, Node> path = new HashMap<>();
     ArrayList<Node> visited = new ArrayList<>();
