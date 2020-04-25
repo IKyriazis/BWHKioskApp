@@ -99,4 +99,89 @@ public class InternalTransportDatabase extends Database {
       return -1;
     }
   }
+
+  /**
+   * Updates the rn with a certain progress
+   *
+   * @param rn request number
+   * @param name name
+   * @param progress progress
+   * @return true if the progress has been updated
+   */
+  public boolean updateRequest(int rn, String name, String progress) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE InternalTransportRequest SET name = ?, progress = ? Where requestNumber = ?");
+      pstmt.setString(1, name);
+      pstmt.setString(2, progress);
+      pstmt.setInt(3, rn);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  //  /**
+  //   * returns true if the progress has been updated
+  //   *
+  //   * @param rn request number
+  //   * @param progress progress
+  //   * @return true if the request has been updated
+  //   */
+  //  public boolean updateRequest(int rn, String progress) {
+  //    try {
+  //      PreparedStatement pstmt =
+  //          getConnection()
+  //              .prepareStatement("SELECT * FROM InternalTransportRequest WHERE requestNumber =
+  // ?");
+  //      pstmt.setInt(1, rn);
+  //      pstmt.executeUpdate();
+  //      ResultSet rset = pstmt.executeQuery();
+  //      rset.next();
+  //      String name = rset.getString("name");
+  //      System.out.println("-----------------------------------------------------" + name);
+  //      updateRequest(rn, name, progress);
+  //      rset.close();
+  //      pstmt.close();
+  //      return true;
+  //    } catch (SQLException e) {
+  //      e.printStackTrace();
+  //      return false;
+  //    }
+  //  }
+
+  /** Prints out the table */
+  public void printTable() {
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * FROM InternalTransportRequest ");
+      ResultSet rset = pstmt.executeQuery();
+      String request;
+      while (rset.next()) {
+        request =
+                "requestNumber: "
+                        + rset.getInt("requestNumber")
+                        + ", start: "
+                        + rset.getString("start")
+                        + ", time: "
+                        + rset.getTimestamp("time")
+                        + ", name: "
+                        + rset.getString("name")
+                        + ", progress: "
+                        + rset.getString("progress")
+                        + ", destination: "
+                        + rset.getString("destination");
+        System.out.println(request);
+      }
+      rset.close();
+      pstmt.close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
 }

@@ -72,4 +72,20 @@ public class TestInternalTransportDatabase {
     itDB.removeAll();
     gDB.removeAllNodes();
   }
+
+  @Test
+  public void testUpdateRequest() throws SQLException {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    itDB.removeAll();
+    itDB.addRequest("biscuit", "biscuit");
+    boolean a = itDB.updateRequest(1, "Harry", "Dispatched");
+    Assertions.assertTrue(a);
+    boolean b = itDB.updateRequest(1, "Harry", "Ert");
+    Assertions.assertFalse(b);
+
+    itDB.removeAll();
+    gDB.removeAllNodes();
+  }
 }
