@@ -6,7 +6,6 @@
 <?import com.jfoenix.controls.JFXTreeTableView?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -21,23 +20,20 @@
          <children>
             <GridPane>
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="350.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="7.0" minWidth="7.0" prefWidth="7.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Separator orientation="VERTICAL" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <GridPane GridPane.columnIndex="2">
+                  <GridPane>
                      <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="598.0" minHeight="362.0" prefHeight="505.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="296.0" minHeight="60.0" prefHeight="153.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefWidth="993.0" spacing="10.0">
@@ -55,17 +51,46 @@
                         <JFXTreeTableView fx:id="tblServiceView" maxHeight="1.7976931348623157E308" onMouseClicked="#refreshActiveRequests" GridPane.rowIndex="1" />
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                            <children>
-                              <JFXTextField fx:id="textfieldCurrent" editable="false" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Previous Status" />
-                              <JFXComboBox fx:id="ComboBoxNextStatus" labelFloat="true" prefWidth="150.0" promptText="New Status">
-                                 <VBox.margin>
-                                    <Insets left="75.0" right="75.0" />
-                                 </VBox.margin>
-                              </JFXComboBox>
-                              <JFXButton fx:id="changeProgressButton" buttonType="RAISED"  style="-fx-background-color: white;" text="Change Progress">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </JFXButton>
+                              <GridPane maxWidth="600.0" prefHeight="200.0" prefWidth="600.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1">
+                                       <children>
+                                          <JFXTextField fx:id="textfieldCurrentStatus" editable="false" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Previous Status" />
+                                          <JFXComboBox fx:id="comboboxNextStatus" labelFloat="true" prefWidth="150.0" promptText="New Status">
+                                             <VBox.margin>
+                                                <Insets left="75.0" right="75.0" />
+                                             </VBox.margin>
+                                          </JFXComboBox>
+                                          <JFXButton fx:id="btnChangeStatus" alignment="CENTER" buttonType="RAISED" prefWidth="190.0" style="-fx-background-color: white;" text="Change Progress">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </JFXButton>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+                                       <children>
+                                          <JFXButton fx:id="btnAddRequest" alignment="CENTER" buttonType="RAISED" prefWidth="190.0" style="-fx-background-color: white;" text="Add Janitorial Request">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </JFXButton>
+                                          <JFXButton fx:id="btnRemoveRequest" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" prefWidth="190.0" style="-fx-background-color: white;" text="Remove Janitorial Request">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </JFXButton>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </GridPane>
                            </children>
                            <padding>
                               <Insets top="25.0" />
@@ -73,42 +98,7 @@
                         </VBox>
                      </children>
                      <GridPane.margin>
-                        <Insets left="25.0" />
-                     </GridPane.margin>
-                  </GridPane>
-                  <GridPane>
-                     <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                        <RowConstraints vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-                        <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefWidth="350.0" spacing="10.0">
-                           <children>
-                              <Label fx:id="orderTblLbl1" text="Create a Service Request" textAlignment="CENTER" wrapText="true">
-                                 <font>
-                                    <Font size="24.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="25.0" />
-                                 </padding>
-                              </Label>
-                           </children>
-                           <GridPane.margin>
-                              <Insets />
-                           </GridPane.margin>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
-                           <children>
-                              <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: white;" text="Add Request" />
-                           </children>
-                        </VBox>
-                     </children>
-                     <GridPane.margin>
-                        <Insets right="25.0" />
+                        <Insets />
                      </GridPane.margin>
                   </GridPane>
                </children>
