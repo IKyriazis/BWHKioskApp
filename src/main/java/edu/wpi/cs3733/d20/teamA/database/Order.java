@@ -1,12 +1,16 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import com.jfoenix.controls.JFXTreeTableColumn;
+import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 // enum status {Status};
 
-public class Order {
+public class Order implements ITableable<Order> {
   private final SimpleIntegerProperty orderNumber;
   private final SimpleIntegerProperty numFlowers;
   private final SimpleStringProperty flowerColor;
@@ -86,5 +90,31 @@ public class Order {
 
   public SimpleStringProperty flowerTypeProperty() {
     return flowerType;
+  }
+
+  @Override
+  public ArrayList<JFXTreeTableColumn<Order, ?>> getColumns() {
+    JFXTreeTableColumn<Order, Integer> col1 = new JFXTreeTableColumn<>("Order #");
+    col1.setCellValueFactory(param -> param.getValue().getValue().orderNumberProperty().asObject());
+
+    JFXTreeTableColumn<Order, Integer> col2 = new JFXTreeTableColumn<>("Quantity");
+    col2.setCellValueFactory(param -> param.getValue().getValue().numFlowersProperty().asObject());
+
+    JFXTreeTableColumn<Order, String> col3 = new JFXTreeTableColumn<>("Type");
+    col3.setCellValueFactory(param -> param.getValue().getValue().flowerTypeProperty());
+
+    JFXTreeTableColumn<Order, String> col4 = new JFXTreeTableColumn<>("Color");
+    col4.setCellValueFactory(param -> param.getValue().getValue().flowerColorProperty());
+
+    JFXTreeTableColumn<Order, Double> col5 = new JFXTreeTableColumn<>("Price");
+    col5.setCellValueFactory(param -> param.getValue().getValue().priceProperty().asObject());
+
+    JFXTreeTableColumn<Order, String> col6 = new JFXTreeTableColumn<>("Status");
+    col6.setCellValueFactory(param -> param.getValue().getValue().statusProperty());
+
+    JFXTreeTableColumn<Order, String> col7 = new JFXTreeTableColumn<>("Location");
+    col7.setCellValueFactory(param -> param.getValue().getValue().locationProperty());
+
+    return new ArrayList<>(List.of(col1, col2, col3, col4, col5, col6, col7));
   }
 }

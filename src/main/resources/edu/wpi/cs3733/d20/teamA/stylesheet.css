@@ -31,6 +31,10 @@
     -jfx-selected-color: black;
 }
 
+.jfx-tree-table-view .column-header .label {
+    -fx-text-fill: black;
+}
+
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
@@ -44,7 +48,7 @@
 
 #loginButton {
     -fx-text-fill: black;
-    -fx-background-color: #78909C;
+    -fx-background-color: #78909c;
     -fx-padding: 0 5 0 5;
     -fx-font-size: 18pt;
 }
@@ -59,6 +63,7 @@
     -fx-font-size: 12pt;
 }
 
-#flowerTable {
+#flowerServiceTablePane {
     -fx-font-size: 18pt;
 }
+
