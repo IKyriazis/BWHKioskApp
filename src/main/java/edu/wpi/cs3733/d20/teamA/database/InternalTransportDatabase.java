@@ -54,7 +54,7 @@ public class InternalTransportDatabase extends Database {
     return helperPrepared("DELETE From InternalTransportRequest");
   }
 
-  public boolean addRequest(String start, String destination) {
+  public int addRequest(String start, String destination) {
     // creates a timestamp of the time that the function is called
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     // default status is reported
@@ -74,11 +74,11 @@ public class InternalTransportDatabase extends Database {
       pstmt.setInt(5, ++requestCount);
       pstmt.executeUpdate();
       pstmt.close();
-      // return true if the request is added
-      return true;
+      // return requestCount if the request is added
+      return requestCount;
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
 
@@ -158,23 +158,24 @@ public class InternalTransportDatabase extends Database {
   /** Prints out the table */
   public void printTable() {
     try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * FROM InternalTransportRequest ");
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("Select * FROM InternalTransportRequest ");
       ResultSet rset = pstmt.executeQuery();
       String request;
       while (rset.next()) {
         request =
-                "requestNumber: "
-                        + rset.getInt("requestNumber")
-                        + ", start: "
-                        + rset.getString("start")
-                        + ", time: "
-                        + rset.getTimestamp("time")
-                        + ", name: "
-                        + rset.getString("name")
-                        + ", progress: "
-                        + rset.getString("progress")
-                        + ", destination: "
-                        + rset.getString("destination");
+            "requestNumber: "
+                + rset.getInt("requestNumber")
+                + ", start: "
+                + rset.getString("start")
+                + ", time: "
+                + rset.getTimestamp("time")
+                + ", name: "
+                + rset.getString("name")
+                + ", progress: "
+                + rset.getString("progress")
+                + ", destination: "
+                + rset.getString("destination");
         System.out.println(request);
       }
       rset.close();
@@ -183,5 +184,4 @@ public class InternalTransportDatabase extends Database {
       e.printStackTrace();
     }
   }
-
 }

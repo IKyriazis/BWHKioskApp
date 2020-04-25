@@ -20,9 +20,6 @@
                 <Tab fx:id="employeeLoginTab" text="Employee Login">
                     <fx:include source="EmployeeHome.fxml" />
                 </Tab>
-                <Tab fx:id="internalTransportTab" text="Internal Transport Request">
-                    <fx:include source="InternalTransportService.fxml" />
-                </Tab>
             </JFXTabPane>
             <JFXButton fx:id="informationButton" onAction="#informationButtonPressed" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
          </children>
