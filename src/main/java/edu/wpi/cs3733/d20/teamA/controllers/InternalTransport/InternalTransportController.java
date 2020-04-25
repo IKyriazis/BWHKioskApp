@@ -17,6 +17,13 @@ public class InternalTransportController extends AbstractController {
 
   @FXML private Pane rootPane;
 
+  InternalTransportRequestController itrc = new InternalTransportRequestController();
+
+  public void initialize() {
+    itDatabase.dropTables();
+    itDatabase.createTables();
+  }
+
   @FXML
   public void placeOrder() {
     DialogUtil.complexDialog(

@@ -56,17 +56,18 @@ public class TestInternalTransportDatabase {
     // need nodeID "biscuit" in node table so addrequest works
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     itDB.removeAll();
-    boolean a = itDB.addRequest("biscuit", "biscuit");
-    Assertions.assertTrue(a);
+    int a = itDB.addRequest("biscuit", "biscuit");
+    Assertions.assertEquals(1, a);
     Assertions.assertEquals(1, itDB.getRequestSize());
-    boolean b = itDB.addRequest("biscuit", "Extra Large");
-    Assertions.assertFalse(b);
+    int b = itDB.addRequest("biscuit", "Extra Large");
+    Assertions.assertEquals(-1, b);
     Assertions.assertEquals(1, itDB.getRequestSize());
-    boolean c = itDB.addRequest("yoyoyo", "biscuit");
-    Assertions.assertFalse(c);
+    int c = itDB.addRequest("yoyoyo", "biscuit");
+    Assertions.assertEquals(-1, c);
     Assertions.assertEquals(1, itDB.getRequestSize());
-    boolean d = itDB.addRequest("biscuit", "biscuit");
-    Assertions.assertTrue(d);
+    int d = itDB.addRequest("biscuit", "biscuit");
+    itDB.printTable();
+    Assertions.assertEquals(2, d);
     Assertions.assertEquals(2, itDB.getRequestSize());
 
     itDB.removeAll();

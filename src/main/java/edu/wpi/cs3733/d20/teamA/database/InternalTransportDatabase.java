@@ -4,14 +4,14 @@ import java.sql.*;
 
 public class InternalTransportDatabase extends Database {
 
-  private int requestCount = 0;
+  private int requestCount = getRequestSize();
 
   public InternalTransportDatabase(Connection connection) {
     super(connection);
 
-    if (doesTableNotExist("InternalTransportRequest")) {
-      createTables();
-    }
+    //    if (doesTableNotExist("InternalTransportRequest")) {
+    //      createTables();
+    //    }
   }
 
   /**
@@ -21,9 +21,9 @@ public class InternalTransportDatabase extends Database {
    */
   public boolean createTables() {
 
-    // Create the janitorrequest table
+    // Create the InternalTransportRequest table
     return helperPrepared(
-        "CREATE TABLE InternalTransportRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, start Varchar(10) NOT NULL, destination Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, CONSTRAINT FK_S FOREIGN KEY (start) REFERENCES Node(nodeID), CONSTRAINT FK_D FOREIGN KEY (destination) REFERENCES Node(nodeID), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
+        "CREATE TABLE InternalTransportRequest (internalTransportRequestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, start Varchar(10) NOT NULL, destination Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, CONSTRAINT FK_START FOREIGN KEY (start) REFERENCES Node(nodeID), CONSTRAINT FK_DEST FOREIGN KEY (destination) REFERENCES Node(nodeID), CONSTRAINT CHK_INTTRANSPROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
   }
 
   /**
@@ -35,8 +35,8 @@ public class InternalTransportDatabase extends Database {
 
     // if the helper returns false this method should too
     // drop the CONSTRAINT first
-    if (!(helperPrepared("ALTER TABLE InternalTransportRequest DROP CONSTRAINT FK_S")
-        && helperPrepared("ALTER TABLE InternalTransportRequest DROP CONSTRAINT FK_D"))) {
+    if (!(helperPrepared("ALTER TABLE InternalTransportRequest DROP CONSTRAINT FK_START")
+        && helperPrepared("ALTER TABLE InternalTransportRequest DROP CONSTRAINT FK_DEST"))) {
 
       return false;
     }
@@ -64,18 +64,18 @@ public class InternalTransportDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO InternalTransportRequest (time, start, progress, destination, requestNumber) VALUES (?, ?, ?, ?, ?)");
+                  "INSERT INTO InternalTransportRequest (time, start, progress, destination, internalTransportRequestNumber) VALUES (?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, start);
       pstmt.setString(3, progress);
       pstmt.setString(4, destination);
       // first request starts at 1 and increments every time a new request is added
-      pstmt.setInt(5, ++requestCount);
+      pstmt.setInt(5, requestCount + 1);
       pstmt.executeUpdate();
       pstmt.close();
       // return requestCount if the request is added
-      return requestCount;
+      return ++requestCount;
     } catch (SQLException e) {
       e.printStackTrace();
       return -1;
