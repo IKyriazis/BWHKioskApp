@@ -30,12 +30,9 @@ public class VSwitcherBox extends VBox {
   private boolean transitioning = false;
   private int transitionTime = 1000;
 
-  private static final String iconStyle =
-      "-fx-font-size: 36pt;"
-          + "    -fx-border-color: #BDBDBD;"
-          + "    -fx-border-width: 0px 0px 2px 0px;";
+  private static final String iconStyle = "-fx-font-size: 36pt;";
   private static final String buttonStyle =
-      "-fx-font-size: 20pt;" + "-fx-background-radius: 0px;" + "-fx-text-fill: black;";
+      "-fx-font-size: 26pt;" + "-fx-background-radius: 0px;" + "-fx-text-fill: black;";
 
   public VSwitcherBox(Pane destPane, Node topIcon) {
     this.destPane = destPane;
@@ -52,6 +49,7 @@ public class VSwitcherBox extends VBox {
     iconLabel.setPrefWidth(getWidth());
     iconLabel.setStyle(iconStyle);
     iconLabel.setAlignment(Pos.CENTER);
+    iconLabel.setPadding(new Insets(0, 2, 0, 2));
     getChildren().add(iconLabel);
 
     // Add mouseover listener
@@ -206,7 +204,8 @@ public class VSwitcherBox extends VBox {
     map.keySet().forEach(button -> button.setMaxWidth(getWidth()));
 
     // Fit padding on destpane for overlap only when expanded
-    destPane.setPadding(new Insets(0, 0, 0, 2 * getMaxIconWidth() + 14.0));
+    double labelIconWidth = iconLabel.getGraphic().prefWidth(iconLabel.getHeight());
+    destPane.setPadding(new Insets(0, 0, 0, Math.max(labelIconWidth, getMaxIconWidth()) + 5.0));
 
     // Offset labels by deviation from max icon width
     double maxIconWidth = getMaxIconWidth();
@@ -214,7 +213,9 @@ public class VSwitcherBox extends VBox {
         .forEach(
             button -> {
               double graphicWidth = button.getGraphic().prefWidth(button.getHeight());
-              button.setGraphicTextGap(2 + (maxIconWidth - graphicWidth));
+              double gap = (maxIconWidth - graphicWidth);
+              button.setPadding(new Insets(0, 0, 0, gap / 2 + 4));
+              button.setGraphicTextGap(gap / 2 + 4);
             });
   }
 
