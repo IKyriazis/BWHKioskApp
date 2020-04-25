@@ -34,18 +34,6 @@ public class TestFlowerDatabase {
     }
   }
 
-  // @Test
-  public void testDB() throws SQLException {
-    boolean test = false;
-    try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      test = true;
-    } catch (SQLException e) {
-
-    }
-    Assertions.assertTrue(test);
-  }
-
   @Test
   public void testTables() throws SQLException {
     DB.createTables();
