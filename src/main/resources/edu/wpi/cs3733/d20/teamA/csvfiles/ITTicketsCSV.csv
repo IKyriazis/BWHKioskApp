@@ -1,6 +1,2 @@
-﻿ticketNum,status,category,location,name,completedBy
-1,In Progress,Wifi,ADEPT00101,Jim,James
-,,,,,
-,,,,,
-,,,,,
-,,S,,,
+﻿ticketNum,timestamp,status,category,location,name,completedBy
+1,2016-11-16 06:43:19.77,In Progress,Wifi,ADEPT00101,Jim,James
