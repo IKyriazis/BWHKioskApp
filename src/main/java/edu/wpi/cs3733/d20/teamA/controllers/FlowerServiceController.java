@@ -6,11 +6,10 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerOrderController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerTrackerController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
-import edu.wpi.cs3733.d20.teamA.database.QuantityFlower;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.util.ArrayList;
 import java.util.List;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -18,12 +17,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.cell.TextFieldTreeTableCell;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 public class FlowerServiceController extends AbstractController {
-  @FXML private GridPane flowerServiceTablePane;
   @FXML private Label headerLabel;
 
   @FXML private JFXButton trackButton;
@@ -56,6 +53,7 @@ public class FlowerServiceController extends AbstractController {
 
     // Add columns to table - please for the love of god dont use a simple table view here unless
     // you are really sure
+    // Nevermind that.It isnt that hard. Im dummmb. Someone please kill me - will
     JFXTreeTableColumn<Flower, String> column1 = new JFXTreeTableColumn<>("Type");
     column1.setCellValueFactory(param -> param.getValue().getValue().typeFlowerProperty());
 
@@ -69,13 +67,13 @@ public class FlowerServiceController extends AbstractController {
     column4.setCellValueFactory(param -> param.getValue().getValue().pricePerProperty().asObject());
 
     JFXTreeTableColumn<Flower, String> column5 = new JFXTreeTableColumn<>("Number");
+    column5.setCellValueFactory(param -> param.getValue().getValue().numProperty());
+
     column5.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
-    column5.setEditable(true);
     column5.setOnEditCommit(
-        new EventHandler<>() {
+        new EventHandler<TreeTableColumn.CellEditEvent<Flower, String>>() {
           @Override
           public void handle(TreeTableColumn.CellEditEvent<Flower, String> t) {
-            System.out.println("handle");
             ((Flower)
                     t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue())
                 .setQuantitySelected(Integer.parseInt(t.getNewValue()));
@@ -84,6 +82,7 @@ public class FlowerServiceController extends AbstractController {
 
     //noinspection unchecked
     flowerTable.getColumns().addAll(column1, column2, column3, column4, column5);
+    flowerTable.setEditable(true);
 
     // Setup column sizing
     flowerTable.setColumnResizePolicy(JFXTreeTableView.CONSTRAINED_RESIZE_POLICY);
@@ -130,31 +129,23 @@ public class FlowerServiceController extends AbstractController {
     }
   }
 
-  /**
-   * Convert a list to quantity flowers, allowing it to hold the number selected
-   *
-   * @param flowerOl
-   * @return
-   */
-  private List<QuantityFlower> toQuantityFlower(ObservableList<Flower> flowerOl) {
-    ObservableList<QuantityFlower> list = FXCollections.observableArrayList();
-    for (Flower f : flowerOl) {
-      list.add(
-          new QuantityFlower(
-              f.getTypeFlower(), f.getColor(), f.getQty(), f.getPricePer(), f.getFlowerID()));
-    }
-    return list;
-  }
-
   @FXML
   public void placeOrder() {
+    List<Flower> myList = getOrderList();
+    FlowerOrderController cont = new FlowerOrderController();
+    cont.setList(myList);
     DialogUtil.complexDialog(
-        dialogPane,
-        "Place Order",
-        "views/FlowerOrderDialog.fxml",
-        false,
-        null,
-        new FlowerOrderController());
+        dialogPane, "Place Order", "views/FlowerOrderDialog.fxml", false, null, cont);
+  }
+  // Generate a list of flowers to pass to the order controller
+  private List<Flower> getOrderList() {
+    List<Flower> myList = new ArrayList<>();
+    ObservableList<TreeItem<Flower>> f = flowerTable.getRoot().getChildren();
+    for (TreeItem<Flower> item : f) {
+      Flower myFlower = item.getValue();
+      if (myFlower.getQuantitySelected() != 0) myList.add(myFlower);
+    }
+    return myList;
   }
 
   @FXML

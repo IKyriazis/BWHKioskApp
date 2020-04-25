@@ -25,6 +25,11 @@ public abstract class AbstractController {
     // Uncomment if employee database is messed up
     // eDB.removeAllEmployees();
     // eDB.readEmployeeCSV();
+
+    // Run these two after I merge the new version of flower
+    flDatabase.removeAllOrders();
+    // flDatabase.removeAllFlowers();
+
     janitorDatabase = new JanitorDatabase(conn);
   }
 }

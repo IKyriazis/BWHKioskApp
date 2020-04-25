@@ -13,24 +13,21 @@ import javafx.beans.property.SimpleStringProperty;
 public class Order implements ITableable<Order> {
   private final SimpleIntegerProperty orderNumber;
   private final SimpleIntegerProperty numFlowers;
-  private final SimpleStringProperty flowerColor;
+  private final SimpleStringProperty flowerString;
   private final SimpleDoubleProperty price;
   private final SimpleStringProperty status;
   private final SimpleStringProperty location;
-  private final SimpleStringProperty flowerType;
 
   public Order(
       int orderNumber,
       int numFlowers,
-      String flowerType,
-      String flowerColor,
+      String flowerString,
       double price,
       String status,
       String location) {
     this.orderNumber = new SimpleIntegerProperty(orderNumber);
     this.numFlowers = new SimpleIntegerProperty(numFlowers);
-    this.flowerType = new SimpleStringProperty(flowerType);
-    this.flowerColor = new SimpleStringProperty(flowerColor);
+    this.flowerString = new SimpleStringProperty(flowerString);
     this.price = new SimpleDoubleProperty(price);
     this.status = new SimpleStringProperty(status);
     this.location = new SimpleStringProperty(location);
@@ -52,12 +49,12 @@ public class Order implements ITableable<Order> {
     return numFlowers;
   }
 
-  public String getFlowerColor() {
-    return flowerColor.get();
+  public String getFlowerString() {
+    return flowerString.get();
   }
 
-  public SimpleStringProperty flowerColorProperty() {
-    return flowerColor;
+  public SimpleStringProperty flowerStringProperty() {
+    return flowerString;
   }
 
   public double getPrice() {
@@ -84,14 +81,6 @@ public class Order implements ITableable<Order> {
     return location;
   }
 
-  public String getFlowerType() {
-    return flowerType.get();
-  }
-
-  public SimpleStringProperty flowerTypeProperty() {
-    return flowerType;
-  }
-
   @Override
   public ArrayList<JFXTreeTableColumn<Order, ?>> getColumns() {
     JFXTreeTableColumn<Order, Integer> col1 = new JFXTreeTableColumn<>("Order #");
@@ -99,12 +88,6 @@ public class Order implements ITableable<Order> {
 
     JFXTreeTableColumn<Order, Integer> col2 = new JFXTreeTableColumn<>("Quantity");
     col2.setCellValueFactory(param -> param.getValue().getValue().numFlowersProperty().asObject());
-
-    JFXTreeTableColumn<Order, String> col3 = new JFXTreeTableColumn<>("Type");
-    col3.setCellValueFactory(param -> param.getValue().getValue().flowerTypeProperty());
-
-    JFXTreeTableColumn<Order, String> col4 = new JFXTreeTableColumn<>("Color");
-    col4.setCellValueFactory(param -> param.getValue().getValue().flowerColorProperty());
 
     JFXTreeTableColumn<Order, Double> col5 = new JFXTreeTableColumn<>("Price");
     col5.setCellValueFactory(param -> param.getValue().getValue().priceProperty().asObject());
@@ -115,6 +98,6 @@ public class Order implements ITableable<Order> {
     JFXTreeTableColumn<Order, String> col7 = new JFXTreeTableColumn<>("Location");
     col7.setCellValueFactory(param -> param.getValue().getValue().locationProperty());
 
-    return new ArrayList<>(List.of(col1, col2, col3, col4, col5, col6, col7));
+    return new ArrayList<>(List.of(col1, col2, col5, col6, col7));
   }
 }

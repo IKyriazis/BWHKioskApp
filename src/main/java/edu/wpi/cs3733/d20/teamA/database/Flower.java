@@ -43,6 +43,10 @@ public class Flower extends RecursiveTreeObject<Flower> implements ITableable<Fl
     return pricePer;
   }
 
+  public SimpleStringProperty numProperty() {
+    return new SimpleStringProperty("" + quantitySelected.get());
+  }
+
   public String getTypeFlower() {
     return typeFlower.get();
   }
@@ -65,6 +69,10 @@ public class Flower extends RecursiveTreeObject<Flower> implements ITableable<Fl
 
   public SimpleIntegerProperty flowerIDProperty() {
     return flowerID;
+  }
+
+  public int getQuantitySelected() {
+    return quantitySelected.get();
   }
 
   public void setQuantitySelected(int i) {

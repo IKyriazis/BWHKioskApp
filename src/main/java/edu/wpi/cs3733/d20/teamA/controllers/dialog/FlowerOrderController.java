@@ -1,17 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -20,13 +17,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 public class FlowerOrderController extends AbstractController implements IDialogController {
-  @FXML private JFXComboBox<String> choiceFlower;
   @FXML private JFXComboBox<Node> roomList;
-  @FXML private JFXTextField txtNumber;
-  @FXML private JFXTextField txtTotal;
   @FXML private JFXButton confirmButton;
 
+  @FXML private JFXTextArea showOrder;
+
   private JFXDialog dialog;
+
+  private List<Flower> orderContent;
+
+  public void setList(List<Flower> myList) {
+    orderContent = myList;
+  }
 
   @FXML
   public void initialize() throws Exception {
@@ -42,72 +44,47 @@ public class FlowerOrderController extends AbstractController implements IDialog
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
 
-    // Setup input formatter for flower number
-    txtNumber.setTextFormatter(InputFormatUtil.getIntFilter());
-  }
-
-  @FXML
-  public void updateCost() {
-    String s = choiceFlower.getSelectionModel().getSelectedItem();
-    String type = s.substring(0, s.indexOf(','));
-    String color = s.substring(s.indexOf(' ') + 1);
-
-    try {
-      double i = flDatabase.getFlowerPricePer(type, color) * Integer.parseInt(txtNumber.getText());
-      txtTotal.setText(String.format("$%.2f", i));
-    } catch (Exception e) {
-      e.printStackTrace();
+    double cost = 0;
+    for (Flower f : orderContent) {
+      cost += f.getPricePer() * f.getQuantitySelected();
+      showOrder.appendText(
+          f.getQuantitySelected() + " " + f.getColor() + " " + f.getTypeFlower() + "'s\n");
     }
+    showOrder.appendText("Total cost: " + String.format("$%.2f", cost));
   }
 
   @FXML
   public void placeOrder(ActionEvent actionEvent) {
-    if (choiceFlower.getSelectionModel().getSelectedItem() != null) {
-      String s = choiceFlower.getSelectionModel().getSelectedItem();
-      String type = s.substring(0, s.indexOf(','));
-      String color = s.substring(s.indexOf(' ') + 1);
-      int count = Integer.parseInt(txtNumber.getText());
-
+    Optional<Node> found =
+        roomList.getItems().stream()
+            .filter(node -> node.toString().contains(roomList.getEditor().getText()))
+            .findFirst();
+    if (found.isPresent()) {
+      Node node = found.get();
+      String flowerString = "";
+      int numFlowers = 0;
+      for (Flower f : orderContent) {
+        numFlowers += f.getQuantitySelected();
+        flowerString += f.getFlowerID() + "," + f.getQuantitySelected() + "|";
+      }
       try {
-        if ((count <= 0) || (count > flDatabase.getFlowerQuantity(type, color))) {
-          return;
-        }
+        int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID());
+        dialog.close();
+        DialogUtil.simpleInfoDialog(
+            dialog.getDialogContainer(), "Order Placed", "Order #" + i + " placed successfully");
       } catch (Exception e) {
         e.printStackTrace();
-        return;
       }
-
-      Optional<Node> found =
-          roomList.getItems().stream()
-              .filter(node -> node.toString().contains(roomList.getEditor().getText()))
-              .findFirst();
-      if (found.isPresent()) {
-        Node node = found.get();
-        try {
-          int i = flDatabase.addOrder(count, type, color, node.getNodeID());
-          dialog.close();
-          DialogUtil.simpleInfoDialog(
-              dialog.getDialogContainer(), "Order Placed", "Order #" + i + " placed successfully");
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    }
-  }
-
-  @FXML
-  public void updateFlowerList() {
-    try {
-      ObservableList<Flower> list = flDatabase.flowerOl();
-      list.forEach(
-          flower -> choiceFlower.getItems().add(flower.getTypeFlower() + ", " + flower.getColor()));
-    } catch (Exception e) {
-      e.printStackTrace();
     }
   }
 
   @Override
   public void setDialog(JFXDialog dialog) {
     this.dialog = dialog;
+  }
+
+  @FXML
+  public void cancel() {
+    // COMPLETE
   }
 }

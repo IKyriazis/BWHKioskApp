@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerEditController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.ShowOrderController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Flower;
 import edu.wpi.cs3733.d20.teamA.database.Order;
@@ -11,6 +12,7 @@ import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -75,8 +77,29 @@ public class FlowerAdminController extends AbstractController {
     tblFlowerView = new SimpleTableView<>(new Flower("", "", 0, 0, 0), 80.0);
     flowerTablePane.getChildren().add(tblFlowerView);
 
-    tblOrderView = new SimpleTableView<>(new Order(0, 0, "", "", 0, "", ""), 40.0);
+    tblOrderView = new SimpleTableView<>(new Order(0, 0, "", 0, "", ""), 40.0);
     orderTablePane.getChildren().addAll(tblOrderView);
+
+    tblOrderView.setRowFactory(
+        tv -> {
+          TreeTableRow<Order> row = new TreeTableRow<>();
+          row.setOnMouseClicked(
+              event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                  Order rowData = row.getItem();
+                  ShowOrderController showController = new ShowOrderController();
+                  showController.setOrder(row.getTreeItem().getValue());
+                  DialogUtil.complexDialog(
+                      dialogStackPane,
+                      "Order",
+                      "views/ViewDetailOrder.fxml",
+                      false,
+                      event2 -> update(),
+                      showController);
+                }
+              });
+          return row;
+        });
 
     // Populate tables
     update();
@@ -101,7 +124,7 @@ public class FlowerAdminController extends AbstractController {
 
   private boolean hasDependentOrder(Flower flower) {
     boolean constrained = false;
-    try {
+    /*try {
       for (Order order : flDatabase.orderOl()) {
         if ((order.getFlowerType().equals(flower.getTypeFlower()))
             && (order.getFlowerColor().equals(flower.getColor()))) {
@@ -114,8 +137,7 @@ public class FlowerAdminController extends AbstractController {
           "Database Failure",
           "Failed to verify that there were no outstanding orders for flower: "
               + flower.toString());
-    }
-
+    }*/
     return constrained;
   }
 
