@@ -44,7 +44,7 @@ public class PatientDatabase extends Database {
     // Create the graph tables
     boolean a =
         helperPrepared(
-            "CREATE TABLE Patients (firstName Varchar(15), lastName Varchar(15), healthInsurance Varchar(15), dateOfBirth Varchar(15), heightFeet INTEGER NOT NULL, heightInches INTEGER NOT NULL, weight DOUBLE NOT NULL, symptoms Varchar(20), allergies Varchar(20), currentMeds Varchar(20), CONSTRAINT PK_fl PRIMARY KEY (lastName, dateOfBirth))");
+            "CREATE TABLE Patients (firstName Varchar(15), lastName Varchar(15), healthInsurance Varchar(15), dateOfBirth Varchar(15), heightFeet INTEGER NOT NULL, heightInches INTEGER NOT NULL, weight DOUBLE NOT NULL, symptoms Varchar(20), allergies Varchar(20), currentMeds Varchar(20), CONSTRAINT PK_pat PRIMARY KEY (lastName, dateOfBirth))");
     return a;
   }
 

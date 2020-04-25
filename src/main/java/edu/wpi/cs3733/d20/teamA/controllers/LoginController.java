@@ -65,7 +65,7 @@ public class LoginController extends AbstractController {
     vSwitcherBox.addEntry(
         "Patient Info",
         new MaterialIconView(MaterialIcon.CARD_MEMBERSHIP),
-        "views/PatientInfoService.fxml");
+        "views/PatientsInfoService.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it

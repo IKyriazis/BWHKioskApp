@@ -11,10 +11,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.views.PatientsInfoService">
+<AnchorPane fx:id="patientPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PatientInfoController">
    <children>
-      <StackPane prefHeight="400.0" prefWidth="600.0">
+      <StackPane fx:id="dialogStackPane" prefHeight="400.0" prefWidth="600.0">
          <children>
             <GridPane>
               <columnConstraints>
@@ -37,7 +36,7 @@
                     </rowConstraints>
                      <children>
                         <Label text="Patients" />
-                        <GridPane prefHeight="146.0" prefWidth="293.0" GridPane.rowIndex="1">
+                        <GridPane fx:id="patientTablePane" prefHeight="146.0" prefWidth="293.0" GridPane.rowIndex="1">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                           </columnConstraints>
@@ -47,8 +46,8 @@
                         </GridPane>
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                            <children>
-                              <JFXButton buttonType="RAISED" style="-fx-background-color: white;" text="Add Patient Info" />
-                              <JFXButton buttonType="RAISED" style="-fx-background-color: white;" text="Edit Patient Info" />
+                              <JFXButton fx:id="addPatientButton" buttonType="RAISED" style="-fx-background-color: white;" text="Add Patient Info" />
+                              <JFXButton fx:id="editPatientButton" buttonType="RAISED" style="-fx-background-color: white;" text="Edit Patient Info" />
                            </children>
                            <GridPane.margin>
                               <Insets top="25.0" />

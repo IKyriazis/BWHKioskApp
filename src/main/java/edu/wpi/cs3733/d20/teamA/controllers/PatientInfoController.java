@@ -4,14 +4,19 @@ import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Patient;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class PatientInfoController extends AbstractController {
-  @FXML private GridPane patientServiceTablePane;
   @FXML private JFXButton addPatientButton;
   @FXML private JFXButton editPatientButton;
 
   @FXML private SimpleTableView<Patient> patientTable;
+
+  @FXML private AnchorPane patientPane;
+  @FXML private StackPane dialogStackPane;
+  @FXML private GridPane patientTablePane;
 
   public PatientInfoController() {}
 
@@ -29,7 +34,7 @@ public class PatientInfoController extends AbstractController {
 
     // Setup Table
     patientTable = new SimpleTableView<>(new Patient("", "", "", "", 0, 0, 0.0, "", "", ""), 20.0);
-    patientServiceTablePane.getChildren().add(patientTable);
+    patientTablePane.getChildren().add(patientTable);
 
     update();
   }
