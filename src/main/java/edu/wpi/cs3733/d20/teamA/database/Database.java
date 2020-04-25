@@ -39,6 +39,12 @@ public abstract class Database {
     }
   }
 
+  /**
+   * Finds out how many rows of data are in the given table
+   *
+   * @param tableName - The name of the table
+   * @return The size of the table
+   */
   public int getSize(String tableName) {
     int count = 0;
     try {
@@ -70,6 +76,61 @@ public abstract class Database {
       }
 
       return false;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /**
+   * Find out if a specific string from the given table exists
+   *
+   * @param tableName - The name of the table
+   * @param col - The column to search in
+   * @param value - The value to search for
+   * @return True, if the string exists
+   */
+  public boolean checkIfExistsString(String tableName, String col, String value) {
+    boolean a = false;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "SELECT * FROM " + tableName + " WHERE " + col + " = '" + value + "'");
+      ResultSet rset = pstmt.executeQuery();
+      if (rset.next()) {
+        a = true;
+      }
+      rset.close();
+      pstmt.close();
+      return a;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /**
+   * Find out if a specific int from the given table exists
+   *
+   * @param tableName - The name of the table
+   * @param col - The column to search in
+   * @param value - The value to search for
+   * @return True, if the int exists
+   */
+  public boolean checkIfExistsInt(String tableName, String col, int value) {
+    boolean a = false;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("SELECT * FROM " + tableName + " WHERE " + col + " = " + value);
+      ResultSet rset = pstmt.executeQuery();
+      if (rset.next()) {
+        a = true;
+      }
+      rset.close();
+      pstmt.close();
+      return a;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;

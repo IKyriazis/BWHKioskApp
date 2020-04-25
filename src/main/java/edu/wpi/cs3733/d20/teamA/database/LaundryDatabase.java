@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class LaundryDatabase extends Database {
   // private int requestNum = getSizeLaundry() + 1;
@@ -37,7 +34,7 @@ public class LaundryDatabase extends Database {
     if (doesTableNotExist("LAUNDRY")) {
       boolean a =
           helperPrepared(
-              "CREATE TABLE Laundry (requestNum INTEGER PRIMARY KEY, employeeEntered Varchar(25) NOT NULL, location Varchar(10), progress Varchar(50), employeeWash Varchar(25), CONSTRAINT FK_EMPE FOREIGN KEY (employeeEntered) REFERENCES Employees(username), CONSTRAINT FK_EMPW FOREIGN KEY (employeeWash) REFERENCES Employees(username), CONSTRAINT FK_LOC FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT Check_Prog CHECK (progress in ('Request Sent', 'Clothes Collected', 'Clothes Washing', 'Clothes Drying', 'Clothes Returned')))");
+              "CREATE TABLE Laundry (requestNum INTEGER PRIMARY KEY, employeeEntered Varchar(25) NOT NULL, location Varchar(10), progress Varchar(50), employeeWash Varchar(25), timeRequested TIMESTAMP NOT NULL, CONSTRAINT FK_EMPE FOREIGN KEY (employeeEntered) REFERENCES Employees(username), CONSTRAINT FK_EMPW FOREIGN KEY (employeeWash) REFERENCES Employees(username), CONSTRAINT FK_LOC FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT Check_Prog CHECK (progress in ('Request Sent', 'Clothes Collected', 'Clothes Washing', 'Clothes Drying', 'Clothes Returned')))");
       return a;
     }
     return false;
@@ -69,17 +66,25 @@ public class LaundryDatabase extends Database {
    * @return True if a successful add
    */
   public boolean addLaundry(String emp, String loc) {
+    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "INSERT INTO Laundry (requestNum, employeeEntered, location, progress) VALUES (?, ?, ?, 'Request Sent')");
-      pstmt.setInt(1, getSizeLaundry() + 1);
-      pstmt.setString(2, emp);
-      pstmt.setString(3, loc);
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
+      boolean a = checkIfExistsString("Employees", "username", emp);
+      boolean b = checkIfExistsString("Node", "nodeID", loc);
+      if (a && b) {
+        PreparedStatement pstmt =
+            getConnection()
+                .prepareStatement(
+                    "INSERT INTO Laundry (requestNum, employeeEntered, location, progress, timeRequested) VALUES (?, ?, ?, 'Request Sent', ?)");
+        pstmt.setInt(1, getSizeLaundry() + 1);
+        pstmt.setString(2, emp);
+        pstmt.setString(3, loc);
+        pstmt.setTimestamp(4, timestamp);
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      } else {
+        return false;
+      }
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
@@ -96,17 +101,19 @@ public class LaundryDatabase extends Database {
    * @param empW - The employee who is washing the clothes
    * @return True if a successful edit
    */
-  public boolean editLaundry(int num, String emp, String loc, String prog, String empW) {
+  public boolean editLaundry(
+      int num, String emp, String loc, String prog, String empW, Timestamp timestamp) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "UPDATE Laundry SET employee = ?, location = ?, progress = ?, employeeWash = ? WHERE requestNum = ?");
+                  "UPDATE Laundry SET employee = ?, location = ?, progress = ?, employeeWash = ?, timeRequested = ? WHERE requestNum = ?");
       pstmt.setString(1, emp);
       pstmt.setString(2, loc);
       pstmt.setString(3, prog);
       pstmt.setString(4, empW);
-      pstmt.setInt(5, num);
+      pstmt.setTimestamp(5, timestamp);
+      pstmt.setInt(6, num);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -124,12 +131,17 @@ public class LaundryDatabase extends Database {
    */
   public boolean deleteLaundry(int num) {
     try {
-      PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE FROM Laundry WHERE requestNum = ?");
-      pstmt.setInt(1, num);
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
+      boolean a = checkIfExistsInt("Laundry", "requestNum", num);
+      if (a) {
+        PreparedStatement pstmt =
+            getConnection().prepareStatement("DELETE FROM Laundry WHERE requestNum = ?");
+        pstmt.setInt(1, num);
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      } else {
+        return false;
+      }
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
@@ -145,18 +157,23 @@ public class LaundryDatabase extends Database {
    */
   public String helperGetString(int num, String col) {
     try {
-      PreparedStatement pstmt =
-          getConnection().prepareStatement("SELECT * FROM Laundry WHERE requestNum = ?");
-      pstmt.setInt(1, num);
-      ResultSet rset = pstmt.executeQuery();
-      rset.next();
-      String s = rset.getString(col);
-      rset.close();
-      pstmt.close();
-      return s;
+      boolean a = checkIfExistsInt("Laundry", "requestNum", num);
+      if (a) {
+        PreparedStatement pstmt =
+            getConnection().prepareStatement("SELECT * FROM Laundry WHERE requestNum = ?");
+        pstmt.setInt(1, num);
+        ResultSet rset = pstmt.executeQuery();
+        rset.next();
+        String s = rset.getString(col);
+        rset.close();
+        pstmt.close();
+        return s;
+      } else {
+        return null;
+      }
     } catch (SQLException e) {
       e.printStackTrace();
-      return "";
+      return null;
     }
   }
 
@@ -201,6 +218,34 @@ public class LaundryDatabase extends Database {
   }
 
   /**
+   * Gets the timeRequested value from the laundry table
+   *
+   * @param num - The request number
+   * @return The time the request was made
+   */
+  public Timestamp getTimeRequested(int num) {
+    try {
+      boolean a = checkIfExistsInt("Laundry", "requestNum", num);
+      if (a) {
+        PreparedStatement pstmt =
+            getConnection().prepareStatement("SELECT * FROM Laundry WHERE requestNum = ?");
+        pstmt.setInt(1, num);
+        ResultSet rset = pstmt.executeQuery();
+        rset.next();
+        Timestamp ts = rset.getTimestamp("timeRequested");
+        rset.close();
+        pstmt.close();
+        return ts;
+      } else {
+        return null;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
    * Helps set the various String values in the laundry table
    *
    * @param num - The request number
@@ -210,13 +255,18 @@ public class LaundryDatabase extends Database {
    */
   public boolean helperSetString(int num, String col, String s) {
     try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE Laundry SET " + col + " = " + s + " WHERE requestNum = " + num);
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
+      boolean a = checkIfExistsInt("Laundry", "requestNum", num);
+      if (a) {
+        PreparedStatement pstmt =
+            getConnection()
+                .prepareStatement(
+                    "UPDATE Laundry SET " + col + " = '" + s + "' WHERE requestNum = " + num);
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      } else {
+        return false;
+      }
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
@@ -231,7 +281,12 @@ public class LaundryDatabase extends Database {
    * @return True if the change was successful
    */
   public boolean setEmpE(int num, String s) {
-    return helperSetString(num, "employeeEntered", s);
+    boolean a = checkIfExistsString("Employees", "username", s);
+    if (a) {
+      return helperSetString(num, "employeeEntered", s);
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -242,7 +297,12 @@ public class LaundryDatabase extends Database {
    * @return True if the change was successful
    */
   public boolean setLoc(int num, String s) {
-    return helperSetString(num, "location", s);
+    boolean a = checkIfExistsString("Node", "nodeID", s);
+    if (a) {
+      return helperSetString(num, "location", s);
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -253,7 +313,15 @@ public class LaundryDatabase extends Database {
    * @return True if the change was successful
    */
   public boolean setProg(int num, String s) {
-    return helperSetString(num, "progress", s);
+    if (s.equals("Request Sent")
+        || s.equals("Clothes Collected")
+        || s.equals("Clothes Washing")
+        || s.equals("Clothes Drying")
+        || s.equals("Clothes Returned")) {
+      return helperSetString(num, "progress", s);
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -264,6 +332,41 @@ public class LaundryDatabase extends Database {
    * @return True if the change was successful
    */
   public boolean setEmpW(int num, String s) {
-    return helperSetString(num, "employeeWash", s);
+    boolean a = checkIfExistsString("Employees", "username", s);
+    if (a) {
+      return helperSetString(num, "employeeWash", s);
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Sets the timeRequested filed to the specified value at the specified request
+   *
+   * @param num - The request number
+   * @param timestamp - The value to change to
+   * @return True if the change was successful
+   */
+  public boolean setTimestamp(int num, Timestamp timestamp) {
+    try {
+      boolean a = checkIfExistsInt("Laundry", "requestNum", num);
+      if (a) {
+        PreparedStatement pstmt =
+            getConnection()
+                .prepareStatement(
+                    "UPDATE Laundry SET timeRequested = '"
+                        + timestamp
+                        + "' WHERE requestNum = "
+                        + num);
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 }
