@@ -10,7 +10,7 @@ public class ContextPath {
         this.pathFindingAlgo = pathFindingAlgo;
     }
 
-    public void setContextPath(IStrategyPath pathFindingAlgo){
+    public void setPath(IStrategyPath pathFindingAlgo){
         this.pathFindingAlgo = pathFindingAlgo;
     }
 
