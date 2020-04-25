@@ -24,7 +24,7 @@ public class PatientDatabase extends Database{
 
         // if the helper returns false this method should too
         // drop the CONSTRAINT first
-        if (!(helperPrepared("ALTER TABLE Orders DROP CONSTRAINT FK_fT"))) {
+        if (!(helperPrepared("ALTER TABLE Patients DROP CONSTRAINT FK_fT"))) {
             return false;
         }
         // Drop the tables
@@ -36,7 +36,7 @@ public class PatientDatabase extends Database{
     }
 
     /**
-     * Creates tables
+     * Creates table
      *
      * @return False if tables couldn't be created
      */
@@ -50,25 +50,25 @@ public class PatientDatabase extends Database{
     }
 
     /**
-     * Gets how many entries are in the flower table
+     * Gets how many entries are in the patients table
      *
-     * @return the number of entries in the flower table
+     * @return the number of entries in the patients table
      */
     public int getSizePatients() {
         return getSize("Patients");
     }
 
     /**
-     * removes all flowers from the table
+     * removes all patients from the table
      *
-     * @return true if all the flowers were removed, false otherwise
+     * @return true if all the patients were removed, false otherwise
      */
     public boolean removeAllPatients() {
         return helperPrepared("DELETE From Patients");
     }
 
     /**
-     * Gets all flowers in the flower table in an observable list
+     * Gets all patients in the flower table in an observable list
      *
      * @return an observable list containing all the flowers in the table
      */
