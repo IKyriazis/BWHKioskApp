@@ -2,70 +2,121 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import com.jfoenix.controls.JFXTextField?>
 <AnchorPane focusTraversable="true" prefHeight="768.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.JanitorialController">
    <children>
-      <BorderPane layoutX="200.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <left>
-            <AnchorPane prefHeight="768.0" prefWidth="420.0" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="768.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="350.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="7.0" minWidth="7.0" prefWidth="7.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+              </rowConstraints>
                <children>
-                  <Separator halignment="RIGHT" layoutX="198.0" orientation="VERTICAL" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <Label alignment="CENTER" layoutY="360.0" text="Priority" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Label>
-                  <Label alignment="CENTER" layoutY="250.0" text="Location" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                     <font>
-                        <Font size="14.0" />
-                     </font></Label>
-                  <Label fx:id="labelSubmitRequest" alignment="CENTER" layoutY="645.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <Label alignment="CENTER" layoutY="25.0" text="Submit Request" textAlignment="CENTER" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <JFXButton fx:id="btnSubmitRequest" buttonType="RAISED" layoutX="123.0" layoutY="600.0" onAction="#addServiceRequest" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: white;" text="Submit Request">
-                     <font>
-                        <Font size="14.0" />
-                     </font></JFXButton>
-                  <JFXComboBox fx:id="comboboxPriority" layoutX="182.0" layoutY="400.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
-                  <JFXComboBox fx:id="roomList" layoutX="183.0" layoutY="293.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+                  <Separator orientation="VERTICAL" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <GridPane GridPane.columnIndex="2">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefWidth="993.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="orderTblLbl" text="Active Service Requests" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="25.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <JFXTreeTableView fx:id="tblServiceView" maxHeight="1.7976931348623157E308" onMouseClicked="#refreshActiveRequests" GridPane.rowIndex="1" />
+                        <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
+                           <children>
+                              <JFXTextField fx:id="textfieldCurrent" editable="false" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Previous Status" />
+                              <JFXComboBox fx:id="ComboBoxNextStatus" labelFloat="true" prefWidth="150.0" promptText="New Status">
+                                 <VBox.margin>
+                                    <Insets left="75.0" right="75.0" />
+                                 </VBox.margin>
+                              </JFXComboBox>
+                              <JFXButton fx:id="changeProgressButton" buttonType="RAISED"  style="-fx-background-color: white;" text="Change Progress">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                           <padding>
+                              <Insets top="25.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                     <GridPane.margin>
+                        <Insets left="25.0" />
+                     </GridPane.margin>
+                  </GridPane>
+                  <GridPane>
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" prefWidth="350.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="orderTblLbl1" text="Create a Service Request" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="25.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                           <GridPane.margin>
+                              <Insets />
+                           </GridPane.margin>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="1">
+                           <children>
+                              <JFXButton alignment="CENTER" buttonType="RAISED" style="-fx-background-color: white;" text="Add Request" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <GridPane.margin>
+                        <Insets right="25.0" />
+                     </GridPane.margin>
+                  </GridPane>
                </children>
-            </AnchorPane>
-         </left>
-         <right>
-            <AnchorPane prefHeight="768.0" prefWidth="580.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Separator layoutX="-3.0" orientation="VERTICAL" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <Label alignment="CENTER" layoutX="1.0" layoutY="25.0" text="Clear Request" wrapText="true" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="55.0">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                  </Label>
-                  <JFXButton fx:id="btnClearRequest" alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" layoutX="188.0" layoutY="651.0" onAction="#removeServiceRequest" onMouseClicked="#refreshActiveRequests" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: white;" text="Clear Request">
-                     <font>
-                        <Font size="14.0" />
-                     </font></JFXButton>
-                  <Label fx:id="labelClearRequest" alignment="CENTER" layoutY="360.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-                  <JFXListView fx:id="listviewActiveRequests" layoutX="61.0" layoutY="84.0" onMouseClicked="#elementSelect" prefHeight="496.0" prefWidth="500.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="55.0" />
-                  <JFXButton fx:id="btnNotStarted" alignment="CENTER" contentDisplay="CENTER" layoutX="71.0" layoutY="589.0" onAction="#markNotStarted" style="-fx-background-color: white;" text="Not Started" visible="false" AnchorPane.leftAnchor="71.0" />
-                  <JFXButton fx:id="btnInProgress" layoutX="238.0" layoutY="589.0" onAction="#markInProgress" style="-fx-background-color: white;" text="In Progress" visible="false" />
-                  <JFXButton fx:id="btnCompleted" layoutX="394.0" layoutY="589.0" onAction="#markCompleted" style="-fx-background-color: white;" text="Completed" visible="false" />
-                  <Label fx:id="labelStatus" alignment="CENTER" layoutY="622.0" text="Label" visible="false" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="55.0" />
-                  <JFXTextField fx:id="textfieldEmployeeName" alignment="CENTER" layoutX="25.0" layoutY="654.0" promptText="Enter name" style="-fx-background-color: white;" visible="false"/>
-               </children>
-            </AnchorPane>
-         </right>
-         <center>
-            <AnchorPane prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
-         </center>
-      </BorderPane>
+               <StackPane.margin>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </StackPane.margin>
+            </GridPane>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>
