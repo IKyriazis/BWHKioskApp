@@ -127,6 +127,7 @@
                                     <JFXButton buttonType="RAISED" onAction="#changeStatus" prefWidth="150.0" style="-fx-background-color: #78909C;" text="Change Status" textFill="WHITE" />
                                  </children>
                               </HBox>
+                              <JFXButton buttonType="RAISED" onAction="#deleteRequest" style="-fx-background-color: #e57373;" text="Delete Request" textFill="WHITE" />
                            </children>
                         </VBox>
                      </children>
