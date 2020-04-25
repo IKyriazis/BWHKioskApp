@@ -7,7 +7,7 @@ import java.util.*;
 import javafx.scene.control.Label;
 
 /** Represents a path along the graph */
-public class Path implements IStrategyPath{
+public class Path implements IStrategyPath {
 
   /** Represents a list of nodes along path */
   private ArrayList<Node> pathNodes;
