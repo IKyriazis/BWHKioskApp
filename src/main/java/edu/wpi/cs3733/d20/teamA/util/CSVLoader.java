@@ -1,16 +1,72 @@
 package edu.wpi.cs3733.d20.teamA.util;
 
+import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.Edge;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import edu.wpi.cs3733.d20.teamA.graph.NodeType;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class CSVLoader {
+  public static void readNodes(Graph graph) {
+    InputStream stream =
+        App.class.getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllNodes.csv");
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+    readNodes(graph, reader.lines().skip(1).collect(Collectors.toList()));
+  }
+
+  public static void readNodes(Graph graph, List<String> nodeLines) {
+    for (String line : nodeLines) {
+      String[] cols = line.split(",");
+
+      String nodeID = cols[0];
+      int x = Integer.parseInt(cols[1]);
+      int y = Integer.parseInt(cols[2]);
+      int floor = Integer.parseInt(cols[3]);
+      String building = cols[4];
+      String nodeType = cols[5];
+      String longName = cols[6];
+      String shortName = cols[7];
+      String teamAssigned = cols[8];
+
+      graph.addNode(
+          new Node(
+              nodeID,
+              x,
+              y,
+              floor,
+              building,
+              NodeType.toNodeType(nodeType),
+              longName,
+              shortName,
+              teamAssigned));
+    }
+  }
+
+  public static void readEdges(Graph graph) {
+    InputStream stream =
+        App.class.getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/MapAAllEdges.csv");
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+    readEdges(graph, reader.lines().skip(1).collect(Collectors.toList()));
+  }
+
+  public static void readEdges(Graph graph, List<String> edgeLines) {
+    for (String line : edgeLines) {
+      String[] cols = line.split(",");
+
+      String startID = cols[1];
+      String endID = cols[2];
+      graph.addEdge(graph.getNodeByID(startID), graph.getNodeByID(endID));
+    }
+  }
+
   public static void exportEdges(Graph graph, File out) {
     // Accumulate all edges
     ArrayList<Edge> edges = new ArrayList<>();
@@ -47,8 +103,7 @@ public class CSVLoader {
 
   public static void exportNodes(Graph graph, File out) {
     // Accumulate all edges
-    ArrayList<Node> nodes = new ArrayList<>();
-    graph.getNodes().values().forEach(node -> nodes.add(node));
+    ArrayList<Node> nodes = new ArrayList<>(graph.getNodes().values());
 
     try {
       BufferedWriter writer = new BufferedWriter(new FileWriter(out));
