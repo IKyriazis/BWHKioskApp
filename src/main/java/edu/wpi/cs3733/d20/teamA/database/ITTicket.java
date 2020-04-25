@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ITTicket implements ITableable<ITTicket> {
 
@@ -83,6 +84,17 @@ public class ITTicket implements ITableable<ITTicket> {
 
     @Override
     public ArrayList<JFXTreeTableColumn<ITTicket, ?>> getColumns() {
-        return null;
+        JFXTreeTableColumn<ITTicket, String> column1 = new JFXTreeTableColumn<>("Status");
+        column1.setCellValueFactory(param -> param.getValue().getValue().statusProperty());
+        JFXTreeTableColumn<ITTicket, String> column2 = new JFXTreeTableColumn<>("Category");
+        column2.setCellValueFactory(param -> param.getValue().getValue().categoryProperty());
+        JFXTreeTableColumn<ITTicket, String> column3 = new JFXTreeTableColumn<>("Location");
+        column3.setCellValueFactory(param -> param.getValue().getValue().locationProperty());
+        JFXTreeTableColumn<ITTicket, String> column4 = new JFXTreeTableColumn<>("Requester Name");
+        column4.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
+        JFXTreeTableColumn<ITTicket, String> column5 = new JFXTreeTableColumn<>("Employee Name");
+        column5.setCellValueFactory(param -> param.getValue().getValue().completedByProperty());
+
+        return new ArrayList<>(List.of(column1, column2, column3, column4, column5));
     }
 }
