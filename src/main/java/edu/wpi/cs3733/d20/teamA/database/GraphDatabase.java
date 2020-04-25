@@ -9,7 +9,7 @@ public class GraphDatabase extends Database {
 
     super(connection);
 
-    if (doesTableNotExist("NODE") && doesTableNotExist("EDGE")) {
+    if (doesTableNotExist("NODE") || doesTableNotExist("EDGE")) {
       createTables();
     }
   }
@@ -47,7 +47,7 @@ public class GraphDatabase extends Database {
                 + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
                 + "nodeType Varchar(4) NOT NULL, longName Varchar(200) NOT NULL, shortName Varchar(25), "
                 + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
-                + "CONSTRAINT CHK_Coords CHECK (xcoord > 0 AND ycoord > 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
+                + "CONSTRAINT CHK_Coords CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
 
     boolean a =
         helperPrepared(

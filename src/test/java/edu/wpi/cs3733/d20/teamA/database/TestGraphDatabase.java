@@ -12,7 +12,7 @@ public class TestGraphDatabase {
   private Connection conn;
   GraphDatabase DB;
 
-  public TestGraphDatabase() throws SQLException {}
+  public TestGraphDatabase() {}
 
   @BeforeEach
   public void init() throws SQLException {
@@ -81,8 +81,8 @@ public class TestGraphDatabase {
     DB.removeAllNodes();
     boolean a = DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     Assertions.assertTrue(a);
-    boolean b = DB.addNode("nugget", 0, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    Assertions.assertFalse(b);
+    boolean b = DB.addNode("nugget", 0, 0, 2, "White House", "CONF", "balogna", "b", "Team A");
+    Assertions.assertTrue(b);
     boolean c = DB.addNode("mashedP", 2, -1, 2, "White House", "CONF", "balogna", "b", "Team A");
     Assertions.assertFalse(c);
     boolean d = DB.addNode("BBQSauce", 2, 5, 0, "White House", "CONF", "balogna", "b", "Team A");
