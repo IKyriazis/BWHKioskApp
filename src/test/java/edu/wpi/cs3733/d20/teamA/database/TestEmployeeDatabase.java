@@ -60,15 +60,15 @@ public class TestEmployeeDatabase {
   public void testAddEmployee() throws SQLException {
     eDB.createTables();
     eDB.removeAllEmployees();
-    boolean a = eDB.addEmployee("abc", "brad", "bad", "Janitor");
+    boolean a = eDB.addEmployee(1, "abc", "brad", "bad", "123", "Janitor");
     Assertions.assertTrue(a);
-    boolean d = eDB.addEmployee("abcd", "chad", "lad", "Manager");
+    boolean d = eDB.addEmployee(2, "abcd", "chad", "lad", "456", "Manager");
     Assertions.assertTrue(d);
-    boolean b = eDB.addEmployee("ab", "kassy", "lassy", "Surgeon");
+    boolean b = eDB.addEmployee(3, "ab", "kassy", "lassy", "789", "Surgeon");
     Assertions.assertTrue(b);
-    boolean e = eDB.addEmployee("bacd", "ray", "jay", "Intern");
+    boolean e = eDB.addEmployee(4, "bacd", "ray", "jay", "banana", "Intern");
     Assertions.assertTrue(e);
-    boolean c = eDB.addEmployee("abcd", "bailey", "kaylee", "Nurse");
+    boolean c = eDB.addEmployee(2, "abcd", "bailey", "kaylee", "blah", "Nurse");
     Assertions.assertFalse(c);
     Assertions.assertEquals(4, eDB.getSizeEmployees());
     eDB.removeAllEmployees();
@@ -78,16 +78,16 @@ public class TestEmployeeDatabase {
   public void testDeleteEmployee() throws SQLException {
     eDB.createTables();
     eDB.removeAllEmployees();
-    boolean a = eDB.addEmployee("abc", "brad", "bad", "Nurse");
+    boolean a = eDB.addEmployee(1, "abc", "brad", "bad", "123", "Janitor");
     Assertions.assertTrue(a);
-    boolean b = eDB.deleteEmployee("abc");
+    boolean b = eDB.deleteEmployee("bad");
     Assertions.assertTrue(b);
     Assertions.assertEquals(0, eDB.getSizeEmployees());
-    eDB.addEmployee("abc", "brad", "bad", "Nurse");
-    eDB.addEmployee("dyi", "brad", "bad", "Doctor Sleep");
+    eDB.addEmployee(1, "abc", "brad", "bad", "123", "Janitor");
+    eDB.addEmployee(2, "abcd", "chad", "lad", "456", "Manager");
     Assertions.assertEquals(2, eDB.getSizeEmployees());
-    boolean c = eDB.deleteEmployee("abc");
-    Assertions.assertTrue(c);
+    boolean e = eDB.deleteEmployee("bad");
+    Assertions.assertTrue(e);
     Assertions.assertEquals(1, eDB.getSizeEmployees());
   }
 
@@ -95,8 +95,8 @@ public class TestEmployeeDatabase {
   public void testEditTitle() throws SQLException {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "Intern");
-    boolean a = eDB.editTitle("bacd", "Doctor");
+    eDB.addEmployee(3, "ab", "kassy", "lassy", "789", "Intern");
+    boolean a = eDB.editTitle("lassy", "Doctor");
     Assertions.assertTrue(a);
   }
 
@@ -104,8 +104,8 @@ public class TestEmployeeDatabase {
   public void testEditFName() throws SQLException {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "Intern");
-    boolean a = eDB.editNameFirst("bacd", "cray");
+    eDB.addEmployee(3, "ab", "kassy", "lassy", "789", "Intern");
+    boolean a = eDB.editNameFirst("lassy", "cray");
     Assertions.assertTrue(a);
   }
 
@@ -113,8 +113,8 @@ public class TestEmployeeDatabase {
   public void testEditLName() throws SQLException {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "Intern");
-    boolean a = eDB.editNameLast("bacd", "kay");
+    eDB.addEmployee(3, "ab", "kassy", "lassy", "789", "Intern");
+    boolean a = eDB.editNameLast("lassy", "kay");
     Assertions.assertTrue(a);
   }
 
@@ -122,12 +122,12 @@ public class TestEmployeeDatabase {
   public void testChangePass() throws SQLException {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "Intern");
-    boolean a = eDB.changePassword("bacd", "bacd", "Is3");
+    eDB.addEmployee(3, "ab", "kassy", "lassy", "789", "Intern");
+    boolean a = eDB.changePassword("lassy", "789", "Is3");
     Assertions.assertTrue(a);
-    boolean b = eDB.changePassword("bacd", "Is3", "happy");
+    boolean b = eDB.changePassword("lassy", "Is3", "happy");
     Assertions.assertFalse(b);
-    boolean c = eDB.changePassword("bacd", "Is3", "IskkIg3");
+    boolean c = eDB.changePassword("lassy", "Is3", "IskkIg3");
     Assertions.assertTrue(c);
   }
 }

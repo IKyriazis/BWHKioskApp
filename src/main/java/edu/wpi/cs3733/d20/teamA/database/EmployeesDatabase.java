@@ -10,7 +10,7 @@ import java.util.List;
 
 public class EmployeesDatabase extends Database {
 
-  int employeeID = getSizeEmployees() + 1;
+  // int employeeID = getSizeEmployees() + 1;
 
   public EmployeesDatabase(Connection connection) {
 
@@ -77,7 +77,7 @@ public class EmployeesDatabase extends Database {
 
   public void addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
-    addEmployee(employeeID, nameFirst, nameLast, username, password, title);
+    addEmployee(getSizeEmployees() + 1, nameFirst, nameLast, username, password, title);
   }
 
   /**
