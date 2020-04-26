@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
+import java.util.Date;
 
 public class EmployeesDatabase extends Database {
 
@@ -16,7 +17,7 @@ public class EmployeesDatabase extends Database {
 
     super(connection);
 
-    if (doesTableNotExist("EMPLOYEES")) {
+    if (doesTableNotExist("EMPLOYEES") && doesTableNotExist("EquipReq") && doesTableNotExist("LoggedIn")) {
       createTables();
     }
   }
@@ -25,7 +26,16 @@ public class EmployeesDatabase extends Database {
   public boolean dropTables() {
 
     // Drop the tables
-    return helperPrepared("DROP TABLE Employees");
+    if (!(helperPrepared("ALTER TABLE EquipReq DROP CONSTRAINT FK_EID") && helperPrepared("ALTER TABLE LoggedIn DROP CONSTRAINT FK_USE"))) {
+
+      return false;
+    }
+    // Drop the tables
+    if (!(helperPrepared("DROP TABLE Employees") && helperPrepared("DROP TABLE EquipReq") && helperPrepared("DROP TABLE LoggedIn"))) {
+      return false;
+    }
+
+    return true;
   }
 
   /**
@@ -37,8 +47,13 @@ public class EmployeesDatabase extends Database {
 
     // Create the graph tables
 
-    return helperPrepared(
-        "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title Varchar(50))");
+    boolean a = helperPrepared(
+        "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title Varchar(50), pageNum BIGINT, CONSTRAINT tenDigit CHECK (pageNum BETWEEN 1000000000 and 9999999999), )");
+    boolean b = helperPrepared(
+            "CREATE TABLE EquipReq (username Varchar(25), timeOf TIMESTAMP, item Varchar(75) NOT NULL, qty INTEGER, location Varchar(10) NOT NULL, priority Varchar(7) NOT NULL, CONSTRAINT FK_EID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT PK_ET PRIMARY KEY(employeeID, time), CONSTRAINT CHK_PRI CHECK (priority in ('High', 'Medium', 'Low')), CONSTRAINT FK_NLOC FOREIGN KEY (location) REFERENCES NODE(nodeID))");
+    boolean c = helperPrepared(
+            "CREATE TABLE LoggedIn (username Varchar(25), timeLogged TIMESTAMP, flagLog BOOLEAN, CONSTRAINT FK_USE FOREIGN KEY (username) REFERENCES Employees (username), CONSTRAINT PK_UST PRIMARY KEY (username, timeLogged))");
+    return a && b && c;
   }
 
   /**
@@ -260,4 +275,106 @@ public class EmployeesDatabase extends Database {
       e.printStackTrace();
     }
   }
+
+  public String getLoggedIn(){
+    String username = null;
+    try {
+      PreparedStatement pstm =
+              getConnection()
+                      .prepareStatement(
+                              "Select username From LoggedIn Where flag = true");
+      ResultSet rset = pstm.executeQuery();
+      while (rset.next()) {
+        username = rset.getString("username");
+      }
+      rset.close();
+      pstm.close();
+      if(username != null){
+        return username;
+      }
+      return null;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public boolean addReq(String item, int qty, String location, String priority) {
+    String username = getLoggedIn();
+    Timestamp timeOf = new Timestamp(System.currentTimeMillis());
+
+    if(username == null){
+      return false;
+    }
+
+    try {
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement(
+                              "INSERT INTO EquipReq (username, timeOf, item, qty, location, priority) VALUES (?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, username);
+      pstmt.setTimestamp(2, timeOf);
+      pstmt.setString(3, item);
+      pstmt.setInt(4, qty);
+      pstmt.setString(5, location);
+      pstmt.setString(6, priority);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean deleteReq(String username) {
+    try {
+      PreparedStatement pstmt =
+              getConnection().prepareStatement("DELETE From EquipReq Where username = ?");
+      pstmt.setString(1, username);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean addLog(String username) {
+    Timestamp timeOf = new Timestamp(System.currentTimeMillis());
+
+    try {
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement(
+                              "INSERT INTO LoggedIn (username, timeOf, flag) VALUES (?, ?, ?)");
+      pstmt.setString(1, username);
+      pstmt.setTimestamp(2, timeOf);
+      pstmt.setBoolean(3, true);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean changeFlag() {
+
+    String username = getLoggedIn();
+
+    try {
+      PreparedStatement pstmt =
+              getConnection().prepareStatement("UPDATE LoggedIn set flag = false WHERE username = '"+username+"'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
 }

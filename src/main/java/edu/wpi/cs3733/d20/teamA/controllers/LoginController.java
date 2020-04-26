@@ -98,6 +98,7 @@ public class LoginController extends AbstractController {
   @FXML
   public void loginButtonPressed() {
     if (transitioning || loggedIn) {
+      eDB.addLog(usernameBox.getText());
       return;
     }
 
@@ -141,6 +142,7 @@ public class LoginController extends AbstractController {
   @FXML
   public void logoutButtonPressed() {
     if (!loggedIn || transitioning) {
+      eDB.changeFlag();
       return;
     }
 

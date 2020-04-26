@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleStringProperty;
 // enum status {Status};
 
 public class Order implements ITableable<Order> {
+
   private final SimpleIntegerProperty orderNumber;
   private final SimpleIntegerProperty numFlowers;
   private final SimpleStringProperty flowerColor;
