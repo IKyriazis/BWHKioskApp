@@ -12,7 +12,7 @@
 
 <AnchorPane fx:id="medPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.MedicineDeliveryController">
    <children>
-      <StackPane prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="dialogStackPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane>
               <columnConstraints>
@@ -43,8 +43,8 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" text="Create New Request" GridPane.halignment="CENTER" GridPane.rowIndex="1" style="-fx-background-color: white;"/>
-                              <JFXButton buttonType="RAISED" text="Edit Request" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" style="-fx-background-color: white;"/>
+                              <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#addRequest" style="-fx-background-color: white;" text="Create New Request" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                              <JFXButton buttonType="RAISED" style="-fx-background-color: white;" text="Edit Request" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                      </children>

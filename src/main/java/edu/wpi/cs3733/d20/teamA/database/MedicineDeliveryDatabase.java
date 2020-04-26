@@ -11,7 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MedicineDeliveryDatabase extends Database {
-  private int requestCount = 0;
+  private int requestCount = getRequestSize();
 
   public MedicineDeliveryDatabase(Connection connection) {
     super(connection);
@@ -69,6 +69,7 @@ public class MedicineDeliveryDatabase extends Database {
               .prepareStatement(
                   "INSERT INTO MedicineRequest (requestNumber, firstName, lastName, doctor, medicine, roomNumber, progress) VALUES (?, ?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
+      // requestCount++;
       pstmt.setInt(1, ++requestCount);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
