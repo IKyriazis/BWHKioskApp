@@ -27,9 +27,8 @@ public abstract class AbstractController {
     // eDB.readEmployeeCSV();
 
     // Run these two after I merge the new version of flower
-    flDatabase.removeAllOrders();
+    // flDatabase.removeAllOrders();
     // flDatabase.removeAllFlowers();
-
     janitorDatabase = new JanitorDatabase(conn);
   }
 }

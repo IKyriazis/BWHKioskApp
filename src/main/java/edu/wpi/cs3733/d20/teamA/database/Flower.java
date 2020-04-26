@@ -92,6 +92,10 @@ public class Flower extends RecursiveTreeObject<Flower> implements ITableable<Fl
 
     JFXTreeTableColumn<Flower, Double> column4 = new JFXTreeTableColumn<>("Unit Price");
     column4.setCellValueFactory(param -> param.getValue().getValue().pricePerProperty().asObject());
-    return new ArrayList<>(List.of(column1, column2, column3, column4));
+
+    JFXTreeTableColumn<Flower, Integer> column5 = new JFXTreeTableColumn<>("NUMBER");
+    column5.setCellValueFactory(param -> param.getValue().getValue().flowerIDProperty().asObject());
+
+    return new ArrayList<>(List.of(column1, column2, column3, column4, column5));
   }
 }

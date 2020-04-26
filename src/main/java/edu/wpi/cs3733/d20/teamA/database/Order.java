@@ -17,6 +17,7 @@ public class Order implements ITableable<Order> {
   private final SimpleDoubleProperty price;
   private final SimpleStringProperty status;
   private final SimpleStringProperty location;
+  private final SimpleStringProperty message;
 
   public Order(
       int orderNumber,
@@ -24,13 +25,15 @@ public class Order implements ITableable<Order> {
       String flowerString,
       double price,
       String status,
-      String location) {
+      String location,
+      String message) {
     this.orderNumber = new SimpleIntegerProperty(orderNumber);
     this.numFlowers = new SimpleIntegerProperty(numFlowers);
     this.flowerString = new SimpleStringProperty(flowerString);
     this.price = new SimpleDoubleProperty(price);
     this.status = new SimpleStringProperty(status);
     this.location = new SimpleStringProperty(location);
+    this.message = new SimpleStringProperty(message);
   }
 
   public int getOrderNumber() {
@@ -79,6 +82,10 @@ public class Order implements ITableable<Order> {
 
   public SimpleStringProperty locationProperty() {
     return location;
+  }
+
+  public String getMessage() {
+    return message.get();
   }
 
   @Override

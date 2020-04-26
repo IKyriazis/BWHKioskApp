@@ -70,9 +70,6 @@ public class FlowerEditController extends AbstractController implements IDialogC
       txtColor.setText(myFlower.getColor());
       txtQty.setText(String.valueOf(myFlower.getQty()));
       txtCost.setText(String.valueOf(myFlower.getPricePer()));
-    }
-
-    if (hasOrder) {
       txtName.setEditable(false);
       txtColor.setEditable(false);
     }
@@ -102,13 +99,8 @@ public class FlowerEditController extends AbstractController implements IDialogC
       if (!modify) {
         super.flDatabase.addFlower(name, color, qty, price);
       } else {
-        if (hasOrder) {
-          super.flDatabase.updatePrice(myFlower.getTypeFlower(), myFlower.getColor(), price);
-          super.flDatabase.updateQTY(myFlower.getTypeFlower(), myFlower.getColor(), qty);
-        } else {
-          super.flDatabase.deleteFlower(myFlower.getTypeFlower(), myFlower.getColor());
-          super.flDatabase.addFlower(name, color, qty, price);
-        }
+        super.flDatabase.updatePrice(myFlower.getTypeFlower(), myFlower.getColor(), price);
+        super.flDatabase.updateQTY(myFlower.getTypeFlower(), myFlower.getColor(), qty);
       }
 
       dialog.close();

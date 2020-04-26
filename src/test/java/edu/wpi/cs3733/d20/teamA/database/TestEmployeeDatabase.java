@@ -15,7 +15,7 @@ public class TestEmployeeDatabase {
   private Connection conn;
   EmployeesDatabase eDB;
 
-  public TestEmployeeDatabase() throws SQLException {}
+  public TestEmployeeDatabase() {}
 
   @BeforeEach
   public void init() throws SQLException {
@@ -32,20 +32,8 @@ public class TestEmployeeDatabase {
     }
   }
 
-  // @Test
-  public void testDB() throws SQLException {
-    boolean test = false;
-    try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      test = true;
-    } catch (SQLException e) {
-
-    }
-    Assertions.assertTrue(test);
-  }
-
   @Test
-  public void testTables() throws SQLException {
+  public void testTables() {
     eDB.dropTables();
     boolean dropTables = eDB.dropTables();
     Assertions.assertFalse(dropTables);
@@ -57,77 +45,80 @@ public class TestEmployeeDatabase {
   }
 
   @Test
-  public void testAddEmployee() throws SQLException {
+  public void testAddEmployee() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    boolean a = eDB.addEmployee("abc", "brad", "bad", "Janitor");
+    boolean a = eDB.addEmployee("abc", "brad", "bad", "password", "Janitor");
     Assertions.assertTrue(a);
-    boolean d = eDB.addEmployee("abcd", "chad", "lad", "Manager");
+    boolean d = eDB.addEmployee("abcd", "chad", "lad", "password", "Manager");
     Assertions.assertTrue(d);
-    boolean b = eDB.addEmployee("ab", "kassy", "lassy", "Surgeon");
+    boolean b = eDB.addEmployee("ab", "kassy", "lassy", "password", "Surgeon");
     Assertions.assertTrue(b);
-    boolean e = eDB.addEmployee("bacd", "ray", "jay", "Intern");
+    boolean e = eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
     Assertions.assertTrue(e);
-    boolean c = eDB.addEmployee("abcd", "bailey", "kaylee", "Nurse");
-    Assertions.assertFalse(c);
     Assertions.assertEquals(4, eDB.getSizeEmployees());
     eDB.removeAllEmployees();
   }
 
   @Test
-  public void testDeleteEmployee() throws SQLException {
+  public void testDeleteEmployee() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    boolean a = eDB.addEmployee("abc", "brad", "bad", "Nurse");
+    boolean a = eDB.addEmployee("abc", "brad", "bad", "password", "Nurse");
     Assertions.assertTrue(a);
-    boolean b = eDB.deleteEmployee("abc");
+    boolean b = eDB.deleteEmployee("bad");
     Assertions.assertTrue(b);
     Assertions.assertEquals(0, eDB.getSizeEmployees());
-    eDB.addEmployee("abc", "brad", "bad", "Nurse");
-    eDB.addEmployee("dyi", "brad", "bad", "Doctor Sleep");
+    eDB.addEmployee("bad", "brad", "abc", "password", "Nurse");
+    eDB.addEmployee("bad", "brad", "dyi", "password", "Doctor Sleep");
     Assertions.assertEquals(2, eDB.getSizeEmployees());
     boolean c = eDB.deleteEmployee("abc");
     Assertions.assertTrue(c);
     Assertions.assertEquals(1, eDB.getSizeEmployees());
+    eDB.addEmployee("bad", "brad", "abc", "password", "Nurse");
+    Assertions.assertEquals(2, eDB.getSizeEmployees());
+    boolean d = eDB.removeAllEmployees();
+    Assertions.assertTrue(d);
+    Assertions.assertEquals(0, eDB.getSizeEmployees());
   }
 
   @Test
-  public void testEditTitle() throws SQLException {
+  public void testEditTitle() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
     boolean a = eDB.editTitle("bacd", "Doctor");
     Assertions.assertTrue(a);
   }
 
   @Test
-  public void testEditFName() throws SQLException {
+  public void testEditFName() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
     boolean a = eDB.editNameFirst("bacd", "cray");
     Assertions.assertTrue(a);
   }
 
   @Test
-  public void testEditLName() throws SQLException {
+  public void testEditLName() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
     boolean a = eDB.editNameLast("bacd", "kay");
     Assertions.assertTrue(a);
   }
 
   @Test
-  public void testChangePass() throws SQLException {
+  public void testChangePass() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "Intern");
-    boolean a = eDB.changePassword("bacd", "bacd", "Is3");
+    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    boolean a = eDB.changePassword("jay", "password", "Is3");
     Assertions.assertTrue(a);
-    boolean b = eDB.changePassword("bacd", "Is3", "happy");
+    boolean b = eDB.changePassword("jay", "Is33", "happy");
     Assertions.assertFalse(b);
-    boolean c = eDB.changePassword("bacd", "Is3", "IskkIg3");
+    boolean c = eDB.changePassword("jay", "Is3", "IskkIg3");
     Assertions.assertTrue(c);
   }
 }

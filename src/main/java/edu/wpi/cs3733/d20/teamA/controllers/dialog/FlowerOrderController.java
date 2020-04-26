@@ -20,7 +20,11 @@ public class FlowerOrderController extends AbstractController implements IDialog
   @FXML private JFXComboBox<Node> roomList;
   @FXML private JFXButton confirmButton;
 
-  @FXML private JFXTextArea showOrder;
+  @FXML private JFXTextArea showOrderFlower;
+  @FXML private JFXTextArea showOrderNumber;
+  @FXML private JFXTextField txtTotal;
+
+  @FXML private JFXTextField txtMessage;
 
   private JFXDialog dialog;
 
@@ -47,10 +51,10 @@ public class FlowerOrderController extends AbstractController implements IDialog
     double cost = 0;
     for (Flower f : orderContent) {
       cost += f.getPricePer() * f.getQuantitySelected();
-      showOrder.appendText(
-          f.getQuantitySelected() + " " + f.getColor() + " " + f.getTypeFlower() + "'s\n");
+      showOrderFlower.appendText(f.getColor() + " " + f.getTypeFlower() + "s\n");
+      showOrderNumber.appendText(f.getQuantitySelected() + "\n");
     }
-    showOrder.appendText("Total cost: " + String.format("$%.2f", cost));
+    txtTotal.setText("Total cost: " + String.format("$%.2f", cost));
   }
 
   @FXML
@@ -67,8 +71,10 @@ public class FlowerOrderController extends AbstractController implements IDialog
         numFlowers += f.getQuantitySelected();
         flowerString += f.getFlowerID() + "," + f.getQuantitySelected() + "|";
       }
+
+      String message = txtMessage.getText();
       try {
-        int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID());
+        int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID(), message);
         dialog.close();
         DialogUtil.simpleInfoDialog(
             dialog.getDialogContainer(), "Order Placed", "Order #" + i + " placed successfully");
