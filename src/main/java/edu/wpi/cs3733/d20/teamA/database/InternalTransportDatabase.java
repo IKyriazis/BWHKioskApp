@@ -23,7 +23,7 @@ public class InternalTransportDatabase extends Database {
 
     // Create the InternalTransportRequest table
     return helperPrepared(
-        "CREATE TABLE InternalTransportRequest (internalTransportRequestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, start Varchar(10) NOT NULL, destination Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, CONSTRAINT FK_START FOREIGN KEY (start) REFERENCES Node(nodeID), CONSTRAINT FK_DEST FOREIGN KEY (destination) REFERENCES Node(nodeID), CONSTRAINT CHK_INTTRANSPROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
+        "CREATE TABLE InternalTransportRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, start Varchar(10) NOT NULL, destination Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, CONSTRAINT FK_START FOREIGN KEY (start) REFERENCES Node(nodeID), CONSTRAINT FK_DEST FOREIGN KEY (destination) REFERENCES Node(nodeID), CONSTRAINT CHK_INTTRANSPROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
   }
 
   /**
@@ -64,7 +64,7 @@ public class InternalTransportDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO InternalTransportRequest (time, start, progress, destination, internalTransportRequestNumber) VALUES (?, ?, ?, ?, ?)");
+                  "INSERT INTO InternalTransportRequest (time, start, progress, destination, requestNumber) VALUES (?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, start);
@@ -123,6 +123,44 @@ public class InternalTransportDatabase extends Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
+    }
+  }
+
+  public String getRequestStatus(int rn) {
+    String n;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "SELECT progress FROM InternalTransportRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      n = rset.getString("progress");
+      pstmt.close();
+      return n;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public String getName(int rn) {
+    String n;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "SELECT name FROM InternalTransportRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      n = rset.getString("name");
+      pstmt.close();
+      return n;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
     }
   }
 
