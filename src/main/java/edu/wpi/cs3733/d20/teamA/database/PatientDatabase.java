@@ -83,26 +83,8 @@ public class PatientDatabase extends Database {
         String lastName = rset.getString("lastName");
         String healthInsurance = rset.getString("healthInsurance");
         String dateOfBirth = rset.getString("dateOfBirth");
-        int heightFeet = rset.getInt("heightFeet");
-        int heightInches = rset.getInt("heightInches");
-        double weight = rset.getDouble("weight");
-        String symptoms = rset.getString("symptoms");
-        String allergies = rset.getString("allergies");
-        String currentMeds = rset.getString("currentMeds");
 
-        Patient node =
-            new Patient(
-                patientID,
-                firstName,
-                lastName,
-                healthInsurance,
-                dateOfBirth,
-                heightFeet,
-                heightInches,
-                weight,
-                symptoms,
-                allergies,
-                currentMeds);
+        Patient node = new Patient(patientID, firstName, lastName, healthInsurance, dateOfBirth);
         oList.add(node);
       }
       rset.close();
@@ -120,38 +102,18 @@ public class PatientDatabase extends Database {
       String firstName,
       String lastName,
       String healthInsurance,
-      String dateOfBirth,
-      int heightFeet,
-      int heightInches,
-      double weight,
-      String symptoms,
-      String allergies,
-      String currentMeds) {
-
-    String text = Double.toString(Math.abs(weight));
-    int integerPlaces = text.indexOf('.');
-    int decimalPlaces = text.length() - integerPlaces - 1;
-
-    if (decimalPlaces > 2) {
-      return false;
-    }
+      String dateOfBirth) {
 
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth, heightFeet, heightInches, weight, symptoms, allergies, currentMeds) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth) VALUES (?, ?, ?, ?, ?)");
       pstmt.setInt(1, patientID);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
       pstmt.setString(4, healthInsurance);
       pstmt.setString(5, dateOfBirth);
-      pstmt.setInt(6, heightFeet);
-      pstmt.setInt(7, heightInches);
-      pstmt.setDouble(8, weight);
-      pstmt.setString(9, symptoms);
-      pstmt.setString(10, allergies);
-      pstmt.setString(11, currentMeds);
       pstmt.executeUpdate();
       pstmt.close();
       return true;

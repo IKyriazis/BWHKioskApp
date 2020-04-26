@@ -20,12 +20,6 @@ public class PatientEditController extends AbstractController implements IDialog
   @FXML private JFXTextField txtLastName;
   @FXML private JFXTextField txtHealthInsurance;
   @FXML private JFXTextField txtDateOfBirth;
-  @FXML private JFXTextField txtHeightFeet;
-  @FXML private JFXTextField txtHeightInches;
-  @FXML private JFXTextField txtWeight;
-  @FXML private JFXTextField txtSymptoms;
-  @FXML private JFXTextField txtAllergies;
-  @FXML private JFXTextField txtCurrentMeds;
 
   @FXML private JFXButton doneButton;
 
@@ -85,42 +79,12 @@ public class PatientEditController extends AbstractController implements IDialog
               }
             });
 
-    txtHeightFeet.setTextFormatter(InputFormatUtil.getIntFilter());
-    txtHeightInches.setTextFormatter(InputFormatUtil.getIntFilter());
-    txtWeight.setTextFormatter(InputFormatUtil.getDoubleFilter());
-    txtSymptoms
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (newValue.length() > 15) {
-                txtSymptoms.setText(newValue.substring(0, 15));
-              }
-            });
-    txtAllergies
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (newValue.length() > 15) {
-                txtAllergies.setText(newValue.substring(0, 15));
-              }
-            });
-    txtCurrentMeds
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (newValue.length() > 15) {
-                txtCurrentMeds.setText(newValue.substring(0, 15));
-              }
-            });
-
     if (modify) {
+      txtPatientID.setText(String.valueOf(myPatient.getPatientID()));
+      txtFirstName.setText(myPatient.getFirstName());
+      txtLastName.setText(myPatient.getLastName());
       txtHealthInsurance.setText(myPatient.getHealthInsurance());
-      txtHeightFeet.setText(String.valueOf(myPatient.getHeightFeet()));
-      txtHeightInches.setText(String.valueOf(myPatient.getHeightInches()));
-      txtWeight.setText(String.valueOf(myPatient.getWeight()));
-      txtSymptoms.setText(myPatient.getSymptoms());
-      txtAllergies.setText(myPatient.getAllergies());
-      txtCurrentMeds.setText(myPatient.getCurrentMeds());
+      txtDateOfBirth.setText(myPatient.getDateOfBirth());
     }
 
     doneButton.setOnAction(this::isDone);
@@ -135,13 +99,7 @@ public class PatientEditController extends AbstractController implements IDialog
         || txtFirstName.getText().isEmpty()
         || txtLastName.getText().isEmpty()
         || txtHealthInsurance.getText().isEmpty()
-        || txtDateOfBirth.getText().isEmpty()
-        || txtHeightFeet.getText().isEmpty()
-        || txtHeightInches.getText().isEmpty()
-        || txtWeight.getText().isEmpty()
-        || txtSymptoms.getText().isEmpty()
-        || txtAllergies.getText().isEmpty()
-        || txtCurrentMeds.getText().isEmpty()) {
+        || txtDateOfBirth.getText().isEmpty()) {
       return;
     }
 
@@ -151,16 +109,9 @@ public class PatientEditController extends AbstractController implements IDialog
       String last = txtLastName.getText();
       String healthIns = txtHealthInsurance.getText();
       String birthday = txtDateOfBirth.getText();
-      int heightF = Integer.parseInt(txtHeightFeet.getText());
-      int heightI = Integer.parseInt(txtHeightInches.getText());
-      double weigh = Double.parseDouble(txtWeight.getText());
-      String symps = txtSymptoms.getText();
-      String allergy = txtAllergies.getText();
-      String meds = txtCurrentMeds.getText();
 
       if (!modify) {
-        super.patientDatabase.addPatient(
-            id, first, last, healthIns, birthday, heightF, heightI, weigh, symps, allergy, meds);
+        super.patientDatabase.addPatient(id, first, last, healthIns, birthday);
       }
 
       dialog.close();

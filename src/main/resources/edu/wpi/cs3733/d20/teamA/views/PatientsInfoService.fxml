@@ -47,7 +47,7 @@
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                            <children>
                               <JFXButton fx:id="addPatientButton" buttonType="RAISED" onAction="#addPatient" style="-fx-background-color: white;" text="Add Patient Info" />
-                              <JFXButton fx:id="editPatientButton" buttonType="RAISED" style="-fx-background-color: white;" text="Edit Patient Info" />
+                              <JFXButton fx:id="editPatientButton" buttonType="RAISED" onAction="#editPatient" style="-fx-background-color: white;" text="Edit Patient Info" />
                            </children>
                            <GridPane.margin>
                               <Insets top="25.0" />
