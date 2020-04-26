@@ -11,6 +11,7 @@ import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.util.Comparator;
+import java.util.Hashtable;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -30,6 +31,8 @@ public class JanitorEditController extends AbstractController implements IDialog
 
   private JanitorService janitorService;
   private JFXDialog dialog;
+
+  private Hashtable<String, String> nodeIDHash;
 
   public JanitorEditController() {
     super();
@@ -85,17 +88,14 @@ public class JanitorEditController extends AbstractController implements IDialog
     }
 
     try {
-
-      String priority = comboboxPriority.getValue().toString();
-
-      Optional<Node> found =
+      Optional<Node> start =
           comboboxLocation.getItems().stream()
               .filter(node -> node.toString().contains(comboboxLocation.getEditor().getText()))
-              .findAny();
-      Node node = found.get();
-      System.out.println(node.getNodeID());
-      String location = node.getNodeID();
-      String longName = node.getLongName();
+              .findFirst();
+
+      String location = start.get().getNodeID();
+      String priority = comboboxPriority.getValue().toString();
+      String longName = comboboxLocation.getValue().toString();
 
       if (modify) {
         super.janitorDatabase.deleteRequest(janitorService.getIndex());

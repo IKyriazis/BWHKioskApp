@@ -5,7 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class JanitorDatabase extends Database {
-  private int requestCount = 0;
+  private int requestCount = getRequestSize() + 1;
 
   /**
    * Sets the connection to the database
@@ -46,7 +46,7 @@ public class JanitorDatabase extends Database {
 
     // Create the janitorrequest table
     return helperPrepared(
-        "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, longName Varchar(20), employeeName Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
+        "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, longName Varchar(1000), employeeName Varchar(30), progress Varchar(19) NOT NULL, priority Varchar(10) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
   }
 
   /**
@@ -86,8 +86,8 @@ public class JanitorDatabase extends Database {
       pstmt.setString(6, priority);
 
       // first request starts at 1 and increments every time a new request is added
-      pstmt.setInt(7, ++requestCount);
-
+      pstmt.setInt(7, requestCount);
+      requestCount++;
       pstmt.executeUpdate();
       pstmt.close();
       // return true if the request is added
@@ -239,6 +239,9 @@ public class JanitorDatabase extends Database {
 
   public int getRequestSize() {
     int count = 0;
+    if (doesTableNotExist("JANITORREQUEST")) {
+      return -1;
+    }
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * From JanitorRequest ");
       ResultSet rset = pstmt.executeQuery();
