@@ -1,5 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 
 public class InternalTransportDatabase extends Database {
@@ -161,6 +164,39 @@ public class InternalTransportDatabase extends Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
+    }
+  }
+
+  /**
+   * Gets all requests in the table
+   *
+   * @return an observable list containing all orders in the table
+   */
+  public ObservableList<Order> requestOl() {
+    ObservableList<Order> oList = FXCollections.observableArrayList();
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM InternalTransportRequest");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int orderNumber = rset.getInt("requestNumber");
+        String start = rset.getString("start");
+        String destination = rset.getString("destination");
+        Timestamp time = rset.getTimestamp("time");
+        String progress = rset.getString("progress");
+        String name = rset.getString("name");
+
+        Order node =
+                new Order(orderNumber, numFlowers, flowerType, flowerColor, price, status, location);
+        oList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      conn.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
     }
   }
 
