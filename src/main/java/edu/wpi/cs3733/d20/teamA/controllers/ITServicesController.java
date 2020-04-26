@@ -42,7 +42,7 @@ public class ITServicesController extends AbstractController {
       itTicketDatabase.readITTicketsCSV();
     }
     ITTicketCategory.getItems().addAll("Wifi", "Email", "Login", "Kiosk", "Pager", "Other");
-    statusChangeStatus.getItems().addAll("Ticket Sent", "In Process", "Complete");
+    statusChangeStatus.getItems().addAll("Ticket Sent", "In Progress", "Complete");
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
             Graph.getInstance().getNodes().values().stream()
@@ -57,24 +57,13 @@ public class ITServicesController extends AbstractController {
 
   public void changeStatus(ActionEvent actionEvent) {}
 
-//  public void submitTicket(ActionEvent actionEvent) {
-//            Node locationSelection = ITTicketLocation.getSelectionModel().getSelectedItem();
-//            String loc = "";
-//            if (locationSelection != null && !ITTicketLocation.getValue().equals("")) {
-//              loc = locationSelection.getNodeID();
-//                janitorDatabase.addRequest(loc, comboboxPriority.getValue());
-//              statusHash.put(loc, "Not Started");
-//              comboboxPriority.getSelectionModel().clearSelection();
-//              labelSubmitRequest.setText("Request Submitted Successfully");
-//            } else if (comboboxPriority.getValue() != null && locationSelection == null) {
-//              labelSubmitRequest.setText("Please enter a location");
-//            } else if (comboboxPriority.getValue() == null && locationSelection != null) {
-//              labelSubmitRequest.setText("Please enter a priority");
-//            } else if (comboboxPriority.getValue() == null && locationSelection == null) {
-//              labelSubmitRequest.setText("Please enter data");
-//            }
-//            refreshActiveRequests();
-//  }
+  public void submitTicket(ActionEvent actionEvent) {
+    Node locationSelection = ITTicketLocation.getSelectionModel().getSelectedItem();
+    String location = "";
+    if (locationSelection != null && !ITTicketLocation.getValue().equals("")) {
+      location = locationSelection.getNodeID();
+    }
+  }
 
   public void update() {
     try {
@@ -83,8 +72,7 @@ public class ITServicesController extends AbstractController {
       tblViewITTicket.add(itTicketDatabase.ITTicketObservableList());
     } catch (Exception e) {
       e.printStackTrace();
-      DialogUtil.simpleErrorDialog(
-              dialogStackPane, "Error", "Failed to update flower and/or order tables");
+      DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Failed to update IT Ticket Table");
     }
   }
 }

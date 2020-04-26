@@ -11,13 +11,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ITTicketDatabase extends Database {
-  private int ticketNum = getSizeITTickets() + 1;
+  private int ticketNum;
 
   public ITTicketDatabase(Connection connection) {
     super(connection);
     if (doesTableNotExist("ITTICKETS")) {
       createTables();
     }
+    ticketNum = getSizeITTickets() + 1;
   }
 
   public boolean dropTables() {
@@ -40,11 +41,11 @@ public class ITTicketDatabase extends Database {
             + "status VarChar(50) NOT NULL, "
             + "category Varchar(50) NOT NULL, "
             + "location Varchar(10) NOT NULL, "
-            + "name Varchar(10) NOT NULL, "
-            + "completedBy Varchar(10) NOT NULL, "
+            + "requestorName Varchar(25) NOT NULL, "
+            + "completedBy Varchar(25) NOT NULL, "
             + "description Varchar(200) NOT NULL, "
             + "CONSTRAINT ITLocation FOREIGN KEY (location) REFERENCES Node(nodeID), "
-            + "CONSTRAINT ITStatus CHECK (status in ('Ticket Sent', 'In Process', 'Complete')))");
+            + "CONSTRAINT ITStatus CHECK (status in ('Ticket Sent', 'In Progress', 'Complete')))");
   }
 
   public boolean addTicket(
@@ -52,23 +53,23 @@ public class ITTicketDatabase extends Database {
       String status,
       String category,
       String location,
-      String name,
+      String requestorName,
       String completedBy,
       String description) {
-
+    System.out.println(completedBy);
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO ITTickets (ticketNum, ticketTime , status, category, location, name, completedBy, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO ITTickets (ticketNum, ticketTime , status, category, location, requestorName, completedBy, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
       pstmt.setInt(1, ticketNum);
       pstmt.setTimestamp(2, ticketTime);
       pstmt.setString(3, status);
       pstmt.setString(4, category);
       pstmt.setString(5, location);
-      pstmt.setString(6, name);
+      pstmt.setString(6, requestorName);
       pstmt.setString(7, completedBy);
       pstmt.setString(8, description);
       pstmt.executeUpdate();
@@ -117,12 +118,13 @@ public class ITTicketDatabase extends Database {
         String status = rset.getString("status");
         String category = rset.getString("category");
         String location = rset.getString("location");
-        String name = rset.getString("name");
+        String requestorName = rset.getString("requestorName");
         String completedBy = rset.getString("completedBy");
         String description = rset.getString("description");
 
         ITTicket node =
-            new ITTicket(ticketTime, status, category, location, name, completedBy, description);
+            new ITTicket(
+                ticketTime, status, category, location, requestorName, completedBy, description);
         ITTicketObservableList.add(node);
       }
       rset.close();
@@ -141,17 +143,18 @@ public class ITTicketDatabase extends Database {
           getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/ITTicketsCSV.csv");
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
+      Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
       for (int i = 1; i < data.size(); i++) {
-        Timestamp ticketTime;
-        String status, category, location, name, completedBy, description;
-        ticketTime = Timestamp.valueOf(data.get(i)[0]);
-        status = data.get(i)[2];
-        category = data.get(i)[3];
-        location = data.get(i)[4];
-        name = data.get(i)[5];
-        completedBy = data.get(i)[6];
-        description = data.get(i)[7];
-        addTicket(ticketTime, status, category, location, name, completedBy, description);
+        // Timestamp ticketTime;
+        String status, category, location, requestorName, completedBy, description;
+        // ticketTime = Timestamp.valueOf(data.get(i)[0]);
+        status = data.get(i)[1];
+        category = data.get(i)[2];
+        location = data.get(i)[3];
+        requestorName = data.get(i)[4];
+        completedBy = data.get(i)[5];
+        description = data.get(i)[6];
+        addTicket(ticketTime, status, category, location, requestorName, completedBy, description);
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();
