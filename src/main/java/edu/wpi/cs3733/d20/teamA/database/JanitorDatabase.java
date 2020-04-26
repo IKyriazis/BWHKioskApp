@@ -1,12 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.*;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -52,7 +46,7 @@ public class JanitorDatabase extends Database {
 
     // Create the janitorrequest table
     return helperPrepared(
-        "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, name Varchar(15), employeeName Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
+        "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, longName Varchar(20), employeeName Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
   }
 
   /**
@@ -70,7 +64,8 @@ public class JanitorDatabase extends Database {
    *
    * @return False if request couldn't be added
    */
-  public boolean addRequest(String location, String priority, String employeeName) {
+  public boolean addRequest(
+      String location, String priority, String employeeName, String longName) {
 
     // creates a timestamp of the time that the function is called
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -81,16 +76,17 @@ public class JanitorDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO JanitorRequest (time, location, employeeName, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO JanitorRequest (time, location, longName, employeeName, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, location);
-      pstmt.setString(3, employeeName);
-      pstmt.setString(4, progress);
-      pstmt.setString(5, priority);
+      pstmt.setString(3, longName);
+      pstmt.setString(4, employeeName);
+      pstmt.setString(5, progress);
+      pstmt.setString(6, priority);
 
       // first request starts at 1 and increments every time a new request is added
-      pstmt.setInt(6, ++requestCount);
+      pstmt.setInt(7, ++requestCount);
 
       pstmt.executeUpdate();
       pstmt.close();
@@ -146,15 +142,16 @@ public class JanitorDatabase extends Database {
    * @param progress progress
    * @return true if the progress has been updated
    */
-  public boolean updateRequest(int rn, String name, String progress) {
+  public boolean updateRequest(int rn, String name, String progress, String employeeName) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "UPDATE JanitorRequest SET name = ?, progress = ? Where requestNumber = ?");
+                  "UPDATE JanitorRequest SET longName = ?, progress = ?, employeeName = ? Where requestNumber = ?");
       pstmt.setString(1, name);
       pstmt.setString(2, progress);
-      pstmt.setInt(3, rn);
+      pstmt.setInt(4, rn);
+      pstmt.setString(3, employeeName);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -164,14 +161,7 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  /**
-   * returns true if the progress has been updated
-   *
-   * @param rn request number
-   * @param progress progress
-   * @return true if the request has been updated
-   */
-  public boolean updateRequest(int rn, String progress) {
+  public boolean updateEmployeeName(int rn, String employeeName) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -180,9 +170,10 @@ public class JanitorDatabase extends Database {
       ResultSet rset = pstmt.executeQuery();
       rset.next();
       String name = rset.getString("name");
+      String progress = rset.getString("progress");
       rset.close();
       pstmt.close();
-      updateRequest(rn, name, progress);
+      updateRequest(rn, name, progress, employeeName);
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -371,23 +362,24 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public void readFromCSV() {
-    try {
-      InputStream stream =
-          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/JanitorRequest.csv");
-      CSVReader reader = new CSVReader(new InputStreamReader(stream));
-      List<String[]> data = reader.readAll();
-      for (int i = 1; i < data.size(); i++) {
-        String location, priority, employeeName;
-        location = data.get(i)[0];
-        priority = data.get(i)[1];
-        employeeName = data.get(i)[2];
-        addRequest(location, priority, employeeName);
-      }
-    } catch (IOException | CsvException e) {
-      e.printStackTrace();
-    }
-  }
+  //  public void readFromCSV() {
+  //    try {
+  //      InputStream stream =
+  //
+  // getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/JanitorRequest.csv");
+  //      CSVReader reader = new CSVReader(new InputStreamReader(stream));
+  //      List<String[]> data = reader.readAll();
+  //      for (int i = 1; i < data.size(); i++) {
+  //        String location, priority, employeeName;
+  //        location = data.get(i)[0];
+  //        priority = data.get(i)[1];
+  //        employeeName = data.get(i)[2];
+  //        addRequest(location, priority, employeeName, "");
+  //      }
+  //    } catch (IOException | CsvException e) {
+  //      e.printStackTrace();
+  //    }
+  //  }
 
   public ObservableList<JanitorService> janitor01() {
     ObservableList<JanitorService> oList = FXCollections.observableArrayList();
@@ -397,12 +389,14 @@ public class JanitorDatabase extends Database {
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         String location = rset.getString("location");
-        String typeOfJanitorService = rset.getString("priority");
+        String priority = rset.getString("priority");
         String status = rset.getString("progress");
         String employeeName = rset.getString("employeeName");
+        int requestNumber = rset.getInt("requestNumber");
+        String longName = rset.getString("longName");
 
         JanitorService node =
-            new JanitorService(location, typeOfJanitorService, status, employeeName);
+            new JanitorService(location, priority, status, employeeName, requestNumber, longName);
         oList.add(node);
       }
       rset.close();
