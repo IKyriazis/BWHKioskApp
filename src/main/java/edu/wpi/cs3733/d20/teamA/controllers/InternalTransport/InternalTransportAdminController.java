@@ -39,10 +39,10 @@ public class InternalTransportAdminController extends AbstractController {
     if (itDatabase.getRequestSize() == -1) {
       itDatabase.dropTables();
       itDatabase.createTables();
-//      itDatabase.readFlowerOrderCSV();
+      itDatabase.readInternalTransportCSV();
     } else if (itDatabase.getRequestSize() == 0) {
       itDatabase.removeAll();
-//      itDatabase.readFlowersCSV();
+      itDatabase.readInternalTransportCSV();
     }
 
     // Setup label icons

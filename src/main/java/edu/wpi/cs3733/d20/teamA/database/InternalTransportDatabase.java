@@ -1,6 +1,15 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -187,6 +196,56 @@ public class InternalTransportDatabase extends Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
+    }
+  }
+
+  private boolean addRequestFromCSV(int requestNumber, Timestamp time, String start, String destination, String name, String progress) {
+    try {
+      // creates the prepared statement that will be sent to the database
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement(
+                              "INSERT INTO InternalTransportRequest (time, start, progress, destination, requestNumber, name) VALUES (?, ?, ?, ?, ?, ?)");
+      // sets all the parameters of the prepared statement string
+      pstmt.setTimestamp(1, time);
+      pstmt.setString(2, start);
+      pstmt.setString(3, progress);
+      pstmt.setString(4, destination);
+      // first request starts at 1 and increments every time a new request is added
+      pstmt.setInt(5, requestNumber);
+      pstmt.setString(6, name);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /** Reads the internal transport csv file into the database */
+  public void readInternalTransportCSV() {
+    try {
+      InputStream stream =
+              getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/InternalTransportCSV.csv");
+      CSVReader reader = new CSVReader(new InputStreamReader(stream));
+      List<String[]> data = reader.readAll();
+      SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+      for (int i = 1; i < data.size(); i++) {
+        int requestNumber;
+        String name, start, destination, progress;
+        Timestamp time;
+        requestNumber = Integer.parseInt(data.get(i)[0]);
+        Date parsedDate = (Date) dateFormat.parse(data.get(i)[1]);
+        time = new java.sql.Timestamp(parsedDate.getTime());
+        start = data.get(i)[2];
+        destination = data.get(i)[3];
+        name = data.get(i)[4];
+        progress = data.get(i)[5];
+        addRequestFromCSV(requestNumber, time, start, destination, name, progress);
+      }
+    } catch (IOException | CsvException | ParseException e) {
+      e.printStackTrace();
     }
   }
 

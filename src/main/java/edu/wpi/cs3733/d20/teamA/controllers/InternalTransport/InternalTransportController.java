@@ -17,11 +17,15 @@ public class InternalTransportController extends AbstractController {
 
   @FXML private Pane rootPane;
 
-  InternalTransportRequestController itrc = new InternalTransportRequestController();
-
   public void initialize() {
-    itDatabase.dropTables();
-    itDatabase.createTables();
+    if (itDatabase.getRequestSize() == -1) {
+      itDatabase.dropTables();
+      itDatabase.createTables();
+      itDatabase.readInternalTransportCSV();
+    } else if (itDatabase.getRequestSize() == 0) {
+      itDatabase.removeAll();
+      itDatabase.readInternalTransportCSV();
+    }
   }
 
   @FXML
