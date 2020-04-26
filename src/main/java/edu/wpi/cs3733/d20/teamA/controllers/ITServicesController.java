@@ -67,10 +67,29 @@ public class ITServicesController extends AbstractController {
   public void changeStatus(ActionEvent actionEvent) {}
 
   public void submitTicket(ActionEvent actionEvent) {
-    Node locationSelection = ITTicketLocation.getSelectionModel().getSelectedItem();
-    String location = "";
-    if (locationSelection != null && !ITTicketLocation.getValue().equals("")) {
-      location = locationSelection.getNodeID();
+    if (ITTicketLocation.getSelectionModel().getSelectedItem() != null
+        && ITTicketCategory.getSelectionModel().getSelectedItem() != null
+        && ITTicketName.getText() != null
+        && ITTicketDescription.getText() != null) {
+      Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
+      String status = "Ticket Sent";
+      String category = ITTicketCategory.getSelectionModel().getSelectedItem();
+      // String location = ITTicketLocation.getSelectionModel().getSelectedItem().getNodeID();
+      Node location = ITTicketLocation.getSelectionModel().getSelectedItem();
+
+      String requesterName = ITTicketName.getText();
+      String completedBy = " ";
+      String description = ITTicketDescription.getText();
+      boolean ticket =
+          itTicketDatabase.addTicket(
+              ticketTime,
+              status,
+              category,
+              location.getNodeID(),
+              requesterName,
+              completedBy,
+              description);
+      updateTable();
     }
   }
 
