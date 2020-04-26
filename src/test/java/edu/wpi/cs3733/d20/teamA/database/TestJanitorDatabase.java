@@ -240,6 +240,7 @@ public class TestJanitorDatabase {
     jDB.createTables();
     jDB.removeAll();
     boolean a = jDB.addRequest("biscuit", "Medium");
+    jDB.printTable();
     Assertions.assertTrue(a);
     Assertions.assertEquals(1, jDB.getRequestSize());
     boolean b = jDB.updateRequest(1, "harry", "Dispatched");
