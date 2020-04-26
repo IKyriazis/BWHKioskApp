@@ -15,8 +15,8 @@ public class InterpreterDatabase extends Database {
   }
 
   public boolean dropTables() {
-    if (!(helperPrepared("DROP TABLE Interpreters")
-        && helperPrepared("DROP TABLE InterpreterRequests"))) {
+    if (!(helperPrepared("DROP TABLE InterpreterRequests")
+        && helperPrepared("DROP TABLE Interpreters"))) {
       return false;
     }
 
@@ -28,21 +28,27 @@ public class InterpreterDatabase extends Database {
         helperPrepared(
             "CREATE TABLE Interpreters (name Varchar(64) NOT NULL, language Varchar(64) NOT NULL, PRIMARY KEY (name))");
 
-    // Add dummy interpreters
-    addInterpreter("Bob", "Spanish");
-    addInterpreter("Bobby", "French");
-    addInterpreter("Rob", "German");
-    addInterpreter("Robbie", "Italian");
-    addInterpreter("Robert", "Portuguese");
-
     boolean b =
         helperPrepared(
             "CREATE TABLE InterpreterRequests (requestNumber INTEGER PRIMARY KEY, name VARCHAR(64) NOT NULL, language VARCHAR(64) NOT NULL, location VARCHAR(10) NOT NULL, status VARCHAR(64) NOT NULL, CONSTRAINT FK_INID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT FK_RN FOREIGN KEY (name) REFERENCES Interpreters(name))");
 
-    // Add dummy request
-    addRequest("Bobby", "French", "AINFO00101", "Submitted");
-
     return a && b;
+  }
+
+  public boolean addDummyInterpreters() {
+    // Add dummy interpreters
+    boolean a = addInterpreter("Bob", "Spanish");
+    boolean b = addInterpreter("Bobby", "French");
+    boolean c = addInterpreter("Rob", "German");
+    boolean d = addInterpreter("Robbie", "Italian");
+    boolean e = addInterpreter("Robert", "Portuguese");
+
+    return a && b && c && d && e;
+  }
+
+  public boolean addDummyRequests() {
+    // Add dummy request
+    return (addRequest("Bobby", "French", "AINFO00101", "Submitted") != 0);
   }
 
   public boolean addInterpreter(String name, String language) {
@@ -171,6 +177,14 @@ public class InterpreterDatabase extends Database {
       return 0;
     } else {
       return getSize("InterpreterRequests");
+    }
+  }
+
+  public int getSizeInterpreters() {
+    if (doesTableNotExist("INTERPRETERS")) {
+      return 0;
+    } else {
+      return getSize("Interpreters");
     }
   }
 }

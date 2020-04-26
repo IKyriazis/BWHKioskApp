@@ -114,12 +114,12 @@
                         </GridPane>
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                            <children>
-                              <JFXButton fx:id="requestButton" buttonType="RAISED" onAction="#requestClicked" prefWidth="125.0" style="-fx-background-color: white;" text="New Request">
+                              <JFXButton fx:id="requestButton" buttonType="RAISED" onAction="#requestClicked" prefWidth="150.0" style="-fx-background-color: white;" text="New Request">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton fx:id="completeButton" buttonType="RAISED" onAction="#completeClicked" prefWidth="125.0" style="-fx-background-color: white;" text="Mark Completed">
+                              <JFXButton fx:id="completeButton" buttonType="RAISED" onAction="#completeClicked" prefWidth="150.0" style="-fx-background-color: white;" text="Mark Completed">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
