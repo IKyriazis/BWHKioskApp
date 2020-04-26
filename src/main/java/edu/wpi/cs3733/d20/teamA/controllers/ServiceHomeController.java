@@ -23,7 +23,7 @@ public class ServiceHomeController {
         "Flowers", new MaterialIconView(MaterialIcon.LOCAL_FLORIST), "views/FlowerService.fxml");
     vSwitcherBox.addEntry(
         "Internal Transport",
-        new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
+        new MaterialIconView(MaterialIcon.ACCESSIBLE),
         "views/InternalTransportService.fxml");
     vSwitcherBox.setTransitionMillis(500);
 

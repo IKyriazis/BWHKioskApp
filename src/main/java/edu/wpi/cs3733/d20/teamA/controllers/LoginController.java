@@ -62,6 +62,10 @@ public class LoginController extends AbstractController {
         "Announcements",
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
+    vSwitcherBox.addEntry(
+            "Internal Transport Requests",
+            new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
+            "views/AnnouncementAdmin.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
