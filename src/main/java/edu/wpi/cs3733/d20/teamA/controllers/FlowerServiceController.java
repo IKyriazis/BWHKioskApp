@@ -135,7 +135,7 @@ public class FlowerServiceController extends AbstractController {
     FlowerOrderController cont = new FlowerOrderController();
     cont.setList(myList);
     DialogUtil.complexDialog(
-        dialogPane, "Place Order", "views/FlowerOrderDialog.fxml", false, null, cont);
+        dialogPane, "Place Order", "views/flower/FlowerOrderDialog.fxml", false, null, cont);
   }
   // Generate a list of flowers to pass to the order controller
   private List<Flower> getOrderList() {
@@ -153,7 +153,7 @@ public class FlowerServiceController extends AbstractController {
     DialogUtil.complexDialog(
         dialogPane,
         "Track Order",
-        "views/FlowerTrackerDialog.fxml",
+        "views/flower/FlowerTrackerDialog.fxml",
         false,
         null,
         new FlowerTrackerController());

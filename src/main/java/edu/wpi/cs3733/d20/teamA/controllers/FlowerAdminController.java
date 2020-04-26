@@ -86,7 +86,7 @@ public class FlowerAdminController extends AbstractController {
                   DialogUtil.complexDialog(
                       dialogStackPane,
                       "Order",
-                      "views/ViewDetailOrder.fxml",
+                      "views/flower/ViewDetailOrder.fxml",
                       false,
                       event2 -> update(),
                       showController);
@@ -103,7 +103,7 @@ public class FlowerAdminController extends AbstractController {
     DialogUtil.complexDialog(
         dialogStackPane,
         "Add Flower",
-        "views/AddFlowerPopup.fxml",
+        "views/flower/AddFlowerPopup.fxml",
         false,
         event -> update(),
         new FlowerEditController());
@@ -111,10 +111,9 @@ public class FlowerAdminController extends AbstractController {
 
   private boolean hasDependentOrder(Flower flower) {
     boolean constrained = false;
-    /*try {
+    try {
       for (Order order : flDatabase.orderOl()) {
-        if ((order.getFlowerType().equals(flower.getTypeFlower()))
-            && (order.getFlowerColor().equals(flower.getColor()))) {
+        if (order.getFlowerString().contains(flower.getFlowerID() + "/")) {
           constrained = true;
         }
       }
@@ -124,7 +123,7 @@ public class FlowerAdminController extends AbstractController {
           "Database Failure",
           "Failed to verify that there were no outstanding orders for flower: "
               + flower.toString());
-    }*/
+    }
     return constrained;
   }
 
@@ -139,7 +138,7 @@ public class FlowerAdminController extends AbstractController {
       DialogUtil.complexDialog(
           dialogStackPane,
           "Edit Flower",
-          "views/AddFlowerPopup.fxml",
+          "views/flower/AddFlowerPopup.fxml",
           false,
           event -> update(),
           controller);

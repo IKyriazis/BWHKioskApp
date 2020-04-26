@@ -41,10 +41,10 @@ public class FlowerTrackerController extends AbstractController implements IDial
       } else if (s.equals("Order Received")) {
         progressBar.setProgress(.35);
         orderStatusLabel.setText("Order Received");
-      } else if (s.equals("Flower Sent")) {
+      } else if (s.equals("Flowers Sent")) {
         progressBar.setProgress(.7);
         orderStatusLabel.setText("Flower Sent");
-      } else if (s.equals("Flower Delivered")) {
+      } else if (s.equals("Flowers Delivered")) {
         progressBar.setProgress(1);
         orderStatusLabel.setText("Flower Delivered");
       } else {

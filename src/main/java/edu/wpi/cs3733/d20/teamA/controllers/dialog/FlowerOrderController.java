@@ -9,7 +9,6 @@ import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,17 +58,15 @@ public class FlowerOrderController extends AbstractController implements IDialog
 
   @FXML
   public void placeOrder(ActionEvent actionEvent) {
-    Optional<Node> found =
-        roomList.getItems().stream()
-            .filter(node -> node.toString().contains(roomList.getEditor().getText()))
-            .findFirst();
-    if (found.isPresent()) {
-      Node node = found.get();
+    System.out.println(roomList.getSelectionModel().getSelectedItem().getLongName());
+    Node node = roomList.getSelectionModel().getSelectedItem();
+    if (node != null) {
+      System.out.println(node.getLongName());
       String flowerString = "";
       int numFlowers = 0;
       for (Flower f : orderContent) {
         numFlowers += f.getQuantitySelected();
-        flowerString += f.getFlowerID() + "," + f.getQuantitySelected() + "|";
+        flowerString += f.getFlowerID() + "/" + f.getQuantitySelected() + "|";
       }
 
       String message = txtMessage.getText();

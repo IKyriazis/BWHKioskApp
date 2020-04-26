@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minWidth="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane fx:id="flowerOrderPane" alignment="CENTER" hgap="25.0" vgap="25.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
@@ -45,7 +45,7 @@
             <JFXButton fx:id="confirmButton" buttonType="RAISED" onAction="#placeOrder" prefWidth="100.0" style="-fx-background-color: #78909C; -fx-text-fill: black;" text="New Order" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
             <Label text="Enter Message:" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.valignment="BOTTOM" />
             <JFXTextArea fx:id="showOrderFlower" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
-            <JFXButton alignment="CENTER" onAction="#cancel" prefWidth="100.0" style="-fx-background-color: #c62828;" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
+            <JFXButton alignment="CENTER" buttonType="RAISED" onAction="#cancel" prefWidth="100.0" style="-fx-background-color: #ef5350;" text="Cancel" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="9" />
             <Label text="Select Location:" GridPane.rowIndex="6" GridPane.valignment="BOTTOM" />
             <JFXTextField fx:id="txtMessage" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
             <JFXTextArea fx:id="showOrderNumber" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />

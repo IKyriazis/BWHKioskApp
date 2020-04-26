@@ -111,6 +111,49 @@ public class FlowerDatabase extends Database {
   }
 
   /**
+   * Adds a flower to the flower table with a given ID number
+   *
+   * @param id id number of flower
+   * @param type type of flower
+   * @param color color
+   * @param qty how many are available in inventory
+   * @param pricePer price per flower
+   * @return boolean for test purposes. True is everything goes through without an SQL exception
+   */
+  public boolean addFlowerWithID(int id, String type, String color, int qty, double pricePer) {
+
+    String text = Double.toString(Math.abs(pricePer));
+    int integerPlaces = text.indexOf('.');
+    int decimalPlaces = text.length() - integerPlaces - 1;
+
+    if (decimalPlaces > 2) {
+      return false;
+    }
+
+    try {
+      int num = flowerNum;
+      while (idInUse(num)) {
+        num++;
+      }
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
+      pstmt.setInt(1, id);
+      pstmt.setString(2, type);
+      pstmt.setString(3, color);
+      pstmt.setInt(4, qty);
+      pstmt.setDouble(5, pricePer);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /**
    * Takes in the color and type of flower and updates to a given price
    *
    * @param type flowerType
@@ -529,13 +572,14 @@ public class FlowerDatabase extends Database {
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
         String typeFlower, color;
-        int qty;
+        int qty, id;
         double pricePer;
-        typeFlower = data.get(i)[0];
-        color = data.get(i)[1];
-        qty = Integer.parseInt(data.get(i)[2]);
-        pricePer = Double.parseDouble(data.get(i)[3]);
-        addFlower(typeFlower, color, qty, pricePer);
+        id = Integer.parseInt(data.get(i)[0]);
+        typeFlower = data.get(i)[1];
+        color = data.get(i)[2];
+        qty = Integer.parseInt(data.get(i)[3]);
+        pricePer = Double.parseDouble(data.get(i)[4]);
+        addFlowerWithID(id, typeFlower, color, qty, pricePer);
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();

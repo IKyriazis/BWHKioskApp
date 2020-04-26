@@ -28,8 +28,8 @@ public class ShowOrderController extends AbstractController implements IDialogCo
   public void initialize() {
     String s = myOrder.getFlowerString();
     while (s.indexOf('|') != -1) {
-      int flNum = Integer.parseInt(s.substring(0, s.indexOf(",")));
-      int num = Integer.parseInt(s.substring(s.indexOf(",") + 1, s.indexOf("|")));
+      int flNum = Integer.parseInt(s.substring(0, s.indexOf("/")));
+      int num = Integer.parseInt(s.substring(s.indexOf("/") + 1, s.indexOf("|")));
 
       String flType = flDatabase.getFlowerTypeID(flNum);
       String flColor = flDatabase.getFlowerColorID(flNum);
@@ -40,7 +40,7 @@ public class ShowOrderController extends AbstractController implements IDialogCo
 
     txtTotalCost.setText(String.format("$%.2f", myOrder.getPrice()));
     txtMessage.setText(myOrder.getMessage());
-    txtLocation.setText(myOrder.getLocation());
+    txtLocation.setText(graphDatabase.getLongName(myOrder.getLocation()));
 
     changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
     changeEmployeeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ID_CARD));
