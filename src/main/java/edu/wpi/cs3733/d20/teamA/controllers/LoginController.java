@@ -40,6 +40,7 @@ public class LoginController extends AbstractController {
   @FXML
   public void initialize() {
 
+    // Creates the table if it doesn't exit
     if (eDB.getSizeEmployees() == -1) {
       eDB.dropTables();
       eDB.createTables();

@@ -11,20 +11,36 @@ import java.util.List;
 public class PrescriptionDatabase extends Database {
   private int prescriptionNum;
 
+  /**
+   * Constructor
+   *
+   * @param connection
+   */
   public PrescriptionDatabase(Connection connection) {
     super(connection);
 
+    // Creates the table if it doesn't exist
     if (doesTableNotExist("PRESCRIPTION")) {
       createTables();
     }
     prescriptionNum = getSizePrescription() + 1;
   }
 
+  /**
+   * Creates the table in the database
+   *
+   * @return true if completed
+   */
   protected boolean createTables() {
     return helperPrepared(
         "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) UNIQUE NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR','')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
   }
 
+  /**
+   * Deletes the table from the database
+   *
+   * @return true if completed
+   */
   protected boolean dropTables() {
     if (!(helperPrepared("ALTER TABLE PRESCRIPTION DROP CONSTRAINT FK_DOCTOR"))) {
       return false;
@@ -33,14 +49,27 @@ public class PrescriptionDatabase extends Database {
     return helperPrepared("DROP TABLE PRESCRIPTION");
   }
 
+  /**
+   * Removes all info in the database
+   *
+   * @return
+   */
   public boolean removeAllPrescriptions() {
     return helperPrepared("DELETE From PRESCRIPTION");
   }
 
+  /**
+   * Returns the size of the table
+   *
+   * @return int size
+   */
   protected int getSizePrescription() {
     return getSize("PRESCRIPTION");
   }
 
+  /*
+  Adds a prescription to the table
+   */
   protected boolean addPrescription(
       int prescriptionNum,
       String patient,
@@ -75,6 +104,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
+  /** Adds a prescription without a prescription number */
   protected boolean addPrescription(
       String patient,
       String prescription,
