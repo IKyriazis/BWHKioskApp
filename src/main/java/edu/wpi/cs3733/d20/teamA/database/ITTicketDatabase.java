@@ -43,8 +43,8 @@ public class ITTicketDatabase extends Database {
             + "name Varchar(10) NOT NULL, "
             + "completedBy Varchar(10) NOT NULL, "
             + "description Varchar(200) NOT NULL, "
-            + "CONSTRAINT ITLOCATION FOREIGN KEY (location) REFERENCES Node(nodeID), "
-            + "CONSTRAINT ITStatus CHECK (status in ('Ticket Sent', 'In Progress', 'Complete')))");
+            + "CONSTRAINT ITLocation FOREIGN KEY (location) REFERENCES Node(nodeID), "
+            + "CONSTRAINT ITStatus CHECK (status in ('Ticket Sent', 'In Process', 'Complete')))");
   }
 
   public boolean addTicket(
