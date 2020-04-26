@@ -1,8 +1,13 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerEditController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.PatientEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Patient;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -30,7 +35,9 @@ public class PatientInfoController extends AbstractController {
       // patientDatabase.readFlowersCSV();
     }
 
-    // Setup any icons we want to use
+    // Setup button icons
+    addPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
+    editPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
 
     // Setup Table
     patientTable = new SimpleTableView<>(new Patient(0,"", "", "", "", 0, 0, 0.0, "", "", ""), 20.0);
@@ -49,5 +56,15 @@ public class PatientInfoController extends AbstractController {
       // DialogUtil.simpleErrorDialog(
       //         dialogStackPane, "Error", "Failed to update flower and/or order tables");
     }
+  }
+
+  public void addPatient() {
+    DialogUtil.complexDialog(
+            dialogStackPane,
+            "Add Patient",
+            "views/AddFlowerPopup.fxml",
+            false,
+            event -> update(),
+            new PatientEditController());
   }
 }

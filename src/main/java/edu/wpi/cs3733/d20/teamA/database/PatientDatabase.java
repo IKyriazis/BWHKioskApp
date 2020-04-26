@@ -114,4 +114,39 @@ public class PatientDatabase extends Database {
       return oList;
     }
   }
+
+  public boolean addPatient(int patientID, String firstName, String lastName, String healthInsurance, String dateOfBirth, int heightFeet, int heightInches, double weight, String symptoms, String allergies, String currentMeds) {
+
+    String text = Double.toString(Math.abs(weight));
+    int integerPlaces = text.indexOf('.');
+    int decimalPlaces = text.length() - integerPlaces - 1;
+
+    if (decimalPlaces > 2) {
+      return false;
+    }
+
+    try {
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement(
+                              "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth, heightFeet, heightInches, weight, symptoms, allergies, currentMeds) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setInt(1, patientID);
+      pstmt.setString(2, firstName);
+      pstmt.setString(3, lastName);
+      pstmt.setString(4, healthInsurance);
+      pstmt.setString(5, dateOfBirth);
+      pstmt.setInt(6, heightFeet);
+      pstmt.setInt(7, heightInches);
+      pstmt.setDouble(8, weight);
+      pstmt.setString(9, symptoms);
+      pstmt.setString(10, allergies);
+      pstmt.setString(11, currentMeds);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 }
