@@ -20,9 +20,9 @@ public class ITTicket implements ITableable<ITTicket> {
 
   public ITTicket(
       Timestamp ticketTime,
-      String location,
-      String category,
       String status,
+      String category,
+      String location,
       String name,
       String completedBy,
       String description) {
@@ -35,7 +35,7 @@ public class ITTicket implements ITableable<ITTicket> {
     this.completedBy = new SimpleStringProperty(completedBy);
   }
 
-  public String getticketTime() {
+  public String getTicketTime() {
     return ticketTime.get();
   }
 

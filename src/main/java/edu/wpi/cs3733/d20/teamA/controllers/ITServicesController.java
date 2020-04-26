@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamA.database.ITTicket;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -51,6 +52,14 @@ public class ITServicesController extends AbstractController {
     allNodeList.sort(Comparator.comparing(Node::getLongName));
 
     ITTicketLocation.setItems(allNodeList);
+
+    // Set up table
+    tblViewITTicket =
+        new SimpleTableView<>(
+            new ITTicket(new Timestamp(System.currentTimeMillis()), "", "", "", "", "", ""), 80.0);
+    ticketTablePane.getChildren().add(tblViewITTicket);
+
+    updateTable();
   }
 
   public void deleteRequest(ActionEvent actionEvent) {}
@@ -65,7 +74,7 @@ public class ITServicesController extends AbstractController {
     }
   }
 
-  public void update() {
+  public void updateTable() {
     try {
       tblViewITTicket.clear();
 

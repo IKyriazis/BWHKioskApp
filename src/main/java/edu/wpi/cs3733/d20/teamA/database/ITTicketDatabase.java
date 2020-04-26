@@ -41,7 +41,7 @@ public class ITTicketDatabase extends Database {
             + "status VarChar(50) NOT NULL, "
             + "category Varchar(50) NOT NULL, "
             + "location Varchar(10) NOT NULL, "
-            + "requestorName Varchar(25) NOT NULL, "
+            + "requesterName Varchar(25) NOT NULL, "
             + "completedBy Varchar(25) NOT NULL, "
             + "description Varchar(200) NOT NULL, "
             + "CONSTRAINT ITLocation FOREIGN KEY (location) REFERENCES Node(nodeID), "
@@ -53,7 +53,7 @@ public class ITTicketDatabase extends Database {
       String status,
       String category,
       String location,
-      String requestorName,
+      String requesterName,
       String completedBy,
       String description) {
     System.out.println(completedBy);
@@ -62,14 +62,14 @@ public class ITTicketDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO ITTickets (ticketNum, ticketTime , status, category, location, requestorName, completedBy, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO ITTickets (ticketNum, ticketTime , status, category, location, requesterName, completedBy, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
       pstmt.setInt(1, ticketNum);
       pstmt.setTimestamp(2, ticketTime);
       pstmt.setString(3, status);
       pstmt.setString(4, category);
       pstmt.setString(5, location);
-      pstmt.setString(6, requestorName);
+      pstmt.setString(6, requesterName);
       pstmt.setString(7, completedBy);
       pstmt.setString(8, description);
       pstmt.executeUpdate();
@@ -118,13 +118,13 @@ public class ITTicketDatabase extends Database {
         String status = rset.getString("status");
         String category = rset.getString("category");
         String location = rset.getString("location");
-        String requestorName = rset.getString("requestorName");
+        String requesterName = rset.getString("requesterName");
         String completedBy = rset.getString("completedBy");
         String description = rset.getString("description");
 
         ITTicket node =
             new ITTicket(
-                ticketTime, status, category, location, requestorName, completedBy, description);
+                ticketTime, status, category, location, requesterName, completedBy, description);
         ITTicketObservableList.add(node);
       }
       rset.close();
@@ -146,15 +146,15 @@ public class ITTicketDatabase extends Database {
       // Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
       for (int i = 1; i < data.size(); i++) {
         Timestamp ticketTime;
-        String status, category, location, requestorName, completedBy, description;
+        String status, category, location, requesterName, completedBy, description;
         ticketTime = Timestamp.valueOf(data.get(i)[0]);
         status = data.get(i)[1];
         category = data.get(i)[2];
         location = data.get(i)[3];
-        requestorName = data.get(i)[4];
+        requesterName = data.get(i)[4];
         completedBy = data.get(i)[5];
         description = data.get(i)[6];
-        addTicket(ticketTime, status, category, location, requestorName, completedBy, description);
+        addTicket(ticketTime, status, category, location, requesterName, completedBy, description);
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();
