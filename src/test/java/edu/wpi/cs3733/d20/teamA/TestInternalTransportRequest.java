@@ -27,7 +27,7 @@ public class TestInternalTransportRequest {
   }
 
   @Test
-  public void testGetProgressn() {
+  public void testGetProgress() {
     InternalTransportRequest itr =
         new InternalTransportRequest(1, "biscuit", "torn", "time", "done", "harry");
     Assertions.assertEquals("done", itr.getProgress());
