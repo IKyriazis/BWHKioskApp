@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -7,9 +9,6 @@ import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -147,9 +146,9 @@ public class InternalTransportDatabase extends Database {
   public boolean updateRequest(int rn, String progress) {
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "UPDATE InternalTransportRequest SET progress = ? Where requestNumber = ?");
+          getConnection()
+              .prepareStatement(
+                  "UPDATE InternalTransportRequest SET progress = ? Where requestNumber = ?");
       pstmt.setString(1, progress);
       pstmt.setInt(2, rn);
       pstmt.executeUpdate();
@@ -199,13 +198,19 @@ public class InternalTransportDatabase extends Database {
     }
   }
 
-  private boolean addRequestFromCSV(int requestNumber, Timestamp time, String start, String destination, String name, String progress) {
+  private boolean addRequestFromCSV(
+      int requestNumber,
+      Timestamp time,
+      String start,
+      String destination,
+      String name,
+      String progress) {
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "INSERT INTO InternalTransportRequest (time, start, progress, destination, requestNumber, name) VALUES (?, ?, ?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO InternalTransportRequest (time, start, progress, destination, requestNumber, name) VALUES (?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
       pstmt.setTimestamp(1, time);
       pstmt.setString(2, start);
@@ -227,7 +232,8 @@ public class InternalTransportDatabase extends Database {
   public void readInternalTransportCSV() {
     try {
       InputStream stream =
-              getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/InternalTransportCSV.csv");
+          getClass()
+              .getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/InternalTransportCSV.csv");
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");

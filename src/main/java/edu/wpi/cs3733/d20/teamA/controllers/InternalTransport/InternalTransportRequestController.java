@@ -10,7 +10,6 @@ import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.util.Comparator;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,27 +46,17 @@ public class InternalTransportRequestController extends AbstractController
   public void placeRequest(ActionEvent actionEvent) {
     if (startList.getSelectionModel().getSelectedItem() != null
         && destinationList.getSelectionModel().getSelectedItem() != null) {
-      Optional<Node> start =
-          startList.getItems().stream()
-              .filter(node -> node.toString().contains(startList.getEditor().getText()))
-              .findFirst();
-      Optional<Node> end =
-          destinationList.getItems().stream()
-              .filter(node -> node.toString().contains(destinationList.getEditor().getText()))
-              .findFirst();
-      if (start.isPresent() && end.isPresent()) {
-        Node startNode = start.get();
-        Node endNode = end.get();
-        try {
-          int i = itDatabase.addRequest(startNode.getNodeID(), endNode.getNodeID());
-          dialog.close();
-          DialogUtil.simpleInfoDialog(
-              dialog.getDialogContainer(),
-              "Request Placed",
-              "Request #" + i + " placed successfully");
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+      Node start = startList.getSelectionModel().getSelectedItem();
+      Node end = destinationList.getSelectionModel().getSelectedItem();
+      try {
+        int i = itDatabase.addRequest(start.getNodeID(), end.getNodeID());
+        dialog.close();
+        DialogUtil.simpleInfoDialog(
+            dialog.getDialogContainer(),
+            "Request Placed",
+            "Request #" + i + " placed successfully");
+      } catch (Exception e) {
+        e.printStackTrace();
       }
     }
   }
