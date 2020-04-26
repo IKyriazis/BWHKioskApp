@@ -46,6 +46,7 @@
             </GridPane>
             <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                <children>
+                  <JFXTextField fx:id="txtName" editable="true" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Name" />
                   <JFXTextField fx:id="txtPrev" editable="false" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Previous Status" />
                   <JFXComboBox fx:id="txtNext" labelFloat="true" prefWidth="150.0" promptText="New Status">
                      <VBox.margin>

@@ -233,7 +233,7 @@ public class InternalTransportDatabase extends Database {
     try {
       InputStream stream =
           getClass()
-              .getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/InternalTransportCSV.csv");
+              .getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/InternalTransport.csv");
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");

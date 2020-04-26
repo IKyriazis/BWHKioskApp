@@ -43,10 +43,10 @@ public class InternalTransportTrackerController extends AbstractController
         orderStatusLabel.setText("No one has been assigned to your request");
       } else if (s.equals("Dispatched")) {
         progressBar.setProgress(.5);
-        orderStatusLabel.setText("Your request has been assigned!");
+        orderStatusLabel.setText("Your request has been assigned! " + name + " is on the way!");
       } else if (s.equals("Done")) {
         progressBar.setProgress(1);
-        orderStatusLabel.setText("You have been brought to your destination.");
+        orderStatusLabel.setText(name + " brought you to your destination.");
       } else {
         progressBar.setProgress(0);
         orderStatusLabel.setText("Input an order number");

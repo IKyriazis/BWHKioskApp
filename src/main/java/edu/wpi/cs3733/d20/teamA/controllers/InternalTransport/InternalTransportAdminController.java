@@ -21,6 +21,7 @@ public class InternalTransportAdminController extends AbstractController {
 
   @FXML private GridPane requestTablePane;
 
+  @FXML private JFXTextField txtName;
   @FXML private JFXTextField txtPrev;
   @FXML private JFXComboBox<String> txtNext;
 
@@ -121,7 +122,12 @@ public class InternalTransportAdminController extends AbstractController {
   public void changeProgress() {
     if (lastOrder != null) {
       String s = txtNext.getSelectionModel().getSelectedItem();
-      super.itDatabase.updateRequest(lastOrder.getRequestNumber(), s);
+      String name = txtName.getText();
+      if (name != "") {
+        super.itDatabase.updateRequest(lastOrder.getRequestNumber(), name, s);
+      } else {
+        super.itDatabase.updateRequest(lastOrder.getRequestNumber(), s);
+      }
       lastOrder = null;
       update();
     } else {
