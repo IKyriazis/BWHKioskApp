@@ -8,7 +8,7 @@ public class TestOrder {
 
   @Test
   public void testOrder() {
-    Order o = new Order(4, 5, "type", "color", 3.45, "Status", "location");
+    Order o = new Order(4, 5, "1/15|", 45, "Status", "location", "Hi mom");
     Assertions.assertEquals(
         o.getOrderNumber(), 4); // Order is a very simple class, comprehensive tests not required
   }

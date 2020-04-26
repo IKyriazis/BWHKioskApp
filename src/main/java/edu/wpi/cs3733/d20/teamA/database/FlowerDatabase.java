@@ -9,8 +9,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class FlowerDatabase extends Database {
-  private int orderNum = getSizeOrders() + 1;
-  private int flowerNum = getSizeFlowers() + 1;
+  private int orderNum;
+  private int flowerNum;
 
   /**
    * Creates the Flower database with given connection
@@ -24,6 +24,8 @@ public class FlowerDatabase extends Database {
     if (doesTableNotExist("FLOWERS") && doesTableNotExist("ORDERS")) {
       createTables();
     }
+    orderNum = getSizeOrders() + 1;
+    flowerNum = getSizeFlowers() + 1;
   }
 
   /**
@@ -33,13 +35,6 @@ public class FlowerDatabase extends Database {
    *     tables are dropped correctly
    */
   public boolean dropTables() {
-
-    // if the helper returns false this method should too
-    // drop the CONSTRAINT first
-    if (!(helperPrepared("ALTER TABLE Orders DROP CONSTRAINT FK_fT"))) {
-
-      return false;
-    }
     // Drop the tables
     if (!(helperPrepared("DROP TABLE Flowers") && helperPrepared("DROP TABLE Orders"))) {
       return false;

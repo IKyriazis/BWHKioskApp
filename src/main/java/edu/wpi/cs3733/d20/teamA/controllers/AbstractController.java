@@ -15,6 +15,7 @@ public abstract class AbstractController {
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
   protected JanitorDatabase janitorDatabase;
+  protected PrescriptionDatabase prescriptionDatabase;
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
@@ -30,5 +31,6 @@ public abstract class AbstractController {
     // flDatabase.removeAllOrders();
     // flDatabase.removeAllFlowers();
     janitorDatabase = new JanitorDatabase(conn);
+    prescriptionDatabase = new PrescriptionDatabase(conn);
   }
 }
