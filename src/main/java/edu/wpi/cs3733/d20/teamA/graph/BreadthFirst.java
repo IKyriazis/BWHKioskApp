@@ -31,13 +31,13 @@ public class BreadthFirst implements IStrategyPath {
 
     // Add start node ot the queue
     queue.add(start);
+    visited.add(start);
 
     while (queue.size() != 0) {
       Node current = queue.poll();
-      visited.add(current);
-
+      // visited.add(current);
       // Early exit
-      if (current.equals(end)) break;
+      if (current.equals(end) || queue.contains(end)) break;
 
       // Check the current nodes neighbors
       for (Edge edge : current.getEdges().values()) {

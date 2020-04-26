@@ -153,7 +153,23 @@ public class TestPath {
     DepthFirst path = new DepthFirst(graph);
     path.findPath(node1, node3);
     ArrayList<Node> pathNodes = path.getPathNodes();
+    Assertions.assertNotNull(pathNodes);
+    // Assertions.assertTrue(true);
+    Assertions.assertEquals(realPath, pathNodes);
+  }
 
+  @Test
+  public void testDepthFirstGraph2() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(nodeG);
+    realPath.add(nodeH);
+    realPath.add(nodeF);
+    realPath.add(nodeC);
+
+    setupSecondGraph();
+    DepthFirst path = new DepthFirst(graph);
+    path.findPath(nodeG, nodeC);
+    ArrayList<Node> pathNodes = path.getPathNodes();
     Assertions.assertNotNull(pathNodes);
 
     Assertions.assertEquals(realPath, pathNodes);

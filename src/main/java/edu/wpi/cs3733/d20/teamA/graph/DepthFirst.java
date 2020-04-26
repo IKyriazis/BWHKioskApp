@@ -25,23 +25,42 @@ public class DepthFirst implements IStrategyPath {
     Stack<Node> stack = new Stack<Node>();
 
     stack.push(start);
+    visited.add(start);
 
     while (!stack.isEmpty()) {
       Node current = stack.pop();
-      if (!visited.contains(current)) {
-        visited.add(current);
 
-        for (Edge edge : current.getEdges().values()) {
-          Node neighbor = edge.getEnd();
+      if (current.equals(end) || stack.contains(end)) break;
 
-          if (!visited.contains(neighbor)) {
-            visited.add(neighbor);
-            stack.push(neighbor);
-            path.put(neighbor, current);
-          }
+      for (Edge edge : current.getEdges().values()) {
+        Node neighbor = edge.getEnd();
+
+        if (!visited.contains(neighbor)) {
+          visited.add(neighbor);
+          stack.push(neighbor);
+          path.put(neighbor, current);
         }
       }
     }
+
+    // If the path doesn't exist return null
+    if (!path.containsKey(end)) return;
+
+    // clear the path nodes in case there was something in it alread
+    pathNodes.clear();
+
+    Node curr = end;
+    while (!curr.equals(start)) {
+      // add the current node to the path
+      pathNodes.add(curr);
+
+      // set the current node to the node that we came from
+      curr = path.get(curr);
+    }
+    pathNodes.add(start);
+
+    // Flip to correct path direction
+    Collections.reverse(pathNodes);
   }
 
   public ArrayList<Node> getPathNodes() {
