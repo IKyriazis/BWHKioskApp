@@ -136,14 +136,15 @@ public class PatientDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "UPDATE Patients SET healthInsurance = "
+                  "UPDATE Patients SET healthInsurance = '"
                       + newHealthIns
-                      + " WHERE patientID = '"
+                      + "' WHERE patientID = "
                       + patientID
-                      + "' AND firstName = '"
+                      + " AND firstName = '"
                       + firstName
-                      + "' AND lastName = "
-                      + lastName);
+                      + "' AND lastName = '"
+                      + lastName
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
