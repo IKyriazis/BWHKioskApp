@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 
 public class Patient implements ITableable<Patient> {
+  @Setter private SimpleIntegerProperty patientID;
   @Setter private SimpleStringProperty firstName;
   @Setter private SimpleStringProperty lastName;
   @Setter private SimpleStringProperty healthInsurance;
@@ -22,6 +23,7 @@ public class Patient implements ITableable<Patient> {
   @Setter private SimpleStringProperty currentMeds;
 
   public Patient(
+      int patientID,
       String firstName,
       String lastName,
       String healthInsurance,
@@ -32,6 +34,7 @@ public class Patient implements ITableable<Patient> {
       String symptoms,
       String allergies,
       String currentMeds) {
+    this.patientID = new SimpleIntegerProperty(patientID);
     this.firstName = new SimpleStringProperty(firstName);
     this.lastName = new SimpleStringProperty(lastName);
     this.healthInsurance = new SimpleStringProperty(healthInsurance);
@@ -124,8 +127,19 @@ public class Patient implements ITableable<Patient> {
     return currentMeds;
   }
 
+  public int getPatientID() {
+    return patientID.get();
+  }
+
+  public SimpleIntegerProperty patientIDProperty() {
+    return patientID;
+  }
+
   @Override
   public ArrayList<JFXTreeTableColumn<Patient, ?>> getColumns() {
+    JFXTreeTableColumn<Patient, Integer> column0 = new JFXTreeTableColumn<>("Patient ID");
+    column0.setCellValueFactory(param -> param.getValue().getValue().patientIDProperty().asObject());
+
     JFXTreeTableColumn<Patient, String> column1 = new JFXTreeTableColumn<>("First Name");
     column1.setCellValueFactory(param -> param.getValue().getValue().firstNameProperty());
 

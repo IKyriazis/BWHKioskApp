@@ -33,7 +33,7 @@ public class PatientInfoController extends AbstractController {
     // Setup any icons we want to use
 
     // Setup Table
-    patientTable = new SimpleTableView<>(new Patient("", "", "", "", 0, 0, 0.0, "", "", ""), 20.0);
+    patientTable = new SimpleTableView<>(new Patient(0,"", "", "", "", 0, 0, 0.0, "", "", ""), 20.0);
     patientTablePane.getChildren().add(patientTable);
 
     update();
