@@ -114,6 +114,9 @@ public class PatientEditController extends AbstractController implements IDialog
 
       if (!modify) {
         super.patientDatabase.addPatient(id, first, last, healthIns, birthday);
+      } else {
+        super.patientDatabase.updatePatient(
+            myPatient.getPatientID(), myPatient.getFirstName(), myPatient.getLastName(), healthIns);
       }
 
       dialog.close();

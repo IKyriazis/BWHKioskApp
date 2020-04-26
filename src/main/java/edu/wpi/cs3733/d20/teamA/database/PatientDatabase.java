@@ -128,4 +128,28 @@ public class PatientDatabase extends Database {
       return false;
     }
   }
+
+  public boolean updatePatient(
+      int patientID, String firstName, String lastName, String newHealthIns) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Patients SET healthInsurance = "
+                      + newHealthIns
+                      + " WHERE patientID = '"
+                      + patientID
+                      + "' AND firstName = '"
+                      + firstName
+                      + "' AND lastName = "
+                      + lastName);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 }
