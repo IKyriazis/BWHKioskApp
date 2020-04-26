@@ -7,15 +7,12 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Patient;
-import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import lombok.SneakyThrows;
 
 public class PatientEditController extends AbstractController implements IDialogController {
 
   private final boolean modify;
-  @FXML private JFXTextField txtPatientID;
   @FXML private JFXTextField txtFirstName;
   @FXML private JFXTextField txtLastName;
   @FXML private JFXTextField txtHealthInsurance;
@@ -26,13 +23,11 @@ public class PatientEditController extends AbstractController implements IDialog
   private Patient myPatient;
   private JFXDialog dialog;
 
-  @SneakyThrows
   public PatientEditController() {
     super();
     modify = false;
   }
 
-  @SneakyThrows
   public PatientEditController(Patient p) {
     super();
 
@@ -42,7 +37,6 @@ public class PatientEditController extends AbstractController implements IDialog
 
   public void initialize() {
     // Set formatters to restrict input in boxes
-    txtPatientID.setTextFormatter(InputFormatUtil.getIntFilter());
     txtFirstName
         .textProperty()
         .addListener(
@@ -80,7 +74,6 @@ public class PatientEditController extends AbstractController implements IDialog
             });
 
     if (modify) {
-      txtPatientID.setText(String.valueOf(myPatient.getPatientID()));
       txtFirstName.setText(myPatient.getFirstName());
       txtLastName.setText(myPatient.getLastName());
       txtHealthInsurance.setText(myPatient.getHealthInsurance());
@@ -95,16 +88,25 @@ public class PatientEditController extends AbstractController implements IDialog
 
   @FXML
   public void isDone(ActionEvent e) {
-    if (txtPatientID.getText().isEmpty()
-        || txtFirstName.getText().isEmpty()
+    if (txtFirstName.getText().isEmpty()
         || txtLastName.getText().isEmpty()
         || txtHealthInsurance.getText().isEmpty()
         || txtDateOfBirth.getText().isEmpty()) {
       return;
     }
 
+    if (myPatient == null) {
+      myPatient =
+          new Patient(
+              patientDatabase.getSizePatients() + 1,
+              txtFirstName.getText(),
+              txtLastName.getText(),
+              txtHealthInsurance.getText(),
+              txtDateOfBirth.getText());
+    }
+
     try {
-      int id = Integer.parseInt(txtPatientID.getText());
+      int id = myPatient.getPatientID();
       String first = txtFirstName.getText();
       String last = txtLastName.getText();
       String healthIns = txtHealthInsurance.getText();

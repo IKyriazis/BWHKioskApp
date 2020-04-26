@@ -40,8 +40,7 @@ public class PatientInfoController extends AbstractController {
     editPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
 
     // Setup Table
-    patientTable =
-        new SimpleTableView<>(new Patient(0, "", "", "", "", 0, 0, 0.0, "", "", ""), 20.0);
+    patientTable = new SimpleTableView<>(new Patient(0, "", "", "", ""), 80.0);
     patientTablePane.getChildren().add(patientTable);
 
     // Add tab switch update listener
@@ -63,7 +62,7 @@ public class PatientInfoController extends AbstractController {
     } catch (Exception e) {
       e.printStackTrace();
       // DialogUtil.simpleErrorDialog(
-      //         dialogStackPane, "Error", "Failed to update flower and/or order tables");
+      //       dialogStackPane, "Error", "Failed to update flower and/or order tables");
     }
   }
 
@@ -75,5 +74,27 @@ public class PatientInfoController extends AbstractController {
         false,
         event -> update(),
         new PatientEditController());
+  }
+
+  public void editPatient() {
+    Patient patient = patientTable.getSelected();
+    if (patient != null) {
+      // Figure out whether any outstanding orders depend on this flower type, in which case we
+      // can't change the name / type
+
+      PatientEditController controller = new PatientEditController(patient);
+      DialogUtil.complexDialog(
+          dialogStackPane,
+          "Edit Patient",
+          "views/AddPatientPopup.fxml",
+          false,
+          event -> update(),
+          controller);
+    } else {
+      DialogUtil.simpleInfoDialog(
+          dialogStackPane,
+          "No Patient Selected",
+          "Please select a patient by clicking a row in the table");
+    }
   }
 }

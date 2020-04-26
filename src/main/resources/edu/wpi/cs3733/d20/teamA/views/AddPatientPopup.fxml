@@ -18,11 +18,10 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <JFXTextField fx:id="txtPatientID" labelFloat="true" prefWidth="150.0" promptText="PatientID" />
-      <JFXTextField fx:id="txtHealthInsurance" prefWidth="150.0" promptText="Health Insurance" GridPane.columnIndex="2" />
-      <JFXTextField fx:id="txtFirstName" prefWidth="150.0" promptText="First Name" GridPane.rowIndex="1" />
-      <JFXTextField fx:id="txtLastName" prefWidth="150.0" promptText="Last Name" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-      <JFXTextField fx:id="txtDateOfBirth" prefWidth="150.0" promptText="Date of Birth (mm/dd/yyyy)" GridPane.rowIndex="2" />
+      <JFXTextField fx:id="txtHealthInsurance" prefWidth="150.0" promptText="Health Insurance" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <JFXTextField fx:id="txtFirstName" prefWidth="150.0" promptText="First Name" />
+      <JFXTextField fx:id="txtLastName" prefWidth="150.0" promptText="Last Name" GridPane.columnIndex="2" />
+      <JFXTextField fx:id="txtDateOfBirth" prefWidth="150.0" promptText="Date of Birth (mm/dd/yyyy)" GridPane.rowIndex="1" />
       <JFXButton fx:id="doneButton" buttonType="RAISED" style="-fx-background-color: white;" text="Done" GridPane.columnIndex="2" GridPane.rowIndex="2" />
    </children>
 </GridPane>

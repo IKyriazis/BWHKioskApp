@@ -5,12 +5,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class PatientDatabase extends Database {
+
+  private int patientID;
+
   public PatientDatabase(Connection connection) {
     super(connection);
 
     if (doesTableNotExist("PATIENTS")) {
       createTables();
     }
+
+    patientID = getSizePatients() + 1;
   }
 
   /**
@@ -44,7 +49,7 @@ public class PatientDatabase extends Database {
     // Create the graph tables
     boolean a =
         helperPrepared(
-            "CREATE TABLE Patients (patientID INTEGER NOT NULL, firstName Varchar(15), lastName Varchar(15), healthInsurance Varchar(15), dateOfBirth Varchar(15), heightFeet INTEGER NOT NULL, heightInches INTEGER NOT NULL, weight DOUBLE NOT NULL, symptoms Varchar(500), allergies Varchar(500), currentMeds Varchar(500), CONSTRAINT PK_pat PRIMARY KEY (patientID))");
+            "CREATE TABLE Patients (patientID INTEGER NOT NULL, firstName Varchar(15), lastName Varchar(15), healthInsurance Varchar(15), dateOfBirth Varchar(15), CONSTRAINT PK_pat PRIMARY KEY (patientID))");
     return a;
   }
 
@@ -109,13 +114,14 @@ public class PatientDatabase extends Database {
           getConnection()
               .prepareStatement(
                   "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, patientID);
+      pstmt.setInt(1, this.patientID);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
       pstmt.setString(4, healthInsurance);
       pstmt.setString(5, dateOfBirth);
       pstmt.executeUpdate();
       pstmt.close();
+      this.patientID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
