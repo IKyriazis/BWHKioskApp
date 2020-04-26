@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import java.sql.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class LaundryDatabase extends Database {
   // private int requestNum = getSizeLaundry() + 1;
@@ -8,9 +10,7 @@ public class LaundryDatabase extends Database {
   public LaundryDatabase(Connection connection) {
     super(connection);
 
-    if (doesTableNotExist("LAUNDRY")) {
-      createTables();
-    }
+    createTables();
   }
 
   /**
@@ -367,6 +367,36 @@ public class LaundryDatabase extends Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
+    }
+  }
+
+  /**
+   * Takes all of the data in the Laundry table and converts it to an observable list
+   *
+   * @return The observable list
+   */
+  public ObservableList<Laundry> laundryOL() {
+    ObservableList<Laundry> oList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Laundry");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int rNum = rset.getInt("requestNum");
+        String empE = rset.getString("employeeEntered");
+        String loc = rset.getString("location");
+        String prog = rset.getString("progress");
+        String empW = rset.getString("employeeWash");
+        Timestamp ts = rset.getTimestamp("timeRequested");
+
+        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        oList.add(laundry);
+      }
+      rset.close();
+      pstmt.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
     }
   }
 }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="flowerPane" prefHeight="768.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.LaundryController">
+<AnchorPane fx:id="laundryPane" prefHeight="768.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.LaundryController">
     <children>
         <StackPane fx:id="dialogStackPane" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
@@ -37,7 +37,7 @@
                                 <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <Label text="Laundry Service" textAlignment="CENTER" wrapText="true">
+                                <Label fx:id="serviceLabel" text="Laundry Service" textAlignment="CENTER" wrapText="true">
                                     <font>
                                         <Font size="24.0" />
                                     </font>
@@ -47,29 +47,29 @@
                                 </Label>
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="1">
                            <children>
-                              <JFXButton fx:id="updateCleanerButton" buttonType="RAISED" prefWidth="175.0" style="-fx-background-color: white;" text="Update Cleaner">
+                              <JFXButton fx:id="updateCleanerButton" buttonType="RAISED" onAction="#updateCleaner" prefWidth="175.0" style="-fx-background-color: white;" text="Update Cleaner">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXComboBox fx:id="cleanerComboBox" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Cleaner Name" visible="false" />
-                              <JFXButton fx:id="updateProgressButton" buttonType="RAISED" prefWidth="175.0" style="-fx-background-color: white;" text="Update Progress">
+                              <JFXComboBox fx:id="cleanerComboBox" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Cleaner Name" />
+                              <JFXButton fx:id="updateProgressButton" buttonType="RAISED" onAction="#updateProgress" prefWidth="175.0" style="-fx-background-color: white;" text="Update Progress">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXComboBox fx:id="progressComboBox" labelFloat="true" prefWidth="150.0" promptText="Progress" visible="false" />
+                              <JFXComboBox fx:id="progressComboBox" labelFloat="true" prefWidth="150.0" promptText="Progress" />
                            </children>
                         </VBox>
                                 <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                                     <children>
-                                        <JFXButton fx:id="addRequestButton" buttonType="RAISED" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #66BB6A;" text="Add New Request" textFill="WHITE">
+                                        <JFXButton fx:id="addRequestButton" buttonType="RAISED" onAction="#addRequest" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #66BB6A;" text="Add New Request" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
                                             </font>
                                         </JFXButton>
                               <JFXComboBox fx:id="roomList" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Location" />
-                                        <JFXButton fx:id="removeRequestButton" buttonType="RAISED" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #ef5350;" text="Remove Request" textFill="WHITE">
+                                        <JFXButton fx:id="removeRequestButton" buttonType="RAISED" onAction="#removeRequest" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #ef5350;" text="Remove Request" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
                                             </font>
