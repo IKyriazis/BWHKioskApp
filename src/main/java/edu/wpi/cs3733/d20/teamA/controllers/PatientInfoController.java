@@ -16,6 +16,7 @@ import javafx.scene.layout.StackPane;
 public class PatientInfoController extends AbstractController {
   @FXML private JFXButton addPatientButton;
   @FXML private JFXButton editPatientButton;
+  @FXML private JFXButton deletePatientButton;
 
   @FXML private SimpleTableView<Patient> patientTable;
 
@@ -38,6 +39,7 @@ public class PatientInfoController extends AbstractController {
     // Setup button icons
     addPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
     editPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
+    deletePatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
 
     // Setup Table
     patientTable = new SimpleTableView<>(new Patient(0, "", "", "", ""), 80.0);
@@ -90,6 +92,28 @@ public class PatientInfoController extends AbstractController {
           false,
           event -> update(),
           controller);
+    } else {
+      DialogUtil.simpleInfoDialog(
+          dialogStackPane,
+          "No Patient Selected",
+          "Please select a patient by clicking a row in the table");
+    }
+  }
+
+  public void deletePatient() {
+    Patient patient = patientTable.getSelected();
+    if (patient != null) {
+      int id = patient.getPatientID();
+
+      try {
+        super.patientDatabase.deletePatient(id);
+      } catch (Exception e) {
+        e.printStackTrace();
+        DialogUtil.simpleErrorDialog(
+            dialogStackPane, "Error Deleting Patient", "Could not delete patient: " + patient);
+      }
+
+      update();
     } else {
       DialogUtil.simpleInfoDialog(
           dialogStackPane,

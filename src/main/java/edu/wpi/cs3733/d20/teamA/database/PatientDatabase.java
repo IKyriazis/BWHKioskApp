@@ -153,4 +153,17 @@ public class PatientDatabase extends Database {
       return false;
     }
   }
+
+  public boolean deletePatient(int id) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("DELETE From Patients WHERE patientID = " + id);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 }

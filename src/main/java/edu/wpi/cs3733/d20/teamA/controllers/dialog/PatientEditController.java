@@ -84,6 +84,11 @@ public class PatientEditController extends AbstractController implements IDialog
 
     // Set button icon
     doneButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
+
+    txtFirstName.setLabelFloat(true);
+    txtLastName.setLabelFloat(true);
+    txtDateOfBirth.setLabelFloat(true);
+    txtHealthInsurance.setLabelFloat(true);
   }
 
   @FXML
