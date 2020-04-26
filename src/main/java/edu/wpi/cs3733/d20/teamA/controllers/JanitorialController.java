@@ -71,7 +71,7 @@ public class JanitorialController extends AbstractController {
     btnRemoveRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
     btnChangeStatus.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
 
-    tblServiceView = new SimpleTableView<>(new JanitorService("", "", ""), 80.0);
+    tblServiceView = new SimpleTableView<>(new JanitorService("", "", "", ""), 80.0);
     gridTableView.getChildren().add(tblServiceView);
 
     refreshActiveRequests();
@@ -84,7 +84,11 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void addServiceRequest() throws SQLException {
+    if (tblServiceView.getSelectionModel().getSelectedItem() instanceof JanitorService) {
 
+    } else {
+
+    }
     refreshActiveRequests();
   }
 
@@ -95,6 +99,12 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void removeServiceRequest() throws SQLException {
+
+    refreshActiveRequests();
+  }
+
+  @FXML
+  private void updateRequest() throws SQLException {
 
     refreshActiveRequests();
   }

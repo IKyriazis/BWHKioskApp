@@ -52,7 +52,7 @@ public class JanitorDatabase extends Database {
 
     // Create the janitorrequest table
     return helperPrepared(
-        "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
+        "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, name Varchar(15), employeeName Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
   }
 
   /**
@@ -70,7 +70,7 @@ public class JanitorDatabase extends Database {
    *
    * @return False if request couldn't be added
    */
-  public boolean addRequest(String location, String priority) {
+  public boolean addRequest(String location, String priority, String employeeName) {
 
     // creates a timestamp of the time that the function is called
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -81,14 +81,17 @@ public class JanitorDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO JanitorRequest (time, location, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?)");
+                  "INSERT INTO JanitorRequest (time, location, employeeName, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, location);
-      pstmt.setString(3, progress);
-      pstmt.setString(4, priority);
+      pstmt.setString(3, employeeName);
+      pstmt.setString(4, progress);
+      pstmt.setString(5, priority);
+
       // first request starts at 1 and increments every time a new request is added
-      pstmt.setInt(5, ++requestCount);
+      pstmt.setInt(6, ++requestCount);
+
       pstmt.executeUpdate();
       pstmt.close();
       // return true if the request is added
@@ -350,6 +353,24 @@ public class JanitorDatabase extends Database {
     }
   }
 
+  public String getEmployeeName(int rn) {
+    String n;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("SELECT priority FROM JanitorRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      n = rset.getString("employeeName");
+      pstmt.close();
+      return n;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   public void readFromCSV() {
     try {
       InputStream stream =
@@ -357,10 +378,11 @@ public class JanitorDatabase extends Database {
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
-        String location, priority;
+        String location, priority, employeeName;
         location = data.get(i)[0];
         priority = data.get(i)[1];
-        addRequest(location, priority);
+        employeeName = data.get(i)[2];
+        addRequest(location, priority, employeeName);
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();
@@ -377,9 +399,10 @@ public class JanitorDatabase extends Database {
         String location = rset.getString("location");
         String typeOfJanitorService = rset.getString("priority");
         String status = rset.getString("progress");
-        String assignedJanitorName = rset.getString("");
+        String employeeName = rset.getString("employeeName");
 
-        JanitorService node = new JanitorService(location, typeOfJanitorService, status);
+        JanitorService node =
+            new JanitorService(location, typeOfJanitorService, status, employeeName);
         oList.add(node);
       }
       rset.close();
