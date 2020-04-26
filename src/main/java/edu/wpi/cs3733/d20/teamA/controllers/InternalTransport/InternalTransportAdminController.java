@@ -120,4 +120,18 @@ public class InternalTransportAdminController extends AbstractController {
         return 999;
     }
   }
+
+  public void changeProgress() {
+    if (lastOrder != null) {
+      String s = txtNext.getSelectionModel().getSelectedItem();
+      super.itDatabase.updateRequest(lastOrder.getRequestNumber(), "harry", s);
+      lastOrder = null;
+      update();
+    } else {
+      DialogUtil.simpleInfoDialog(
+          dialogStackPane,
+          "No Request Selected",
+          "Please select a request by clicking a row in the table");
+    }
+  }
 }
