@@ -128,6 +128,30 @@ public class InternalTransportDatabase extends Database {
     }
   }
 
+  /**
+   * Updates the rn with a certain progress
+   *
+   * @param rn request number
+   * @param progress progress
+   * @return true if the progress has been updated
+   */
+  public boolean updateRequest(int rn, String progress) {
+    try {
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement(
+                              "UPDATE InternalTransportRequest SET progress = ? Where requestNumber = ?");
+      pstmt.setString(1, progress);
+      pstmt.setInt(2, rn);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public String getRequestStatus(int rn) {
     String n;
     try {

@@ -36,16 +36,13 @@ public class InternalTransportAdminController extends AbstractController {
   private SimpleTableView<InternalTransportRequest> tblOrderView;
 
   public void initialize() {
-    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
-      flDatabase.dropTables();
-      flDatabase.createTables();
-      flDatabase.readFlowersCSV();
-      flDatabase.readFlowerOrderCSV();
-    } else if (flDatabase.getSizeFlowers() == 0 || flDatabase.getSizeOrders() == 0) {
-      flDatabase.removeAllOrders();
-      flDatabase.removeAllFlowers();
-      flDatabase.readFlowersCSV();
-      flDatabase.readFlowerOrderCSV();
+    if (itDatabase.getRequestSize() == -1) {
+      itDatabase.dropTables();
+      itDatabase.createTables();
+//      itDatabase.readFlowerOrderCSV();
+    } else if (itDatabase.getRequestSize() == 0) {
+      itDatabase.removeAll();
+//      itDatabase.readFlowersCSV();
     }
 
     // Setup label icons
@@ -124,7 +121,7 @@ public class InternalTransportAdminController extends AbstractController {
   public void changeProgress() {
     if (lastOrder != null) {
       String s = txtNext.getSelectionModel().getSelectedItem();
-      super.itDatabase.updateRequest(lastOrder.getRequestNumber(), "harry", s);
+      super.itDatabase.updateRequest(lastOrder.getRequestNumber(), s);
       lastOrder = null;
       update();
     } else {
