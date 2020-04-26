@@ -5,9 +5,7 @@ import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class PrescriptionDatabase extends Database {
@@ -24,7 +22,7 @@ public class PrescriptionDatabase extends Database {
 
   protected boolean createTables() {
     return helperPrepared(
-        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills > 0))");
+        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) UNIQUE NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR','')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
   }
 
   protected boolean dropTables() {
@@ -100,7 +98,7 @@ public class PrescriptionDatabase extends Database {
   }
 
   /** Reads the flower csv file into the database */
-  protected void readPrescriptionCSV() {
+  protected boolean readPrescriptionCSV() {
     try {
       InputStream stream =
           getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Prescription.csv");
@@ -129,8 +127,256 @@ public class PrescriptionDatabase extends Database {
             doctorName,
             notes);
       }
+      return true;
     } catch (IOException | CsvException e) {
       e.printStackTrace();
+      return false;
+    }
+  }
+
+  protected String getPrescription(String patientName) {
+    String prescription;
+    try {
+      Statement stmt = getConnection().createStatement();
+      ResultSet rst =
+          stmt.executeQuery("SELECT * FROM PRESCRIPTION WHERE patientName = '" + patientName + "'");
+      rst.next();
+      prescription = rst.getString("prescription");
+      return prescription;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  protected String getPharmacy(String patient) {
+    String pharmacy;
+    try {
+      Statement stmt = getConnection().createStatement();
+      ResultSet rst =
+          stmt.executeQuery("SELECT * FROM PRESCRIPTION WHERE patientName = '" + patient + "'");
+      rst.next();
+      pharmacy = rst.getString("pharmacy");
+      return pharmacy;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  protected String getDosage(String patient) {
+    String dosage;
+    try {
+      Statement stmt = getConnection().createStatement();
+      ResultSet rst =
+          stmt.executeQuery("SELECT * FROM PRESCRIPTION WHERE patientName = '" + patient + "'");
+      rst.next();
+      dosage = rst.getString("dosage");
+      return dosage;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  protected int getNumRefills(String patient) {
+    int numRefills;
+    try {
+      Statement stmt = getConnection().createStatement();
+      ResultSet rst =
+          stmt.executeQuery("SELECT * FROM PRESCRIPTION WHERE patientName = '" + patient + "'");
+      rst.next();
+      numRefills = rst.getInt("numberOfRefills");
+      return numRefills;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return -1;
+    }
+  }
+
+  protected String getNotes(String patient) {
+    String notes;
+    try {
+      Statement stmt = getConnection().createStatement();
+      ResultSet rst =
+          stmt.executeQuery("SELECT * FROM PRESCRIPTION WHERE patientName = '" + patient + "'");
+      rst.next();
+      notes = rst.getString("notes");
+      return notes;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "error";
+    }
+  }
+
+  protected String getDoctor(String patient) {
+    String doctor;
+    try {
+      Statement stmt = getConnection().createStatement();
+      ResultSet rst =
+          stmt.executeQuery("SELECT * FROM PRESCRIPTION WHERE patientName = '" + patient + "'");
+      rst.next();
+      doctor = rst.getString("doctorUsername");
+
+      Statement doctorStatement = getConnection().createStatement();
+      ResultSet rstD =
+          stmt.executeQuery("SELECT * FROM EMPLOYEES WHERE username = '" + doctor + "'");
+      rstD.next();
+      String doctorName = rstD.getString("nameFirst") + " " + rstD.getString("nameLast");
+      return doctorName;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "error";
+    }
+  }
+
+  protected String getPatient(int prescriptionID) {
+    String patient;
+    try {
+      Statement stmt = getConnection().createStatement();
+      ResultSet rst =
+          stmt.executeQuery(
+              "SELECT * FROM PRESCRIPTION WHERE prescriptionID = " + prescriptionID + "");
+      rst.next();
+      patient = rst.getString("patientName");
+      return patient;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  protected boolean setPatient(int prescriptionID, String newPatient) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE PRESCRIPTION SET patientName = '"
+                      + newPatient
+                      + "' WHERE prescriptionID = "
+                      + prescriptionID
+                      + "");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  protected boolean setPrescription(String patient, String newPrescription) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE PRESCRIPTION SET prescription = '"
+                      + newPrescription
+                      + "' WHERE patientName = '"
+                      + patient
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  protected boolean setPharmacy(String patient, String newPharmacy) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE PRESCRIPTION SET pharmacy = '"
+                      + newPharmacy
+                      + "' WHERE patientName = '"
+                      + patient
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  protected boolean setDosage(String patient, String newDosage) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE PRESCRIPTION SET dosage = '"
+                      + newDosage
+                      + "' WHERE patientName = '"
+                      + patient
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  protected boolean setNumberOfRefills(String patient, int newRefills) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE PRESCRIPTION SET numberOfRefills = "
+                      + newRefills
+                      + " WHERE patientName = '"
+                      + patient
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  protected boolean setDoctorUsername(String patient, String newDoctorUsername) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE PRESCRIPTION SET doctorUsername = '"
+                      + newDoctorUsername
+                      + "' WHERE patientName = '"
+                      + patient
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  protected boolean setNotes(String patient, String newNote) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE PRESCRIPTION SET notes = '"
+                      + newNote
+                      + "' WHERE patientName = '"
+                      + patient
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
     }
   }
 }

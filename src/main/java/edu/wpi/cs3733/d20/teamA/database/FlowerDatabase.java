@@ -430,7 +430,6 @@ public class FlowerDatabase extends Database {
                 + "' AND color = '"
                 + flowerColor
                 + "'");
-    ;
     rst.next();
     quantity = rst.getInt("qty");
     return quantity;
