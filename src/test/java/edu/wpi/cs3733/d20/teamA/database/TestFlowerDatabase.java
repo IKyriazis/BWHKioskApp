@@ -26,8 +26,6 @@ public class TestFlowerDatabase {
       fDB = new FlowerDatabase(conn);
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println(
-          "AAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAA");
     }
   }
 
