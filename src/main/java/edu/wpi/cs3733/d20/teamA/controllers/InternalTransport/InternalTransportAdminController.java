@@ -19,17 +19,17 @@ import javafx.scene.layout.StackPane;
 
 public class InternalTransportAdminController extends AbstractController {
 
-  @FXML private GridPane orderTablePane;
+  @FXML private GridPane requestTablePane;
 
   @FXML private JFXTextField txtPrev;
   @FXML private JFXComboBox<String> txtNext;
 
   @FXML private StackPane dialogStackPane;
 
-  @FXML private Label orderTblLbl;
+  @FXML private Label requestTblLbl;
   @FXML private JFXButton changeProgressButton;
 
-  @FXML private AnchorPane flowerPane;
+  @FXML private AnchorPane internalTransportPane;
 
   private InternalTransportRequest lastOrder;
 
@@ -49,13 +49,13 @@ public class InternalTransportAdminController extends AbstractController {
     }
 
     // Setup label icons
-    orderTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
+    requestTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
 
     // Setup button icons
     changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
 
     // Add tab switch update listener
-    flowerPane.addEventHandler(
+    internalTransportPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
         event -> {
           event.consume();
@@ -65,7 +65,7 @@ public class InternalTransportAdminController extends AbstractController {
     // Set up tables
 
     tblOrderView = new SimpleTableView<>(new InternalTransportRequest(0, "", "", "", "", ""), 40.0);
-    orderTablePane.getChildren().addAll(tblOrderView);
+    requestTablePane.getChildren().addAll(tblOrderView);
 
     // Populate tables
     update();
