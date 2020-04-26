@@ -16,13 +16,17 @@ public class TestFlowerDatabase {
   FlowerDatabase fDB;
   GraphDatabase DB;
 
-  public TestFlowerDatabase() throws SQLException {}
+  public TestFlowerDatabase() {}
 
   @BeforeEach
-  public void init() throws SQLException {
-    conn = DriverManager.getConnection(jdbcUrl);
-    DB = new GraphDatabase(conn);
-    fDB = new FlowerDatabase(conn);
+  public void init() {
+    try {
+      conn = DriverManager.getConnection(jdbcUrl);
+      DB = new GraphDatabase(conn);
+      fDB = new FlowerDatabase(conn);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   @AfterEach
