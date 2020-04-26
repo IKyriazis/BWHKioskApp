@@ -16,13 +16,17 @@ public class TestFlowerDatabase {
   FlowerDatabase fDB;
   GraphDatabase DB;
 
-  public TestFlowerDatabase() throws SQLException {}
+  public TestFlowerDatabase() {}
 
   @BeforeEach
-  public void init() throws SQLException {
-    conn = DriverManager.getConnection(jdbcUrl);
-    fDB = new FlowerDatabase(conn);
-    DB = new GraphDatabase(conn);
+  public void init() {
+    try {
+      conn = DriverManager.getConnection(jdbcUrl);
+      DB = new GraphDatabase(conn);
+      fDB = new FlowerDatabase(conn);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   @AfterEach
@@ -35,8 +39,7 @@ public class TestFlowerDatabase {
   }
 
   @Test
-  public void testTables() throws SQLException {
-    DB.createTables();
+  public void testTables() {
     fDB.dropTables();
     boolean dropTables = fDB.dropTables();
     Assertions.assertFalse(dropTables);

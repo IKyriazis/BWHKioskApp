@@ -9,7 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class FlowerDatabase extends Database {
-  private int orderNum = getSizeOrders() + 1;
+  private int orderNum;
 
   /**
    * Creates the Flower database with given connection
@@ -23,6 +23,7 @@ public class FlowerDatabase extends Database {
     if (doesTableNotExist("FLOWERS") && doesTableNotExist("ORDERS")) {
       createTables();
     }
+    orderNum = getSizeOrders() + 1;
   }
 
   /**
