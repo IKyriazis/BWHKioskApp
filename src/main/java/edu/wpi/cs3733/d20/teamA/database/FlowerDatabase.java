@@ -272,12 +272,9 @@ public class FlowerDatabase extends Database {
    *
    * @return the customer's order number
    */
-  public int addOrder(int numFlowers, String flowerString, String location, String inMessage) {
+  public int addOrder(
+      int numFlowers, String flowerString, String location, String inMessage, double total) {
     try {
-      double total;
-      double pricePer = 3.5; // getFlowerPricePer(flowerType, flowerColor);
-      total = pricePer * numFlowers;
-
       total = Math.round(total * 100.0) / 100.0;
 
       String status = "Order Sent";
@@ -600,7 +597,8 @@ public class FlowerDatabase extends Database {
         flowerString = data.get(i)[1];
         location = data.get(i)[3];
         message = data.get(i)[4];
-        addOrder(numFlowers, flowerString, location, message);
+        double price = Double.parseDouble(data.get(i)[5]);
+        addOrder(numFlowers, flowerString, location, message, price);
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();

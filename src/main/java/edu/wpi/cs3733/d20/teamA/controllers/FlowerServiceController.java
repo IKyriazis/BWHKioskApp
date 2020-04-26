@@ -23,6 +23,8 @@ import javafx.scene.layout.StackPane;
 public class FlowerServiceController extends AbstractController {
   @FXML private Label headerLabel;
 
+  @FXML private JFXTextField txtTotal;
+
   @FXML private JFXButton trackButton;
   @FXML private JFXButton orderButton;
   @FXML private StackPane dialogPane;
@@ -77,6 +79,7 @@ public class FlowerServiceController extends AbstractController {
             ((Flower)
                     t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue())
                 .setQuantitySelected(Integer.parseInt(t.getNewValue()));
+            updateTotal();
           }
         });
 
@@ -113,6 +116,17 @@ public class FlowerServiceController extends AbstractController {
         });
   }
 
+  private void updateTotal() {
+    double cost = 0;
+
+    ObservableList<TreeItem<Flower>> f = flowerTable.getRoot().getChildren();
+    for (TreeItem<Flower> item : f) {
+      Flower myFlower = item.getValue();
+      cost += myFlower.getQuantitySelected() * myFlower.getPricePer();
+    }
+    txtTotal.setText(String.format("$%.2f", cost));
+  }
+
   @FXML
   public void updateTable() {
     try {
@@ -120,6 +134,7 @@ public class FlowerServiceController extends AbstractController {
       flDatabase
           .flowerOl()
           .forEach(flower -> flowerTable.getRoot().getChildren().add(new TreeItem(flower)));
+      updateTotal();
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleInfoDialog(

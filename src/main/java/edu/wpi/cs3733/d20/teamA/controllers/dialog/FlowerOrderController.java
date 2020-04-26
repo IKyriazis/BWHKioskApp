@@ -58,20 +58,20 @@ public class FlowerOrderController extends AbstractController implements IDialog
 
   @FXML
   public void placeOrder(ActionEvent actionEvent) {
-    System.out.println(roomList.getSelectionModel().getSelectedItem().getLongName());
     Node node = roomList.getSelectionModel().getSelectedItem();
     if (node != null) {
-      System.out.println(node.getLongName());
       String flowerString = "";
       int numFlowers = 0;
+      double price = 0;
       for (Flower f : orderContent) {
+        price += f.getPricePer() * f.getQuantitySelected();
         numFlowers += f.getQuantitySelected();
         flowerString += f.getFlowerID() + "/" + f.getQuantitySelected() + "|";
       }
 
       String message = txtMessage.getText();
       try {
-        int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID(), message);
+        int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID(), message, price);
         dialog.close();
         DialogUtil.simpleInfoDialog(
             dialog.getDialogContainer(), "Order Placed", "Order #" + i + " placed successfully");
@@ -88,6 +88,6 @@ public class FlowerOrderController extends AbstractController implements IDialog
 
   @FXML
   public void cancel() {
-    // COMPLETE
+    dialog.close();
   }
 }
