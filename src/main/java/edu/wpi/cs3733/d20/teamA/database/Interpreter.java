@@ -49,4 +49,9 @@ public class Interpreter implements ITableable<Interpreter> {
 
     return new ArrayList<>(List.of(col1, col2));
   }
+
+  @Override
+  public String toString() {
+    return nameProperty().getValue();
+  }
 }

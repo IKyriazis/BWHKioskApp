@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.InterpreterDialogController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.InterpreterRequestDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Interpreter;
 import edu.wpi.cs3733.d20.teamA.database.InterpreterRequest;
@@ -39,12 +40,12 @@ public class InterpreterController extends AbstractController {
         TabSwitchEvent.TAB_SWITCH,
         event -> {
           event.consume();
-          updateTable();
+          updateTables();
         });
   }
 
   @FXML
-  public void updateTable() {
+  public void updateTables() {
     try {
       interpreterTable.clear();
       interpreterTable.add(iDB.getInterpreters());
@@ -68,7 +69,7 @@ public class InterpreterController extends AbstractController {
         "views/InterpreterDialog.fxml",
         false,
         event -> {
-          updateTable();
+          updateTables();
         },
         new InterpreterDialogController());
   }
@@ -79,7 +80,7 @@ public class InterpreterController extends AbstractController {
     if (selected != null) {
       boolean success = iDB.deleteInterpreter(selected.getName());
       if (success) {
-        updateTable();
+        updateTables();
       } else {
         DialogUtil.simpleErrorDialog(
             dialogPane,
@@ -93,8 +94,31 @@ public class InterpreterController extends AbstractController {
   }
 
   @FXML
-  public void requestClicked() {}
+  public void requestClicked() {
+    DialogUtil.complexDialog(
+        dialogPane,
+        "New Interpreter Request",
+        "views/InterpreterRequestDialog.fxml",
+        false,
+        event -> {
+          updateTables();
+        },
+        new InterpreterRequestDialogController());
+  }
 
   @FXML
-  public void completeClicked() {}
+  public void completeClicked() {
+    InterpreterRequest selected = requestTable.getSelected();
+    if (selected != null) {
+      boolean success = iDB.updateRequestStatus(selected.getRequestNumber(), "Completed");
+      if (success) {
+        updateTables();
+      } else {
+        DialogUtil.simpleErrorDialog(
+            dialogPane,
+            "Database Error",
+            "Failed to update status in database. Please try again later.");
+      }
+    }
+  }
 }

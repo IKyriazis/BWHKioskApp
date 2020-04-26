@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -16,19 +17,17 @@
    <rowConstraints>
       <RowConstraints vgrow="SOMETIMES" />
       <RowConstraints vgrow="SOMETIMES" />
+      <RowConstraints vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <JFXTextField fx:id="nameField" labelFloat="true" prefWidth="150.0" promptText="Translator Name">
+      <JFXTextField fx:id="languageField" editable="false" labelFloat="true" prefWidth="150.0" promptText="Language" GridPane.rowIndex="1">
          <GridPane.margin>
             <Insets />
          </GridPane.margin>
       </JFXTextField>
-      <JFXTextField fx:id="languageField" labelFloat="true" prefWidth="150.0" promptText="Language" GridPane.columnIndex="1">
-         <GridPane.margin>
-            <Insets />
-         </GridPane.margin>
-      </JFXTextField>
-      <JFXButton fx:id="doneButton" onAction="#clickedDone" prefWidth="150.0" style="-fx-background-color: #78909C;" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <JFXButton fx:id="doneButton" onAction="#clickedDone" prefWidth="150.0" style="-fx-background-color: #78909C; -fx-text-fill: white;" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <JFXComboBox fx:id="interpreterNameBox" labelFloat="true" onAction="#updateLanguage" prefWidth="150.0" promptText="Interpreter Name" />
+      <JFXComboBox fx:id="locationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Location" GridPane.columnIndex="1" />
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

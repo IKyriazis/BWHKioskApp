@@ -148,6 +148,24 @@ public class InterpreterDatabase extends Database {
     return requests;
   }
 
+  public boolean updateRequestStatus(int id, String status) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE InterpreterRequests SET status = '"
+                      + status
+                      + "' WHERE requestNumber = "
+                      + id);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public int getSizeRequests() {
     if (doesTableNotExist("INTERPRETERREQUESTS")) {
       return 0;
