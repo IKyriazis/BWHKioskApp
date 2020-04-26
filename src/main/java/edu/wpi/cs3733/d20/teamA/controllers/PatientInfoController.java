@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.PatientEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Patient;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -43,6 +44,14 @@ public class PatientInfoController extends AbstractController {
     patientTable = new SimpleTableView<>(new Patient(0,"", "", "", "", 0, 0, 0.0, "", "", ""), 20.0);
     patientTablePane.getChildren().add(patientTable);
 
+    // Add tab switch update listener
+    patientPane.addEventHandler(
+            TabSwitchEvent.TAB_SWITCH,
+            event -> {
+              event.consume();
+              update();
+            });
+
     update();
   }
 
@@ -62,7 +71,7 @@ public class PatientInfoController extends AbstractController {
     DialogUtil.complexDialog(
             dialogStackPane,
             "Add Patient",
-            "views/AddFlowerPopup.fxml",
+            "views/AddPatientPopup.fxml",
             false,
             event -> update(),
             new PatientEditController());
