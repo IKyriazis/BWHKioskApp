@@ -329,6 +329,9 @@ public class Graph {
 
     // Reset edge count
     edgeCount = 0;
+
+    // Clear the database
+    DB.removeAll();
   }
 
   public GraphDatabase getDB() {

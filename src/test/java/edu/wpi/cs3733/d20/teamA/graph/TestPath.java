@@ -126,7 +126,7 @@ public class TestPath {
   }
 
   @Test
-  public void testBreadthFirstGraph2() throws SQLException{
+  public void testBreadthFirstGraph2() throws SQLException {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(nodeG);
     realPath.add(nodeD);
@@ -144,7 +144,7 @@ public class TestPath {
   }
 
   @Test
-  public void testDepthFirstGraph1() throws SQLException{
+  public void testDepthFirstGraph1() throws SQLException {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(node1);
     realPath.add(node3);
@@ -158,6 +158,4 @@ public class TestPath {
 
     Assertions.assertEquals(realPath, pathNodes);
   }
-
-
 }
