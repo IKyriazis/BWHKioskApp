@@ -28,6 +28,7 @@ public class MedRequest implements ITableable<MedRequest> {
       String progress,
       String time,
       String fulfilledBy) {
+
     this.orderNum = new SimpleIntegerProperty(orderNum);
     this.firstName = new SimpleStringProperty(firstName);
     this.lastName = new SimpleStringProperty(lastName);
