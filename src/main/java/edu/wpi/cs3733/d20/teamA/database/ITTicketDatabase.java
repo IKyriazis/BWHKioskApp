@@ -56,7 +56,6 @@ public class ITTicketDatabase extends Database {
       String requesterName,
       String completedBy,
       String description) {
-    System.out.println(completedBy);
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
