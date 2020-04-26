@@ -3,7 +3,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerEditController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.PatientEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Patient;
@@ -41,16 +40,17 @@ public class PatientInfoController extends AbstractController {
     editPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
 
     // Setup Table
-    patientTable = new SimpleTableView<>(new Patient(0,"", "", "", "", 0, 0, 0.0, "", "", ""), 20.0);
+    patientTable =
+        new SimpleTableView<>(new Patient(0, "", "", "", "", 0, 0, 0.0, "", "", ""), 20.0);
     patientTablePane.getChildren().add(patientTable);
 
     // Add tab switch update listener
     patientPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              update();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          update();
+        });
 
     update();
   }
@@ -69,11 +69,11 @@ public class PatientInfoController extends AbstractController {
 
   public void addPatient() {
     DialogUtil.complexDialog(
-            dialogStackPane,
-            "Add Patient",
-            "views/AddPatientPopup.fxml",
-            false,
-            event -> update(),
-            new PatientEditController());
+        dialogStackPane,
+        "Add Patient",
+        "views/AddPatientPopup.fxml",
+        false,
+        event -> update(),
+        new PatientEditController());
   }
 }

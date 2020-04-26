@@ -138,7 +138,8 @@ public class Patient implements ITableable<Patient> {
   @Override
   public ArrayList<JFXTreeTableColumn<Patient, ?>> getColumns() {
     JFXTreeTableColumn<Patient, Integer> column0 = new JFXTreeTableColumn<>("Patient ID");
-    column0.setCellValueFactory(param -> param.getValue().getValue().patientIDProperty().asObject());
+    column0.setCellValueFactory(
+        param -> param.getValue().getValue().patientIDProperty().asObject());
 
     JFXTreeTableColumn<Patient, String> column1 = new JFXTreeTableColumn<>("First Name");
     column1.setCellValueFactory(param -> param.getValue().getValue().firstNameProperty());
@@ -174,7 +175,7 @@ public class Patient implements ITableable<Patient> {
 
     return new ArrayList<>(
         List.of(
-            column0, column1, column2, column3, column4, column5, column6, column7, column8, column9,
-            column10));
+            column0, column1, column2, column3, column4, column5, column6, column7, column8,
+            column9, column10));
   }
 }

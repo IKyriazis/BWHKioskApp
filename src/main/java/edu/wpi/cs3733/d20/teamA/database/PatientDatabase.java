@@ -115,7 +115,18 @@ public class PatientDatabase extends Database {
     }
   }
 
-  public boolean addPatient(int patientID, String firstName, String lastName, String healthInsurance, String dateOfBirth, int heightFeet, int heightInches, double weight, String symptoms, String allergies, String currentMeds) {
+  public boolean addPatient(
+      int patientID,
+      String firstName,
+      String lastName,
+      String healthInsurance,
+      String dateOfBirth,
+      int heightFeet,
+      int heightInches,
+      double weight,
+      String symptoms,
+      String allergies,
+      String currentMeds) {
 
     String text = Double.toString(Math.abs(weight));
     int integerPlaces = text.indexOf('.');
@@ -127,9 +138,9 @@ public class PatientDatabase extends Database {
 
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth, heightFeet, heightInches, weight, symptoms, allergies, currentMeds) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth, heightFeet, heightInches, weight, symptoms, allergies, currentMeds) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       pstmt.setInt(1, patientID);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
