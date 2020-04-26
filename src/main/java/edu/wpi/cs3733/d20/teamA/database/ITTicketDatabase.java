@@ -143,11 +143,11 @@ public class ITTicketDatabase extends Database {
           getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/ITTicketsCSV.csv");
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
-      Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
+      // Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
       for (int i = 1; i < data.size(); i++) {
-        // Timestamp ticketTime;
+        Timestamp ticketTime;
         String status, category, location, requestorName, completedBy, description;
-        // ticketTime = Timestamp.valueOf(data.get(i)[0]);
+        ticketTime = Timestamp.valueOf(data.get(i)[0]);
         status = data.get(i)[1];
         category = data.get(i)[2];
         location = data.get(i)[3];
