@@ -12,7 +12,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane fx:id="rootPane" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.InterpreterController">
    <children>
       <StackPane fx:id="dialogPane" alignment="TOP_CENTER" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -55,12 +54,12 @@
                         </GridPane>
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                            <children>
-                              <JFXButton fx:id="registerButton" buttonType="RAISED" prefWidth="175.0" style="-fx-background-color: white;" text="Register Interpreter">
+                              <JFXButton fx:id="registerButton" buttonType="RAISED" onAction="#registerClicked" prefWidth="175.0" style="-fx-background-color: white;" text="Register Interpreter">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton fx:id="deleteButton" buttonType="RAISED" prefWidth="175.0" style="-fx-background-color: white;" text="Delete Interpreter">
+                              <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteClicked" prefWidth="175.0" style="-fx-background-color: white;" text="Delete Interpreter">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -115,7 +114,12 @@
                         </GridPane>
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                            <children>
-                              <JFXButton fx:id="completeButton" buttonType="RAISED" style="-fx-background-color: white;" text="Mark Completed">
+                              <JFXButton fx:id="requestButton" buttonType="RAISED" onAction="#requestClicked" prefWidth="125.0" style="-fx-background-color: white;" text="New Request">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton fx:id="completeButton" buttonType="RAISED" onAction="#completeClicked" prefWidth="125.0" style="-fx-background-color: white;" text="Mark Completed">
                                  <font>
                                     <Font size="14.0" />
                                  </font>

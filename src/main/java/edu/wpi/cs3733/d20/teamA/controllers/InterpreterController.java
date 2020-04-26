@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.InterpreterDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Interpreter;
 import edu.wpi.cs3733.d20.teamA.database.InterpreterRequest;
@@ -15,6 +17,11 @@ public class InterpreterController extends AbstractController {
   @FXML private GridPane requestTablePane;
   @FXML private StackPane dialogPane;
   @FXML private Pane rootPane;
+
+  @FXML private JFXButton registerButton;
+  @FXML private JFXButton deleteButton;
+  @FXML private JFXButton requestButton;
+  @FXML private JFXButton completeButton;
 
   private SimpleTableView<Interpreter> interpreterTable;
   private SimpleTableView<InterpreterRequest> requestTable;
@@ -52,4 +59,42 @@ public class InterpreterController extends AbstractController {
           "Failed to pull interpreter list from database. Please try again later.");
     }
   }
+
+  @FXML
+  public void registerClicked() {
+    DialogUtil.complexDialog(
+        dialogPane,
+        "Register Interpreter",
+        "views/InterpreterDialog.fxml",
+        false,
+        event -> {
+          updateTable();
+        },
+        new InterpreterDialogController());
+  }
+
+  @FXML
+  public void deleteClicked() {
+    Interpreter selected = interpreterTable.getSelected();
+    if (selected != null) {
+      boolean success = iDB.deleteInterpreter(selected.getName());
+      if (success) {
+        updateTable();
+      } else {
+        DialogUtil.simpleErrorDialog(
+            dialogPane,
+            "Database Error",
+            "Failed to delete interpreter from database. Please try again later.");
+      }
+    } else {
+      DialogUtil.simpleInfoDialog(
+          dialogPane, "No Selection", "Please select an interpreter from the list and try again,");
+    }
+  }
+
+  @FXML
+  public void requestClicked() {}
+
+  @FXML
+  public void completeClicked() {}
 }

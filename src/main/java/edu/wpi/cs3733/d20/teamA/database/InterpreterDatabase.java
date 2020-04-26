@@ -71,7 +71,7 @@ public class InterpreterDatabase extends Database {
   public boolean deleteInterpreter(String name) {
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE From Interpreters WHERE name = '" + name + "')");
+          getConnection().prepareStatement("DELETE From Interpreters WHERE name = '" + name + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
