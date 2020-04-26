@@ -47,7 +47,7 @@ public class InternalTransportAdminController extends AbstractController {
     }
 
     // Setup label icons
-    requestTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
+    requestTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR));
 
     // Setup button icons
     changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
