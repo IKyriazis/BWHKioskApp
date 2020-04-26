@@ -2,9 +2,13 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
 import com.opencsv.exceptions.CsvException;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.JanitorService;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+import java.awt.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Comparator;
@@ -12,6 +16,7 @@ import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 
 public class JanitorialController extends AbstractController {
 
@@ -26,21 +31,33 @@ public class JanitorialController extends AbstractController {
 
   @FXML private JFXTextField textfieldCurrentStatus;
 
-  @FXML private JFXTreeTableView<JanitorService> tblServiceView;
+  @FXML private GridPane gridTableView;
 
-  ObservableList priorityItems = FXCollections.observableArrayList();
+  private SimpleTableView<JanitorService> tblServiceView;
+
+  ObservableList statusItems = FXCollections.observableArrayList();
   ObservableList activeItems = FXCollections.observableArrayList();
 
   public JanitorialController() {}
 
   public void initialize() throws SQLException, IOException, CsvException {
-    refreshActiveRequests();
-    priorityItems.clear();
-    String a = "Not Started";
-    String b = "In Progress";
-    String c = "Finished";
-    priorityItems.addAll(a, b, c);
-    comboboxNextStatus.getItems().addAll(priorityItems);
+    // initialize the database
+    if (janitorDatabase.getRequestSize() == -1) {
+      janitorDatabase.dropTables();
+      janitorDatabase.createTables();
+      janitorDatabase.readFromCSV();
+    } else if (janitorDatabase.getRequestSize() == 0) {
+      janitorDatabase.removeAll();
+      janitorDatabase.readFromCSV();
+    }
+
+    // Add the status items to the combobox
+    statusItems.clear();
+    String a = "Reported";
+    String b = "Dispatched";
+    String c = "Done";
+    statusItems.addAll(a, b, c);
+    comboboxNextStatus.getItems().addAll(statusItems);
 
     // Set up autofill for nodes
     ObservableList<Node> allNodeList =
@@ -50,7 +67,14 @@ public class JanitorialController extends AbstractController {
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));
 
-    janitorDatabase.readFromCSV();
+    btnAddRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_TRIANGLE));
+    btnRemoveRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
+    btnChangeStatus.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
+
+    tblServiceView = new SimpleTableView<>(new JanitorService("", "", ""), 80.0);
+    gridTableView.getChildren().add(tblServiceView);
+
+    refreshActiveRequests();
   }
 
   /**
@@ -81,5 +105,13 @@ public class JanitorialController extends AbstractController {
    * @throws SQLException
    */
   @FXML
-  private void refreshActiveRequests() throws SQLException {}
+  private void refreshActiveRequests() {
+    try {
+      tblServiceView.clear();
+
+      tblServiceView.add(janitorDatabase.janitor01());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 }

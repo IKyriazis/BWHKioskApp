@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class JanitorDatabase extends Database {
   private int requestCount = 0;
@@ -362,6 +364,31 @@ public class JanitorDatabase extends Database {
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();
+    }
+  }
+
+  public ObservableList<JanitorService> janitor01() {
+    ObservableList<JanitorService> oList = FXCollections.observableArrayList();
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM JanitorRequest");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String location = rset.getString("location");
+        String typeOfJanitorService = rset.getString("priority");
+        String status = rset.getString("progress");
+        String assignedJanitorName = rset.getString("");
+
+        JanitorService node = new JanitorService(location, typeOfJanitorService, status);
+        oList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      conn.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
     }
   }
 }

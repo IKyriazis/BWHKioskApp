@@ -13,11 +13,13 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
   @Setter private SimpleStringProperty location;
   @Setter private SimpleStringProperty typeOfJanitorService;
   @Setter private SimpleStringProperty status;
+  // @Setter private SimpleStringProperty name;
 
   public JanitorService(String location, String typeOfJanitorService, String status) {
     this.location = new SimpleStringProperty(location);
     this.typeOfJanitorService = new SimpleStringProperty(typeOfJanitorService);
     this.status = new SimpleStringProperty(status);
+    // this.time = new SimpleStringProperty(time);
   }
 
   public SimpleStringProperty location() {
@@ -32,7 +34,11 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
     return status;
   }
 
-  public String getServiceType() {
+  //  public SimpleStringProperty time() {
+  //    return time;
+  //  }
+
+  public String getTypeOfJanitorService() {
     return typeOfJanitorService.get();
   }
 
@@ -40,20 +46,26 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
     return location.get();
   }
 
-  public String getQty() {
+  public String getStatus() {
     return status.get();
   }
+
+  //  public String getTime() {
+  //    return status.get();
+  //  }
 
   @Override
   public ArrayList<JFXTreeTableColumn<JanitorService, ?>> getColumns() {
     JFXTreeTableColumn<JanitorService, String> column1 = new JFXTreeTableColumn<>("Location");
     column1.setCellValueFactory(param -> param.getValue().getValue().location);
 
-    JFXTreeTableColumn<JanitorService, String> column2 =
-        new JFXTreeTableColumn<>("Type of Janitor Service");
+    JFXTreeTableColumn<JanitorService, String> column2 = new JFXTreeTableColumn<>("Priority");
     column2.setCellValueFactory(param -> param.getValue().getValue().typeOfJanitorService);
 
-    JFXTreeTableColumn<JanitorService, String> column3 = new JFXTreeTableColumn<>("Priority");
+    JFXTreeTableColumn<JanitorService, String> column3 = new JFXTreeTableColumn<>("Status");
+    column3.setCellValueFactory(param -> param.getValue().getValue().status);
+
+    JFXTreeTableColumn<JanitorService, String> column4 = new JFXTreeTableColumn<>("Status");
     column3.setCellValueFactory(param -> param.getValue().getValue().status);
 
     return new ArrayList<>(List.of(column1, column2, column3));
