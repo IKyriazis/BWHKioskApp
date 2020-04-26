@@ -16,6 +16,7 @@ public abstract class AbstractController {
   protected EmployeesDatabase eDB;
   protected JanitorDatabase janitorDatabase;
   protected PatientDatabase patientDatabase;
+  protected PrescriptionDatabase prescriptionDatabase;
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
@@ -25,5 +26,6 @@ public abstract class AbstractController {
     eDB = new EmployeesDatabase(conn);
     janitorDatabase = new JanitorDatabase(conn);
     patientDatabase = new PatientDatabase(conn);
+    prescriptionDatabase = new PrescriptionDatabase(conn);
   }
 }
