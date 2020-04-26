@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class PrescriptionDatabase extends Database {
@@ -22,7 +24,7 @@ public class PrescriptionDatabase extends Database {
 
   protected boolean createTables() {
     return helperPrepared(
-        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) NOT NULL, prescription VARCHAR(50) NOT NULL, dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorLastName VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorLastName) REFERENCES Employees(nameLast), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills > 0))");
+        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills > 0))");
   }
 
   protected boolean dropTables() {
@@ -44,12 +46,57 @@ public class PrescriptionDatabase extends Database {
   protected boolean addPrescription(
       int prescriptionNum,
       String patient,
+      String prescription,
+      String pharmacy,
       String dosage,
       int numRefills,
       String refillPer,
       String doctorName,
       String notes) {
-    return false;
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO PRESCRIPTION (prescriptionID, patientName, prescription, pharmacy, dosage, numberOfRefills, refillPer, doctorUsername, notes) VALUES (?, ?, ?, ?,?,?,?,?,?)");
+      pstmt.setInt(1, prescriptionNum);
+      pstmt.setString(2, patient);
+      pstmt.setString(3, prescription);
+      pstmt.setString(4, pharmacy);
+      pstmt.setString(5, dosage);
+      pstmt.setInt(6, numRefills);
+      pstmt.setString(7, refillPer);
+      pstmt.setString(8, doctorName);
+      pstmt.setString(9, notes);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  protected boolean addPrescription(
+      String patient,
+      String prescription,
+      String pharmacy,
+      String dosage,
+      int numRefills,
+      String refillPer,
+      String doctorName,
+      String notes) {
+    this.prescriptionNum++;
+    return addPrescription(
+        this.prescriptionNum,
+        patient,
+        prescription,
+        pharmacy,
+        dosage,
+        numRefills,
+        refillPer,
+        doctorName,
+        notes);
   }
 
   /** Reads the flower csv file into the database */
@@ -60,16 +107,27 @@ public class PrescriptionDatabase extends Database {
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
-        String patient, prescription, dosage, refillPer, doctorName, notes;
+        String patient, prescription, pharmacy, dosage, refillPer, doctorName, notes;
         int prescriptionNum, numRefills;
         prescriptionNum = Integer.parseInt(data.get(i)[0]);
         patient = data.get(i)[1];
-        dosage = data.get(i)[2];
-        numRefills = Integer.parseInt(data.get(i)[3]);
-        refillPer = data.get(i)[4];
-        doctorName = data.get(i)[5];
-        notes = data.get(i)[6];
-        addPrescription(prescriptionNum, patient, dosage, numRefills, refillPer, doctorName, notes);
+        prescription = data.get(i)[2];
+        pharmacy = data.get(i)[3];
+        dosage = data.get(i)[4];
+        numRefills = Integer.parseInt(data.get(i)[5]);
+        refillPer = data.get(i)[6];
+        doctorName = data.get(i)[7];
+        notes = data.get(i)[8];
+        addPrescription(
+            prescriptionNum,
+            patient,
+            prescription,
+            pharmacy,
+            dosage,
+            numRefills,
+            refillPer,
+            doctorName,
+            notes);
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();
