@@ -89,4 +89,44 @@ public class TestInternalTransportDatabase {
     itDB.removeAll();
     gDB.removeAllNodes();
   }
+
+  @Test
+  public void testGetRequestStatus() {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    itDB.removeAll();
+    itDB.addRequest("biscuit", "biscuit");
+    boolean a = itDB.updateRequest(1, "Harry", "Dispatched");
+    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(1));
+    Assertions.assertTrue(a);
+    boolean b = itDB.updateRequest(1, "Harry", "Ert");
+    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(1));
+    Assertions.assertFalse(b);
+    boolean c = itDB.updateRequest(1, "Harry", "Done");
+    Assertions.assertEquals("Done", itDB.getRequestStatus(1));
+
+    itDB.removeAll();
+    gDB.removeAllNodes();
+  }
+
+  @Test
+  public void testGetName() {
+    gDB.removeAllNodes();
+    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+
+    itDB.removeAll();
+    itDB.addRequest("biscuit", "biscuit");
+    boolean a = itDB.updateRequest(1, "Harry", "Dispatched");
+    Assertions.assertEquals("Harry", itDB.getName(1));
+    Assertions.assertTrue(a);
+    boolean b = itDB.updateRequest(1, "Harry", "Ert");
+    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(1));
+    Assertions.assertFalse(b);
+    boolean c = itDB.updateRequest(1, "Ava", "Done");
+    Assertions.assertEquals("Ava", itDB.getName(1));
+
+    itDB.removeAll();
+    gDB.removeAllNodes();
+  }
 }

@@ -164,35 +164,6 @@ public class InternalTransportDatabase extends Database {
     }
   }
 
-  //  /**
-  //   * returns true if the progress has been updated
-  //   *
-  //   * @param rn request number
-  //   * @param progress progress
-  //   * @return true if the request has been updated
-  //   */
-  //  public boolean updateRequest(int rn, String progress) {
-  //    try {
-  //      PreparedStatement pstmt =
-  //          getConnection()
-  //              .prepareStatement("SELECT * FROM InternalTransportRequest WHERE requestNumber =
-  // ?");
-  //      pstmt.setInt(1, rn);
-  //      pstmt.executeUpdate();
-  //      ResultSet rset = pstmt.executeQuery();
-  //      rset.next();
-  //      String name = rset.getString("name");
-  //      System.out.println("-----------------------------------------------------" + name);
-  //      updateRequest(rn, name, progress);
-  //      rset.close();
-  //      pstmt.close();
-  //      return true;
-  //    } catch (SQLException e) {
-  //      e.printStackTrace();
-  //      return false;
-  //    }
-  //  }
-
   /** Prints out the table */
   public void printTable() {
     try {
