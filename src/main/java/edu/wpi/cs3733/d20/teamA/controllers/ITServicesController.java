@@ -74,9 +74,7 @@ public class ITServicesController extends AbstractController {
       Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
       String status = "Ticket Sent";
       String category = ITTicketCategory.getSelectionModel().getSelectedItem();
-      // String location = ITTicketLocation.getSelectionModel().getSelectedItem().getNodeID();
       Node location = ITTicketLocation.getSelectionModel().getSelectedItem();
-
       String requesterName = ITTicketName.getText();
       String completedBy = " ";
       String description = ITTicketDescription.getText();
@@ -89,6 +87,10 @@ public class ITServicesController extends AbstractController {
               requesterName,
               completedBy,
               description);
+      ITTicketCategory.getSelectionModel().clearSelection();
+      ITTicketLocation.getSelectionModel().clearSelection();
+      ITTicketDescription.clear();
+      ITTicketName.clear();
       updateTable();
     }
   }
