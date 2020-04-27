@@ -31,6 +31,8 @@ public class ITServicesController extends AbstractController {
   @FXML private JFXTextField statusChangeName;
   @FXML private StackPane dialogStackPane;
 
+  private ITTicket selected;
+
   private SimpleTableView<ITTicket> tblViewITTicket;
 
   public void initialize() {
@@ -39,7 +41,6 @@ public class ITServicesController extends AbstractController {
       itTicketDatabase.createTables();
       itTicketDatabase.readITTicketsCSV();
     } else if (itTicketDatabase.getSizeITTickets() == 0) {
-      // itTicketDatabase.removeAllOrders();
       itTicketDatabase.readITTicketsCSV();
     }
     ITTicketCategory.getItems().addAll("Wifi", "Email", "Login", "Kiosk", "Pager", "Other");
@@ -64,7 +65,21 @@ public class ITServicesController extends AbstractController {
 
   public void deleteRequest(ActionEvent actionEvent) {}
 
-  public void changeStatus(ActionEvent actionEvent) {}
+  public void changeStatus(ActionEvent actionEvent) {
+    selected = tblViewITTicket.getSelected();
+    if (selected != null
+        && statusChangeStatus.getSelectionModel().getSelectedItem() != null
+        && statusChangeName.getText() != null) {
+      boolean i =
+          itTicketDatabase.changeStatus(
+              Timestamp.valueOf(selected.getTicketTime()),
+              statusChangeStatus.getSelectionModel().getSelectedItem());
+      System.out.println(Timestamp.valueOf(selected.getTicketTime()));
+      statusChangeName.clear();
+      statusChangeStatus.getSelectionModel().clearSelection();
+      updateTable();
+    }
+  }
 
   public void submitTicket(ActionEvent actionEvent) {
     if (ITTicketLocation.getSelectionModel().getSelectedItem() != null
