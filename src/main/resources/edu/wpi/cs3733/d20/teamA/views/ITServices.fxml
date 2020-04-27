@@ -22,8 +22,8 @@
          <children>
             <GridPane>
                <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="405.5999755859375" minWidth="299.199951171875" prefWidth="405.5999755859375" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.00004882812499" minWidth="1.6000244140624886" prefWidth="1.6000244140624886" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="405.5999755859375" minWidth="224.39996643066405" prefWidth="224.39996643066405" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.00004882812499" minWidth="1.6000244140624886" prefWidth="76.80003356933594" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" />
                </columnConstraints>
                <rowConstraints>
@@ -120,14 +120,14 @@
                                  <font>
                                     <Font size="18.0" />
                                  </font></Label>
-                              <HBox fx:id="changeStatusOptions" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0" visible="false">
+                              <HBox fx:id="changeStatusOptions" alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
                                  <children>
                                     <JFXComboBox fx:id="statusChangeStatus" focusColor="#64b5f6" labelFloat="true" prefWidth="150.0" promptText="Status (not selected)" style="-fx-background-color: white;" />
                                     <JFXTextField fx:id="statusChangeName" alignment="CENTER" focusColor="#78909c" labelFloat="true" prefWidth="150.0" promptText="Enter your name" style="-fx-background-color: white;" />
                                     <JFXButton buttonType="RAISED" onAction="#changeStatus" prefWidth="150.0" style="-fx-background-color: #78909C;" text="Change Status" textFill="WHITE" />
                                  </children>
                               </HBox>
-                              <JFXButton buttonType="RAISED" onAction="#deleteRequest" style="-fx-background-color: #ef5350;" text="Delete Request" textFill="WHITE" visible="false" />
+                              <JFXButton buttonType="RAISED" onAction="#deleteRequest" style="-fx-background-color: #ef5350;" text="Delete Request" textFill="WHITE" />
                            </children>
                         </VBox>
                      </children>
