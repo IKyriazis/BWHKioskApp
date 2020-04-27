@@ -1,5 +1,10 @@
+@font-face {
+    font-family: "Roboto";
+    src: url('fonts/Roboto-Regular.ttf');
+}
+
 .root {
-    -fx-font-family: "Comic Sans MS";
+    -fx-font-family: "Roboto";
 }
 
 .tab .tab-label {
@@ -49,7 +54,7 @@
     -fx-text-fill: black;
 }
 
-.toggle-button {
+.gray-button {
     -fx-background-color: #BDBDBD;
     -fx-text-fill: black;
 }
@@ -71,11 +76,11 @@
 }
 
 .small-text {
-    -fx-font-size: 12pt;
+    -fx-font-size: 10pt;
 }
 
 .regular-text {
-    -fx-font-size: 16pt;
+    -fx-font-size: 12pt;
 }
 
 .heading-text {
