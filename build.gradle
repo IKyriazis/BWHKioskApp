@@ -50,7 +50,10 @@ dependencies {
             'com.google.inject:guice:4.2.2',
 
             'com.google.zxing:core:3.4.0',
-            'com.google.zxing:javase:3.4.0'
+            'com.google.zxing:javase:3.4.0',
+
+            // bcrypt
+            'at.favre.lib:bcrypt:0.9.0'
     )
 
     testImplementation(
