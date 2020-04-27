@@ -34,7 +34,9 @@ public class MapCanvas extends Canvas {
   private boolean dragEnabled;
   private EventHandler<MouseEvent> dragStartHandler;
   private EventHandler<MouseEvent> dragHandler;
+
   private Node selectedNode;
+  private Point2D selectedDragPos;
 
   private Path path;
 
@@ -255,7 +257,12 @@ public class MapCanvas extends Canvas {
 
     graphicsContext.setFill(color);
 
-    Point2D nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
+    Point2D nodePoint;
+    if (selectedNode != null && selectedDragPos != null) {
+      nodePoint = selectedDragPos;
+    } else {
+      nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
+    }
     graphicsContext.fillOval(nodePoint.getX() - 5, nodePoint.getY() - 5, 10, 10);
   }
 
@@ -356,5 +363,9 @@ public class MapCanvas extends Canvas {
 
   public Node getSelectedNode() {
     return selectedNode;
+  }
+
+  public void setSelectedDragPos(Point2D selectedDragPos) {
+    this.selectedDragPos = selectedDragPos;
   }
 }
