@@ -6,7 +6,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.FlowerEmployee;
+import edu.wpi.cs3733.d20.teamA.database.Employee;
 import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -24,7 +24,7 @@ public class ShowOrderController extends AbstractController implements IDialogCo
   @FXML private JFXComboBox<String> txtNextStat;
 
   @FXML private JFXTextField txtPrevEmp;
-  @FXML private JFXComboBox<FlowerEmployee> txtNextEmp;
+  @FXML private JFXComboBox<Employee> txtNextEmp;
 
   @FXML private JFXButton changeProgressButton;
   @FXML private JFXButton changeEmployeeButton;
@@ -69,7 +69,7 @@ public class ShowOrderController extends AbstractController implements IDialogCo
 
     txtTotalCost.setText(String.format("$%.2f", myOrder.getPrice()));
     txtMessage.setText(myOrder.getMessage());
-    txtLocation.setText(graphDatabase.getLongName(myOrder.getLocation()));
+    txtLocation.setText(myOrder.getLocation());
 
     changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
     changeEmployeeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ID_CARD));
@@ -84,12 +84,12 @@ public class ShowOrderController extends AbstractController implements IDialogCo
         .select(Math.min(statusStringToValue(myOrder.getStatus()) + 1, 3));
 
     if (myOrder.employeeAssigned()) {
-      FlowerEmployee e = myOrder.getEmployee();
-      txtPrevEmp.setText(e.getFirstName() + " " + e.getLastName());
+      int id = myOrder.getId();
+      txtPrevEmp.setText(eDB.getName(id));
     } else {
       txtPrevEmp.setText("No employee assigned");
     }
-    txtNextEmp.getItems().addAll(flDatabase.employeeOl());
+    txtNextEmp.getItems().addAll(eDB.employeeOl());
   }
 
   public void setOrder(Order value) {
@@ -116,10 +116,10 @@ public class ShowOrderController extends AbstractController implements IDialogCo
   }
 
   public void changeEmployee() {
-    FlowerEmployee e = txtNextEmp.getSelectionModel().getSelectedItem();
+    Employee e = txtNextEmp.getSelectionModel().getSelectedItem();
 
     if (e != null) {
-      super.flDatabase.assignEmployee(myOrder.getOrderNumber(), e);
+      super.flDatabase.assignEmployee(myOrder.getOrderNumber(), e.getId());
       // Set fields to reflect this
       txtPrevEmp.setText(e.toString());
       txtNextEmp.getSelectionModel().clearSelection();

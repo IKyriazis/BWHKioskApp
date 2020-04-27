@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class EmployeesDatabase extends Database {
 
@@ -192,6 +194,27 @@ public class EmployeesDatabase extends Database {
     }
   }
 
+  public String getName(int id) {
+    String pass = null;
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("Select * From Employees Where employeeID = " + id);
+      ResultSet rset = pstmt.executeQuery();
+      String name = "Not found";
+      if (rset.next()) {
+        String fName = rset.getString("nameFirst");
+        String lName = rset.getString("nameLast");
+        name = fName + " " + lName;
+      }
+      rset.close();
+      pstmt.close();
+      return name;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "Not found";
+    }
+  }
+
   public boolean changePassword(String username, String oldPass, String newPass) {
 
     if (logIn(username, oldPass) && checkSecurePass(newPass)) {
@@ -238,6 +261,38 @@ public class EmployeesDatabase extends Database {
       if (number && capital && lowercase) return true;
     }
     return false;
+  }
+
+  /**
+   * Gets all employees in the table
+   *
+   * @return an observable list containing all employees in the table
+   */
+  public ObservableList<Employee> employeeOl() {
+    ObservableList<Employee> eList = FXCollections.observableArrayList();
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      // CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast
+      // Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title
+      // Varchar(50))"
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Employees");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int id = rset.getInt("employeeID");
+        String fName = rset.getString("nameFirst");
+        String lName = rset.getString("nameLast");
+        String title = rset.getString("title");
+        Employee e = new Employee(id, fName, lName, title);
+        eList.add(e);
+      }
+      rset.close();
+      pstmt.close();
+      conn.close();
+      return eList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return eList;
+    }
   }
 
   /** @return true if all all employee are removed */

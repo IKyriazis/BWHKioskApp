@@ -12,7 +12,6 @@ import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import lombok.SneakyThrows;
 
 public class FlowerEditController extends AbstractController implements IDialogController {
   private final boolean modify;
@@ -29,14 +28,13 @@ public class FlowerEditController extends AbstractController implements IDialogC
   private JFXDialog dialog;
   private boolean hasOrder;
 
-  @SneakyThrows
+  // Set up window to add flower
   public FlowerEditController() {
     super();
-
     modify = false;
   }
 
-  @SneakyThrows
+  // Constructor that sets up window to modify flower
   public FlowerEditController(Flower f, boolean hasOrder) {
     super();
 
@@ -63,6 +61,7 @@ public class FlowerEditController extends AbstractController implements IDialogC
                 txtColor.setText(newValue.substring(0, 15));
               }
             });
+    // Prevent input of letters in number fields
     txtQty.setTextFormatter(InputFormatUtil.getIntFilter());
     txtCost.setTextFormatter(InputFormatUtil.getDoubleFilter());
 

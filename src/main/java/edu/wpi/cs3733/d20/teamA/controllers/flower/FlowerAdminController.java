@@ -6,7 +6,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.FlowerEmployee;
 import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -20,7 +19,6 @@ import javafx.scene.layout.StackPane;
 public class FlowerAdminController extends AbstractController {
   @FXML private GridPane flowerTablePane;
   @FXML private GridPane orderTablePane;
-  @FXML private GridPane employeeTablePane;
 
   @FXML private StackPane dialogStackPane;
 
@@ -33,13 +31,8 @@ public class FlowerAdminController extends AbstractController {
 
   @FXML private AnchorPane flowerPane;
 
-  @FXML private Label lblEmployees;
-
-  private Order lastOrder;
-
   private SimpleTableView<Flower> tblFlowerView;
   private SimpleTableView<Order> tblOrderView;
-  private SimpleTableView<FlowerEmployee> tblEmployeeView;
 
   public void initialize() {
     if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
@@ -57,7 +50,6 @@ public class FlowerAdminController extends AbstractController {
     // Setup label icons
     flowerTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.FILE));
     orderTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
-    lblEmployees.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.USERS));
 
     // Setup button icons
     addFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
@@ -76,16 +68,16 @@ public class FlowerAdminController extends AbstractController {
     tblFlowerView = new SimpleTableView<>(new Flower("", "", 0, 0, 0), 40.0);
     flowerTablePane.getChildren().add(tblFlowerView);
 
-    tblOrderView = new SimpleTableView<>(new Order(0, 0, "", 0, "", "", "", "", ""), 40.0);
+    tblOrderView = new SimpleTableView<>(new Order(0, 0, "", 0, "", "", "", -1), 40.0);
     orderTablePane.getChildren().addAll(tblOrderView);
 
+    // Double click a row in the order table to bring up the dialog for that order
     tblOrderView.setRowFactory(
         tv -> {
           TreeTableRow<Order> row = new TreeTableRow<>();
           row.setOnMouseClicked(
               event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                  Order rowData = row.getItem();
                   ShowOrderController showController = new ShowOrderController();
                   showController.setOrder(row.getTreeItem().getValue());
                   DialogUtil.complexDialog(
@@ -99,9 +91,6 @@ public class FlowerAdminController extends AbstractController {
               });
           return row;
         });
-
-    tblEmployeeView = new SimpleTableView<>(new FlowerEmployee("", ""), 30.0);
-    employeeTablePane.getChildren().addAll(tblEmployeeView);
 
     // Populate tables
     update();
@@ -117,16 +106,7 @@ public class FlowerAdminController extends AbstractController {
         new FlowerEditController());
   }
 
-  public void addEmployee() {
-    DialogUtil.complexDialog(
-        dialogStackPane,
-        "Add Employee",
-        "views/flower/AddFlowerEmployee.fxml",
-        false,
-        event -> update(),
-        new EmployeeDialogController());
-  }
-
+  // Check if a flower is part of an order, and thus should not be deleted
   private boolean hasDependentOrder(Flower flower) {
     boolean constrained = false;
     try {
@@ -148,8 +128,6 @@ public class FlowerAdminController extends AbstractController {
   public void editFlower() {
     Flower flower = tblFlowerView.getSelected();
     if (flower != null) {
-      // Figure out whether any outstanding orders depend on this flower type, in which case we
-      // can't change the name / type
       boolean constrained = hasDependentOrder(flower);
 
       FlowerEditController controller = new FlowerEditController(flower, constrained);
@@ -198,44 +176,13 @@ public class FlowerAdminController extends AbstractController {
     }
   }
 
-  public void deleteEmployee() {
-    FlowerEmployee e = tblEmployeeView.getSelected();
-    if (e != null) {
-      String fName = e.getFirstName();
-      String lName = e.getLastName();
-
-      /*try {
-          super.flDatabase.deleteFlower(name, color);
-        } catch (Exception e) {
-          e.printStackTrace();
-          DialogUtil.simpleErrorDialog(
-                  dialogStackPane, "Error Deleting Flower", "Could not delete flower: " + f);
-        }
-
-        update();
-      } else {
-        DialogUtil.simpleInfoDialog(
-                dialogStackPane,
-                "Cannot Delete Flower",
-                "This flower has an active order depending on it and thus cannot be removed");
-      }*/
-    } else {
-      DialogUtil.simpleInfoDialog(
-          dialogStackPane,
-          "No Employee Selected",
-          "Please select an employee by clicking a row in the table");
-    }
-  }
-
   public void update() {
     try {
       tblFlowerView.clear();
       tblOrderView.clear();
-      tblEmployeeView.clear();
 
       tblFlowerView.add(flDatabase.flowerOl());
       tblOrderView.add(flDatabase.orderOl());
-      tblEmployeeView.add(flDatabase.employeeOl());
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

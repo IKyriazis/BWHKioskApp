@@ -32,8 +32,8 @@ public class FlowerOrderController extends AbstractController implements IDialog
   @FXML private JFXTextField txtMessage;
 
   private JFXDialog dialog;
-
   private List<Flower> orderContent;
+  private double cost;
 
   public void setList(List<Flower> myList) {
     orderContent = myList;
@@ -42,6 +42,7 @@ public class FlowerOrderController extends AbstractController implements IDialog
   @FXML
   public void initialize() throws Exception {
     // Setup list of destination nodes
+    // TODO get nodes for all floors
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
             Graph.getInstance().getNodes().values().stream()
@@ -61,6 +62,25 @@ public class FlowerOrderController extends AbstractController implements IDialog
     tblDisplay.setShowRoot(false);
     tblDisplay.setEditable(false);
 
+    // Setup columns in the table
+    setupColumns();
+
+    // Calculate and display each flower along with the total cost
+    cost = 0;
+    for (Flower f : orderContent) {
+      cost += f.getPricePer() * f.getQuantitySelected();
+      TempFlower flow = new TempFlower(f.getTypeFlower(), f.getColor(), f.getQuantitySelected());
+      tblDisplay.getRoot().getChildren().add(new TreeItem<>(flow));
+    }
+
+    txtTotal.setText("Total cost: " + String.format("$%.2f", cost));
+
+    // Set button icons
+    confirmButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK));
+  }
+
+  // Set up columns in table
+  private void setupColumns() {
     JFXTreeTableColumn<TempFlower, String> columnName = new JFXTreeTableColumn<>("Type");
     columnName.setCellValueFactory(param -> param.getValue().getValue().type);
     columnName.setMinWidth(125);
@@ -77,36 +97,24 @@ public class FlowerOrderController extends AbstractController implements IDialog
     columnNum.setResizable(false);
 
     tblDisplay.getColumns().addAll(columnName, columnColor, columnNum);
-
-    double cost = 0;
-    for (Flower f : orderContent) {
-      cost += f.getPricePer() * f.getQuantitySelected();
-      TempFlower flow = new TempFlower(f.getTypeFlower(), f.getColor(), f.getQuantitySelected());
-      tblDisplay.getRoot().getChildren().add(new TreeItem<>(flow));
-    }
-
-    txtTotal.setText("Total cost: " + String.format("$%.2f", cost));
-
-    // Set button icons
-    confirmButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK));
   }
 
   @FXML
   public void placeOrder(ActionEvent actionEvent) {
     Node node = roomList.getSelectionModel().getSelectedItem();
     if (node != null) {
-      String flowerString = "";
+      String flowerString =
+          ""; // This is a specifically formatted string that represents type and quantity of
+      // flowers in the order
       int numFlowers = 0;
-      double price = 0;
       for (Flower f : orderContent) {
-        price += f.getPricePer() * f.getQuantitySelected();
         numFlowers += f.getQuantitySelected();
         flowerString += f.getFlowerID() + "/" + f.getQuantitySelected() + "|";
       }
 
       String message = txtMessage.getText();
       try {
-        int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID(), message, price);
+        int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID(), message, cost);
         dialog.close();
         // Once the order is placed, remove the flowers from the list
         for (Flower f : orderContent) {

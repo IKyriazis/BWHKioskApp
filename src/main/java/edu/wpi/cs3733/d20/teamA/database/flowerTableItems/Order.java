@@ -19,7 +19,7 @@ public class Order implements ITableable<Order> {
   private final SimpleStringProperty location;
   private final SimpleStringProperty message;
 
-  private FlowerEmployee emp;
+  private int id;
 
   public Order(
       int orderNumber,
@@ -29,8 +29,7 @@ public class Order implements ITableable<Order> {
       String status,
       String location,
       String message,
-      String fName,
-      String lName) {
+      int id) {
     this.orderNumber = new SimpleIntegerProperty(orderNumber);
     this.numFlowers = new SimpleIntegerProperty(numFlowers);
     this.flowerString = new SimpleStringProperty(flowerString);
@@ -38,7 +37,7 @@ public class Order implements ITableable<Order> {
     this.status = new SimpleStringProperty(status);
     this.location = new SimpleStringProperty(location);
     this.message = new SimpleStringProperty(message);
-    emp = new FlowerEmployee(fName, lName);
+    this.id = id;
   }
 
   public int getOrderNumber() {
@@ -93,12 +92,12 @@ public class Order implements ITableable<Order> {
     return message.get();
   }
 
-  public FlowerEmployee getEmployee() {
-    return emp;
+  public int getId() {
+    return id;
   }
 
   public boolean employeeAssigned() {
-    return emp.getFirstName() != null;
+    return id != -1;
   }
 
   @Override

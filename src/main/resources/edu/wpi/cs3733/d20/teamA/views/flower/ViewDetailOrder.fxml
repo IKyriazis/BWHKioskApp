@@ -59,7 +59,7 @@
                         <Insets />
                      </opaqueInsets>
                      </JFXComboBox>
-                     <JFXButton fx:id="changeProgressButton" buttonType="RAISED" onAction="#changeProgress" style="-fx-background-color: white;" text="Change Order Progress">
+                     <JFXButton fx:id="changeProgressButton" buttonType="RAISED" onAction="#changeProgress" style="-fx-background-color: #78909C;" text="Change Order Progress">
                          <font>
                              <Font size="14.0" />
                          </font>
@@ -80,7 +80,7 @@
                         <Insets left="50.0" right="50.0" />
                      </VBox.margin>
                   </JFXComboBox>
-                  <JFXButton fx:id="changeEmployeeButton" buttonType="RAISED" onAction="#changeEmployee" style="-fx-background-color: white;" text="Change Assigned Employee">
+                  <JFXButton fx:id="changeEmployeeButton" buttonType="RAISED" onAction="#changeEmployee" style="-fx-background-color: #78909C;" text="Change Assigned Employee">
                      <font>
                         <Font size="14.0" />
                      </font>

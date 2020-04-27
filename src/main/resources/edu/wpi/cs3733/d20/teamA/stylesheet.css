@@ -35,6 +35,10 @@
     -fx-text-fill: black;
 }
 
+.jfx-tree-table-view .tree-table-cell{
+      -fx-font-size:14px; /*Set the font size in all tables*/
+  }
+
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;

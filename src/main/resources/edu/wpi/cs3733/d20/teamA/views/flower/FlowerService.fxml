@@ -63,6 +63,11 @@
                         <Insets />
                      </GridPane.margin>
                   </JFXTextField>
+                  <Label text="Total cost:" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets right="50.0" />
+                     </GridPane.margin>
+                  </Label>
                </children>
                <padding>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
