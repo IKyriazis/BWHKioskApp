@@ -94,6 +94,7 @@ public class MapEditorController {
                       (int) (node.getY() + offset.getY()));
                 });
 
+            updateTipLabel();
             canvas.setHighlightOffset(null);
             draggingNodes = false;
           } else {
@@ -121,6 +122,7 @@ public class MapEditorController {
                     });
             canvas.setSelectionBox(null, null);
           }
+          updateTipLabel();
           canvas.draw(floor);
           dragStart = dragCurr = null;
         }
@@ -168,16 +170,31 @@ public class MapEditorController {
 
     // Setup info pane rippler
     infoRippler = new JFXRippler(infoPane, JFXRippler.RipplerMask.RECT);
-    infoRippler.setRipplerFill(Color.web("#607D8B"));
+    infoRippler.setRipplerFill(Color.web("#9E9E9E"));
     infoRippler.setEnabled(true);
 
-    // Trigger ripple when label is updated
+    // Trigger drawer open & ripple when label is updated
     editorTipLabel
         .textProperty()
-        .addListener(observable -> Platform.runLater(infoRippler.createManualRipple()));
+        .addListener(
+            observable -> {
+              infoDrawer.open();
+              Platform.runLater(infoRippler.createManualRipple());
+            });
 
     // Setup info drawer
     infoDrawer.setSidePane(infoRippler);
+
+    // Fix info drawer height to info rippler height
+    infoRippler
+        .widthProperty()
+        .addListener(
+            observable -> {
+              infoDrawer.setPrefHeight(infoRippler.getHeight());
+            });
+
+    // Setup tip label
+    updateTipLabel();
 
     // Set up drawer transparency hooks
     infoDrawer.setOnDrawerOpened(event -> infoDrawer.setMouseTransparent(false));
@@ -190,6 +207,7 @@ public class MapEditorController {
             infoDrawer.open();
           }
         });
+    infoDrawer.open();
 
     // Setup button icons
     floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
@@ -216,7 +234,9 @@ public class MapEditorController {
     if (event.getButton() == MouseButton.PRIMARY) {
       if (optionalNode.isPresent()) {
         Node node = optionalNode.get();
-        selections.add(node);
+        if (!selections.contains(node)) {
+          selections.add(node);
+        }
       } else {
         selections.clear();
       }
@@ -288,6 +308,7 @@ public class MapEditorController {
             e -> {
               popup.hide();
               draggingNodes = true;
+              editorTipLabel.setText("Click and Drag to Move Selection");
             });
 
         // TODO; Find a way to not delete constrained nodes
@@ -333,7 +354,26 @@ public class MapEditorController {
       popup.show(dialogPane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, popX, popY);
     }
 
+    updateTipLabel();
     canvas.draw(floor);
+  }
+
+  public void updateTipLabel() {
+    String info;
+    if (selections.size() == 0) {
+      info =
+          "Click on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for New Node";
+    } else if (selections.size() == 1) {
+      info =
+          "Click on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Info/Move/Edit/Delete";
+    } else if (selections.size() == 2) {
+      info =
+          "Click on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Move/Delete/Edge";
+    } else {
+      info =
+          "Click on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Move/Delete";
+    }
+    editorTipLabel.setText(info);
   }
 
   private void openNodeModifyDialog(Node node, int x, int y, int floor) {
