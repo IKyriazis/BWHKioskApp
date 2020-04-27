@@ -121,4 +121,18 @@ public class TestEmployeeDatabase {
     boolean c = eDB.changePassword("jay", "Is3", "IskkIg3");
     Assertions.assertTrue(c);
   }
+
+  @Test
+  public void testUNameExists() {
+    eDB.createTables();
+    eDB.removeAllEmployees();
+    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    Assertions.assertTrue(eDB.uNameExists("jay"));
+    eDB.addEmployee("bacd", "ray", "play", "password", "Intern");
+    Assertions.assertTrue(eDB.uNameExists("play"));
+    eDB.addEmployee("bacd", "ray", "cray", "password", "Intern");
+    Assertions.assertTrue(eDB.uNameExists("cray"));
+    Assertions.assertFalse(eDB.uNameExists("asdfj"));
+    Assertions.assertFalse(eDB.uNameExists("askldjf"));
+  }
 }

@@ -81,6 +81,24 @@ public class EmployeesDatabase extends Database {
     }
   }
 
+  // returns true if the username isn't in the database
+  public boolean uNameExists(String uName) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, uName);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String uNameFromTable;
+      uNameFromTable = rset.getString("username");
+      pstmt.close();
+      return uName.equals(uNameFromTable);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
     return addEmployee(employeeID, nameFirst, nameLast, username, password, title);

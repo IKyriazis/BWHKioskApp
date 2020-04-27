@@ -17,7 +17,23 @@ public class CreateAcctController extends AbstractController {
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
 
-  public void submitEmployee() {}
+  public void submitEmployee() {
+    if (fName.getText().isEmpty() ||
+            lName.getText().isEmpty() ||
+            uName.getText().isEmpty() ||
+            title.getText().isEmpty() ||
+            pass.getText().isEmpty() ||
+            cPass.getText().isEmpty()) {
+      // make popup that says one or more fields are empty
+      return;
+    }
+    else {
+      if (eDB.uNameExists(uName.getText()) {
+        // make popup that says username already exists
+        return;
+      }
+    }
+  }
 
   public void clearFields() {
     fName.clear();
