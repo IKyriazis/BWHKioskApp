@@ -29,7 +29,7 @@ public class ITServicesController extends AbstractController {
   @FXML private HBox changeStatusOptions;
   @FXML private JFXComboBox<String> statusChangeStatus;
   @FXML private JFXTextField statusChangeName;
-  @FXML private StackPane dialogStackPane;
+  @FXML private StackPane ITStackPane;
 
   private ITTicket selected;
 
@@ -75,7 +75,7 @@ public class ITServicesController extends AbstractController {
     selected = tblViewITTicket.getSelected();
     if (selected != null
         && statusChangeStatus.getSelectionModel().getSelectedItem() != null
-        && statusChangeName.getText() != null) {
+        && !statusChangeName.getText().isEmpty()) {
       boolean i =
           itTicketDatabase.changeStatus(
               Timestamp.valueOf(selected.getTicketTime()),
@@ -88,11 +88,18 @@ public class ITServicesController extends AbstractController {
     }
   }
 
+  public void getDescription(ActionEvent actionEvent) {
+    selected = tblViewITTicket.getSelected();
+    if (selected != null) {
+      DialogUtil.simpleInfoDialog(ITStackPane, "Description", selected.getDescription());
+    }
+  }
+
   public void submitTicket(ActionEvent actionEvent) {
     if (ITTicketLocation.getSelectionModel().getSelectedItem() != null
         && ITTicketCategory.getSelectionModel().getSelectedItem() != null
-        && ITTicketName.getText() != null
-        && ITTicketDescription.getText() != null) {
+        && !ITTicketName.getText().isEmpty()
+        && !ITTicketDescription.getText().isEmpty()) {
       Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
       String status = "Ticket Sent";
       String category = ITTicketCategory.getSelectionModel().getSelectedItem();
@@ -124,7 +131,7 @@ public class ITServicesController extends AbstractController {
       tblViewITTicket.add(itTicketDatabase.ITTicketObservableList());
     } catch (Exception e) {
       e.printStackTrace();
-      DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Failed to update IT Ticket Table");
+      DialogUtil.simpleErrorDialog(ITStackPane, "Error", "Failed to update IT Ticket Table");
     }
   }
 }
