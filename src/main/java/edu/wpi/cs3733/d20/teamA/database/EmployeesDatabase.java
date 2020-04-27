@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.List;
 public class EmployeesDatabase extends Database {
 
   int employeeID;
+  private int numIterations = 16; // 2 ^ 16 = 65536 iterations
 
   public EmployeesDatabase(Connection connection) {
 
@@ -59,6 +61,7 @@ public class EmployeesDatabase extends Database {
       String username,
       String password,
       String title) {
+    String storedPassword = BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
     try {
       PreparedStatement pstmt =
@@ -69,7 +72,7 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
       pstmt.setString(4, username);
-      pstmt.setString(5, password);
+      pstmt.setString(5, storedPassword);
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
@@ -202,8 +205,8 @@ public class EmployeesDatabase extends Database {
       }
       rset.close();
       pstmt.close();
-
-      return (pass != null) && pass.equals(enteredPass);
+      BCrypt.Result result = BCrypt.verifyer().verify(enteredPass.toCharArray(), pass);
+      return (pass != null) && result.verified;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;

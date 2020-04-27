@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import javafx.fxml.FXML;
 
-
 public class CreateAcctController extends AbstractController {
 
   @FXML private JFXTextField fName;
@@ -18,20 +17,28 @@ public class CreateAcctController extends AbstractController {
   @FXML private JFXButton clear;
 
   public void submitEmployee() {
-    if (fName.getText().isEmpty() ||
-            lName.getText().isEmpty() ||
-            uName.getText().isEmpty() ||
-            title.getText().isEmpty() ||
-            pass.getText().isEmpty() ||
-            cPass.getText().isEmpty()) {
+    if (fName.getText().isEmpty()
+        || lName.getText().isEmpty()
+        || uName.getText().isEmpty()
+        || title.getText().isEmpty()
+        || pass.getText().isEmpty()
+        || cPass.getText().isEmpty()) {
       // make popup that says one or more fields are empty
       return;
     }
-    else {
-      if (eDB.uNameExists(uName.getText()) {
-        // make popup that says username already exists
-        return;
-      }
+    if (eDB.uNameExists(uName.getText())) {
+      // make popup that says username already exists
+      return;
+    }
+    if (cPass.getText() != pass.getText()) {
+      // make popup that says passwords are not the same
+      return;
+    }
+    if (eDB.addEmployee(
+        fName.getText(), lName.getText(), uName.getText(), cPass.getText(), title.getText())) {
+      // print that account has been created successfully
+    } else {
+      // print that for some reason the account couldn't be added
     }
   }
 
