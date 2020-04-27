@@ -26,11 +26,6 @@ public class PatientDatabase extends Database {
    */
   public boolean dropTables() {
 
-    // if the helper returns false this method should too
-    // drop the CONSTRAINT first
-    if (!(helperPrepared("ALTER TABLE Patients DROP CONSTRAINT FK_fT"))) {
-      return false;
-    }
     // Drop the tables
     if (!(helperPrepared("DROP TABLE Patients"))) {
       return false;
@@ -49,7 +44,7 @@ public class PatientDatabase extends Database {
     // Create the graph tables
     boolean a =
         helperPrepared(
-            "CREATE TABLE Patients (patientID INTEGER NOT NULL, firstName Varchar(15), lastName Varchar(15), healthInsurance Varchar(15), dateOfBirth Varchar(15), CONSTRAINT PK_pat PRIMARY KEY (patientID))");
+            "CREATE TABLE Patients (patientID INTEGER PRIMARY KEY, firstName Varchar(15), lastName Varchar(15), healthInsurance Varchar(30), dateOfBirth Varchar(15), CONSTRAINT IDNotNegative CHECK (patientID >= 0))");
     return a;
   }
 
@@ -114,19 +109,25 @@ public class PatientDatabase extends Database {
           getConnection()
               .prepareStatement(
                   "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, this.patientID);
+      pstmt.setInt(1, patientID);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
       pstmt.setString(4, healthInsurance);
       pstmt.setString(5, dateOfBirth);
       pstmt.executeUpdate();
       pstmt.close();
-      this.patientID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
     }
+  }
+
+  public boolean addPatient(
+      String firstName, String lastName, String healthInsurance, String dateOfBirth) {
+    this.patientID++;
+
+    return addPatient(this.patientID, firstName, lastName, healthInsurance, dateOfBirth);
   }
 
   public boolean updatePatient(
