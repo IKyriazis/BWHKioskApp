@@ -106,6 +106,21 @@ public class ITTicketDatabase extends Database {
     }
   }
 
+  public boolean deleteTicket(Timestamp deleteTicketTime) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "DELETE From ITTickets WHERE ticketTime = '" + deleteTicketTime + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public ObservableList<ITTicket> ITTicketObservableList() {
     ObservableList<ITTicket> ITTicketObservableList = FXCollections.observableArrayList();
     try {

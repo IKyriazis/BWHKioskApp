@@ -63,7 +63,13 @@ public class ITServicesController extends AbstractController {
     updateTable();
   }
 
-  public void deleteRequest(ActionEvent actionEvent) {}
+  public void deleteRequest(ActionEvent actionEvent) {
+    selected = tblViewITTicket.getSelected();
+    if (selected != null) {
+      boolean i = itTicketDatabase.deleteTicket(Timestamp.valueOf(selected.getTicketTime()));
+      updateTable();
+    }
+  }
 
   public void changeStatus(ActionEvent actionEvent) {
     selected = tblViewITTicket.getSelected();
