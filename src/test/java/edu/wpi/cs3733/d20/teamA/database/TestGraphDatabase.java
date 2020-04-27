@@ -69,7 +69,7 @@ public class TestGraphDatabase {
     DB.removeAll();
     Assertions.assertEquals(0, DB.getSizeEdge());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A");
     DB.addEdge("biscuit_nugget", "biscuit", "nugget");
     Assertions.assertEquals(1, DB.getSizeEdge());
     DB.removeAll();
@@ -81,16 +81,16 @@ public class TestGraphDatabase {
     DB.removeAllNodes();
     boolean a = DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     Assertions.assertTrue(a);
-    boolean b = DB.addNode("nugget", 0, 0, 2, "White House", "CONF", "balogna", "b", "Team A");
+    boolean b = DB.addNode("nugget", 0, 0, 2, "White House", "CONF", "balogna2", "b", "Team A");
     Assertions.assertTrue(b);
-    boolean c = DB.addNode("mashedP", 2, -1, 2, "White House", "CONF", "balogna", "b", "Team A");
+    boolean c = DB.addNode("mashedP", 2, -1, 2, "White House", "CONF", "balogna3", "b", "Team A");
     Assertions.assertFalse(c);
-    boolean d = DB.addNode("BBQSauce", 2, 5, 0, "White House", "CONF", "balogna", "b", "Team A");
+    boolean d = DB.addNode("BBQSauce", 2, 5, 0, "White House", "CONF", "balogna4", "b", "Team A");
     Assertions.assertFalse(d);
-    boolean e = DB.addNode("banana", 2, 5, 11, "White House", "CONF", "balogna", "b", "Team A");
+    boolean e = DB.addNode("banana", 2, 5, 11, "White House", "CONF", "balogna5", "b", "Team A");
     Assertions.assertFalse(e);
     boolean f =
-        DB.addNode("banana", 2, 5, 1, "White House", "abacabadabacaba", "balogna", "b", "Team A");
+        DB.addNode("banana", 2, 5, 1, "White House", "abacabadabacaba", "balogna6", "b", "Team A");
     Assertions.assertFalse(f);
     DB.removeAllNodes();
   }
@@ -100,7 +100,7 @@ public class TestGraphDatabase {
     DB.createTables();
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A");
     boolean a = DB.addEdge("biscuit_nugget", "biscuit", "nugget");
     Assertions.assertTrue(a);
     boolean b = DB.addEdge("biscuit_mashedP", "biscuit", "mashedP");
@@ -113,7 +113,7 @@ public class TestGraphDatabase {
     DB.createTables();
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A");
     DB.addEdge("biscuit_nugget", "biscuit", "nugget");
     Assertions.assertEquals(1, DB.getSizeEdge());
     boolean a = DB.deleteEdge("biscuit_nugget");
@@ -127,7 +127,7 @@ public class TestGraphDatabase {
     DB.createTables();
     DB.removeAllNodes();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A");
     Assertions.assertEquals(2, DB.getSizeNode());
     boolean a = DB.deleteNode("nugget");
     Assertions.assertTrue(a);
@@ -140,7 +140,7 @@ public class TestGraphDatabase {
     DB.createTables();
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    DB.editNode("biscuit", 2, 7, 3, "White Hose", "CONF", "balogna", "b", "Team A");
+    DB.editNode("biscuit", 2, 7, 3, "White Hose", "CONF", "balogna2", "b", "Team A");
     Assertions.assertEquals("White Hose", DB.getBuilding("biscuit"));
     DB.removeAll();
   }

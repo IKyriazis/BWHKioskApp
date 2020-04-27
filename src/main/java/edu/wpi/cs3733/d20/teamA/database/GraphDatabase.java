@@ -22,15 +22,17 @@ public class GraphDatabase extends Database {
    */
   public boolean dropTables() {
 
+    boolean a = false;
+    boolean b = false;
     // if the helper returns false this method should too
     // drop the constraints first
-    if (!(helperPrepared("ALTER TABLE Edge DROP CONSTRAINT FK_SN")
-        && helperPrepared("ALTER TABLE Edge DROP CONSTRAINT FK_EN"))) {
-
-      return false;
+    if (!doesTableNotExist("EDGE")) {
+      a = helperPrepared("DROP TABLE Edge");
     }
-    // Drop the tables
-    return helperPrepared("DROP TABLE Edge") && helperPrepared("DROP TABLE Node");
+    if (!doesTableNotExist("NODE")) {
+      b = helperPrepared("DROP TABLE Node");
+    }
+    return a && b;
   }
 
   /**
@@ -40,21 +42,25 @@ public class GraphDatabase extends Database {
    */
   public boolean createTables() {
 
+    boolean a = false;
+    boolean b = false;
     // Create the graph tables
-    boolean b =
-        helperPrepared(
-            "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
-                + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
-                + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(25), "
-                + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
-                + "CONSTRAINT CHK_Coords CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
-
-    boolean a =
-        helperPrepared(
-            "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, "
-                + "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), "
-                + "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
-
+    if (doesTableNotExist("NODE")) {
+      b =
+          helperPrepared(
+              "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
+                  + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
+                  + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(25), "
+                  + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
+                  + "CONSTRAINT CHK_Coords CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
+    }
+    if (doesTableNotExist("EDGE")) {
+      a =
+          helperPrepared(
+              "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, "
+                  + "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), "
+                  + "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
+    }
     return a && b;
   }
 
