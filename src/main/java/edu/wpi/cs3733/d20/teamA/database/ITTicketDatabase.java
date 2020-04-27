@@ -11,14 +11,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class ITTicketDatabase extends Database {
-  private int ticketNum;
 
   public ITTicketDatabase(Connection connection) {
     super(connection);
     if (doesTableNotExist("ITTICKETS")) {
       createTables();
     }
-    ticketNum = getSizeITTickets() + 1;
   }
 
   public boolean dropTables() {
@@ -36,8 +34,7 @@ public class ITTicketDatabase extends Database {
   public boolean createTables() {
     // Create the graph tables
     return helperPrepared(
-        "CREATE TABLE ITTickets (ticketNum INTEGER PRIMARY KEY, "
-            + "ticketTime TIMESTAMP NOT NULL, "
+        "CREATE TABLE ITTickets (ticketTime TIMESTAMP PRIMARY KEY, "
             + "status VarChar(50) NOT NULL, "
             + "category Varchar(50) NOT NULL, "
             + "location Varchar(10) NOT NULL, "
@@ -61,19 +58,17 @@ public class ITTicketDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO ITTickets (ticketNum, ticketTime , status, category, location, requesterName, completedBy, description) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO ITTickets (ticketTime , status, category, location, requesterName, completedBy, description) VALUES (?, ?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
-      pstmt.setInt(1, ticketNum);
-      pstmt.setTimestamp(2, ticketTime);
-      pstmt.setString(3, status);
-      pstmt.setString(4, category);
-      pstmt.setString(5, location);
-      pstmt.setString(6, requesterName);
-      pstmt.setString(7, completedBy);
-      pstmt.setString(8, description);
+      pstmt.setTimestamp(1, ticketTime);
+      pstmt.setString(2, status);
+      pstmt.setString(3, category);
+      pstmt.setString(4, location);
+      pstmt.setString(5, requesterName);
+      pstmt.setString(6, completedBy);
+      pstmt.setString(7, description);
       pstmt.executeUpdate();
       pstmt.close();
-      ticketNum++;
       // return true if the request is added
       return true;
     } catch (SQLException e) {
@@ -86,7 +81,7 @@ public class ITTicketDatabase extends Database {
     return getSize("ITTickets");
   }
 
-  public boolean changeStatus(int ticketNumber, String newStatus) {
+  public boolean changeStatus(String statusTicketTime, String newStatus) {
 
     try {
       PreparedStatement pstmt =
@@ -94,8 +89,8 @@ public class ITTicketDatabase extends Database {
               .prepareStatement(
                   "UPDATE ITTickets Set status = '"
                       + newStatus
-                      + "' WHERE orderNumber = "
-                      + ticketNumber);
+                      + "' WHERE ticketTime = "
+                      + statusTicketTime);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -112,7 +107,6 @@ public class ITTicketDatabase extends Database {
       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ITTickets");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
-        int ticketNum = rset.getInt("ticketNum");
         Timestamp ticketTime = rset.getTimestamp("ticketTime");
         String status = rset.getString("status");
         String category = rset.getString("category");
