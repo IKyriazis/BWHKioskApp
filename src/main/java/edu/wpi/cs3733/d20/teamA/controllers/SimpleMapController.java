@@ -41,9 +41,14 @@ public class SimpleMapController {
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton qrCodeButton;
 
+  @FXML private JFXButton floorUpButton;
+  @FXML private JFXButton floorDownButton;
+  @FXML private JFXTextField floorField;
+
   private MapCanvas canvas;
   private Graph graph;
   private String lastDirs;
+  private int floor = 1;
 
   private ObservableList<Node> allNodeList;
 
@@ -82,6 +87,9 @@ public class SimpleMapController {
     swapBtn.setGraphic(new FontAwesomeIconView((FontAwesomeIcon.EXCHANGE)));
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
     qrCodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QRCODE));
+
+    floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
+    floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
 
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(
@@ -137,6 +145,7 @@ public class SimpleMapController {
       alert.setContentText(e.toString());
       alert.show();
     }
+    Platform.runLater(() -> canvas.draw(floor));
   }
 
   @FXML
@@ -236,5 +245,19 @@ public class SimpleMapController {
       DialogUtil.simpleInfoDialog(
           dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
     }
+  }
+
+  @FXML
+  public void floorUp() {
+    floor = Math.min(5, floor + 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
+  }
+
+  @FXML
+  public void floorDown() {
+    floor = Math.max(1, floor - 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
   }
 }
