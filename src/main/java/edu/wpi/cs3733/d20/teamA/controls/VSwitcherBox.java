@@ -33,7 +33,7 @@ public class VSwitcherBox extends VBox {
 
   private static final String iconStyle = "-fx-font-size: 36pt;";
   private static final String buttonStyle =
-      "-fx-font-size: 26pt;" + "-fx-background-radius: 0px;" + "-fx-text-fill: black;";
+      "-fx-font-size: 22pt;" + "-fx-background-radius: 0px;" + "-fx-text-fill: black;";
 
   public VSwitcherBox(Pane destPane, Node topIcon) {
     this.destPane = destPane;
@@ -196,7 +196,7 @@ public class VSwitcherBox extends VBox {
       maxGraphicWidth =
           Math.max(maxGraphicWidth, button.getGraphic().prefWidth(button.getHeight()));
     }
-    return maxGraphicWidth;
+    return Math.max(maxGraphicWidth, iconLabel.getGraphic().prefWidth(iconLabel.getHeight()));
   }
 
   @Override
