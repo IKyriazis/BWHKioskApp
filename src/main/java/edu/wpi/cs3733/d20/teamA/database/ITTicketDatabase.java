@@ -21,28 +21,28 @@ public class ITTicketDatabase extends Database {
 
   public boolean dropTables() {
 
-    // if the helper returns false this method should too
-    // drop the CONSTRAINT first
-    if (!(helperPrepared("ALTER TABLE ITTickets DROP CONSTRAINT ITLocation"))) {
-
-      return false;
+    if (!doesTableNotExist("ITTICKETS")) {
+      // Drop the tables
+      return helperPrepared("DROP TABLE ITTickets");
     }
-    // Drop the tables
-    return helperPrepared("DROP TABLE ITTickets");
+    return false;
   }
 
   public boolean createTables() {
     // Create the graph tables
-    return helperPrepared(
-        "CREATE TABLE ITTickets (ticketTime TIMESTAMP PRIMARY KEY, "
-            + "status VarChar(15) NOT NULL, "
-            + "category Varchar(15) NOT NULL, "
-            + "location Varchar(10) NOT NULL, "
-            + "requesterName Varchar(25) NOT NULL, "
-            + "completedBy Varchar(25) NOT NULL, "
-            + "description Varchar(200) NOT NULL, "
-            + "CONSTRAINT ITLocation FOREIGN KEY (location) REFERENCES Node(nodeID), "
-            + "CONSTRAINT ITStatus CHECK (status in ('Ticket Sent', 'In Progress', 'Complete')))");
+    if (doesTableNotExist("ITTICKETS")) {
+      return helperPrepared(
+          "CREATE TABLE ITTickets (ticketTime TIMESTAMP PRIMARY KEY, "
+              + "status VarChar(15) NOT NULL, "
+              + "category Varchar(15) NOT NULL, "
+              + "location Varchar(10) NOT NULL, "
+              + "requesterName Varchar(25) NOT NULL, "
+              + "completedBy Varchar(25) NOT NULL, "
+              + "description Varchar(200) NOT NULL, "
+              + "CONSTRAINT ITLocation FOREIGN KEY (location) REFERENCES Node(nodeID), "
+              + "CONSTRAINT ITStatus CHECK (status in ('Ticket Sent', 'In Progress', 'Complete')))");
+    }
+    return false;
   }
 
   public boolean addTicket(

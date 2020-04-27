@@ -42,7 +42,6 @@ public class TestITTicketDatabse {
 
   @Test
   public void testTable() {
-    tDB.createTables();
     tDB.dropTables();
     boolean dropTables = tDB.dropTables();
     Assertions.assertFalse(dropTables);
