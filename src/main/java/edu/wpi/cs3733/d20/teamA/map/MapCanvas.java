@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
-import edu.wpi.cs3733.d20.teamA.graph.Edge;
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.graph.Path;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -46,7 +43,7 @@ public class MapCanvas extends Canvas {
   private Point2D selectionStart;
   private Point2D selectionEnd;
 
-  private Path path;
+  private ContextPath path;
 
   public MapCanvas(boolean dragEnabled) {
     super();
@@ -300,7 +297,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws the path found
-  private void drawPath(Path path) {
+  private void drawPath(ContextPath path) {
 
     for (Edge edge : path.getPathEdges()) {
       drawEdge(edge);
@@ -330,7 +327,7 @@ public class MapCanvas extends Canvas {
     getGraphicsContext2D().fillRect(startX, startY, width, height);
   }
 
-  public Path getPath() {
+  public ContextPath getPath() {
     return this.path;
   }
 
@@ -364,7 +361,7 @@ public class MapCanvas extends Canvas {
     }
   }
 
-  public void setPath(Path path) {
+  public void setPath(ContextPath path) {
     this.path = path;
   }
 

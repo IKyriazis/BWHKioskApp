@@ -159,18 +159,19 @@ public class SimpleMapController {
             .findFirst();
     if (start.isPresent() && end.isPresent()) {
       /*ContextPath path = new ContextPath();
-      if(aStarButton is pressed) path.setPath(new Path(graph))
+      if(aStarButton is pressed) path.setPath(new BreadthFirst(graph))
       else if (depthFirstButton is pressed) path.setPath(new DepthFirst(graph))
-      else path.setPath(new BreadthFirst(graph))
+      else path.setPath(new Path(graph))
       */
-      Path path = new Path(graph);
+      ContextPath path = new ContextPath();
+      path.setPath(new DepthFirst(graph));
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
       canvas.draw(1);
 
       directionsList.getItems().clear();
-      if (path.getPathNodes().size() != 0) {
-        ArrayList<Label> directions = path.textualDirections();
+      if (path.getPathFindingAlgo().getPathNodes().size() != 0) {
+        ArrayList<Label> directions = path.getPathFindingAlgo().textualDirections();
         directions.forEach(
             l -> {
               directionsList.getItems().add(l);
