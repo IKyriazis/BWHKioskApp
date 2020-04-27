@@ -36,6 +36,7 @@ public class MapEditorController {
 
   @FXML private JFXButton floorUpButton;
   @FXML private JFXButton floorDownButton;
+  @FXML private JFXButton exportCSVButton;
   @FXML private JFXTextField floorField;
 
   @FXML private AnchorPane infoPane;
@@ -212,6 +213,7 @@ public class MapEditorController {
     // Setup button icons
     floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
     floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
+    exportCSVButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SAVE));
 
     // Try to get graph
     try {
@@ -362,16 +364,16 @@ public class MapEditorController {
     String info;
     if (selections.size() == 0) {
       info =
-          "Click on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for New Node";
+          "Middle Click to Pan\nClick on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for New Node";
     } else if (selections.size() == 1) {
       info =
-          "Click on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Info/Move/Edit/Delete";
+          "Middle Click to Pan\nClick on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Info/Move/Edit/Delete";
     } else if (selections.size() == 2) {
       info =
-          "Click on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Move/Delete/Edge";
+          "Middle Click to Pan\nClick on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Move/Delete/Edge";
     } else {
       info =
-          "Click on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Move/Delete";
+          "Middle Click to Pan\nClick on Node / Click & Drag to Select\nClick Blank Area to Deselect\nRight Click for Move/Delete";
     }
     editorTipLabel.setText(info);
   }
