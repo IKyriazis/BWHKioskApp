@@ -3,6 +3,9 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.LaundryEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Laundry;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
@@ -50,7 +53,7 @@ public class LaundryController extends AbstractController {
     lDB.addLaundry("admin", "Emergency Department");
     lDB.addLaundry("admin", "Admitting");
 
-    serviceLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CIRCLE_THIN));
+    serviceLabel.setGraphic(new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE));
     requestTableLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LIST));
 
     addRequestButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_CIRCLE));
@@ -69,13 +72,6 @@ public class LaundryController extends AbstractController {
     orderTablePane.getChildren().add(tblLaundryView);
 
     update();
-
-    progressComboBox.getItems().addAll("Requested", "Collected", "Washing", "Drying", "Returned");
-    progressComboBox.getSelectionModel().select(0);
-
-    // Will need to connect to employee database later
-    cleanerComboBox.getItems().addAll("admin", "staff");
-    cleanerComboBox.getSelectionModel().select(0);
 
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
@@ -124,39 +120,17 @@ public class LaundryController extends AbstractController {
   private void updateCleaner() {
     Laundry l = tblLaundryView.getSelected();
     if (l != null) {
-      if (cleanerComboBox.getValue() != null) {
-        if (!lDB.setEmpW(l.getRequestNum(), cleanerComboBox.getValue())) {
-          DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot update cleaner");
-        } else {
-          if (l.getProgress().equals("Requested")) {
-            lDB.setProg(l.getRequestNum(), "Collected");
-          }
-        }
-      } else if (cleanerComboBox.getValue() == null) {
-        DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a cleaner");
-      }
+      LaundryEditController controller = new LaundryEditController(l);
+      DialogUtil.complexDialog(
+          dialogStackPane,
+          "Update Request",
+          "views/LaundryEdit.fxml",
+          false,
+          event -> update(),
+          controller);
     } else if (l == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
     }
-    cleanerComboBox.getSelectionModel().clearSelection();
-    update();
-  }
-
-  @FXML
-  private void updateProgress() {
-    Laundry l = tblLaundryView.getSelected();
-    if (l != null) {
-      if (progressComboBox.getValue() != null) {
-        if (!lDB.setProg(l.getRequestNum(), progressComboBox.getValue())) {
-          DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot update progress");
-        }
-      } else if (progressComboBox.getValue() == null) {
-        DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select desired progress");
-      }
-    } else if (l == null) {
-      DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
-    }
-    progressComboBox.getSelectionModel().clearSelection();
     update();
   }
 

@@ -19,7 +19,7 @@
             <children>
                 <GridPane>
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="275.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="7.0" minWidth="7.0" prefWidth="7.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="400.0" />
                     </columnConstraints>
@@ -47,28 +47,21 @@
                                 </Label>
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="1">
                            <children>
-                              <JFXButton fx:id="updateCleanerButton" buttonType="RAISED" onAction="#updateCleaner" prefWidth="175.0" style="-fx-background-color: white;" text="Update Cleaner">
+                              <JFXButton fx:id="updateCleanerButton" buttonType="RAISED" onAction="#updateCleaner" prefWidth="175.0" style="-fx-background-color: white;" text="Update">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXComboBox fx:id="cleanerComboBox" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Cleaner Name" />
-                              <JFXButton fx:id="updateProgressButton" buttonType="RAISED" onAction="#updateProgress" prefWidth="175.0" style="-fx-background-color: white;" text="Update Progress">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </JFXButton>
-                              <JFXComboBox fx:id="progressComboBox" labelFloat="true" prefWidth="150.0" promptText="Progress" />
                            </children>
                         </VBox>
                                 <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                                     <children>
+                              <JFXComboBox fx:id="roomList" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Location" />
                                         <JFXButton fx:id="addRequestButton" buttonType="RAISED" onAction="#addRequest" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #66BB6A;" text="Add New Request" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
                                             </font>
                                         </JFXButton>
-                              <JFXComboBox fx:id="roomList" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Location" />
                                         <JFXButton fx:id="removeRequestButton" buttonType="RAISED" onAction="#removeRequest" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #ef5350;" text="Remove Request" textFill="WHITE">
                                             <font>
                                                 <Font name="System Bold" size="14.0" />
