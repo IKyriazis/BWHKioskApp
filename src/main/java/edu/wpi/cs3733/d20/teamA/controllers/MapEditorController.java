@@ -10,10 +10,13 @@ import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -39,9 +42,68 @@ public class MapEditorController {
   @FXML private JFXDrawer infoDrawer;
   private JFXRippler infoRippler;
 
+  private ArrayList<Node> selections;
   private MapCanvas canvas;
   private Graph graph;
   private int floor = 1;
+
+  private Point2D dragStart;
+  private Point2D dragCurr;
+  private Point2D lastPressedPos = new Point2D(0, 0);
+  private final EventHandler<MouseEvent> dragStartHandler =
+      event -> {
+        if (event.getButton() == MouseButton.PRIMARY) {
+          dragStart = new Point2D(event.getX(), event.getY());
+        }
+        canvas.getDragStartHandler().handle(event);
+      };
+
+  private final EventHandler<MouseEvent> dragHandler =
+      event -> {
+        if (event.getButton() == MouseButton.PRIMARY) {
+          dragCurr = new Point2D(event.getX(), event.getY());
+          canvas.setSelectionBox(dragStart, dragCurr);
+          canvas.draw(floor);
+        }
+
+        canvas.getDragHandler().handle(event);
+      };
+
+  private final EventHandler<MouseEvent> dragEndHandler =
+      event -> {
+        if (event.getButton() == MouseButton.PRIMARY) {
+          if (dragCurr == null) {
+            return;
+          }
+          double startX = Math.min(dragStart.getX(), dragCurr.getX());
+          double startY = Math.min(dragStart.getY(), dragCurr.getY());
+
+          double width = Math.max(dragStart.getX(), dragCurr.getX()) - startX;
+          double height = Math.max(dragStart.getY(), dragCurr.getY()) - startY;
+
+          if (width < 5 || height < 5) {
+            return;
+          }
+          lastPressedPos = new Point2D(event.getX(), event.getY());
+
+          BoundingBox bounds = new BoundingBox(startX, startY, width, height);
+          selections.clear();
+          graph.getNodes().values().stream()
+              .filter(node -> node.getFloor() == floor)
+              .forEach(
+                  node -> {
+                    Point2D nodePos = canvas.graphToCanvas(new Point2D(node.getX(), node.getY()));
+                    if (bounds.contains(nodePos) && !selections.contains(node)) {
+                      selections.add(node);
+                    }
+                  });
+          canvas.setSelectionBox(null, null);
+          canvas.draw(floor);
+
+          dragStart = dragCurr = null;
+        }
+        canvas.getDragEndHandler().handle(event);
+      };
 
   enum Action {
     NONE,
@@ -55,7 +117,7 @@ public class MapEditorController {
   @FXML
   public void initialize() {
     // Setup map canvas
-    canvas = new MapCanvas(true, true);
+    canvas = new MapCanvas(false);
     canvas.setDrawAllNodes(true);
     canvasPane.getChildren().add(0, canvas);
     canvas.widthProperty().bind(canvasPane.widthProperty());
@@ -66,10 +128,18 @@ public class MapEditorController {
 
     // Set canvas to pan with middle mouse button, drag nodes with left mouse click
     canvas.setDragMapButton(MouseButton.MIDDLE);
-    canvas.setDragNodeButton(MouseButton.PRIMARY);
 
     // Setup canvas click handler
     canvas.setOnMouseClicked(this::canvasClicked);
+
+    // Setup canvas drag handlers
+    canvas.setOnMousePressed(dragStartHandler);
+    canvas.setOnMouseDragged(dragHandler);
+    canvas.setOnMouseReleased(dragEndHandler);
+
+    // Set canvas highlights
+    selections = new ArrayList<>();
+    canvas.setHighlights(selections);
 
     // Setup zoom slider cursor
     zoomSlider.setCursor(Cursor.H_RESIZE);
@@ -114,87 +184,93 @@ public class MapEditorController {
   }
 
   public void canvasClicked(MouseEvent event) {
+    if (lastPressedPos.getX() == event.getX() && lastPressedPos.getY() == event.getY()) {
+      return;
+    }
     Point2D mousePos = new Point2D(event.getX(), event.getY());
     Point2D mouseGraphPos = canvas.canvasToGraph(mousePos);
     Optional<Node> optionalNode = canvas.getClosestNode(floor, mousePos, 15);
 
-    if (event.getButton() == MouseButton.SECONDARY) {
+    if (event.getButton() == MouseButton.PRIMARY) {
+      if (optionalNode.isPresent()) {
+        Node node = optionalNode.get();
+        selections.add(node);
+      } else {
+        selections.clear();
+      }
+    } else if (event.getButton() == MouseButton.SECONDARY) {
       JFXPopup popup = new JFXPopup();
       VBox buttonBox = new VBox();
-      String buttonStyle = "-fx-font-size: 18pt; -fx-background-radius: 0px;";
+      String buttonStyle = "-fx-font-size: 18pt; -fx-background-radius: 0px";
 
       double popX = event.getX();
       double popY = event.getY();
-      if (optionalNode.isPresent()) {
-        Node node = optionalNode.get();
-        Point2D nodeCanvasPos = canvas.graphToCanvas(new Point2D(node.getX(), node.getY()));
-        popX = nodeCanvasPos.getX();
-        popY = nodeCanvasPos.getY();
 
-        canvas.setSelectedNode(node);
-
-        JFXButton infoButton = new JFXButton("Node Info");
-        infoButton.setOnAction(
-            e -> {
-              buttonBox.getChildren().clear();
-
-              Label infoLabel = new Label(getNodeInfo(node));
-              infoLabel.setStyle("-fx-font-size: 18pt");
-              buttonBox.getChildren().add(infoLabel);
-            });
-
-        JFXButton editButton = new JFXButton("Edit Node");
-        editButton.setOnAction(
-            e -> {
-              popup.hide();
-              canvas.setSelectedNode(null);
-              openNodeModifyDialog(
-                  node, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY(), floor);
-            });
-
-        JFXButton deleteButton = new JFXButton("Delete Node");
-        deleteButton.setOnAction(
-            e -> {
-              graph.deleteNode(node);
-              canvas.draw(floor);
-              popup.hide();
-            });
-
-        JFXButton addEdgeButton = new JFXButton("Add Edge");
-        addEdgeButton.setOnAction(
-            e -> {
-              mode = Action.ADDING_EDGE;
-              popup.hide();
-            });
-
-        JFXButton deleteEdgeButton = new JFXButton("Delete Edge");
-        deleteEdgeButton.setOnAction(
-            e -> {
-              mode = Action.DELETING_EDGE;
-              popup.hide();
-            });
-
-        infoButton.setStyle(buttonStyle);
-        editButton.setStyle(buttonStyle);
-        deleteButton.setStyle(buttonStyle);
-        addEdgeButton.setStyle(buttonStyle);
-        deleteEdgeButton.setStyle(buttonStyle);
-
-        buttonBox
-            .getChildren()
-            .addAll(infoButton, editButton, deleteButton, addEdgeButton, deleteEdgeButton);
-      } else {
-        JFXButton newButton = new JFXButton("New Node");
-        newButton.setStyle(buttonStyle);
-        newButton.setOnAction(
+      if (selections.size() == 0) {
+        JFXButton newNodeButton = new JFXButton("New Node");
+        newNodeButton.setStyle(buttonStyle);
+        newNodeButton.setOnAction(
             e -> {
               popup.hide();
               openNodeModifyDialog(
                   null, (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY(), floor);
             });
+        buttonBox.getChildren().add(newNodeButton);
+      } else if (selections.size() == 1) {
+        JFXButton infoButton = new JFXButton("Node Info");
+        infoButton.setStyle(buttonStyle);
+        infoButton.setOnAction(
+            e -> {
+              buttonBox.getChildren().clear();
 
-        buttonBox.getChildren().add(newButton);
-        canvas.setSelectedNode(null);
+              Label infoLabel = new Label(getNodeInfo(selections.get(0)));
+              infoLabel.setStyle("-fx-font-size: 18pt");
+              buttonBox.getChildren().add(infoLabel);
+            });
+
+        JFXButton editButton = new JFXButton("Edit Node");
+        editButton.setStyle(buttonStyle);
+        editButton.setOnAction(
+            e -> {
+              popup.hide();
+              openNodeModifyDialog(
+                  selections.get(0), (int) mouseGraphPos.getX(), (int) mouseGraphPos.getY(), floor);
+            });
+
+        buttonBox.getChildren().addAll(infoButton, editButton);
+      } else if (selections.size() == 2) {
+        JFXButton addEdgeButton = new JFXButton("Add Edge");
+        addEdgeButton.setStyle(buttonStyle);
+        addEdgeButton.setOnAction(
+            e -> {
+              popup.hide();
+              graph.addEdge(selections.get(0), selections.get(1));
+              canvas.draw(floor);
+            });
+
+        JFXButton deleteEdgeButton = new JFXButton("Delete Edge");
+        deleteEdgeButton.setStyle(buttonStyle);
+        deleteEdgeButton.setOnAction(
+            e -> {
+              popup.hide();
+              graph.deleteEdge(selections.get(0), selections.get(1));
+              canvas.draw(floor);
+            });
+        buttonBox.getChildren().addAll(addEdgeButton, deleteEdgeButton);
+      }
+
+      if (selections.size() >= 1) {
+        JFXButton deleteButton =
+            new JFXButton("Delete " + (selections.size() > 1 ? "Nodes" : "Node"));
+        deleteButton.setStyle(buttonStyle);
+        deleteButton.setOnAction(
+            e -> {
+              popup.hide();
+              selections.forEach(node -> graph.deleteNode(node));
+              canvas.draw(floor);
+            });
+
+        buttonBox.getChildren().add(deleteButton);
       }
 
       buttonBox
@@ -212,34 +288,7 @@ public class MapEditorController {
               });
       popup.setPopupContent(buttonBox);
       popup.setHideOnEscape(true);
-      popup.setOnHidden(
-          e -> {
-            if (mode == Action.NONE) {
-              canvas.setSelectedNode(null);
-              canvas.draw(floor);
-              canvas.setDragNodeEnabled(true);
-            }
-          });
       popup.show(dialogPane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, popX, popY);
-
-      canvas.setDragNodeEnabled(false);
-    } else if (event.getButton() == MouseButton.PRIMARY) {
-      if (optionalNode.isPresent()) {
-        Node node = optionalNode.get();
-        if (mode == Action.ADDING_EDGE) {
-          graph.addEdge(canvas.getSelectedNode(), node);
-          canvas.setDragNodeEnabled(true);
-        } else if (mode == Action.DELETING_EDGE) {
-          graph.deleteEdge(canvas.getSelectedNode(), node);
-          canvas.setDragNodeEnabled(true);
-        }
-
-        mode = Action.NONE;
-      }
-
-      canvas.setSelectedNode(null);
-    } else {
-      canvas.setSelectedNode(null);
     }
 
     canvas.draw(floor);
