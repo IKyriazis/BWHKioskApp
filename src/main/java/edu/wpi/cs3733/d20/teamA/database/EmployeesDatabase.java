@@ -2,36 +2,49 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
-import java.util.Date;
 
 public class EmployeesDatabase extends Database {
 
-  int employeeID = getSizeEmployees() + 1;
+  int employeeID;
 
   public EmployeesDatabase(Connection connection) {
 
     super(connection);
 
-    if (doesTableNotExist("EMPLOYEES") && doesTableNotExist("EquipReq") && doesTableNotExist("LoggedIn")) {
+    if (doesTableNotExist("EMPLOYEES")
+            && doesTableNotExist("EquipReq")
+            && doesTableNotExist("LoggedIn")) {
       createTables();
     }
+
+    employeeID = getSizeEmployees() + 1;
   }
 
-  /** @return */
+  /**
+   * Drop the 'Employees' table
+   *
+   * @return Success / Failure
+   */
   public boolean dropTables() {
 
     // Drop the tables
-    if (!(helperPrepared("ALTER TABLE EquipReq DROP CONSTRAINT FK_EID") && helperPrepared("ALTER TABLE LoggedIn DROP CONSTRAINT FK_USE"))) {
+    if (!(helperPrepared("ALTER TABLE EquipReq DROP CONSTRAINT FK_EID")
+            && helperPrepared("ALTER TABLE LoggedIn DROP CONSTRAINT FK_USE"))) {
 
       return false;
     }
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE Employees") && helperPrepared("DROP TABLE EquipReq") && helperPrepared("DROP TABLE LoggedIn"))) {
+    if (!(helperPrepared("DROP TABLE Employees")
+            && helperPrepared("DROP TABLE EquipReq")
+            && helperPrepared("DROP TABLE LoggedIn"))) {
       return false;
     }
 
@@ -47,33 +60,36 @@ public class EmployeesDatabase extends Database {
 
     // Create the graph tables
 
-    boolean a = helperPrepared(
-        "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title Varchar(50), pageNum BIGINT, CONSTRAINT tenDigit CHECK (pageNum BETWEEN 1000000000 and 9999999999), )");
-    boolean b = helperPrepared(
-            "CREATE TABLE EquipReq (username Varchar(25), timeOf TIMESTAMP, item Varchar(75) NOT NULL, qty INTEGER, location Varchar(10) NOT NULL, priority Varchar(7) NOT NULL, CONSTRAINT FK_EID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT PK_ET PRIMARY KEY(employeeID, time), CONSTRAINT CHK_PRI CHECK (priority in ('High', 'Medium', 'Low')), CONSTRAINT FK_NLOC FOREIGN KEY (location) REFERENCES NODE(nodeID))");
-    boolean c = helperPrepared(
-            "CREATE TABLE LoggedIn (username Varchar(25), timeLogged TIMESTAMP, flagLog BOOLEAN, CONSTRAINT FK_USE FOREIGN KEY (username) REFERENCES Employees (username), CONSTRAINT PK_UST PRIMARY KEY (username, timeLogged))");
+    boolean a =
+            helperPrepared(
+                    "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title Varchar(50), pageNum BIGINT, CONSTRAINT tenDigit CHECK (pageNum BETWEEN 1000000000 and 9999999999))");
+    boolean b =
+            helperPrepared(
+                    "CREATE TABLE EquipReq (username Varchar(25), timeOf TIMESTAMP, item Varchar(75) NOT NULL, qty INTEGER, location Varchar(10) NOT NULL, priority Varchar(7) NOT NULL, CONSTRAINT CK_Q CHECK (qty >= 0), CONSTRAINT FK_EID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT PK_ET PRIMARY KEY(username, timeOf), CONSTRAINT CHK_PRI CHECK (priority in ('High', 'Medium', 'Low')), CONSTRAINT FK_NLOC FOREIGN KEY (location) REFERENCES NODE(nodeID))");
+    boolean c =
+            helperPrepared(
+                    "CREATE TABLE LoggedIn (username Varchar(25), timeLogged TIMESTAMP, flag BOOLEAN, CONSTRAINT FK_USE FOREIGN KEY (username) REFERENCES Employees (username), CONSTRAINT PK_UST PRIMARY KEY (username, timeLogged))");
     return a && b && c;
   }
 
   /**
    * @param nameFirst nameFirst
-   * @param nameLast last name
+   * @param nameLast  last name
    * @return returns true if the employee is added
    */
   public boolean addEmployee(
-      int employeeID,
-      String nameFirst,
-      String nameLast,
-      String username,
-      String password,
-      String title) {
+          int employeeID,
+          String nameFirst,
+          String nameLast,
+          String username,
+          String password,
+          String title) {
 
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title) VALUES (?, ?, ?, ?, ?, ?)");
+              getConnection()
+                      .prepareStatement(
+                              "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title) VALUES (?, ?, ?, ?, ?, ?)");
       pstmt.setInt(1, employeeID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
@@ -82,7 +98,7 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
-      employeeID++;
+      this.employeeID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -90,9 +106,9 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public void addEmployee(
-      String nameFirst, String nameLast, String username, String password, String title) {
-    addEmployee(employeeID, nameFirst, nameLast, username, password, title);
+  public boolean addEmployee(
+          String nameFirst, String nameLast, String username, String password, String title) {
+    return addEmployee(employeeID, nameFirst, nameLast, username, password, title);
   }
 
   /**
@@ -103,7 +119,7 @@ public class EmployeesDatabase extends Database {
   public boolean deleteEmployee(String username) {
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE From Employees Where username = ?");
+              getConnection().prepareStatement("DELETE From Employees Where username = ?");
       pstmt.setString(1, username);
       pstmt.executeUpdate();
       pstmt.close();
@@ -114,7 +130,9 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  /** @return returns the size of the table */
+  /**
+   * @return returns the size of the table
+   */
   public int getSizeEmployees() {
     return getSize("Employees");
   }
@@ -126,13 +144,13 @@ public class EmployeesDatabase extends Database {
   public boolean editTitle(String username, String newTitle) {
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE Employees SET title = '"
-                      + newTitle
-                      + "' WHERE username = '"
-                      + username
-                      + "'");
+              getConnection()
+                      .prepareStatement(
+                              "UPDATE Employees SET title = '"
+                                      + newTitle
+                                      + "' WHERE username = '"
+                                      + username
+                                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -145,13 +163,13 @@ public class EmployeesDatabase extends Database {
   public boolean editNameFirst(String username, String newFirst) {
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE Employees SET title = '"
-                      + newFirst
-                      + "' WHERE username = '"
-                      + username
-                      + "'");
+              getConnection()
+                      .prepareStatement(
+                              "UPDATE Employees SET title = '"
+                                      + newFirst
+                                      + "' WHERE username = '"
+                                      + username
+                                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -164,13 +182,13 @@ public class EmployeesDatabase extends Database {
   public boolean editNameLast(String username, String newLast) {
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE Employees SET title = '"
-                      + newLast
-                      + "' WHERE username = '"
-                      + username
-                      + "'");
+              getConnection()
+                      .prepareStatement(
+                              "UPDATE Employees SET title = '"
+                                      + newLast
+                                      + "' WHERE username = '"
+                                      + username
+                                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -184,9 +202,9 @@ public class EmployeesDatabase extends Database {
     String pass = null;
     try {
       PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "Select password From Employees Where username = '" + username + "'");
+              getConnection()
+                      .prepareStatement(
+                              "Select password From Employees Where username = '" + username + "'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         pass = rset.getString("password");
@@ -206,13 +224,13 @@ public class EmployeesDatabase extends Database {
     if (logIn(username, oldPass) && checkSecurePass(newPass)) {
       try {
         PreparedStatement pstmt =
-            getConnection()
-                .prepareStatement(
-                    "UPDATE Employees SET password = '"
-                        + newPass
-                        + "' WHERE username = '"
-                        + username
-                        + "'");
+                getConnection()
+                        .prepareStatement(
+                                "UPDATE Employees SET password = '"
+                                        + newPass
+                                        + "' WHERE username = '"
+                                        + username
+                                        + "'");
         pstmt.executeUpdate();
         pstmt.close();
         return true;
@@ -249,7 +267,9 @@ public class EmployeesDatabase extends Database {
     return false;
   }
 
-  /** @return true if all all employee are removed */
+  /**
+   * @return true if all all employee are removed
+   */
   public boolean removeAllEmployees() {
     return helperPrepared("DELETE From Employees");
   }
@@ -257,7 +277,7 @@ public class EmployeesDatabase extends Database {
   public void readEmployeeCSV() {
     try {
       InputStream stream =
-          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Employees.csv");
+              getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Employees.csv");
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
@@ -276,20 +296,18 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public String getLoggedIn(){
+  public String getLoggedIn() {
     String username = null;
     try {
       PreparedStatement pstm =
-              getConnection()
-                      .prepareStatement(
-                              "Select username From LoggedIn Where flag = true");
+              getConnection().prepareStatement("Select username From LoggedIn Where flag = true");
       ResultSet rset = pstm.executeQuery();
       while (rset.next()) {
         username = rset.getString("username");
       }
       rset.close();
       pstm.close();
-      if(username != null){
+      if (username != null) {
         return username;
       }
       return null;
@@ -303,7 +321,7 @@ public class EmployeesDatabase extends Database {
     String username = getLoggedIn();
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
 
-    if(username == null){
+    if (username == null) {
       return false;
     }
 
@@ -348,7 +366,7 @@ public class EmployeesDatabase extends Database {
       PreparedStatement pstmt =
               getConnection()
                       .prepareStatement(
-                              "INSERT INTO LoggedIn (username, timeOf, flag) VALUES (?, ?, ?)");
+                              "INSERT INTO LoggedIn (username, timeLogged, flag) VALUES (?, ?, ?)");
       pstmt.setString(1, username);
       pstmt.setTimestamp(2, timeOf);
       pstmt.setBoolean(3, true);
@@ -367,7 +385,9 @@ public class EmployeesDatabase extends Database {
 
     try {
       PreparedStatement pstmt =
-              getConnection().prepareStatement("UPDATE LoggedIn set flag = false WHERE username = '"+username+"'");
+              getConnection()
+                      .prepareStatement(
+                              "UPDATE LoggedIn set flag = false WHERE username = '" + username + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -376,5 +396,72 @@ public class EmployeesDatabase extends Database {
       return false;
     }
   }
+
+  public int getSizeReq() {
+    return getSize("EquipReq");
+  }
+
+  public int getSizeLog() {
+    return getSize("LoggedIn");
+  }
+
+  public boolean removeAllReqs() {
+    return helperPrepared("DELETE From EquipReq");
+  }
+
+  public boolean removeAllLogs() {
+    return helperPrepared("DELETE From LoggedIn");
+  }
+
+  public static String getNamefromUser(String username) {
+    String first;
+    String last;
+    try {
+      Statement priceStmt = getConnection().createStatement();
+      ResultSet rst =
+              priceStmt.executeQuery(
+                      "SELECT * FROM Employees WHERE username = '"
+                              + username
+                              + "'");
+      ;
+      rst.next();
+      first = rst.getString("nameFirst");
+      last = rst.getString("nameLast");
+      return first + last;
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return null;
+  }
+
+  public static ObservableList<EquipRequest> ReqOl() {
+    ObservableList<EquipRequest> rList = FXCollections.observableArrayList();
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EquipReq");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String username = getNamefromUser(rset.getString("username"));
+        String timeOf = rset.getTimestamp("timeOF").toString();
+        String item = rset.getString("item");
+        int qty = rset.getInt("qty");
+        String location = rset.getString("location");
+        String priority = rset.getString("priority");
+
+        EquipRequest node =
+                new EquipRequest(username, item, qty, location, priority, timeOf);
+
+        rList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      conn.close();
+      return rList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return rList;
+    }
+  }
+
 
 }
