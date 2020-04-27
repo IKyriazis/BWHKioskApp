@@ -26,6 +26,7 @@ public class VSwitcherBox extends VBox {
   private JFXButton selected;
 
   private boolean minimized = true;
+  private double minimizedWidth = Double.MAX_VALUE;
   private Animation widthTransition;
 
   private boolean transitioning = false;
@@ -203,13 +204,17 @@ public class VSwitcherBox extends VBox {
   public void resize(double width, double height) {
     super.resize(width, height);
 
+    if (getWidth() < minimizedWidth) {
+      minimizedWidth = getWidth();
+    }
+
     // Resize contents to max
     iconLabel.setMaxWidth(getWidth());
     map.keySet().forEach(button -> button.setMaxWidth(getWidth()));
 
     // Fit padding on destpane for overlap only when expanded
     double labelIconWidth = iconLabel.getGraphic().prefWidth(iconLabel.getHeight());
-    destPane.setPadding(new Insets(0, 0, 0, Math.max(labelIconWidth, getMaxIconWidth()) + 5.0));
+    destPane.setPadding(new Insets(0, 0, 0, minimizedWidth));
 
     // Offset labels by deviation from max icon width
     double maxIconWidth = getMaxIconWidth();
