@@ -46,7 +46,7 @@ public class EmployeesDatabase extends Database {
     // Create the graph tables
 
     return helperPrepared(
-        "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title Varchar(50))");
+        "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(60) NOT NULL, title Varchar(50))");
   }
 
   /**
@@ -61,7 +61,8 @@ public class EmployeesDatabase extends Database {
       String username,
       String password,
       String title) {
-    String storedPassword = BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
     try {
       PreparedStatement pstmt =
@@ -216,12 +217,13 @@ public class EmployeesDatabase extends Database {
   public boolean changePassword(String username, String oldPass, String newPass) {
 
     if (logIn(username, oldPass) && checkSecurePass(newPass)) {
+      String storedPass = BCrypt.withDefaults().hashToString(numIterations, newPass.toCharArray());
       try {
         PreparedStatement pstmt =
             getConnection()
                 .prepareStatement(
                     "UPDATE Employees SET password = '"
-                        + newPass
+                        + storedPass
                         + "' WHERE username = '"
                         + username
                         + "'");
