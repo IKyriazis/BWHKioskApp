@@ -103,6 +103,11 @@ public class EmployeesDatabase extends Database {
     }
   }
 
+  public boolean addEmployeeNoChecks(
+      String nameFirst, String nameLast, String username, String password, String title) {
+    return addEmployee(employeeID, nameFirst, nameLast, username, password, title);
+  }
+
   public boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
     return checkSecurePass(password)
@@ -207,8 +212,11 @@ public class EmployeesDatabase extends Database {
       }
       rset.close();
       pstmt.close();
+      if (pass == null) {
+        return false;
+      }
       BCrypt.Result result = BCrypt.verifyer().verify(enteredPass.toCharArray(), pass);
-      return (pass != null) && result.verified;
+      return result.verified;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;

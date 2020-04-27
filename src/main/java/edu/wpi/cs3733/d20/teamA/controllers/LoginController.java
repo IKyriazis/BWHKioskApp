@@ -48,7 +48,6 @@ public class LoginController extends AbstractController {
       eDB.removeAllEmployees();
       eDB.readEmployeeCSV();
     }
-
     // Setup switcher box
     VSwitcherBox vSwitcherBox =
         new VSwitcherBox(destPane, new FontAwesomeIconView(FontAwesomeIcon.COGS));

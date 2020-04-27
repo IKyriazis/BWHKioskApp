@@ -34,6 +34,12 @@ public class CreateAcctController extends AbstractController {
       // make popup that says passwords are not the same
       return;
     }
+    if (!eDB.checkSecurePass(pass.getText())) {
+      // make popup that says make sure password includes a number, lowercase letter, and uppercase
+      // letter, and it's
+      // less than 72 characters
+      return;
+    }
     if (eDB.addEmployee(
         fName.getText(), lName.getText(), uName.getText(), cPass.getText(), title.getText())) {
       // print that account has been created successfully

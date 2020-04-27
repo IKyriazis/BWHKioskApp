@@ -63,6 +63,10 @@ public class TestEmployeeDatabase {
     boolean f = eDB.addEmployee("bacd", "ray", "jay", invalidPassword, "Intern");
     Assertions.assertFalse(f);
     Assertions.assertEquals(4, eDB.getSizeEmployees());
+    boolean g = eDB.addEmployee("admin", "admin", "admin", "admin", "admin");
+    Assertions.assertTrue(g);
+    boolean h = eDB.addEmployee("staff", "staff", "staff", "staff", "staff");
+    Assertions.assertTrue(h);
     eDB.removeAllEmployees();
   }
 
@@ -70,18 +74,18 @@ public class TestEmployeeDatabase {
   public void testDeleteEmployee() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    boolean a = eDB.addEmployee("abc", "brad", "bad", "password", "Nurse");
+    boolean a = eDB.addEmployee("abc", "brad", "bad", "passwordA2", "Nurse");
     Assertions.assertTrue(a);
     boolean b = eDB.deleteEmployee("bad");
     Assertions.assertTrue(b);
     Assertions.assertEquals(0, eDB.getSizeEmployees());
-    eDB.addEmployee("bad", "brad", "abc", "password", "Nurse");
-    eDB.addEmployee("bad", "brad", "dyi", "password", "Doctor Sleep");
+    eDB.addEmployee("bad", "brad", "abc", "passwordA2", "Nurse");
+    eDB.addEmployee("bad", "brad", "dyi", "passwordA2", "Doctor Sleep");
     Assertions.assertEquals(2, eDB.getSizeEmployees());
     boolean c = eDB.deleteEmployee("abc");
     Assertions.assertTrue(c);
     Assertions.assertEquals(1, eDB.getSizeEmployees());
-    eDB.addEmployee("bad", "brad", "abc", "password", "Nurse");
+    eDB.addEmployee("bad", "brad", "abc", "passwordA2", "Nurse");
     Assertions.assertEquals(2, eDB.getSizeEmployees());
     boolean d = eDB.removeAllEmployees();
     Assertions.assertTrue(d);
@@ -92,7 +96,7 @@ public class TestEmployeeDatabase {
   public void testEditTitle() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", "Intern");
     boolean a = eDB.editTitle("bacd", "Doctor");
     Assertions.assertTrue(a);
   }
@@ -101,7 +105,7 @@ public class TestEmployeeDatabase {
   public void testEditFName() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", "Intern");
     boolean a = eDB.editNameFirst("bacd", "cray");
     Assertions.assertTrue(a);
   }
@@ -110,7 +114,7 @@ public class TestEmployeeDatabase {
   public void testEditLName() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", "Intern");
     boolean a = eDB.editNameLast("bacd", "kay");
     Assertions.assertTrue(a);
   }
@@ -119,8 +123,8 @@ public class TestEmployeeDatabase {
   public void testChangePass() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
-    boolean a = eDB.changePassword("jay", "password", "Is3");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", "Intern");
+    boolean a = eDB.changePassword("jay", "passwordA2", "Is3");
     Assertions.assertTrue(a);
     boolean b = eDB.changePassword("jay", "Is33", "happy");
     Assertions.assertFalse(b);
@@ -132,13 +136,27 @@ public class TestEmployeeDatabase {
   public void testUNameExists() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", "Intern");
     Assertions.assertTrue(eDB.uNameExists("jay"));
-    eDB.addEmployee("bacd", "ray", "play", "password", "Intern");
+    eDB.addEmployee("bacd", "ray", "play", "passwordA2", "Intern");
     Assertions.assertTrue(eDB.uNameExists("play"));
-    eDB.addEmployee("bacd", "ray", "cray", "password", "Intern");
+    eDB.addEmployee("bacd", "ray", "cray", "passwordA2", "Intern");
     Assertions.assertTrue(eDB.uNameExists("cray"));
     Assertions.assertFalse(eDB.uNameExists("asdfj"));
     Assertions.assertFalse(eDB.uNameExists("askldjf"));
+  }
+
+  @Test
+  public void testLogin() {
+    eDB.createTables();
+    eDB.removeAllEmployees();
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", "Intern");
+    eDB.addEmployee("bacd", "ray", "play", "passwordA2", "Intern");
+    eDB.addEmployee("bacd", "ray", "cray", "passwordA2", "Intern");
+    Assertions.assertTrue(eDB.logIn("jay", "passwordA2"));
+    Assertions.assertTrue(eDB.logIn("play", "passwordA2"));
+    Assertions.assertTrue(eDB.logIn("play", "passwordA2"));
+    Assertions.assertFalse(eDB.logIn("play", "passworasdfdA2"));
+    Assertions.assertFalse(eDB.logIn("plaasdfsdafy", "passwordA2"));
   }
 }
