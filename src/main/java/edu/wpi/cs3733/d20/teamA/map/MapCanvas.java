@@ -41,6 +41,7 @@ public class MapCanvas extends Canvas {
 
   private ArrayList<Node> highlights;
   private Color highlightColor = Color.DEEPSKYBLUE;
+  private Point2D highlightOffset;
 
   private Point2D selectionStart;
   private Point2D selectionEnd;
@@ -268,7 +269,14 @@ public class MapCanvas extends Canvas {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
+    if (highlightOffset != null && highlights.contains(edge.getStart())) {
+      start = start.add(highlightOffset);
+    }
+
     Point2D end = graphToCanvas(new Point2D(edge.getEnd().getX(), edge.getEnd().getY()));
+    if (highlightOffset != null && highlights.contains(edge.getEnd())) {
+      end = end.add(highlightOffset);
+    }
 
     // Set the color to black for the edge
     graphicsContext.setLineWidth(5);
@@ -285,6 +293,9 @@ public class MapCanvas extends Canvas {
     graphicsContext.setFill(color);
 
     Point2D nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
+    if (highlights.contains(node) && highlightOffset != null) {
+      nodePoint = nodePoint.add(highlightOffset);
+    }
     graphicsContext.fillOval(nodePoint.getX() - 5, nodePoint.getY() - 5, 10, 10);
   }
 
@@ -419,5 +430,9 @@ public class MapCanvas extends Canvas {
   public void setSelectionBox(Point2D start, Point2D end) {
     selectionStart = start;
     selectionEnd = end;
+  }
+
+  public void setHighlightOffset(Point2D highlightOffset) {
+    this.highlightOffset = highlightOffset;
   }
 }

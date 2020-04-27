@@ -50,6 +50,8 @@ public class MapEditorController {
   private Point2D dragStart;
   private Point2D dragCurr;
   private Point2D lastPressedPos = new Point2D(0, 0);
+  private boolean draggingNodes = false;
+
   private final EventHandler<MouseEvent> dragStartHandler =
       event -> {
         if (event.getButton() == MouseButton.PRIMARY) {
@@ -62,7 +64,12 @@ public class MapEditorController {
       event -> {
         if (event.getButton() == MouseButton.PRIMARY) {
           dragCurr = new Point2D(event.getX(), event.getY());
-          canvas.setSelectionBox(dragStart, dragCurr);
+          if (draggingNodes) {
+            canvas.setHighlightOffset(dragCurr.subtract(dragStart));
+          } else {
+            canvas.setSelectionBox(dragStart, dragCurr);
+          }
+
           canvas.draw(floor);
         }
 
@@ -75,31 +82,46 @@ public class MapEditorController {
           if (dragCurr == null) {
             return;
           }
-          double startX = Math.min(dragStart.getX(), dragCurr.getX());
-          double startY = Math.min(dragStart.getY(), dragCurr.getY());
 
-          double width = Math.max(dragStart.getX(), dragCurr.getX()) - startX;
-          double height = Math.max(dragStart.getY(), dragCurr.getY()) - startY;
+          if (draggingNodes) {
+            Point2D offset =
+                canvas.canvasToGraph(dragCurr).subtract(canvas.canvasToGraph(dragStart));
+            selections.forEach(
+                node -> {
+                  graph.moveNode(
+                      node,
+                      (int) (node.getX() + offset.getX()),
+                      (int) (node.getY() + offset.getY()));
+                });
 
-          if (width < 5 || height < 5) {
-            return;
+            canvas.setHighlightOffset(null);
+            draggingNodes = false;
+          } else {
+            double startX = Math.min(dragStart.getX(), dragCurr.getX());
+            double startY = Math.min(dragStart.getY(), dragCurr.getY());
+
+            double width = Math.max(dragStart.getX(), dragCurr.getX()) - startX;
+            double height = Math.max(dragStart.getY(), dragCurr.getY()) - startY;
+
+            if (width < 5 || height < 5) {
+              return;
+            }
+            lastPressedPos = new Point2D(event.getX(), event.getY());
+
+            BoundingBox bounds = new BoundingBox(startX, startY, width, height);
+            selections.clear();
+            graph.getNodes().values().stream()
+                .filter(node -> node.getFloor() == floor)
+                .forEach(
+                    node -> {
+                      Point2D nodePos = canvas.graphToCanvas(new Point2D(node.getX(), node.getY()));
+                      if (bounds.contains(nodePos) && !selections.contains(node)) {
+                        selections.add(node);
+                      }
+                    });
+            canvas.setSelectionBox(null, null);
           }
-          lastPressedPos = new Point2D(event.getX(), event.getY());
-
-          BoundingBox bounds = new BoundingBox(startX, startY, width, height);
-          selections.clear();
-          graph.getNodes().values().stream()
-              .filter(node -> node.getFloor() == floor)
-              .forEach(
-                  node -> {
-                    Point2D nodePos = canvas.graphToCanvas(new Point2D(node.getX(), node.getY()));
-                    if (bounds.contains(nodePos) && !selections.contains(node)) {
-                      selections.add(node);
-                    }
-                  });
-          canvas.setSelectionBox(null, null);
           canvas.draw(floor);
-
           dragStart = dragCurr = null;
         }
         canvas.getDragEndHandler().handle(event);
@@ -260,6 +282,15 @@ public class MapEditorController {
       }
 
       if (selections.size() >= 1) {
+        JFXButton moveButton = new JFXButton("Move " + (selections.size() > 1 ? "Nodes" : "Node"));
+        moveButton.setStyle(buttonStyle);
+        moveButton.setOnAction(
+            e -> {
+              popup.hide();
+              draggingNodes = true;
+            });
+
+        //TODO; Find a way to not delete constrained nodes
         JFXButton deleteButton =
             new JFXButton("Delete " + (selections.size() > 1 ? "Nodes" : "Node"));
         deleteButton.setStyle(buttonStyle);
@@ -270,7 +301,7 @@ public class MapEditorController {
               canvas.draw(floor);
             });
 
-        buttonBox.getChildren().add(deleteButton);
+        buttonBox.getChildren().addAll(deleteButton, moveButton);
       }
 
       buttonBox
