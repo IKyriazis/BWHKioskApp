@@ -73,7 +73,8 @@ public class ITServicesController extends AbstractController {
       boolean i =
           itTicketDatabase.changeStatus(
               Timestamp.valueOf(selected.getTicketTime()),
-              statusChangeStatus.getSelectionModel().getSelectedItem());
+              statusChangeStatus.getSelectionModel().getSelectedItem(),
+              statusChangeName.getText());
       System.out.println(Timestamp.valueOf(selected.getTicketTime()));
       statusChangeName.clear();
       statusChangeStatus.getSelectionModel().clearSelection();

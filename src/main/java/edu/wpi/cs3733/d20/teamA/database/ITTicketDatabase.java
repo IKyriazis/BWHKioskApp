@@ -85,13 +85,15 @@ public class ITTicketDatabase extends Database {
     return helperPrepared("DELETE From ITTickets");
   }
 
-  public boolean changeStatus(Timestamp statusTicketTime, String newStatus) {
+  public boolean changeStatus(Timestamp statusTicketTime, String newStatus, String newCompletedBy) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE ITTickets Set status = '"
                       + newStatus
+                      + "', completedBy = '"
+                      + newCompletedBy
                       + "' WHERE ticketTime = '"
                       + statusTicketTime
                       + "'");
