@@ -58,10 +58,10 @@
                            <children>
                               <VBox alignment="CENTER" onMouseClicked="#disableBtns" prefHeight="200.0" prefWidth="100.0" spacing="50.0">
                                  <children>
-                                    <JFXTextField fx:id="ITTicketName" alignment="CENTER" focusColor="#64b5f6" labelFloat="true" maxWidth="-Infinity" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Enter your name" />
-                                    <JFXComboBox fx:id="ITTicketLocation" focusColor="#64b5f6" labelFloat="true" layoutX="114.0" layoutY="251.0" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Location (not selected)" />
-                                    <JFXComboBox fx:id="ITTicketCategory" focusColor="#64b5f6" labelFloat="true" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Category (not selected)" />
-                                    <JFXTextArea fx:id="ITTicketDescription" focusColor="#64b5f6" labelFloat="true" onMouseClicked="#disableBtns" prefWidth="198.0" promptText="Description (200 characters max.)" style="-fx-background-color: white;" />
+                                    <JFXTextField fx:id="ITTicketName" alignment="CENTER" focusColor="#64b5f6" labelFloat="true" maxWidth="-Infinity" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Enter your name" />
+                                    <JFXComboBox fx:id="ITTicketLocation" focusColor="#64b5f6" labelFloat="true" layoutX="114.0" layoutY="251.0" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Location (not selected)" />
+                                    <JFXComboBox fx:id="ITTicketCategory" focusColor="#64b5f6" labelFloat="true" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Category (not selected)" />
+                                    <JFXTextArea fx:id="ITTicketDescription" focusColor="#64b5f6" labelFloat="true" onKeyTyped="#descriptionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="198.0" promptText="Description (200 characters max.)" style="-fx-background-color: white;" />
                                     <JFXButton fx:id="submitBtn" buttonType="RAISED" disable="true" onAction="#submitTicket" onMouseClicked="#disableBtns" prefWidth="150.0" style="-fx-background-color: #66BB6A;" text="Submit" textFill="WHITE" />
                                  </children>
                               </VBox>

@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -71,7 +72,6 @@ public class ITServicesController extends AbstractController {
           statusChangeStatus.disableProperty().setValue(false);
           statusChangeName.disableProperty().setValue(false);
         });
-
     updateTable();
   }
 
@@ -105,6 +105,25 @@ public class ITServicesController extends AbstractController {
     if (selected != null) {
       DialogUtil.simpleInfoDialog(ITStackPane, "Description", selected.getDescription());
     }
+  }
+
+  public void checkSubmit() {
+    if (ITTicketLocation.getSelectionModel().getSelectedItem() != null
+        && ITTicketCategory.getSelectionModel().getSelectedItem() != null
+        && !ITTicketName.getText().isEmpty()
+        && !ITTicketDescription.getText().isEmpty()) {
+      submitBtn.disableProperty().setValue(false);
+    } else {
+      submitBtn.disableProperty().setValue(true);
+    }
+  }
+
+  public void descriptionCheckSubmit(KeyEvent keyEvent) {
+    checkSubmit();
+  }
+
+  public void actionCheckSubmit(ActionEvent actionEvent) {
+    checkSubmit();
   }
 
   public void submitTicket(ActionEvent actionEvent) {
