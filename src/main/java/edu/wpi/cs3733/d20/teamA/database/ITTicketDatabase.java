@@ -23,7 +23,7 @@ public class ITTicketDatabase extends Database {
 
     // if the helper returns false this method should too
     // drop the CONSTRAINT first
-    if (!(helperPrepared("ALTER TABLE ITTickets DROP CONSTRAINT FK_L"))) {
+    if (!(helperPrepared("ALTER TABLE ITTickets DROP CONSTRAINT ITLocation"))) {
 
       return false;
     }
