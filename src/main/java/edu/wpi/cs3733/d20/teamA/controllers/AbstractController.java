@@ -15,6 +15,8 @@ public abstract class AbstractController {
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
   protected JanitorDatabase janitorDatabase;
+  protected InternalTransportDatabase itDatabase;
+  protected InterpreterDatabase iDB;
   protected PrescriptionDatabase prescriptionDatabase;
 
   public AbstractController() {
@@ -23,6 +25,7 @@ public abstract class AbstractController {
     graphDatabase = new GraphDatabase(conn);
     flDatabase = new FlowerDatabase(conn);
     eDB = new EmployeesDatabase(conn);
+
     // Uncomment if employee database is messed up
     // eDB.removeAllEmployees();
     // eDB.readEmployeeCSV();
@@ -30,7 +33,12 @@ public abstract class AbstractController {
     // Run these two after I merge the new version of flower
     // flDatabase.removeAllOrders();
     // flDatabase.removeAllFlowers();
+    iDB = new InterpreterDatabase(conn);
+    // Uncomment if employee database is messed up
+    // eDB.removeAllEmployees();
+    // eDB.readEmployeeCSV();
     janitorDatabase = new JanitorDatabase(conn);
+    itDatabase = new InternalTransportDatabase(conn);
     prescriptionDatabase = new PrescriptionDatabase(conn);
   }
 }

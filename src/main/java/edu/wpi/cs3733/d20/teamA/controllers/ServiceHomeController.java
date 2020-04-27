@@ -23,6 +23,10 @@ public class ServiceHomeController {
         "Flowers",
         new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
         "views/flower/FlowerService.fxml");
+    vSwitcherBox.addEntry(
+        "Internal Transport",
+        new MaterialIconView(MaterialIcon.ACCESSIBLE),
+        "views/InternalTransportService.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
