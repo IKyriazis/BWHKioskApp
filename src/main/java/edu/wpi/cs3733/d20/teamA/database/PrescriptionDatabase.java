@@ -31,7 +31,7 @@ public class PrescriptionDatabase extends Database {
    *
    * @return true if completed
    */
-  protected boolean createTables() {
+  public boolean createTables() {
     return helperPrepared(
         "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) UNIQUE NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR','')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
   }
@@ -41,7 +41,7 @@ public class PrescriptionDatabase extends Database {
    *
    * @return true if completed
    */
-  protected boolean dropTables() {
+  public boolean dropTables() {
     if (!(helperPrepared("ALTER TABLE PRESCRIPTION DROP CONSTRAINT FK_DOCTOR"))) {
       return false;
     }
@@ -63,14 +63,14 @@ public class PrescriptionDatabase extends Database {
    *
    * @return int size
    */
-  protected int getSizePrescription() {
+  public int getSizePrescription() {
     return getSize("PRESCRIPTION");
   }
 
   /*
   Adds a prescription to the table
    */
-  protected boolean addPrescription(
+  public boolean addPrescription(
       int prescriptionNum,
       String patient,
       String prescription,
@@ -105,7 +105,7 @@ public class PrescriptionDatabase extends Database {
   }
 
   /** Adds a prescription without a prescription number */
-  protected boolean addPrescription(
+  public boolean addPrescription(
       String patient,
       String prescription,
       String pharmacy,
@@ -128,7 +128,7 @@ public class PrescriptionDatabase extends Database {
   }
 
   /** Reads the flower csv file into the database */
-  protected boolean readPrescriptionCSV() {
+  public boolean readPrescriptionCSV() {
     try {
       InputStream stream =
           getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Prescription.csv");
