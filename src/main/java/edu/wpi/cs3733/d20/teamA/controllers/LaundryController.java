@@ -43,7 +43,12 @@ public class LaundryController extends AbstractController {
   private SimpleTableView<Laundry> tblLaundryView;
 
   public void initialize() {
+    lDB.dropTables();
     lDB.createTables();
+    lDB.removeAll();
+
+    lDB.addLaundry("admin", "Emergency Department");
+    lDB.addLaundry("admin", "Admitting");
 
     serviceLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CIRCLE_THIN));
     requestTableLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LIST));
@@ -65,14 +70,7 @@ public class LaundryController extends AbstractController {
 
     update();
 
-    progressComboBox
-        .getItems()
-        .addAll(
-            "Request Sent",
-            "Clothes Collected",
-            "Clothes Washing",
-            "Clothes Drying",
-            "Clothes Returned");
+    progressComboBox.getItems().addAll("Requested", "Collected", "Washing", "Drying", "Returned");
     progressComboBox.getSelectionModel().select(0);
 
     // Will need to connect to employee database later
@@ -98,7 +96,7 @@ public class LaundryController extends AbstractController {
     Node node = roomList.getSelectionModel().getSelectedItem();
     String loc = "";
     if (node != null) {
-      loc = node.getNodeID();
+      loc = node.getLongName();
       if (!lDB.addLaundry("admin", loc)) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot add request");
       }
@@ -129,6 +127,10 @@ public class LaundryController extends AbstractController {
       if (cleanerComboBox.getValue() != null) {
         if (!lDB.setEmpW(l.getRequestNum(), cleanerComboBox.getValue())) {
           DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot update cleaner");
+        } else {
+          if (l.getProgress().equals("Requested")) {
+            lDB.setProg(l.getRequestNum(), "Collected");
+          }
         }
       } else if (cleanerComboBox.getValue() == null) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a cleaner");
@@ -158,11 +160,17 @@ public class LaundryController extends AbstractController {
     update();
   }
 
+  @FXML
+  private void seeCompleted() {
+    DialogUtil.complexDialog(
+        dialogStackPane, "Completed Requests", "views/LaundryCompleted.fxml", true, null, null);
+  }
+
   public void update() {
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(lDB.laundryOL());
+      tblLaundryView.add(lDB.laundryOLNotComplete());
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

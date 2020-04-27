@@ -52,7 +52,7 @@ public class TestLaundryDatabase {
     lDB.createTables();
     lDB.removeAll();
     Assertions.assertEquals(0, lDB.getSizeLaundry());
-    lDB.addLaundry("brob", "AWASH00101");
+    lDB.addLaundry("brob", "washing hall");
     Assertions.assertEquals(1, lDB.getSizeLaundry());
   }
 
@@ -60,11 +60,11 @@ public class TestLaundryDatabase {
   public void testAddLaundry() {
     lDB.createTables();
     lDB.removeAll();
-    boolean a = lDB.addLaundry("brob", "AWASH00101");
+    boolean a = lDB.addLaundry("brob", "washing hall");
     Assertions.assertTrue(a);
-    boolean b = lDB.addLaundry("rbob", "AWASH00101");
+    boolean b = lDB.addLaundry("rbob", "washing hall");
     Assertions.assertTrue(b);
-    boolean c = lDB.addLaundry("steve", "AWASH00101");
+    boolean c = lDB.addLaundry("steve", "washing hall");
     Assertions.assertFalse(c);
     boolean d = lDB.addLaundry("rbob", "notanode");
     Assertions.assertFalse(d);
@@ -74,7 +74,7 @@ public class TestLaundryDatabase {
   public void testDeleteLaundry() {
     lDB.createTables();
     lDB.removeAll();
-    lDB.addLaundry("brob", "AWASH00101");
+    lDB.addLaundry("brob", "washing hall");
     boolean a = lDB.deleteLaundry(1);
     Assertions.assertTrue(a);
     boolean b = lDB.deleteLaundry(1);
@@ -85,10 +85,10 @@ public class TestLaundryDatabase {
   public void testGetters() {
     lDB.createTables();
     lDB.removeAll();
-    lDB.addLaundry("brob", "AWASH00101");
+    lDB.addLaundry("brob", "washing hall");
     Assertions.assertEquals("brob", lDB.getEmpE(1));
-    Assertions.assertEquals("AWASH00101", lDB.getLoc(1));
-    Assertions.assertEquals("Request Sent", lDB.getProg(1));
+    Assertions.assertEquals("washing hall", lDB.getLoc(1));
+    Assertions.assertEquals("Requested", lDB.getProg(1));
     Assertions.assertNull(lDB.getEmpW(1));
     Assertions.assertNotNull(lDB.getTimeRequested(1));
     Assertions.assertNull(lDB.getEmpE(2));
@@ -99,12 +99,12 @@ public class TestLaundryDatabase {
     lDB.createTables();
     lDB.removeAll();
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    lDB.addLaundry("brob", "AWASH00101");
+    lDB.addLaundry("brob", "washing hall");
     Assertions.assertTrue(lDB.setEmpE(1, "rbob"));
     Assertions.assertFalse(lDB.setEmpE(1, "steve"));
-    Assertions.assertTrue(lDB.setLoc(1, "AWASH00101"));
+    Assertions.assertTrue(lDB.setLoc(1, "washing hall"));
     Assertions.assertFalse(lDB.setLoc(1, "notanode"));
-    Assertions.assertTrue(lDB.setProg(1, "Clothes Collected"));
+    Assertions.assertTrue(lDB.setProg(1, "Collected"));
     Assertions.assertFalse(lDB.setProg(1, "notaprog"));
     Assertions.assertTrue(lDB.setEmpW(1, "rbob"));
     Assertions.assertFalse(lDB.setEmpW(1, "steve"));

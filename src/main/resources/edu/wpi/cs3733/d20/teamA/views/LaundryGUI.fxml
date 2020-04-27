@@ -124,7 +124,7 @@
                                 </GridPane>
                                 <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                                     <children>
-                              <JFXButton fx:id="seeCompletedButton" buttonType="RAISED" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #78909C;" text="See Completed Requests" textFill="WHITE">
+                              <JFXButton fx:id="seeCompletedButton" buttonType="RAISED" onAction="#seeCompleted" prefHeight="50.0" prefWidth="225.0" style="-fx-background-color: #78909C;" text="See Completed Requests" textFill="WHITE">
                                  <font>
                                     <Font size="14.0" />
                                  </font>

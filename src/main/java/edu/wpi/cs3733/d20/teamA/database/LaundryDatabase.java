@@ -34,7 +34,7 @@ public class LaundryDatabase extends Database {
     if (doesTableNotExist("LAUNDRY")) {
       boolean a =
           helperPrepared(
-              "CREATE TABLE Laundry (requestNum INTEGER PRIMARY KEY, employeeEntered Varchar(25) NOT NULL, location Varchar(10), progress Varchar(50), employeeWash Varchar(25), timeRequested TIMESTAMP NOT NULL, CONSTRAINT FK_EMPE FOREIGN KEY (employeeEntered) REFERENCES Employees(username), CONSTRAINT FK_EMPW FOREIGN KEY (employeeWash) REFERENCES Employees(username), CONSTRAINT FK_LOC FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT Check_Prog CHECK (progress in ('Request Sent', 'Clothes Collected', 'Clothes Washing', 'Clothes Drying', 'Clothes Returned')))");
+              "CREATE TABLE Laundry (requestNum INTEGER PRIMARY KEY, employeeEntered Varchar(25) NOT NULL, location Varchar(200), progress Varchar(50), employeeWash Varchar(25), timeRequested TIMESTAMP NOT NULL, CONSTRAINT FK_EMPE FOREIGN KEY (employeeEntered) REFERENCES Employees(username), CONSTRAINT FK_EMPW FOREIGN KEY (employeeWash) REFERENCES Employees(username), CONSTRAINT FK_LOC FOREIGN KEY (location) REFERENCES Node(longName), CONSTRAINT Check_Prog CHECK (progress in ('Requested', 'Collected', 'Washing', 'Drying', 'Returned')))");
       return a;
     }
     return false;
@@ -69,12 +69,12 @@ public class LaundryDatabase extends Database {
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     try {
       boolean a = checkIfExistsString("Employees", "username", emp);
-      boolean b = checkIfExistsString("Node", "nodeID", loc);
+      boolean b = checkIfExistsString("Node", "longName", loc);
       if (a && b) {
         PreparedStatement pstmt =
             getConnection()
                 .prepareStatement(
-                    "INSERT INTO Laundry (requestNum, employeeEntered, location, progress, timeRequested) VALUES (?, ?, ?, 'Request Sent', ?)");
+                    "INSERT INTO Laundry (requestNum, employeeEntered, location, progress, timeRequested) VALUES (?, ?, ?, 'Requested', ?)");
         pstmt.setInt(1, getSizeLaundry() + 1);
         pstmt.setString(2, emp);
         pstmt.setString(3, loc);
@@ -297,7 +297,7 @@ public class LaundryDatabase extends Database {
    * @return True if the change was successful
    */
   public boolean setLoc(int num, String s) {
-    boolean a = checkIfExistsString("Node", "nodeID", s);
+    boolean a = checkIfExistsString("Node", "longName", s);
     if (a) {
       return helperSetString(num, "location", s);
     } else {
@@ -313,11 +313,11 @@ public class LaundryDatabase extends Database {
    * @return True if the change was successful
    */
   public boolean setProg(int num, String s) {
-    if (s.equals("Request Sent")
-        || s.equals("Clothes Collected")
-        || s.equals("Clothes Washing")
-        || s.equals("Clothes Drying")
-        || s.equals("Clothes Returned")) {
+    if (s.equals("Requested")
+        || s.equals("Collected")
+        || s.equals("Washing")
+        || s.equals("Drying")
+        || s.equals("Returned")) {
       return helperSetString(num, "progress", s);
     } else {
       return false;
@@ -379,6 +379,70 @@ public class LaundryDatabase extends Database {
     ObservableList<Laundry> oList = FXCollections.observableArrayList();
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Laundry");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int rNum = rset.getInt("requestNum");
+        String empE = rset.getString("employeeEntered");
+        String loc = rset.getString("location");
+        String prog = rset.getString("progress");
+        String empW = rset.getString("employeeWash");
+        Timestamp ts = rset.getTimestamp("timeRequested");
+
+        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        oList.add(laundry);
+      }
+      rset.close();
+      pstmt.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
+    }
+  }
+
+  /**
+   * Takes all of the data in the Laundry table that are not completed and converts it to an
+   * observable list
+   *
+   * @return The observable list
+   */
+  public ObservableList<Laundry> laundryOLNotComplete() {
+    ObservableList<Laundry> oList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Laundry WHERE progress != 'Returned'");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int rNum = rset.getInt("requestNum");
+        String empE = rset.getString("employeeEntered");
+        String loc = rset.getString("location");
+        String prog = rset.getString("progress");
+        String empW = rset.getString("employeeWash");
+        Timestamp ts = rset.getTimestamp("timeRequested");
+
+        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        oList.add(laundry);
+      }
+      rset.close();
+      pstmt.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
+    }
+  }
+
+  /**
+   * Takes all of the data in the Laundry table that are completed and converts it to an observable
+   * list
+   *
+   * @return The observable list
+   */
+  public ObservableList<Laundry> laundryOLCompleted() {
+    ObservableList<Laundry> oList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Laundry WHERE progress = 'Returned'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         int rNum = rset.getInt("requestNum");
