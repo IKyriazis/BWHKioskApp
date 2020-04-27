@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
@@ -35,7 +34,7 @@ public class JanitorialController extends AbstractController {
 
   @FXML private JFXComboBox<String> comboboxNextStatus;
 
-  @FXML private JFXTextField textfieldCurrentStatus;
+  @FXML private JFXTextField textfieldEmployeeName;
 
   @FXML private GridPane gridTableView;
 
@@ -80,12 +79,11 @@ public class JanitorialController extends AbstractController {
     btnChangeStatus.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
 
     tblServiceView = new SimpleTableView<>(new JanitorService("", "", "", "", 0, ""), 80.0);
-    tblServiceView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-      @Override
-      public void handle(MouseEvent event) {
-
-      }
-    });
+    tblServiceView.setOnMouseClicked(
+        new EventHandler<MouseEvent>() {
+          @Override
+          public void handle(MouseEvent event) {}
+        });
     gridTableView.getChildren().add(tblServiceView);
 
     refreshActiveRequests();
@@ -135,8 +133,23 @@ public class JanitorialController extends AbstractController {
       JanitorService j =
           (((TreeItem<JanitorService>) (tblServiceView.getSelectionModel().getSelectedItem()))
               .getValue());
-      janitorDatabase.updateRequest(
-          j.getIndex(), j.getLongName(), comboboxNextStatus.getValue(), j.getEmployeeName());
+      if (comboboxNextStatus.getValue() == null) {
+        DialogUtil.simpleErrorDialog(
+            popupStackPane, "Error", "Please select the status of the request");
+      } else {
+        System.out.println(textfieldEmployeeName.getText());
+        System.out.println(j.getEmployeeName());
+        if (textfieldEmployeeName.getText().equals("")) {
+          janitorDatabase.updateRequest(
+              j.getIndex(), j.getLongName(), comboboxNextStatus.getValue(), j.getEmployeeName());
+        } else {
+          janitorDatabase.updateRequest(
+              j.getIndex(),
+              j.getLongName(),
+              comboboxNextStatus.getValue(),
+              textfieldEmployeeName.getText());
+        }
+      }
     }
     refreshActiveRequests();
   }

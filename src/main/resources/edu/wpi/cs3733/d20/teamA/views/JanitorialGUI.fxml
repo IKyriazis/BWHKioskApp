@@ -68,13 +68,13 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1">
                                        <children>
-                                          <JFXTextField fx:id="textfieldCurrentStatus" editable="false" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Previous Status" />
-                                          <JFXComboBox fx:id="comboboxNextStatus" labelFloat="true" prefWidth="150.0" promptText="New Status">
+                                          <JFXTextField fx:id="textfieldEmployeeName" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Employee Name" />
+                                          <JFXComboBox fx:id="comboboxNextStatus" labelFloat="true" prefWidth="150.0" promptText="Status">
                                              <VBox.margin>
                                                 <Insets left="75.0" right="75.0" />
                                              </VBox.margin>
                                           </JFXComboBox>
-                                          <JFXButton fx:id="btnChangeStatus" onAction="#updateRequest" buttonType="RAISED" prefWidth="200.0" style="-fx-background-color: white;" text="Change Progress">
+                                          <JFXButton fx:id="btnChangeStatus" buttonType="RAISED" onAction="#updateRequest" prefWidth="200.0" style="-fx-background-color: white;" text="Change Progress">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
@@ -88,7 +88,7 @@
                                                 <Font size="14.0" />
                                              </font>
                                           </JFXButton>
-                                          <JFXButton fx:id="btnRemoveRequest" onAction="#removeServiceRequest" buttonType="RAISED" prefWidth="200.0" style="-fx-background-color: white;" text="Remove Janitorial Request">
+                                          <JFXButton fx:id="btnRemoveRequest" buttonType="RAISED" onAction="#removeServiceRequest" prefWidth="200.0" style="-fx-background-color: white;" text="Remove Janitorial Request">
                                              <font>
                                                 <Font size="14.0" />
                                              </font>
