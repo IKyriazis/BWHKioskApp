@@ -28,23 +28,28 @@ public class CreateAcctController extends AbstractController {
     }
     if (eDB.uNameExists(uName.getText())) {
       // make popup that says username already exists
+      System.out.println("uname exists");
       return;
     }
-    if (cPass.getText() != pass.getText()) {
+    if (!cPass.getText().equals(pass.getText())) {
       // make popup that says passwords are not the same
+      System.out.println("cpass doesn't match");
       return;
     }
     if (!eDB.checkSecurePass(pass.getText())) {
       // make popup that says make sure password includes a number, lowercase letter, and uppercase
       // letter, and it's
       // less than 72 characters
+      System.out.println("check secure pass");
       return;
     }
     if (eDB.addEmployee(
         fName.getText(), lName.getText(), uName.getText(), cPass.getText(), title.getText())) {
       // print that account has been created successfully
+      System.out.println("Added account");
     } else {
       // print that for some reason the account couldn't be added
+      System.out.println("Failed to add account");
     }
   }
 
