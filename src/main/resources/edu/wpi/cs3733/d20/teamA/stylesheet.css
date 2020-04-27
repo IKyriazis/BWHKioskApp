@@ -1,3 +1,12 @@
+@font-face {
+    font-family: "Roboto";
+    src: url('fonts/Roboto-Regular.ttf');
+}
+
+.root {
+    -fx-font-family: "Roboto";
+}
+
 .tab .tab-label {
     -fx-background-color: transparent;
     -fx-alignment: CENTER;
@@ -35,26 +44,59 @@
     -fx-text-fill: black;
 }
 
-.jfx-tree-table-view .tree-table-cell{
-      -fx-font-size:14px; /*Set the font size in all tables*/
-  }
+
+.red-button {
+    -fx-background-color: #ef5350;
+    -fx-text-fill: black;
+}
+
+.green-button {
+    -fx-background-color: #66BB6A;
+    -fx-text-fill: black;
+}
+
+.gray-button {
+    -fx-background-color: #BDBDBD;
+    -fx-text-fill: black;
+}
+
+.bluegray-button {
+    -fx-background-color: #78909C;
+    -fx-text-fill: black;
+}
+
+.white-button {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+}
+
+.white-square-button {
+    -fx-background-color: white;
+    -fx-background-radius: 0px;
+    -fx-text-fill: black;
+}
+
+.small-text {
+    -fx-font-size: 10pt;
+}
+
+.regular-text {
+    -fx-font-size: 12pt;
+}
+
+.heading-text {
+    -fx-font-size: 18pt;
+}
+
+.large-text {
+    -fx-font-size: 20pt;
+}
 
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
     -fx-font-size: 20pt;
     -fx-background-color: white;
-}
-
-#usernameBox, #passwordBox {
-    -fx-font-size: 18pt;
-}
-
-#loginButton {
-    -fx-text-fill: black;
-    -fx-background-color: #78909c;
-    -fx-padding: 0 5 0 5;
-    -fx-font-size: 18pt;
 }
 
 #loginBox, #centerPane {
@@ -70,4 +112,3 @@
 #flowerServiceTablePane {
     -fx-font-size: 18pt;
 }
-
