@@ -63,6 +63,10 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
     vSwitcherBox.addEntry(
+        "Internal Transport Requests",
+        new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR),
+        "views/InternalTransportAdmin.fxml");
+    vSwitcherBox.addEntry(
         "Interpreters",
         new FontAwesomeIconView(FontAwesomeIcon.GLOBE),
         "views/InterpreterService.fxml");
