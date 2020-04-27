@@ -169,7 +169,7 @@ public class TestFlowerDatabase {
 
   @Test
   public void testOrders() {
-    Order flr = new Order(1, 4, "1/4|", 9.88, "Order Sent", "dsss", "Hi", null, null);
+    Order flr = new Order(1, 4, "1/4|", 9.88, "Order Sent", "dsss", "Hi", -1);
     Assertions.assertEquals(1, flr.getOrderNumber());
     Assertions.assertEquals(4, flr.getNumFlowers());
     Assertions.assertEquals("1/4|", flr.getFlowerString());
