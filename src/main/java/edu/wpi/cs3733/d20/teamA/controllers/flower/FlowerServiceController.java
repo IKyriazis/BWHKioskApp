@@ -1,11 +1,10 @@
-package edu.wpi.cs3733.d20.teamA.controllers;
+package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerOrderController;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerTrackerController;
-import edu.wpi.cs3733.d20.teamA.database.Flower;
+import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.ArrayList;
@@ -76,10 +75,25 @@ public class FlowerServiceController extends AbstractController {
         new EventHandler<TreeTableColumn.CellEditEvent<Flower, String>>() {
           @Override
           public void handle(TreeTableColumn.CellEditEvent<Flower, String> t) {
-            ((Flower)
-                    t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue())
-                .setQuantitySelected(Integer.parseInt(t.getNewValue()));
-            updateTotal();
+            Flower f =
+                ((Flower)
+                    t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue());
+            int i = 0;
+            try {
+              i = Integer.parseInt(t.getNewValue());
+              if (i <= f.getQty()) {
+                f.setQuantitySelected(Integer.parseInt(t.getNewValue()));
+                updateTotal();
+              } else {
+                DialogUtil.simpleErrorDialog(
+                    dialogPane,
+                    "Invalid number",
+                    "Please enter a number no larger than the number of flowers in stock");
+              }
+            } catch (NumberFormatException e) {
+              DialogUtil.simpleErrorDialog(
+                  dialogPane, "Invalid number", "Please enter a numeric value");
+            }
           }
         });
 
@@ -150,7 +164,12 @@ public class FlowerServiceController extends AbstractController {
     FlowerOrderController cont = new FlowerOrderController();
     cont.setList(myList);
     DialogUtil.complexDialog(
-        dialogPane, "Place Order", "views/flower/FlowerOrderDialog.fxml", false, null, cont);
+        dialogPane,
+        "Place Order",
+        "views/flower/FlowerOrderDialog.fxml",
+        false,
+        event -> updateTable(),
+        cont);
   }
   // Generate a list of flowers to pass to the order controller
   private List<Flower> getOrderList() {

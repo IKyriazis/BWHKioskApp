@@ -1,9 +1,10 @@
-package edu.wpi.cs3733.d20.teamA.controllers.dialog;
+package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

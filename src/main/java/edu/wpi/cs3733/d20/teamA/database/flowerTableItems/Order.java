@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.flowerTableItems;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
@@ -19,6 +19,8 @@ public class Order implements ITableable<Order> {
   private final SimpleStringProperty location;
   private final SimpleStringProperty message;
 
+  private FlowerEmployee emp;
+
   public Order(
       int orderNumber,
       int numFlowers,
@@ -26,7 +28,9 @@ public class Order implements ITableable<Order> {
       double price,
       String status,
       String location,
-      String message) {
+      String message,
+      String fName,
+      String lName) {
     this.orderNumber = new SimpleIntegerProperty(orderNumber);
     this.numFlowers = new SimpleIntegerProperty(numFlowers);
     this.flowerString = new SimpleStringProperty(flowerString);
@@ -34,6 +38,7 @@ public class Order implements ITableable<Order> {
     this.status = new SimpleStringProperty(status);
     this.location = new SimpleStringProperty(location);
     this.message = new SimpleStringProperty(message);
+    emp = new FlowerEmployee(fName, lName);
   }
 
   public int getOrderNumber() {
@@ -86,6 +91,14 @@ public class Order implements ITableable<Order> {
 
   public String getMessage() {
     return message.get();
+  }
+
+  public FlowerEmployee getEmployee() {
+    return emp;
+  }
+
+  public boolean employeeAssigned() {
+    return emp.getFirstName() != null;
   }
 
   @Override

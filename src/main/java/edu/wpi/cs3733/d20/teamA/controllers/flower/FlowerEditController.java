@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.controllers.dialog;
+package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -6,7 +6,8 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.Flower;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

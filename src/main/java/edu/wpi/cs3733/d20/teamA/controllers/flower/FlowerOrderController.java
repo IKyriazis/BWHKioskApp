@@ -1,8 +1,12 @@
-package edu.wpi.cs3733.d20.teamA.controllers.dialog;
+package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.Flower;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -10,17 +14,19 @@ import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TreeItem;
 
 public class FlowerOrderController extends AbstractController implements IDialogController {
   @FXML private JFXComboBox<Node> roomList;
   @FXML private JFXButton confirmButton;
 
-  @FXML private JFXTextArea showOrderFlower;
-  @FXML private JFXTextArea showOrderNumber;
+  @FXML private JFXTreeTableView<TempFlower> tblDisplay;
   @FXML private JFXTextField txtTotal;
 
   @FXML private JFXTextField txtMessage;
@@ -47,13 +53,42 @@ public class FlowerOrderController extends AbstractController implements IDialog
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
 
+    // Set up table
+    TreeItem rootItem = new TreeItem<>(new TempFlower("", "", 0));
+
+    // Setup root item in table
+    tblDisplay.setRoot(rootItem);
+    tblDisplay.setShowRoot(false);
+    tblDisplay.setEditable(false);
+
+    JFXTreeTableColumn<TempFlower, String> columnName = new JFXTreeTableColumn<>("Type");
+    columnName.setCellValueFactory(param -> param.getValue().getValue().type);
+    columnName.setMinWidth(125);
+    columnName.setResizable(false);
+
+    JFXTreeTableColumn<TempFlower, String> columnColor = new JFXTreeTableColumn<>("Color");
+    columnColor.setCellValueFactory(param -> param.getValue().getValue().color);
+    columnColor.setMinWidth(125);
+    columnColor.setResizable(false);
+
+    JFXTreeTableColumn<TempFlower, Integer> columnNum = new JFXTreeTableColumn<>("Number in Order");
+    columnNum.setCellValueFactory(param -> param.getValue().getValue().num.asObject());
+    columnNum.setMinWidth(125);
+    columnNum.setResizable(false);
+
+    tblDisplay.getColumns().addAll(columnName, columnColor, columnNum);
+
     double cost = 0;
     for (Flower f : orderContent) {
       cost += f.getPricePer() * f.getQuantitySelected();
-      showOrderFlower.appendText(f.getColor() + " " + f.getTypeFlower() + "s\n");
-      showOrderNumber.appendText(f.getQuantitySelected() + "\n");
+      TempFlower flow = new TempFlower(f.getTypeFlower(), f.getColor(), f.getQuantitySelected());
+      tblDisplay.getRoot().getChildren().add(new TreeItem<>(flow));
     }
+
     txtTotal.setText("Total cost: " + String.format("$%.2f", cost));
+
+    // Set button icons
+    confirmButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK));
   }
 
   @FXML
@@ -73,6 +108,11 @@ public class FlowerOrderController extends AbstractController implements IDialog
       try {
         int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID(), message, price);
         dialog.close();
+        // Once the order is placed, remove the flowers from the list
+        for (Flower f : orderContent) {
+          flDatabase.updateQTY(
+              f.getTypeFlower(), f.getColor(), f.getQty() - f.getQuantitySelected());
+        }
         DialogUtil.simpleInfoDialog(
             dialog.getDialogContainer(), "Order Placed", "Order #" + i + " placed successfully");
       } catch (Exception e) {
@@ -89,5 +129,18 @@ public class FlowerOrderController extends AbstractController implements IDialog
   @FXML
   public void cancel() {
     dialog.close();
+  }
+
+  // Temporary flower object used to create a treetable
+  private class TempFlower extends RecursiveTreeObject<TempFlower> {
+    public SimpleStringProperty type;
+    public SimpleStringProperty color;
+    public SimpleIntegerProperty num;
+
+    public TempFlower(String tp, String col, int num) {
+      type = new SimpleStringProperty(tp);
+      color = new SimpleStringProperty(col);
+      this.num = new SimpleIntegerProperty(num);
+    }
   }
 }

@@ -1,5 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.FlowerEmployee;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,8 +29,6 @@ public class TestFlowerDatabase {
       fDB = new FlowerDatabase(conn);
     } catch (SQLException e) {
       e.printStackTrace();
-      System.out.println(
-          "AAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAAAAAAAA\nAAAAAAAAAAAAAA");
     }
   }
 
@@ -168,7 +169,7 @@ public class TestFlowerDatabase {
 
   @Test
   public void testOrders() {
-    Order flr = new Order(1, 4, "1/4|", 9.88, "Order Sent", "dsss", "Hi");
+    Order flr = new Order(1, 4, "1/4|", 9.88, "Order Sent", "dsss", "Hi", null, null);
     Assertions.assertEquals(1, flr.getOrderNumber());
     Assertions.assertEquals(4, flr.getNumFlowers());
     Assertions.assertEquals("1/4|", flr.getFlowerString());
@@ -176,5 +177,11 @@ public class TestFlowerDatabase {
     Assertions.assertEquals("Order Sent", flr.getStatus());
     Assertions.assertEquals("dsss", flr.getLocation());
     Assertions.assertEquals("Hi", flr.getMessage());
+  }
+
+  @Test
+  public void testEmployees() {
+    FlowerEmployee emp = new FlowerEmployee("Bob", "LastName");
+    Assertions.assertEquals("Bob LastName", emp.toString());
   }
 }

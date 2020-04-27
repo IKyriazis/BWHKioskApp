@@ -2,6 +2,9 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.FlowerEmployee;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
 import java.io.*;
 import java.sql.*;
 import java.util.List;
@@ -21,7 +24,9 @@ public class FlowerDatabase extends Database {
 
     super(connection);
 
-    if (doesTableNotExist("FLOWERS") && doesTableNotExist("ORDERS")) {
+    if (doesTableNotExist("FLOWERS")
+        && doesTableNotExist("ORDERS")
+        && doesTableNotExist("FLOWEREMPLOYEES")) {
       createTables();
     }
     orderNum = getSizeOrders() + 1;
@@ -36,7 +41,9 @@ public class FlowerDatabase extends Database {
    */
   public boolean dropTables() {
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE Flowers") && helperPrepared("DROP TABLE Orders"))) {
+    if (!(helperPrepared("DROP TABLE Flowers")
+        && helperPrepared("DROP TABLE Orders")
+        && helperPrepared("DROP TABLE FlowerEmployees"))) {
       return false;
     }
 
@@ -57,9 +64,13 @@ public class FlowerDatabase extends Database {
 
     boolean b =
         helperPrepared(
-            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flower Varchar(50) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, message Varchar(200), CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
+            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flower Varchar(50) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, message Varchar(200), firstName Varchar(50), lastName Varchar(50), CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
 
-    return a && b;
+    boolean c =
+        helperPrepared(
+            "CREATE TABLE FlowerEmployees (firstName Varchar(50) NOT NULL, lastName Varchar(50) NOT NULL)");
+
+    return a && b && c;
   }
 
   /**
@@ -149,6 +160,53 @@ public class FlowerDatabase extends Database {
   }
 
   /**
+   * Adds a employee to the flower employee table
+   *
+   * @param firstName first name of employee
+   * @param lastName last name of employee
+   * @return boolean for test purposes. True is everything goes through without an SQL exception
+   */
+  public boolean addEmployee(String firstName, String lastName) {
+    try {
+      if (existsEmployee(firstName, lastName)) return false;
+
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("INSERT INTO FlowerEmployees (firstName,lastName) VALUES (?, ?)");
+      pstmt.setString(1, firstName);
+      pstmt.setString(2, lastName);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  private boolean existsEmployee(String firstName, String lastName) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "Select * From FlowerEmployees Where firstName = '"
+                      + firstName
+                      + "' AND lastName = '"
+                      + lastName
+                      + "'");
+
+      ResultSet rset = pstmt.executeQuery();
+      if (rset.next()) return true;
+
+      pstmt.close();
+      return false;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /**
    * Takes in the color and type of flower and updates to a given price
    *
    * @param type flowerType
@@ -211,6 +269,41 @@ public class FlowerDatabase extends Database {
                       + "' AND color = '"
                       + color
                       + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /**
+   * Thsi method assigns an employee to the flower order
+   *
+   * @param orderNum order to assign the employee to
+   * @param e the employee being assigned
+   * @return
+   */
+  public boolean assignEmployee(int orderNum, FlowerEmployee emp) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Orders SET firstName = '"
+                      + emp.getFirstName()
+                      + "' WHERE orderNumber = "
+                      + orderNum);
+      pstmt.executeUpdate();
+      pstmt.close();
+      // Should figure out how to avoid using 2 statements, but this works for now
+      pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Orders SET lastName = '"
+                      + emp.getLastName()
+                      + "' WHERE orderNumber = "
+                      + orderNum);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -287,8 +380,7 @@ public class FlowerDatabase extends Database {
       pstmt.setString(7, inMessage);
       pstmt.executeUpdate();
       pstmt.close();
-      int quantity = 4; // getFlowerQuantity(flowerType, flowerColor);
-      // updateQTY(flowerType, flowerColor, (quantity - numFlowers));
+
       orderNum++;
       return orderNum - 1;
     } catch (SQLException e) {
@@ -376,6 +468,14 @@ public class FlowerDatabase extends Database {
     orderNum = 1;
     return helperPrepared("DELETE From Orders");
   }
+  /**
+   * Removes all employees from the table
+   *
+   * @return true if all the orders were removed, false otherwise
+   */
+  public boolean removeAllEmployees() {
+    return helperPrepared("DELETE From FlowerEmployees");
+  }
 
   /**
    * Gets all flowers in the flower table in an observable list
@@ -427,8 +527,40 @@ public class FlowerDatabase extends Database {
         String status = rset.getString("status");
         String location = rset.getString("location");
         String msg = rset.getString("message");
+        String fName = rset.getString("firstName");
+        String lName = rset.getString("lastName");
 
-        Order node = new Order(orderNumber, numFlowers, flowerType, price, status, location, msg);
+        Order node =
+            new Order(
+                orderNumber, numFlowers, flowerType, price, status, location, msg, fName, lName);
+        oList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      conn.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
+    }
+  }
+
+  /**
+   * Gets all flowers in the flower table in an observable list
+   *
+   * @return an observable list containing all the flowers in the table
+   */
+  public ObservableList<FlowerEmployee> employeeOl() {
+    ObservableList<FlowerEmployee> oList = FXCollections.observableArrayList();
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM FlowerEmployees");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String firstName = rset.getString("firstName");
+        String lastName = rset.getString("lastName");
+
+        FlowerEmployee node = new FlowerEmployee(firstName, lastName);
         oList.add(node);
       }
       rset.close();

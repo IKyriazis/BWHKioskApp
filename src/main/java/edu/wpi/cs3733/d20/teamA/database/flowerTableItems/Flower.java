@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.flowerTableItems;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
@@ -93,9 +93,6 @@ public class Flower extends RecursiveTreeObject<Flower> implements ITableable<Fl
     JFXTreeTableColumn<Flower, Double> column4 = new JFXTreeTableColumn<>("Unit Price");
     column4.setCellValueFactory(param -> param.getValue().getValue().pricePerProperty().asObject());
 
-    JFXTreeTableColumn<Flower, Integer> column5 = new JFXTreeTableColumn<>("NUMBER");
-    column5.setCellValueFactory(param -> param.getValue().getValue().flowerIDProperty().asObject());
-
-    return new ArrayList<>(List.of(column1, column2, column3, column4, column5));
+    return new ArrayList<>(List.of(column1, column2, column3, column4));
   }
 }
