@@ -131,7 +131,7 @@ public class PatientDatabase extends Database {
   }
 
   public boolean updatePatient(
-      int patientID, String firstName, String lastName, String newHealthIns) {
+      int patientID, String firstName, String lastName, String newHealthIns, String dateOfBirth) {
 
     try {
       PreparedStatement pstmt =
@@ -139,13 +139,14 @@ public class PatientDatabase extends Database {
               .prepareStatement(
                   "UPDATE Patients SET healthInsurance = '"
                       + newHealthIns
-                      + "' WHERE patientID = "
-                      + patientID
-                      + " AND firstName = '"
+                      + "', firstName = '"
                       + firstName
-                      + "' AND lastName = '"
+                      + "', lastName = '"
                       + lastName
-                      + "'");
+                      + "', dateOfBirth = '"
+                      + dateOfBirth
+                      + "' WHERE patientID = "
+                      + patientID);
       pstmt.executeUpdate();
       pstmt.close();
       return true;

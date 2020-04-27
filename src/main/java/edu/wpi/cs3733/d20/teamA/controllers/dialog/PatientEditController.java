@@ -127,10 +127,7 @@ public class PatientEditController extends AbstractController implements IDialog
           super.patientDatabase.addPatient(id, first, last, healthIns, birthday);
         } else {
           super.patientDatabase.updatePatient(
-              myPatient.getPatientID(),
-              myPatient.getFirstName(),
-              myPatient.getLastName(),
-              healthIns);
+              myPatient.getPatientID(), first, last, healthIns, birthday);
         }
         dialog.close();
 
