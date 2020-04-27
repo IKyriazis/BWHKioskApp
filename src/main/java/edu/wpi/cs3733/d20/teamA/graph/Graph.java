@@ -108,6 +108,34 @@ public class Graph {
   }
 
   /**
+   * Changes a node's x/y coordinates on the graph
+   *
+   * @param x X coordinate
+   * @param y Y coordinate
+   * @return Success / Failure
+   */
+  public boolean moveNode(Node node, int x, int y) {
+    if ((node == null) || !(nodes.containsKey(node.getNodeID()))) {
+      return false;
+    }
+
+    boolean success =
+        DB.editNode(
+            node.getNodeID(),
+            x,
+            y,
+            node.getFloor(),
+            node.getBuilding(),
+            node.getStringType(),
+            node.getLongName(),
+            node.getShortName(),
+            node.getTeamAssigned());
+    update();
+
+    return success;
+  }
+
+  /**
    * Add a new edge (in both directions) to the graph and automatically calculate weight
    *
    * @param start First node of the edge

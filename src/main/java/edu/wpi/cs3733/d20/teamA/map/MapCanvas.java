@@ -17,6 +17,7 @@ import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
@@ -30,20 +31,26 @@ public class MapCanvas extends Canvas {
   private BoundingBox viewSpace;
   private Point2D center;
   private Point2D dragLast;
+  private Point2D dragFirst;
 
-  private boolean dragEnabled;
+  private boolean dragMapEnabled;
+  private boolean dragNodeEnabled;
+  private MouseButton dragMapButton = MouseButton.PRIMARY;
+  private MouseButton dragNodeButton = MouseButton.SECONDARY;
   private EventHandler<MouseEvent> dragStartHandler;
   private EventHandler<MouseEvent> dragHandler;
+  private EventHandler<MouseEvent> dragEndHandler;
 
   private Node selectedNode;
   private Point2D selectedDragPos;
 
   private Path path;
 
-  public MapCanvas(boolean dragEnabled) {
+  public MapCanvas(boolean dragMapEnabled, boolean dragNodeEnabled) {
     super();
 
-    this.dragEnabled = dragEnabled;
+    this.dragMapEnabled = dragMapEnabled;
+    this.dragNodeEnabled = dragNodeEnabled;
 
     // Load floor images
     floorImages = new Image[5];
@@ -62,30 +69,70 @@ public class MapCanvas extends Canvas {
             (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
 
     // Create drag event handlers
-    dragStartHandler = event -> dragLast = new Point2D(event.getX(), event.getY());
+    dragStartHandler =
+        event -> {
+          if (event.getButton() == dragMapButton && this.dragMapEnabled) {
+            setCursor(Cursor.MOVE);
+            dragLast = new Point2D(event.getX(), event.getY());
+          } else if (event.getButton() == dragNodeButton && this.dragNodeEnabled) {
+            Optional<Node> selected =
+                getClosestNode(lastDrawnFloor, new Point2D(event.getX(), event.getY()), 15.0);
+            if (selected.isPresent()) {
+              selectedNode = selected.get();
+              dragLast = new Point2D(event.getX(), event.getY());
+              selectedDragPos = dragLast;
+            }
+          }
+          dragFirst = dragLast;
+        };
     dragHandler =
         event -> {
-          Point2D startGraphPos = canvasToGraph(dragLast);
-          Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
+          if (event.getButton() == dragMapButton && this.dragMapEnabled) {
+            Point2D startGraphPos = canvasToGraph(dragLast);
+            Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
 
-          double xDiff = startGraphPos.getX() - endGraphPos.getX();
-          double yDiff = startGraphPos.getY() - endGraphPos.getY();
+            double xDiff = startGraphPos.getX() - endGraphPos.getX();
+            double yDiff = startGraphPos.getY() - endGraphPos.getY();
 
-          center = new Point2D(xDiff + center.getX(), yDiff + center.getY());
+            center = new Point2D(xDiff + center.getX(), yDiff + center.getY());
 
-          draw(lastDrawnFloor);
+            draw(lastDrawnFloor);
 
-          dragLast = new Point2D(event.getX(), event.getY());
+            dragLast = new Point2D(event.getX(), event.getY());
+          } else if (event.getButton() == dragNodeButton && this.dragNodeEnabled) {
+            dragLast = new Point2D(event.getX(), event.getY());
+            selectedDragPos = dragLast;
+            draw(lastDrawnFloor);
+          }
+        };
+    dragEndHandler =
+        event -> {
+          if (dragFirst != null && dragFirst.equals(dragLast)) {
+            dragFirst = null;
+            dragLast = null;
+            selectedDragPos = null;
+            return;
+          }
+
+          if (event.getButton() == dragMapButton && this.dragMapEnabled) {
+            setCursor(Cursor.DEFAULT);
+          } else if (event.getButton() == dragNodeButton
+              && this.dragNodeEnabled
+              && selectedDragPos != null) {
+            Point2D newGraphCoords =
+                canvasToGraph(new Point2D(selectedDragPos.getX(), selectedDragPos.getY()));
+            Graph.getInstance()
+                .moveNode(selectedNode, (int) newGraphCoords.getX(), (int) newGraphCoords.getY());
+            selectedNode = null;
+            selectedDragPos = null;
+            draw(lastDrawnFloor);
+          }
         };
 
-    // Register drag handlers if enabled
-    if (dragEnabled) {
-      setOnMousePressed(dragStartHandler);
-      setOnMouseDragged(dragHandler);
-
-      // Set cursor to indicate panning possibility
-      setCursor(Cursor.MOVE);
-    }
+    // Register drag handlers
+    setOnMousePressed(dragStartHandler);
+    setOnMouseDragged(dragHandler);
+    setOnMouseReleased(dragEndHandler);
 
     setOnScroll(
         event -> {
@@ -240,8 +287,19 @@ public class MapCanvas extends Canvas {
   private void drawEdge(Edge edge) {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
-    Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
-    Point2D end = graphToCanvas(new Point2D(edge.getEnd().getX(), edge.getEnd().getY()));
+    Point2D start;
+    if (edge.getStart() == selectedNode && selectedDragPos != null) {
+      start = selectedDragPos;
+    } else {
+      start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
+    }
+
+    Point2D end;
+    if (edge.getEnd() == selectedNode && selectedDragPos != null) {
+      end = selectedDragPos;
+    } else {
+      end = graphToCanvas(new Point2D(edge.getEnd().getX(), edge.getEnd().getY()));
+    }
 
     // Set the color to black for the edge
     graphicsContext.setLineWidth(5);
@@ -258,7 +316,7 @@ public class MapCanvas extends Canvas {
     graphicsContext.setFill(color);
 
     Point2D nodePoint;
-    if (selectedNode != null && selectedDragPos != null) {
+    if (node == selectedNode && selectedDragPos != null) {
       nodePoint = selectedDragPos;
     } else {
       nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
@@ -341,20 +399,12 @@ public class MapCanvas extends Canvas {
     this.drawAllNodes = drawAllNodes;
   }
 
-  public void setDragEnabled(boolean dragEnabled) {
-    if (dragEnabled == this.dragEnabled) return;
+  public void setDragMapEnabled(boolean dragMapEnabled) {
+    this.dragMapEnabled = dragMapEnabled;
+  }
 
-    if (dragEnabled) {
-      setOnMousePressed(dragStartHandler);
-      setOnMouseDragged(dragHandler);
-      setCursor(Cursor.MOVE);
-    } else {
-      setOnMousePressed(null);
-      setOnMouseDragged(null);
-      setCursor(Cursor.DEFAULT);
-    }
-
-    this.dragEnabled = dragEnabled;
+  public void setDragNodeEnabled(boolean dragNodeEnabled) {
+    this.dragNodeEnabled = dragNodeEnabled;
   }
 
   public void setSelectedNode(Node selectedNode) {
@@ -367,5 +417,13 @@ public class MapCanvas extends Canvas {
 
   public void setSelectedDragPos(Point2D selectedDragPos) {
     this.selectedDragPos = selectedDragPos;
+  }
+
+  public void setDragMapButton(MouseButton dragMapButton) {
+    this.dragMapButton = dragMapButton;
+  }
+
+  public void setDragNodeButton(MouseButton dragNodeButton) {
+    this.dragNodeButton = dragNodeButton;
   }
 }
