@@ -81,16 +81,20 @@ public class ITTicketDatabase extends Database {
     return getSize("ITTickets");
   }
 
-  public boolean changeStatus(String statusTicketTime, String newStatus) {
+  public boolean removeAllITTickets() {
+    return helperPrepared("DELETE From ITTickets");
+  }
 
+  public boolean changeStatus(Timestamp statusTicketTime, String newStatus) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE ITTickets Set status = '"
                       + newStatus
-                      + "' WHERE ticketTime = "
-                      + statusTicketTime);
+                      + "' WHERE ticketTime = '"
+                      + statusTicketTime
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
