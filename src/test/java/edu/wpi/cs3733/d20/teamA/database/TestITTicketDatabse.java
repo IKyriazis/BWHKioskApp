@@ -103,7 +103,6 @@ public class TestITTicketDatabse {
   public void testUpdateStatus() throws SQLException {
     tDB.removeAllITTickets();
     Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
-    System.out.println(ticketTime.toString());
     tDB.addTicket(
         ticketTime, "In Progress", "Email", "MDEPT00325", "Luke", "Adam", "this is a test");
 
