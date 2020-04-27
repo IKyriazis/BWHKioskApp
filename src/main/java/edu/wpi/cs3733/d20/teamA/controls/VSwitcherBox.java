@@ -1,7 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.controls;
 
 import com.jfoenix.controls.JFXButton;
+import de.jensd.fx.glyphs.GlyphIcon;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.HashMap;
 import javafx.animation.Animation;
 import javafx.animation.Transition;
@@ -29,12 +31,9 @@ public class VSwitcherBox extends VBox {
   private boolean transitioning = false;
   private int transitionTime = 1000;
 
-  private static final String iconStyle =
-      "-fx-font-size: 52pt;"
-          + "    -fx-border-color: #BDBDBD;"
-          + "    -fx-border-width: 0px 0px 2px 0px;";
+  private static final String iconStyle = "-fx-font-size: 36pt;";
   private static final String buttonStyle =
-      "-fx-font-size: 20pt;" + "-fx-background-radius: 0px;" + "-fx-text-fill: black;";
+      "-fx-font-size: 22pt;" + "-fx-background-radius: 0px;" + "-fx-text-fill: black;";
 
   public VSwitcherBox(Pane destPane, Node topIcon) {
     this.destPane = destPane;
@@ -51,6 +50,7 @@ public class VSwitcherBox extends VBox {
     iconLabel.setPrefWidth(getWidth());
     iconLabel.setStyle(iconStyle);
     iconLabel.setAlignment(Pos.CENTER);
+    iconLabel.setPadding(new Insets(0, 2, 0, 2));
     getChildren().add(iconLabel);
 
     // Add mouseover listener
@@ -92,7 +92,7 @@ public class VSwitcherBox extends VBox {
     selected = newSelection;
   }
 
-  public void addEntry(String label, Node graphic, String fxmlPath) {
+  public void addEntry(String label, GlyphIcon graphic, String fxmlPath) {
     JFXButton button = new JFXButton(label, graphic);
     button.setEllipsisString("");
     button.setAlignment(Pos.CENTER_LEFT);
@@ -162,6 +162,9 @@ public class VSwitcherBox extends VBox {
 
         transitioning = true;
       }
+
+      // Fire off tab switch event to notify new tab that it was swapped in
+      newNode.fireEvent(new TabSwitchEvent());
     }
   }
 
@@ -190,9 +193,10 @@ public class VSwitcherBox extends VBox {
   private double getMaxIconWidth() {
     double maxGraphicWidth = 0.0;
     for (JFXButton button : map.keySet()) {
-      maxGraphicWidth = Math.max(maxGraphicWidth, button.getGraphic().prefWidth(getHeight()));
+      maxGraphicWidth =
+          Math.max(maxGraphicWidth, button.getGraphic().prefWidth(button.getHeight()));
     }
-    return maxGraphicWidth;
+    return Math.max(maxGraphicWidth, iconLabel.getGraphic().prefWidth(iconLabel.getHeight()));
   }
 
   @Override
@@ -204,7 +208,19 @@ public class VSwitcherBox extends VBox {
     map.keySet().forEach(button -> button.setMaxWidth(getWidth()));
 
     // Fit padding on destpane for overlap only when expanded
-    destPane.setPadding(new Insets(0, 0, 0, 2 * getMaxIconWidth() + 14.0));
+    double labelIconWidth = iconLabel.getGraphic().prefWidth(iconLabel.getHeight());
+    destPane.setPadding(new Insets(0, 0, 0, Math.max(labelIconWidth, getMaxIconWidth()) + 5.0));
+
+    // Offset labels by deviation from max icon width
+    double maxIconWidth = getMaxIconWidth();
+    map.keySet()
+        .forEach(
+            button -> {
+              double graphicWidth = button.getGraphic().prefWidth(button.getHeight());
+              double gap = (maxIconWidth - graphicWidth);
+              button.setPadding(new Insets(0, 0, 0, gap / 2 + 4));
+              button.setGraphicTextGap(gap / 2 + 4);
+            });
   }
 
   public void setTransitionMillis(int transitionTime) {
