@@ -85,25 +85,40 @@ public class ITServicesController extends AbstractController {
 
   public void changeStatus(ActionEvent actionEvent) {
     selected = tblViewITTicket.getSelected();
-    if (selected != null
-        && statusChangeStatus.getSelectionModel().getSelectedItem() != null
-        && !statusChangeName.getText().isEmpty()) {
-      boolean i =
-          itTicketDatabase.changeStatus(
-              Timestamp.valueOf(selected.getTicketTime()),
-              statusChangeStatus.getSelectionModel().getSelectedItem(),
-              statusChangeName.getText());
-      System.out.println(Timestamp.valueOf(selected.getTicketTime()));
-      statusChangeName.clear();
-      statusChangeStatus.getSelectionModel().clearSelection();
-      updateTable();
-    }
+    boolean i =
+        itTicketDatabase.changeStatus(
+            Timestamp.valueOf(selected.getTicketTime()),
+            statusChangeStatus.getSelectionModel().getSelectedItem(),
+            statusChangeName.getText());
+    System.out.println(Timestamp.valueOf(selected.getTicketTime()));
+    statusChangeName.clear();
+    statusChangeStatus.getSelectionModel().clearSelection();
+    updateTable();
   }
 
   public void getDescription(ActionEvent actionEvent) {
     selected = tblViewITTicket.getSelected();
     if (selected != null) {
       DialogUtil.simpleInfoDialog(ITStackPane, "Description", selected.getDescription());
+    }
+  }
+
+  public void checkUpdateStatusName(KeyEvent keyEvent) {
+    checkUpdateStatus();
+  }
+
+  public void checkUpdateStatusBox(ActionEvent actionEvent) {
+    checkUpdateStatus();
+  }
+
+  public void checkUpdateStatus() {
+    selected = tblViewITTicket.getSelected();
+    if (selected != null
+        && statusChangeStatus.getSelectionModel().getSelectedItem() != null
+        && !statusChangeName.getText().isEmpty()) {
+      changeStatusBtn.disableProperty().setValue(false);
+    } else {
+      changeStatusBtn.disableProperty().setValue(true);
     }
   }
 
@@ -127,32 +142,27 @@ public class ITServicesController extends AbstractController {
   }
 
   public void submitTicket(ActionEvent actionEvent) {
-    if (ITTicketLocation.getSelectionModel().getSelectedItem() != null
-        && ITTicketCategory.getSelectionModel().getSelectedItem() != null
-        && !ITTicketName.getText().isEmpty()
-        && !ITTicketDescription.getText().isEmpty()) {
-      Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
-      String status = "Ticket Sent";
-      String category = ITTicketCategory.getSelectionModel().getSelectedItem();
-      Node location = ITTicketLocation.getSelectionModel().getSelectedItem();
-      String requesterName = ITTicketName.getText();
-      String completedBy = " ";
-      String description = ITTicketDescription.getText();
-      boolean ticket =
-          itTicketDatabase.addTicket(
-              ticketTime,
-              status,
-              category,
-              location.getNodeID(),
-              requesterName,
-              completedBy,
-              description);
-      ITTicketCategory.getSelectionModel().clearSelection();
-      ITTicketLocation.getSelectionModel().clearSelection();
-      ITTicketDescription.clear();
-      ITTicketName.clear();
-      updateTable();
-    }
+    Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
+    String status = "Ticket Sent";
+    String category = ITTicketCategory.getSelectionModel().getSelectedItem();
+    Node location = ITTicketLocation.getSelectionModel().getSelectedItem();
+    String requesterName = ITTicketName.getText();
+    String completedBy = " ";
+    String description = ITTicketDescription.getText();
+    boolean ticket =
+        itTicketDatabase.addTicket(
+            ticketTime,
+            status,
+            category,
+            location.getNodeID(),
+            requesterName,
+            completedBy,
+            description);
+    ITTicketCategory.getSelectionModel().clearSelection();
+    ITTicketLocation.getSelectionModel().clearSelection();
+    ITTicketDescription.clear();
+    ITTicketName.clear();
+    updateTable();
   }
 
   public void updateTable() {
