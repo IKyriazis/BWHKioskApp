@@ -12,6 +12,8 @@ import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.stream.Collectors;
+
+import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
