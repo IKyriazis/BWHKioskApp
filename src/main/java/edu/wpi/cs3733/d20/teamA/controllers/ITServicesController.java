@@ -51,6 +51,7 @@ public class ITServicesController extends AbstractController {
       itTicketDatabase.createTables();
       itTicketDatabase.readITTicketsCSV();
     } else if (itTicketDatabase.getSizeITTickets() == 0) {
+      itTicketDatabase.removeAllITTickets();
       itTicketDatabase.readITTicketsCSV();
     }
 

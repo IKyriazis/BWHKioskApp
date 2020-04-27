@@ -106,10 +106,10 @@ public class ITTicket implements ITableable<ITTicket> {
     JFXTreeTableColumn<ITTicket, String> column4 = new JFXTreeTableColumn<>("Location");
     column4.setCellValueFactory(param -> param.getValue().getValue().locationProperty());
 
-    JFXTreeTableColumn<ITTicket, String> column5 = new JFXTreeTableColumn<>("Requester Name");
+    JFXTreeTableColumn<ITTicket, String> column5 = new JFXTreeTableColumn<>("Employee Name");
     column5.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
 
-    JFXTreeTableColumn<ITTicket, String> column6 = new JFXTreeTableColumn<>("Employee Name");
+    JFXTreeTableColumn<ITTicket, String> column6 = new JFXTreeTableColumn<>("IT Assistant Name");
     column6.setCellValueFactory(param -> param.getValue().getValue().completedByProperty());
 
     return new ArrayList<>(List.of(column1, column2, column3, column4, column5, column6));
