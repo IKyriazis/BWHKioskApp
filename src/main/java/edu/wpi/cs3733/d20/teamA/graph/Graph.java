@@ -198,9 +198,21 @@ public class Graph {
     nodes.remove(node.getNodeID());
 
     DB.removeEdgeByNode(node.getNodeID());
-    DB.deleteNode(node.getNodeID());
 
-    return true;
+    boolean success = DB.deleteNode(node.getNodeID());
+    if (success) {
+      return true;
+    } else {
+      // Add node back to graph map
+      nodes.put(node.getNodeID(), node);
+
+      // Add edges back to table if we failed to remove the node
+      toDelete.forEach(
+          edge -> {
+            addEdge(edge.getStart(), edge.getEnd());
+          });
+      return false;
+    }
   }
 
   /**

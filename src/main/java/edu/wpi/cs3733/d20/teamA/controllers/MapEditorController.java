@@ -290,14 +290,25 @@ public class MapEditorController {
               draggingNodes = true;
             });
 
-        //TODO; Find a way to not delete constrained nodes
+        // TODO; Find a way to not delete constrained nodes
         JFXButton deleteButton =
             new JFXButton("Delete " + (selections.size() > 1 ? "Nodes" : "Node"));
         deleteButton.setStyle(buttonStyle);
         deleteButton.setOnAction(
             e -> {
               popup.hide();
-              selections.forEach(node -> graph.deleteNode(node));
+              selections.forEach(
+                  node -> {
+                    boolean success = graph.deleteNode(node);
+                    if (!success) {
+                      DialogUtil.simpleErrorDialog(
+                          dialogPane,
+                          "Database Error",
+                          "Failed to delete node "
+                              + node.getNodeID()
+                              + ", likely due to indeterminate service constraints. Please try again later.");
+                    }
+                  });
               canvas.draw(floor);
             });
 
