@@ -9,6 +9,8 @@ import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Patient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 
 public class PatientEditController extends AbstractController implements IDialogController {
 
@@ -17,6 +19,8 @@ public class PatientEditController extends AbstractController implements IDialog
   @FXML private JFXTextField txtLastName;
   @FXML private JFXTextField txtHealthInsurance;
   @FXML private JFXTextField txtDateOfBirth;
+  @FXML private StackPane dialogDialogStackPane;
+  @FXML private Label errorLabel;
 
   @FXML private JFXButton doneButton;
 
@@ -117,17 +121,56 @@ public class PatientEditController extends AbstractController implements IDialog
       String healthIns = txtHealthInsurance.getText();
       String birthday = txtDateOfBirth.getText();
 
-      if (!modify) {
-        super.patientDatabase.addPatient(id, first, last, healthIns, birthday);
+      if (checkDOBFormat(birthday)) {
+
+        if (!modify) {
+          super.patientDatabase.addPatient(id, first, last, healthIns, birthday);
+        } else {
+          super.patientDatabase.updatePatient(
+              myPatient.getPatientID(),
+              myPatient.getFirstName(),
+              myPatient.getLastName(),
+              healthIns);
+        }
+        dialog.close();
+
       } else {
-        super.patientDatabase.updatePatient(
-            myPatient.getPatientID(), myPatient.getFirstName(), myPatient.getLastName(), healthIns);
+        errorLabel.setText("Incorrect Date of Birth Format.");
+        JFXDialog errorDialog =
+            new JFXDialog(dialogDialogStackPane, errorLabel, JFXDialog.DialogTransition.TOP);
+        errorDialog.show();
       }
 
-      dialog.close();
     } catch (Exception exception) {
       exception.printStackTrace();
     }
+  }
+
+  public boolean checkDOBFormat(String dOB) {
+    boolean slashCheck = false;
+    boolean monthCheck = false;
+    boolean dayCheck = false;
+    boolean yearCheck = false;
+
+    if (dOB.length() != 10) return false;
+    else {
+
+      try {
+        int month = Integer.parseInt(dOB.substring(0, 2));
+        int day = Integer.parseInt(dOB.substring(3, 5));
+        int year = Integer.parseInt(dOB.substring(6, 10));
+        slashCheck = dOB.substring(2, 3).equals("/") && dOB.substring(5, 6).equals("/");
+        monthCheck = month > 0 && month < 13;
+        dayCheck = day > 0 && day < 31;
+        yearCheck = year > 0 && year < 2021;
+
+      } catch (NumberFormatException e) {
+        e.printStackTrace();
+        return false;
+      }
+    }
+
+    return slashCheck && monthCheck && dayCheck && yearCheck;
   }
 
   @Override
