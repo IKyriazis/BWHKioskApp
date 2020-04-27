@@ -75,11 +75,39 @@ public class ITServicesController extends AbstractController {
     // Track when the mouse has clicked on the table
     tblViewITTicket.setOnMouseClicked(
         event -> {
-          descriptionBtn.disableProperty().setValue(false);
-          deleteBtn.disableProperty().setValue(false);
-          statusChangeStatus.disableProperty().setValue(false);
-          statusChangeName.disableProperty().setValue(false);
+          selected = tblViewITTicket.getSelected();
+          if (selected != null) {
+            descriptionBtn.disableProperty().setValue(false);
+            deleteBtn.disableProperty().setValue(false);
+            statusChangeStatus.disableProperty().setValue(false);
+            statusChangeName.disableProperty().setValue(false);
+          }
         });
+
+    // Set max character values.
+    ITTicketName.textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.length() > 25) {
+                ITTicketName.setText(newValue.substring(0, 25));
+              }
+            });
+    statusChangeName
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.length() > 25) {
+                statusChangeName.setText(newValue.substring(0, 25));
+              }
+            });
+    ITTicketDescription.textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.length() > 200) {
+                ITTicketDescription.setText(newValue.substring(0, 200));
+              }
+            });
+
     updateTable();
   }
 
@@ -238,9 +266,7 @@ public class ITServicesController extends AbstractController {
     if (ITTicketLocation.getSelectionModel().getSelectedItem() != null
         && ITTicketCategory.getSelectionModel().getSelectedItem() != null
         && !ITTicketName.getText().isEmpty()
-        && !ITTicketDescription.getText().isEmpty()
-        && ITTicketDescription.getText().length() < 200
-        && ITTicketName.getText().length() < 25) {
+        && !ITTicketDescription.getText().isEmpty()) {
       submitBtn.disableProperty().setValue(false);
     } else {
       submitBtn.disableProperty().setValue(true);

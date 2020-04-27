@@ -63,7 +63,7 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
     vSwitcherBox.addEntry(
-        "IT Ticket Gabriel",
+        "IT Ticket Gabriel Dudlicek",
         new FontAwesomeIconView(FontAwesomeIcon.LAPTOP),
         "views/ITServices.fxml");
     vSwitcherBox.setTransitionMillis(500);
