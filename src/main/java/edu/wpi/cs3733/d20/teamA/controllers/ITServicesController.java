@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
@@ -15,8 +16,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 public class ITServicesController extends AbstractController {
@@ -26,10 +27,13 @@ public class ITServicesController extends AbstractController {
   @FXML private JFXComboBox<String> ITTicketCategory;
   @FXML private JFXTextArea ITTicketDescription;
   @FXML private GridPane ticketTablePane;
-  @FXML private HBox changeStatusOptions;
   @FXML private JFXComboBox<String> statusChangeStatus;
   @FXML private JFXTextField statusChangeName;
   @FXML private StackPane ITStackPane;
+  @FXML private JFXButton changeStatusBtn;
+  @FXML private JFXButton descriptionBtn;
+  @FXML private JFXButton submitBtn;
+  @FXML private JFXButton deleteBtn;
 
   private ITTicket selected;
 
@@ -59,6 +63,14 @@ public class ITServicesController extends AbstractController {
         new SimpleTableView<>(
             new ITTicket(new Timestamp(System.currentTimeMillis()), "", "", "", "", "", ""), 80.0);
     ticketTablePane.getChildren().add(tblViewITTicket);
+
+    tblViewITTicket.setOnMouseClicked(
+        event -> {
+          descriptionBtn.disableProperty().setValue(false);
+          deleteBtn.disableProperty().setValue(false);
+          statusChangeStatus.disableProperty().setValue(false);
+          statusChangeName.disableProperty().setValue(false);
+        });
 
     updateTable();
   }
@@ -133,5 +145,12 @@ public class ITServicesController extends AbstractController {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(ITStackPane, "Error", "Failed to update IT Ticket Table");
     }
+  }
+
+  public void disableBtns(MouseEvent mouseEvent) {
+    descriptionBtn.disableProperty().setValue(true);
+    deleteBtn.disableProperty().setValue(true);
+    statusChangeStatus.disableProperty().setValue(true);
+    statusChangeName.disableProperty().setValue(true);
   }
 }
