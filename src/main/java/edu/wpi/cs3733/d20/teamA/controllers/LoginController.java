@@ -63,6 +63,10 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
     vSwitcherBox.addEntry(
+        "Patient Info - Tyler Looney",
+        new MaterialIconView(MaterialIcon.PERSON_ADD),
+        "views/PatientsInfoService.fxml");
+    vSwitcherBox.addEntry(
         "Internal Transport Requests",
         new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR),
         "views/InternalTransportAdmin.fxml");
