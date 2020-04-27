@@ -105,7 +105,8 @@ public class EmployeesDatabase extends Database {
 
   public boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
-    return addEmployee(employeeID, nameFirst, nameLast, username, password, title);
+    return checkSecurePass(password)
+        && addEmployee(employeeID, nameFirst, nameLast, username, password, title);
   }
 
   /**
@@ -248,6 +249,9 @@ public class EmployeesDatabase extends Database {
     boolean capital = false;
     boolean lowercase = false;
     boolean number = false;
+    if (password.length() > 72) {
+      return false;
+    }
     for (int i = 0; i < password.length(); i++) {
       ch = password.charAt(i);
       if (Character.isDigit(ch)) {

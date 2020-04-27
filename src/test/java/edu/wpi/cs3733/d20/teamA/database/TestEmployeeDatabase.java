@@ -48,14 +48,20 @@ public class TestEmployeeDatabase {
   public void testAddEmployee() {
     eDB.createTables();
     eDB.removeAllEmployees();
-    boolean a = eDB.addEmployee("abc", "brad", "bad", "password", "Janitor");
+    boolean a = eDB.addEmployee("abc", "brad", "bad", "passwordH2", "Janitor");
     Assertions.assertTrue(a);
-    boolean d = eDB.addEmployee("abcd", "chad", "lad", "password", "Manager");
+    boolean d = eDB.addEmployee("abcd", "chad", "lad", "passwordH2", "Manager");
     Assertions.assertTrue(d);
-    boolean b = eDB.addEmployee("ab", "kassy", "lassy", "password", "Surgeon");
+    boolean b = eDB.addEmployee("ab", "kassy", "lassy", "passwordH2", "Surgeon");
     Assertions.assertTrue(b);
-    boolean e = eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    boolean e = eDB.addEmployee("bacd", "ray", "jay", "passwordH2", "Intern");
     Assertions.assertTrue(e);
+    String invalidPassword = "";
+    for (int i = 0; i < 90; i++) {
+      invalidPassword += "a";
+    }
+    boolean f = eDB.addEmployee("bacd", "ray", "jay", invalidPassword, "Intern");
+    Assertions.assertFalse(f);
     Assertions.assertEquals(4, eDB.getSizeEmployees());
     eDB.removeAllEmployees();
   }
