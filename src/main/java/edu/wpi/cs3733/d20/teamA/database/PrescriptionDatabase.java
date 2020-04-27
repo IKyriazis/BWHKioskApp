@@ -33,7 +33,7 @@ public class PrescriptionDatabase extends Database {
    */
   public boolean createTables() {
     return helperPrepared(
-        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) UNIQUE NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR','')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
+        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR','')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
   }
 
   /**
