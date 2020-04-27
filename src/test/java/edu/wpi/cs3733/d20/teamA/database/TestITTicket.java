@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class TestITicket {
+public class TestITTicket {
   @Test
   public void testITTicket() {
     ITTicket t =

@@ -126,7 +126,9 @@ public class ITServicesController extends AbstractController {
     if (ITTicketLocation.getSelectionModel().getSelectedItem() != null
         && ITTicketCategory.getSelectionModel().getSelectedItem() != null
         && !ITTicketName.getText().isEmpty()
-        && !ITTicketDescription.getText().isEmpty()) {
+        && !ITTicketDescription.getText().isEmpty()
+        && ITTicketDescription.getText().length() < 200
+        && ITTicketName.getText().length() < 25) {
       submitBtn.disableProperty().setValue(false);
     } else {
       submitBtn.disableProperty().setValue(true);

@@ -35,8 +35,8 @@ public class ITTicketDatabase extends Database {
     // Create the graph tables
     return helperPrepared(
         "CREATE TABLE ITTickets (ticketTime TIMESTAMP PRIMARY KEY, "
-            + "status VarChar(50) NOT NULL, "
-            + "category Varchar(50) NOT NULL, "
+            + "status VarChar(15) NOT NULL, "
+            + "category Varchar(15) NOT NULL, "
             + "location Varchar(10) NOT NULL, "
             + "requesterName Varchar(25) NOT NULL, "
             + "completedBy Varchar(25) NOT NULL, "
