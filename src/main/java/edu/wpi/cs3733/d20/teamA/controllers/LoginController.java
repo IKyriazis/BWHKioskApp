@@ -39,7 +39,7 @@ public class LoginController extends AbstractController {
 
   @FXML
   public void initialize() {
-
+    loginButton.getStyleClass().add("submitButton");
     if (eDB.getSizeEmployees() == -1) {
       eDB.dropTables();
       eDB.createTables();
