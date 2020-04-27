@@ -174,4 +174,19 @@ public class TestPath {
 
     Assertions.assertEquals(realPath, pathNodes);
   }
+
+  @Test
+  public void testContextPath() throws SQLException {
+    ContextPath path = new ContextPath();
+    setupFirstGraph();
+
+    path.setPath(new BreadthFirst(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof BreadthFirst);
+
+    path.setPath(new DepthFirst(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof DepthFirst);
+
+    path.setPath(new Path(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof Path);
+  }
 }
