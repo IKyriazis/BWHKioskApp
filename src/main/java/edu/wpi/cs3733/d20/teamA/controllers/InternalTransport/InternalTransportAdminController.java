@@ -123,7 +123,7 @@ public class InternalTransportAdminController extends AbstractController {
     if (lastOrder != null) {
       String s = txtNext.getSelectionModel().getSelectedItem();
       String name = txtName.getText();
-      if (name != "") {
+      if (!name.isEmpty()) {
         super.itDatabase.updateRequest(lastOrder.getRequestNumber(), name, s);
       } else {
         super.itDatabase.updateRequest(lastOrder.getRequestNumber(), s);
