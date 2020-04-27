@@ -16,6 +16,9 @@ public abstract class AbstractController {
   protected EmployeesDatabase eDB;
   protected JanitorDatabase janitorDatabase;
   protected LaundryDatabase lDB;
+  protected InternalTransportDatabase itDatabase;
+  protected InterpreterDatabase iDB;
+  protected PrescriptionDatabase prescriptionDatabase;
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
@@ -23,7 +26,13 @@ public abstract class AbstractController {
     graphDatabase = new GraphDatabase(conn);
     flDatabase = new FlowerDatabase(conn);
     eDB = new EmployeesDatabase(conn);
+    iDB = new InterpreterDatabase(conn);
+    // Uncomment if employee database is messed up
+    // eDB.removeAllEmployees();
+    // eDB.readEmployeeCSV();
     janitorDatabase = new JanitorDatabase(conn);
     lDB = new LaundryDatabase(conn);
+    itDatabase = new InternalTransportDatabase(conn);
+    prescriptionDatabase = new PrescriptionDatabase(conn);
   }
 }

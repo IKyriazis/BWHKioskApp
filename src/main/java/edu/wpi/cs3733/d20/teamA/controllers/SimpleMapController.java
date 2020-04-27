@@ -4,9 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.graph.Path;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
@@ -160,6 +158,11 @@ public class SimpleMapController {
             .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
             .findFirst();
     if (start.isPresent() && end.isPresent()) {
+      /*ContextPath path = new ContextPath();
+      if(aStarButton is pressed) path.setPath(new Path(graph))
+      else if (depthFirstButton is pressed) path.setPath(new DepthFirst(graph))
+      else path.setPath(new BreadthFirst(graph))
+      */
       Path path = new Path(graph);
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
