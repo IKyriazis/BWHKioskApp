@@ -34,11 +34,11 @@ public class TestGraph {
     }
   }
 
-  Node node1 = new Node("testNode1", 1, 2, 1, "", NodeType.HALL, "", "", "");
-  Node node2 = new Node("testNode2", 2, 2, 1, "", NodeType.HALL, "", "", "");
-  Node node3 = new Node("testNode3", 1, 1, 1, "", NodeType.HALL, "", "", "");
-  Node node4 = new Node("testNode4", 2, 3, 1, "", NodeType.HALL, "", "", "");
-  Node node5 = new Node("testNode5", 2, 1, 1, "", NodeType.HALL, "", "", "");
+  Node node1 = new Node("testNode1", 1, 2, 1, "", NodeType.HALL, "a", "", "");
+  Node node2 = new Node("testNode2", 2, 2, 1, "", NodeType.HALL, "b", "", "");
+  Node node3 = new Node("testNode3", 1, 1, 1, "", NodeType.HALL, "c", "", "");
+  Node node4 = new Node("testNode4", 2, 3, 1, "", NodeType.HALL, "d", "", "");
+  Node node5 = new Node("testNode5", 2, 1, 1, "", NodeType.HALL, "e", "", "");
 
   public TestGraph() throws SQLException, IOException, CsvException {}
 

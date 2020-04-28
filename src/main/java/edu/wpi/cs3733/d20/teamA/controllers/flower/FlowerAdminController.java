@@ -1,17 +1,17 @@
-package edu.wpi.cs3733.d20.teamA.controllers;
+package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.FlowerEditController;
+import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Flower;
-import edu.wpi.cs3733.d20.teamA.database.Order;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -19,9 +19,6 @@ import javafx.scene.layout.StackPane;
 public class FlowerAdminController extends AbstractController {
   @FXML private GridPane flowerTablePane;
   @FXML private GridPane orderTablePane;
-
-  @FXML private JFXTextField txtPrev;
-  @FXML private JFXComboBox<String> txtNext;
 
   @FXML private StackPane dialogStackPane;
 
@@ -31,11 +28,8 @@ public class FlowerAdminController extends AbstractController {
   @FXML private JFXButton addFlowerButton;
   @FXML private JFXButton editFlowerButton;
   @FXML private JFXButton deleteFlowerButton;
-  @FXML private JFXButton changeProgressButton;
 
   @FXML private AnchorPane flowerPane;
-
-  private Order lastOrder;
 
   private SimpleTableView<Flower> tblFlowerView;
   private SimpleTableView<Order> tblOrderView;
@@ -61,7 +55,6 @@ public class FlowerAdminController extends AbstractController {
     addFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
     editFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
     deleteFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
-    changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
 
     // Add tab switch update listener
     flowerPane.addEventHandler(
@@ -72,39 +65,53 @@ public class FlowerAdminController extends AbstractController {
         });
 
     // Set up tables
-    tblFlowerView = new SimpleTableView<>(new Flower("", "", 0, 0), 80.0);
+    tblFlowerView = new SimpleTableView<>(new Flower("", "", 0, 0, 0), 40.0);
     flowerTablePane.getChildren().add(tblFlowerView);
 
-    tblOrderView = new SimpleTableView<>(new Order(0, 0, "", "", 0, "", ""), 40.0);
+    tblOrderView = new SimpleTableView<>(new Order(0, 0, "", 0, "", "", "", -1), 40.0);
     orderTablePane.getChildren().addAll(tblOrderView);
+
+    // Double click a row in the order table to bring up the dialog for that order
+    tblOrderView.setRowFactory(
+        tv -> {
+          TreeTableRow<Order> row = new TreeTableRow<>();
+          row.setOnMouseClicked(
+              event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                  ShowOrderController showController = new ShowOrderController();
+                  showController.setOrder(row.getTreeItem().getValue());
+                  DialogUtil.complexDialog(
+                      dialogStackPane,
+                      "Order",
+                      "views/flower/ViewDetailOrder.fxml",
+                      false,
+                      event2 -> update(),
+                      showController);
+                }
+              });
+          return row;
+        });
 
     // Populate tables
     update();
-
-    // Hook up txtPrev to show status of selected order
-    tblOrderView.setOnMouseClicked(this::updateStatus);
-
-    // Setup status change stuff
-    txtNext.getItems().addAll("Order Sent", "Order Received", "Flowers Sent", "Flowers Delivered");
-    txtNext.getSelectionModel().select(0);
   }
 
   public void addFlower() {
     DialogUtil.complexDialog(
         dialogStackPane,
         "Add Flower",
-        "views/AddFlowerPopup.fxml",
+        "views/flower/AddFlowerPopup.fxml",
         false,
         event -> update(),
         new FlowerEditController());
   }
 
+  // Check if a flower is part of an order, and thus should not be deleted
   private boolean hasDependentOrder(Flower flower) {
     boolean constrained = false;
     try {
       for (Order order : flDatabase.orderOl()) {
-        if ((order.getFlowerType().equals(flower.getTypeFlower()))
-            && (order.getFlowerColor().equals(flower.getColor()))) {
+        if (order.getFlowerString().contains(flower.getFlowerID() + "/")) {
           constrained = true;
         }
       }
@@ -115,22 +122,19 @@ public class FlowerAdminController extends AbstractController {
           "Failed to verify that there were no outstanding orders for flower: "
               + flower.toString());
     }
-
     return constrained;
   }
 
   public void editFlower() {
     Flower flower = tblFlowerView.getSelected();
     if (flower != null) {
-      // Figure out whether any outstanding orders depend on this flower type, in which case we
-      // can't change the name / type
       boolean constrained = hasDependentOrder(flower);
 
       FlowerEditController controller = new FlowerEditController(flower, constrained);
       DialogUtil.complexDialog(
           dialogStackPane,
           "Edit Flower",
-          "views/AddFlowerPopup.fxml",
+          "views/flower/AddFlowerPopup.fxml",
           false,
           event -> update(),
           controller);
@@ -183,53 +187,6 @@ public class FlowerAdminController extends AbstractController {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(
           dialogStackPane, "Error", "Failed to update flower and/or order tables");
-    }
-  }
-
-  public void changeProgress() {
-    if (lastOrder != null) {
-      String s = txtNext.getSelectionModel().getSelectedItem();
-      super.flDatabase.changeOrderStatus(lastOrder.getOrderNumber(), s);
-      lastOrder = null;
-      update();
-    } else {
-      DialogUtil.simpleInfoDialog(
-          dialogStackPane,
-          "No Order Selected",
-          "Please select an order by clicking a row in the table");
-    }
-  }
-
-  public void updateStatus(MouseEvent mouseEvent) {
-    Order selected = tblOrderView.getSelected();
-    if (selected != null) {
-      // track the last selected order
-      lastOrder = selected;
-
-      // Update status text display
-      txtPrev.setText(lastOrder.getStatus());
-
-      // Update combobox selection (automagically select next status)
-      int i = statusStringToValue(lastOrder.getStatus()) + 1; // next status
-      if (i <= 3) txtNext.getSelectionModel().select(i);
-    } else {
-      txtPrev.setText("");
-      txtNext.getSelectionModel().select(0);
-    }
-  }
-
-  private int statusStringToValue(String status) {
-    switch (status) {
-      case "Order Sent":
-        return 0;
-      case "Order Received":
-        return 1;
-      case "Flowers Sent":
-        return 2;
-      case "Flowers Delivered":
-        return 3;
-      default:
-        return 999;
     }
   }
 }

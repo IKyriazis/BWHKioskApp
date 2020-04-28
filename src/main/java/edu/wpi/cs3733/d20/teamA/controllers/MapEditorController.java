@@ -4,8 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.NodeDialogController;
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -38,6 +37,10 @@ public class MapEditorController {
   @FXML private JFXButton floorDownButton;
   @FXML private JFXButton exportCSVButton;
   @FXML private JFXTextField floorField;
+
+  @FXML private JFXButton aStarButton;
+  @FXML private JFXButton breadthFirstButton;
+  @FXML private JFXButton depthFirstButton;
 
   @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
@@ -221,6 +224,16 @@ public class MapEditorController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    aStarButton.setOnAction(
+        event -> {
+          MapSettings.setPath(new Path(graph));
+        });
+    depthFirstButton.setOnAction(event -> MapSettings.setPath(new DepthFirst(graph)));
+    breadthFirstButton.setOnAction(
+        event -> {
+          MapSettings.setPath(new BreadthFirst(graph));
+        });
 
     Platform.runLater(() -> canvas.draw(floor));
   }
@@ -430,6 +443,9 @@ public class MapEditorController {
     canvas.draw(floor);
     floorField.setText(String.valueOf(floor));
   }
+
+  @FXML
+  public void setDepthFirst() {}
 
   private String getNodeInfo(Node node) {
     return "Node ID: "
