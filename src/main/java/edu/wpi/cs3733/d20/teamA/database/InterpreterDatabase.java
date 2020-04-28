@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class InterpreterDatabase extends Database {
-  private int requestNum = getSizeRequests() + 1;
+  private int requestNum;
 
   public InterpreterDatabase(Connection connection) {
     super(connection);
@@ -12,6 +12,8 @@ public class InterpreterDatabase extends Database {
     if (doesTableNotExist("INTERPRETERS") && doesTableNotExist("INTERPRETERREQUESTS")) {
       createTables();
     }
+
+    requestNum = getRandomNumber();
   }
 
   public boolean dropTables() {
@@ -88,19 +90,20 @@ public class InterpreterDatabase extends Database {
   }
 
   public int addRequest(String name, String language, String location, String status) {
+    requestNum = getRandomNumber();
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO InterpreterRequests (requestNumber, name, language, location, status) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, requestNum++);
+      pstmt.setInt(1, requestNum);
       pstmt.setString(2, name);
       pstmt.setString(3, language);
       pstmt.setString(4, location);
       pstmt.setString(5, status);
       pstmt.executeUpdate();
       pstmt.close();
-      return requestNum - 1;
+      return requestNum;
     } catch (SQLException e) {
       e.printStackTrace();
       return 0;

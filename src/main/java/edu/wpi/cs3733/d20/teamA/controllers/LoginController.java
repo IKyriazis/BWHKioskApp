@@ -41,7 +41,10 @@ public class LoginController extends AbstractController {
 
   @FXML
   public void initialize() {
+
     loginButton.getStyleClass().add("submitButton");
+
+    // Creates the table if it doesn't exit
     if (eDB.getSizeEmployees() == -1) {
       eDB.dropTables();
       eDB.createTables();
@@ -56,7 +59,7 @@ public class LoginController extends AbstractController {
     vSwitcherBox.addEntry(
         "Map Editor", new FontAwesomeIconView(FontAwesomeIcon.MAP_ALT), "views/MapEditor.fxml");
     vSwitcherBox.addEntry(
-        "Flowers",
+        "Flowers - William Engdahl",
         new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
         "views/flower/FlowerAdmin.fxml");
     vSwitcherBox.addEntry(
@@ -88,9 +91,13 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR),
         "views/InternalTransportAdmin.fxml");
     vSwitcherBox.addEntry(
-        "Interpreters",
+        "Interpreters - Dyllan Cole",
         new FontAwesomeIconView(FontAwesomeIcon.GLOBE),
         "views/InterpreterService.fxml");
+    vSwitcherBox.addEntry(
+        "Prescriptions - Yash Patel",
+        new MaterialIconView(MaterialIcon.LOCAL_PHARMACY),
+        "views/PrescriptionService.fxml");
     vSwitcherBox.addEntry(
         "Manage Accounts", new FontAwesomeIconView(FontAwesomeIcon.USER), "views/CreateAcct.fxml");
     vSwitcherBox.setTransitionMillis(500);

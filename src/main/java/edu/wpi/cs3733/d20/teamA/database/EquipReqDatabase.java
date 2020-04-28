@@ -10,7 +10,7 @@ public class EquipReqDatabase extends Database {
 
     super(connection);
 
-    if (doesTableNotExist("EquipReq")) {
+    if (doesTableNotExist("EQUIPREQ")) {
       createTables();
     }
   }
