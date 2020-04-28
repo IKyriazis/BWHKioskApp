@@ -183,6 +183,7 @@ public class LoginController extends AbstractController {
                   loginButton.setDisable(false);
                 });
           } else {
+            eDB.addLog(usernameBox.getText());
             Platform.runLater(
                 () -> {
                   // Chuck the login box way off screen
