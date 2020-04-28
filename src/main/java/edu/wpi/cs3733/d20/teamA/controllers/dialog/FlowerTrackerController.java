@@ -1,10 +1,9 @@
-package edu.wpi.cs3733.d20.teamA.controllers.flower;
+package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -42,10 +41,10 @@ public class FlowerTrackerController extends AbstractController implements IDial
       } else if (s.equals("Order Received")) {
         progressBar.setProgress(.35);
         orderStatusLabel.setText("Order Received");
-      } else if (s.equals("Flowers Sent")) {
+      } else if (s.equals("Flower Sent")) {
         progressBar.setProgress(.7);
         orderStatusLabel.setText("Flower Sent");
-      } else if (s.equals("Flowers Delivered")) {
+      } else if (s.equals("Flower Delivered")) {
         progressBar.setProgress(1);
         orderStatusLabel.setText("Flower Delivered");
       } else {
