@@ -118,6 +118,17 @@ public class BreadthFirst implements IStrategyPath {
     double lastAngle = 0.0;
     // For every node in the path
     for (int i = 0; i < pathNodes.size() - 1; i++) {
+      int floorStart = pathNodes.get(i).getFloor();
+      int floorEnd = pathNodes.get(i + 1).getFloor();
+      if (floorEnd > floorStart) {
+        directions.add(Direction.UP);
+        continue;
+      } else if (floorEnd < floorStart) {
+        directions.add(Direction.DOWN);
+        continue;
+      }
+
+      // Account for nodes between floors
       int currX = pathNodes.get(i).getX();
       int currY = pathNodes.get(i).getY();
       int nextX = pathNodes.get(i + 1).getX();
@@ -157,7 +168,7 @@ public class BreadthFirst implements IStrategyPath {
       } else if (angleDiff <= (-Math.PI / 4) || (angleDiff >= (3 * Math.PI / 2))) {
         directions.add(Direction.RIGHT);
       } else {
-        directions.add(Direction.UP);
+        directions.add(Direction.NEXT);
       }
 
       lastAngle = angle;
@@ -175,12 +186,22 @@ public class BreadthFirst implements IStrategyPath {
             new Label(
                 "Turn left at " + pathNodes.get(j).getLongName(),
                 new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_LEFT)));
+      } else if (directions.get(j) == Direction.UP) {
+        textPath.add(
+            new Label(
+                "Go up one floor at " + pathNodes.get(j).getLongName(),
+                new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+      } else if (directions.get(j) == Direction.DOWN) {
+        textPath.add(
+            new Label(
+                "Go down one floor at " + pathNodes.get(j).getLongName(),
+                new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_DOWN)));
       } else {
         // else if it's straight keep track of how many nodes it is straight for
         String end = "";
         int nextNotStraight = j;
         for (int k = j + 1; k < directions.size(); k++) {
-          if (directions.get(k) != Direction.UP) {
+          if (directions.get(k) != Direction.NEXT) {
             end = pathNodes.get(k).getLongName();
             nextNotStraight = k;
             break;
@@ -192,13 +213,13 @@ public class BreadthFirst implements IStrategyPath {
           textPath.add(
               new Label(
                   "Continue straight until destination",
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
           break;
         } else {
           textPath.add(
               new Label(
                   "Go straight until " + end,
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
         }
       }
     }
