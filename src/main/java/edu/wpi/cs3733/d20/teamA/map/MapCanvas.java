@@ -1,10 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
 import edu.wpi.cs3733.d20.teamA.graph.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -39,7 +36,7 @@ public class MapCanvas extends Canvas {
   private EventHandler<MouseEvent> dragHandler;
   private EventHandler<MouseEvent> dragEndHandler;
 
-  private ArrayList<Node> highlights;
+  private HashSet<Node> highlights;
   private Color highlightColor = Color.DEEPSKYBLUE;
   private Point2D highlightOffset;
 
@@ -122,7 +119,7 @@ public class MapCanvas extends Canvas {
     zoom.addListener(observable -> draw(lastDrawnFloor));
 
     // Create list of nodes to highlight
-    highlights = new ArrayList<>();
+    highlights = new HashSet<>();
   }
 
   // graphToCanvas() projects a point from graph coordinates onto canvas coordinates
@@ -440,7 +437,7 @@ public class MapCanvas extends Canvas {
   }
 
   public void setHighlights(ArrayList<Node> highlights) {
-    this.highlights = highlights;
+    this.highlights.addAll(highlights);
   }
 
   public void setHighlightColor(Color color) {
