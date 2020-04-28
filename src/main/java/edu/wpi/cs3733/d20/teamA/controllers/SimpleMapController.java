@@ -41,9 +41,14 @@ public class SimpleMapController {
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton qrCodeButton;
 
+  @FXML private JFXButton floorUpButton;
+  @FXML private JFXButton floorDownButton;
+  @FXML private JFXTextField floorField;
+
   private MapCanvas canvas;
   private Graph graph;
   private String lastDirs;
+  private int floor = 1;
 
   private ObservableList<Node> allNodeList;
 
@@ -83,6 +88,9 @@ public class SimpleMapController {
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
     qrCodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QRCODE));
 
+    floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
+    floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
+
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
@@ -98,7 +106,7 @@ public class SimpleMapController {
       allNodeList =
           FXCollections.observableArrayList(
               graph.getNodes().values().stream()
-                  .filter(node -> node.getFloor() == 1)
+                  .filter(node -> node.getType() != NodeType.HALL)
                   .collect(Collectors.toList()));
       allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
 
@@ -108,7 +116,7 @@ public class SimpleMapController {
             allNodeList.addAll(
                 FXCollections.observableArrayList(
                     graph.getNodes().values().stream()
-                        .filter(node -> node.getFloor() == 1)
+                        .filter(node -> node.getType() != NodeType.HALL)
                         .collect(Collectors.toList())));
             allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
             startingLocationBox.setItems(allNodeList);
@@ -137,6 +145,10 @@ public class SimpleMapController {
       alert.setContentText(e.toString());
       alert.show();
     }
+    if (!MapSettings.isSetup()) {
+      MapSettings.setup();
+    }
+    Platform.runLater(() -> canvas.draw(floor));
   }
 
   @FXML
@@ -158,19 +170,20 @@ public class SimpleMapController {
             .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
             .findFirst();
     if (start.isPresent() && end.isPresent()) {
-      /*ContextPath path = new ContextPath();
-      if(aStarButton is pressed) path.setPath(new Path(graph))
-      else if (depthFirstButton is pressed) path.setPath(new DepthFirst(graph))
-      else path.setPath(new BreadthFirst(graph))
-      */
-      Path path = new Path(graph);
+      ContextPath path = MapSettings.getPath();
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
-      canvas.draw(1);
+
+      if (start.get().getFloor() != floor) {
+        floor = Math.min(5, start.get().getFloor());
+        floorField.setText(String.valueOf(floor));
+      }
+
+      canvas.draw(floor);
 
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
-        ArrayList<Label> directions = path.textualDirections();
+        ArrayList<Label> directions = path.getPathFindingAlgo().textualDirections();
         directions.forEach(
             l -> {
               directionsList.getItems().add(l);
@@ -235,5 +248,21 @@ public class SimpleMapController {
       DialogUtil.simpleInfoDialog(
           dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
     }
+  }
+
+  @FXML
+  public void floorUp() {
+    floor = Math.min(5, floor + 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
+    canvas.draw(floor);
+  }
+
+  @FXML
+  public void floorDown() {
+    floor = Math.max(1, floor - 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
+    canvas.draw(floor);
   }
 }

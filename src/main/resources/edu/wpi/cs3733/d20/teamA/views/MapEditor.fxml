@@ -49,6 +49,9 @@
                   <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" />
                </children>
             </VBox>
+            <JFXButton fx:id="aStarButton" buttonType="RAISED" style="-fx-background-color: white;" text="A Star" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="93.0" />
+            <JFXButton fx:id="breadthFirstButton" buttonType="RAISED" style="-fx-background-color: white;" text="Breadth First" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="133.0" />
+            <JFXButton fx:id="depthFirstButton" buttonType="RAISED" style="-fx-background-color: white;" text="Depth First" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="173.0" />
          </children>
       </AnchorPane>
    </children>
