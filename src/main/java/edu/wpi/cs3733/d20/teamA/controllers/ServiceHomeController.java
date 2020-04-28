@@ -7,12 +7,11 @@ import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 public class ServiceHomeController {
   @FXML private Pane rootPane;
-  @FXML private AnchorPane switcherPane;
+  @FXML private Pane switcherPane;
   @FXML private Pane destPane;
 
   public void initialize() {
@@ -31,8 +30,6 @@ public class ServiceHomeController {
 
     // Add switcher box to anchor pane and constrain it
     switcherPane.getChildren().add(vSwitcherBox);
-    AnchorPane.setBottomAnchor(vSwitcherBox, 0.0);
-    AnchorPane.setTopAnchor(vSwitcherBox, 0.0);
 
     // Pass tab switch events through to current view
     rootPane.addEventFilter(

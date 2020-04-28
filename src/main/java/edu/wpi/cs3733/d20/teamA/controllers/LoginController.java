@@ -14,7 +14,6 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -99,8 +98,6 @@ public class LoginController extends AbstractController {
 
     // Add switcher box to anchor pane and constrain it
     switcherPane.getChildren().add(vSwitcherBox);
-    AnchorPane.setBottomAnchor(vSwitcherBox, 0.0);
-    AnchorPane.setTopAnchor(vSwitcherBox, 0.0);
 
     // Add drop shadow to login box.
     DropShadow dropShadow = new DropShadow();
