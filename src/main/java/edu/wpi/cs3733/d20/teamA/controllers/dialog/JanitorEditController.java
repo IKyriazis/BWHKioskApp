@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
@@ -28,6 +29,8 @@ public class JanitorEditController extends AbstractController implements IDialog
   @FXML private JFXComboBox comboboxPriority;
 
   @FXML private JFXButton doneButton;
+
+  @FXML private JFXTextField textboxEmployee;
 
   private JanitorService janitorService;
   private JFXDialog dialog;
@@ -96,11 +99,12 @@ public class JanitorEditController extends AbstractController implements IDialog
       String location = start.get().getNodeID();
       String priority = comboboxPriority.getValue().toString();
       String longName = comboboxLocation.getValue().toString();
+      String employee = textboxEmployee.getText();
 
       if (modify) {
         super.janitorDatabase.deleteRequest(janitorService.getIndex());
       }
-      super.janitorDatabase.addRequest(location, priority, "Unassigned", longName);
+      super.janitorDatabase.addRequest(location, priority, employee, longName);
 
       dialog.close();
     } catch (Exception exception) {

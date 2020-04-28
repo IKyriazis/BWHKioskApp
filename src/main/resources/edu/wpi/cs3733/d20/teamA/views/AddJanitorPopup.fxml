@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -23,6 +24,7 @@
         <JFXButton fx:id="doneButton" style="-fx-background-color: #78909C;" text="Done" GridPane.columnIndex="2" GridPane.rowIndex="2" />
       <JFXComboBox fx:id="comboboxLocation" prefWidth="150.0" promptText="Location" />
       <JFXComboBox fx:id="comboboxPriority" prefWidth="150.0" promptText="Priority" GridPane.columnIndex="2" />
+      <JFXTextField fx:id="textboxEmployee" labelFloat="true" promptText="Employee Name" text="Unassigned" GridPane.rowIndex="2" />
     </children>
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
