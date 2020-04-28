@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
@@ -11,8 +12,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class EmployeesDatabase extends Database {
-
   int employeeID;
+  private int numIterations = 16; // 2 ^ 16 = 65536 iterations
 
   public EmployeesDatabase(Connection connection) {
 
@@ -32,7 +33,7 @@ public class EmployeesDatabase extends Database {
    *
    * @return Success / Failure
    */
-  public boolean dropTables() {
+  public synchronized boolean dropTables() {
 
     // Drop the tables
     if (!(helperPrepared("ALTER TABLE EquipReq DROP CONSTRAINT FK_EID")
@@ -55,13 +56,13 @@ public class EmployeesDatabase extends Database {
    *
    * @return False if tables couldn't be created
    */
-  public boolean createTables() {
+  public synchronized boolean createTables() {
 
     // Create the graph tables
 
     boolean a =
         helperPrepared(
-            "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title Varchar(50), pageNum BIGINT, CONSTRAINT tenDigit CHECK (pageNum BETWEEN 1000000000 and 9999999999))");
+            "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(60) NOT NULL, title Varchar(50))");
     boolean b =
         helperPrepared(
             "CREATE TABLE EquipReq (username Varchar(25), timeOf TIMESTAMP, item Varchar(75) NOT NULL, qty INTEGER, location Varchar(10) NOT NULL, priority Varchar(7) NOT NULL, CONSTRAINT CK_Q CHECK (qty >= 0), CONSTRAINT FK_EID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT PK_ET PRIMARY KEY(username, timeOf), CONSTRAINT CHK_PRI CHECK (priority in ('High', 'Medium', 'Low')), CONSTRAINT FK_NLOC FOREIGN KEY (location) REFERENCES NODE(nodeID))");
@@ -76,13 +77,15 @@ public class EmployeesDatabase extends Database {
    * @param nameLast last name
    * @return returns true if the employee is added
    */
-  public boolean addEmployee(
+  public synchronized boolean addEmployee(
       int employeeID,
       String nameFirst,
       String nameLast,
       String username,
       String password,
       String title) {
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
     try {
       PreparedStatement pstmt =
@@ -93,10 +96,11 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
       pstmt.setString(4, username);
-      pstmt.setString(5, password);
+      pstmt.setString(5, storedPassword);
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
+      this.employeeID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -104,9 +108,33 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean addEmployee(
+  // returns true if the username isn't in the database
+  public synchronized boolean uNameExists(String uName) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, uName);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String uNameFromTable;
+      uNameFromTable = rset.getString("username");
+      pstmt.close();
+      return uName.equals(uNameFromTable);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public synchronized boolean addEmployeeNoChecks(
       String nameFirst, String nameLast, String username, String password, String title) {
     return addEmployee(getSizeEmployees() + 1, nameFirst, nameLast, username, password, title);
+  }
+
+  public synchronized boolean addEmployee(
+      String nameFirst, String nameLast, String username, String password, String title) {
+    return checkSecurePass(password)
+        && addEmployee(employeeID, nameFirst, nameLast, username, password, title);
   }
 
   /**
@@ -114,7 +142,7 @@ public class EmployeesDatabase extends Database {
    *
    * @return true if the Janitor was successfully deleted
    */
-  public boolean deleteEmployee(String username) {
+  public synchronized boolean deleteEmployee(String username) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From Employees Where username = ?");
@@ -129,7 +157,7 @@ public class EmployeesDatabase extends Database {
   }
 
   /** @return returns the size of the table */
-  public int getSizeEmployees() {
+  public synchronized int getSizeEmployees() {
     return getSize("Employees");
   }
 
@@ -137,7 +165,7 @@ public class EmployeesDatabase extends Database {
    * @param newTitle newTitle
    * @return true if the title is changed
    */
-  public boolean editTitle(String username, String newTitle) {
+  public synchronized boolean editTitle(String username, String newTitle) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -156,7 +184,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean editNameFirst(String username, String newFirst) {
+  public synchronized boolean editNameFirst(String username, String newFirst) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -175,7 +203,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean editNameLast(String username, String newLast) {
+  public synchronized boolean editNameLast(String username, String newLast) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -194,7 +222,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean logIn(String username, String enteredPass) {
+  public synchronized boolean logIn(String username, String enteredPass) {
     String pass = null;
     try {
       PreparedStatement pstmt =
@@ -207,15 +235,18 @@ public class EmployeesDatabase extends Database {
       }
       rset.close();
       pstmt.close();
-
-      return (pass != null) && pass.equals(enteredPass);
+      if (pass == null) {
+        return false;
+      }
+      BCrypt.Result result = BCrypt.verifyer().verify(enteredPass.toCharArray(), pass);
+      return result.verified;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
     }
   }
 
-  public String getName(int id) {
+  public synchronized String getName(int id) {
     String pass = null;
     try {
       PreparedStatement pstmt =
@@ -236,15 +267,16 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean changePassword(String username, String oldPass, String newPass) {
+  public synchronized boolean changePassword(String username, String oldPass, String newPass) {
 
     if (logIn(username, oldPass) && checkSecurePass(newPass)) {
+      String storedPass = BCrypt.withDefaults().hashToString(numIterations, newPass.toCharArray());
       try {
         PreparedStatement pstmt =
             getConnection()
                 .prepareStatement(
                     "UPDATE Employees SET password = '"
-                        + newPass
+                        + storedPass
                         + "' WHERE username = '"
                         + username
                         + "'");
@@ -264,11 +296,14 @@ public class EmployeesDatabase extends Database {
    * @param password password
    * @return true if the there is a scure pass
    */
-  public boolean checkSecurePass(String password) {
+  public synchronized boolean checkSecurePass(String password) {
     char ch;
     boolean capital = false;
     boolean lowercase = false;
     boolean number = false;
+    if (password.length() > 72) {
+      return false;
+    }
     for (int i = 0; i < password.length(); i++) {
       ch = password.charAt(i);
       if (Character.isDigit(ch)) {
@@ -289,7 +324,7 @@ public class EmployeesDatabase extends Database {
    *
    * @return an observable list containing all employees in the table
    */
-  public ObservableList<Employee> employeeOl() {
+  public synchronized ObservableList<Employee> employeeOl() {
     ObservableList<Employee> eList = FXCollections.observableArrayList();
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
@@ -317,11 +352,11 @@ public class EmployeesDatabase extends Database {
   }
 
   /** @return true if all all employee are removed */
-  public boolean removeAllEmployees() {
+  public synchronized boolean removeAllEmployees() {
     return helperPrepared("DELETE From Employees");
   }
 
-  public void readEmployeeCSV() {
+  public synchronized void readEmployeeCSV() {
     try {
       InputStream stream =
           getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Employees.csv");
