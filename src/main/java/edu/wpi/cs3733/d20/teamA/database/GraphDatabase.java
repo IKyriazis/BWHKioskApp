@@ -22,15 +22,17 @@ public class GraphDatabase extends Database {
    */
   public boolean dropTables() {
 
+    boolean a = false;
+    boolean b = false;
     // if the helper returns false this method should too
     // drop the constraints first
-    if (!(helperPrepared("ALTER TABLE Edge DROP CONSTRAINT FK_SN")
-        && helperPrepared("ALTER TABLE Edge DROP CONSTRAINT FK_EN"))) {
-
-      return false;
+    if (!doesTableNotExist("EDGE")) {
+      a = helperPrepared("DROP TABLE Edge");
     }
-    // Drop the tables
-    return helperPrepared("DROP TABLE Edge") && helperPrepared("DROP TABLE Node");
+    if (!doesTableNotExist("NODE")) {
+      b = helperPrepared("DROP TABLE Node");
+    }
+    return a && b;
   }
 
   /**
@@ -40,21 +42,25 @@ public class GraphDatabase extends Database {
    */
   public boolean createTables() {
 
+    boolean a = false;
+    boolean b = false;
     // Create the graph tables
-    boolean b =
-        helperPrepared(
-            "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
-                + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
-                + "nodeType Varchar(4) NOT NULL, longName Varchar(200) NOT NULL, shortName Varchar(25), "
-                + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
-                + "CONSTRAINT CHK_Coords CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
-
-    boolean a =
-        helperPrepared(
-            "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, "
-                + "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), "
-                + "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
-
+    if (doesTableNotExist("NODE")) {
+      b =
+          helperPrepared(
+              "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
+                  + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
+                  + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(25), "
+                  + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
+                  + "CONSTRAINT CHK_Coords CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
+    }
+    if (doesTableNotExist("EDGE")) {
+      a =
+          helperPrepared(
+              "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, "
+                  + "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), "
+                  + "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
+    }
     return a && b;
   }
 
@@ -290,7 +296,7 @@ public class GraphDatabase extends Database {
    * @param col - The name of the column with the int
    * @return The int
    */
-  public int helperGetInt(String nodeID, String col) {
+  public int helperGetIntG(String nodeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
@@ -314,7 +320,7 @@ public class GraphDatabase extends Database {
    * @param col - The name of the column with the String
    * @return The String
    */
-  public String helperGetString(String nodeID, String col) {
+  public String helperGetStringG(String nodeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
@@ -338,7 +344,7 @@ public class GraphDatabase extends Database {
    * @param col - The column name with the String
    * @return The String
    */
-  public String helperGetStringEdge(String edgeID, String col) {
+  public String helperGetStringEdgeG(String edgeID, String col) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Edge WHERE nodeID = ?");
@@ -356,43 +362,43 @@ public class GraphDatabase extends Database {
   }
 
   public int getX(String nodeID) {
-    return helperGetInt(nodeID, "xcoord");
+    return helperGetIntG(nodeID, "xcoord");
   }
 
   public int getY(String nodeID) {
-    return helperGetInt(nodeID, "ycoord");
+    return helperGetIntG(nodeID, "ycoord");
   }
 
   public int getFloor(String nodeID) {
-    return helperGetInt(nodeID, "floor");
+    return helperGetIntG(nodeID, "floor");
   }
 
   public String getBuilding(String nodeID) {
-    return helperGetString(nodeID, "building");
+    return helperGetStringG(nodeID, "building");
   }
 
   public String getNodeType(String nodeID) {
-    return helperGetString(nodeID, "nodeType");
+    return helperGetStringG(nodeID, "nodeType");
   }
 
   public String getLongName(String nodeID) {
-    return helperGetString(nodeID, "longName");
+    return helperGetStringG(nodeID, "longName");
   }
 
   public String getShortName(String nodeID) {
-    return helperGetString(nodeID, "shortName");
+    return helperGetStringG(nodeID, "shortName");
   }
 
   public String getTeamAssigned(String nodeID) {
-    return helperGetString(nodeID, "teamAssigned");
+    return helperGetStringG(nodeID, "teamAssigned");
   }
 
   public String getStartNode(String edgeID) {
-    return helperGetStringEdge(edgeID, "startNode");
+    return helperGetStringEdgeG(edgeID, "startNode");
   }
 
   public String getEndNode(String edgeID) {
-    return helperGetStringEdge(edgeID, "endNode");
+    return helperGetStringEdgeG(edgeID, "endNode");
   }
 
   public boolean setX(String nodeID, int i) {

@@ -37,8 +37,8 @@
                         <JFXTextField fx:id="textAnn" labelFloat="true" promptText="Announcement Text" GridPane.valignment="TOP" />
                         <VBox alignment="CENTER" spacing="25.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                            <children>
-                              <JFXButton fx:id="addButton" buttonType="RAISED" onAction="#addAnn" prefWidth="150.0" style="-fx-background-color: #91A5D1;" text="Add Announcement" />
-                              <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteAnn" prefWidth="150.0" style="-fx-background-color: #91A5D1;" text="Delete Announcement" />
+                              <JFXButton fx:id="addButton" buttonType="RAISED" onAction="#addAnn" prefWidth="150.0" text="Add Announcement" />
+                              <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteAnn" prefWidth="150.0" text="Delete Announcement" />
                            </children>
                         </VBox>
                      </children>

@@ -35,9 +35,9 @@
                   </GridPane>
                   <VBox alignment="CENTER" prefHeight="107.0" prefWidth="575.0" spacing="25.0" GridPane.rowIndex="2">
                      <children>
-                        <JFXButton fx:id="addPatientButton" buttonType="RAISED" onAction="#addPatient" style="-fx-background-color: white;" text="Add Patient Info" />
-                        <JFXButton fx:id="editPatientButton" buttonType="RAISED" onAction="#editPatient" style="-fx-background-color: white;" text="Edit Patient Info" />
-                        <JFXButton fx:id="deletePatientButton" buttonType="RAISED" onAction="#deletePatient" style="-fx-background-color: white;" text="Delete Patient Info" />
+                        <JFXButton fx:id="addPatientButton" buttonType="RAISED" onAction="#addPatient" text="Add Patient Info" />
+                        <JFXButton fx:id="editPatientButton" buttonType="RAISED" onAction="#editPatient" text="Edit Patient Info" />
+                        <JFXButton fx:id="deletePatientButton" buttonType="RAISED" onAction="#deletePatient" text="Delete Patient Info" />
                      </children>
                      <GridPane.margin>
                         <Insets />
