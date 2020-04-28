@@ -130,6 +130,7 @@ public class TestEmployeeDatabase {
     eDB.addLog("jay");
     Assertions.assertEquals(1, eDB.getSizeLog());
     eDB.removeAllLogs();
+    DB.removeAll();
   }
 
   @Test
@@ -147,6 +148,7 @@ public class TestEmployeeDatabase {
     boolean a = eDB.isOnline("jay");
     Assertions.assertFalse(a);
     eDB.removeAllLogs();
+    DB.removeAll();
   }
 
   @Test
