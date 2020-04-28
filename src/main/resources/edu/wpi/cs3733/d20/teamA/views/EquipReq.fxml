@@ -35,7 +35,7 @@
                         <Insets bottom="5.0" left="5.0" right="5.0" />
                      </GridPane.margin>
                   </GridPane>
-                  <GridPane alignment="CENTER" onMouseClicked="#disableBttns" prefWidth="600.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                  <GridPane alignment="CENTER" onMouseClicked="#disableBttns" prefWidth="600.0" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -46,16 +46,16 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXComboBox fx:id="priCombo" labelFloat="true" onAction="#checkSubmittableCombo" prefWidth="100.0" promptText="Priority" GridPane.halignment="CENTER" />
-                        <JFXButton fx:id="addReqbttn" buttonType="RAISED" disable="true" onAction="#addReq" onMouseClicked="#disableBttns" prefWidth="100.0" style="-fx-background-color: #81C784;" text="Add Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <JFXButton fx:id="delReqbttn" buttonType="RAISED" disable="true" onAction="#delReq" onMouseClicked="#disableBttns" prefWidth="100.0" style="-fx-background-color: #e57373;" text="Finish Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                        <JFXComboBox fx:id="priCombo" labelFloat="true" onAction="#checkSubmittableCombo" prefWidth="150.0" promptText="Priority" GridPane.halignment="CENTER" />
+                        <JFXButton fx:id="addReqbttn" buttonType="RAISED" disable="true" onAction="#addReq" onMouseClicked="#disableBttns" prefWidth="150.0" style="-fx-background-color: #81C784;" text="Add Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <JFXButton fx:id="delReqbttn" buttonType="RAISED" disable="true" onAction="#delReq" onMouseClicked="#disableBttns" prefWidth="150.0" style="-fx-background-color: #e57373;" text="Finish Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                            <effect>
                               <SepiaTone />
                            </effect>
                         </JFXButton>
-                        <JFXComboBox fx:id="locCombo" labelFloat="true" onAction="#checkSubmittableCombo" prefWidth="100.0" promptText="Location" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                        <JFXTextField fx:id="itemField" alignment="CENTER" labelFloat="true" maxWidth="100.0" onKeyTyped="#checkSubmittableField" prefWidth="100.0" promptText="Item" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                        <JFXTextField fx:id="qtyField" alignment="CENTER" labelFloat="true" maxWidth="100.0" onKeyTyped="#checkSubmittableField" prefWidth="100.0" promptText="Quantity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <JFXComboBox fx:id="locCombo" labelFloat="true" onAction="#checkSubmittableCombo" prefWidth="150.0" promptText="Location" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <JFXTextField fx:id="itemField" alignment="CENTER" labelFloat="true" maxWidth="150.0" onKeyTyped="#checkSubmittableField" prefWidth="150.0" promptText="Item" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <JFXTextField fx:id="qtyField" alignment="CENTER" labelFloat="true" maxWidth="150.0" onKeyTyped="#checkSubmittableField" prefWidth="150.0" promptText="Quantity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
