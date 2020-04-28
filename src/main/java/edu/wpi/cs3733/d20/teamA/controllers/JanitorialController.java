@@ -16,10 +16,8 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
@@ -79,11 +77,7 @@ public class JanitorialController extends AbstractController {
     btnChangeStatus.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
 
     tblServiceView = new SimpleTableView<>(new JanitorService("", "", "", "", 0, ""), 80.0);
-    tblServiceView.setOnMouseClicked(
-        new EventHandler<MouseEvent>() {
-          @Override
-          public void handle(MouseEvent event) {}
-        });
+
     gridTableView.getChildren().add(tblServiceView);
 
     refreshActiveRequests();
