@@ -13,19 +13,17 @@ import javafx.collections.ObservableList;
 
 public class EmployeesDatabase extends Database {
   int employeeID;
-  private int numIterations = 16; // 2 ^ 16 = 65536 iterations
+  private final int numIterations = 14; // 2 ^ 16 = 16384 iterations
 
   public EmployeesDatabase(Connection connection) {
 
     super(connection);
 
-    if (doesTableNotExist("EMPLOYEES")
-        && doesTableNotExist("EquipReq")
-        && doesTableNotExist("LoggedIn")) {
+    if (doesTableNotExist("EMPLOYEES") && doesTableNotExist("LoggedIn")) {
       createTables();
     }
 
-    employeeID = getSizeEmployees() + 1;
+    employeeID = getRandomNumber();
   }
 
   /**
@@ -36,15 +34,12 @@ public class EmployeesDatabase extends Database {
   public synchronized boolean dropTables() {
 
     // Drop the tables
-    if (!(helperPrepared("ALTER TABLE EquipReq DROP CONSTRAINT FK_EID")
-        && helperPrepared("ALTER TABLE LoggedIn DROP CONSTRAINT FK_USE"))) {
+    if (!(helperPrepared("ALTER TABLE LoggedIn DROP CONSTRAINT FK_USE"))) {
 
       return false;
     }
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE Employees")
-        && helperPrepared("DROP TABLE EquipReq")
-        && helperPrepared("DROP TABLE LoggedIn"))) {
+    if (!(helperPrepared("DROP TABLE Employees") && helperPrepared("DROP TABLE LoggedIn"))) {
       return false;
     }
 
@@ -63,13 +58,10 @@ public class EmployeesDatabase extends Database {
     boolean a =
         helperPrepared(
             "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(60) NOT NULL, title Varchar(50))");
-    boolean b =
-        helperPrepared(
-            "CREATE TABLE EquipReq (username Varchar(25), timeOf TIMESTAMP, item Varchar(75) NOT NULL, qty INTEGER, location Varchar(10) NOT NULL, priority Varchar(7) NOT NULL, CONSTRAINT CK_Q CHECK (qty >= 0), CONSTRAINT FK_EID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT PK_ET PRIMARY KEY(username, timeOf), CONSTRAINT CHK_PRI CHECK (priority in ('High', 'Medium', 'Low')), CONSTRAINT FK_NLOC FOREIGN KEY (location) REFERENCES NODE(nodeID))");
     boolean c =
         helperPrepared(
             "CREATE TABLE LoggedIn (username Varchar(25), timeLogged TIMESTAMP, flag BOOLEAN, CONSTRAINT FK_USE FOREIGN KEY (username) REFERENCES Employees (username), CONSTRAINT PK_UST PRIMARY KEY (username, timeLogged))");
-    return a && b && c;
+    return a && c;
   }
 
   /**
@@ -128,11 +120,12 @@ public class EmployeesDatabase extends Database {
 
   public synchronized boolean addEmployeeNoChecks(
       String nameFirst, String nameLast, String username, String password, String title) {
-    return addEmployee(getSizeEmployees() + 1, nameFirst, nameLast, username, password, title);
+    return addEmployee(getRandomNumber(), nameFirst, nameLast, username, password, title);
   }
 
   public synchronized boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
+    employeeID = getRandomNumber();
     return checkSecurePass(password)
         && addEmployee(employeeID, nameFirst, nameLast, username, password, title);
   }
@@ -378,72 +371,6 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public String getLoggedIn() {
-    String username = null;
-    try {
-      PreparedStatement pstm =
-          getConnection().prepareStatement("Select username From LoggedIn Where flag = true");
-      ResultSet rset = pstm.executeQuery();
-      while (rset.next()) {
-        username = rset.getString("username");
-      }
-      rset.close();
-      pstm.close();
-      if (username != null) {
-        return username;
-      }
-      return null;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  public boolean addReq(String item, int qty, String location, String priority) {
-    String username = getLoggedIn();
-    Timestamp timeOf = new Timestamp(System.currentTimeMillis());
-    if (username == null) {
-      return false;
-    }
-    try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "INSERT INTO EquipReq (username, timeOf, item, qty, location, priority) VALUES (?, ?, ?, ?, ?, ?)");
-      pstmt.setString(1, username);
-      pstmt.setTimestamp(2, timeOf);
-      pstmt.setString(3, item);
-      pstmt.setInt(4, qty);
-      pstmt.setString(5, location);
-      pstmt.setString(6, priority);
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
-
-  public boolean deleteReq(String username, String timeOf) {
-    try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "DELETE From EquipReq Where username = '"
-                      + username
-                      + "' AND timeOf = '"
-                      + timeOf
-                      + "'");
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
-
   public boolean addLog(String username) {
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
 
@@ -482,52 +409,12 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public int getSizeReq() {
-    return getSize("EquipReq");
-  }
-
   public int getSizeLog() {
     return getSize("LoggedIn");
   }
 
-  public boolean removeAllReqs() {
-    return helperPrepared("DELETE From EquipReq");
-  }
-
   public boolean removeAllLogs() {
     return helperPrepared("DELETE From LoggedIn");
-  }
-
-  public String getNamefromUser(String username) {
-    String last;
-    try {
-      Statement priceStmt = getConnection().createStatement();
-      ResultSet rst =
-          priceStmt.executeQuery("SELECT * FROM Employees WHERE username = '" + username + "'");
-      ;
-      rst.next();
-      last = rst.getString("nameLast");
-      return last;
-    } catch (SQLException ex) {
-      ex.printStackTrace();
-    }
-    return null;
-  }
-
-  public String getTime(String username) {
-    Timestamp timeOf;
-    try {
-      Statement priceStmt = getConnection().createStatement();
-      ResultSet rst =
-          priceStmt.executeQuery("SELECT * FROM EquipReq WHERE username = '" + username + "'");
-      ;
-      rst.next();
-      timeOf = rst.getTimestamp("timeOf");
-      return timeOf.toString();
-    } catch (SQLException ex) {
-      ex.printStackTrace();
-    }
-    return null;
   }
 
   public boolean isOnline(String username) {
@@ -543,34 +430,5 @@ public class EmployeesDatabase extends Database {
       ex.printStackTrace();
     }
     return false;
-  }
-
-  public ObservableList<EquipRequest> ReqOl() {
-    ObservableList<EquipRequest> rList = FXCollections.observableArrayList();
-    try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EquipReq");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        String name = getNamefromUser(rset.getString("username"));
-        Timestamp timeOf = rset.getTimestamp("timeOF");
-        String item = rset.getString("item");
-        int qty = rset.getInt("qty");
-        String location = rset.getString("location");
-        String priority = rset.getString("priority");
-        String username = rset.getString("username");
-
-        EquipRequest node = new EquipRequest(name, item, qty, location, priority, timeOf, username);
-
-        rList.add(node);
-      }
-      rset.close();
-      pstmt.close();
-      conn.close();
-      return rList;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return rList;
-    }
   }
 }

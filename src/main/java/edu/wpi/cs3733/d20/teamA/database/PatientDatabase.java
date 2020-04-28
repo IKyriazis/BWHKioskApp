@@ -15,7 +15,7 @@ public class PatientDatabase extends Database {
       createTables();
     }
 
-    patientID = getSizePatients() + 1;
+    patientID = getRandomNumber();
   }
 
   /**
@@ -97,7 +97,7 @@ public class PatientDatabase extends Database {
     }
   }
 
-  public boolean addPatient(
+  public int addPatient(
       int patientID,
       String firstName,
       String lastName,
@@ -122,11 +122,10 @@ public class PatientDatabase extends Database {
       pstmt.executeUpdate();
       pstmt.close();
 
-      patientID = num + 1;
-      return true;
+      return patientID;
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
 
@@ -152,9 +151,9 @@ public class PatientDatabase extends Database {
     }
   }
 
-  public boolean addPatient(
+  public int addPatient(
       String firstName, String lastName, String healthInsurance, String dateOfBirth) {
-    this.patientID++;
+    patientID = getRandomNumber();
 
     return addPatient(this.patientID, firstName, lastName, healthInsurance, dateOfBirth);
   }

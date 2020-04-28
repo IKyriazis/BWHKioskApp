@@ -51,18 +51,17 @@ public class TestPatientDatabase {
   @Test
   public void testAddPatient() throws SQLException {
     pDB.removeAllPatients();
-    boolean a = pDB.addPatient(0, "Tyler", "Looney", "Health Insurance", "01/01/2000");
-    Assertions.assertTrue(a);
-    boolean d = pDB.addPatient(1, "Yash", "Patel", "Yash Health", "01/02/2000");
-    Assertions.assertTrue(d);
-    boolean b = pDB.addPatient(0, "Eva", "Labbe", "Eva Health", "01/03/2000");
-    System.out.println(pDB.getSizePatients());
-    Assertions.assertTrue(b); // Should handle the duplicate key and assign a new number
-    boolean e = pDB.addPatient(2, "Brennan", "Aubuchon", "Brennan Insurance", "01/04/2000");
-    Assertions.assertTrue(e);
-    boolean c = pDB.addPatient(-1, "Lily", "Green", "Lily Insurance", "01/04/2000");
-    Assertions.assertFalse(c);
-    Assertions.assertEquals(4, pDB.getSizePatients());
+    int a = pDB.addPatient(0, "Tyler", "Looney", "Health Insurance", "01/01/2000");
+    Assertions.assertEquals(0, a);
+    int d = pDB.addPatient(1, "Yash", "Patel", "Yash Health", "01/02/2000");
+    Assertions.assertEquals(1, d);
+    int b = pDB.addPatient(0, "Eva", "Labbe", "Eva Health", "01/03/2000");
+    Assertions.assertEquals(-1, b);
+    int e = pDB.addPatient(2, "Brennan", "Aubuchon", "Brennan Insurance", "01/04/2000");
+    Assertions.assertEquals(2, e);
+    int c = pDB.addPatient(-1, "Lily", "Green", "Lily Insurance", "01/04/2000");
+    Assertions.assertEquals(-1, c);
+    Assertions.assertEquals(3, pDB.getSizePatients());
     pDB.removeAllPatients();
   }
 

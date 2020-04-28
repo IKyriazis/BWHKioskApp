@@ -18,19 +18,19 @@ public class TestInternalTransportDatabase {
   InternalTransportDatabase itDB;
 
   @BeforeEach
-  public void init() throws SQLException {
-    conn = DriverManager.getConnection(jdbcUrl);
-    gDB = new GraphDatabase(conn);
-    itDB = new InternalTransportDatabase(conn);
-    gDB.createTables();
-    itDB.createTables();
+  public void init() {
+    try {
+      conn = DriverManager.getConnection(jdbcUrl);
+      gDB = new GraphDatabase(conn);
+      itDB = new InternalTransportDatabase(conn);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
 
   @AfterEach
   public void teardown() {
     try {
-      gDB.dropTables();
-      itDB.dropTables();
       conn.close();
       DriverManager.getConnection(closeUrl);
     } catch (SQLException ignored) {
@@ -38,7 +38,7 @@ public class TestInternalTransportDatabase {
   }
 
   @Test
-  public void testTables() throws SQLException {
+  public void testTables() {
     itDB.dropTables();
     boolean dropTables = itDB.dropTables();
     Assertions.assertFalse(dropTables);
@@ -50,14 +50,15 @@ public class TestInternalTransportDatabase {
   }
 
   @Test
-  public void testAddRequest() throws SQLException {
+  public void testAddRequest() {
 
     gDB.removeAllNodes();
     // need nodeID "biscuit" in node table so addrequest works
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     itDB.removeAll();
     int a = itDB.addRequest("biscuit", "biscuit");
-    Assertions.assertEquals(1, a);
+    boolean aCorrect = (a > 100000000);
+    Assertions.assertTrue(aCorrect);
     Assertions.assertEquals(1, itDB.getRequestSize());
     int b = itDB.addRequest("biscuit", "Extra Large");
     Assertions.assertEquals(-1, b);
@@ -66,8 +67,9 @@ public class TestInternalTransportDatabase {
     Assertions.assertEquals(-1, c);
     Assertions.assertEquals(1, itDB.getRequestSize());
     int d = itDB.addRequest("biscuit", "biscuit");
+    boolean dCorrect = (d > 100000000);
     itDB.printTable();
-    Assertions.assertEquals(2, d);
+    Assertions.assertTrue(dCorrect);
     Assertions.assertEquals(2, itDB.getRequestSize());
 
     itDB.removeAll();
@@ -75,15 +77,14 @@ public class TestInternalTransportDatabase {
   }
 
   @Test
-  public void testUpdateRequest() throws SQLException {
+  public void testUpdateRequest() {
     gDB.removeAllNodes();
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-
     itDB.removeAll();
-    itDB.addRequest("biscuit", "biscuit");
-    boolean a = itDB.updateRequest(1, "Harry", "Dispatched");
+    int id1 = itDB.addRequest("biscuit", "biscuit");
+    boolean a = itDB.updateRequest(id1, "Harry", "Dispatched");
     Assertions.assertTrue(a);
-    boolean b = itDB.updateRequest(1, "Harry", "Ert");
+    boolean b = itDB.updateRequest(id1, "Harry", "Ert");
     Assertions.assertFalse(b);
 
     itDB.removeAll();
@@ -94,17 +95,16 @@ public class TestInternalTransportDatabase {
   public void testGetRequestStatus() {
     gDB.removeAllNodes();
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-
     itDB.removeAll();
-    itDB.addRequest("biscuit", "biscuit");
-    boolean a = itDB.updateRequest(1, "Harry", "Dispatched");
-    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(1));
+    int id1 = itDB.addRequest("biscuit", "biscuit");
+    boolean a = itDB.updateRequest(id1, "Harry", "Dispatched");
+    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(id1));
     Assertions.assertTrue(a);
-    boolean b = itDB.updateRequest(1, "Harry", "Ert");
-    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(1));
+    boolean b = itDB.updateRequest(id1, "Harry", "Ert");
+    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(id1));
     Assertions.assertFalse(b);
-    boolean c = itDB.updateRequest(1, "Harry", "Done");
-    Assertions.assertEquals("Done", itDB.getRequestStatus(1));
+    boolean c = itDB.updateRequest(id1, "Harry", "Done");
+    Assertions.assertEquals("Done", itDB.getRequestStatus(id1));
 
     itDB.removeAll();
     gDB.removeAllNodes();
@@ -116,15 +116,15 @@ public class TestInternalTransportDatabase {
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
 
     itDB.removeAll();
-    itDB.addRequest("biscuit", "biscuit");
-    boolean a = itDB.updateRequest(1, "Harry", "Dispatched");
-    Assertions.assertEquals("Harry", itDB.getName(1));
+    int id1 = itDB.addRequest("biscuit", "biscuit");
+    boolean a = itDB.updateRequest(id1, "Harry", "Dispatched");
+    Assertions.assertEquals("Harry", itDB.getName(id1));
     Assertions.assertTrue(a);
-    boolean b = itDB.updateRequest(1, "Harry", "Ert");
-    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(1));
+    boolean b = itDB.updateRequest(id1, "Harry", "Ert");
+    Assertions.assertEquals("Dispatched", itDB.getRequestStatus(id1));
     Assertions.assertFalse(b);
-    boolean c = itDB.updateRequest(1, "Ava", "Done");
-    Assertions.assertEquals("Ava", itDB.getName(1));
+    boolean c = itDB.updateRequest(id1, "Ava", "Done");
+    Assertions.assertEquals("Ava", itDB.getName(id1));
 
     itDB.removeAll();
     gDB.removeAllNodes();
