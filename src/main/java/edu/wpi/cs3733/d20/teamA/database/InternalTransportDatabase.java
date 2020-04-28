@@ -14,14 +14,16 @@ import javafx.collections.ObservableList;
 
 public class InternalTransportDatabase extends Database {
 
-  private int requestCount = getRequestSize();
+  private int requestCount;
 
   public InternalTransportDatabase(Connection connection) {
     super(connection);
 
-    //    if (doesTableNotExist("InternalTransportRequest")) {
-    //      createTables();
-    //    }
+    if (doesTableNotExist("INTERNALTRANSPORTREQUEST")) {
+      createTables();
+    }
+
+    requestCount = getRequestSize() + 1;
   }
 
   /**
