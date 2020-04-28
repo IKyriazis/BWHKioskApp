@@ -46,8 +46,6 @@ public class LaundryController extends AbstractController {
 
   public void initialize() {
 
-    lDB.addDummy();
-
     serviceLabel.setGraphic(new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE));
     requestTableLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LIST));
 
