@@ -6,7 +6,6 @@ import edu.wpi.cs3733.d20.teamA.database.Prescription;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;

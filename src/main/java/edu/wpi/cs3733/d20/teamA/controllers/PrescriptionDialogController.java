@@ -127,16 +127,12 @@ public class PrescriptionDialogController extends AbstractController implements 
   }
 
   public void disableDoneText() {
-    btnDone.setDisable(true);
-  }
-
-  public void checkForDone() {
-    if (txtPatientName.getText().isEmpty()
+    if (!(txtPatientName.getText().isEmpty()
         || txtDoctorName.getText().isEmpty()
         || txtPrescription.getText().isEmpty()
         || txtPharmacy.getText().isEmpty()
         || txtDosage.getText().isEmpty()
-        || txtNumberOfRefills.getText().isEmpty()) {
+        || txtNumberOfRefills.getText().isEmpty())) {
       btnDone.setDisable(false);
     }
   }
