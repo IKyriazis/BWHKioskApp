@@ -117,6 +117,6 @@ public class Order implements ITableable<Order> {
     JFXTreeTableColumn<Order, String> col7 = new JFXTreeTableColumn<>("Location");
     col7.setCellValueFactory(param -> param.getValue().getValue().locationProperty());
 
-    return new ArrayList<>(List.of(col1, col2, col5, col6, col7));
+    return new ArrayList(List.of(col1, col2, col5, col6, col7));
   }
 }

@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
+import com.jfoenix.controls.cells.editors.IntegerTextFieldEditorBuilder;
+import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
@@ -15,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
-import javafx.scene.control.cell.TextFieldTreeTableCell;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
@@ -67,33 +68,30 @@ public class FlowerServiceController extends AbstractController {
     JFXTreeTableColumn<Flower, Double> column4 = new JFXTreeTableColumn<>("Unit Price");
     column4.setCellValueFactory(param -> param.getValue().getValue().pricePerProperty().asObject());
 
-    JFXTreeTableColumn<Flower, String> column5 = new JFXTreeTableColumn<>("Number");
-    column5.setCellValueFactory(param -> param.getValue().getValue().numProperty());
+    JFXTreeTableColumn<Flower, Integer> column5 = new JFXTreeTableColumn<>("Number");
 
-    column5.setCellFactory(TextFieldTreeTableCell.forTreeTableColumn());
+    column5.setCellFactory(
+        (TreeTableColumn<Flower, Integer> param) ->
+            new GenericEditableTreeTableCell<Flower, Integer>(new IntegerTextFieldEditorBuilder()));
+
     column5.setOnEditCommit(
-        new EventHandler<TreeTableColumn.CellEditEvent<Flower, String>>() {
+        new EventHandler<TreeTableColumn.CellEditEvent<Flower, Integer>>() {
           @Override
-          public void handle(TreeTableColumn.CellEditEvent<Flower, String> t) {
+          public void handle(TreeTableColumn.CellEditEvent<Flower, Integer> t) {
             Flower f =
                 ((Flower)
                     t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue());
-            int i = 0;
-            try {
-              i = Integer.parseInt(t.getNewValue());
-              if (i <= f.getQty()) {
-                f.setQuantitySelected(Integer.parseInt(t.getNewValue()));
-                updateTotal();
-              } else {
-                DialogUtil.simpleErrorDialog(
-                    dialogPane,
-                    "Invalid number",
-                    "Please enter a number no larger than the number of flowers in stock");
-              }
-            } catch (NumberFormatException e) {
+            int i = t.getNewValue();
+            if (i <= f.getQty() && i >= 0) {
+              f.setQuantitySelected(t.getNewValue());
+            } else {
+              f.setQuantitySelected(t.getOldValue());
               DialogUtil.simpleErrorDialog(
-                  dialogPane, "Invalid number", "Please enter a numeric value");
+                  dialogPane,
+                  "Invalid number",
+                  "Please enter a number between 0 and the number of flowers in stock");
             }
+            updateTotal();
           }
         });
 
@@ -161,15 +159,20 @@ public class FlowerServiceController extends AbstractController {
   @FXML
   public void placeOrder() {
     List<Flower> myList = getOrderList();
-    FlowerOrderController cont = new FlowerOrderController();
-    cont.setList(myList);
-    DialogUtil.complexDialog(
-        dialogPane,
-        "Place Order",
-        "views/flower/FlowerOrderDialog.fxml",
-        false,
-        event -> updateTable(),
-        cont);
+    if (myList.size() != 0) {
+      FlowerOrderController cont = new FlowerOrderController();
+      cont.setList(myList);
+      DialogUtil.complexDialog(
+          dialogPane,
+          "Place Order",
+          "views/flower/FlowerOrderDialog.fxml",
+          false,
+          event -> updateTable(),
+          cont);
+    } else {
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "Cannot add order", "Please select flowers before placing your order");
+    }
   }
   // Generate a list of flowers to pass to the order controller
   private List<Flower> getOrderList() {
