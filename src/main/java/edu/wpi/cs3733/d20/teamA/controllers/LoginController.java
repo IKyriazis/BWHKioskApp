@@ -67,6 +67,10 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
     vSwitcherBox.addEntry(
+        "Equipment Request Eva L",
+        new FontAwesomeIconView(FontAwesomeIcon.STETHOSCOPE),
+        "views/EquipReq.fxml");
+    vSwitcherBox.addEntry(
         "Laundry - Brennan",
         new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE),
         "views/LaundryGUI.fxml");
@@ -86,6 +90,7 @@ public class LoginController extends AbstractController {
         "Interpreters",
         new FontAwesomeIconView(FontAwesomeIcon.GLOBE),
         "views/InterpreterService.fxml");
+
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
@@ -140,7 +145,7 @@ public class LoginController extends AbstractController {
     } else {
 
     }
-
+    eDB.addLog(usernameBox.getText());
     // Chuck the login box way off screen
     transitioning = true;
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
@@ -169,7 +174,7 @@ public class LoginController extends AbstractController {
     if (!loggedIn || transitioning) {
       return;
     }
-
+    eDB.changeFlag();
     transitioning = true;
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
     translate.setByY(2000f);
