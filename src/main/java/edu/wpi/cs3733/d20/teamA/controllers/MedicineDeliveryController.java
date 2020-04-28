@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.EditMedRequestController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.MedInfoController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.MedRequest;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -71,6 +72,28 @@ public class MedicineDeliveryController extends AbstractController {
         false,
         event -> update(),
         new EditMedRequestController());
+  }
+
+  public void clickInfo() {
+    MedRequest req = tblMedReq.getSelected();
+    if (req != null) {
+      // Figure out whether any outstanding orders depend on this flower type, in which case we
+      // can't change the name / type
+
+      MedInfoController controller = new MedInfoController(req);
+      DialogUtil.complexDialog(
+          dialogStackPane,
+          "View Medicine Request",
+          "views/MedRequestInfoPopup.fxml",
+          false,
+          event -> update(),
+          controller);
+    } else {
+      DialogUtil.simpleInfoDialog(
+          dialogStackPane,
+          "No Request Selected",
+          "Please select a medicine request by clicking a row in the table");
+    }
   }
 
   public void editRequest() {

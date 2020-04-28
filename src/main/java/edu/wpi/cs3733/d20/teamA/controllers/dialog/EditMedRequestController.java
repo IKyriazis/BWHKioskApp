@@ -3,9 +3,11 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.MedRequest;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.layout.StackPane;
 
 public class EditMedRequestController extends AbstractController implements IDialogController {
   private final boolean modify;
@@ -19,6 +21,7 @@ public class EditMedRequestController extends AbstractController implements IDia
   @FXML private JFXTextField fBy;
   @FXML private JFXButton done;
   @FXML private JFXTimePicker pTime;
+  @FXML private StackPane dPane;
 
   public EditMedRequestController() {
     super();
@@ -73,6 +76,7 @@ public class EditMedRequestController extends AbstractController implements IDia
       String medicineText = medicine.getText();
       String fulfilledBy = fBy.getText();
       int rnum = Integer.parseInt(roomNum.getText());
+
       int hour = -1;
       int minute = -1;
 
@@ -106,6 +110,8 @@ public class EditMedRequestController extends AbstractController implements IDia
       }
 
       dialog.close();
+    } catch (NumberFormatException exception) {
+      DialogUtil.simpleInfoDialog(dPane, "Invalid Room Number", "Please enter a valid room number");
     } catch (Exception exception) {
       exception.printStackTrace();
     }

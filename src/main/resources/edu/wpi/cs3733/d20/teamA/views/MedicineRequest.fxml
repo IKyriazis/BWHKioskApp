@@ -41,9 +41,10 @@
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" GridPane.rowIndex="2">
                      <children>
-                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#addRequest" prefWidth="100.0" style="-fx-background-color: white;" text=" New Request" />
-                        <JFXButton fx:id="editBtn" buttonType="RAISED" onAction="#editRequest" prefWidth="100.0" style="-fx-background-color: white;" text="Edit" />
-                        <JFXButton buttonType="RAISED" onAction="#deleteRequest" prefWidth="100.0" style="-fx-background-color: white;" text="Delete" />
+                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#addRequest" prefWidth="100.0"  text=" New Request" />
+                        <JFXButton fx:id="editBtn" buttonType="RAISED" onAction="#editRequest" prefWidth="100.0"  text="Edit" />
+                        <JFXButton alignment="CENTER" buttonType="RAISED" contentDisplay="CENTER" onAction="#deleteRequest" prefWidth="100.0"  text="Delete" />
+                        <JFXButton fx:id="infoBtn" buttonType="RAISED" onAction="#clickInfo" prefWidth="100.0" text="Info" />
                      </children>
                   </HBox>
                   <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" GridPane.halignment="CENTER" GridPane.rowIndex="3">

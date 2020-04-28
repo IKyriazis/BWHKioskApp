@@ -110,6 +110,10 @@ public class MedicineDeliveryDatabase extends Database {
 
   public boolean updateHo(String id, int newHo) {
 
+    if (newHo < 0 || newHo > 23) {
+      return false;
+    }
+
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -129,6 +133,10 @@ public class MedicineDeliveryDatabase extends Database {
   }
 
   public boolean updateMins(String id, int newMins) {
+
+    if (newMins < 0 || newMins > 59) {
+      return false;
+    }
 
     try {
       PreparedStatement pstmt =
@@ -170,6 +178,9 @@ public class MedicineDeliveryDatabase extends Database {
 
   public boolean updateProgress(String id, String newProg) {
 
+    if (!newProg.equals("Prescribed") && !newProg.equals("Dispatched") && !newProg.equals("Done")) {
+      return false;
+    }
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -236,6 +247,15 @@ public class MedicineDeliveryDatabase extends Database {
       int minute) {
     // default status is reported
     String progress = "Prescribed";
+
+    if (hour < 0 || hour > 23) {
+      return false;
+    }
+
+    if (minute < 0 || minute > 59) {
+      return false;
+    }
+
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
@@ -276,6 +296,15 @@ public class MedicineDeliveryDatabase extends Database {
       String fulfilledBy) {
     // default status is reported
     String progress = "Prescribed";
+
+    if (hour < 0 || hour > 23) {
+      return false;
+    }
+
+    if (minute < 0 || minute > 59) {
+      return false;
+    }
+
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =

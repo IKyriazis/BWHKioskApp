@@ -13,6 +13,7 @@ public class MedRequest implements ITableable<MedRequest> {
   private SimpleStringProperty orderNum;
   private SimpleStringProperty firstName;
   private SimpleStringProperty lastName;
+  private SimpleStringProperty name;
   private SimpleStringProperty doctor;
   private SimpleStringProperty medicine;
   private SimpleIntegerProperty roomNum;
@@ -36,6 +37,7 @@ public class MedRequest implements ITableable<MedRequest> {
     this.orderNum = new SimpleStringProperty(orderNum);
     this.firstName = new SimpleStringProperty(firstName);
     this.lastName = new SimpleStringProperty(lastName);
+    this.name = new SimpleStringProperty(firstName + " " + lastName);
     this.doctor = new SimpleStringProperty(doctor);
     this.medicine = new SimpleStringProperty(medicine);
     this.roomNum = new SimpleIntegerProperty(roomNum);
@@ -166,20 +168,45 @@ public class MedRequest implements ITableable<MedRequest> {
     }
   }
 
+  public String getName() {
+    return name.get();
+  }
+
+  public SimpleStringProperty nameProperty() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name.set(name);
+  }
+
   @Override
   public ArrayList<JFXTreeTableColumn<MedRequest, ?>> getColumns() {
+    /*
     JFXTreeTableColumn<MedRequest, String> column1 = new JFXTreeTableColumn<>("Request ID");
     column1.setCellValueFactory(param -> param.getValue().getValue().orderNumProperty());
 
+
+     */
+    /*
     JFXTreeTableColumn<MedRequest, String> column2 = new JFXTreeTableColumn<>("First Name");
     column2.setCellValueFactory(param -> param.getValue().getValue().firstNameProperty());
 
     JFXTreeTableColumn<MedRequest, String> column3 = new JFXTreeTableColumn<>("Last Name");
     column3.setCellValueFactory(param -> param.getValue().getValue().lastNameProperty());
 
+
+     */
+
+    JFXTreeTableColumn<MedRequest, String> column3 = new JFXTreeTableColumn<>("Name");
+    column3.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
+
+    /*
     JFXTreeTableColumn<MedRequest, String> column4 = new JFXTreeTableColumn<>("Doctor");
     column4.setCellValueFactory(param -> param.getValue().getValue().doctorProperty());
 
+
+     */
     JFXTreeTableColumn<MedRequest, String> column5 = new JFXTreeTableColumn<>("Medicine");
     column5.setCellValueFactory(param -> param.getValue().getValue().medicineProperty());
 
@@ -189,12 +216,14 @@ public class MedRequest implements ITableable<MedRequest> {
     JFXTreeTableColumn<MedRequest, String> column7 = new JFXTreeTableColumn<>("Progress");
     column7.setCellValueFactory(param -> param.getValue().getValue().progressProperty());
 
+    /*
     JFXTreeTableColumn<MedRequest, String> column8 = new JFXTreeTableColumn<>("Time Administered");
     column8.setCellValueFactory(param -> param.getValue().getValue().timeStProperty());
 
+
+     */
     JFXTreeTableColumn<MedRequest, String> column9 = new JFXTreeTableColumn<>("Fulfilled By");
     column9.setCellValueFactory(param -> param.getValue().getValue().fulfilledByProperty());
-    return new ArrayList<>(
-        List.of(column1, column2, column3, column4, column5, column6, column7, column8, column9));
+    return new ArrayList<>(List.of(column3, column5, column6, column7, column9));
   }
 }
