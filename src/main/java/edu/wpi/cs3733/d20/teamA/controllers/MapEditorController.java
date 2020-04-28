@@ -56,16 +56,6 @@ public class MapEditorController {
   private Point2D lastPressedPos = new Point2D(0, 0);
   private boolean draggingNodes = false;
 
-  enum Search{
-      ASTAR,
-      BREADTHFIRST,
-      DEPTHFIRST
-  }
-
-  private Search search = Search.ASTAR;
-
-  MapSettings settings = new MapSettings();
-
   private final EventHandler<MouseEvent> dragStartHandler =
       event -> {
         if (event.getButton() == MouseButton.PRIMARY) {
@@ -235,6 +225,16 @@ public class MapEditorController {
       e.printStackTrace();
     }
 
+    aStarButton.setOnAction(
+        event -> {
+          MapSettings.setPath(new Path(graph));
+        });
+    depthFirstButton.setOnAction(event -> MapSettings.setPath(new DepthFirst(graph)));
+    breadthFirstButton.setOnAction(
+        event -> {
+          MapSettings.setPath(new BreadthFirst(graph));
+        });
+
     Platform.runLater(() -> canvas.draw(floor));
   }
 
@@ -369,20 +369,6 @@ public class MapEditorController {
       popup.show(dialogPane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, popX, popY);
     }
 
-    switch(search){
-        case ASTAR:
-            settings.setPath(new Path(graph));
-            break;
-        case BREADTHFIRST:
-            settings.setPath(new BreadthFirst(graph));
-            break;
-        case DEPTHFIRST:
-            settings.setPath(new DepthFirst(graph));
-            break;
-        default:
-            break;
-    }
-
     updateTipLabel();
     canvas.draw(floor);
   }
@@ -458,23 +444,8 @@ public class MapEditorController {
     floorField.setText(String.valueOf(floor));
   }
 
-  public void searchPressed(ActionEvent event){
-
-      if(event.getTarget().equals(breadthFirstButton)){
-          search = Search.BREADTHFIRST;
-      }
-      else if(event.getTarget().equals(depthFirstButton)){
-          search = Search.DEPTHFIRST;
-      }
-      else{
-          search = Search.ASTAR;
-      }
-  }
-
   @FXML
-  public void setDepthFirst(){
-
-  }
+  public void setDepthFirst() {}
 
   private String getNodeInfo(Node node) {
     return "Node ID: "

@@ -52,8 +52,6 @@ public class SimpleMapController {
 
   private ObservableList<Node> allNodeList;
 
-  MapSettings settings = new MapSettings();
-
   public void initialize() {
     directionsDrawer.close();
     textDirectionsDrawer.close();
@@ -147,6 +145,9 @@ public class SimpleMapController {
       alert.setContentText(e.toString());
       alert.show();
     }
+    if (!MapSettings.isSetup()) {
+      MapSettings.setup();
+    }
     Platform.runLater(() -> canvas.draw(floor));
   }
 
@@ -169,16 +170,16 @@ public class SimpleMapController {
             .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
             .findFirst();
     if (start.isPresent() && end.isPresent()) {
-      ContextPath path = settings.getPath();
+      ContextPath path = MapSettings.getPath();
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
 
       if (start.get().getFloor() != floor) {
         floor = Math.min(5, start.get().getFloor());
         floorField.setText(String.valueOf(floor));
-        canvas.draw(floor);
       }
-      // canvas.draw(1);
+
+      canvas.draw(floor);
 
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
