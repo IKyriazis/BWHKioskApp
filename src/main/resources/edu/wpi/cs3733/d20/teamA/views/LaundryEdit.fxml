@@ -19,7 +19,7 @@
         <RowConstraints vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <JFXButton fx:id="doneButton" style="-fx-background-color: #78909C;" text="Done" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+        <JFXButton fx:id="doneButton" text="Done" GridPane.columnSpan="2" GridPane.rowIndex="2" />
       <JFXComboBox fx:id="cleanerComboBox" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Cleaner Name" />
       <JFXComboBox fx:id="progressComboBox" labelFloat="true" prefWidth="150.0" promptText="Progress" GridPane.columnIndex="1" />
     </children>
