@@ -66,11 +66,11 @@ public class LoginController extends AbstractController {
         "Laundry - Brennan",
         new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE),
         "views/LaundryGUI.fxml");
-      vSwitcherBox.addEntry(
+    vSwitcherBox.addEntry(
         "IT Ticket Gabriel Dudlicek",
         new FontAwesomeIconView(FontAwesomeIcon.LAPTOP),
         "views/ITServices.fxml");
-      vSwitcherBox.addEntry(
+    vSwitcherBox.addEntry(
         "Patient Info - Tyler Looney",
         new MaterialIconView(MaterialIcon.PERSON_ADD),
         "views/PatientsInfoService.fxml");
