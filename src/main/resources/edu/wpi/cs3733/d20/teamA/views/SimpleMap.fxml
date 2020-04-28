@@ -6,6 +6,7 @@
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,9 +17,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SimpleMapController">
+<BorderPane fx:id="rootPane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SimpleMapController">
    <center>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0">
          <StackPane fx:id="dialogPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -32,21 +32,30 @@
                         <padding>
                            <Insets bottom="25.0" left="10.0" right="10.0" top="25.0" />
                         </padding>
-                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Starting Location" />
+                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Starting Location" styleClass="small-text" />
 
 
-                        <JFXButton fx:id="swapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedSwap" style="-fx-background-color: E0E0E0;" />
-                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Destination" />
+                        <JFXButton fx:id="swapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedSwap">
+                           <styleClass>
+                              <String fx:value="gray-button" />
+                              <String fx:value="small-text" />
+                           </styleClass></JFXButton>
+                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="200.0" minWidth="200.0" prefWidth="200.0" promptText="Destination" styleClass="small-text" />
 
-                        <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" style="-fx-background-color: #66BB6A;" text="Go" />
+                        <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" text="Go">
+                           <styleClass>
+                              <String fx:value="green-button" />
+                              <String fx:value="small-text" />
+                           </styleClass></JFXButton>
                      </VBox>
                   </JFXDrawer>
                   <HBox layoutX="15.0" layoutY="15.0" pickOnBounds="false" spacing="25.0">
                      <children>
-                        <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" style="-fx-background-color: white;" text="Get Directions">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
+                        <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" text="Get Directions">
+                           <styleClass>
+                              <String fx:value="white-button" />
+                              <String fx:value="regular-text" />
+                           </styleClass>
                         </JFXButton>
                         <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" />
                      </children>
@@ -63,10 +72,14 @@
                            </rowConstraints>
                            <children>
                               <JFXListView fx:id="directionsList" />
-                              <JFXButton fx:id="qrCodeButton" buttonType="RAISED" onAction="#pressedQRButton" style="-fx-background-color: #78909C;" text="Generate QR Code" GridPane.rowIndex="1">
+                              <JFXButton fx:id="qrCodeButton" buttonType="RAISED" onAction="#pressedQRButton" text="Generate QR Code" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" top="10.0" />
                                  </GridPane.margin>
+                                 <styleClass>
+                                    <String fx:value="bluegray-button" />
+                                    <String fx:value="small-text" />
+                                 </styleClass>
                               </JFXButton>
                            </children>
                         </GridPane>

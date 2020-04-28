@@ -21,7 +21,7 @@
                     <fx:include source="EmployeeHome.fxml" />
                 </Tab>
             </JFXTabPane>
-            <JFXButton fx:id="informationButton" onAction="#informationButtonPressed" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
+            <JFXButton styleClass="large-text" fx:id="informationButton" onAction="#informationButtonPressed" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
          </children>
       </AnchorPane>
    </children>

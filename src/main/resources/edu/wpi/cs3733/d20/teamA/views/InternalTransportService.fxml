@@ -41,12 +41,12 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="trackButton" buttonType="RAISED" onAction="#trackOrder" prefHeight="51.0" prefWidth="228.0" style="-fx-background-color: #66BB6A; -fx-text-fill: black;" text="Track Transport" GridPane.columnIndex="1">
+                        <JFXButton fx:id="trackButton" buttonType="RAISED" onAction="#trackOrder" prefHeight="51.0" prefWidth="228.0" text="Track Transport" GridPane.columnIndex="1">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="orderButton" buttonType="RAISED" onAction="#placeOrder" prefHeight="51.0" prefWidth="228.0" style="-fx-background-color: #78909C; -fx-text-fill: black;" text="Request Transport">
+                        <JFXButton fx:id="orderButton" buttonType="RAISED" onAction="#placeOrder" prefHeight="51.0" prefWidth="228.0" text="Request Transport">
                            <font>
                               <Font size="24.0" />
                            </font>

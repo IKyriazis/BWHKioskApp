@@ -1,64 +1,68 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import com.opencsv.exceptions.CsvException;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.JanitorEditController;
+import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
+import edu.wpi.cs3733.d20.teamA.database.JanitorService;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Comparator;
-import java.util.Hashtable;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.TreeItem;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class JanitorialController extends AbstractController {
 
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
 
-  @FXML private JFXButton btnClearRequest;
-  @FXML private JFXButton btnSubmitRequest;
-  @FXML private JFXButton btnNotStarted;
-  @FXML private JFXButton btnCompleted;
-  @FXML private JFXButton btnInProgress;
+  @FXML private JFXButton btnAddRequest;
+  @FXML private JFXButton btnRemoveRequest;
+  @FXML private JFXButton btnChangeStatus;
 
-  @FXML private JFXComboBox<Node> roomList;
-
-  // @FXML private JFXTextField textfieldLocation;
-  @FXML private JFXTextField textfieldPriority;
+  @FXML private JFXComboBox<String> comboboxNextStatus;
 
   @FXML private JFXTextField textfieldEmployeeName;
 
-  @FXML private Label labelClearRequest;
-  @FXML private Label labelSubmitRequest;
-  @FXML private Label labelStatus;
+  @FXML private GridPane gridTableView;
 
-  @FXML private JFXListView<String> listviewActiveRequests;
-  @FXML private JFXComboBox<String> comboboxPriority;
+  @FXML private StackPane popupStackPane;
 
-  ObservableList priorityItems = FXCollections.observableArrayList();
+  private SimpleTableView<JanitorService> tblServiceView;
+
+  ObservableList statusItems = FXCollections.observableArrayList();
   ObservableList activeItems = FXCollections.observableArrayList();
-  Hashtable<String, Integer> activeRequestHash = new Hashtable<>();
-  Hashtable<String, String> statusHash = new Hashtable<>();
 
   public JanitorialController() {}
 
   public void initialize() throws SQLException, IOException, CsvException {
-    refreshActiveRequests();
-    statusHash.clear();
-    priorityItems.clear();
-    String a = "High";
-    String b = "Medium";
-    String c = "Low";
-    priorityItems.addAll(a, b, c);
-    comboboxPriority.getItems().addAll(priorityItems);
+    // initialize the database
+    if (janitorDatabase.getRequestSize() == -1) {
+      janitorDatabase.dropTables();
+      janitorDatabase.createTables();
+      //      janitorDatabase.readFromCSV();
+    } else if (janitorDatabase.getRequestSize() == 0) {
+      janitorDatabase.removeAll();
+      //      janitorDatabase.readFromCSV();
+    }
+
+    // Add the status items to the combobox
+    statusItems.clear();
+    String a = "Reported";
+    String b = "Dispatched";
+    String c = "Done";
+    statusItems.addAll(a, b, c);
+    comboboxNextStatus.getItems().addAll(statusItems);
 
     // Set up autofill for nodes
     ObservableList<Node> allNodeList =
@@ -68,13 +72,15 @@ public class JanitorialController extends AbstractController {
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));
 
-    roomList.setItems(allNodeList);
+    btnAddRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_TRIANGLE));
+    btnRemoveRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
+    btnChangeStatus.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
 
-    roomList
-        .getEditor()
-        .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
+    tblServiceView = new SimpleTableView<>(new JanitorService("", "", "", "", 0, ""), 80.0);
 
-    janitorDatabase.readFromCSV();
+    gridTableView.getChildren().add(tblServiceView);
+
+    refreshActiveRequests();
   }
 
   /**
@@ -84,21 +90,13 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void addServiceRequest() throws SQLException {
-    Node node = roomList.getSelectionModel().getSelectedItem();
-    String loc = "";
-    if (node != null && !comboboxPriority.getValue().equals("")) {
-      loc = node.getNodeID();
-      janitorDatabase.addRequest(loc, comboboxPriority.getValue());
-      statusHash.put(loc, "Not Started");
-      comboboxPriority.getSelectionModel().clearSelection();
-      labelSubmitRequest.setText("Request Submitted Successfully");
-    } else if (comboboxPriority.getValue() != null && node == null) {
-      labelSubmitRequest.setText("Please enter a location");
-    } else if (comboboxPriority.getValue() == null && node != null) {
-      labelSubmitRequest.setText("Please enter a priority");
-    } else if (comboboxPriority.getValue() == null && node == null) {
-      labelSubmitRequest.setText("Please enter data");
-    }
+    DialogUtil.complexDialog(
+        popupStackPane,
+        "Make a Janitorial Request",
+        "views/AddJanitorPopup.fxml",
+        false,
+        event -> refreshActiveRequests(),
+        new JanitorEditController());
     refreshActiveRequests();
   }
 
@@ -109,21 +107,45 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void removeServiceRequest() throws SQLException {
-    if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
-      return;
-    }
+    if (tblServiceView.getSelectionModel().getSelectedItem() == null) {
+      DialogUtil.simpleErrorDialog(popupStackPane, "Error", "Please select a request to remove");
 
-    String request = listviewActiveRequests.getSelectionModel().getSelectedItem();
-    if (request != null) {
-      if (janitorDatabase.deleteRequest(activeRequestHash.get(request))) {
-        labelClearRequest.setText("Service Removed Successfully");
-        listviewActiveRequests.getItems().removeAll(activeItems);
+    } else {
+      JanitorService j =
+          (((TreeItem<JanitorService>) (tblServiceView.getSelectionModel().getSelectedItem()))
+              .getValue());
+      janitorDatabase.deleteRequest(j.getIndex());
+      refreshActiveRequests();
+    }
+  }
+
+  @FXML
+  private void updateRequest() throws SQLException {
+    if (tblServiceView.getSelectionModel().getSelectedItem() == null) {
+      DialogUtil.simpleErrorDialog(popupStackPane, "Error", "Please select a request to update");
+    } else {
+      JanitorService j =
+          (((TreeItem<JanitorService>) (tblServiceView.getSelectionModel().getSelectedItem()))
+              .getValue());
+      if (comboboxNextStatus.getValue() == null) {
+        DialogUtil.simpleErrorDialog(
+            popupStackPane, "Error", "Please select the status of the request");
       } else {
-        labelClearRequest.setText("Please select an active request");
+        System.out.println(textfieldEmployeeName.getText());
+        System.out.println(j.getEmployeeName());
+        if (textfieldEmployeeName.getText().equals("")) {
+          janitorDatabase.updateRequest(
+              j.getIndex(), j.getLongName(), comboboxNextStatus.getValue(), j.getEmployeeName());
+        } else {
+          janitorDatabase.updateRequest(
+              j.getIndex(),
+              j.getLongName(),
+              comboboxNextStatus.getValue(),
+              textfieldEmployeeName.getText());
+        }
       }
     }
     refreshActiveRequests();
-    statusHash.remove(request);
   }
 
   /**
@@ -132,81 +154,15 @@ public class JanitorialController extends AbstractController {
    * @throws SQLException
    */
   @FXML
-  private void refreshActiveRequests() throws SQLException {
-    listviewActiveRequests.getItems().clear();
-    activeItems.clear();
-    activeRequestHash.clear();
-    String Request;
-    int size = janitorDatabase.getRequestSize();
-    for (int i = 3; i < size + 3; i++) {
-      Request = janitorDatabase.getLocation(i);
-      if (Request == null) {
-        continue;
-      } else {
-        activeItems.add(Request);
-        activeRequestHash.put(Request, i);
-      }
-    }
-    listviewActiveRequests.getItems().addAll(activeItems);
-  }
+  private void refreshActiveRequests() {
+    try {
+      tblServiceView.clear();
 
-  @FXML
-  private void elementSelect() {
-    String Request = listviewActiveRequests.getSelectionModel().getSelectedItem();
-    if (Request != null) {
-      btnCompleted.setVisible(true);
-      btnInProgress.setVisible(true);
-      btnNotStarted.setVisible(true);
-      labelStatus.setText(statusHash.get(Request));
-      labelStatus.setVisible(true);
-      textfieldEmployeeName.setVisible(true);
-    }
-  }
-
-  @FXML
-  private void markInProgress() {
-    if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
-      return;
-    }
-    if (textfieldEmployeeName.getText().equals("")) {
-      labelStatus.setText("Please enter the employee name below");
-    } else if (!textfieldEmployeeName.getText().equals("")) {
-      statusHash.replace(
-          listviewActiveRequests.getSelectionModel().getSelectedItem(),
-          textfieldEmployeeName.getText() + " is currently working");
-      labelStatus.setText(
-          statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
-    }
-  }
-
-  @FXML
-  private void markNotStarted() {
-    if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
-      return;
-    }
-    if (textfieldEmployeeName.getText().equals("")) {
-      labelStatus.setText("Please enter the employee name below");
-    } else if (!textfieldEmployeeName.getText().equals("")) {
-      statusHash.replace(
-          listviewActiveRequests.getSelectionModel().getSelectedItem(), "Not Started");
-      labelStatus.setText(
-          statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
-    }
-  }
-
-  @FXML
-  private void markCompleted() {
-    if (listviewActiveRequests.getSelectionModel().getSelectedIndex() == -1) {
-      return;
-    }
-    if (textfieldEmployeeName.getText().equals("")) {
-      labelStatus.setText("Please enter the employee name below");
-    } else if (!textfieldEmployeeName.getText().equals("")) {
-      statusHash.replace(
-          listviewActiveRequests.getSelectionModel().getSelectedItem(),
-          "Completed by " + textfieldEmployeeName.getText());
-      labelStatus.setText(
-          statusHash.get(listviewActiveRequests.getSelectionModel().getSelectedItem()));
+      tblServiceView.add(janitorDatabase.janitor01());
+    } catch (Exception e) {
+      e.printStackTrace();
+      DialogUtil.simpleErrorDialog(
+          popupStackPane, "Error", "Failed to update flower and/or order tables");
     }
   }
 }

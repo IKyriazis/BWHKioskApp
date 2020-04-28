@@ -207,7 +207,7 @@ public class Node implements Comparable<Node> {
    *
    * @return Cost
    */
-  protected int getCost() {
+  public int getCost() {
     return cost;
   }
 
@@ -216,7 +216,7 @@ public class Node implements Comparable<Node> {
    *
    * @param cost Cost
    */
-  protected void setCost(int cost) {
+  public void setCost(int cost) {
     this.cost = cost;
   }
 

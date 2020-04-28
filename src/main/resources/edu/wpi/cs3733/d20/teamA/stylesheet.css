@@ -1,56 +1,130 @@
+@font-face {
+    font-family: "Roboto";
+    src: url('fonts/Roboto-Regular.ttf');
+}
+
+.root {
+    -fx-font-family: "Roboto";
+
+    -primary-color: #1565c0;
+    -primary-color-text: rgba(255, 255, 255, .84);
+
+    -primary-color-light: #1976d2;
+    -primary-color-light-text: rgba(255, 255, 255, 0.84);
+
+    -primary-color-dark: #0D47A1;
+    -primary-color-dark-text: rgba(255, 255, 255, 0.84);
+
+    -secondary-color: white;
+    -secondary-color-text: rgba(0, 0, 0, 0.92);
+
+    -secondary-color-light: white;
+    -secondary-color-light-text: rgba(0, 0, 0, 0.92);
+
+    -secondary-color-dark: white;
+    -secondary-color-dark-text: rgba(0, 0, 0, 0.92);
+}
+
 .tab .tab-label {
     -fx-background-color: transparent;
     -fx-alignment: CENTER;
-    -fx-text-fill: black;
+    -fx-text-fill: -primary-color-dark-text;
     -fx-font-size: 18pt; /* all the same except this newly added one */
 }
 
+.tab .tab-label .glyph-icon {
+    -fx-fill: -primary-color-dark-text;
+}
+
 .jfx-tab-pane .headers-region, .jfx-tab-pane .tab-header-background {
-    -fx-background-color: #78909C;
+    -fx-background-color: -primary-color-dark;
 }
 
 .jfx-tab-pane .headers-region > .tab > .jfx-rippler {
-    -jfx-rippler-fill: BLACK;
+    -jfx-rippler-fill: -primary-color-dark-text;
 }
 
 .jfx-tab-pane .headers-region > .tab-selected-line{
-    -fx-background-color: black;
+    -fx-background-color: -primary-color-dark-text;
     -fx-pref-width: 1px !important;
     -fx-pref-height: 2px;
 }
 
 .jfx-slider .thumb, .jfx-slider .colored-track{
-    -fx-background-color: black;
+    -fx-background-color: -primary-color;
 }
 
 .jfx-slider .animated-thumb {
-    -fx-background-color: black;
+    -fx-background-color: -primary-color;
 }
 
 .jfx-radio-button {
-    -jfx-selected-color: black;
+    -jfx-selected-color: -primary-color;
 }
 
 .jfx-tree-table-view .column-header .label {
     -fx-text-fill: black;
 }
 
+.jfx-tree-table-view:focused > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {
+    -fx-background-color: -primary-color-light;
+    -fx-table-cell-border-color: -secondary-color;
+    -fx-text-fill: -primary-color-light-text;
+}
+
+.jfx-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: -primary-color-text;
+}
+
+.jfx-button .glyph-icon {
+    -fx-fill: -primary-color-text;
+}
+
+.jfx-button .jfx-rippler {
+    -jfx-rippler-fill: -primary-color-text;
+}
+
+.jfx-text-field {
+    -jfx-focus-color: -primary-color;
+}
+
+.jfx-password-field {
+    -jfx-focus-color: -primary-color;
+}
+
+.sidebar-button .glyph-icon {
+    -fx-fill: -secondary-color-text;
+}
+
+.sidebar-button .jfx-rippler {
+    -jfx-rippler-fill: -primary-color-light;
+}
+
+.label {
+    -fx-text-fill: black;
+}
+
+.small-text {
+    -fx-font-size: 10pt;
+}
+
+.regular-text {
+    -fx-font-size: 12pt;
+}
+
+.heading-text {
+    -fx-font-size: 18pt;
+}
+
+.large-text {
+    -fx-font-size: 20pt;
+}
+
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
-    -fx-font-size: 20pt;
-    -fx-background-color: white;
-}
-
-#usernameBox, #passwordBox {
-    -fx-font-size: 18pt;
-}
-
-#loginButton {
-    -fx-text-fill: black;
-    -fx-background-color: #78909c;
-    -fx-padding: 0 5 0 5;
-    -fx-font-size: 18pt;
+    -fx-background-color: rgba(255, 255, 255, 0);
 }
 
 #loginBox, #centerPane {
@@ -66,4 +140,3 @@
 #flowerServiceTablePane {
     -fx-font-size: 18pt;
 }
-
