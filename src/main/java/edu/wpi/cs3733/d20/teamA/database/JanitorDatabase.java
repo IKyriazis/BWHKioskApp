@@ -5,7 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class JanitorDatabase extends Database {
-  private int requestCount = getRequestSize() + 1;
+  private int requestCount;
 
   /**
    * Sets the connection to the database
@@ -18,6 +18,8 @@ public class JanitorDatabase extends Database {
     if (doesTableNotExist("JANITORREQUEST")) {
       createTables();
     }
+
+    requestCount = getRandomNumber();
   }
 
   /**
@@ -64,13 +66,13 @@ public class JanitorDatabase extends Database {
    *
    * @return False if request couldn't be added
    */
-  public boolean addRequest(
-      String location, String priority, String employeeName, String longName) {
+  public int addRequest(String location, String priority, String employeeName, String longName) {
 
     // creates a timestamp of the time that the function is called
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     // default status is reported
     String progress = "Reported";
+    requestCount = getRandomNumber();
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
@@ -87,14 +89,13 @@ public class JanitorDatabase extends Database {
 
       // first request starts at 1 and increments every time a new request is added
       pstmt.setInt(7, requestCount);
-      requestCount++;
       pstmt.executeUpdate();
       pstmt.close();
       // return true if the request is added
-      return true;
+      return requestCount;
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
 
@@ -238,23 +239,7 @@ public class JanitorDatabase extends Database {
   }
 
   public int getRequestSize() {
-    int count = 0;
-    if (doesTableNotExist("JANITORREQUEST")) {
-      return -1;
-    }
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From JanitorRequest ");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return -1;
-    }
+    return getSize("JanitorRequest");
   }
 
   public Timestamp getTimestamp(int rn) {
@@ -364,25 +349,6 @@ public class JanitorDatabase extends Database {
       return null;
     }
   }
-
-  //  public void readFromCSV() {
-  //    try {
-  //      InputStream stream =
-  //
-  // getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/JanitorRequest.csv");
-  //      CSVReader reader = new CSVReader(new InputStreamReader(stream));
-  //      List<String[]> data = reader.readAll();
-  //      for (int i = 1; i < data.size(); i++) {
-  //        String location, priority, employeeName;
-  //        location = data.get(i)[0];
-  //        priority = data.get(i)[1];
-  //        employeeName = data.get(i)[2];
-  //        addRequest(location, priority, employeeName, "");
-  //      }
-  //    } catch (IOException | CsvException e) {
-  //      e.printStackTrace();
-  //    }
-  //  }
 
   public ObservableList<JanitorService> janitor01() {
     ObservableList<JanitorService> oList = FXCollections.observableArrayList();
