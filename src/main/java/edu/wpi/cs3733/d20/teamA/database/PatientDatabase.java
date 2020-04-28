@@ -15,7 +15,7 @@ public class PatientDatabase extends Database {
       createTables();
     }
 
-    patientID = getSizePatients() + 1;
+    patientID = getRandomNumber();
   }
 
   /**
@@ -97,7 +97,7 @@ public class PatientDatabase extends Database {
     }
   }
 
-  public boolean addPatient(
+  public int addPatient(
       int patientID,
       String firstName,
       String lastName,
@@ -105,6 +105,7 @@ public class PatientDatabase extends Database {
       String dateOfBirth) {
 
     try {
+
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
@@ -116,16 +117,27 @@ public class PatientDatabase extends Database {
       pstmt.setString(5, dateOfBirth);
       pstmt.executeUpdate();
       pstmt.close();
-      return true;
+
+      return patientID;
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
 
-  public boolean addPatient(
+  /**
+   * Check to ensure that no duplicate IDs are present in the database
+   *
+   * @param num
+   * @return
+   */
+  private boolean idInUse(int num) {
+    return checkIfExistsInt("PATIENTS", "patientID", num);
+  }
+
+  public int addPatient(
       String firstName, String lastName, String healthInsurance, String dateOfBirth) {
-    this.patientID++;
+    patientID = getRandomNumber();
 
     return addPatient(this.patientID, firstName, lastName, healthInsurance, dateOfBirth);
   }

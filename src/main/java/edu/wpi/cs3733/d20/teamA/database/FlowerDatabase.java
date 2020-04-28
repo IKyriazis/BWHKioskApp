@@ -26,8 +26,8 @@ public class FlowerDatabase extends Database {
     if (doesTableNotExist("FLOWERS") && doesTableNotExist("ORDERS")) {
       createTables();
     }
-    orderNum = getSizeOrders() + 1;
-    flowerNum = getSizeFlowers() + 1;
+    orderNum = getRandomNumber();
+    flowerNum = getRandomNumber();
   }
 
   /**
@@ -84,21 +84,17 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-      int num = flowerNum;
-      while (idInUse(num)) {
-        num++;
-      }
+      flowerNum = getRandomNumber();
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, num);
+      pstmt.setInt(1, flowerNum);
       pstmt.setString(2, type);
       pstmt.setString(3, color);
       pstmt.setInt(4, qty);
       pstmt.setDouble(5, pricePer);
       pstmt.executeUpdate();
-      flowerNum = num + 1;
       pstmt.close();
       return true;
     } catch (SQLException e) {
@@ -128,15 +124,13 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-      int num = flowerNum;
-      while (idInUse(num)) {
-        num++;
-      }
+
+      flowerNum = getRandomNumber();
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, id);
+      pstmt.setInt(1, flowerNum);
       pstmt.setString(2, type);
       pstmt.setString(3, color);
       pstmt.setInt(4, qty);
@@ -226,7 +220,6 @@ public class FlowerDatabase extends Database {
    * Thsi method assigns an employee to the flower order
    *
    * @param orderNum order to assign the employee to
-   * @param e the employee being assigned
    * @return
    */
   public boolean assignEmployee(int orderNum, int id) {
@@ -246,19 +239,7 @@ public class FlowerDatabase extends Database {
 
   public boolean idInUse(int ID) {
 
-    try {
-      PreparedStatement pstmt =
-          getConnection().prepareStatement("Select typeFlower From Flowers Where flowerID = " + ID);
-
-      ResultSet rset = pstmt.executeQuery();
-      if (rset.next()) return true;
-
-      pstmt.close();
-      return false;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
-    }
+    return checkIfExistsInt("Flowers", "flowerID", ID);
   }
 
   /**
@@ -517,7 +498,6 @@ public class FlowerDatabase extends Database {
                 + "' AND color = '"
                 + flowerColor
                 + "'");
-    ;
     rst.next();
     quantity = rst.getInt("qty");
     return quantity;

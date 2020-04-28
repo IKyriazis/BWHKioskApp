@@ -3,17 +3,22 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import de.jensd.fx.glyphs.materialicons.MaterialIcon;
+import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.PatientEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Patient;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.awt.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 public class PatientInfoController extends AbstractController {
+  @FXML private Label lblTitle;
   @FXML private JFXButton addPatientButton;
   @FXML private JFXButton editPatientButton;
   @FXML private JFXButton deletePatientButton;
@@ -36,7 +41,9 @@ public class PatientInfoController extends AbstractController {
       // patientDatabase.readFlowersCSV();
     }
 
-    // Setup button icons
+    // Setup icons
+    lblTitle.setGraphic(new MaterialIconView(MaterialIcon.PERSON_ADD));
+
     addPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
     editPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
     deletePatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));

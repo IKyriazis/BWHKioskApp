@@ -23,7 +23,7 @@ public class InternalTransportDatabase extends Database {
       createTables();
     }
 
-    requestCount = getRequestSize() + 1;
+    requestCount = getRandomNumber();
   }
 
   /**
@@ -71,6 +71,7 @@ public class InternalTransportDatabase extends Database {
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     // default status is reported
     String progress = "Reported";
+    requestCount = getRandomNumber();
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
@@ -83,11 +84,11 @@ public class InternalTransportDatabase extends Database {
       pstmt.setString(3, progress);
       pstmt.setString(4, destination);
       // first request starts at 1 and increments every time a new request is added
-      pstmt.setInt(5, requestCount + 1);
+      pstmt.setInt(5, requestCount);
       pstmt.executeUpdate();
       pstmt.close();
       // return requestCount if the request is added
-      return ++requestCount;
+      return requestCount;
     } catch (SQLException e) {
       e.printStackTrace();
       return -1;
@@ -95,21 +96,7 @@ public class InternalTransportDatabase extends Database {
   }
 
   public int getRequestSize() {
-    int count = 0;
-    try {
-      PreparedStatement pstmt =
-          getConnection().prepareStatement("Select * From InternalTransportRequest ");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return -1;
-    }
+    return getSize("InternalTransportRequest");
   }
 
   /**

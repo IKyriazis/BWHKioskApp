@@ -138,6 +138,32 @@ public abstract class Database {
     }
   }
 
+  /**
+   * get's the username of whoever is currently logged in
+   *
+   * @return the username
+   */
+  public String getLoggedIn() {
+    String username = null;
+    try {
+      PreparedStatement pstm =
+          getConnection().prepareStatement("Select username From LoggedIn Where flag = true");
+      ResultSet rset = pstm.executeQuery();
+      while (rset.next()) {
+        username = rset.getString("username");
+      }
+      rset.close();
+      pstm.close();
+      if (username != null) {
+        return username;
+      }
+      return null;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   public int getRandomNumber() {
     return new Random().nextInt((999999999 - 100000000) + 1) + 100000000;
   }

@@ -68,32 +68,48 @@ public class FlowerAdminController extends AbstractController {
     tblFlowerView = new SimpleTableView<>(new Flower("", "", 0, 0, 0), 40.0);
     flowerTablePane.getChildren().add(tblFlowerView);
 
-    tblOrderView = new SimpleTableView<>(new Order(0, 0, "", 0, "", "", "", -1), 40.0);
+    tblOrderView = new SimpleTableView<Order>(new Order(0, 0, "", 0, "", "", "", -1), 40.0);
     orderTablePane.getChildren().addAll(tblOrderView);
 
     // Double click a row in the order table to bring up the dialog for that order
-    tblOrderView.setRowFactory(
+    tblFlowerView.setRowFactory(
         tv -> {
-          TreeTableRow<Order> row = new TreeTableRow<>();
+          TreeTableRow<Flower> row = new TreeTableRow<>();
           row.setOnMouseClicked(
               event -> {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                  ShowOrderController showController = new ShowOrderController();
-                  showController.setOrder(row.getTreeItem().getValue());
-                  DialogUtil.complexDialog(
-                      dialogStackPane,
-                      "Order",
-                      "views/flower/ViewDetailOrder.fxml",
-                      false,
-                      event2 -> update(),
-                      showController);
+                  editFlower();
                 }
               });
           return row;
         });
 
+    // Double click a row in the order table to bring up the dialog for that order
+    tblOrderView.setRowFactory(tv -> doubleClickEdit());
+
     // Populate tables
     update();
+  }
+  // Set up the order table row to bring up the edit dialog when double clicked
+  private TreeTableRow<Order> doubleClickEdit() {
+    {
+      TreeTableRow<Order> row = new TreeTableRow<>();
+      row.setOnMouseClicked(
+          event -> {
+            if (event.getClickCount() == 2 && (!row.isEmpty())) {
+              ShowOrderController showController = new ShowOrderController();
+              showController.setOrder(row.getTreeItem().getValue());
+              DialogUtil.complexDialog(
+                  dialogStackPane,
+                  "Order",
+                  "views/flower/ViewDetailOrder.fxml",
+                  false,
+                  event2 -> update(),
+                  showController);
+            }
+          });
+      return row;
+    }
   }
 
   public void addFlower() {

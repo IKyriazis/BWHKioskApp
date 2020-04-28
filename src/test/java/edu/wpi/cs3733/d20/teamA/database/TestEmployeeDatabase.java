@@ -3,7 +3,6 @@ package edu.wpi.cs3733.d20.teamA.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -122,31 +121,25 @@ public class TestEmployeeDatabase {
   }
 
   @Test
-  public void testAddReq() {
-    eDB.removeAllReqs();
+  public void testAddLog() {
     eDB.removeAllLogs();
     DB.removeAll();
-    Assertions.assertEquals(0, eDB.getSizeReq());
     Assertions.assertEquals(0, eDB.getSizeLog());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "Password69", "Intern");
     eDB.addLog("jay");
     Assertions.assertEquals(1, eDB.getSizeLog());
-    eDB.addReq("mask", 2, "biscuit", "High");
-    Assertions.assertEquals(1, eDB.getSizeReq());
-    eDB.removeAllReqs();
     eDB.removeAllLogs();
+    DB.removeAll();
   }
 
   @Test
   public void testChangeFlag() {
-    eDB.removeAllReqs();
     eDB.removeAllLogs();
     DB.removeAll();
-    Assertions.assertEquals(0, eDB.getSizeReq());
     Assertions.assertEquals(0, eDB.getSizeLog());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
+    eDB.addEmployee("bacd", "ray", "jay", "Password87", "Intern");
     eDB.addLog("jay");
     Assertions.assertEquals(1, eDB.getSizeLog());
     boolean b = eDB.isOnline("jay");
@@ -154,38 +147,8 @@ public class TestEmployeeDatabase {
     eDB.changeFlag();
     boolean a = eDB.isOnline("jay");
     Assertions.assertFalse(a);
-    eDB.removeAllReqs();
-    eDB.removeAllLogs();
-  }
-
-  @Test
-  public void testDelReq() {
-    eDB.removeAllReqs();
     eDB.removeAllLogs();
     DB.removeAll();
-    Assertions.assertEquals(0, eDB.getSizeReq());
-    Assertions.assertEquals(0, eDB.getSizeLog());
-    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    eDB.addEmployee("bacd", "ray", "jay", "password", "Intern");
-    eDB.addLog("jay");
-    Assertions.assertEquals(1, eDB.getSizeLog());
-    eDB.addReq("mask", 2, "biscuit", "High");
-    Assertions.assertEquals(1, eDB.getSizeReq());
-    eDB.deleteReq("jay", eDB.getTime("jay"));
-    Assertions.assertEquals(0, eDB.getSizeReq());
-    eDB.removeAllReqs();
-    eDB.removeAllLogs();
-  }
-
-  @Test
-  public void testEquipObject() {
-    EquipRequest eq =
-        new EquipRequest(
-            "Daisy", "Blue", 9, " ", " ", new Timestamp(System.currentTimeMillis()), " ");
-    Assertions.assertEquals("Daisy", eq.getName());
-    Assertions.assertEquals("Blue", eq.getItem());
-    Assertions.assertEquals(9, eq.getQty());
-    Assertions.assertEquals(" ", eq.getLocation());
   }
 
   @Test
