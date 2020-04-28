@@ -23,7 +23,6 @@ public abstract class AbstractController {
   protected InterpreterDatabase iDB;
   protected PrescriptionDatabase prescriptionDatabase;
 
-
   public AbstractController() {
     provider = new DatabaseServiceProvider();
     conn = provider.provideConnection();
