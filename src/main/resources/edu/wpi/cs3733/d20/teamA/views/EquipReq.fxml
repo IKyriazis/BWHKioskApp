@@ -47,8 +47,8 @@
                     </rowConstraints>
                      <children>
                         <JFXComboBox fx:id="priCombo" labelFloat="true" onAction="#checkSubmittableCombo" prefWidth="150.0" promptText="Priority" GridPane.halignment="CENTER" />
-                        <JFXButton fx:id="addReqbttn" buttonType="RAISED" disable="true" onAction="#addReq" onMouseClicked="#disableBttns" prefWidth="150.0" style="-fx-background-color: #81C784;" text="Add Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                        <JFXButton fx:id="delReqbttn" buttonType="RAISED" disable="true" onAction="#delReq" onMouseClicked="#disableBttns" prefWidth="150.0" style="-fx-background-color: #e57373;" text="Finish Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                        <JFXButton fx:id="addReqbttn" buttonType="RAISED" disable="true" onAction="#addReq" onMouseClicked="#disableBttns" prefWidth="150.0" text="Add Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <JFXButton fx:id="delReqbttn" buttonType="RAISED" disable="true" onAction="#delReq" onMouseClicked="#disableBttns" prefWidth="150.0" text="Finish Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                            <effect>
                               <SepiaTone />
                            </effect>
