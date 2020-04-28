@@ -59,7 +59,7 @@ public class LoginController extends AbstractController {
     vSwitcherBox.addEntry(
         "Map Editor", new FontAwesomeIconView(FontAwesomeIcon.MAP_ALT), "views/MapEditor.fxml");
     vSwitcherBox.addEntry(
-        "Flowers",
+        "Flowers - William Engdahl",
         new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
         "views/flower/FlowerAdmin.fxml");
     vSwitcherBox.addEntry(
@@ -91,7 +91,7 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR),
         "views/InternalTransportAdmin.fxml");
     vSwitcherBox.addEntry(
-        "Interpreters",
+        "Interpreters - Dyllan Cole",
         new FontAwesomeIconView(FontAwesomeIcon.GLOBE),
         "views/InterpreterService.fxml");
     vSwitcherBox.addEntry(

@@ -144,6 +144,8 @@ public class PrescriptionDialogController extends AbstractController implements 
         || txtDosage.getText().isEmpty()
         || txtNumberOfRefills.getText().isEmpty())) {
       btnDone.setDisable(false);
+    } else {
+      btnDone.setDisable(true);
     }
 
     if (info) {
