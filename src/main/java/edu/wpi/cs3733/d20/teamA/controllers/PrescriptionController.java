@@ -13,7 +13,6 @@ import javafx.scene.layout.StackPane;
 
 public class PrescriptionController extends AbstractController {
 
-  @FXML private Label prescriptionTblLbl;
   @FXML private JFXButton addPrescriptionBtn;
   @FXML private JFXButton editPrescriptionBtn;
   @FXML private JFXButton deletePrescriptionBtn;
@@ -41,7 +40,7 @@ public class PrescriptionController extends AbstractController {
 
     // Setup table
     tblViewPrescription =
-        new SimpleTableView<>(new Prescription(0, "", "", "", "", 0, "", "", ""), 80.0);
+        new SimpleTableView<>(new Prescription(0, "", "", "", "", 0, "", ""), 80.0);
     prescriptionTablePane.getChildren().addAll(tblViewPrescription);
 
     // Track when the mouse has clicked the table

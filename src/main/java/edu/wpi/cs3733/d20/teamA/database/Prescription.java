@@ -15,7 +15,6 @@ public class Prescription implements ITableable<Prescription> {
   @Setter private SimpleStringProperty pharmacy;
   @Setter private SimpleStringProperty dosage;
   @Setter private SimpleIntegerProperty numberOfRefills;
-  @Setter private SimpleStringProperty refillPer;
   @Setter private SimpleStringProperty doctorName;
   @Setter private SimpleStringProperty notes;
 
@@ -26,7 +25,6 @@ public class Prescription implements ITableable<Prescription> {
       String pharmacy,
       String dosage,
       int numberOfRefills,
-      String refillPer,
       String doctorName,
       String notes) {
     this.prescriptionID = new SimpleIntegerProperty(prescriptionID);
@@ -35,7 +33,6 @@ public class Prescription implements ITableable<Prescription> {
     this.pharmacy = new SimpleStringProperty(pharmacy);
     this.dosage = new SimpleStringProperty(dosage);
     this.numberOfRefills = new SimpleIntegerProperty(numberOfRefills);
-    this.refillPer = new SimpleStringProperty(refillPer);
     this.doctorName = new SimpleStringProperty(doctorName);
     this.notes = new SimpleStringProperty(notes);
   }
@@ -63,10 +60,6 @@ public class Prescription implements ITableable<Prescription> {
 
   public SimpleIntegerProperty getNumberOfRefillsProperty() {
     return this.numberOfRefills;
-  }
-
-  public SimpleStringProperty getRefillPerProperty() {
-    return this.refillPer;
   }
 
   public SimpleStringProperty getDoctorNameProperty() {
@@ -100,10 +93,6 @@ public class Prescription implements ITableable<Prescription> {
 
   public int getNumberOfRefills() {
     return numberOfRefills.get();
-  }
-
-  public String getRefillPer() {
-    return refillPer.get();
   }
 
   public String getDoctorName() {

@@ -4,8 +4,6 @@ import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.database.Prescription;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -18,7 +16,6 @@ public class PrescriptionDialogController extends AbstractController implements 
   @FXML private JFXTextField txtDosage;
   @FXML private JFXTextField txtNumberOfRefills;
   @FXML private JFXTextArea txtNotes;
-  @FXML private JFXComboBox cBoxRefillPer;
   @FXML private JFXButton btnDone;
   private JFXDialog dialog;
   boolean modify = false;
@@ -93,10 +90,6 @@ public class PrescriptionDialogController extends AbstractController implements 
               }
             });
 
-    ObservableList<String> per = FXCollections.observableArrayList();
-    per.addAll("DAY", "WEEK", "MONTH", "YEAR", "");
-    cBoxRefillPer.setItems(per);
-
     if (modify) {
       txtPatientName.setText(prescription.getPrescription());
       txtDoctorName.setText(prescription.getDoctorName());
@@ -105,10 +98,7 @@ public class PrescriptionDialogController extends AbstractController implements 
       txtDosage.setText(prescription.getDosage());
       txtNumberOfRefills.setText(String.valueOf(prescription.getNumberOfRefills()));
       txtNotes.setText(prescription.getNotes());
-      cBoxRefillPer.getSelectionModel().select(1);
     }
-
-    btnDone.setOnAction(this::isDone);
 
     // Set button icon
     // btnDone.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
@@ -116,45 +106,28 @@ public class PrescriptionDialogController extends AbstractController implements 
 
   // Scene switch & database addNode
   @FXML
-  public void isDone(ActionEvent e) {
-    if (txtPatientName.getText().isEmpty()
-        || txtDoctorName.getText().isEmpty()
-        || txtPrescription.getText().isEmpty()
-        || txtPharmacy.getText().isEmpty()
-        || txtDosage.getText().isEmpty()
-        || txtNumberOfRefills.getText().isEmpty()
-        || cBoxRefillPer.getSelectionModel().getSelectedItem() != null) {
-      return;
+  public void pressDone(ActionEvent e) {
+
+    String patientName = txtPatientName.getText();
+    String doctorName = txtDoctorName.getText();
+    String prescription = txtPrescription.getText();
+    String pharmacy = txtPharmacy.getText();
+    String dosage = txtDosage.getText();
+    int numberOfRefills = Integer.parseInt(txtNumberOfRefills.getText());
+    String notes = txtNotes.getText();
+
+    if (!modify) {
+      prescriptionDatabase.addPrescription(
+          patientName, prescription, pharmacy, dosage, numberOfRefills, doctorName, notes);
     }
 
-    try {
-      String patientName = txtPatientName.getText();
-      String doctorName = txtDoctorName.getText();
-      String prescription = txtPrescription.getText();
-      String pharmacy = txtPharmacy.getText();
-      String dosage = txtDosage.getText();
-      int numberOfRefills = Integer.parseInt(txtNumberOfRefills.getText());
-      String refillPer = cBoxRefillPer.getSelectionModel().getSelectedItem().toString();
-      String notes = txtNotes.getText();
+    btnDone.setDisable(false);
 
-      if (!modify) {
-        prescriptionDatabase.addPrescription(
-            patientName,
-            prescription,
-            pharmacy,
-            dosage,
-            numberOfRefills,
-            refillPer,
-            doctorName,
-            notes);
-      }
+    dialog.close();
+  }
 
-      btnDone.setDisable(false);
-
-      dialog.close();
-    } catch (Exception exception) {
-      exception.printStackTrace();
-    }
+  public void disableDoneText() {
+    btnDone.setDisable(true);
   }
 
   public void checkForDone() {
@@ -163,8 +136,7 @@ public class PrescriptionDialogController extends AbstractController implements 
         || txtPrescription.getText().isEmpty()
         || txtPharmacy.getText().isEmpty()
         || txtDosage.getText().isEmpty()
-        || txtNumberOfRefills.getText().isEmpty()
-        || cBoxRefillPer.getSelectionModel().getSelectedItem() != null) {
+        || txtNumberOfRefills.getText().isEmpty()) {
       btnDone.setDisable(false);
     }
   }

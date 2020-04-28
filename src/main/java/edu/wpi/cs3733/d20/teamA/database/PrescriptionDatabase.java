@@ -35,7 +35,7 @@ public class PrescriptionDatabase extends Database {
    */
   public boolean createTables() {
     return helperPrepared(
-        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, refillPer VARCHAR(20), doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_PER CHECK( refillPer in ('DAY', 'WEEK', 'MONTH','YEAR','')), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
+        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
   }
 
   /**
@@ -79,7 +79,6 @@ public class PrescriptionDatabase extends Database {
       String pharmacy,
       String dosage,
       int numRefills,
-      String refillPer,
       String doctorName,
       String notes) {
 
@@ -87,16 +86,15 @@ public class PrescriptionDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO PRESCRIPTION (prescriptionID, patientName, prescription, pharmacy, dosage, numberOfRefills, refillPer, doctorUsername, notes) VALUES (?, ?, ?, ?,?,?,?,?,?)");
+                  "INSERT INTO PRESCRIPTION (prescriptionID, patientName, prescription, pharmacy, dosage, numberOfRefills, doctorUsername, notes) VALUES (?, ?, ?, ?,?,?,?,?)");
       pstmt.setInt(1, prescriptionNum);
       pstmt.setString(2, patient);
       pstmt.setString(3, prescription);
       pstmt.setString(4, pharmacy);
       pstmt.setString(5, dosage);
       pstmt.setInt(6, numRefills);
-      pstmt.setString(7, refillPer);
-      pstmt.setString(8, doctorName);
-      pstmt.setString(9, notes);
+      pstmt.setString(7, doctorName);
+      pstmt.setString(8, notes);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -113,7 +111,6 @@ public class PrescriptionDatabase extends Database {
       String pharmacy,
       String dosage,
       int numRefills,
-      String refillPer,
       String doctorName,
       String notes) {
     this.prescriptionNum++;
@@ -124,7 +121,6 @@ public class PrescriptionDatabase extends Database {
         pharmacy,
         dosage,
         numRefills,
-        refillPer,
         doctorName,
         notes);
   }
@@ -145,9 +141,8 @@ public class PrescriptionDatabase extends Database {
         pharmacy = data.get(i)[3];
         dosage = data.get(i)[4];
         numRefills = Integer.parseInt(data.get(i)[5]);
-        refillPer = data.get(i)[6];
-        doctorName = data.get(i)[7];
-        notes = data.get(i)[8];
+        doctorName = data.get(i)[6];
+        notes = data.get(i)[7];
         addPrescription(
             prescriptionNum,
             patient,
@@ -155,7 +150,6 @@ public class PrescriptionDatabase extends Database {
             pharmacy,
             dosage,
             numRefills,
-            refillPer,
             doctorName,
             notes);
       }
@@ -252,7 +246,7 @@ public class PrescriptionDatabase extends Database {
 
       Statement doctorStatement = getConnection().createStatement();
       ResultSet rstD =
-          stmt.executeQuery("SELECT * FROM EMPLOYEES WHERE username = '" + doctor + "'");
+          doctorStatement.executeQuery("SELECT * FROM EMPLOYEES WHERE username = '" + doctor + "'");
       rstD.next();
       String doctorName = rstD.getString("nameFirst") + " " + rstD.getString("nameLast");
       return doctorName;
@@ -424,7 +418,6 @@ public class PrescriptionDatabase extends Database {
         String pharmacy = rset.getString("pharmacy");
         String dosage = rset.getString("dosage");
         int numberOfRefills = rset.getInt("numberOfRefills");
-        String refillPer = rset.getString("refillPer");
         String doctorUsername = rset.getString("doctorUsername");
         String notes = rset.getString("notes");
 
@@ -436,7 +429,6 @@ public class PrescriptionDatabase extends Database {
                 pharmacy,
                 dosage,
                 numberOfRefills,
-                refillPer,
                 doctorUsername,
                 notes);
         prescriptionObservableList.add(node);

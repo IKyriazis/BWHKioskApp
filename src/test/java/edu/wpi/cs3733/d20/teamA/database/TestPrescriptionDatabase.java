@@ -54,7 +54,7 @@ public class TestPrescriptionDatabase {
     employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "1234", "employee");
     prescriptionDatabase.removeAllPrescriptions();
     prescriptionDatabase.addPrescription(
-        1, "Yash", "Ketamin", "CVS", "2 pills", 3, "WEEK", "yppatel", "Don't Die");
+        1, "Yash", "Ketamin", "CVS", "2 pills", 3, "yppatel", "Don't Die");
     Assertions.assertEquals(1, prescriptionDatabase.getSizePrescription());
     Assertions.assertEquals("Ketamin", prescriptionDatabase.getPrescription("Yash"));
     Assertions.assertEquals("CVS", prescriptionDatabase.getPharmacy("Yash"));
@@ -84,5 +84,19 @@ public class TestPrescriptionDatabase {
     Assertions.assertEquals("Yash Patel", prescriptionDatabase.getDoctor("Jacob White"));
     Assertions.assertTrue(prescriptionDatabase.setNotes("Jacob White", "UGHH"));
     Assertions.assertEquals("UGHH", prescriptionDatabase.getNotes("Jacob White"));
+  }
+
+  @Test
+  public void createPrescriptionObject() {
+    Prescription p =
+        new Prescription(1, "Yash", "Ketamin", "CVS", "2 pills", 3, "yppatel", "Don't Die");
+    Assertions.assertEquals(1, p.getPrescriptionID());
+    Assertions.assertEquals("Yash", p.getPatientName());
+    Assertions.assertEquals("Ketamin", p.getPrescription());
+    Assertions.assertEquals("CVS", p.getPharmacy());
+    Assertions.assertEquals("2 pills", p.getDosage());
+    Assertions.assertEquals(3, p.getNumberOfRefills());
+    Assertions.assertEquals("yppatel", p.getDoctorName());
+    Assertions.assertEquals("Don't Die", p.getNotes());
   }
 }
