@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="patientPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PatientInfoController">
+<AnchorPane fx:id="patientPane" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PatientInfoController">
    <children>
       <StackPane fx:id="dialogStackPane" alignment="TOP_LEFT" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0">
          <children>
@@ -21,7 +21,7 @@
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints maxHeight="128.0" minHeight="7.0" prefHeight="47.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="282.0" minHeight="10.0" prefHeight="215.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="215.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="151.0" minHeight="10.0" prefHeight="137.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
@@ -30,14 +30,26 @@
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="350.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
                   <VBox alignment="CENTER" prefHeight="107.0" prefWidth="575.0" spacing="25.0" GridPane.rowIndex="2">
                      <children>
-                        <JFXButton fx:id="addPatientButton" buttonType="RAISED" onAction="#addPatient" text="Add Patient Info" />
-                        <JFXButton fx:id="editPatientButton" buttonType="RAISED" onAction="#editPatient" text="Edit Patient Info" />
-                        <JFXButton fx:id="deletePatientButton" buttonType="RAISED" onAction="#deletePatient" text="Delete Patient Info" />
+                        <JFXButton fx:id="addPatientButton" buttonType="RAISED" onAction="#addPatient" prefWidth="175.0" text="Add Patient Info">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin></JFXButton>
+                        <JFXButton fx:id="editPatientButton" buttonType="RAISED" onAction="#editPatient" prefWidth="175.0" text="Edit Patient Info">
+                           <font>
+                              <Font size="14.0" />
+                           </font></JFXButton>
+                        <JFXButton fx:id="deletePatientButton" buttonType="RAISED" onAction="#deletePatient" prefWidth="175.0" text="Delete Patient Info">
+                           <font>
+                              <Font size="14.0" />
+                           </font></JFXButton>
                      </children>
                      <GridPane.margin>
                         <Insets />
@@ -45,9 +57,9 @@
                   </VBox>
                   <VBox alignment="TOP_CENTER" prefHeight="82.0" prefWidth="575.0" spacing="10.0">
                      <children>
-                        <Label text="Patient Information" wrapText="true">
+                        <Label fx:id="lblTitle" text="Patient Information" wrapText="true">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="25.0" />
                            </font>
                            <VBox.margin>
                               <Insets top="10.0" />

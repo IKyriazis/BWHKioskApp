@@ -56,7 +56,7 @@ public class LoginController extends AbstractController {
     vSwitcherBox.addEntry(
         "Map Editor", new FontAwesomeIconView(FontAwesomeIcon.MAP_ALT), "views/MapEditor.fxml");
     vSwitcherBox.addEntry(
-        "Flowers",
+        "Flowers - Will E",
         new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
         "views/flower/FlowerAdmin.fxml");
     vSwitcherBox.addEntry(

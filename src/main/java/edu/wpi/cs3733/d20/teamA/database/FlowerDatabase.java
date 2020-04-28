@@ -128,10 +128,6 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-      int num = flowerNum;
-      while (idInUse(num)) {
-        num++;
-      }
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(

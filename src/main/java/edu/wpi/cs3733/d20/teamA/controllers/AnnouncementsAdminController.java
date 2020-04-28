@@ -10,9 +10,12 @@ import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 
 public class AnnouncementsAdminController {
+  @FXML private Label lblTitle;
+
   @FXML private JFXListView editAnn;
   @FXML private JFXTextField textAnn;
 
@@ -23,6 +26,7 @@ public class AnnouncementsAdminController {
 
   @FXML
   public void initialize() {
+    lblTitle.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BULLHORN));
     addButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE_ALT));
     deleteButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE_ALT));
 
