@@ -48,9 +48,9 @@ public class BreadthFirst implements IStrategyPath {
         Node neighbor = edge.getEnd();
 
         // Only consider nodes on this floor for now.
-        if (neighbor.getFloor() != start.getFloor()) {
-          continue;
-        }
+        // if (neighbor.getFloor() != start.getFloor()) {
+        //  continue;
+        // }
 
         // if the neighbor hasn't been visited then mark it as visited and enqueue it
         // add it to the path with the neighbor and where it came from

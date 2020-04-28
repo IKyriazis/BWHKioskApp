@@ -240,7 +240,7 @@ public class MapCanvas extends Canvas {
 
     // Draw path if it exists
     if (path != null) {
-      drawPath(path);
+      drawPath(path, floor);
     }
 
     lastDrawnFloor = floor;
@@ -297,19 +297,20 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws the path found
-  private void drawPath(ContextPath path) {
+  private void drawPath(ContextPath path, int floor) {
 
     for (Edge edge : path.getPathEdges()) {
-      drawEdge(edge);
+      if (edge.getEnd().getFloor() == floor) drawEdge(edge);
     }
 
     for (Node node : path.getPathNodes()) {
 
-      if (path.getPathNodes().indexOf(node) == 0) {
+      if (path.getPathNodes().indexOf(node) == 0 && node.getFloor() == floor) {
         drawNode(node, Color.SPRINGGREEN);
-      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)) {
+      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)
+          && node.getFloor() == floor) {
         drawNode(node, Color.TOMATO);
-      } else {
+      } else if (node.getFloor() == floor) {
         drawNode(node, Color.BLACK);
       }
     }

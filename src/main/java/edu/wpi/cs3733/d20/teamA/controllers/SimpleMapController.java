@@ -106,7 +106,7 @@ public class SimpleMapController {
       allNodeList =
           FXCollections.observableArrayList(
               graph.getNodes().values().stream()
-                  .filter(node -> node.getFloor() == 1)
+                  .filter(node -> node.getType() != NodeType.HALL)
                   .collect(Collectors.toList()));
       allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
 
@@ -116,7 +116,7 @@ public class SimpleMapController {
             allNodeList.addAll(
                 FXCollections.observableArrayList(
                     graph.getNodes().values().stream()
-                        .filter(node -> node.getFloor() == 1)
+                        .filter(node -> node.getType() != NodeType.HALL)
                         .collect(Collectors.toList())));
             allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
             startingLocationBox.setItems(allNodeList);
@@ -172,14 +172,21 @@ public class SimpleMapController {
       else if (depthFirstButton is pressed) path.setPath(new DepthFirst(graph))
       else path.setPath(new Path(graph))
       */
+
       ContextPath path = new ContextPath();
-      path.setPath(new DepthFirst(graph));
+      path.setPath(new Path(graph));
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
-      canvas.draw(1);
+
+      if (start.get().getFloor() != floor) {
+        floor = Math.min(5, start.get().getFloor());
+        floorField.setText(String.valueOf(floor));
+        canvas.draw(floor);
+      }
+      // canvas.draw(1);
 
       directionsList.getItems().clear();
-      if (path.getPathFindingAlgo().getPathNodes().size() != 0) {
+      if (path.getPathNodes().size() != 0) {
         ArrayList<Label> directions = path.getPathFindingAlgo().textualDirections();
         directions.forEach(
             l -> {
@@ -252,6 +259,7 @@ public class SimpleMapController {
     floor = Math.min(5, floor + 1);
     canvas.draw(floor);
     floorField.setText(String.valueOf(floor));
+    canvas.draw(floor);
   }
 
   @FXML
@@ -259,5 +267,6 @@ public class SimpleMapController {
     floor = Math.max(1, floor - 1);
     canvas.draw(floor);
     floorField.setText(String.valueOf(floor));
+    canvas.draw(floor);
   }
 }

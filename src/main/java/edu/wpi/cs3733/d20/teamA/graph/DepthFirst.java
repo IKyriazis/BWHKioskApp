@@ -40,9 +40,9 @@ public class DepthFirst implements IStrategyPath {
         Node neighbor = edge.getEnd();
 
         // Only consider nodes on this floor for now.
-        if (neighbor.getFloor() != start.getFloor()) {
-          continue;
-        }
+        // if (neighbor.getFloor() != start.getFloor()) {
+        //  continue;
+        // }
 
         if (!visited.contains(neighbor)) {
           visited.add(neighbor);
