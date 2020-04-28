@@ -93,6 +93,8 @@ public class LoginController extends AbstractController {
         "views/InterpreterService.fxml");
     vSwitcherBox.addEntry(
         "Manage Accounts", new FontAwesomeIconView(FontAwesomeIcon.USER), "views/CreateAcct.fxml");
+    vSwitcherBox.addEntry(
+        "Settings", new FontAwesomeIconView(FontAwesomeIcon.COG), "views/Settings.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
