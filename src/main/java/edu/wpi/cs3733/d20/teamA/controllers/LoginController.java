@@ -39,7 +39,7 @@ public class LoginController extends AbstractController {
 
   @FXML
   public void initialize() {
-
+    loginButton.getStyleClass().add("submitButton");
     if (eDB.getSizeEmployees() == -1) {
       eDB.dropTables();
       eDB.createTables();
@@ -66,6 +66,23 @@ public class LoginController extends AbstractController {
         "Equipment Request Eva L",
         new FontAwesomeIconView(FontAwesomeIcon.STETHOSCOPE),
         "views/EquipReq.fxml");
+    vSwitcherBox.addEntry(
+        "IT Ticket Gabriel Dudlicek",
+        new FontAwesomeIconView(FontAwesomeIcon.LAPTOP),
+        "views/ITServices.fxml");
+    vSwitcherBox.addEntry(
+        "Patient Info - Tyler Looney",
+        new MaterialIconView(MaterialIcon.PERSON_ADD),
+        "views/PatientsInfoService.fxml");
+    vSwitcherBox.addEntry(
+        "Internal Transport Requests",
+        new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR),
+        "views/InternalTransportAdmin.fxml");
+    vSwitcherBox.addEntry(
+        "Interpreters",
+        new FontAwesomeIconView(FontAwesomeIcon.GLOBE),
+        "views/InterpreterService.fxml");
+
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
