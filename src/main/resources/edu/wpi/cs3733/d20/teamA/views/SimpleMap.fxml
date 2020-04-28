@@ -87,9 +87,9 @@
                   </JFXDrawer>
                   <VBox layoutX="837.0" layoutY="15.0" prefHeight="95.0" prefWidth="28.0" spacing="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                      <children>
-                        <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" style="-fx-background-color: white;" />
+                        <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" />
                         <JFXTextField fx:id="floorField" alignment="CENTER" prefColumnCount="1" prefHeight="25.0" prefWidth="41.0" text="1" />
-                        <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" style="-fx-background-color: white;" />
+                        <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" />
                      </children>
                   </VBox>
                </children></AnchorPane>
