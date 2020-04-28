@@ -37,11 +37,11 @@ public class EquipReqController extends AbstractController {
 
   public void initialize() {
 
-    if (eDB.getSizeReq() == -1) {
+    if (erDB.getSizeReq() == -1) {
       eDB.dropTables();
       eDB.createTables();
-    } else if (eDB.getSizeReq() == 0) {
-      eDB.removeAllReqs();
+    } else if (erDB.getSizeReq() == 0) {
+      erDB.removeAllReqs();
     }
 
     qtyField.setTextFormatter(InputFormatUtil.getIntFilter());
@@ -74,7 +74,7 @@ public class EquipReqController extends AbstractController {
     try {
 
       tblEquipView.clear();
-      tblEquipView.add(eDB.ReqOl());
+      tblEquipView.add(erDB.ReqOl());
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -91,7 +91,7 @@ public class EquipReqController extends AbstractController {
     Node location = locCombo.getSelectionModel().getSelectedItem();
     String item = itemField.getText();
     int qty = Integer.parseInt(qtyField.getText());
-    boolean a = eDB.addReq(item, qty, location.getNodeID(), priority);
+    boolean a = erDB.addReq(item, qty, location.getNodeID(), priority);
     priCombo.getSelectionModel().clearSelection();
     locCombo.getSelectionModel().clearSelection();
     itemField.clear();
@@ -103,7 +103,7 @@ public class EquipReqController extends AbstractController {
 
     selected = tblEquipView.getSelected();
     if (selected != null) {
-      boolean b = eDB.deleteReq(selected.getUsername(), selected.getTime());
+      boolean b = erDB.deleteReq(selected.getUsername(), selected.getTime());
       updateTable();
     }
   }
