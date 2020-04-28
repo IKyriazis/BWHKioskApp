@@ -5,9 +5,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import edu.wpi.cs3733.d20.teamA.database.AnnouncementList;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -40,7 +38,7 @@ public class AnnouncementsAdminController {
       return;
     }
 
-    AnnouncementList.addToList(textAnn.getText());
+    // AnnouncementDatabase.addToList(textAnn.getText());
     textAnn.setText("");
     update();
   }
@@ -52,15 +50,15 @@ public class AnnouncementsAdminController {
       return;
     }
 
-    AnnouncementList.deleteFromList(editAnn.getSelectionModel().getSelectedIndex());
+    // AnnouncementDatabase.deleteFromList(editAnn.getSelectionModel().getSelectedIndex());
     update();
   }
 
   public void update() {
     editAnn.getItems().clear();
-    ObservableList<String> listAnn = AnnouncementList.getList();
-    for (int i = 0; i < listAnn.size(); i++) {
-      editAnn.getItems().add(listAnn.get(i));
-    }
+    // ObservableList<String> listAnn = AnnouncementDatabase.getList();
+    // for (int i = 0; i < listAnn.size(); i++) {
+    //  editAnn.getItems().add(listAnn.get(i));
+    // }
   }
 }
