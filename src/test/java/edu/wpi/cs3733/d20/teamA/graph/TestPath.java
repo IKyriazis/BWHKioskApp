@@ -108,4 +108,85 @@ public class TestPath {
 
     Assertions.assertEquals(realPath, pathNodes);
   }
+
+  @Test
+  public void testBreadthFirstGraph1() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(node1);
+    realPath.add(node3);
+
+    setupFirstGraph();
+    BreadthFirst path = new BreadthFirst(graph);
+    path.findPath(node1, node3);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+
+    Assertions.assertNotNull(pathNodes);
+
+    Assertions.assertEquals(realPath, pathNodes);
+  }
+
+  @Test
+  public void testBreadthFirstGraph2() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(nodeG);
+    realPath.add(nodeD);
+    realPath.add(nodeE);
+    realPath.add(nodeC);
+
+    setupSecondGraph();
+    BreadthFirst path = new BreadthFirst(graph);
+    path.findPath(nodeG, nodeC);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+
+    Assertions.assertNotNull(pathNodes);
+
+    Assertions.assertEquals(realPath, pathNodes);
+  }
+
+  @Test
+  public void testDepthFirstGraph1() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(node1);
+    realPath.add(node3);
+
+    setupFirstGraph();
+    DepthFirst path = new DepthFirst(graph);
+    path.findPath(node1, node3);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+    Assertions.assertNotNull(pathNodes);
+    // Assertions.assertTrue(true);
+    Assertions.assertEquals(realPath, pathNodes);
+  }
+
+  @Test
+  public void testDepthFirstGraph2() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(nodeG);
+    realPath.add(nodeH);
+    realPath.add(nodeF);
+    realPath.add(nodeC);
+
+    setupSecondGraph();
+    DepthFirst path = new DepthFirst(graph);
+    path.findPath(nodeG, nodeC);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+    Assertions.assertNotNull(pathNodes);
+
+    Assertions.assertEquals(realPath, pathNodes);
+  }
+
+  @Test
+  public void testContextPath() throws SQLException {
+    ContextPath path = new ContextPath();
+    setupFirstGraph();
+
+    path.setPath(new BreadthFirst(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof BreadthFirst);
+
+    path.setPath(new DepthFirst(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof DepthFirst);
+
+    path.setPath(new Path(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof Path);
+  }
 }

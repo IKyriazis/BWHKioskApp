@@ -4,6 +4,7 @@ import edu.wpi.cs3733.d20.teamA.graph.Edge;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.Path;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
@@ -32,9 +34,17 @@ public class MapCanvas extends Canvas {
   private Point2D dragLast;
 
   private boolean dragEnabled;
+  private MouseButton dragMapButton = MouseButton.PRIMARY;
   private EventHandler<MouseEvent> dragStartHandler;
   private EventHandler<MouseEvent> dragHandler;
-  private Node selectedNode;
+  private EventHandler<MouseEvent> dragEndHandler;
+
+  private ArrayList<Node> highlights;
+  private Color highlightColor = Color.DEEPSKYBLUE;
+  private Point2D highlightOffset;
+
+  private Point2D selectionStart;
+  private Point2D selectionEnd;
 
   private Path path;
 
@@ -60,29 +70,41 @@ public class MapCanvas extends Canvas {
             (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
 
     // Create drag event handlers
-    dragStartHandler = event -> dragLast = new Point2D(event.getX(), event.getY());
+    dragStartHandler =
+        event -> {
+          if (event.getButton() == dragMapButton) {
+            dragLast = new Point2D(event.getX(), event.getY());
+            setCursor(Cursor.MOVE);
+          }
+        };
     dragHandler =
         event -> {
-          Point2D startGraphPos = canvasToGraph(dragLast);
-          Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
+          if (event.getButton() == dragMapButton) {
+            Point2D startGraphPos = canvasToGraph(dragLast);
+            Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
 
-          double xDiff = startGraphPos.getX() - endGraphPos.getX();
-          double yDiff = startGraphPos.getY() - endGraphPos.getY();
+            double xDiff = startGraphPos.getX() - endGraphPos.getX();
+            double yDiff = startGraphPos.getY() - endGraphPos.getY();
 
-          center = new Point2D(xDiff + center.getX(), yDiff + center.getY());
+            center = new Point2D(xDiff + center.getX(), yDiff + center.getY());
 
-          draw(lastDrawnFloor);
+            draw(lastDrawnFloor);
 
-          dragLast = new Point2D(event.getX(), event.getY());
+            dragLast = new Point2D(event.getX(), event.getY());
+          }
+        };
+    dragEndHandler =
+        event -> {
+          if (event.getButton() == dragMapButton) {
+            setCursor(Cursor.DEFAULT);
+          }
         };
 
     // Register drag handlers if enabled
     if (dragEnabled) {
       setOnMousePressed(dragStartHandler);
       setOnMouseDragged(dragHandler);
-
-      // Set cursor to indicate panning possibility
-      setCursor(Cursor.MOVE);
+      setOnMouseReleased(dragEndHandler);
     }
 
     setOnScroll(
@@ -94,6 +116,9 @@ public class MapCanvas extends Canvas {
     // Setup zoom property
     zoom = new SimpleDoubleProperty(0.0);
     zoom.addListener(observable -> draw(lastDrawnFloor));
+
+    // Create list of nodes to highlight
+    highlights = new ArrayList<>();
   }
 
   // graphToCanvas() projects a point from graph coordinates onto canvas coordinates
@@ -200,14 +225,19 @@ public class MapCanvas extends Canvas {
         // Draw nodes
         floorNodes.forEach(
             node -> {
-              if (node == selectedNode) {
-                drawNode(node, Color.web("#1E88E5"));
+              if (highlights.contains(node)) {
+                drawNode(node, highlightColor);
               } else {
                 drawNode(node, Color.BLACK);
               }
             });
       } catch (Exception e) {
         e.printStackTrace();
+      }
+
+      // Draw selection box
+      if (selectionStart != null && selectionEnd != null) {
+        drawSelectionBox(selectionStart, selectionEnd);
       }
     }
 
@@ -239,7 +269,14 @@ public class MapCanvas extends Canvas {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
+    if (highlightOffset != null && highlights.contains(edge.getStart())) {
+      start = start.add(highlightOffset);
+    }
+
     Point2D end = graphToCanvas(new Point2D(edge.getEnd().getX(), edge.getEnd().getY()));
+    if (highlightOffset != null && highlights.contains(edge.getEnd())) {
+      end = end.add(highlightOffset);
+    }
 
     // Set the color to black for the edge
     graphicsContext.setLineWidth(5);
@@ -256,6 +293,9 @@ public class MapCanvas extends Canvas {
     graphicsContext.setFill(color);
 
     Point2D nodePoint = graphToCanvas(new Point2D(node.getX(), node.getY()));
+    if (highlights.contains(node) && highlightOffset != null) {
+      nodePoint = nodePoint.add(highlightOffset);
+    }
     graphicsContext.fillOval(nodePoint.getX() - 5, nodePoint.getY() - 5, 10, 10);
   }
 
@@ -278,9 +318,22 @@ public class MapCanvas extends Canvas {
     }
   }
 
+  // Draws a rubber-band selection box
+  public void drawSelectionBox(Point2D start, Point2D end) {
+    double startX = Math.min(start.getX(), end.getX());
+    double startY = Math.min(start.getY(), end.getY());
+
+    double width = Math.max(start.getX(), end.getX()) - startX;
+    double height = Math.max(start.getY(), end.getY()) - startY;
+
+    getGraphicsContext2D().setFill(Color.rgb(63, 159, 191, 0.40));
+    getGraphicsContext2D().fillRect(startX, startY, width, height);
+  }
+
   public Path getPath() {
     return this.path;
   }
+
   // Get distance between two points
   private double getDistance(Point2D p0, Point2D p1) {
     double xDiff = p1.getX() - p0.getX();
@@ -340,21 +393,46 @@ public class MapCanvas extends Canvas {
     if (dragEnabled) {
       setOnMousePressed(dragStartHandler);
       setOnMouseDragged(dragHandler);
-      setCursor(Cursor.MOVE);
+      setOnMouseReleased(dragEndHandler);
     } else {
       setOnMousePressed(null);
       setOnMouseDragged(null);
-      setCursor(Cursor.DEFAULT);
+      setOnMouseReleased(null);
     }
 
     this.dragEnabled = dragEnabled;
   }
 
-  public void setSelectedNode(Node selectedNode) {
-    this.selectedNode = selectedNode;
+  public void setHighlights(ArrayList<Node> highlights) {
+    this.highlights = highlights;
   }
 
-  public Node getSelectedNode() {
-    return selectedNode;
+  public void setHighlightColor(Color color) {
+    this.highlightColor = color;
+  }
+
+  public void setDragMapButton(MouseButton dragMapButton) {
+    this.dragMapButton = dragMapButton;
+  }
+
+  public EventHandler<MouseEvent> getDragStartHandler() {
+    return dragStartHandler;
+  }
+
+  public EventHandler<MouseEvent> getDragHandler() {
+    return dragHandler;
+  }
+
+  public EventHandler<MouseEvent> getDragEndHandler() {
+    return dragEndHandler;
+  }
+
+  public void setSelectionBox(Point2D start, Point2D end) {
+    selectionStart = start;
+    selectionEnd = end;
+  }
+
+  public void setHighlightOffset(Point2D highlightOffset) {
+    this.highlightOffset = highlightOffset;
   }
 }
