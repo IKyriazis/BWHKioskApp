@@ -221,7 +221,10 @@ public class MapCanvas extends Canvas {
 
           // Draw edges
           belowNodes.forEach(
-              node -> node.getEdges().values().forEach(edge -> drawEdge(edge, belowColor, false)));
+              node ->
+                  node.getEdges()
+                      .values()
+                      .forEach(edge -> drawEdge(edge, belowColor, false, true)));
 
           belowNodes.forEach(
               node -> {
@@ -242,7 +245,7 @@ public class MapCanvas extends Canvas {
         // Draw all edges
         floorNodes.forEach(
             node -> {
-              node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true));
+              node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true, true));
             });
 
         // Draw nodes
@@ -288,7 +291,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws an edge
-  private void drawEdge(Edge edge, Color color, boolean showArrows) {
+  private void drawEdge(Edge edge, Color color, boolean showArrows, boolean drawMultifloorEdge) {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
@@ -306,14 +309,17 @@ public class MapCanvas extends Canvas {
     graphicsContext.setStroke(color);
 
     // Draw the line in between the points
-    graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
+    if ((edge.getStart().getFloor() == edge.getEnd().getFloor()) || drawMultifloorEdge) {
+      graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
+    }
 
     if (showArrows) {
+      Point2D pos = (drawMultifloorEdge) ? end : start;
       // Draw up / down arrow if floor changed
       if (edge.getEnd().getFloor() < edge.getStart().getFloor()) {
-        graphicsContext.drawImage(downImage, end.getX() - 16, end.getY() - 16, 32, 32);
+        graphicsContext.drawImage(downImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
       } else if (edge.getEnd().getFloor() > edge.getStart().getFloor()) {
-        graphicsContext.drawImage(upImage, end.getX() - 16, end.getY() - 16, 32, 32);
+        graphicsContext.drawImage(upImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
       }
     }
   }
@@ -335,7 +341,7 @@ public class MapCanvas extends Canvas {
   private void drawPath(ContextPath path, int floor) {
 
     for (Edge edge : path.getPathEdges()) {
-      if (edge.getEnd().getFloor() == floor) drawEdge(edge, Color.BLACK, false);
+      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.BLACK, true, false);
     }
 
     for (Node node : path.getPathNodes()) {
