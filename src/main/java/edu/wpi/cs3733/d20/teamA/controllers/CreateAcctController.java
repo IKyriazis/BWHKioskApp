@@ -3,7 +3,9 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.fxml.FXML;
+import javafx.scene.layout.StackPane;
 
 public class CreateAcctController extends AbstractController {
 
@@ -13,6 +15,7 @@ public class CreateAcctController extends AbstractController {
   @FXML private JFXTextField title;
   @FXML private JFXPasswordField pass;
   @FXML private JFXPasswordField cPass;
+  @FXML private StackPane dialogPane;
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
 
@@ -24,32 +27,49 @@ public class CreateAcctController extends AbstractController {
         || pass.getText().isEmpty()
         || cPass.getText().isEmpty()) {
       // make popup that says one or more fields are empty
+      DialogUtil.simpleErrorDialog(
+          dialogPane,
+          "Empty fields",
+          "You left some fields empty. Please make sure they are all filled.");
       return;
     }
     if (eDB.uNameExists(uName.getText())) {
       // make popup that says username already exists
-      System.out.println("uname exists");
+      DialogUtil.simpleErrorDialog(
+          dialogPane,
+          "Invalid Username",
+          "The username you have chosen is already taken. Please choose another.");
       return;
     }
     if (!cPass.getText().equals(pass.getText())) {
       // make popup that says passwords are not the same
-      System.out.println("cpass doesn't match");
+      DialogUtil.simpleErrorDialog(
+          dialogPane,
+          "Passwords Don't Match",
+          "Please make sure that the password you entered in the confirm password field matches your intended password.");
       return;
     }
     if (!eDB.checkSecurePass(pass.getText())) {
       // make popup that says make sure password includes a number, lowercase letter, and uppercase
       // letter, and it's
       // less than 72 characters
-      System.out.println("check secure pass");
+      DialogUtil.simpleErrorDialog(
+          dialogPane,
+          "Invalid Password",
+          "Please create a password that includes a number, lowercase letter, and uppercase letter. Shorter than 72 characters.");
       return;
     }
     if (eDB.addEmployee(
         fName.getText(), lName.getText(), uName.getText(), cPass.getText(), title.getText())) {
       // print that account has been created successfully
-      System.out.println("Added account");
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "Account Created", "You have successfully created an account.");
     } else {
       // print that for some reason the account couldn't be added
-      System.out.println("Failed to add account");
+      DialogUtil.simpleErrorDialog(
+          dialogPane,
+          "Account creation failed",
+          "For some reason we could not create your account.");
     }
   }
 
