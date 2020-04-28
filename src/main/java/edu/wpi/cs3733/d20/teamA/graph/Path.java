@@ -243,39 +243,54 @@ public class Path implements IStrategyPath {
                 "Turn left at " + pathNodes.get(j).getLongName(),
                 new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_LEFT)));
       } else if (directions.get(j) == Direction.UP) {
-        textPath.add(
-            new Label(
-                "Go up one floor at " + pathNodes.get(j).getLongName(),
-                new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+        int sameLength = getSameLength(directions, j, Direction.UP);
+
+        if (sameLength >= 1) {
+          j += sameLength - 1;
+          textPath.add(
+              new Label(
+                  "Go up " + sameLength + " floors",
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+        } else {
+          textPath.add(
+              new Label(
+                  "Go up until destination",
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+          break;
+        }
       } else if (directions.get(j) == Direction.DOWN) {
-        textPath.add(
-            new Label(
-                "Go down one floor at " + pathNodes.get(j).getLongName(),
-                new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_DOWN)));
+        int sameLength = getSameLength(directions, j, Direction.DOWN);
+
+        if (sameLength >= 1) {
+          j += sameLength - 1;
+          textPath.add(
+              new Label(
+                  "Go down " + sameLength + " floors",
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_DOWN)));
+        } else {
+          textPath.add(
+              new Label(
+                  "Go up until destination",
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_DOWN)));
+          break;
+        }
+
       } else {
         // else if it's straight keep track of how many nodes it is straight for
-        String end = "";
-        int nextNotStraight = j;
-        for (int k = j + 1; k < directions.size(); k++) {
-          if (directions.get(k) != Direction.NEXT) {
-            end = pathNodes.get(k).getLongName();
-            nextNotStraight = k;
-            break;
-          }
-        }
-        j = nextNotStraight - 1;
-        // If end is empty then there were no other turns
-        if (end.isEmpty()) {
+        int sameLength = getSameLength(directions, j, Direction.NEXT);
+
+        if (sameLength >= 1) {
+          j += sameLength - 1;
+          textPath.add(
+              new Label(
+                  "Go straight until " + pathNodes.get(j + 1).getLongName(),
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
+        } else {
           textPath.add(
               new Label(
                   "Continue straight until destination",
                   new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
           break;
-        } else {
-          textPath.add(
-              new Label(
-                  "Go straight until " + end,
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
         }
       }
     }
@@ -286,5 +301,14 @@ public class Path implements IStrategyPath {
             new FontAwesomeIconView(FontAwesomeIcon.DOT_CIRCLE_ALT)));
 
     return textPath;
+  }
+
+  private int getSameLength(List<Direction> directions, int index, Direction direction) {
+    for (int i = index; i < directions.size(); i++) {
+      if (directions.get(i) != direction) {
+        return i - index;
+      }
+    }
+    return -1;
   }
 }
