@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDecorator;
 import java.io.IOException;
 import javafx.application.Application;
@@ -8,6 +9,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,6 +37,14 @@ public class App extends Application {
 
     Scene scene = new Scene(decorator);
     scene.getStylesheets().add(getClass().getResource("stylesheet.css").toExternalForm());
+    ((HBox) decorator.getChildren().get(0))
+        .getChildren()
+        .forEach(
+            node -> {
+              if (node instanceof JFXButton) {
+                node.setStyle("-fx-background-color: black; -fx-text-fill: white; -fx-fill: white");
+              }
+            });
 
     primaryStage.setScene(scene);
     primaryStage.setTitle("Hospital App");

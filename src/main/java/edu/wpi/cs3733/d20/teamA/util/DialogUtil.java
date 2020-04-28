@@ -18,7 +18,7 @@ public class DialogUtil {
   private static JFXButton createCloseButton() {
     JFXButton closeButton = new JFXButton("Close");
     closeButton.setButtonType(JFXButton.ButtonType.RAISED);
-    closeButton.setStyle("-fx-background-color: #78909C");
+    closeButton.setStyle("-fx-background-color: -primary-color");
     closeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
 
     return closeButton;

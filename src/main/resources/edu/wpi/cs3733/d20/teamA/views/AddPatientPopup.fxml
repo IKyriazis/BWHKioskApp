@@ -24,7 +24,7 @@
       <JFXTextField fx:id="txtFirstName" prefWidth="150.0" promptText="First Name" />
       <JFXTextField fx:id="txtLastName" prefWidth="150.0" promptText="Last Name" GridPane.columnIndex="2" />
       <JFXTextField fx:id="txtDateOfBirth" prefWidth="150.0" promptText="Date of Birth (mm/dd/yyyy)" GridPane.rowIndex="1" />
-      <JFXButton fx:id="doneButton" buttonType="RAISED" style="-fx-background-color: white;" text="Done" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <JFXButton fx:id="doneButton" buttonType="RAISED" text="Done" GridPane.columnIndex="2" GridPane.rowIndex="2" />
       <StackPane fx:id="dialogDialogStackPane" prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2">
          <children>
             <Label fx:id="errorLabel" />

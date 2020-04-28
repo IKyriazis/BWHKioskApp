@@ -97,7 +97,6 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
-      this.employeeID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -107,7 +106,7 @@ public class EmployeesDatabase extends Database {
 
   public boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
-    return addEmployee(employeeID, nameFirst, nameLast, username, password, title);
+    return addEmployee(getSizeEmployees() + 1, nameFirst, nameLast, username, password, title);
   }
 
   /**
