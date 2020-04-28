@@ -14,6 +14,7 @@ public abstract class AbstractController {
   protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
+  protected EquipReqDatabase erDB;
   protected JanitorDatabase janitorDatabase;
   protected LaundryDatabase lDB;
   protected ITTicketDatabase itTicketDatabase;
@@ -28,6 +29,7 @@ public abstract class AbstractController {
     graphDatabase = new GraphDatabase(conn);
     flDatabase = new FlowerDatabase(conn);
     eDB = new EmployeesDatabase(conn);
+    erDB = new EquipReqDatabase(conn);
 
     // Uncomment if employee database is messed up
     // eDB.removeAllEmployees();
