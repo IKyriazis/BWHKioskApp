@@ -6,24 +6,23 @@
 .root {
     -fx-font-family: "Roboto";
 
-    -primary-color: #2196f3;
-    -primary-color-text: rgba(255, 255, 255, 0.92);
+    -primary-color: #78909c;
+    -primary-color-text: rgba(0, 0, 0, 0.92);
 
-    -primary-color-light: #6ec6ff;
+    -primary-color-light: #a7c0cd;
     -primary-color-light-text: rgba(0, 0, 0, 0.86);
 
-    -primary-color-dark: #0069c0;
-    -primary-color-dark-text: rgba(255, 255, 255, 0.92);
+    -primary-color-dark: #4b636e;
+    -primary-color-dark-text: rgba(0, 0, 0, 0.92);
 
     -secondary-color: #757575;
-    -secondary-color-text: rgba(0, 0, 0, 0.34);
+    -secondary-color-text: rgba(0, 0, 0, 0.92);
 
     -secondary-color-light: #a4a4a4;
-    -secondary-color-light-text: rgba(0, 0, 0, 0.52);
-
+    -secondary-color-light-text: rgba(0, 0, 0, 0.92);
 
     -secondary-color-dark: #494949;
-    -secondary-color-dark-text: rgba(255, 255, 255, 0.58);
+    -secondary-color-dark-text: rgba(0, 0, 0, 0.92);
 }
 
 .tab .tab-label {
@@ -91,6 +90,10 @@
     -jfx-unfocus-color: -secondary-color;
 }
 
+.sidebar-button .glyph-icon {
+    -fx-fill: -secondary-color-text;
+}
+
 .small-text {
     -fx-font-size: 10pt;
 }
@@ -110,6 +113,7 @@
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
+    -fx-background-color: rgba(255, 255, 255, 0);
 }
 
 #loginBox, #centerPane {
