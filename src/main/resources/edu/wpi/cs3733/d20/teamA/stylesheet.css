@@ -93,6 +93,11 @@
     -jfx-focus-color: -primary-color;
 }
 
+.jfx-check-box {
+    -jfx-checked-color: -primary-color;
+    -jfx-unchecked-color: black;
+}
+
 .sidebar-button .glyph-icon {
     -fx-fill: -secondary-color-text;
 }

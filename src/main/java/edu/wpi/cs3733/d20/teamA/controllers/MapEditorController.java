@@ -445,7 +445,10 @@ public class MapEditorController {
   }
 
   @FXML
-  public void setDepthFirst() {}
+  public void toggleDrawBelow(ActionEvent event) {
+    canvas.setDrawBelow(((JFXCheckBox) event.getSource()).isSelected());
+    canvas.draw(floor);
+  }
 
   private String getNodeInfo(Node node) {
     return "Node ID: "

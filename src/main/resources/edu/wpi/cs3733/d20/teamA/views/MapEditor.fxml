@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -49,9 +50,10 @@
                   <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" />
                </children>
             </VBox>
-            <JFXButton fx:id="aStarButton" buttonType="RAISED" text="A Star" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="93.0" />
-            <JFXButton fx:id="breadthFirstButton" buttonType="RAISED" text="Breadth First" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="133.0" />
-            <JFXButton fx:id="depthFirstButton" buttonType="RAISED" text="Depth First" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="173.0" />
+            <JFXCheckBox onAction="#toggleDrawBelow" text="Draw Nodes Below" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="15.0" />
+            <JFXButton fx:id="aStarButton" buttonType="RAISED" text="A Star" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="203.0" />
+            <JFXButton fx:id="breadthFirstButton" buttonType="RAISED" text="Breadth First" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="233.0" />
+            <JFXButton fx:id="depthFirstButton" buttonType="RAISED" text="Depth First" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="263.0" />
          </children>
       </AnchorPane>
    </children>

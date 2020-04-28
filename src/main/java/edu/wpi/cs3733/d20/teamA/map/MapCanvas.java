@@ -25,7 +25,8 @@ public class MapCanvas extends Canvas {
   private final Image downImage;
 
   private int lastDrawnFloor = 1;
-  private boolean drawAllNodes;
+  private boolean drawAllNodes = false;
+  private boolean drawBelow = false;
   private SimpleDoubleProperty zoom;
 
   private BoundingBox viewSpace;
@@ -207,6 +208,35 @@ public class MapCanvas extends Canvas {
     if (drawAllNodes) {
       try {
         int finalFloor = floor;
+        if (drawBelow) {
+          // Get all the nodes on the floor below
+          List<Node> belowNodes =
+              Graph.getInstance().getNodes().values().stream()
+                  .filter(node -> node.getFloor() == finalFloor - 1)
+                  .collect(Collectors.toList());
+          Color belowColor = Color.rgb(0, 0, 0, 0.25);
+          Color belowHighlight =
+              Color.rgb(
+                  (int) highlightColor.getRed() * 255,
+                  (int) highlightColor.getGreen() * 255,
+                  (int) highlightColor.getBlue() * 255,
+                  0.5);
+
+          // Draw edges
+          belowNodes.forEach(
+              node -> node.getEdges().values().forEach(edge -> drawEdge(edge, belowColor, false)));
+
+          belowNodes.forEach(
+              node -> {
+                if (highlights.contains(node)) {
+                  drawNode(node, belowHighlight);
+                } else {
+                  drawNode(node, belowColor);
+                }
+              });
+        }
+
+        // Get all the nodes on this floor
         List<Node> floorNodes =
             Graph.getInstance().getNodes().values().stream()
                 .filter(node -> node.getFloor() == finalFloor)
@@ -215,7 +245,7 @@ public class MapCanvas extends Canvas {
         // Draw all edges
         floorNodes.forEach(
             node -> {
-              node.getEdges().values().forEach(this::drawEdge);
+              node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true));
             });
 
         // Draw nodes
@@ -261,7 +291,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws an edge
-  private void drawEdge(Edge edge) {
+  private void drawEdge(Edge edge, Color color, boolean showArrows) {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
@@ -276,16 +306,18 @@ public class MapCanvas extends Canvas {
 
     // Set the color to black for the edge
     graphicsContext.setLineWidth(5);
-    graphicsContext.setStroke(Color.BLACK);
+    graphicsContext.setStroke(color);
 
     // Draw the line in between the points
     graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
 
-    // Draw up / down arrow if floor changed
-    if (edge.getEnd().getFloor() < edge.getStart().getFloor()) {
-      graphicsContext.drawImage(downImage, end.getX() - 16, end.getY() - 16, 32, 32);
-    } else if (edge.getEnd().getFloor() > edge.getStart().getFloor()) {
-      graphicsContext.drawImage(upImage, end.getX() - 16, end.getY() - 16, 32, 32);
+    if (showArrows) {
+      // Draw up / down arrow if floor changed
+      if (edge.getEnd().getFloor() < edge.getStart().getFloor()) {
+        graphicsContext.drawImage(downImage, end.getX() - 16, end.getY() - 16, 32, 32);
+      } else if (edge.getEnd().getFloor() > edge.getStart().getFloor()) {
+        graphicsContext.drawImage(upImage, end.getX() - 16, end.getY() - 16, 32, 32);
+      }
     }
   }
 
@@ -306,7 +338,7 @@ public class MapCanvas extends Canvas {
   private void drawPath(ContextPath path, int floor) {
 
     for (Edge edge : path.getPathEdges()) {
-      if (edge.getEnd().getFloor() == floor) drawEdge(edge);
+      if (edge.getEnd().getFloor() == floor) drawEdge(edge, Color.BLACK, false);
     }
 
     for (Node node : path.getPathNodes()) {
@@ -438,5 +470,9 @@ public class MapCanvas extends Canvas {
 
   public void setHighlightOffset(Point2D highlightOffset) {
     this.highlightOffset = highlightOffset;
+  }
+
+  public void setDrawBelow(boolean drawBelow) {
+    this.drawBelow = drawBelow;
   }
 }
