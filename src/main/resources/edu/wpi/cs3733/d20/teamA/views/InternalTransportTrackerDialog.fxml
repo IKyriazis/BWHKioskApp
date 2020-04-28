@@ -40,7 +40,7 @@
             <VBox alignment="CENTER" spacing="25.0" GridPane.columnIndex="1">
                <children>
                   <JFXTextField fx:id="txtNumber" labelFloat="true" prefWidth="100.0" text="Request Number" />
-                  <JFXButton fx:id="trackButton" buttonType="RAISED" onAction="#updateProgress" prefWidth="100.0" style="-fx-background-color: #66BB6A;" text="Track Request" />
+                  <JFXButton fx:id="trackButton" buttonType="RAISED" onAction="#updateProgress" prefWidth="100.0" text="Track Request" />
                </children>
                <padding>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

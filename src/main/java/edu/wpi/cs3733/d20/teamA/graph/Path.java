@@ -66,9 +66,9 @@ public class Path implements IStrategyPath {
         Node neighbor = edge.getEnd();
 
         // Only consider nodes on this floor for now.
-        if (neighbor.getFloor() != start.getFloor()) {
-          continue;
-        }
+        // if (neighbor.getFloor() != start.getFloor()) {
+        //  continue;
+        // }
 
         // if the neighbor hasn't been visited
         if (!visited.contains(neighbor)) {

@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -9,9 +10,10 @@
 
 <GridPane fx:id="modPane" hgap="25.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" vgap="25.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <columnConstraints>
+        <ColumnConstraints />
         <ColumnConstraints halignment="CENTER" />
         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-        <ColumnConstraints hgrow="SOMETIMES" />
+      <ColumnConstraints hgrow="SOMETIMES" />
     </columnConstraints>
     <rowConstraints>
         <RowConstraints vgrow="SOMETIMES" />
@@ -19,9 +21,10 @@
         <RowConstraints vgrow="SOMETIMES" />
     </rowConstraints>
     <children>
-        <JFXButton fx:id="doneButton" text="Done" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-      <JFXComboBox fx:id="cleanerComboBox" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Cleaner Name" />
-      <JFXComboBox fx:id="progressComboBox" labelFloat="true" prefWidth="150.0" promptText="Progress" GridPane.columnIndex="1" />
+        <JFXButton fx:id="doneButton" text="Done" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <JFXComboBox fx:id="comboboxLocation" prefWidth="150.0" promptText="Location" />
+      <JFXComboBox fx:id="comboboxPriority" prefWidth="150.0" promptText="Priority" GridPane.columnIndex="2" />
+      <JFXTextField fx:id="textboxEmployee" labelFloat="true" promptText="Employee Name" text="Unassigned" GridPane.rowIndex="2" />
     </children>
     <padding>
         <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

@@ -11,7 +11,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class MedicineDeliveryDatabase extends Database {
-  private int requestCount = getRequestSize();
+  private int requestCount;
 
   public MedicineDeliveryDatabase(Connection connection) {
     super(connection);
@@ -19,6 +19,8 @@ public class MedicineDeliveryDatabase extends Database {
     if (doesTableNotExist("MEDICINEREQUEST")) {
       createTables();
     }
+
+    requestCount = getRequestSize();
   }
 
   /**

@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
+import java.util.ArrayList;
+
 public class ContextPath {
 
   private IStrategyPath pathFindingAlgo;
@@ -20,5 +22,13 @@ public class ContextPath {
 
   public IStrategyPath getPathFindingAlgo() {
     return this.pathFindingAlgo;
+  }
+
+  public ArrayList<Edge> getPathEdges() {
+    return pathFindingAlgo.getPathEdges();
+  }
+
+  public ArrayList<Node> getPathNodes() {
+    return pathFindingAlgo.getPathNodes();
   }
 }

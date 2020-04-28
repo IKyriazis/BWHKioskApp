@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
-import edu.wpi.cs3733.d20.teamA.graph.Edge;
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.graph.Path;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -46,7 +43,7 @@ public class MapCanvas extends Canvas {
   private Point2D selectionStart;
   private Point2D selectionEnd;
 
-  private Path path;
+  private ContextPath path;
 
   public MapCanvas(boolean dragEnabled) {
     super();
@@ -243,7 +240,7 @@ public class MapCanvas extends Canvas {
 
     // Draw path if it exists
     if (path != null) {
-      drawPath(path);
+      drawPath(path, floor);
     }
 
     lastDrawnFloor = floor;
@@ -300,20 +297,21 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws the path found
-  private void drawPath(Path path) {
+  private void drawPath(ContextPath path, int floor) {
 
     for (Edge edge : path.getPathEdges()) {
-      drawEdge(edge);
+      if (edge.getEnd().getFloor() == floor) drawEdge(edge);
     }
 
     for (Node node : path.getPathNodes()) {
 
-      if (path.getPathNodes().indexOf(node) == 0) {
+      if (path.getPathNodes().indexOf(node) == 0 && node.getFloor() == floor) {
         drawNode(node, Color.SPRINGGREEN);
-      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)) {
+      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)
+          && node.getFloor() == floor) {
         drawNode(node, Color.TOMATO);
-      } else {
-        drawNode(node, Color.BLACK);
+      } else if (node.getFloor() == floor) {
+        // drawNode(node, Color.BLACK);
       }
     }
   }
@@ -330,7 +328,7 @@ public class MapCanvas extends Canvas {
     getGraphicsContext2D().fillRect(startX, startY, width, height);
   }
 
-  public Path getPath() {
+  public ContextPath getPath() {
     return this.path;
   }
 
@@ -364,7 +362,7 @@ public class MapCanvas extends Canvas {
     }
   }
 
-  public void setPath(Path path) {
+  public void setPath(ContextPath path) {
     this.path = path;
   }
 
