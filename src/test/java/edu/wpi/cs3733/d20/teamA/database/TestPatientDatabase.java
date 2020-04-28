@@ -57,12 +57,12 @@ public class TestPatientDatabase {
     Assertions.assertTrue(d);
     boolean b = pDB.addPatient(0, "Eva", "Labbe", "Eva Health", "01/03/2000");
     System.out.println(pDB.getSizePatients());
-    Assertions.assertFalse(b);
+    Assertions.assertTrue(b); // Should handle the duplicate key and assign a new number
     boolean e = pDB.addPatient(2, "Brennan", "Aubuchon", "Brennan Insurance", "01/04/2000");
     Assertions.assertTrue(e);
     boolean c = pDB.addPatient(-1, "Lily", "Green", "Lily Insurance", "01/04/2000");
     Assertions.assertFalse(c);
-    Assertions.assertEquals(3, pDB.getSizePatients());
+    Assertions.assertEquals(4, pDB.getSizePatients());
     pDB.removeAllPatients();
   }
 
