@@ -25,7 +25,7 @@ public class EmployeesDatabase extends Database {
       createTables();
     }
 
-    employeeID = getSizeEmployees() + 1;
+    employeeID = getRandomNumber();
   }
 
   /**
@@ -128,11 +128,12 @@ public class EmployeesDatabase extends Database {
 
   public synchronized boolean addEmployeeNoChecks(
       String nameFirst, String nameLast, String username, String password, String title) {
-    return addEmployee(getSizeEmployees() + 1, nameFirst, nameLast, username, password, title);
+    return addEmployee(getRandomNumber(), nameFirst, nameLast, username, password, title);
   }
 
   public synchronized boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
+    employeeID = getRandomNumber();
     return checkSecurePass(password)
         && addEmployee(employeeID, nameFirst, nameLast, username, password, title);
   }

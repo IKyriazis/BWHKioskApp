@@ -25,7 +25,7 @@ public class PrescriptionDatabase extends Database {
     if (doesTableNotExist("PRESCRIPTION")) {
       createTables();
     }
-    prescriptionNum = getSizePrescription() + 1;
+    prescriptionNum = getRandomNumber();
   }
 
   /**
@@ -113,7 +113,7 @@ public class PrescriptionDatabase extends Database {
       int numRefills,
       String doctorName,
       String notes) {
-    this.prescriptionNum++;
+    prescriptionNum = getRandomNumber();
     return addPrescription(
         this.prescriptionNum,
         patient,
