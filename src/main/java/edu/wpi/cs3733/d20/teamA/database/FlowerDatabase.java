@@ -2,6 +2,8 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
 import java.io.*;
 import java.sql.*;
 import java.util.List;
@@ -10,6 +12,7 @@ import javafx.collections.ObservableList;
 
 public class FlowerDatabase extends Database {
   private int orderNum;
+  private int flowerNum;
 
   /**
    * Creates the Flower database with given connection
@@ -24,6 +27,7 @@ public class FlowerDatabase extends Database {
       createTables();
     }
     orderNum = getSizeOrders() + 1;
+    flowerNum = getSizeFlowers() + 1;
   }
 
   /**
@@ -33,13 +37,6 @@ public class FlowerDatabase extends Database {
    *     tables are dropped correctly
    */
   public boolean dropTables() {
-
-    // if the helper returns false this method should too
-    // drop the CONSTRAINT first
-    if (!(helperPrepared("ALTER TABLE Orders DROP CONSTRAINT FK_fT"))) {
-
-      return false;
-    }
     // Drop the tables
     if (!(helperPrepared("DROP TABLE Flowers") && helperPrepared("DROP TABLE Orders"))) {
       return false;
@@ -58,11 +55,11 @@ public class FlowerDatabase extends Database {
     // Create the graph tables
     boolean a =
         helperPrepared(
-            "CREATE TABLE Flowers (typeFlower Varchar(15), color Varchar(15), qty INTEGER NOT NULL, pricePer DOUBLE NOT NULL, CONSTRAINT PK_fl PRIMARY KEY (typeFlower, color), CONSTRAINT CHK_NUMFL CHECK (qty >= 0))");
+            "CREATE TABLE Flowers (flowerID INTEGER NOT NULL, typeFlower Varchar(15), color Varchar(15), qty INTEGER NOT NULL, pricePer DOUBLE NOT NULL, CONSTRAINT PK_fl PRIMARY KEY (typeFlower, color), CONSTRAINT CHK_NUMFL CHECK (qty >= 0))");
 
     boolean b =
         helperPrepared(
-            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flowerType Varchar(15) NOT NULL, flowerColor Varchar(15) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT FK_fT FOREIGN KEY (flowerType, flowerColor) REFERENCES Flowers(typeFlower, color), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
+            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flower Varchar(50) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, message Varchar(200), employeeId INTEGER NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
 
     return a && b;
   }
@@ -87,14 +84,63 @@ public class FlowerDatabase extends Database {
     }
 
     try {
+      int num = flowerNum;
+      while (idInUse(num)) {
+        num++;
+      }
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Flowers (typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?)");
-      pstmt.setString(1, type);
-      pstmt.setString(2, color);
-      pstmt.setInt(3, qty);
-      pstmt.setDouble(4, pricePer);
+                  "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
+      pstmt.setInt(1, num);
+      pstmt.setString(2, type);
+      pstmt.setString(3, color);
+      pstmt.setInt(4, qty);
+      pstmt.setDouble(5, pricePer);
+      pstmt.executeUpdate();
+      flowerNum = num + 1;
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /**
+   * Adds a flower to the flower table with a given ID number
+   *
+   * @param id id number of flower
+   * @param type type of flower
+   * @param color color
+   * @param qty how many are available in inventory
+   * @param pricePer price per flower
+   * @return boolean for test purposes. True is everything goes through without an SQL exception
+   */
+  public boolean addFlowerWithID(int id, String type, String color, int qty, double pricePer) {
+
+    String text = Double.toString(Math.abs(pricePer));
+    int integerPlaces = text.indexOf('.');
+    int decimalPlaces = text.length() - integerPlaces - 1;
+
+    if (decimalPlaces > 2) {
+      return false;
+    }
+
+    try {
+      int num = flowerNum;
+      while (idInUse(num)) {
+        num++;
+      }
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
+      pstmt.setInt(1, id);
+      pstmt.setString(2, type);
+      pstmt.setString(3, color);
+      pstmt.setInt(4, qty);
+      pstmt.setDouble(5, pricePer);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -177,6 +223,45 @@ public class FlowerDatabase extends Database {
   }
 
   /**
+   * Thsi method assigns an employee to the flower order
+   *
+   * @param orderNum order to assign the employee to
+   * @param e the employee being assigned
+   * @return
+   */
+  public boolean assignEmployee(int orderNum, int id) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Orders SET employeeId = " + id + " WHERE orderNumber = " + orderNum);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean idInUse(int ID) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("Select typeFlower From Flowers Where flowerID = " + ID);
+
+      ResultSet rset = pstmt.executeQuery();
+      if (rset.next()) return true;
+
+      pstmt.close();
+      return false;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /**
    * Deletes a flower from the flower table
    *
    * @param type, color
@@ -206,12 +291,9 @@ public class FlowerDatabase extends Database {
    *
    * @return the customer's order number
    */
-  public int addOrder(int numFlowers, String flowerType, String flowerColor, String location) {
+  public int addOrder(
+      int numFlowers, String flowerString, String location, String inMessage, double total) {
     try {
-      double total;
-      double pricePer = getFlowerPricePer(flowerType, flowerColor);
-      total = pricePer * numFlowers;
-
       total = Math.round(total * 100.0) / 100.0;
 
       String status = "Order Sent";
@@ -219,18 +301,17 @@ public class FlowerDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Orders (orderNumber, numFlowers, flowerType, flowerColor, price, status, location) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO Orders (orderNumber, numFlowers, flower, price, status, location,message, employeeId) VALUES (?, ?, ?, ?, ?, ?,?,?)");
       pstmt.setInt(1, orderNum);
       pstmt.setInt(2, numFlowers);
-      pstmt.setString(3, flowerType);
-      pstmt.setString(4, flowerColor);
-      pstmt.setDouble(5, total);
-      pstmt.setString(6, status);
-      pstmt.setString(7, location);
+      pstmt.setString(3, flowerString);
+      pstmt.setDouble(4, total);
+      pstmt.setString(5, status);
+      pstmt.setString(6, location);
+      pstmt.setString(7, inMessage);
+      pstmt.setInt(8, -1);
       pstmt.executeUpdate();
       pstmt.close();
-      int quantity = getFlowerQuantity(flowerType, flowerColor);
-      updateQTY(flowerType, flowerColor, (quantity - numFlowers));
       orderNum++;
       return orderNum - 1;
     } catch (SQLException e) {
@@ -335,8 +416,9 @@ public class FlowerDatabase extends Database {
         String color = rset.getString("color");
         int qty = rset.getInt("qty");
         double pricePer = rset.getDouble("pricePer");
+        int idNum = rset.getInt("flowerID");
 
-        Flower node = new Flower(typeFlower, color, qty, pricePer);
+        Flower node = new Flower(typeFlower, color, qty, pricePer, idNum);
         oList.add(node);
       }
       rset.close();
@@ -363,14 +445,19 @@ public class FlowerDatabase extends Database {
       while (rset.next()) {
         int orderNumber = rset.getInt("orderNumber");
         int numFlowers = rset.getInt("numFlowers");
-        String flowerType = rset.getString("flowerType");
-        String flowerColor = rset.getString("flowerColor");
+        String flowerType = rset.getString("flower");
         double price = rset.getDouble("price");
         String status = rset.getString("status");
-        String location = rset.getString("location");
+        String id = rset.getString("location");
+        String msg = rset.getString("message");
+        int empId = rset.getInt("employeeId");
+        // Open up graph database for node name
+        GraphDatabase graphDatabase = new GraphDatabase(conn);
+        String longLocationName = graphDatabase.getLongName(id);
 
         Order node =
-            new Order(orderNumber, numFlowers, flowerType, flowerColor, price, status, location);
+            new Order(
+                orderNumber, numFlowers, flowerType, price, status, longLocationName, msg, empId);
         oList.add(node);
       }
       rset.close();
@@ -425,7 +512,7 @@ public class FlowerDatabase extends Database {
     Statement priceStmt = getConnection().createStatement();
     ResultSet rst =
         priceStmt.executeQuery(
-            "SELECT * FROM Flowers WHERE typeFlower = '"
+            "SELECT qty FROM Flowers WHERE typeFlower = '"
                 + typeFlower
                 + "' AND color = '"
                 + flowerColor
@@ -434,6 +521,42 @@ public class FlowerDatabase extends Database {
     rst.next();
     quantity = rst.getInt("qty");
     return quantity;
+  }
+
+  public String getFlowerTypeID(int ID) {
+    String status = null;
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("Select typeFlower From Flowers Where flowerID = " + ID);
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        status = rset.getString("typeFlower");
+      }
+      rset.close();
+      pstmt.close();
+      return status;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public String getFlowerColorID(int ID) {
+    String status = null;
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("Select color From Flowers Where flowerID = " + ID);
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        status = rset.getString("color");
+      }
+      rset.close();
+      pstmt.close();
+      return status;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   /**
@@ -470,13 +593,14 @@ public class FlowerDatabase extends Database {
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
         String typeFlower, color;
-        int qty;
+        int qty, id;
         double pricePer;
-        typeFlower = data.get(i)[0];
-        color = data.get(i)[1];
-        qty = Integer.parseInt(data.get(i)[2]);
-        pricePer = Double.parseDouble(data.get(i)[3]);
-        addFlower(typeFlower, color, qty, pricePer);
+        id = Integer.parseInt(data.get(i)[0]);
+        typeFlower = data.get(i)[1];
+        color = data.get(i)[2];
+        qty = Integer.parseInt(data.get(i)[3]);
+        pricePer = Double.parseDouble(data.get(i)[4]);
+        addFlowerWithID(id, typeFlower, color, qty, pricePer);
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();
@@ -491,13 +615,14 @@ public class FlowerDatabase extends Database {
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
-        String flowerType, flowerColor, location;
+        String flowerString, location, message;
         int numFlowers;
         numFlowers = Integer.parseInt(data.get(i)[0]);
-        flowerType = data.get(i)[1];
-        flowerColor = data.get(i)[2];
+        flowerString = data.get(i)[1];
         location = data.get(i)[3];
-        addOrder(numFlowers, flowerType, flowerColor, location);
+        message = data.get(i)[4];
+        double price = Double.parseDouble(data.get(i)[5]);
+        addOrder(numFlowers, flowerString, location, message, price);
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();

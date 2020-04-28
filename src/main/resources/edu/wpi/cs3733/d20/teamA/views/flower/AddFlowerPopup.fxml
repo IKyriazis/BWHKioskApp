@@ -35,7 +35,7 @@
          <GridPane.margin>
             <Insets />
          </GridPane.margin></JFXTextField>
-      <JFXButton fx:id="doneButton" style="-fx-background-color: #78909C;" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <JFXButton fx:id="doneButton" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="2" />
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

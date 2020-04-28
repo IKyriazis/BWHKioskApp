@@ -54,7 +54,9 @@ public class LoginController extends AbstractController {
     vSwitcherBox.addEntry(
         "Map Editor", new FontAwesomeIconView(FontAwesomeIcon.MAP_ALT), "views/MapEditor.fxml");
     vSwitcherBox.addEntry(
-        "Flowers", new MaterialIconView(MaterialIcon.LOCAL_FLORIST), "views/FlowerAdmin.fxml");
+        "Flowers",
+        new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
+        "views/flower/FlowerAdmin.fxml");
     vSwitcherBox.addEntry(
         "Janitor GUI", new FontAwesomeIconView(FontAwesomeIcon.CAR), "views/JanitorialGUI.fxml");
     vSwitcherBox.addEntry(
@@ -62,10 +64,14 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
     vSwitcherBox.addEntry(
+        "Laundry - Brennan",
+        new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE),
+        "views/LaundryGUI.fxml");
+    vSwitcherBox.addEntry(
         "IT Ticket Gabriel Dudlicek",
         new FontAwesomeIconView(FontAwesomeIcon.LAPTOP),
         "views/ITServices.fxml");
-      vSwitcherBox.addEntry(
+    vSwitcherBox.addEntry(
         "Patient Info - Tyler Looney",
         new MaterialIconView(MaterialIcon.PERSON_ADD),
         "views/PatientsInfoService.fxml");
@@ -130,6 +136,8 @@ public class LoginController extends AbstractController {
       usernameBox.setText("");
       passwordBox.setText("");
       return;
+    } else {
+
     }
 
     // Chuck the login box way off screen

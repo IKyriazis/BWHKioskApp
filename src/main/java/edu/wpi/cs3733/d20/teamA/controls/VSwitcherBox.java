@@ -34,14 +34,16 @@ public class VSwitcherBox extends VBox {
 
   private static final String iconStyle = "-fx-font-size: 36pt;";
   private static final String buttonStyle =
-      "-fx-font-size: 22pt;" + "-fx-background-radius: 0px;" + "-fx-text-fill: black;";
+      "-fx-font-size: 22pt;"
+          + "-fx-background-radius: 0px;"
+          + "-fx-text-fill: -secondary-color-text;";
 
   public VSwitcherBox(Pane destPane, Node topIcon) {
     this.destPane = destPane;
     this.map = new HashMap<>();
 
     // Set background to white
-    setStyle("-fx-background-color: white");
+    setStyle("-fx-background-color: -secondary-color-light");
 
     // Center all children
     setAlignment(Pos.TOP_CENTER);
@@ -88,17 +90,18 @@ public class VSwitcherBox extends VBox {
     if (selected != null) {
       selected.setStyle(buttonStyle + "-fx-background-color: white");
     }
-    newSelection.setStyle(buttonStyle + "-fx-background-color: #BDBDBD");
+    newSelection.setStyle(buttonStyle + "-fx-background-color: rgba(21,101,191,0.63)");
 
     selected = newSelection;
   }
 
   public void addEntry(String label, GlyphIcon graphic, String fxmlPath) {
     JFXButton button = new JFXButton(label, graphic);
+    button.getStyleClass().add("sidebar-button");
     button.setEllipsisString("");
     button.setAlignment(Pos.CENTER_LEFT);
     button.setButtonType(JFXButton.ButtonType.FLAT);
-    button.setStyle(buttonStyle + "-fx-background-color: white");
+    button.setStyle(buttonStyle + "-fx-background-color: -secondary-color-light");
     button.setOnAction(this::switchView);
 
     // Load initial scene if this is the first button added
