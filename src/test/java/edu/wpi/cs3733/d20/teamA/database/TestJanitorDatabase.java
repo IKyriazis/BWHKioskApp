@@ -120,8 +120,8 @@ public class TestJanitorDatabase {
   public void testDeleteDoneRequests() throws SQLException {
     gDB.removeAllNodes();
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("hihihi", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna2", "b", "Team A");
+    gDB.addNode("hihihi", 2, 5, 2, "White House", "CONF", "balogna3", "b", "Team A");
 
     jDB.removeAll();
     jDB.addRequest("biscuit", "Medium");
