@@ -51,7 +51,7 @@ public class TestPrescriptionDatabase {
   @Test
   public void testAddPrescription() {
     employeesDatabase.removeAllEmployees();
-    employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "1234", "employee");
+    employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "Passwords123", "employee");
     prescriptionDatabase.removeAllPrescriptions();
     prescriptionDatabase.addPrescription(
         1, "Yash", "Ketamin", "CVS", "2 pills", 3, "yppatel", "Don't Die");
