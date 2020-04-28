@@ -30,7 +30,7 @@ public class MedicineDeliveryDatabase extends Database {
 
     // Create the medicinerequest table
     return helperPrepared(
-        "CREATE TABLE MedicineRequest (requestNumber INTEGER PRIMARY KEY, firstName Varchar(15) NOT NULL, lastName Varchar(15) NOT NULL, doctor Varchar(15) NOT NULL, medicine Varchar(25), roomNumber INTEGER NOT NULL, progress Varchar(19), timeAdminister TIME, fulfilledBy varchar(15), CONSTRAINT CHK_PROG2 CHECK (progress in ('Prescribed', 'Dispatched', 'Done')))");
+        "CREATE TABLE MedicineRequest (requestNumber varchar(50) PRIMARY KEY, firstName Varchar(15) NOT NULL, lastName Varchar(15) NOT NULL, doctor Varchar(15) NOT NULL, medicine Varchar(25), roomNumber INTEGER NOT NULL, progress Varchar(19), ho INTEGER DEFAULT -1, mins INTEGER DEFAULT -1, fulfilledBy varchar(15), CONSTRAINT CHK_PROG2 CHECK (progress in ('Prescribed', 'Dispatched', 'Done')))");
   }
 
   /**
@@ -53,8 +53,144 @@ public class MedicineDeliveryDatabase extends Database {
     return helperPrepared("DELETE From MedicineRequest");
   }
 
+  public boolean deleteRequest(String requestNum) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "DELETE From MedicineRequest WHERE requestNumber = '" + requestNum + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateMedicine(String id, String newMed) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE MedicineRequest SET medicine = '"
+                      + newMed
+                      + "' WHERE requestNumber = '"
+                      + id
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateDoctor(String id, String newDoc) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE MedicineRequest SET doctor = '"
+                      + newDoc
+                      + "' WHERE requestNumber = '"
+                      + id
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateHo(String id, int newHo) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE MedicineRequest SET ho = "
+                      + newHo
+                      + " WHERE requestNumber = '"
+                      + id
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateMins(String id, int newMins) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE MedicineRequest SET mins = "
+                      + newMins
+                      + " WHERE requestNumber = '"
+                      + id
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateFulfilledBy(String id, String fulfilledBy) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE MedicineRequest SET fulfilledBy = '"
+                      + fulfilledBy
+                      + "' WHERE requestNumber = '"
+                      + id
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateProgress(String id, String newProg) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE MedicineRequest SET progress = '"
+                      + newProg
+                      + "' WHERE requestNumber = '"
+                      + id
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   /**
-   * Adds janitor service request given location, and priority
+   * Adds medicine delivery service request given first name, last name, doctor, medicine, and room
+   * number
    *
    * @return False if request couldn't be added
    */
@@ -62,6 +198,7 @@ public class MedicineDeliveryDatabase extends Database {
       String firstName, String lastName, String doctor, String medicine, int roomNumber) {
     // default status is reported
     String progress = "Prescribed";
+
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
@@ -70,7 +207,7 @@ public class MedicineDeliveryDatabase extends Database {
                   "INSERT INTO MedicineRequest (requestNumber, firstName, lastName, doctor, medicine, roomNumber, progress) VALUES (?, ?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
       // requestCount++;
-      pstmt.setInt(1, ++requestCount);
+      pstmt.setString(1, firstName + lastName + medicine + roomNumber);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
       pstmt.setString(4, doctor);
@@ -82,17 +219,52 @@ public class MedicineDeliveryDatabase extends Database {
       pstmt.close();
       // return true if the request is added
       return true;
+
+    } catch (SQLException esq) {
+      esq.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean addRequest(
+      String firstName,
+      String lastName,
+      String doctor,
+      String medicine,
+      int roomNumber,
+      int hour,
+      int minute) {
+    // default status is reported
+    String progress = "Prescribed";
+    try {
+      // creates the prepared statement that will be sent to the database
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO MedicineRequest (requestNumber, firstName, lastName, doctor, medicine, roomNumber, progress, ho, mins) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      // sets all the parameters of the prepared statement string
+      // requestCount++;
+      pstmt.setString(1, firstName + lastName + medicine + roomNumber);
+      pstmt.setString(2, firstName);
+      pstmt.setString(3, lastName);
+      pstmt.setString(4, doctor);
+      pstmt.setString(5, medicine);
+      pstmt.setInt(6, roomNumber);
+      pstmt.setString(7, progress);
+      pstmt.setInt(8, hour);
+      pstmt.setInt(9, minute);
+
+      pstmt.executeUpdate();
+      pstmt.close();
+      // return true if the request is added
+      return true;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
     }
   }
 
-  /**
-   * Adds janitor service request given location, and priority
-   *
-   * @return False if request couldn't be added
-   */
+  /** @return False if request couldn't be added */
   public boolean addRequest(
       String firstName,
       String lastName,
@@ -109,17 +281,18 @@ public class MedicineDeliveryDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO MedicineRequest (requestNumber, firstName, lastName, doctor, medicine, roomNumber, progress, timeAdminister, fulfilledBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO MedicineRequest (requestNumber, firstName, lastName, doctor, medicine, roomNumber, progress, ho, mins, fulfilledBy) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
       // sets all the parameters of the prepared statement string
-      pstmt.setInt(1, ++requestCount);
+      pstmt.setString(1, firstName + lastName + medicine + roomNumber);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
       pstmt.setString(4, doctor);
       pstmt.setString(5, medicine);
       pstmt.setInt(6, roomNumber);
       pstmt.setString(7, progress);
-      pstmt.setString(8, hour + ":" + minute + ":00");
-      pstmt.setString(9, fulfilledBy);
+      pstmt.setInt(8, hour);
+      pstmt.setInt(9, minute);
+      pstmt.setString(10, fulfilledBy);
 
       pstmt.executeUpdate();
       pstmt.close();
@@ -152,7 +325,7 @@ public class MedicineDeliveryDatabase extends Database {
   public int getRequestSize() {
     int count = 0;
     try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From MedicineRequest ");
+      PreparedStatement pstmt = getConnection().prepareStatement("Select * From MedicineRequest");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         count++;
@@ -173,13 +346,13 @@ public class MedicineDeliveryDatabase extends Database {
       CSVReader reader = new CSVReader(new InputStreamReader(stream));
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
-        int num;
+        String num;
         String firstName;
         String lastName;
         String doctor;
         String medicine;
         int roomNumber;
-        num = Integer.parseInt(data.get(i)[0]);
+        num = data.get(i)[0];
         firstName = data.get(i)[1];
         lastName = data.get(i)[2];
         doctor = data.get(i)[3];
@@ -200,19 +373,21 @@ public class MedicineDeliveryDatabase extends Database {
       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM MedicineRequest");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
-        int reqNum = rset.getInt("requestNumber");
+        String reqNum = rset.getString("requestNumber");
         String fName = rset.getString("firstName");
         String lName = rset.getString("lastName");
         String doctor = rset.getString("doctor");
         String medicine = rset.getString("medicine");
         int room = rset.getInt("roomNumber");
         String progress = rset.getString("progress");
-        String time = rset.getString("timeAdminister");
+        int ho = rset.getInt("ho");
+        int mins = rset.getInt("mins");
+
         String fulfilledBy = rset.getString("fulfilledBy");
 
         MedRequest node =
             new MedRequest(
-                reqNum, fName, lName, doctor, medicine, room, progress, time, fulfilledBy);
+                reqNum, fName, lName, doctor, medicine, room, progress, ho, mins, fulfilledBy);
         oList.add(node);
       }
       rset.close();

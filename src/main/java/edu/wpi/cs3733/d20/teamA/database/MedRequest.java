@@ -2,45 +2,54 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class MedRequest implements ITableable<MedRequest> {
-  private SimpleIntegerProperty orderNum;
+  private SimpleStringProperty orderNum;
   private SimpleStringProperty firstName;
   private SimpleStringProperty lastName;
   private SimpleStringProperty doctor;
   private SimpleStringProperty medicine;
   private SimpleIntegerProperty roomNum;
   private SimpleStringProperty progress;
-  private SimpleStringProperty time;
+  // private SimpleStringProperty time;
+  private SimpleObjectProperty<LocalTime> time;
   private SimpleStringProperty fulfilledBy;
 
   public MedRequest(
-      int orderNum,
+      String orderNum,
       String firstName,
       String lastName,
       String doctor,
       String medicine,
       int roomNum,
       String progress,
-      String time,
+      int hour,
+      int minute,
       String fulfilledBy) {
 
-    this.orderNum = new SimpleIntegerProperty(orderNum);
+    this.orderNum = new SimpleStringProperty(orderNum);
     this.firstName = new SimpleStringProperty(firstName);
     this.lastName = new SimpleStringProperty(lastName);
     this.doctor = new SimpleStringProperty(doctor);
     this.medicine = new SimpleStringProperty(medicine);
     this.roomNum = new SimpleIntegerProperty(roomNum);
     this.progress = new SimpleStringProperty(progress);
-    this.time = new SimpleStringProperty(time);
+    this.time = new SimpleObjectProperty<LocalTime>();
+
+    if (hour >= 0 && minute >= 0) {
+      time.set(LocalTime.of(hour, minute));
+    }
+
     this.fulfilledBy = new SimpleStringProperty(fulfilledBy);
   }
 
-  public void setOrderNum(int orderNum) {
+  public void setOrderNum(String orderNum) {
     this.orderNum.set(orderNum);
   }
 
@@ -68,19 +77,15 @@ public class MedRequest implements ITableable<MedRequest> {
     this.progress.set(progress);
   }
 
-  public void setTime(String time) {
-    this.time.set(time);
-  }
-
   public void setFulfilledBy(String fulfilledBy) {
     this.fulfilledBy.set(fulfilledBy);
   }
 
-  public int getOrderNum() {
+  public String getOrderNum() {
     return orderNum.get();
   }
 
-  public SimpleIntegerProperty orderNumProperty() {
+  public SimpleStringProperty orderNumProperty() {
     return orderNum;
   }
 
@@ -132,12 +137,16 @@ public class MedRequest implements ITableable<MedRequest> {
     return progress;
   }
 
-  public String getTime() {
+  public LocalTime getTime() {
     return time.get();
   }
 
-  public SimpleStringProperty timeProperty() {
+  public SimpleObjectProperty<LocalTime> timeProperty() {
     return time;
+  }
+
+  public void setTime(LocalTime time) {
+    this.time.set(time);
   }
 
   public String getFulfilledBy() {
@@ -148,10 +157,19 @@ public class MedRequest implements ITableable<MedRequest> {
     return fulfilledBy;
   }
 
+  public SimpleStringProperty timeStProperty() {
+    try {
+      SimpleStringProperty s = new SimpleStringProperty(this.time.get().toString());
+      return s;
+    } catch (NullPointerException ex) {
+      return new SimpleStringProperty();
+    }
+  }
+
   @Override
   public ArrayList<JFXTreeTableColumn<MedRequest, ?>> getColumns() {
-    JFXTreeTableColumn<MedRequest, Integer> column1 = new JFXTreeTableColumn<>("Request Number");
-    column1.setCellValueFactory(param -> param.getValue().getValue().orderNumProperty().asObject());
+    JFXTreeTableColumn<MedRequest, String> column1 = new JFXTreeTableColumn<>("Request ID");
+    column1.setCellValueFactory(param -> param.getValue().getValue().orderNumProperty());
 
     JFXTreeTableColumn<MedRequest, String> column2 = new JFXTreeTableColumn<>("First Name");
     column2.setCellValueFactory(param -> param.getValue().getValue().firstNameProperty());
@@ -172,7 +190,7 @@ public class MedRequest implements ITableable<MedRequest> {
     column7.setCellValueFactory(param -> param.getValue().getValue().progressProperty());
 
     JFXTreeTableColumn<MedRequest, String> column8 = new JFXTreeTableColumn<>("Time Administered");
-    column8.setCellValueFactory(param -> param.getValue().getValue().timeProperty());
+    column8.setCellValueFactory(param -> param.getValue().getValue().timeStProperty());
 
     JFXTreeTableColumn<MedRequest, String> column9 = new JFXTreeTableColumn<>("Fulfilled By");
     column9.setCellValueFactory(param -> param.getValue().getValue().fulfilledByProperty());

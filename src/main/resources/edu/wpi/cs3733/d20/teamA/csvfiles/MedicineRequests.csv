@@ -1,2 +1,2 @@
-requestNumber, firstName, lastName, doctor, medicine, roomNumber, progress, timeAdminister, fulfilledBy
-1,Wilson,Wong,Dr. Phil,xanax,210,Prescribed,,
+requestNumber,firstName,lastName,doctor,medicine,roomNumber,progress,ho,min,fulfilledBy
+1,Wilson,Wong,Dr. Phil,xanax,210,Prescribed,,,
