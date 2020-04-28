@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.controllers.dialog;
+package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -6,12 +6,12 @@ import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.Flower;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import lombok.SneakyThrows;
 
 public class FlowerEditController extends AbstractController implements IDialogController {
   private final boolean modify;
@@ -28,14 +28,13 @@ public class FlowerEditController extends AbstractController implements IDialogC
   private JFXDialog dialog;
   private boolean hasOrder;
 
-  @SneakyThrows
+  // Set up window to add flower
   public FlowerEditController() {
     super();
-
     modify = false;
   }
 
-  @SneakyThrows
+  // Constructor that sets up window to modify flower
   public FlowerEditController(Flower f, boolean hasOrder) {
     super();
 
@@ -62,6 +61,7 @@ public class FlowerEditController extends AbstractController implements IDialogC
                 txtColor.setText(newValue.substring(0, 15));
               }
             });
+    // Prevent input of letters in number fields
     txtQty.setTextFormatter(InputFormatUtil.getIntFilter());
     txtCost.setTextFormatter(InputFormatUtil.getDoubleFilter());
 
@@ -70,9 +70,6 @@ public class FlowerEditController extends AbstractController implements IDialogC
       txtColor.setText(myFlower.getColor());
       txtQty.setText(String.valueOf(myFlower.getQty()));
       txtCost.setText(String.valueOf(myFlower.getPricePer()));
-    }
-
-    if (hasOrder) {
       txtName.setEditable(false);
       txtColor.setEditable(false);
     }
@@ -102,13 +99,8 @@ public class FlowerEditController extends AbstractController implements IDialogC
       if (!modify) {
         super.flDatabase.addFlower(name, color, qty, price);
       } else {
-        if (hasOrder) {
-          super.flDatabase.updatePrice(myFlower.getTypeFlower(), myFlower.getColor(), price);
-          super.flDatabase.updateQTY(myFlower.getTypeFlower(), myFlower.getColor(), qty);
-        } else {
-          super.flDatabase.deleteFlower(myFlower.getTypeFlower(), myFlower.getColor());
-          super.flDatabase.addFlower(name, color, qty, price);
-        }
+        super.flDatabase.updatePrice(myFlower.getTypeFlower(), myFlower.getColor(), price);
+        super.flDatabase.updateQTY(myFlower.getTypeFlower(), myFlower.getColor(), qty);
       }
 
       dialog.close();

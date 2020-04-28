@@ -1,7 +1,7 @@
-﻿typeFlower,color,qty,pricePer
-Rose,Pink,60,2
-Daisy,Yellow,50,1.5
-Tulip,Red,30,0.9
-Magnolia,Cream,20,1.32
-Tulip,White,5,4.25
-Rose,Red,1000,1
+﻿ID,typeFlower,color,qty,pricePer
+1,Rose,Pink,60,2
+2,Daisy,Yellow,50,1.5
+7,Tulip,Red,30,0.9
+4,Magnolia,Cream,20,1.32
+5,Tulip,White,5,4.25
+6,Rose,Red,1000,1
