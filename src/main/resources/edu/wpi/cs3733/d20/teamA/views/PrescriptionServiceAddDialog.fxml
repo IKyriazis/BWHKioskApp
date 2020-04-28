@@ -34,25 +34,25 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXTextField fx:id="txtPatientName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Patient Name" GridPane.halignment="CENTER" />
-                  <JFXTextField fx:id="txtDoctorName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Doctor Name" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <JFXTextField fx:id="txtPrescription" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Prescription" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <JFXTextField fx:id="txtPharmacy" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Pharmacy" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="txtPatientName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onAction="#checkForDone" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Patient Name" GridPane.halignment="CENTER" />
+                  <JFXTextField fx:id="txtDoctorName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onAction="#checkForDone" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Doctor Name" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <JFXTextField fx:id="txtPrescription" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onAction="#checkForDone" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Prescription" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="txtPharmacy" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onAction="#checkForDone" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Pharmacy" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                </children>
             </GridPane>
-            <JFXTextArea fx:id="txtNotes" labelFloat="true" onKeyTyped="#disableDoneText" promptText="Notes (max 100 characters)" GridPane.rowIndex="2">
+            <JFXTextArea fx:id="txtNotes" labelFloat="true" onDragDetected="#checkForDone" onKeyTyped="#disableDoneText" promptText="Notes (max 100 characters)" GridPane.rowIndex="2">
                <GridPane.margin>
                   <Insets left="20.0" right="20.0" />
                </GridPane.margin>
             </JFXTextArea>
             <HBox alignment="CENTER" prefHeight="89.0" prefWidth="500.0" spacing="30.0" GridPane.rowIndex="1">
                <children>
-                  <JFXTextField fx:id="txtDosage" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Dosage" />
-                  <JFXComboBox fx:id="cBoxRefillPer" labelFloat="true" maxWidth="150.0" minWidth="150.0" prefWidth="150.0" promptText="Refill Every" />
-                  <JFXTextField fx:id="txtNumberOfRefills" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="# of Refills" />
+                  <JFXTextField fx:id="txtDosage" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onAction="#checkForDone" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Dosage" />
+                  <JFXComboBox fx:id="cBoxRefillPer" labelFloat="true" maxWidth="150.0" minWidth="150.0" onAction="#checkForDone" prefWidth="150.0" promptText="Refill Every" />
+                  <JFXTextField fx:id="txtNumberOfRefills" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onAction="#checkForDone" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="# of Refills" />
                </children>
             </HBox>
-            <JFXButton fx:id="btnDone" buttonType="RAISED" contentDisplay="CENTER" disable="true" text="Done" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+            <JFXButton fx:id="btnDone" buttonType="RAISED" contentDisplay="CENTER" disable="true" onAction="#pressDone" text="Done" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
          </children>
       </GridPane>
    </children>

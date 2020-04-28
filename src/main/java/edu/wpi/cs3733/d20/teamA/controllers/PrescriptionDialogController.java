@@ -94,7 +94,7 @@ public class PrescriptionDialogController extends AbstractController implements 
             });
 
     ObservableList<String> per = FXCollections.observableArrayList();
-    per.addAll("DAY", "WEEK", "MONTH","YEAR","");
+    per.addAll("DAY", "WEEK", "MONTH", "YEAR", "");
     cBoxRefillPer.setItems(per);
 
     if (modify) {
@@ -149,14 +149,24 @@ public class PrescriptionDialogController extends AbstractController implements 
             notes);
       }
 
+      btnDone.setDisable(false);
+
       dialog.close();
     } catch (Exception exception) {
       exception.printStackTrace();
     }
   }
 
-  public void disableDoneText() {
-    btnDone.setDisable(true);
+  public void checkForDone() {
+    if (txtPatientName.getText().isEmpty()
+        || txtDoctorName.getText().isEmpty()
+        || txtPrescription.getText().isEmpty()
+        || txtPharmacy.getText().isEmpty()
+        || txtDosage.getText().isEmpty()
+        || txtNumberOfRefills.getText().isEmpty()
+        || cBoxRefillPer.getSelectionModel().getSelectedItem() != null) {
+      btnDone.setDisable(false);
+    }
   }
 
   @Override
