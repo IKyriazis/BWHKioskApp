@@ -105,16 +105,12 @@ public class PatientDatabase extends Database {
       String dateOfBirth) {
 
     try {
-      int num = patientID;
-      while (idInUse(num)) {
-        num++;
-      }
 
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, num);
+      pstmt.setInt(1, patientID);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
       pstmt.setString(4, healthInsurance);
@@ -136,19 +132,7 @@ public class PatientDatabase extends Database {
    * @return
    */
   private boolean idInUse(int num) {
-    try {
-      PreparedStatement pstmt =
-          getConnection().prepareStatement("Select * From Patients Where patientID = " + num);
-
-      ResultSet rset = pstmt.executeQuery();
-      if (rset.next()) return true;
-
-      pstmt.close();
-      return false;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
-    }
+    return checkIfExistsInt("PATIENTS", "patientID", num);
   }
 
   public int addPatient(
