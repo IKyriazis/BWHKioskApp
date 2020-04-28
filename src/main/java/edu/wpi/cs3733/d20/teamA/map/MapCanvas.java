@@ -36,7 +36,7 @@ public class MapCanvas extends Canvas {
   private EventHandler<MouseEvent> dragHandler;
   private EventHandler<MouseEvent> dragEndHandler;
 
-  private HashSet<Node> highlights;
+  private ArrayList<Node> highlights;
   private Color highlightColor = Color.DEEPSKYBLUE;
   private Point2D highlightOffset;
 
@@ -119,7 +119,7 @@ public class MapCanvas extends Canvas {
     zoom.addListener(observable -> draw(lastDrawnFloor));
 
     // Create list of nodes to highlight
-    highlights = new HashSet<>();
+    highlights = new ArrayList<>();
   }
 
   // graphToCanvas() projects a point from graph coordinates onto canvas coordinates
@@ -443,7 +443,7 @@ public class MapCanvas extends Canvas {
   }
 
   public void setHighlights(ArrayList<Node> highlights) {
-    this.highlights.addAll(highlights);
+    this.highlights = highlights;
   }
 
   public void setHighlightColor(Color color) {
