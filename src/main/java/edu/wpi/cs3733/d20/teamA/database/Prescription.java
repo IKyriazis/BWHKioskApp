@@ -129,24 +129,9 @@ public class Prescription implements ITableable<Prescription> {
     JFXTreeTableColumn<Prescription, String> column4 = new JFXTreeTableColumn<>("Pharmacy");
     column4.setCellValueFactory(param -> param.getValue().getValue().getPharmacyProperty());
 
-    JFXTreeTableColumn<Prescription, String> column5 = new JFXTreeTableColumn<>("Dosage");
-    column5.setCellValueFactory(param -> param.getValue().getValue().getDosageProperty());
-
-    JFXTreeTableColumn<Prescription, Integer> column6 =
-        new JFXTreeTableColumn<>("Number of Refills");
-    column6.setCellValueFactory(
-        param -> param.getValue().getValue().getNumberOfRefillsProperty().asObject());
-
-    JFXTreeTableColumn<Prescription, String> column7 = new JFXTreeTableColumn<>("Refill Every");
-    column7.setCellValueFactory(param -> param.getValue().getValue().getRefillPerProperty());
-
     JFXTreeTableColumn<Prescription, String> column8 = new JFXTreeTableColumn<>("Doctor");
     column8.setCellValueFactory(param -> param.getValue().getValue().getDoctorNameProperty());
 
-    JFXTreeTableColumn<Prescription, String> column9 = new JFXTreeTableColumn<>("Notes");
-    column9.setCellValueFactory(param -> param.getValue().getValue().getNotesProperty());
-
-    return new ArrayList<>(
-        List.of(column1, column2, column3, column4, column5, column6, column7, column8, column9));
+    return new ArrayList<>(List.of(column1, column2, column3, column4, column8));
   }
 }

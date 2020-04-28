@@ -81,6 +81,10 @@ public class LoginController extends AbstractController {
         "Interpreters",
         new FontAwesomeIconView(FontAwesomeIcon.GLOBE),
         "views/InterpreterService.fxml");
+    vSwitcherBox.addEntry(
+        "Prescriptions - Yash Patel",
+        new MaterialIconView(MaterialIcon.LOCAL_PHARMACY),
+        "views/PrescriptionService.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it

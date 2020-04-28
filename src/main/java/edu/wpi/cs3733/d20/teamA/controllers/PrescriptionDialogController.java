@@ -1,11 +1,11 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.database.Prescription;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
@@ -93,6 +93,10 @@ public class PrescriptionDialogController extends AbstractController implements 
               }
             });
 
+    ObservableList<String> per = FXCollections.observableArrayList();
+    per.addAll("DAY", "WEEK", "MONTH","YEAR","");
+    cBoxRefillPer.setItems(per);
+
     if (modify) {
       txtPatientName.setText(prescription.getPrescription());
       txtDoctorName.setText(prescription.getDoctorName());
@@ -107,7 +111,7 @@ public class PrescriptionDialogController extends AbstractController implements 
     btnDone.setOnAction(this::isDone);
 
     // Set button icon
-    btnDone.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
+    // btnDone.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
   }
 
   // Scene switch & database addNode
@@ -119,7 +123,6 @@ public class PrescriptionDialogController extends AbstractController implements 
         || txtPharmacy.getText().isEmpty()
         || txtDosage.getText().isEmpty()
         || txtNumberOfRefills.getText().isEmpty()
-        || txtNotes.getText().isEmpty()
         || cBoxRefillPer.getSelectionModel().getSelectedItem() != null) {
       return;
     }
@@ -150,6 +153,10 @@ public class PrescriptionDialogController extends AbstractController implements 
     } catch (Exception exception) {
       exception.printStackTrace();
     }
+  }
+
+  public void disableDoneText() {
+    btnDone.setDisable(true);
   }
 
   @Override
