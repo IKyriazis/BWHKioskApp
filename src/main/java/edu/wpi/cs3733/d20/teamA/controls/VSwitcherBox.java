@@ -88,9 +88,9 @@ public class VSwitcherBox extends VBox {
 
   private void setSelected(JFXButton newSelection) {
     if (selected != null) {
-      selected.setStyle(buttonStyle + "-fx-background-color: -secondary-color-light");
+      selected.setStyle(buttonStyle + "-fx-background-color: white");
     }
-    newSelection.setStyle(buttonStyle + "-fx-background-color: -secondary-color");
+    newSelection.setStyle(buttonStyle + "-fx-background-color: rgba(21,101,191,0.63)");
 
     selected = newSelection;
   }
