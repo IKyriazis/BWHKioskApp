@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import java.sql.*;
+import java.util.Random;
 
 public abstract class Database {
   /*
@@ -135,5 +136,9 @@ public abstract class Database {
       e.printStackTrace();
       return false;
     }
+  }
+
+  public int getRandomNumber() {
+    return new Random().nextInt((999999999 - 100000000) + 1) + 100000000;
   }
 }

@@ -86,7 +86,7 @@ public class Laundry implements ITableable<Laundry> {
     column1.setCellValueFactory(
         param -> param.getValue().getValue().requestNumProperty().asObject());
 
-    JFXTreeTableColumn<Laundry, String> column2 = new JFXTreeTableColumn<>("Request Employee");
+    JFXTreeTableColumn<Laundry, String> column2 = new JFXTreeTableColumn<>("Requested By");
     column2.setCellValueFactory(param -> param.getValue().getValue().employeeEnteredProperty());
 
     JFXTreeTableColumn<Laundry, String> column3 = new JFXTreeTableColumn<>("Location");

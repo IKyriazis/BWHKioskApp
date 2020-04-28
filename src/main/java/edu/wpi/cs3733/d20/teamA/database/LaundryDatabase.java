@@ -65,29 +65,36 @@ public class LaundryDatabase extends Database {
    * @param loc - The location of the request (where to pick up/return the clothes)
    * @return True if a successful add
    */
-  public boolean addLaundry(String emp, String loc) {
+  public int addLaundry(String emp, String loc) {
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    int i = 0;
     try {
       boolean a = checkIfExistsString("Employees", "username", emp);
       boolean b = checkIfExistsString("Node", "longName", loc);
-      if (a && b) {
+      i = getRandomNumber();
+      boolean c = checkIfExistsInt("Laundry", "requestNum", i);
+      while (c) {
+        i = getRandomNumber();
+        c = checkIfExistsInt("Laundry", "requestNum", i);
+      }
+      if (a && b && !c) {
         PreparedStatement pstmt =
             getConnection()
                 .prepareStatement(
                     "INSERT INTO Laundry (requestNum, employeeEntered, location, progress, timeRequested) VALUES (?, ?, ?, 'Requested', ?)");
-        pstmt.setInt(1, getSizeLaundry() + 1);
+        pstmt.setInt(1, i);
         pstmt.setString(2, emp);
         pstmt.setString(3, loc);
         pstmt.setTimestamp(4, timestamp);
         pstmt.executeUpdate();
         pstmt.close();
-        return true;
+        return i;
       } else {
-        return false;
+        return i;
       }
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return 0;
     }
   }
 

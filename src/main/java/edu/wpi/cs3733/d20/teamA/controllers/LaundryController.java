@@ -5,7 +5,6 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.LaundryEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Laundry;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
@@ -46,6 +45,7 @@ public class LaundryController extends AbstractController {
   private SimpleTableView<Laundry> tblLaundryView;
 
   public void initialize() {
+
     lDB.dropTables();
     lDB.createTables();
     lDB.removeAll();
@@ -58,6 +58,8 @@ public class LaundryController extends AbstractController {
 
     addRequestButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_CIRCLE));
     removeRequestButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
+    updateCleanerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP));
+    seeCompletedButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
 
     laundryPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
@@ -70,6 +72,21 @@ public class LaundryController extends AbstractController {
         new SimpleTableView<>(
             new Laundry(0, "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
     orderTablePane.getChildren().add(tblLaundryView);
+
+    tblLaundryView.setOnMouseClicked(
+        event -> {
+          Laundry l = tblLaundryView.getSelected();
+          if (l != null) {
+            updateCleanerButton.disableProperty().setValue(false);
+            removeRequestButton.disableProperty().setValue(false);
+            progressComboBox.getSelectionModel().select(l.getProgress());
+            if (l.getEmployeeWash() != null) {
+              cleanerComboBox.getSelectionModel().select(l.getEmployeeWash());
+            } else {
+              cleanerComboBox.getSelectionModel().clearSelection();
+            }
+          }
+        });
 
     update();
 
@@ -85,6 +102,11 @@ public class LaundryController extends AbstractController {
     roomList
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
+
+    progressComboBox.getItems().addAll("Requested", "Collected", "Washing", "Drying", "Returned");
+
+    // Will need to connect to employee database later
+    cleanerComboBox.getItems().addAll("admin", "staff");
   }
 
   @FXML
@@ -93,12 +115,17 @@ public class LaundryController extends AbstractController {
     String loc = "";
     if (node != null) {
       loc = node.getLongName();
-      if (!lDB.addLaundry("admin", loc)) {
+      int l = lDB.addLaundry("admin", loc);
+      if (l == 0) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot add request");
+      } else {
+        DialogUtil.simpleInfoDialog(
+            dialogStackPane, "Requested", "Request " + l + " Has Been Added");
       }
     } else if (node == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a location");
     }
+    disableAdd();
     roomList.getSelectionModel().clearSelection();
     update();
   }
@@ -120,17 +147,17 @@ public class LaundryController extends AbstractController {
   private void updateCleaner() {
     Laundry l = tblLaundryView.getSelected();
     if (l != null) {
-      LaundryEditController controller = new LaundryEditController(l);
-      DialogUtil.complexDialog(
-          dialogStackPane,
-          "Update Request",
-          "views/LaundryEdit.fxml",
-          false,
-          event -> update(),
-          controller);
+      if (progressComboBox.getValue() != null) {
+        lDB.setProg(l.getRequestNum(), progressComboBox.getValue());
+      }
+      if (cleanerComboBox.getValue() != null) {
+        lDB.setEmpW(l.getRequestNum(), cleanerComboBox.getValue());
+      }
     } else if (l == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
     }
+    progressComboBox.getSelectionModel().clearSelection();
+    cleanerComboBox.getSelectionModel().clearSelection();
     update();
   }
 
@@ -138,6 +165,24 @@ public class LaundryController extends AbstractController {
   private void seeCompleted() {
     DialogUtil.complexDialog(
         dialogStackPane, "Completed Requests", "views/LaundryCompleted.fxml", true, null, null);
+  }
+
+  @FXML
+  private void disableButtons() {
+    updateCleanerButton.disableProperty().setValue(true);
+    removeRequestButton.disableProperty().setValue(true);
+  }
+
+  @FXML
+  private void disableAdd() {
+    addRequestButton.disableProperty().setValue(true);
+  }
+
+  @FXML
+  private void enableAdd() {
+    if (roomList.getSelectionModel().getSelectedItem() != null) {
+      addRequestButton.disableProperty().setValue(false);
+    }
   }
 
   public void update() {
