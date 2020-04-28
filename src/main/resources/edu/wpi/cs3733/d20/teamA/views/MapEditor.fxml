@@ -51,9 +51,6 @@
                </children>
             </VBox>
             <JFXCheckBox onAction="#toggleDrawBelow" text="Draw Nodes Below" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="15.0" />
-            <JFXButton fx:id="aStarButton" buttonType="RAISED" text="A Star" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="203.0" />
-            <JFXButton fx:id="breadthFirstButton" buttonType="RAISED" text="Breadth First" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="233.0" />
-            <JFXButton fx:id="depthFirstButton" buttonType="RAISED" text="Depth First" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="263.0" />
          </children>
       </AnchorPane>
    </children>

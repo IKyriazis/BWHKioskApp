@@ -38,10 +38,6 @@ public class MapEditorController {
   @FXML private JFXButton exportCSVButton;
   @FXML private JFXTextField floorField;
 
-  @FXML private JFXButton aStarButton;
-  @FXML private JFXButton breadthFirstButton;
-  @FXML private JFXButton depthFirstButton;
-
   @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
   private JFXRippler infoRippler;
@@ -224,16 +220,6 @@ public class MapEditorController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    aStarButton.setOnAction(
-        event -> {
-          MapSettings.setPath(new Path(graph));
-        });
-    depthFirstButton.setOnAction(event -> MapSettings.setPath(new DepthFirst(graph)));
-    breadthFirstButton.setOnAction(
-        event -> {
-          MapSettings.setPath(new BreadthFirst(graph));
-        });
 
     Platform.runLater(() -> canvas.draw(floor));
   }

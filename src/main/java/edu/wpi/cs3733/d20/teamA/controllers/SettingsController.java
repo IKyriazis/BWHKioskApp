@@ -1,10 +1,13 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXColorPicker;
+import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.graph.BreadthFirst;
+import edu.wpi.cs3733.d20.teamA.graph.DepthFirst;
+import edu.wpi.cs3733.d20.teamA.graph.Graph;
+import edu.wpi.cs3733.d20.teamA.graph.Path;
 import java.io.*;
-import java.net.URI;
-import java.nio.file.Paths;
 import javafx.css.CssParser;
 import javafx.css.Rule;
 import javafx.css.Stylesheet;
@@ -12,6 +15,7 @@ import javafx.css.converter.ColorConverter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 
 public class SettingsController {
@@ -19,14 +23,48 @@ public class SettingsController {
   @FXML private JFXColorPicker primaryLightPicker;
   @FXML private JFXColorPicker primaryDarkPicker;
 
+  @FXML private JFXRadioButton aStarButton;
+  @FXML private JFXRadioButton bfsButton;
+  @FXML private JFXRadioButton dfsButton;
+
+  private ToggleGroup toggleGroup;
+
   private static final String themePath = "theme.css";
 
   @FXML
   public void initialize() {
+    // Set up color pickers to show default color scheme
     File file = new File(themePath);
     primaryPicker.setValue(getColor("-primary-color"));
     primaryLightPicker.setValue(getColor("-primary-color-light"));
     primaryDarkPicker.setValue(getColor("-primary-color-dark"));
+
+    // Set radio buttons and toggle group
+    toggleGroup = new ToggleGroup();
+    aStarButton.setToggleGroup(toggleGroup);
+    bfsButton.setToggleGroup(toggleGroup);
+    dfsButton.setToggleGroup(toggleGroup);
+
+    aStarButton.setOnAction(
+        event -> {
+          if (aStarButton.isSelected()) {
+            MapSettings.setPath(new Path(Graph.getInstance()));
+          }
+        });
+
+    bfsButton.setOnAction(
+        event -> {
+          if (bfsButton.isSelected()) {
+            MapSettings.setPath(new BreadthFirst(Graph.getInstance()));
+          }
+        });
+
+    dfsButton.setOnAction(
+        event -> {
+          if (dfsButton.isSelected()) {
+            MapSettings.setPath(new DepthFirst(Graph.getInstance()));
+          }
+        });
   }
 
   private Color getColor(String property) {
@@ -64,7 +102,7 @@ public class SettingsController {
 
     String blueHex = Integer.toHexString((int) (color.getBlue() * 255));
     if (blueHex.length() == 1) {
-      blueHex = "0" + greenHex;
+      blueHex = "0" + blueHex;
     }
     hexColor += blueHex;
 
@@ -76,7 +114,12 @@ public class SettingsController {
     // Write theme to temporary file
     File themeFile = new File(themePath);
     try {
-      if (themeFile.createNewFile()) {
+      boolean go = true;
+      if (themeFile.exists()) {
+        go = themeFile.delete();
+      }
+
+      if (go && themeFile.createNewFile()) {
         BufferedWriter writer = new BufferedWriter(new FileWriter(themeFile));
         writer.write(".root {\n");
 
@@ -99,7 +142,7 @@ public class SettingsController {
         .removeIf(
             s -> {
               try {
-                return Paths.get(new URI(s)).endsWith(themePath);
+                return s.equals("file:" + themePath);
               } catch (Exception e) {
                 return false;
               }
@@ -107,12 +150,9 @@ public class SettingsController {
 
     // Read in theme and add
     try {
-      scene.getStylesheets().add(Paths.get(themePath).toUri().toURL().toExternalForm());
+      scene.getStylesheets().add("file:" + themePath);
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    // Delete temporary file
-    themeFile.delete();
   }
 }
