@@ -320,11 +320,10 @@ public class EmployeesDatabase extends Database {
   public synchronized ObservableList<Employee> employeeOl() {
     ObservableList<Employee> eList = FXCollections.observableArrayList();
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       // CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast
       // Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title
       // Varchar(50))"
-      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Employees");
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         int id = rset.getInt("employeeID");
@@ -336,7 +335,6 @@ public class EmployeesDatabase extends Database {
       }
       rset.close();
       pstmt.close();
-      conn.close();
       return eList;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -430,5 +428,43 @@ public class EmployeesDatabase extends Database {
       ex.printStackTrace();
     }
     return false;
+  }
+
+  public String getUsername(int ID) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE employeeID = ?");
+      pstmt.setInt(1, ID);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String un = rset.getString("username");
+      rset.close();
+      pstmt.close();
+      return un;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  public Employee findFromUsername(String un) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, un);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      int ID = rset.getInt("employeeID");
+      String fName = rset.getString("nameFirst");
+      String lName = rset.getString("nameLast");
+      String title = rset.getString("title");
+      Employee e = new Employee(ID, fName, lName, title);
+      rset.close();
+      pstmt.close();
+      return e;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }
