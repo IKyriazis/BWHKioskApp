@@ -136,6 +136,7 @@ public class TestEmployeeDatabase {
     Assertions.assertEquals(1, eDB.getSizeReq());
     eDB.removeAllReqs();
     eDB.removeAllLogs();
+    DB.removeAll();
   }
 
   @Test
@@ -156,6 +157,7 @@ public class TestEmployeeDatabase {
     Assertions.assertFalse(a);
     eDB.removeAllReqs();
     eDB.removeAllLogs();
+    DB.removeAll();
   }
 
   @Test
@@ -175,6 +177,7 @@ public class TestEmployeeDatabase {
     Assertions.assertEquals(0, eDB.getSizeReq());
     eDB.removeAllReqs();
     eDB.removeAllLogs();
+    DB.removeAll();
   }
 
   @Test

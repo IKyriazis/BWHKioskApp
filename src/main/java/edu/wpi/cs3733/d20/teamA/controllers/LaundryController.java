@@ -46,12 +46,7 @@ public class LaundryController extends AbstractController {
 
   public void initialize() {
 
-    lDB.dropTables();
-    lDB.createTables();
-    lDB.removeAll();
-
-    lDB.addLaundry("admin", "Emergency Department");
-    lDB.addLaundry("admin", "Admitting");
+    lDB.addDummy();
 
     serviceLabel.setGraphic(new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE));
     requestTableLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LIST));

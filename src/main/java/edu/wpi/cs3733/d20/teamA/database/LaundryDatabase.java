@@ -470,4 +470,12 @@ public class LaundryDatabase extends Database {
       return oList;
     }
   }
+
+  public void addDummy() {
+    dropTables();
+    createTables();
+    removeAll();
+    addLaundry("admin", "Emergency Department");
+    addLaundry("admin", "Admitting");
+  }
 }
