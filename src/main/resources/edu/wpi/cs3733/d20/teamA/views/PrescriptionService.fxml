@@ -11,29 +11,29 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PrescriptionController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PrescriptionController">
    <children>
       <StackPane fx:id="prescriptionStackPane" prefHeight="700.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane>
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" />
               </columnConstraints>
               <rowConstraints>
-                  <RowConstraints maxHeight="466.8" minHeight="10.0" prefHeight="86.79999237060548" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="466.8" minHeight="10.0" prefHeight="86.79999237060548" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="661.2000045776367" minHeight="10.0" prefHeight="614.0000076293945" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="100.0" minHeight="10.0" prefHeight="60.000003051757815" vgrow="NEVER" />
+                <RowConstraints maxHeight="466.8" minHeight="10.0" prefHeight="65.59999694824218" vgrow="NEVER" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="ALWAYS" />
               </rowConstraints>
                <children>
-                  <HBox alignment="CENTER" prefHeight="176.0" prefWidth="900.0" spacing="50.0" GridPane.rowIndex="1">
+                  <HBox alignment="CENTER" prefHeight="176.0" prefWidth="900.0" spacing="50.0" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
                      <children>
-                        <JFXButton fx:id="addPrescriptionBtn" buttonType="RAISED" maxWidth="150.0" minWidth="150.0" onAction="#openAddDialog" prefWidth="150.0" text="Add" />
-                        <JFXButton fx:id="editPrescriptionBtn" buttonType="RAISED" disable="true" maxWidth="150.0" minWidth="150.0" onAction="#openEditDialog" prefWidth="150.0" text="Edit" />
-                        <JFXButton fx:id="deletePrescriptionBtn" buttonType="RAISED" disable="true" maxWidth="150.0" minWidth="150.0" onAction="#openDeleteDialog" prefWidth="150.0" text="Delete" />
-                        <JFXButton fx:id="infoPrescriptionBtn" buttonType="RAISED" disable="true" maxWidth="150.0" minWidth="150.0" onAction="#openInfoDialog" prefWidth="150.0" text="Info" />
+                        <JFXButton fx:id="addPrescriptionBtn" buttonType="RAISED" maxWidth="150.0" minWidth="150.0" onAction="#openAddDialog" onMouseClicked="#disableBtns" prefWidth="150.0" text="Add" />
+                        <JFXButton fx:id="editPrescriptionBtn" buttonType="RAISED" disable="true" maxWidth="150.0" minWidth="150.0" onAction="#openEditDialog" onMouseClicked="#disableBtns" prefWidth="150.0" text="Edit" />
+                        <JFXButton fx:id="deletePrescriptionBtn" buttonType="RAISED" disable="true" maxWidth="150.0" minWidth="150.0" onAction="#openDeleteDialog" onMouseClicked="#disableBtns" prefWidth="150.0" text="Delete" />
+                        <JFXButton fx:id="infoPrescriptionBtn" buttonType="RAISED" disable="true" maxWidth="150.0" minWidth="150.0" onAction="#openInfoDialog" onMouseClicked="#disableBtns" prefWidth="150.0" text="Info" />
                      </children>
                   </HBox>
-                  <GridPane fx:id="prescriptionTablePane" GridPane.rowIndex="2">
+                  <GridPane fx:id="prescriptionTablePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -44,7 +44,7 @@
                         <Insets left="20.0" />
                      </GridPane.margin>
                   </GridPane>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Manage Prescriptions" GridPane.halignment="CENTER">
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Manage Prescriptions" GridPane.halignment="CENTER" GridPane.vgrow="NEVER">
                      <font>
                         <Font size="24.0" />
                      </font>

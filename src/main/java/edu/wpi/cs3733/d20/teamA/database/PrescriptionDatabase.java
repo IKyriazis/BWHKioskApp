@@ -406,6 +406,21 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
+  public boolean deletePrescription(int prescriptionID) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "DELETE From PRESCRIPTION WHERE prescriptionID = " + prescriptionID);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public ObservableList<Prescription> prescriptionObservableList() {
     ObservableList<Prescription> prescriptionObservableList = FXCollections.observableArrayList();
     try {

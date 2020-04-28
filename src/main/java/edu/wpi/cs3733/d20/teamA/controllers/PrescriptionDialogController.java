@@ -19,17 +19,21 @@ public class PrescriptionDialogController extends AbstractController implements 
   @FXML private JFXButton btnDone;
   private JFXDialog dialog;
   boolean modify = false;
+  boolean info = false;
   Prescription prescription;
 
   public PrescriptionDialogController() {
     super();
   }
 
-  public PrescriptionDialogController(Prescription prescription, boolean modify) {
+  public PrescriptionDialogController(Prescription prescription, boolean modify, boolean info) {
     super();
     this.prescription = prescription;
-    if (modify == true) {
+    if (modify) {
       this.modify = true;
+    }
+    if (info) {
+      this.info = true;
     }
   }
 
@@ -91,7 +95,7 @@ public class PrescriptionDialogController extends AbstractController implements 
             });
 
     if (modify) {
-      txtPatientName.setText(prescription.getPrescription());
+      txtPatientName.setText(prescription.getPatientName());
       txtDoctorName.setText(prescription.getDoctorName());
       txtPrescription.setText(prescription.getPrescription());
       txtPharmacy.setText(prescription.getPharmacy());
@@ -100,8 +104,16 @@ public class PrescriptionDialogController extends AbstractController implements 
       txtNotes.setText(prescription.getNotes());
     }
 
-    // Set button icon
-    // btnDone.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
+    if (info) {
+      txtPatientName.editableProperty().setValue(false);
+      txtDoctorName.editableProperty().setValue(false);
+      txtPrescription.editableProperty().setValue(false);
+      txtPharmacy.editableProperty().setValue(false);
+      txtDosage.editableProperty().setValue(false);
+      txtNumberOfRefills.editableProperty().setValue(false);
+      txtNotes.editableProperty().setValue(false);
+      btnDone.setDisable(false);
+    }
   }
 
   // Scene switch & database addNode
@@ -121,8 +133,6 @@ public class PrescriptionDialogController extends AbstractController implements 
           patientName, prescription, pharmacy, dosage, numberOfRefills, doctorName, notes);
     }
 
-    btnDone.setDisable(false);
-
     dialog.close();
   }
 
@@ -133,6 +143,10 @@ public class PrescriptionDialogController extends AbstractController implements 
         || txtPharmacy.getText().isEmpty()
         || txtDosage.getText().isEmpty()
         || txtNumberOfRefills.getText().isEmpty())) {
+      btnDone.setDisable(false);
+    }
+
+    if (info) {
       btnDone.setDisable(false);
     }
   }

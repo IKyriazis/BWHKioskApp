@@ -69,11 +69,7 @@ public class PrescriptionController extends AbstractController {
     }
   }
 
-  /**
-   * Called when the mouse clicks on anything that isn't the table, or buttons it is disabling.
-   *
-   * @param mouseEvent mouseClicked
-   */
+  /** Called when the mouse clicks on anything that isn't the table, or buttons it is disabling. */
   public void disableBtns(MouseEvent mouseEvent) {
     editPrescriptionBtn.disableProperty().setValue(true);
     deletePrescriptionBtn.disableProperty().setValue(true);
@@ -91,16 +87,23 @@ public class PrescriptionController extends AbstractController {
   }
 
   public void openEditDialog(ActionEvent e) {
+    selected = tblViewPrescription.getSelected();
     DialogUtil.complexDialog(
         prescriptionStackPane,
         "Edit Prescription",
         "views/PrescriptionServiceAddDialog.fxml",
         false,
         event -> updateTable(),
-        new PrescriptionDialogController());
+        new PrescriptionDialogController(selected, true, false));
   }
 
-  public void openDeleteDialog(ActionEvent e) {}
+  public void openDeleteDialog(ActionEvent e) {
+    selected = tblViewPrescription.getSelected();
+    if (selected != null) {
+      boolean i = prescriptionDatabase.deletePrescription(selected.getPrescriptionID());
+      updateTable();
+    }
+  }
 
   public void openInfoDialog(ActionEvent e) {
     DialogUtil.complexDialog(
@@ -109,6 +112,6 @@ public class PrescriptionController extends AbstractController {
         "views/PrescriptionServiceAddDialog.fxml",
         false,
         event -> updateTable(),
-        new PrescriptionDialogController());
+        new PrescriptionDialogController(selected, true, true));
   }
 }
