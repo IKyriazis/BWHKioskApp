@@ -124,6 +124,7 @@ public class FlowerDatabase extends Database {
     }
 
     try {
+
       flowerNum = getRandomNumber();
       PreparedStatement pstmt =
           getConnection()
