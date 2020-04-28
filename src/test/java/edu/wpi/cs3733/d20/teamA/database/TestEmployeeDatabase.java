@@ -17,7 +17,8 @@ public class TestEmployeeDatabase {
   EmployeesDatabase eDB;
   GraphDatabase DB;
 
-  public TestEmployeeDatabase() {}
+  public TestEmployeeDatabase() {
+  }
 
   @BeforeEach
   public void init() throws SQLException {
@@ -184,11 +185,13 @@ public class TestEmployeeDatabase {
   @Test
   public void testEquipObject() {
     EquipRequest eq =
-        new EquipRequest(
-            "Daisy", "Blue", 9, " ", " ", new Timestamp(System.currentTimeMillis()), " ");
+            new EquipRequest(
+                    "Daisy", "Blue", 9, " ", " ", new Timestamp(System.currentTimeMillis()), " ");
     Assertions.assertEquals("Daisy", eq.getName());
     Assertions.assertEquals("Blue", eq.getItem());
     Assertions.assertEquals(9, eq.getQty());
     Assertions.assertEquals(" ", eq.getLocation());
+
+
   }
 }
