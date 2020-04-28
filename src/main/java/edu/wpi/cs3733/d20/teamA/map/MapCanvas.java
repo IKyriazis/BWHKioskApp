@@ -311,7 +311,7 @@ public class MapCanvas extends Canvas {
           && node.getFloor() == floor) {
         drawNode(node, Color.TOMATO);
       } else if (node.getFloor() == floor) {
-        drawNode(node, Color.BLACK);
+        // drawNode(node, Color.BLACK);
       }
     }
   }
