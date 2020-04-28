@@ -213,7 +213,7 @@ public class MedRequest implements ITableable<MedRequest> {
     JFXTreeTableColumn<MedRequest, Integer> column6 = new JFXTreeTableColumn<>("Room Number");
     column6.setCellValueFactory(param -> param.getValue().getValue().roomNumProperty().asObject());
 
-    JFXTreeTableColumn<MedRequest, String> column7 = new JFXTreeTableColumn<>("Progress");
+    JFXTreeTableColumn<MedRequest, String> column7 = new JFXTreeTableColumn<>("Status");
     column7.setCellValueFactory(param -> param.getValue().getValue().progressProperty());
 
     /*
