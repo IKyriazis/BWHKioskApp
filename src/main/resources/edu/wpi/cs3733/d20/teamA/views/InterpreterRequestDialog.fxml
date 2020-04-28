@@ -25,7 +25,7 @@
             <Insets />
          </GridPane.margin>
       </JFXTextField>
-      <JFXButton fx:id="doneButton" onAction="#clickedDone" prefWidth="150.0" style="-fx-background-color: #78909C; -fx-text-fill: white;" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <JFXButton fx:id="doneButton" onAction="#clickedDone" prefWidth="150.0" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <JFXComboBox fx:id="interpreterNameBox" labelFloat="true" onAction="#updateLanguage" prefWidth="150.0" promptText="Interpreter Name" />
       <JFXComboBox fx:id="locationBox" editable="true" labelFloat="true" prefWidth="150.0" promptText="Location" GridPane.columnIndex="1" />
    </children>

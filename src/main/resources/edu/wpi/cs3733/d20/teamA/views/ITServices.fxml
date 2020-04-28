@@ -60,7 +60,7 @@
                               <JFXComboBox fx:id="ITTicketLocation" focusColor="#64b5f6" labelFloat="true" layoutX="114.0" layoutY="251.0" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Location" />
                               <JFXComboBox fx:id="ITTicketCategory" focusColor="#64b5f6" labelFloat="true" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Category" />
                               <JFXTextArea fx:id="ITTicketDescription" focusColor="#64b5f6" labelFloat="true" maxWidth="-Infinity" onKeyTyped="#descriptionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="198.0" promptText="Description (200 characters max.)" />
-                              <JFXButton fx:id="submitBtn" buttonType="RAISED" disable="true" onAction="#submitTicket" onMouseClicked="#disableBtns" prefWidth="150.0" style="-fx-background-color: #66BB6A;" text="Submit Ticket" textFill="WHITE">
+                              <JFXButton fx:id="submitBtn" buttonType="RAISED" disable="true" onAction="#submitTicket" onMouseClicked="#disableBtns" prefWidth="150.0" text="Submit Ticket" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
                                  </font>
@@ -116,7 +116,7 @@
                                  <children>
                                     <JFXComboBox fx:id="statusChangeStatus" disable="true" focusColor="#64b5f6" labelFloat="true" onAction="#checkUpdateStatusBox" prefWidth="150.0" promptText="Status" />
                                     <JFXTextField fx:id="statusChangeName" alignment="CENTER" disable="true" focusColor="#78909c" labelFloat="true" onKeyTyped="#checkUpdateStatusName" prefWidth="150.0" promptText="IT Assistant Name" />
-                                    <JFXButton fx:id="changeStatusBtn" buttonType="RAISED" disable="true" onAction="#changeStatus" onMouseClicked="#disableBtns" prefWidth="150.0" style="-fx-background-color: #78909C;" text="Update Status" textFill="WHITE">
+                                    <JFXButton fx:id="changeStatusBtn" buttonType="RAISED" disable="true" onAction="#changeStatus" onMouseClicked="#disableBtns" prefWidth="150.0" text="Update Status" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
                                        </font></JFXButton>
@@ -124,11 +124,11 @@
                               </HBox>
                               <HBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="57.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" spacing="60.0">
                                  <children>
-                                    <JFXButton fx:id="descriptionBtn" buttonType="RAISED" disable="true" onAction="#getDescription" prefWidth="150.0" style="-fx-background-color: #FFEE58;" text="Get Description" textFill="WHITE">
+                                    <JFXButton fx:id="descriptionBtn" buttonType="RAISED" disable="true" onAction="#getDescription" prefWidth="150.0" text="Get Description" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="15.0" />
                                        </font></JFXButton>
-                                    <JFXButton fx:id="deleteBtn" buttonType="RAISED" disable="true" onAction="#deleteRequest" onMouseClicked="#disableBtns" prefWidth="150.0" style="-fx-background-color: #ef5350;" text="Delete Request" textFill="WHITE">
+                                    <JFXButton fx:id="deleteBtn" buttonType="RAISED" disable="true" onAction="#deleteRequest" onMouseClicked="#disableBtns" prefWidth="150.0" text="Delete Request" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="15.0" />
                                        </font></JFXButton>
