@@ -101,7 +101,7 @@ public class VSwitcherBox extends VBox {
     button.setEllipsisString("");
     button.setAlignment(Pos.CENTER_LEFT);
     button.setButtonType(JFXButton.ButtonType.FLAT);
-    button.setStyle(buttonStyle + "-fx-background-color: white");
+    button.setStyle(buttonStyle + "-fx-background-color: -secondary-color-light");
     button.setOnAction(this::switchView);
 
     // Load initial scene if this is the first button added
