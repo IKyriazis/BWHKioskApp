@@ -427,6 +427,37 @@ public class EmployeesDatabase extends Database {
     return null;
   }
 
+  public String getTime(String username) {
+    Timestamp timeOf;
+    try {
+      Statement priceStmt = getConnection().createStatement();
+      ResultSet rst =
+          priceStmt.executeQuery("SELECT * FROM EquipReq WHERE username = '" + username + "'");
+      ;
+      rst.next();
+      timeOf = rst.getTimestamp("timeOf");
+      return timeOf.toString();
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return null;
+  }
+
+  public boolean isOnline(String username) {
+    boolean isOnline = false;
+    try {
+      Statement priceStmt = getConnection().createStatement();
+      ResultSet rst =
+          priceStmt.executeQuery("SELECT * FROM LoggedIn WHERE username = '" + username + "'");
+      ;
+      rst.next();
+      if (rst.getBoolean("flag")) return true;
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return false;
+  }
+
   public ObservableList<EquipRequest> ReqOl() {
     ObservableList<EquipRequest> rList = FXCollections.observableArrayList();
     try {
