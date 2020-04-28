@@ -9,9 +9,7 @@ public class GraphDatabase extends Database {
 
     super(connection);
 
-    if (doesTableNotExist("NODE") || doesTableNotExist("EDGE")) {
-      createTables();
-    }
+    createTables();
   }
 
   /**

@@ -22,14 +22,15 @@ public class TestLaundryDatabase {
     gDB = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
     lDB = new LaundryDatabase(conn);
-    eDB.addEmployee("Bob", "Roberts", "brob", "abcd", "desk clerk");
-    eDB.addEmployee("Rob", "Boberts", "rbob", "abcd", "cleaner");
+    eDB.addEmployee("Bob", "Roberts", "brob", "AbCd1234", "desk clerk");
+    eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", "cleaner");
     gDB.addNode("AWASH00101", 123, 456, 1, "main", "HALL", "washing hall", "WH", "TeamA");
   }
 
   @AfterEach
   public void teardown() {
     try {
+      gDB.removeAll();
       conn.close();
       DriverManager.getConnection(closeUrl);
     } catch (SQLException ignored) {
