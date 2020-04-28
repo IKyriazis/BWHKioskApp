@@ -4,11 +4,12 @@ import com.jfoenix.controls.*;
 import com.opencsv.exceptions.CsvException;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.JanitorEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.JanitorService;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
-import java.awt.*;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Comparator;
@@ -16,7 +17,9 @@ import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TreeItem;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class JanitorialController extends AbstractController {
 
@@ -29,9 +32,11 @@ public class JanitorialController extends AbstractController {
 
   @FXML private JFXComboBox<String> comboboxNextStatus;
 
-  @FXML private JFXTextField textfieldCurrentStatus;
+  @FXML private JFXTextField textfieldEmployeeName;
 
   @FXML private GridPane gridTableView;
+
+  @FXML private StackPane popupStackPane;
 
   private SimpleTableView<JanitorService> tblServiceView;
 
@@ -45,10 +50,10 @@ public class JanitorialController extends AbstractController {
     if (janitorDatabase.getRequestSize() == -1) {
       janitorDatabase.dropTables();
       janitorDatabase.createTables();
-      janitorDatabase.readFromCSV();
+      //      janitorDatabase.readFromCSV();
     } else if (janitorDatabase.getRequestSize() == 0) {
       janitorDatabase.removeAll();
-      janitorDatabase.readFromCSV();
+      //      janitorDatabase.readFromCSV();
     }
 
     // Add the status items to the combobox
@@ -71,7 +76,8 @@ public class JanitorialController extends AbstractController {
     btnRemoveRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
     btnChangeStatus.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
 
-    tblServiceView = new SimpleTableView<>(new JanitorService("", "", ""), 80.0);
+    tblServiceView = new SimpleTableView<>(new JanitorService("", "", "", "", 0, ""), 80.0);
+
     gridTableView.getChildren().add(tblServiceView);
 
     refreshActiveRequests();
@@ -84,7 +90,13 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void addServiceRequest() throws SQLException {
-
+    DialogUtil.complexDialog(
+        popupStackPane,
+        "Make a Janitorial Request",
+        "views/AddJanitorPopup.fxml",
+        false,
+        event -> refreshActiveRequests(),
+        new JanitorEditController());
     refreshActiveRequests();
   }
 
@@ -95,7 +107,44 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void removeServiceRequest() throws SQLException {
+    if (tblServiceView.getSelectionModel().getSelectedItem() == null) {
+      DialogUtil.simpleErrorDialog(popupStackPane, "Error", "Please select a request to remove");
 
+    } else {
+      JanitorService j =
+          (((TreeItem<JanitorService>) (tblServiceView.getSelectionModel().getSelectedItem()))
+              .getValue());
+      janitorDatabase.deleteRequest(j.getIndex());
+      refreshActiveRequests();
+    }
+  }
+
+  @FXML
+  private void updateRequest() throws SQLException {
+    if (tblServiceView.getSelectionModel().getSelectedItem() == null) {
+      DialogUtil.simpleErrorDialog(popupStackPane, "Error", "Please select a request to update");
+    } else {
+      JanitorService j =
+          (((TreeItem<JanitorService>) (tblServiceView.getSelectionModel().getSelectedItem()))
+              .getValue());
+      if (comboboxNextStatus.getValue() == null) {
+        DialogUtil.simpleErrorDialog(
+            popupStackPane, "Error", "Please select the status of the request");
+      } else {
+        System.out.println(textfieldEmployeeName.getText());
+        System.out.println(j.getEmployeeName());
+        if (textfieldEmployeeName.getText().equals("")) {
+          janitorDatabase.updateRequest(
+              j.getIndex(), j.getLongName(), comboboxNextStatus.getValue(), j.getEmployeeName());
+        } else {
+          janitorDatabase.updateRequest(
+              j.getIndex(),
+              j.getLongName(),
+              comboboxNextStatus.getValue(),
+              textfieldEmployeeName.getText());
+        }
+      }
+    }
     refreshActiveRequests();
   }
 
@@ -112,6 +161,8 @@ public class JanitorialController extends AbstractController {
       tblServiceView.add(janitorDatabase.janitor01());
     } catch (Exception e) {
       e.printStackTrace();
+      DialogUtil.simpleErrorDialog(
+          popupStackPane, "Error", "Failed to update flower and/or order tables");
     }
   }
 }

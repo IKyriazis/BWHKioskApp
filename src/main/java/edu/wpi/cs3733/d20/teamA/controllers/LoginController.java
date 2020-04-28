@@ -59,7 +59,9 @@ public class LoginController extends AbstractController {
         new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
         "views/flower/FlowerAdmin.fxml");
     vSwitcherBox.addEntry(
-        "Janitor GUI", new FontAwesomeIconView(FontAwesomeIcon.CAR), "views/JanitorialGUI.fxml");
+        "Janitorial - Cory H",
+        new FontAwesomeIconView(FontAwesomeIcon.CAR),
+        "views/JanitorialGUI.fxml");
     vSwitcherBox.addEntry(
         "Announcements",
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
