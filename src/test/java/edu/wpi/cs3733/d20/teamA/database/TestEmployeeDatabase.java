@@ -14,12 +14,14 @@ public class TestEmployeeDatabase {
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
   EmployeesDatabase eDB;
+  GraphDatabase DB;
 
   public TestEmployeeDatabase() {}
 
   @BeforeEach
   public void init() throws SQLException {
     conn = DriverManager.getConnection(jdbcUrl);
+    DB = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
   }
 
