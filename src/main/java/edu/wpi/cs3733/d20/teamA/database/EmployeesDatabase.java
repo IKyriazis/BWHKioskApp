@@ -12,7 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class EmployeesDatabase extends Database {
-
   int employeeID;
   private int numIterations = 16; // 2 ^ 16 = 65536 iterations
 
@@ -101,6 +100,7 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
+      this.employeeID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();

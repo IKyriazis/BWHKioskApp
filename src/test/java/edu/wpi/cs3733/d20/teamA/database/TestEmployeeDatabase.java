@@ -61,10 +61,6 @@ public class TestEmployeeDatabase {
     boolean f = eDB.addEmployee("bacd", "ray", "jay", "a".repeat(90), "Intern");
     Assertions.assertFalse(f);
     Assertions.assertEquals(4, eDB.getSizeEmployees());
-    boolean g = eDB.addEmployee("admin", "admin", "admin", "admin", "admin");
-    Assertions.assertTrue(g);
-    boolean h = eDB.addEmployee("staff", "staff", "staff", "staff", "staff");
-    Assertions.assertTrue(h);
     eDB.removeAllEmployees();
   }
 
