@@ -1,8 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.FlowerEmployee;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -115,12 +112,12 @@ public class TestFlowerDatabase {
     DB.removeAll();
     Assertions.assertEquals(0, fDB.getSizeOrders());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    fDB.addFlowerWithID(1, "Daisy", "Blue", 10, 1.20);
-    fDB.addOrder(5, "1/5|", "biscuit", "stuff", 6);
-    fDB.addOrder(-1, "1/-1|", "biscuit", "thing", 0);
-    fDB.addOrder(1, "1/1|", "biscuit", "foo", 1.2);
-    Assertions.assertEquals(2, fDB.getSizeOrders());
-    // Assertions.assertEquals(5, fDB.getFlowerQuantity("Daisy", "Blue"));
+    fDB.addFlower("Daisy", "Blue", 10, 1.20);
+    fDB.addOrder(5, "Daisy", "Blue", "biscuit");
+    fDB.addOrder(-1, "Daisy", "Blue", "buiscuit");
+    fDB.addOrder(1, "Daisy", "Blue", "butter");
+    Assertions.assertEquals(1, fDB.getSizeOrders());
+    Assertions.assertEquals(5, fDB.getFlowerQuantity("Daisy", "Blue"));
     fDB.removeAllOrders();
   }
 
@@ -132,12 +129,12 @@ public class TestFlowerDatabase {
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     fDB.addFlower("Daisy", "Blue", 20, 1.20);
-    fDB.addOrder(5, "1/5|", "biscuit", "mess", 2);
+    fDB.addOrder(5, "Daisy", "Blue", "biscuit");
     boolean a = fDB.deleteOrder(1);
     Assertions.assertTrue(a);
     Assertions.assertEquals(0, fDB.getSizeOrders());
-    fDB.addOrder(2, "1/2|", "biscuit", "ms", 3);
-    fDB.addOrder(6, "1/6|", "biscuit", "ms", 4);
+    fDB.addOrder(2, "Daisy", "Blue", "biscuit");
+    fDB.addOrder(6, "Daisy", "Blue", "biscuit");
     boolean r = fDB.deleteOrder(2);
     Assertions.assertTrue(r);
     Assertions.assertEquals(1, fDB.getSizeOrders());
@@ -151,7 +148,7 @@ public class TestFlowerDatabase {
     fDB.removeAllOrders();
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    fDB.addOrder(5, "1/5|", "biscuit", "Mess", 2.3);
+    fDB.addOrder(5, "Daisy", "Blue", "biscuit");
     boolean a = fDB.changeOrderStatus(5, "Order Received");
     Assertions.assertTrue(a);
     fDB.removeAllOrders();
@@ -159,29 +156,22 @@ public class TestFlowerDatabase {
 
   @Test
   public void testFlowers() {
-    Flower flr = new Flower("Daisy", "Blue", 9, 9.20, 3);
+    Flower flr = new Flower("Daisy", "Blue", 9, 9.20);
     Assertions.assertEquals("Daisy", flr.getTypeFlower());
     Assertions.assertEquals("Blue", flr.getColor());
     Assertions.assertEquals(9, flr.getQty());
     Assertions.assertEquals(9.20, flr.getPricePer());
-    Assertions.assertEquals(3, flr.getFlowerID());
   }
 
   @Test
   public void testOrders() {
-    Order flr = new Order(1, 4, "1/4|", 9.88, "Order Sent", "dsss", "Hi", -1);
+    Order flr = new Order(1, 4, "Daisy", "Yellow", 9.88, "Order Sent", "dsss");
     Assertions.assertEquals(1, flr.getOrderNumber());
     Assertions.assertEquals(4, flr.getNumFlowers());
-    Assertions.assertEquals("1/4|", flr.getFlowerString());
+    Assertions.assertEquals("Daisy", flr.getFlowerType());
+    Assertions.assertEquals("Yellow", flr.getFlowerColor());
     Assertions.assertEquals(9.88, flr.getPrice());
     Assertions.assertEquals("Order Sent", flr.getStatus());
     Assertions.assertEquals("dsss", flr.getLocation());
-    Assertions.assertEquals("Hi", flr.getMessage());
-  }
-
-  @Test
-  public void testEmployees() {
-    FlowerEmployee emp = new FlowerEmployee("Bob", "LastName");
-    Assertions.assertEquals("Bob LastName", emp.toString());
   }
 }
