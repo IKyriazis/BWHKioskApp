@@ -4,8 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.NodeDialogController;
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -39,6 +38,10 @@ public class MapEditorController {
   @FXML private JFXButton exportCSVButton;
   @FXML private JFXTextField floorField;
 
+  @FXML private JFXButton aStarButton;
+  @FXML private JFXButton breadthFirstButton;
+  @FXML private JFXButton depthFirstButton;
+
   @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
   private JFXRippler infoRippler;
@@ -52,6 +55,16 @@ public class MapEditorController {
   private Point2D dragCurr;
   private Point2D lastPressedPos = new Point2D(0, 0);
   private boolean draggingNodes = false;
+
+  enum Search{
+      ASTAR,
+      BREADTHFIRST,
+      DEPTHFIRST
+  }
+
+  private Search search = Search.ASTAR;
+
+  MapSettings settings = new MapSettings();
 
   private final EventHandler<MouseEvent> dragStartHandler =
       event -> {
@@ -356,6 +369,20 @@ public class MapEditorController {
       popup.show(dialogPane, JFXPopup.PopupVPosition.TOP, JFXPopup.PopupHPosition.LEFT, popX, popY);
     }
 
+    switch(search){
+        case ASTAR:
+            settings.setPath(new Path(graph));
+            break;
+        case BREADTHFIRST:
+            settings.setPath(new BreadthFirst(graph));
+            break;
+        case DEPTHFIRST:
+            settings.setPath(new DepthFirst(graph));
+            break;
+        default:
+            break;
+    }
+
     updateTipLabel();
     canvas.draw(floor);
   }
@@ -429,6 +456,24 @@ public class MapEditorController {
     floor = Math.max(1, floor - 1);
     canvas.draw(floor);
     floorField.setText(String.valueOf(floor));
+  }
+
+  public void searchPressed(ActionEvent event){
+
+      if(event.getTarget().equals(breadthFirstButton)){
+          search = Search.BREADTHFIRST;
+      }
+      else if(event.getTarget().equals(depthFirstButton)){
+          search = Search.DEPTHFIRST;
+      }
+      else{
+          search = Search.ASTAR;
+      }
+  }
+
+  @FXML
+  public void setDepthFirst(){
+
   }
 
   private String getNodeInfo(Node node) {

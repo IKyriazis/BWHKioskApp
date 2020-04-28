@@ -52,6 +52,8 @@ public class SimpleMapController {
 
   private ObservableList<Node> allNodeList;
 
+  MapSettings settings = new MapSettings();
+
   public void initialize() {
     directionsDrawer.close();
     textDirectionsDrawer.close();
@@ -167,14 +169,7 @@ public class SimpleMapController {
             .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
             .findFirst();
     if (start.isPresent() && end.isPresent()) {
-      /*ContextPath path = new ContextPath();
-      if(aStarButton is pressed) path.setPath(new BreadthFirst(graph))
-      else if (depthFirstButton is pressed) path.setPath(new DepthFirst(graph))
-      else path.setPath(new Path(graph))
-      */
-
-      ContextPath path = new ContextPath();
-      path.setPath(new Path(graph));
+      ContextPath path = settings.getPath();
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
 

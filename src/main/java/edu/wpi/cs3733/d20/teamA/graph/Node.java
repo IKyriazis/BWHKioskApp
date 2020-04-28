@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 /** Represents a mostly immutable node on the graph */
@@ -73,7 +72,7 @@ public class Node implements Comparable<Node> {
    *
    * @return Edges
    */
-  public HashMap<Node, Edge> getEdges() {
+  public LinkedHashMap<Node, Edge> getEdges() {
     return edges;
   }
 
