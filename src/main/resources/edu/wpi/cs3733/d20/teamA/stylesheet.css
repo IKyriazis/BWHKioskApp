@@ -5,74 +5,75 @@
 
 .root {
     -fx-font-family: "Roboto";
+
+    -primary-color: #3949ab;
+    -primary-color-text: rgba(255, 255, 255, 0.92);
+
+    -primary-color-light: #6f74dd;
+    -primary-color-light-text: rgba(0, 0, 0, 0.86);
+
+    -primary-color-dark: #00227b;
+    -primary-color-dark-text: rgba(255, 255, 255, 0.86);
+
+    -secondary-color: #757575;
+    -secondary-color-text: rgba(0, 0, 0, 0.34);
+
+    -secondary-color-light: #a4a4a4;
+    -secondary-color-light-text: rgba(0, 0, 0, 0.52);
+
+
+    -secondary-color-dark: #494949;
+    -secondary-color-dark-text: rgba(255, 255, 255, 0.58);
 }
 
 .tab .tab-label {
     -fx-background-color: transparent;
     -fx-alignment: CENTER;
-    -fx-text-fill: black;
+    -fx-text-fill: -primary-color-dark-text;
     -fx-font-size: 18pt; /* all the same except this newly added one */
 }
 
+.tab .tab-label .glyph-icon {
+    -fx-fill: -primary-color-dark-text;
+}
+
 .jfx-tab-pane .headers-region, .jfx-tab-pane .tab-header-background {
-    -fx-background-color: #78909C;
+    -fx-background-color: -primary-color-dark;
 }
 
 .jfx-tab-pane .headers-region > .tab > .jfx-rippler {
-    -jfx-rippler-fill: BLACK;
+    -jfx-rippler-fill: -primary-color-dark-text;
 }
 
 .jfx-tab-pane .headers-region > .tab-selected-line{
-    -fx-background-color: black;
+    -fx-background-color: -primary-color-dark-text;
     -fx-pref-width: 1px !important;
     -fx-pref-height: 2px;
 }
 
 .jfx-slider .thumb, .jfx-slider .colored-track{
-    -fx-background-color: black;
+    -fx-background-color: -primary-color;
 }
 
 .jfx-slider .animated-thumb {
-    -fx-background-color: black;
+    -fx-background-color: -primary-color;
 }
 
 .jfx-radio-button {
-    -jfx-selected-color: black;
+    -jfx-selected-color: -primary-color;
 }
 
 .jfx-tree-table-view .column-header .label {
     -fx-text-fill: black;
 }
 
-.red-button {
-    -fx-background-color: #ef5350;
-    -fx-text-fill: black;
+.jfx-button {
+    -fx-background-color: -primary-color;
+    -fx-text-fill: -primary-color-text;
 }
 
-.green-button {
-    -fx-background-color: #66BB6A;
-    -fx-text-fill: black;
-}
-
-.gray-button {
-    -fx-background-color: #BDBDBD;
-    -fx-text-fill: black;
-}
-
-.bluegray-button {
-    -fx-background-color: #78909C;
-    -fx-text-fill: black;
-}
-
-.white-button {
-    -fx-background-color: white;
-    -fx-text-fill: black;
-}
-
-.white-square-button {
-    -fx-background-color: white;
-    -fx-background-radius: 0px;
-    -fx-text-fill: black;
+.jfx-button .glyph-icon {
+    -fx-fill: -primary-color-text;
 }
 
 .small-text {
