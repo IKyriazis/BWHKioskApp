@@ -6,14 +6,14 @@
 .root {
     -fx-font-family: "Roboto";
 
-    -primary-color: #3949ab;
+    -primary-color: #2196f3;
     -primary-color-text: rgba(255, 255, 255, 0.92);
 
-    -primary-color-light: #6f74dd;
+    -primary-color-light: #6ec6ff;
     -primary-color-light-text: rgba(0, 0, 0, 0.86);
 
-    -primary-color-dark: #00227b;
-    -primary-color-dark-text: rgba(255, 255, 255, 0.86);
+    -primary-color-dark: #0069c0;
+    -primary-color-dark-text: rgba(255, 255, 255, 0.92);
 
     -secondary-color: #757575;
     -secondary-color-text: rgba(0, 0, 0, 0.34);
