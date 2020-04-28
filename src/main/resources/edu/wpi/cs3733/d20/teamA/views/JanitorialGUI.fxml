@@ -31,11 +31,11 @@
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <JFXButton fx:id="btnSubmitRequest" buttonType="RAISED" layoutX="123.0" layoutY="600.0" onAction="#addServiceRequest" prefHeight="30.0" prefWidth="175.0" style="-fx-background-color: white;" text="Submit Request">
+                  <JFXButton fx:id="btnSubmitRequest" buttonType="RAISED" layoutX="123.0" layoutY="600.0" onAction="#addServiceRequest" prefHeight="30.0" prefWidth="175.0" text="Submit Request">
                      <font>
                         <Font size="14.0" />
                      </font></JFXButton>
-                  <JFXComboBox fx:id="comboboxPriority" layoutX="182.0" layoutY="400.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
+                  <JFXComboBox fx:id="comboboxPriority" layoutX="182.0" layoutY="400.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
                   <JFXComboBox fx:id="roomList" layoutX="183.0" layoutY="293.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="100.0" />
                </children>
             </AnchorPane>

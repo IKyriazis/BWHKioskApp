@@ -28,7 +28,7 @@
             <Insets />
          </GridPane.margin>
       </JFXTextField>
-      <JFXButton fx:id="doneButton" onAction="#clickedDone" prefWidth="150.0" style="-fx-background-color: #78909C;" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <JFXButton fx:id="doneButton" onAction="#clickedDone" prefWidth="150.0" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

@@ -125,6 +125,8 @@ public class LoginController extends AbstractController {
       usernameBox.setText("");
       passwordBox.setText("");
       return;
+    } else {
+
     }
 
     // Chuck the login box way off screen

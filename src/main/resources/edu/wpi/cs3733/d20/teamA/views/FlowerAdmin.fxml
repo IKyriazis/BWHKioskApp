@@ -56,17 +56,17 @@
                         </GridPane>
                         <VBox alignment="CENTER" spacing="25.0" GridPane.rowIndex="2">
                            <children>
-                              <JFXButton fx:id="addFlowerButton" buttonType="RAISED" onAction="#addFlower" prefWidth="175.0" style="-fx-background-color: white;" text="Add New Flower">
+                              <JFXButton fx:id="addFlowerButton" buttonType="RAISED" onAction="#addFlower" prefWidth="175.0" text="Add New Flower">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton fx:id="editFlowerButton" buttonType="RAISED" onAction="#editFlower" prefWidth="175.0" style="-fx-background-color: white;" text="Edit Existing Flower">
+                              <JFXButton fx:id="editFlowerButton" buttonType="RAISED" onAction="#editFlower" prefWidth="175.0" text="Edit Existing Flower">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
                               </JFXButton>
-                              <JFXButton fx:id="deleteFlowerButton" buttonType="RAISED" onAction="#deleteFlower" prefWidth="175.0" style="-fx-background-color: white;" text="Delete Flower">
+                              <JFXButton fx:id="deleteFlowerButton" buttonType="RAISED" onAction="#deleteFlower" prefWidth="175.0" text="Delete Flower">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -127,7 +127,7 @@
                                     <Insets left="75.0" right="75.0" />
                                  </VBox.margin>
                               </JFXComboBox>
-                              <JFXButton fx:id="changeProgressButton" buttonType="RAISED" onAction="#changeProgress" style="-fx-background-color: white;" text="Change Order Progress">
+                              <JFXButton fx:id="changeProgressButton" buttonType="RAISED" onAction="#changeProgress" text="Change Order Progress">
                                  <font>
                                     <Font size="14.0" />
                                  </font>

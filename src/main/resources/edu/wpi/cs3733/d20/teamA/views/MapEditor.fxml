@@ -18,7 +18,7 @@
       <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
          <children>
             <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" layoutX="15.0" layoutY="15.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
-            <JFXButton fx:id="exportCSVButton" buttonType="RAISED" onAction="#exportClicked" style="-fx-background-color: white;" text="Export CSV" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="53.0" />
+            <JFXButton fx:id="exportCSVButton" buttonType="RAISED" onAction="#exportClicked" text="Export CSV" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="53.0" />
             <GridPane layoutX="369.0" layoutY="-25.0" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
@@ -44,9 +44,9 @@
             </GridPane>
             <VBox layoutX="837.0" layoutY="15.0" spacing="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                <children>
-                  <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" style="-fx-background-color: white;" />
+                  <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" />
                   <JFXTextField fx:id="floorField" alignment="CENTER" editable="false" prefColumnCount="1" text="1" />
-                  <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" style="-fx-background-color: white;" />
+                  <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" />
                </children>
             </VBox>
          </children>

@@ -67,6 +67,12 @@
     -fx-text-fill: black;
 }
 
+.jfx-tree-table-view:focused > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell:filled:selected {
+    -fx-background-color: -primary-color-light;
+    -fx-table-cell-border-color: -secondary-color;
+    -fx-text-fill: -primary-color-light-text;
+}
+
 .jfx-button {
     -fx-background-color: -primary-color;
     -fx-text-fill: -primary-color-text;
@@ -74,6 +80,15 @@
 
 .jfx-button .glyph-icon {
     -fx-fill: -primary-color-text;
+}
+
+.jfx-button .jfx-rippler {
+    -jfx-rippler-fill: -primary-color-text;
+}
+
+.jfx-text-field {
+    -jfx-focus-color: -primary-color;
+    -jfx-unfocus-color: -secondary-color;
 }
 
 .small-text {
@@ -95,8 +110,6 @@
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
-    -fx-font-size: 20pt;
-    -fx-background-color: white;
 }
 
 #loginBox, #centerPane {
