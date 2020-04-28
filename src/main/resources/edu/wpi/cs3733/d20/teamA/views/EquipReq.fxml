@@ -3,25 +3,25 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane onMouseClicked="#disableBttns" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.views.EquipReq">
+<AnchorPane onMouseClicked="#disableBttns" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.EquipReqController">
    <children>
-      <StackPane onMouseClicked="#disableBttns" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="reqStackPane" onMouseClicked="#disableBttns" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <GridPane onMouseClicked="#disableBttns">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
-                <RowConstraints maxHeight="313.0" minHeight="10.0" prefHeight="297.0" vgrow="ALWAYS" />
-                <RowConstraints maxHeight="196.0" minHeight="10.0" prefHeight="103.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="ALWAYS" />
+                <RowConstraints maxHeight="196.0" minHeight="10.0" prefHeight="103.0" valignment="BOTTOM" vgrow="NEVER" />
               </rowConstraints>
                <children>
                   <GridPane fx:id="gridReq" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
@@ -29,36 +29,35 @@
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+                    </rowConstraints>
+                     <GridPane.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </GridPane.margin>
+                  </GridPane>
+                  <GridPane alignment="CENTER" onMouseClicked="#disableBttns" prefWidth="600.0" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
-                  </GridPane>
-                  <HBox alignment="CENTER" onMouseClicked="#disableBttns" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
                      <children>
-                        <GridPane alignment="BOTTOM_CENTER" onMouseClicked="#disableBttns" prefWidth="600.0" HBox.hgrow="NEVER">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <JFXComboBox fx:id="priCombo" labelFloat="true" onAction="#checkSubmittableCombo" promptText="Priority" GridPane.halignment="CENTER" />
-                              <JFXButton fx:id="addReqbttn" buttonType="RAISED" disable="true" onAction="#addReq" onMouseClicked="#disableBttns" prefWidth="100.0" style="-fx-background-color: #81C784;" text="Add Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
-                              <JFXButton fx:id="delReqbttn" buttonType="RAISED" disable="true" onAction="#delReq" onMouseClicked="#disableBttns" prefWidth="100.0" style="-fx-background-color: #e57373;" text="Finish Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
-                                 <effect>
-                                    <SepiaTone />
-                                 </effect>
-                              </JFXButton>
-                              <JFXComboBox fx:id="locCombo" labelFloat="true" onAction="#checkSubmittableCombo" promptText="Location" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                              <JFXTextField fx:id="itemField" alignment="CENTER" labelFloat="true" maxWidth="100.0" onKeyTyped="#checkSubmittableField" prefWidth="100.0" promptText="Item" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                              <JFXTextField fx:id="qtyField" alignment="CENTER" labelFloat="true" maxWidth="100.0" onKeyTyped="#checkSubmittableField" prefWidth="100.0" promptText="Quantity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                           </children>
-                        </GridPane>
+                        <JFXComboBox fx:id="priCombo" labelFloat="true" onAction="#checkSubmittableCombo" prefWidth="100.0" promptText="Priority" GridPane.halignment="CENTER" />
+                        <JFXButton fx:id="addReqbttn" buttonType="RAISED" disable="true" onAction="#addReq" onMouseClicked="#disableBttns" prefWidth="100.0" style="-fx-background-color: #81C784;" text="Add Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" />
+                        <JFXButton fx:id="delReqbttn" buttonType="RAISED" disable="true" onAction="#delReq" onMouseClicked="#disableBttns" prefWidth="100.0" style="-fx-background-color: #e57373;" text="Finish Request" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                           <effect>
+                              <SepiaTone />
+                           </effect>
+                        </JFXButton>
+                        <JFXComboBox fx:id="locCombo" labelFloat="true" onAction="#checkSubmittableCombo" prefWidth="100.0" promptText="Location" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <JFXTextField fx:id="itemField" alignment="CENTER" labelFloat="true" maxWidth="100.0" onKeyTyped="#checkSubmittableField" prefWidth="100.0" promptText="Item" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <JFXTextField fx:id="qtyField" alignment="CENTER" labelFloat="true" maxWidth="100.0" onKeyTyped="#checkSubmittableField" prefWidth="100.0" promptText="Quantity" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                      </children>
-                  </HBox>
+                  </GridPane>
                </children>
             </GridPane>
          </children>

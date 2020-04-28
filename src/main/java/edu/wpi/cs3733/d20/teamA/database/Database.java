@@ -14,7 +14,7 @@ public abstract class Database {
     // makeDatabase();
   }
 
-  public static Connection getConnection() {
+  public Connection getConnection() {
     return connection;
   }
 

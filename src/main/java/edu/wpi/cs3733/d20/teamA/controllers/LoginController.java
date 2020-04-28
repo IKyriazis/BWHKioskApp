@@ -62,6 +62,10 @@ public class LoginController extends AbstractController {
         "Announcements",
         new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
         "views/AnnouncementAdmin.fxml");
+    vSwitcherBox.addEntry(
+        "Equipment Request Eva L",
+        new FontAwesomeIconView(FontAwesomeIcon.STETHOSCOPE),
+        "views/EquipReq.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
@@ -98,7 +102,6 @@ public class LoginController extends AbstractController {
   @FXML
   public void loginButtonPressed() {
     if (transitioning || loggedIn) {
-      eDB.addLog(usernameBox.getText());
       return;
     }
 
@@ -115,7 +118,7 @@ public class LoginController extends AbstractController {
       passwordBox.setText("");
       return;
     }
-
+    eDB.addLog(usernameBox.getText());
     // Chuck the login box way off screen
     transitioning = true;
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
@@ -142,10 +145,9 @@ public class LoginController extends AbstractController {
   @FXML
   public void logoutButtonPressed() {
     if (!loggedIn || transitioning) {
-      eDB.changeFlag();
       return;
     }
-
+    eDB.changeFlag();
     transitioning = true;
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
     translate.setByY(2000f);

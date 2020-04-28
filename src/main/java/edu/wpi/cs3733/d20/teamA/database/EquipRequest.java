@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -15,16 +16,31 @@ public class EquipRequest implements ITableable<EquipRequest> {
   private final SimpleStringProperty location;
   private final SimpleStringProperty priority;
   private final SimpleStringProperty time;
+  private final SimpleStringProperty username;
 
   public EquipRequest(
-      String name, String item, int qty, String location, String priority, String time) {
-
+      String name,
+      String item,
+      int qty,
+      String location,
+      String priority,
+      Timestamp time,
+      String username) {
+    this.username = new SimpleStringProperty(username);
     this.name = new SimpleStringProperty(name);
     this.item = new SimpleStringProperty(item);
     this.qty = new SimpleIntegerProperty(qty);
     this.location = new SimpleStringProperty(location);
     this.priority = new SimpleStringProperty(priority);
-    this.time = new SimpleStringProperty(time);
+    this.time = new SimpleStringProperty(time.toString());
+  }
+
+  public String getUsername() {
+    return username.get();
+  }
+
+  public SimpleStringProperty usernameProperty() {
+    return username;
   }
 
   public String getName() {

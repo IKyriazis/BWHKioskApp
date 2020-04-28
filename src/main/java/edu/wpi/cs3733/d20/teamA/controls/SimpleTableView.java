@@ -2,10 +2,9 @@ package edu.wpi.cs3733.d20.teamA.controls;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.util.ArrayList;
 import java.util.List;
-
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 
@@ -81,6 +80,5 @@ public class SimpleTableView<T extends ITableable<T>> extends JFXTreeTableView {
     return null;
   }
 
-    public void setGraphic(FontAwesomeIconView fontAwesomeIconView) {
-    }
+  public void setGraphic(FontAwesomeIconView fontAwesomeIconView) {}
 }
