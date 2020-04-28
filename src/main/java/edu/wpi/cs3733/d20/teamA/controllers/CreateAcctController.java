@@ -41,6 +41,13 @@ public class CreateAcctController extends AbstractController {
           "The username you have chosen is already taken. Please choose another.");
       return;
     }
+    if (pass.getText().length() < 8) {
+      DialogUtil.simpleErrorDialog(
+          dialogPane,
+          "Invalid Password",
+          "Please make sure your password is at least 8 characters long.");
+      return;
+    }
     if (!cPass.getText().equals(pass.getText())) {
       // make popup that says passwords are not the same
       DialogUtil.simpleErrorDialog(
