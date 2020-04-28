@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PrescriptionController">
+   <children>
+      <GridPane alignment="CENTER" prefHeight="300.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="137.9999755859375" minHeight="10.0" prefHeight="103.40003204345703" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="181.19999160766602" minHeight="10.0" prefHeight="89.79996795654294" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="181.19999160766602" minHeight="10.0" prefHeight="101.60001220703128" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="181.19999160766602" minHeight="10.0" prefHeight="101.60001220703128" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane maxWidth="600.0" minWidth="600.0" prefWidth="600.0" GridPane.halignment="CENTER" GridPane.hgrow="NEVER">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <JFXTextField fx:id="txtPatientName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Patient Name" GridPane.halignment="CENTER" />
+                  <JFXTextField fx:id="txtDoctorName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Doctor Name" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <JFXTextField fx:id="txtPrescription" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Prescription" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="txtPharmacy" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Pharmacy" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+               </children>
+            </GridPane>
+            <JFXTextArea fx:id="txtNotes" labelFloat="true" onKeyTyped="#disableDoneText" promptText="Notes (max 100 characters)" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets left="20.0" right="20.0" />
+               </GridPane.margin>
+            </JFXTextArea>
+            <HBox alignment="CENTER" prefHeight="89.0" prefWidth="500.0" spacing="30.0" GridPane.rowIndex="1">
+               <children>
+                  <JFXTextField fx:id="txtDosage" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Dosage" />
+                  <JFXComboBox fx:id="cBoxRefillPer" labelFloat="true" maxWidth="150.0" minWidth="150.0" onAction="#disableDoneAction" prefWidth="150.0" promptText="Refill Every" />
+                  <JFXTextField fx:id="txtNumberOfRefills" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="# of Refills" />
+               </children>
+            </HBox>
+            <JFXButton fx:id="btnDone" buttonType="RAISED" contentDisplay="CENTER" disable="true" onAction="#disableDoneAction" text="Done" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

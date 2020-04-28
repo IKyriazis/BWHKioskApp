@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class PrescriptionDatabase extends Database {
   private int prescriptionNum;
@@ -407,6 +409,44 @@ public class PrescriptionDatabase extends Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
+    }
+  }
+
+  public ObservableList<Prescription> prescriptionObservableList() {
+    ObservableList<Prescription> prescriptionObservableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM PRESCRIPTION");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int prescriptionID = rset.getInt("prescriptionID");
+        String patientName = rset.getString("patientName");
+        String prescription = rset.getString("prescription");
+        String pharmacy = rset.getString("pharmacy");
+        String dosage = rset.getString("dosage");
+        int numberOfRefills = rset.getInt("numberOfRefills");
+        String refillPer = rset.getString("refillPer");
+        String doctorUsername = rset.getString("doctorUsername");
+        String notes = rset.getString("notes");
+
+        Prescription node =
+            new Prescription(
+                prescriptionID,
+                patientName,
+                prescription,
+                pharmacy,
+                dosage,
+                numberOfRefills,
+                refillPer,
+                doctorUsername,
+                notes);
+        prescriptionObservableList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      return prescriptionObservableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
     }
   }
 }

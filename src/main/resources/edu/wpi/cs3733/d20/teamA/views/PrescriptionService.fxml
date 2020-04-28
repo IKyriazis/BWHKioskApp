@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.PrescriptionController">
+   <children>
+      <StackPane prefHeight="700.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                  <RowConstraints maxHeight="466.8" minHeight="10.0" prefHeight="86.79999237060548" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="466.8" minHeight="10.0" prefHeight="86.79999237060548" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="661.2000045776367" minHeight="10.0" prefHeight="614.0000076293945" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <HBox alignment="CENTER" prefHeight="176.0" prefWidth="900.0" spacing="100.0" GridPane.rowIndex="1">
+                     <children>
+                        <JFXButton fx:id="addPrescriptionBtn" buttonType="RAISED" onAction="#openAddDialog" style="-fx-background-color: WHITE;" text="Add" />
+                        <JFXButton fx:id="editPrescriptionBtn" buttonType="RAISED" disable="true" onAction="#openEditDialog" style="-fx-background-color: WHITE;" text="Edit" />
+                        <JFXButton fx:id="deletePrescriptionBtn" buttonType="RAISED" disable="true" onAction="#openDeleteDialog" style="-fx-background-color: WHITE;" text="Delete" />
+                        <JFXButton fx:id="infoPrescriptionBtn" buttonType="RAISED" disable="true" onAction="#openInfoDialog" style="-fx-background-color: WHITE;" text="Info" />
+                     </children>
+                  </HBox>
+                  <GridPane GridPane.rowIndex="2">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
+                  <Label alignment="CENTER" contentDisplay="CENTER" text="Manage Prescriptions" GridPane.halignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>
