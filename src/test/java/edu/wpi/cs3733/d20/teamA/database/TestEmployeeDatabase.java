@@ -121,4 +121,10 @@ public class TestEmployeeDatabase {
     boolean c = eDB.changePassword("jay", "Is3", "IskkIg3");
     Assertions.assertTrue(c);
   }
+
+  @Test
+  public void testEmployee() {
+    Employee e = new Employee(4, "fm", "lm", "title");
+    Assertions.assertEquals("fm lm", e.toString());
+  }
 }
