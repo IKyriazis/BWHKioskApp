@@ -32,7 +32,7 @@ public class EmployeesDatabase extends Database {
    *
    * @return Success / Failure
    */
-  public boolean dropTables() {
+  public synchronized boolean dropTables() {
 
     // Drop the tables
     return helperPrepared("DROP TABLE Employees");
@@ -43,7 +43,7 @@ public class EmployeesDatabase extends Database {
    *
    * @return False if tables couldn't be created
    */
-  public boolean createTables() {
+  public synchronized boolean createTables() {
 
     // Create the graph tables
 
@@ -56,7 +56,7 @@ public class EmployeesDatabase extends Database {
    * @param nameLast last name
    * @return returns true if the employee is added
    */
-  public boolean addEmployee(
+  public synchronized boolean addEmployee(
       int employeeID,
       String nameFirst,
       String nameLast,
@@ -87,7 +87,7 @@ public class EmployeesDatabase extends Database {
   }
 
   // returns true if the username isn't in the database
-  public boolean uNameExists(String uName) {
+  public synchronized boolean uNameExists(String uName) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
@@ -104,12 +104,12 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean addEmployeeNoChecks(
+  public synchronized boolean addEmployeeNoChecks(
       String nameFirst, String nameLast, String username, String password, String title) {
     return addEmployee(getSizeEmployees() + 1, nameFirst, nameLast, username, password, title);
   }
 
-  public boolean addEmployee(
+  public synchronized boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
     return checkSecurePass(password)
         && addEmployee(employeeID, nameFirst, nameLast, username, password, title);
@@ -120,7 +120,7 @@ public class EmployeesDatabase extends Database {
    *
    * @return true if the Janitor was successfully deleted
    */
-  public boolean deleteEmployee(String username) {
+  public synchronized boolean deleteEmployee(String username) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From Employees Where username = ?");
@@ -135,7 +135,7 @@ public class EmployeesDatabase extends Database {
   }
 
   /** @return returns the size of the table */
-  public int getSizeEmployees() {
+  public synchronized int getSizeEmployees() {
     return getSize("Employees");
   }
 
@@ -143,7 +143,7 @@ public class EmployeesDatabase extends Database {
    * @param newTitle newTitle
    * @return true if the title is changed
    */
-  public boolean editTitle(String username, String newTitle) {
+  public synchronized boolean editTitle(String username, String newTitle) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -162,7 +162,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean editNameFirst(String username, String newFirst) {
+  public synchronized boolean editNameFirst(String username, String newFirst) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -181,7 +181,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean editNameLast(String username, String newLast) {
+  public synchronized boolean editNameLast(String username, String newLast) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -200,7 +200,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean logIn(String username, String enteredPass) {
+  public synchronized boolean logIn(String username, String enteredPass) {
     String pass = null;
     try {
       PreparedStatement pstmt =
@@ -224,7 +224,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public String getName(int id) {
+  public synchronized String getName(int id) {
     String pass = null;
     try {
       PreparedStatement pstmt =
@@ -245,7 +245,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
-  public boolean changePassword(String username, String oldPass, String newPass) {
+  public synchronized boolean changePassword(String username, String oldPass, String newPass) {
 
     if (logIn(username, oldPass) && checkSecurePass(newPass)) {
       String storedPass = BCrypt.withDefaults().hashToString(numIterations, newPass.toCharArray());
@@ -274,7 +274,7 @@ public class EmployeesDatabase extends Database {
    * @param password password
    * @return true if the there is a scure pass
    */
-  public boolean checkSecurePass(String password) {
+  public synchronized boolean checkSecurePass(String password) {
     char ch;
     boolean capital = false;
     boolean lowercase = false;
@@ -302,7 +302,7 @@ public class EmployeesDatabase extends Database {
    *
    * @return an observable list containing all employees in the table
    */
-  public ObservableList<Employee> employeeOl() {
+  public synchronized ObservableList<Employee> employeeOl() {
     ObservableList<Employee> eList = FXCollections.observableArrayList();
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
@@ -330,11 +330,11 @@ public class EmployeesDatabase extends Database {
   }
 
   /** @return true if all all employee are removed */
-  public boolean removeAllEmployees() {
+  public synchronized boolean removeAllEmployees() {
     return helperPrepared("DELETE From Employees");
   }
 
-  public void readEmployeeCSV() {
+  public synchronized void readEmployeeCSV() {
     try {
       InputStream stream =
           getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Employees.csv");

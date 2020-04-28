@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
@@ -10,8 +8,10 @@ import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
@@ -23,6 +23,8 @@ import javafx.util.Duration;
 
 public class LoginController extends AbstractController {
   @FXML private VBox loginBox;
+  @FXML private VBox buttonBox;
+  @FXML private JFXSpinner spinner;
   @FXML private JFXButton loginButton;
   @FXML private JFXTextField usernameBox;
   @FXML private JFXPasswordField passwordBox;
@@ -130,37 +132,84 @@ public class LoginController extends AbstractController {
       return;
     }
 
-    if (!eDB.logIn(usernameBox.getText(), passwordBox.getText())) {
-      DialogUtil.simpleErrorDialog(
-          dialogPane, "Incorrect Login", "Please reenter your credentials and try again");
-      usernameBox.setText("");
-      passwordBox.setText("");
-      return;
-    } else {
+    // Disable login button, hide text fields, and show spinner.
+    loginButton.setDisable(true);
 
-    }
+    // Fade out buttons
+    buttonBox.setDisable(true);
+    FadeTransition boxOutFade = new FadeTransition(Duration.millis(250), buttonBox);
+    boxOutFade.setFromValue(1.0);
+    boxOutFade.setToValue(0.0);
+    boxOutFade.play();
 
-    // Chuck the login box way off screen
-    transitioning = true;
-    TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
-    translate.setByY(-2000f);
-    translate.setOnFinished(
-        event -> {
-          // Clear username / password once they're off screen
-          usernameBox.setText("");
-          passwordBox.setText("");
-          transitioning = false;
+    // Fade in spinner
+    FadeTransition spinnerInFade = new FadeTransition(Duration.millis(250), spinner);
+    spinnerInFade.setFromValue(0.0);
+    spinnerInFade.setToValue(1.0);
+    spinnerInFade.play();
+
+    ThreadPool.runBackgroundTask(
+        () -> {
+          if (!eDB.logIn(usernameBox.getText(), passwordBox.getText())) {
+            Platform.runLater(
+                () -> {
+                  DialogUtil.simpleErrorDialog(
+                      dialogPane,
+                      "Incorrect Login",
+                      "Please reenter your credentials and try again");
+                  usernameBox.setText("");
+                  passwordBox.setText("");
+
+                  // Fade in buttons
+                  buttonBox.setDisable(false);
+                  FadeTransition boxInFade = new FadeTransition(Duration.millis(250), buttonBox);
+                  boxInFade.setFromValue(0.0);
+                  boxInFade.setToValue(1.0);
+                  boxInFade.play();
+
+                  // Fade out spinner
+                  FadeTransition spinnerOutFade = new FadeTransition(Duration.millis(250), spinner);
+                  spinnerOutFade.setFromValue(1.0);
+                  spinnerOutFade.setToValue(0.0);
+                  spinnerOutFade.play();
+
+                  // Re-enable
+                  loginButton.setDisable(false);
+                });
+          } else {
+            Platform.runLater(
+                () -> {
+                  // Chuck the login box way off screen
+                  transitioning = true;
+                  TranslateTransition translate =
+                      new TranslateTransition(Duration.millis(1000), loginBox);
+                  translate.setByY(-2000f);
+                  translate.setOnFinished(
+                      event -> {
+                        // Clear username / password once they're off screen
+                        usernameBox.setText("");
+                        passwordBox.setText("");
+                        transitioning = false;
+
+                        // Reset visibility of stuff in box
+                        buttonBox.setDisable(false);
+                        buttonBox.setOpacity(1.0);
+                        spinner.setOpacity(0.0);
+                        loginButton.setDisable(false);
+                      });
+                  translate.play();
+
+                  // Fade out the background
+                  FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
+                  fade.setFromValue(1.0);
+                  fade.setToValue(0.0);
+                  fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
+                  fade.play();
+
+                  loggedIn = true;
+                });
+          }
         });
-    translate.play();
-
-    // Fade out the background
-    FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
-    fade.setFromValue(1.0);
-    fade.setToValue(0.0);
-    fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
-    fade.play();
-
-    loggedIn = true;
   }
 
   @FXML
