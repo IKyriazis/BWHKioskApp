@@ -26,7 +26,7 @@ public class SimpleTableView<T extends ITableable<T>> extends JFXTreeTableView {
     setShowRoot(false);
   }
 
-  private void buildColumns() {
+  public void buildColumns() {
     if (rootItem.getChildren().isEmpty()) {
       return;
     }

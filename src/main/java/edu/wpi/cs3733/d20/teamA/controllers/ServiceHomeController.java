@@ -20,7 +20,13 @@ public class ServiceHomeController {
     VSwitcherBox vSwitcherBox =
         new VSwitcherBox(destPane, new FontAwesomeIconView(FontAwesomeIcon.FILE_TEXT));
     vSwitcherBox.addEntry(
-        "Flowers", new MaterialIconView(MaterialIcon.LOCAL_FLORIST), "views/FlowerService.fxml");
+        "Flowers",
+        new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
+        "views/flower/FlowerService.fxml");
+    vSwitcherBox.addEntry(
+        "Internal Transport",
+        new MaterialIconView(MaterialIcon.ACCESSIBLE),
+        "views/InternalTransportService.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
