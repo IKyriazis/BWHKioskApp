@@ -13,7 +13,7 @@ import javafx.collections.ObservableList;
 
 public class EmployeesDatabase extends Database {
   int employeeID;
-  private int numIterations = 16; // 2 ^ 16 = 65536 iterations
+  private final int numIterations = 14; // 2 ^ 16 = 16384 iterations
 
   public EmployeesDatabase(Connection connection) {
 
