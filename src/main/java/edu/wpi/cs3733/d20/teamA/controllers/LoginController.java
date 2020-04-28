@@ -84,7 +84,7 @@ public class LoginController extends AbstractController {
         new MaterialIconView(MaterialIcon.PERSON_ADD),
         "views/PatientsInfoService.fxml");
     vSwitcherBox.addEntry(
-        "Internal Transport Requests",
+        "Internal Transport - Ioannis K",
         new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR),
         "views/InternalTransportAdmin.fxml");
     vSwitcherBox.addEntry(
