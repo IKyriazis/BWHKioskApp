@@ -15,13 +15,13 @@
     -primary-color-dark: #4b636e;
     -primary-color-dark-text: rgba(0, 0, 0, 0.92);
 
-    -secondary-color: #757575;
+    -secondary-color: white;
     -secondary-color-text: rgba(0, 0, 0, 0.92);
 
-    -secondary-color-light: #a4a4a4;
+    -secondary-color-light: white;
     -secondary-color-light-text: rgba(0, 0, 0, 0.92);
 
-    -secondary-color-dark: #494949;
+    -secondary-color-dark: white;
     -secondary-color-dark-text: rgba(0, 0, 0, 0.92);
 }
 
@@ -87,7 +87,10 @@
 
 .jfx-text-field {
     -jfx-focus-color: -primary-color;
-    -jfx-unfocus-color: -secondary-color;
+}
+
+.jfx-password-field {
+    -jfx-focus-color: -primary-color;
 }
 
 .sidebar-button .glyph-icon {
