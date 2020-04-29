@@ -98,6 +98,14 @@
     -jfx-unchecked-color: black;
 }
 
+.jfx-progress-bar > .bar{
+    -fx-background-color: -primary-color;
+}
+
+.jfx-spinner .arc {
+    -fx-stroke: -primary-color;
+}
+
 .sidebar-button .glyph-icon {
     -fx-fill: -secondary-color-text;
 }
