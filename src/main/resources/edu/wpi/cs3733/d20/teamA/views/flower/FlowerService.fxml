@@ -22,7 +22,7 @@
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="-Infinity" />
@@ -33,7 +33,7 @@
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <JFXTreeTableView fx:id="flowerTable" GridPane.rowIndex="1" />
+                  <JFXTreeTableView fx:id="flowerTable" maxHeight="1.7976931348623157E308" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
                   <GridPane GridPane.rowIndex="4">
                      <GridPane.margin>
                         <Insets />
