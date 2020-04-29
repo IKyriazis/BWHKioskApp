@@ -22,13 +22,13 @@
             <JFXButton fx:id="exportCSVButton" buttonType="RAISED" onAction="#exportClicked" text="Export CSV" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="53.0" />
             <GridPane layoutX="369.0" layoutY="-25.0" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" valignment="TOP" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXDrawer fx:id="infoDrawer" direction="TOP" maxHeight="-Infinity" maxWidth="-Infinity">
+                  <JFXDrawer fx:id="infoDrawer" defaultDrawerSize="200.0" maxHeight="-Infinity" maxWidth="-Infinity">
                      <children>
                         <AnchorPane fx:id="infoPane" maxHeight="-Infinity" maxWidth="-Infinity">
                            <children>
@@ -51,6 +51,7 @@
                </children>
             </VBox>
             <JFXCheckBox onAction="#toggleDrawBelow" text="Draw Nodes Below" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="15.0" />
+            <JFXButton fx:id="helpButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#helpClicked" text="Help" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="83.0" />
          </children>
       </AnchorPane>
    </children>

@@ -106,6 +106,17 @@
     -jfx-rippler-fill: -primary-color-light;
 }
 
+.popup-button {
+    -fx-font-size: 18pt;
+    -fx-background-radius: 0px;
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -secondary-color-text;
+}
+
+.popup-button .jfx-rippler {
+    -jfx-rippler-fill: -secondary-color-text;
+}
+
 .label {
     -fx-text-fill: black;
 }
