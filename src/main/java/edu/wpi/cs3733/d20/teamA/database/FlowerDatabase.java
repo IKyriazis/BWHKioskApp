@@ -26,8 +26,8 @@ public class FlowerDatabase extends Database {
     if (doesTableNotExist("FLOWERS") && doesTableNotExist("ORDERS")) {
       createTables();
     }
-    orderNum = getRandomNumber();
-    flowerNum = getRandomNumber();
+    orderNum = getSizeOrders() + 1;
+    flowerNum = getSizeFlowers();
   }
 
   /**
@@ -84,7 +84,9 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-      flowerNum = getRandomNumber();
+      int num = flowerNum;
+      while (idInUse(num)) num++;
+
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
@@ -96,6 +98,7 @@ public class FlowerDatabase extends Database {
       pstmt.setDouble(5, pricePer);
       pstmt.executeUpdate();
       pstmt.close();
+      flowerNum = num + 1;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -124,13 +127,11 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-
-      flowerNum = getRandomNumber();
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, flowerNum);
+      pstmt.setInt(1, id);
       pstmt.setString(2, type);
       pstmt.setString(3, color);
       pstmt.setInt(4, qty);
@@ -153,12 +154,13 @@ public class FlowerDatabase extends Database {
    * @return true if the price is updated, false otherwise
    */
   public boolean updatePrice(String type, String color, double newPrice) {
-
+    // This method can be a little unpredictable, use update price with string parameter for more
+    // acccuracy
     String text = Double.toString(Math.abs(newPrice));
     int integerPlaces = text.indexOf('.');
     int decimalPlaces = text.length() - integerPlaces - 1;
 
-    if (decimalPlaces != 2) {
+    if (decimalPlaces > 2) {
       return false;
     }
 
@@ -168,6 +170,42 @@ public class FlowerDatabase extends Database {
               .prepareStatement(
                   "UPDATE Flowers SET pricePer = "
                       + newPrice
+                      + " WHERE typeFlower = '"
+                      + type
+                      + "' AND color = '"
+                      + color
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+  /**
+   * Takes in the color and type of flower and updates to a given price - This price is a string,
+   * avoiding conversion twice for more precision
+   *
+   * @param type flowerType
+   * @param color color
+   * @param newPrice new price
+   * @return true if the price is updated, false otherwise
+   */
+  public boolean updatePrice(String type, String color, String newPrice) {
+    int integerPlaces = newPrice.indexOf('.');
+    int decimalPlaces = newPrice.length() - integerPlaces - 1;
+
+    if (decimalPlaces > 2) {
+      return false;
+    }
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Flowers SET pricePer = "
+                      + Double.parseDouble(newPrice)
                       + " WHERE typeFlower = '"
                       + type
                       + "' AND color = '"

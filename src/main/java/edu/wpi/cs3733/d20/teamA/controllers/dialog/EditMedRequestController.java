@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.MedRequest;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -37,6 +38,7 @@ public class EditMedRequestController extends AbstractController implements IDia
   }
 
   public void initialize() {
+    roomNum.setTextFormatter(InputFormatUtil.getIntFilter());
     if (modify) {
       fName.setText(request.getFirstName());
       lName.setText(request.getLastName());
@@ -45,6 +47,10 @@ public class EditMedRequestController extends AbstractController implements IDia
       fBy.setText(request.getFulfilledBy());
       roomNum.setText(request.getRoomNum() + "");
       pTime.setEditable(true);
+
+      // Prevent editing of fields that cannot be changed
+      fName.setEditable(false);
+      lName.setEditable(false);
 
       try {
         request.getTime();

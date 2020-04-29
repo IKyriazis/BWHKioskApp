@@ -160,7 +160,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected String getPrescription(String patientName) {
+  public String getPrescription(String patientName) {
     String prescription;
     try {
       Statement stmt = getConnection().createStatement();
@@ -175,7 +175,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected String getPharmacy(String patient) {
+  public String getPharmacy(String patient) {
     String pharmacy;
     try {
       Statement stmt = getConnection().createStatement();
@@ -190,7 +190,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected String getDosage(String patient) {
+  public String getDosage(String patient) {
     String dosage;
     try {
       Statement stmt = getConnection().createStatement();
@@ -205,7 +205,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected int getNumRefills(String patient) {
+  public int getNumRefills(String patient) {
     int numRefills;
     try {
       Statement stmt = getConnection().createStatement();
@@ -220,7 +220,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected String getNotes(String patient) {
+  public String getNotes(String patient) {
     String notes;
     try {
       Statement stmt = getConnection().createStatement();
@@ -235,7 +235,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected String getDoctor(String patient) {
+  public String getDoctor(String patient) {
     String doctor;
     try {
       Statement stmt = getConnection().createStatement();
@@ -256,7 +256,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected String getPatient(int prescriptionID) {
+  public String getPatient(int prescriptionID) {
     String patient;
     try {
       Statement stmt = getConnection().createStatement();
@@ -273,7 +273,7 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected boolean setPatient(int prescriptionID, String newPatient) {
+  public boolean setPatient(int prescriptionID, String newPatient) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -292,16 +292,16 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected boolean setPrescription(String patient, String newPrescription) {
+  public boolean setPrescription(int prescriptionID, String newPrescription) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE PRESCRIPTION SET prescription = '"
                       + newPrescription
-                      + "' WHERE patientName = '"
-                      + patient
-                      + "'");
+                      + "' WHERE prescriptionID = "
+                      + prescriptionID
+                      + "");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -311,16 +311,16 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected boolean setPharmacy(String patient, String newPharmacy) {
+  public boolean setPharmacy(int prescriptionID, String newPharmacy) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE PRESCRIPTION SET pharmacy = '"
                       + newPharmacy
-                      + "' WHERE patientName = '"
-                      + patient
-                      + "'");
+                      + "' WHERE prescriptionID = "
+                      + prescriptionID
+                      + "");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -330,16 +330,16 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected boolean setDosage(String patient, String newDosage) {
+  public boolean setDosage(int prescriptionID, String newDosage) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE PRESCRIPTION SET dosage = '"
                       + newDosage
-                      + "' WHERE patientName = '"
-                      + patient
-                      + "'");
+                      + "' WHERE prescriptionID = "
+                      + prescriptionID
+                      + "");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -349,16 +349,16 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected boolean setNumberOfRefills(String patient, int newRefills) {
+  public boolean setNumberOfRefills(int prescriptionID, int newRefills) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE PRESCRIPTION SET numberOfRefills = "
                       + newRefills
-                      + " WHERE patientName = '"
-                      + patient
-                      + "'");
+                      + " WHERE prescriptionID = "
+                      + prescriptionID
+                      + "");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -368,16 +368,16 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected boolean setDoctorUsername(String patient, String newDoctorUsername) {
+  public boolean setDoctorUsername(int prescriptionID, String newDoctorUsername) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE PRESCRIPTION SET doctorUsername = '"
                       + newDoctorUsername
-                      + "' WHERE patientName = '"
-                      + patient
-                      + "'");
+                      + "' WHERE prescriptionID = "
+                      + prescriptionID
+                      + "");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -387,16 +387,16 @@ public class PrescriptionDatabase extends Database {
     }
   }
 
-  protected boolean setNotes(String patient, String newNote) {
+  public boolean setNotes(int prescriptionID, String newNote) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE PRESCRIPTION SET notes = '"
                       + newNote
-                      + "' WHERE patientName = '"
-                      + patient
-                      + "'");
+                      + "' WHERE prescriptionID = "
+                      + prescriptionID
+                      + "");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
