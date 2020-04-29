@@ -161,6 +161,7 @@ public class ITServicesController extends AbstractController {
     ITTicketLocation.getSelectionModel().clearSelection();
     ITTicketDescription.clear();
     ITTicketName.clear();
+    tblViewITTicket.getSelectionModel().clearSelection();
     updateTable();
   }
 
@@ -173,6 +174,7 @@ public class ITServicesController extends AbstractController {
     selected = tblViewITTicket.getSelected();
     if (selected != null) {
       boolean i = itTicketDatabase.deleteTicket(Timestamp.valueOf(selected.getTicketTime()));
+      tblViewITTicket.getSelectionModel().clearSelection();
       updateTable();
     }
   }
@@ -192,6 +194,7 @@ public class ITServicesController extends AbstractController {
     System.out.println(Timestamp.valueOf(selected.getTicketTime()));
     statusChangeName.clear();
     statusChangeStatus.getSelectionModel().clearSelection();
+    tblViewITTicket.getSelectionModel().clearSelection();
     updateTable();
   }
 
