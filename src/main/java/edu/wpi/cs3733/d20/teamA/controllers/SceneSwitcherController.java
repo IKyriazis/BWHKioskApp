@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.NotificationController;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
@@ -58,6 +59,11 @@ public class SceneSwitcherController {
   @FXML
   public void informationButtonPressed() {
     DialogUtil.complexDialog(
-        dialogPane, "Announcements", "views/NotificationWall.fxml", true, null, null);
+        dialogPane,
+        "Announcements",
+        "views/NotificationWall.fxml",
+        true,
+        null,
+        new NotificationController());
   }
 }
