@@ -254,12 +254,37 @@ public class DepthFirst implements IStrategyPath {
 
     for (int i = 0; i < (pathNodes.size() - 1); i++) {
       // Locate forward edges
+      boolean found = false;
       for (Edge edge : pathNodes.get(i).getEdges().values()) {
         if (edge.getEnd().equals(pathNodes.get(i + 1))) {
           // Forward edge found, add it to the list.
           pathEdges.add(edge);
+          found = true;
         }
       }
+      if (!found) {
+        pathEdges.clear();
+        pathNodes.clear();
+        return;
+      }
     }
+  }
+
+  public void update() {
+    ArrayList<Node> newNodes = new ArrayList<>();
+    pathNodes.forEach(
+        node -> {
+          Node newNode = Graph.getInstance().getNodeByID(node.getNodeID());
+          if (newNode == null) {
+            pathNodes.clear();
+            pathEdges.clear();
+          } else {
+            newNodes.add(newNode);
+          }
+        });
+
+    pathNodes.clear();
+    pathNodes.addAll(newNodes);
+    calculateEdges();
   }
 }
