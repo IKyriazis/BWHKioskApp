@@ -45,4 +45,22 @@ public class TestAnnouncementDatabase {
     Assertions.assertTrue(dropTables2);
     announcementDatabase.createTables();
   }
+
+  @Test
+  public void addAnnouncement() {
+    announcementDatabase.removeAllAnnouncements();
+    announcementDatabase.addAnnouncement("First Announcement");
+    announcementDatabase.addAnnouncement("Second Announcement");
+    Assertions.assertEquals(2, announcementDatabase.getSizeAnnouncements());
+    announcementDatabase.removeAllAnnouncements();
+  }
+
+  @Test
+  public void deleteAnnouncement() {
+    announcementDatabase.removeAllAnnouncements();
+    int id = announcementDatabase.addAnnouncement("Cake at the Main Hall");
+    Assertions.assertEquals(1, announcementDatabase.getSizeAnnouncements());
+    announcementDatabase.removeAnnouncement(id);
+    Assertions.assertEquals(0, announcementDatabase.getSizeAnnouncements());
+  }
 }

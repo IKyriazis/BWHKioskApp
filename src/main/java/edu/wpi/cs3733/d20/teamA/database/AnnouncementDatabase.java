@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import java.sql.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class AnnouncementDatabase extends Database {
 
@@ -86,5 +88,26 @@ public class AnnouncementDatabase extends Database {
 
   public boolean removeAnnouncement(int id) {
     return helperPrepared("DELETE From ANNOUNCEMENTS WHERE announcementID = " + id);
+  }
+
+  public ObservableList<Announcement> announcementObservableList() {
+    ObservableList<Announcement> announcementObservableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM ANNOUNCEMENTS");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int announcementID = rset.getInt("announcementID");
+        String announcement = rset.getString("announcement");
+
+        Announcement node = new Announcement(announcementID, announcement);
+        announcementObservableList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      return announcementObservableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

@@ -1,22 +1,40 @@
 package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
-import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
+import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
+import edu.wpi.cs3733.d20.teamA.database.Announcement;
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 
-public class NotificationController extends AbstractController {
-  @FXML JFXListView<String> viewAnn;
+public class NotificationController extends AbstractController implements IDialogController {
+
+  @FXML private GridPane tblPaneAnnouncement;
+  private JFXDialog dialog;
+
+  private SimpleTableView<Announcement> tblAnnouncement;
 
   @FXML
   public void initialize() {
-    // Turn off selection on listview
-    viewAnn.setMouseTransparent(true);
-    viewAnn.setFocusTraversable(false);
 
-    // Clear existing announcements, if there somehow magically are any.
-    viewAnn.getItems().clear();
+    tblAnnouncement = new SimpleTableView<>(new Announcement(0, ""), 20);
+    tblPaneAnnouncement.getChildren().addAll(tblAnnouncement);
+    update();
+  }
 
-    // Add new announcements
-    // AnnouncementDatabase.getList().forEach(s -> viewAnn.getItems().add(s));
+  public void update() {
+
+    try {
+      tblAnnouncement.clear();
+
+      tblAnnouncement.add(announcementDatabase.announcementObservableList());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  @Override
+  public void setDialog(JFXDialog dialog) {
+    this.dialog = dialog;
   }
 }
