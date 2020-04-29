@@ -1,27 +1,33 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.*;
-import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class JanitorDatabase extends Database {
-  private int requestCount = 0;
+  private int requestCount;
 
-  public JanitorDatabase(Connection connection) throws SQLException {
+  /**
+   * Sets the connection to the database
+   *
+   * @param connection connection
+   */
+  public JanitorDatabase(Connection connection) {
     super(connection);
+
+    if (doesTableNotExist("JANITORREQUEST")) {
+      createTables();
+    }
+
+    requestCount = getRandomNumber();
   }
 
   /**
    * Drops the janitor tables so we can start fresh
    *
    * @return false if the tables don't exist, true if table is dropped correctly
-   * @throws SQLException
    */
-  public boolean dropTables() throws SQLException {
+  public boolean dropTables() {
 
     // if the helper returns false this method should too
     // drop the CONSTRAINT first
@@ -30,33 +36,27 @@ public class JanitorDatabase extends Database {
       return false;
     }
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE JanitorRequest"))) {
-      return false;
-    }
-
-    return true;
+    return helperPrepared("DROP TABLE JanitorRequest");
   }
 
   /**
    * Creates janitor tables
    *
    * @return False if tables couldn't be created
-   * @throws SQLException
    */
-  public boolean createTables() throws SQLException {
+  public boolean createTables() {
 
-    try {
-      // Create the janitorrequest table
-      helperPrepared(
-          "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, name Varchar(15), progress Varchar(19) NOT NULL, priority Varchar(6) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
-      return true;
-    } catch (SQLException e) {
-      System.out.println(e.getMessage());
-      return false;
-    }
+    // Create the janitorrequest table
+    return helperPrepared(
+        "CREATE TABLE JanitorRequest (requestNumber INTEGER PRIMARY KEY, time TIMESTAMP NOT NULL, location Varchar(10) NOT NULL, longName Varchar(100), previousNodeCost INTEGER, employeeName Varchar(30), progress Varchar(19) NOT NULL, priority Varchar(10) NOT NULL, CONSTRAINT FK_L FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_PRIO CHECK (priority in ('Low', 'Medium', 'High')), CONSTRAINT CHK_PROG CHECK (progress in ('Reported', 'Dispatched', 'Done')))");
   }
 
-  public boolean removeAll() throws SQLException {
+  /**
+   * Sets the requestCount to 0
+   *
+   * @return true if everything could be deleted
+   */
+  public boolean removeAll() {
     requestCount = 0;
     return helperPrepared("DELETE From JanitorRequest");
   }
@@ -65,32 +65,45 @@ public class JanitorDatabase extends Database {
    * Adds janitor service request given location, and priority
    *
    * @return False if request couldn't be added
-   * @throws SQLException
    */
-  public boolean addRequest(String location, String priority) throws SQLException {
+  public int addRequest(String location, String priority, String employeeName, String longName) {
+
+    // creates a timestamp of the time that the function is called
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+    // default status is reported
     String progress = "Reported";
+    requestCount = getRandomNumber();
     try {
+      // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO JanitorRequest (time, location, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?)");
+                  "INSERT INTO JanitorRequest (time, location, longName, employeeName, progress, priority, requestNumber) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      // sets all the parameters of the prepared statement string
       pstmt.setTimestamp(1, timestamp);
       pstmt.setString(2, location);
-      pstmt.setString(3, progress);
-      pstmt.setString(4, priority);
-      pstmt.setInt(5, ++requestCount);
+      pstmt.setString(3, longName);
+      pstmt.setString(4, employeeName);
+      pstmt.setString(5, progress);
+      pstmt.setString(6, priority);
+
+      // first request starts at 1 and increments every time a new request is added
+      pstmt.setInt(7, requestCount);
       pstmt.executeUpdate();
       pstmt.close();
-      return true;
+      // return true if the request is added
+      return requestCount;
     } catch (SQLException e) {
-      //      System.out.println("Add request failed");
-      //      System.out.println(e.getMessage());
-      return false;
+      e.printStackTrace();
+      return -1;
     }
   }
 
-  public boolean deleteRequest(int rn) throws SQLException {
+  /**
+   * @param rn request number
+   * @return true if the request was deleted
+   */
+  public boolean deleteRequest(int rn) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From JanitorRequest Where requestNumber = ?");
@@ -99,11 +112,17 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean deleteDoneRequests() throws SQLException {
+  /**
+   * Deletes all the progress that have been completed
+   *
+   * @return true if requests were deleted
+   */
+  public boolean deleteDoneRequests() {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From JanitorRequest Where progress = 'Done'");
@@ -111,28 +130,60 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean updateRequest(int rn, String name, String progress) throws SQLException {
+  /**
+   * Updates the rn with a certain progress
+   *
+   * @param rn request number
+   * @param longName name
+   * @param progress progress
+   * @return true if the progress has been updated
+   */
+  public boolean updateRequest(int rn, String longName, String progress, String employeeName) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "UPDATE JanitorRequest SET name = ?, progress = ? Where requestNumber = ?");
-      pstmt.setString(1, name);
+                  "UPDATE JanitorRequest SET longName = ?, progress = ?, employeeName = ? Where requestNumber = ?");
+      pstmt.setString(1, longName);
       pstmt.setString(2, progress);
-      pstmt.setInt(3, rn);
+      pstmt.setInt(4, rn);
+      pstmt.setString(3, employeeName);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public void printTable() throws SQLException {
+  //  public boolean updateEmployeeName(int rn, String employeeName) {
+  //    try {
+  //      PreparedStatement pstmt =
+  //          getConnection()
+  //              .prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = " + rn);
+  //      pstmt.executeUpdate();
+  //      ResultSet rset = pstmt.executeQuery();
+  //      rset.next();
+  //      String name = rset.getString("name");
+  //      String progress = rset.getString("progress");
+  //      rset.close();
+  //      pstmt.close();
+  //      updateRequest(rn, name, progress, employeeName);
+  //      return true;
+  //    } catch (SQLException e) {
+  //      e.printStackTrace();
+  //      return false;
+  //    }
+  //  }
+
+  /** Prints out the table */
+  public void printTable() {
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * FROM JanitorRequest ");
       ResultSet rset = pstmt.executeQuery();
@@ -146,7 +197,7 @@ public class JanitorDatabase extends Database {
                 + ", time: "
                 + rset.getTimestamp("time")
                 + ", name: "
-                + rset.getString("name")
+                + rset.getString("employeeName")
                 + ", progress: "
                 + rset.getString("progress")
                 + ", priority: "
@@ -156,10 +207,11 @@ public class JanitorDatabase extends Database {
       rset.close();
       pstmt.close();
     } catch (SQLException e) {
+      e.printStackTrace();
     }
   }
 
-  public String getRequest(int rn) throws SQLException {
+  public String getRequest(int rn) {
     String request = "";
     try {
       PreparedStatement pstmt =
@@ -168,12 +220,10 @@ public class JanitorDatabase extends Database {
       ResultSet rset = pstmt.executeQuery();
       rset.next();
       request =
-          "requestNumber: "
-              + rset.getInt("requestNumber")
-              + ", location: "
+          "location: "
               + rset.getString("location")
-              + ", name: "
-              + rset.getString("name")
+              + ", employeeName: "
+              + rset.getString("employeeName")
               + ", progress: "
               + rset.getString("progress")
               + ", priority: "
@@ -181,27 +231,16 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return request;
     } catch (SQLException e) {
+      e.printStackTrace();
       return null;
     }
   }
 
-  public int getRequestSize() throws SQLException {
-    int count = 0;
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From JanitorRequest ");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      return -1;
-    }
+  public int getRequestSize() {
+    return getSize("JanitorRequest");
   }
 
-  public Timestamp getTimestamp(int rn) throws SQLException {
+  public Timestamp getTimestamp(int rn) {
     Timestamp ts;
     try {
       PreparedStatement pstmt =
@@ -214,11 +253,12 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return ts;
     } catch (SQLException e) {
+      e.printStackTrace();
       return null;
     }
   }
 
-  public String getName(int rn) throws SQLException {
+  public String getName(int rn) {
     String n;
     try {
       PreparedStatement pstmt =
@@ -231,11 +271,12 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return n;
     } catch (SQLException e) {
+      e.printStackTrace();
       return null;
     }
   }
 
-  public String getLocation(int rn) throws SQLException {
+  public String getLocation(int rn) {
     String n;
     try {
       PreparedStatement pstmt =
@@ -248,11 +289,12 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return n;
     } catch (SQLException e) {
+      e.printStackTrace();
       return null;
     }
   }
 
-  public String getProgress(int rn) throws SQLException {
+  public String getProgress(int rn) {
     String n;
     try {
       PreparedStatement pstmt =
@@ -265,11 +307,12 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return n;
     } catch (SQLException e) {
+      e.printStackTrace();
       return null;
     }
   }
 
-  public String getPriority(int rn) throws SQLException {
+  public String getPriority(int rn) {
     String n;
     try {
       PreparedStatement pstmt =
@@ -282,20 +325,54 @@ public class JanitorDatabase extends Database {
       pstmt.close();
       return n;
     } catch (SQLException e) {
+      e.printStackTrace();
       return null;
     }
   }
 
-  public void readFromCSV() throws IOException, CsvException, SQLException {
-    InputStream stream =
-        getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/JanitorRequest.csv");
-    CSVReader reader = new CSVReader(new InputStreamReader(stream));
-    List<String[]> data = reader.readAll();
-    for (int i = 1; i < data.size(); i++) {
-      String location, priority;
-      location = data.get(i)[0];
-      priority = data.get(i)[1];
-      addRequest(location, priority);
+  public String getEmployeeName(int rn) {
+    String n;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("SELECT priority FROM JanitorRequest WHERE requestNumber = ?");
+      pstmt.setInt(1, rn);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      n = rset.getString("employeeName");
+      pstmt.close();
+      return n;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public ObservableList<JanitorService> janitor01() {
+    ObservableList<JanitorService> oList = FXCollections.observableArrayList();
+    try {
+      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
+      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM JanitorRequest");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String location = rset.getString("location");
+        String priority = rset.getString("priority");
+        String status = rset.getString("progress");
+        String employeeName = rset.getString("employeeName");
+        int requestNumber = rset.getInt("requestNumber");
+        String longName = rset.getString("longName");
+
+        JanitorService node =
+            new JanitorService(location, priority, status, employeeName, requestNumber, longName);
+        oList.add(node);
+      }
+      rset.close();
+      pstmt.close();
+      conn.close();
+      return oList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return oList;
     }
   }
 }

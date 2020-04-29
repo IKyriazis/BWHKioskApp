@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -15,39 +19,39 @@
       <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
          <children>
             <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" layoutX="15.0" layoutY="15.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
-            <VBox alignment="TOP_CENTER" layoutX="14.0" layoutY="53.0" pickOnBounds="false" prefHeight="320.0" prefWidth="100.0" spacing="10.0">
+            <JFXButton fx:id="exportCSVButton" buttonType="RAISED" onAction="#exportClicked" text="Export CSV" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="63.0" />
+            <GridPane layoutX="369.0" layoutY="-25.0" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
+               </rowConstraints>
                <children>
-                  <Label fx:id="modeLabel" />
-                  <JFXButton fx:id="panMapButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Pan Map" />
-                  <JFXButton fx:id="nodeInfoButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Node Info" />
-                  <JFXButton fx:id="addNodeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Add Node" />
-                  <JFXButton fx:id="editNodeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Edit Node" />
-                  <JFXButton fx:id="deleteNodeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Delete Node" />
-                  <JFXButton fx:id="addEdgeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Add Edge" />
-                  <JFXButton fx:id="deleteEdgeButton" buttonType="RAISED" prefWidth="100.0" style="-fx-background-color: white;" text="Delete Edge" textAlignment="CENTER" />
-                  <JFXButton fx:id="exportButton" buttonType="RAISED" onAction="#exportClicked" prefWidth="100.0" style="-fx-background-color: white;" text="Export CSV" />
-               </children>
-            </VBox>
-            <JFXDrawer fx:id="infoDrawer" alignment="CENTER_LEFT" defaultDrawerSize="250.0" layoutY="259.0" mouseTransparent="true" resizeContent="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
-               <children>
-                  <AnchorPane fx:id="infoPane">
+                  <JFXDrawer fx:id="infoDrawer" defaultDrawerSize="275.0" maxHeight="-Infinity" maxWidth="-Infinity">
                      <children>
-                        <Label fx:id="editorTipLabel" alignment="TOP_LEFT">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </Label>
+                        <AnchorPane fx:id="infoPane" maxHeight="-Infinity" maxWidth="-Infinity">
+                           <children>
+                              <Label fx:id="editorTipLabel" text="Label">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </AnchorPane>
                      </children>
-                  </AnchorPane>
+                  </JFXDrawer>
                </children>
-            </JFXDrawer>
+            </GridPane>
             <VBox layoutX="837.0" layoutY="15.0" spacing="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                <children>
-                  <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" style="-fx-background-color: white;" />
+                  <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" />
                   <JFXTextField fx:id="floorField" alignment="CENTER" editable="false" prefColumnCount="1" text="1" />
-                  <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" style="-fx-background-color: white;" />
+                  <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" />
                </children>
             </VBox>
+            <JFXCheckBox onAction="#toggleDrawBelow" text="Draw Nodes Below" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="15.0" />
+            <JFXButton fx:id="helpButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#helpClicked" text="Help" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="103.0" />
          </children>
       </AnchorPane>
    </children>

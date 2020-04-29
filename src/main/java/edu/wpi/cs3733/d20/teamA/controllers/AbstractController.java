@@ -6,7 +6,6 @@ import edu.wpi.cs3733.d20.teamA.database.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.FlowerDatabase;
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public abstract class AbstractController {
 
@@ -15,23 +14,32 @@ public abstract class AbstractController {
   protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
+  protected EquipReqDatabase erDB;
   protected JanitorDatabase janitorDatabase;
+  protected MedicineDeliveryDatabase medicineRequestDatabase;
+  protected LaundryDatabase lDB;
+  protected ITTicketDatabase itTicketDatabase;
+  protected PatientDatabase patientDatabase;
+  protected InternalTransportDatabase itDatabase;
+  protected InterpreterDatabase iDB;
+  protected PrescriptionDatabase prescriptionDatabase;
+  protected AnnouncementDatabase announcementDatabase;
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
-    try {
-      conn = provider.provideConnection();
-      graphDatabase = new GraphDatabase(conn);
-      graphDatabase.createTables();
-      flDatabase = new FlowerDatabase(conn);
-      flDatabase.createTables();
-      eDB = new EmployeesDatabase(conn);
-      eDB.createTables();
-      graphDatabase.deleteNode("ID");
-      janitorDatabase = new JanitorDatabase(conn);
-      janitorDatabase.createTables();
-    } catch (SQLException throwables) {
-      throwables.printStackTrace(); // All is lost
-    }
+    conn = provider.provideConnection();
+    graphDatabase = new GraphDatabase(conn);
+    eDB = new EmployeesDatabase(conn);
+    flDatabase = new FlowerDatabase(conn);
+    erDB = new EquipReqDatabase(conn);
+    iDB = new InterpreterDatabase(conn);
+    janitorDatabase = new JanitorDatabase(conn);
+    medicineRequestDatabase = new MedicineDeliveryDatabase(conn);
+    lDB = new LaundryDatabase(conn);
+    itTicketDatabase = new ITTicketDatabase(conn);
+    patientDatabase = new PatientDatabase(conn);
+    itDatabase = new InternalTransportDatabase(conn);
+    prescriptionDatabase = new PrescriptionDatabase(conn);
+    announcementDatabase = new AnnouncementDatabase(conn);
   }
 }

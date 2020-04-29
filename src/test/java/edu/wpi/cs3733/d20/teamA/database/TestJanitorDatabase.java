@@ -13,7 +13,6 @@ public class TestJanitorDatabase {
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
   GraphDatabase gDB;
-
   JanitorDatabase jDB;
 
   @BeforeEach
@@ -67,17 +66,17 @@ public class TestJanitorDatabase {
     // need nodeID "biscuit" in node table so addrequest works
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     jDB.removeAll();
-    boolean a = jDB.addRequest("biscuit", "High");
-    Assertions.assertTrue(a);
+    int a = jDB.addRequest("biscuit", "High", "", "");
+    Assertions.assertNotEquals(1, a);
     Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean b = jDB.addRequest("biscuit", "Extra Large");
-    Assertions.assertFalse(b);
+    int b = jDB.addRequest("biscuit", "Extra Large", "", "");
+    Assertions.assertNotEquals(1, b);
     Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean c = jDB.addRequest("yoyoyo", "Medium");
-    Assertions.assertFalse(c);
+    int c = jDB.addRequest("yoyoyo", "Medium", "", "");
+    Assertions.assertNotEquals(1, c);
     Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean d = jDB.addRequest("biscuit", "Medium");
-    Assertions.assertTrue(d);
+    int d = jDB.addRequest("biscuit", "Medium", "", "");
+    Assertions.assertNotEquals(1, d);
     Assertions.assertEquals(2, jDB.getRequestSize());
 
     jDB.removeAll();
@@ -90,11 +89,11 @@ public class TestJanitorDatabase {
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
 
     jDB.removeAll();
-    jDB.addRequest("biscuit", "Medium");
-    boolean a = jDB.updateRequest(1, "Harry", "Dispatched");
-    Assertions.assertTrue(a);
-    boolean b = jDB.updateRequest(1, "Harry", "Ert");
-    Assertions.assertFalse(b);
+    int a = jDB.addRequest("biscuit", "Medium", "", "");
+    boolean b = jDB.updateRequest(a, "Harry", "Dispatched", "");
+    Assertions.assertTrue(b);
+    boolean c = jDB.updateRequest(a, "Harry", "Ert", "");
+    Assertions.assertFalse(c);
 
     jDB.removeAll();
     gDB.removeAllNodes();
@@ -107,39 +106,39 @@ public class TestJanitorDatabase {
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
 
     jDB.removeAll();
-    jDB.addRequest("biscuit", "Medium");
+    int test = jDB.addRequest("biscuit", "Medium", "", "");
 
-    boolean a = jDB.deleteRequest(1);
+    boolean a = jDB.deleteRequest(test);
     Assertions.assertTrue(a);
 
     jDB.removeAll();
     gDB.removeAllNodes();
   }
 
-  @Test
-  public void testDeleteDoneRequests() throws SQLException {
-    gDB.removeAllNodes();
-    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("hihihi", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-
-    jDB.removeAll();
-    jDB.addRequest("biscuit", "Medium");
-    jDB.addRequest("yoyoyo", "Medium");
-    jDB.addRequest("hihihi", "Medium");
-    Assertions.assertEquals(3, jDB.getRequestSize());
-
-    jDB.updateRequest(1, "harry", "Done");
-    jDB.updateRequest(2, "harry", "Done");
-    jDB.updateRequest(3, "harry", "Done");
-
-    boolean b = jDB.deleteDoneRequests();
-    Assertions.assertEquals(0, jDB.getRequestSize());
-    Assertions.assertTrue(b);
-
-    jDB.removeAll();
-    gDB.removeAllNodes();
-  }
+  //  @Test
+  //  public void testDeleteDoneRequests() throws SQLException {
+  //    gDB.removeAllNodes();
+  //    gDB.addNode("biscuit", 1, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+  //    gDB.addNode("yoyoyo", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+  //    gDB.addNode("hihihi", 3, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+  //
+  //    jDB.removeAll();
+  //    int a = jDB.addRequest("biscuit", "Medium", "John", "beep");
+  //    int b = jDB.addRequest("yoyoyo", "Medium", "Henry", "boop");
+  //    int c = jDB.addRequest("hihihi", "Medium", "Sid", "bop");
+  //    Assertions.assertEquals(3, jDB.getRequestSize());
+  //
+  //    jDB.updateRequest(a, "harry", "Done", "");
+  //    jDB.updateRequest(b, "harry", "Done", "");
+  //    jDB.updateRequest(c, "harry", "Done", "");
+  //
+  //    boolean test = jDB.deleteDoneRequests();
+  //    Assertions.assertEquals(0, jDB.getRequestSize());
+  //    Assertions.assertTrue(test);
+  //
+  //    jDB.removeAll();
+  //    gDB.removeAllNodes();
+  //  }
 
   @Test
   public void testGetRequest() throws SQLException {
@@ -148,16 +147,16 @@ public class TestJanitorDatabase {
 
     jDB.createTables();
     jDB.removeAll();
-    boolean a = jDB.addRequest("biscuit", "Medium");
-    Assertions.assertTrue(a);
+    int a = jDB.addRequest("biscuit", "Medium", "", "");
+    Assertions.assertNotEquals(1, a);
     Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+    boolean b = jDB.updateRequest(a, "harry", "Dispatched", "harry");
     jDB.printTable();
     Assertions.assertEquals(1, jDB.getRequestSize());
     Assertions.assertTrue(b);
     Assertions.assertEquals(
-        "requestNumber: 1, location: biscuit, name: harry, progress: Dispatched, priority: Medium",
-        jDB.getRequest(1));
+        "location: biscuit, employeeName: harry, progress: Dispatched, priority: Medium",
+        jDB.getRequest(a));
 
     jDB.removeAll();
     jDB.dropTables();
@@ -171,12 +170,12 @@ public class TestJanitorDatabase {
 
     jDB.createTables();
     jDB.removeAll();
-    boolean a = jDB.addRequest("biscuit", "Medium");
-    Assertions.assertTrue(a);
+    int a = jDB.addRequest("biscuit", "Medium", "", "");
+    Assertions.assertNotEquals(1, a);
     Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+    boolean b = jDB.updateRequest(1, "harry", "Dispatched", "");
 
-    Assertions.assertNotNull(jDB.getTimestamp(1));
+    Assertions.assertNotNull(jDB.getTimestamp(a));
     Assertions.assertNull(jDB.getTimestamp(2));
 
     jDB.removeAll();
@@ -184,29 +183,28 @@ public class TestJanitorDatabase {
     gDB.removeAllNodes();
   }
 
-  @Test
-  public void testGetName() throws SQLException {
-    gDB.removeAllNodes();
-    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-
-    jDB.createTables();
-    jDB.removeAll();
-    boolean a = jDB.addRequest("biscuit", "Medium");
-    Assertions.assertTrue(a);
-    Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
-
-    Assertions.assertEquals("harry", jDB.getName(1));
-    Assertions.assertNull(jDB.getName(2));
-
-    Assertions.assertTrue(jDB.addRequest("biscuit", "Medium"));
-    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Dispatched"));
-    Assertions.assertEquals("boris", jDB.getName(2));
-
-    jDB.removeAll();
-    jDB.dropTables();
-    gDB.removeAllNodes();
-  }
+  //  @Test
+  //  public void testGetEmployeeName() throws SQLException {
+  //    gDB.removeAllNodes();
+  //    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+  //
+  //    jDB.createTables();
+  //    jDB.removeAll();
+  //    int a = jDB.addRequest("biscuit", "Medium", "", "");
+  //    Assertions.assertNotEquals(1, a);
+  //    Assertions.assertEquals(1, jDB.getRequestSize());
+  //    boolean b = jDB.updateRequest(a, "harry", "Dispatched", "harry");
+  //
+  //    Assertions.assertEquals("harry", jDB.getEmployeeName(a));
+  //
+  //    int c = jDB.addRequest("biscuit", "Medium", "", "");
+  //    Assertions.assertTrue(jDB.updateRequest(c, "boris", "Dispatched", "boris"));
+  //    Assertions.assertEquals("boris", jDB.getEmployeeName(c));
+  //
+  //    jDB.removeAll();
+  //    jDB.dropTables();
+  //    gDB.removeAllNodes();
+  //  }
 
   @Test
   public void testGetLocation() throws SQLException {
@@ -215,17 +213,17 @@ public class TestJanitorDatabase {
 
     jDB.createTables();
     jDB.removeAll();
-    boolean a = jDB.addRequest("biscuit", "Medium");
-    Assertions.assertTrue(a);
+    int a = jDB.addRequest("biscuit", "Medium", "", "");
+    Assertions.assertNotEquals(1, a);
     Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+    boolean b = jDB.updateRequest(1, "harry", "Dispatched", "");
 
-    Assertions.assertEquals("biscuit", jDB.getLocation(1));
+    Assertions.assertEquals("biscuit", jDB.getLocation(a));
     Assertions.assertNull(jDB.getLocation(2));
 
-    Assertions.assertTrue(jDB.addRequest("biscuit", "Medium"));
-    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Dispatched"));
-    Assertions.assertEquals("biscuit", jDB.getLocation(2));
+    Assertions.assertNotEquals(1, jDB.addRequest("biscuit", "Medium", "", ""));
+    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Dispatched", ""));
+    Assertions.assertEquals("biscuit", jDB.getLocation(a));
 
     jDB.removeAll();
     jDB.dropTables();
@@ -239,17 +237,16 @@ public class TestJanitorDatabase {
 
     jDB.createTables();
     jDB.removeAll();
-    boolean a = jDB.addRequest("biscuit", "Medium");
-    Assertions.assertTrue(a);
+    int a = jDB.addRequest("biscuit", "Medium", "", "");
+    Assertions.assertNotEquals(1, a);
     Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+    boolean b = jDB.updateRequest(a, "harry", "Dispatched", "");
 
-    Assertions.assertEquals("Dispatched", jDB.getProgress(1));
-    Assertions.assertNull(jDB.getProgress(2));
+    Assertions.assertEquals("Dispatched", jDB.getProgress(a));
 
-    Assertions.assertTrue(jDB.addRequest("biscuit", "Medium"));
-    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Done"));
-    Assertions.assertEquals("Done", jDB.getProgress(2));
+    int c = jDB.addRequest("biscuit", "Medium", "", "");
+    Assertions.assertTrue(jDB.updateRequest(c, "boris", "Done", ""));
+    Assertions.assertEquals("Done", jDB.getProgress(c));
 
     jDB.removeAll();
     jDB.dropTables();
@@ -263,17 +260,16 @@ public class TestJanitorDatabase {
 
     jDB.createTables();
     jDB.removeAll();
-    boolean a = jDB.addRequest("biscuit", "Medium");
-    Assertions.assertTrue(a);
+
+    int a = jDB.addRequest("biscuit", "Medium", "", "");
     Assertions.assertEquals(1, jDB.getRequestSize());
-    boolean b = jDB.updateRequest(1, "harry", "Dispatched");
+    boolean b = jDB.updateRequest(a, "harry", "Dispatched", "");
 
-    Assertions.assertEquals("Medium", jDB.getPriority(1));
-    Assertions.assertNull(jDB.getPriority(2));
+    Assertions.assertEquals("Medium", jDB.getPriority(a));
 
-    Assertions.assertTrue(jDB.addRequest("biscuit", "High"));
-    Assertions.assertTrue(jDB.updateRequest(2, "boris", "Done"));
-    Assertions.assertEquals("High", jDB.getPriority(2));
+    int c = jDB.addRequest("biscuit", "High", "", "");
+    Assertions.assertTrue(jDB.updateRequest(c, "boris", "Done", ""));
+    Assertions.assertEquals("High", jDB.getPriority(c));
 
     jDB.removeAll();
     jDB.dropTables();

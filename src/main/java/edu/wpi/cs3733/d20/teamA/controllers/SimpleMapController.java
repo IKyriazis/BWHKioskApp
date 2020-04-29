@@ -4,9 +4,7 @@ import com.jfoenix.controls.*;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.graph.Path;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
@@ -43,9 +41,14 @@ public class SimpleMapController {
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton qrCodeButton;
 
+  @FXML private JFXButton floorUpButton;
+  @FXML private JFXButton floorDownButton;
+  @FXML private JFXTextField floorField;
+
   private MapCanvas canvas;
   private Graph graph;
   private String lastDirs;
+  private int floor = 1;
 
   private ObservableList<Node> allNodeList;
 
@@ -73,9 +76,6 @@ public class SimpleMapController {
     directionsDrawer.setOnDrawerClosed(event -> directionsDrawer.setMouseTransparent(true));
     directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
 
-    // Disable selecting directions
-    directionsList.setMouseTransparent(true);
-    directionsList.setFocusTraversable(false);
     // Setup text directions drawer
     textDirectionsDrawer.setSidePane(directionsPane);
     textDirectionsDrawer.setOnDrawerClosed(event -> textDirectionsDrawer.setMouseTransparent(true));
@@ -88,11 +88,25 @@ public class SimpleMapController {
     directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
     qrCodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QRCODE));
 
+    floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
+    floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
+
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
         event -> {
-          canvas.draw(1);
+          event.consume();
+
+          if (canvas.getPath() != null) {
+            // Try to update path if possible
+            canvas.getPath().update();
+            if (canvas.getPath().getPathNodes().isEmpty()) {
+              pressedGo();
+            }
+
+            // Redraw map
+            canvas.draw(floor);
+          }
         });
 
     try {
@@ -102,7 +116,7 @@ public class SimpleMapController {
       allNodeList =
           FXCollections.observableArrayList(
               graph.getNodes().values().stream()
-                  .filter(node -> node.getFloor() == 1)
+                  .filter(node -> node.getType() != NodeType.HALL)
                   .collect(Collectors.toList()));
       allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
 
@@ -112,7 +126,7 @@ public class SimpleMapController {
             allNodeList.addAll(
                 FXCollections.observableArrayList(
                     graph.getNodes().values().stream()
-                        .filter(node -> node.getFloor() == 1)
+                        .filter(node -> node.getType() != NodeType.HALL)
                         .collect(Collectors.toList())));
             allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
             startingLocationBox.setItems(allNodeList);
@@ -141,6 +155,10 @@ public class SimpleMapController {
       alert.setContentText(e.toString());
       alert.show();
     }
+    if (!MapSettings.isSetup()) {
+      MapSettings.setup();
+    }
+    Platform.runLater(() -> canvas.draw(floor));
   }
 
   @FXML
@@ -162,14 +180,20 @@ public class SimpleMapController {
             .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
             .findFirst();
     if (start.isPresent() && end.isPresent()) {
-      Path path = new Path(graph);
+      ContextPath path = MapSettings.getPath();
       path.findPath(start.get(), end.get());
       canvas.setPath(path);
-      canvas.draw(1);
+
+      if (start.get().getFloor() != floor) {
+        floor = Math.min(5, start.get().getFloor());
+        floorField.setText(String.valueOf(floor));
+      }
+
+      canvas.draw(floor);
 
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
-        ArrayList<Label> directions = path.textualDirections();
+        ArrayList<Label> directions = path.getPathFindingAlgo().textualDirections();
         directions.forEach(
             l -> {
               directionsList.getItems().add(l);
@@ -234,5 +258,21 @@ public class SimpleMapController {
       DialogUtil.simpleInfoDialog(
           dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
     }
+  }
+
+  @FXML
+  public void floorUp() {
+    floor = Math.min(5, floor + 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
+    canvas.draw(floor);
+  }
+
+  @FXML
+  public void floorDown() {
+    floor = Math.max(1, floor - 1);
+    canvas.draw(floor);
+    floorField.setText(String.valueOf(floor));
+    canvas.draw(floor);
   }
 }

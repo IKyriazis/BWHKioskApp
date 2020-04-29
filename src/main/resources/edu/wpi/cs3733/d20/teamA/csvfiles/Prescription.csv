@@ -1,0 +1,3 @@
+﻿id,patientName,prescription,pharmacy, dosage,numberOfRefills,doctorUsername,notes
+1,Marianna Hopkins,Vicodin,CVS, 1 pill,4,admin,Avoid alcohol
+2,Kunal Sharp,Zofran,Walgreen, 1 pill,0,staff,

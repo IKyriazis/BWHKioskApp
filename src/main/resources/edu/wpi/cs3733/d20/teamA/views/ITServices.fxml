@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="ITServicesPane" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#disableBtns" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ITServicesController">
+   <children>
+      <StackPane fx:id="ITStackPane" alignment="TOP_CENTER" onMouseClicked="#disableBtns" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <GridPane onMouseClicked="#disableBtns">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="202.0" minWidth="171.6" prefWidth="202.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="0.0" prefWidth="20.0" />
+                  <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="400.0" prefWidth="626.1999755859375" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <GridPane maxWidth="-Infinity" onMouseClicked="#disableBtns" prefWidth="200.0" GridPane.hgrow="NEVER">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="105.19998474121094" minHeight="99.59999389648438" prefHeight="105.19998474121094" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="444.0000152587891" />
+                        <RowConstraints maxHeight="0.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox alignment="TOP_CENTER" onMouseClicked="#disableBtns" prefHeight="99.0" prefWidth="181.0" GridPane.halignment="CENTER">
+                           <children>
+                              <Label onMouseClicked="#disableBtns" text="Create IT" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="10.0" layoutY="10.0" onMouseClicked="#disableBtns" text="Service Ticket" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" minHeight="-Infinity" onMouseClicked="#disableBtns" prefHeight="542.0" prefWidth="177.0" spacing="50.0" GridPane.rowIndex="1">
+                           <children>
+                              <JFXTextField fx:id="ITTicketName" alignment="CENTER" labelFloat="true" maxWidth="-Infinity" onKeyTyped="#descriptionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Employee Name" />
+                              <JFXComboBox fx:id="ITTicketLocation" labelFloat="true" layoutX="114.0" layoutY="251.0" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Location" />
+                              <JFXComboBox fx:id="ITTicketCategory" labelFloat="true" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Category" />
+                              <JFXTextArea fx:id="ITTicketDescription" labelFloat="true" maxWidth="-Infinity" onKeyTyped="#descriptionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="198.0" promptText="Description (200 characters max.)" />
+                              <JFXButton fx:id="submitBtn" buttonType="RAISED" disable="true" onAction="#submitTicket" onMouseClicked="#disableBtns" prefWidth="150.0" text="Submit Ticket" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="15.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </VBox>
+                     </children>
+                     <GridPane.margin>
+                        <Insets right="25.0" />
+                     </GridPane.margin>
+                  </GridPane>
+                  <Separator maxWidth="-Infinity" onMouseClicked="#disableBtns" orientation="VERTICAL" prefWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <GridPane.margin>
+                        <Insets left="2.0" />
+                     </GridPane.margin>
+                  </Separator>
+                  <GridPane alignment="CENTER" maxWidth="1.7976931348623157E308" onMouseClicked="#disableBtns" GridPane.columnIndex="2">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <VBox alignment="TOP_CENTER" maxWidth="1.7976931348623157E308" onMouseClicked="#disableBtns" spacing="10.0" GridPane.hgrow="ALWAYS">
+                           <children>
+                              <Label maxHeight="1.7976931348623157E308" onMouseClicked="#disableBtns" text="Manage IT Service Tickets" textAlignment="CENTER" wrapText="true">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="25.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <GridPane fx:id="ticketTablePane" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                        </GridPane>
+                        <VBox alignment="CENTER" GridPane.rowIndex="2">
+                           <children>
+                              <HBox alignment="BOTTOM_CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" spacing="25.0">
+                                 <children>
+                                    <JFXComboBox fx:id="statusChangeStatus" disable="true" labelFloat="true" onAction="#checkUpdateStatusBox" prefWidth="150.0" promptText="Status" />
+                                    <JFXTextField fx:id="statusChangeName" alignment="CENTER" disable="true" labelFloat="true" onKeyTyped="#checkUpdateStatusName" prefWidth="150.0" promptText="IT Assistant Name" />
+                                    <JFXButton fx:id="changeStatusBtn" buttonType="RAISED" disable="true" onAction="#changeStatus" onMouseClicked="#disableBtns" prefWidth="150.0" text="Update Status" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="12.0" />
+                                       </font></JFXButton>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="BOTTOM_CENTER" layoutX="10.0" layoutY="57.0" maxWidth="1.7976931348623157E308" prefHeight="60.0" spacing="60.0">
+                                 <children>
+                                    <JFXButton fx:id="descriptionBtn" buttonType="RAISED" disable="true" onAction="#getDescription" prefWidth="150.0" text="Get Description" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font></JFXButton>
+                                    <JFXButton fx:id="deleteBtn" buttonType="RAISED" disable="true" onAction="#deleteRequest" onMouseClicked="#disableBtns" prefWidth="150.0" text="Delete Request" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="15.0" />
+                                       </font></JFXButton>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <GridPane.margin>
+                        <Insets left="25.0" />
+                     </GridPane.margin>
+                  </GridPane>
+               </children>
+               <StackPane.margin>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </StackPane.margin>
+            </GridPane>
+         </children>
+      </StackPane>
+   </children>
+</AnchorPane>

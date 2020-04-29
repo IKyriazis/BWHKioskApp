@@ -11,20 +11,20 @@ public class TestPath {
   Graph graph = Graph.getInstance();
 
   // Create nodes
-  Node node1 = new Node("Node1", 0, 0, 0, "", NodeType.HALL, "", "", "");
-  Node node2 = new Node("Node2", 0, 1, 0, "", NodeType.HALL, "", "", "");
-  Node node3 = new Node("Node3", 1, 1, 0, "", NodeType.HALL, "", "", "");
-  Node node4 = new Node("Node4", 1, 0, 0, "", NodeType.HALL, "", "", "");
+  Node node1 = new Node("Node1", 0, 0, 1, "", NodeType.HALL, "1", "", "");
+  Node node2 = new Node("Node2", 0, 1, 1, "", NodeType.HALL, "2", "", "");
+  Node node3 = new Node("Node3", 1, 1, 1, "", NodeType.HALL, "3", "", "");
+  Node node4 = new Node("Node4", 1, 0, 1, "", NodeType.HALL, "4", "", "");
 
-  Node nodeA = new Node("NodeA", 0, 0, 0, "", NodeType.HALL, "", "", "");
-  Node nodeB = new Node("NodeB", 3, 0, 0, "", NodeType.HALL, "", "", "");
-  Node nodeC = new Node("NodeC", 6, 0, 0, "", NodeType.HALL, "", "", "");
-  Node nodeD = new Node("NodeD", 0, 4, 0, "", NodeType.HALL, "", "", "");
-  Node nodeE = new Node("NodeE", 3, 4, 0, "", NodeType.HALL, "", "", "");
-  Node nodeF = new Node("NodeF", 6, 4, 0, "", NodeType.HALL, "", "", "");
-  Node nodeG = new Node("NodeG", 0, 8, 0, "", NodeType.HALL, "", "", "");
-  Node nodeH = new Node("NodeH", 3, 8, 0, "", NodeType.HALL, "", "", "");
-  Node nodeI = new Node("NodeI", 6, 8, 0, "", NodeType.HALL, "", "", "");
+  Node nodeA = new Node("NodeA", 0, 0, 1, "", NodeType.HALL, "aa", "", "");
+  Node nodeB = new Node("NodeB", 3, 0, 1, "", NodeType.HALL, "bb", "", "");
+  Node nodeC = new Node("NodeC", 6, 0, 1, "", NodeType.HALL, "cc", "", "");
+  Node nodeD = new Node("NodeD", 0, 4, 1, "", NodeType.HALL, "dd", "", "");
+  Node nodeE = new Node("NodeE", 3, 4, 1, "", NodeType.HALL, "ee", "", "");
+  Node nodeF = new Node("NodeF", 6, 4, 1, "", NodeType.HALL, "ff", "", "");
+  Node nodeG = new Node("NodeG", 0, 8, 1, "", NodeType.HALL, "gg", "", "");
+  Node nodeH = new Node("NodeH", 3, 8, 1, "", NodeType.HALL, "hh", "", "");
+  Node nodeI = new Node("NodeI", 6, 8, 1, "", NodeType.HALL, "ii", "", "");
 
   public TestPath() throws SQLException, IOException, CsvException {}
 
@@ -89,6 +89,7 @@ public class TestPath {
     Assertions.assertNotNull(pathNodes);
 
     Assertions.assertEquals(realPath, pathNodes);
+    graph.clearGraph();
   }
 
   @Test
@@ -107,6 +108,92 @@ public class TestPath {
     Assertions.assertNotNull(pathNodes);
 
     Assertions.assertEquals(realPath, pathNodes);
-    System.out.println(path.textualDirections());
+    graph.clearGraph();
+  }
+
+  @Test
+  public void testBreadthFirstGraph1() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(node1);
+    realPath.add(node3);
+
+    setupFirstGraph();
+    BreadthFirst path = new BreadthFirst(graph);
+    path.findPath(node1, node3);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+
+    Assertions.assertNotNull(pathNodes);
+
+    Assertions.assertEquals(realPath, pathNodes);
+    graph.clearGraph();
+  }
+
+  @Test
+  public void testBreadthFirstGraph2() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(nodeG);
+    realPath.add(nodeD);
+    realPath.add(nodeE);
+    realPath.add(nodeC);
+
+    setupSecondGraph();
+    BreadthFirst path = new BreadthFirst(graph);
+    path.findPath(nodeG, nodeC);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+
+    Assertions.assertNotNull(pathNodes);
+
+    Assertions.assertEquals(realPath, pathNodes);
+    graph.clearGraph();
+  }
+
+  @Test
+  public void testDepthFirstGraph1() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(node1);
+    realPath.add(node3);
+
+    setupFirstGraph();
+    DepthFirst path = new DepthFirst(graph);
+    path.findPath(node1, node3);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+    Assertions.assertNotNull(pathNodes);
+    // Assertions.assertTrue(true);
+    Assertions.assertEquals(realPath, pathNodes);
+    graph.clearGraph();
+  }
+
+  @Test
+  public void testDepthFirstGraph2() throws SQLException {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(nodeG);
+    realPath.add(nodeH);
+    realPath.add(nodeF);
+    realPath.add(nodeC);
+
+    setupSecondGraph();
+    DepthFirst path = new DepthFirst(graph);
+    path.findPath(nodeG, nodeC);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+    Assertions.assertNotNull(pathNodes);
+
+    Assertions.assertEquals(realPath, pathNodes);
+    graph.clearGraph();
+  }
+
+  @Test
+  public void testContextPath() throws SQLException {
+    ContextPath path = new ContextPath();
+    setupFirstGraph();
+
+    path.setPath(new BreadthFirst(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof BreadthFirst);
+
+    path.setPath(new DepthFirst(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof DepthFirst);
+
+    path.setPath(new Path(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof Path);
+    graph.clearGraph();
   }
 }

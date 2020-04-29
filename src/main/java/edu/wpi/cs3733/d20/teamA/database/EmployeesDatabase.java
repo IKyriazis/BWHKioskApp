@@ -1,21 +1,45 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.*;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class EmployeesDatabase extends Database {
+  int employeeID;
+  private final int numIterations = 14; // 2 ^ 16 = 16384 iterations
 
-  public EmployeesDatabase(Connection connection) throws SQLException {
+  public EmployeesDatabase(Connection connection) {
+
     super(connection);
+
+    if (doesTableNotExist("EMPLOYEES") && doesTableNotExist("LoggedIn")) {
+      createTables();
+    }
+
+    employeeID = getRandomNumber();
   }
 
   /**
-   * @return
-   * @throws SQLException
+   * Drop the 'Employees' table
+   *
+   * @return Success / Failure
    */
-  public boolean dropTables() throws SQLException {
+  public synchronized boolean dropTables() {
 
     // Drop the tables
-    if (!helperPrepared("DROP TABLE Employees")) {
+    if (!(helperPrepared("ALTER TABLE LoggedIn DROP CONSTRAINT FK_USE"))) {
+
+      return false;
+    }
+    // Drop the tables
+    if (!(helperPrepared("DROP TABLE Employees") && helperPrepared("DROP TABLE LoggedIn"))) {
       return false;
     }
 
@@ -26,180 +50,234 @@ public class EmployeesDatabase extends Database {
    * Creates graph tables
    *
    * @return False if tables couldn't be created
-   * @throws SQLException
    */
-  public boolean createTables() throws SQLException {
+  public synchronized boolean createTables() {
 
     // Create the graph tables
+
     boolean a =
         helperPrepared(
-            "CREATE TABLE Employees (employeeID Varchar(50) PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), password Varchar(10), title Varchar(50))");
-
-    if (a) {
-      return true;
-    } else {
-      return false;
-    }
+            "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(60) NOT NULL, title Varchar(50))");
+    boolean c =
+        helperPrepared(
+            "CREATE TABLE LoggedIn (username Varchar(25), timeLogged TIMESTAMP, flag BOOLEAN, CONSTRAINT FK_USE FOREIGN KEY (username) REFERENCES Employees (username), CONSTRAINT PK_UST PRIMARY KEY (username, timeLogged))");
+    return a && c;
   }
 
   /**
-   * @param empID
-   * @param nameFirst
-   * @param nameLast
-   * @return
-   * @throws SQLException
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
    */
-  public boolean addEmployee(String empID, String nameFirst, String nameLast, String title)
-      throws SQLException {
+  public synchronized boolean addEmployee(
+      int employeeID,
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      String title) {
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, password, title) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setString(1, empID);
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title) VALUES (?, ?, ?, ?, ?, ?)");
+      pstmt.setInt(1, employeeID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
-      pstmt.setString(4, empID);
-      pstmt.setString(5, title);
+      pstmt.setString(4, username);
+      pstmt.setString(5, storedPassword);
+      pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
+      this.employeeID++;
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
+  }
+
+  // returns true if the username isn't in the database
+  public synchronized boolean uNameExists(String uName) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, uName);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String uNameFromTable;
+      uNameFromTable = rset.getString("username");
+      pstmt.close();
+      return uName.equals(uNameFromTable);
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public synchronized boolean addEmployeeNoChecks(
+      String nameFirst, String nameLast, String username, String password, String title) {
+    return addEmployee(getRandomNumber(), nameFirst, nameLast, username, password, title);
+  }
+
+  public synchronized boolean addEmployee(
+      String nameFirst, String nameLast, String username, String password, String title) {
+    employeeID = getRandomNumber();
+    return checkSecurePass(password)
+        && addEmployee(employeeID, nameFirst, nameLast, username, password, title);
   }
 
   /**
    * Removes a janitor of empID from the Janitor's table
    *
-   * @param empID
    * @return true if the Janitor was successfully deleted
-   * @throws SQLException
    */
-  public boolean deleteEmployee(String empID) throws SQLException {
+  public synchronized boolean deleteEmployee(String username) {
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE From Employees Where employeeID = ?");
-      pstmt.setString(1, empID);
+          getConnection().prepareStatement("DELETE From Employees Where username = ?");
+      pstmt.setString(1, username);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  /**
-   * @return
-   * @throws SQLException
-   */
-  public int getSizeEmployees() throws SQLException {
-    int count = 0;
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From Employees ");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
-      }
-      rset.close();
-      pstmt.close();
-      return count;
-    } catch (SQLException e) {
-      return -1;
-    }
+  /** @return returns the size of the table */
+  public synchronized int getSizeEmployees() {
+    return getSize("Employees");
   }
 
-  public boolean editTitle(String empID, String newTitle) throws SQLException {
+  /**
+   * @param newTitle newTitle
+   * @return true if the title is changed
+   */
+  public synchronized boolean editTitle(String username, String newTitle) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE Employees SET title = '"
                       + newTitle
-                      + "' WHERE employeeID = '"
-                      + empID
+                      + "' WHERE username = '"
+                      + username
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean editNameFirst(String empID, String newFirst) throws SQLException {
+  public synchronized boolean editNameFirst(String username, String newFirst) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE Employees SET title = '"
                       + newFirst
-                      + "' WHERE employeeID = '"
-                      + empID
+                      + "' WHERE username = '"
+                      + username
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean editNameLast(String empID, String newLast) throws SQLException {
+  public synchronized boolean editNameLast(String username, String newLast) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE Employees SET title = '"
                       + newLast
-                      + "' WHERE employeeID = '"
-                      + empID
+                      + "' WHERE username = '"
+                      + username
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean logIn(String empID, String enteredPass) throws SQLException {
+  public synchronized boolean logIn(String username, String enteredPass) {
     String pass = null;
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "Select password From Employees Where employeeID = '" + empID + "'");
+                  "Select password From Employees Where username = '" + username + "'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         pass = rset.getString("password");
       }
       rset.close();
       pstmt.close();
-
-      return (pass != null) && pass.equals(enteredPass);
+      if (pass == null) {
+        return false;
+      }
+      BCrypt.Result result = BCrypt.verifyer().verify(enteredPass.toCharArray(), pass);
+      return result.verified;
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
   }
 
-  public boolean changePassword(String empID, String oldPass, String newPass) throws SQLException {
+  public synchronized String getName(int id) {
+    String pass = null;
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("Select * From Employees Where employeeID = " + id);
+      ResultSet rset = pstmt.executeQuery();
+      String name = "Not found";
+      if (rset.next()) {
+        String fName = rset.getString("nameFirst");
+        String lName = rset.getString("nameLast");
+        name = fName + " " + lName;
+      }
+      rset.close();
+      pstmt.close();
+      return name;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "Not found";
+    }
+  }
 
-    if (logIn(empID, oldPass) && checkSecurePass(newPass)) {
+  public synchronized boolean changePassword(String username, String oldPass, String newPass) {
+
+    if (logIn(username, oldPass) && checkSecurePass(newPass)) {
+      String storedPass = BCrypt.withDefaults().hashToString(numIterations, newPass.toCharArray());
       try {
         PreparedStatement pstmt =
             getConnection()
                 .prepareStatement(
                     "UPDATE Employees SET password = '"
-                        + newPass
-                        + "' WHERE employeeID = '"
-                        + empID
+                        + storedPass
+                        + "' WHERE username = '"
+                        + username
                         + "'");
         pstmt.executeUpdate();
         pstmt.close();
         return true;
       } catch (SQLException e) {
+        e.printStackTrace();
         return false;
       }
     }
@@ -208,14 +286,17 @@ public class EmployeesDatabase extends Database {
   }
 
   /**
-   * @param password
-   * @return
+   * @param password password
+   * @return true if the there is a scure pass
    */
-  public boolean checkSecurePass(String password) throws SQLException {
+  public synchronized boolean checkSecurePass(String password) {
     char ch;
     boolean capital = false;
     boolean lowercase = false;
     boolean number = false;
+    if (password.length() > 72) {
+      return false;
+    }
     for (int i = 0; i < password.length(); i++) {
       ch = password.charAt(i);
       if (Character.isDigit(ch)) {
@@ -232,10 +313,158 @@ public class EmployeesDatabase extends Database {
   }
 
   /**
-   * @return
-   * @throws SQLException
+   * Gets all employees in the table
+   *
+   * @return an observable list containing all employees in the table
    */
-  public boolean removeAllEmployees() throws SQLException {
+  public synchronized ObservableList<Employee> employeeOl() {
+    ObservableList<Employee> eList = FXCollections.observableArrayList();
+    try {
+      // CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast
+      // Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title
+      // Varchar(50))"
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        int id = rset.getInt("employeeID");
+        String fName = rset.getString("nameFirst");
+        String lName = rset.getString("nameLast");
+        String title = rset.getString("title");
+        Employee e = new Employee(id, fName, lName, title);
+        eList.add(e);
+      }
+      rset.close();
+      pstmt.close();
+      return eList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return eList;
+    }
+  }
+
+  /** @return true if all all employee are removed */
+  public synchronized boolean removeAllEmployees() {
     return helperPrepared("DELETE From Employees");
+  }
+
+  public synchronized void readEmployeeCSV() {
+    try {
+      InputStream stream =
+          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Employees.csv");
+      CSVReader reader = new CSVReader(new InputStreamReader(stream));
+      List<String[]> data = reader.readAll();
+      for (int i = 1; i < data.size(); i++) {
+        String nameFirst, nameLast, username, password, title;
+        int employeeID;
+        employeeID = Integer.parseInt(data.get(i)[0]);
+        nameFirst = data.get(i)[1];
+        nameLast = data.get(i)[2];
+        username = data.get(i)[3];
+        password = data.get(i)[4];
+        title = data.get(i)[5];
+        addEmployee(employeeID, nameFirst, nameLast, username, password, title);
+      }
+    } catch (IOException | CsvException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public boolean addLog(String username) {
+    Timestamp timeOf = new Timestamp(System.currentTimeMillis());
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO LoggedIn (username, timeLogged, flag) VALUES (?, ?, ?)");
+      pstmt.setString(1, username);
+      pstmt.setTimestamp(2, timeOf);
+      pstmt.setBoolean(3, true);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean changeFlag() {
+
+    String username = getLoggedIn();
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE LoggedIn set flag = false WHERE username = '" + username + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public int getSizeLog() {
+    return getSize("LoggedIn");
+  }
+
+  public boolean removeAllLogs() {
+    return helperPrepared("DELETE From LoggedIn");
+  }
+
+  public boolean isOnline(String username) {
+    boolean isOnline = false;
+    try {
+      Statement priceStmt = getConnection().createStatement();
+      ResultSet rst =
+          priceStmt.executeQuery("SELECT * FROM LoggedIn WHERE username = '" + username + "'");
+      ;
+      rst.next();
+      if (rst.getBoolean("flag")) return true;
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return false;
+  }
+
+  public String getUsername(int ID) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE employeeID = ?");
+      pstmt.setInt(1, ID);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String un = rset.getString("username");
+      rset.close();
+      pstmt.close();
+      return un;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  public Employee findFromUsername(String un) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, un);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      int ID = rset.getInt("employeeID");
+      String fName = rset.getString("nameFirst");
+      String lName = rset.getString("nameLast");
+      String title = rset.getString("title");
+      Employee e = new Employee(ID, fName, lName, title);
+      rset.close();
+      pstmt.close();
+      return e;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

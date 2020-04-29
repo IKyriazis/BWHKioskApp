@@ -1,9 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
-import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
-import java.io.IOException;
+import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -17,7 +16,6 @@ public class Graph {
   GraphDatabase DB = new GraphDatabase(conn);
   /** The nodes in this graph, mapping ID to Node */
   private HashMap<String, Node> nodes;
-  // private GraphDatabase database;
 
   /** Singleton graph instance */
   private static Graph instance;
@@ -26,19 +24,19 @@ public class Graph {
   private int edgeCount = 0;
 
   /** Create a new empty graph, private b/c this is a singleton */
-  private Graph() throws SQLException, IOException, CsvException {
+  private Graph() {
     nodes = new HashMap<>();
 
     if (DB.getSizeNode() == -1 || DB.getSizeEdge() == -1) {
       DB.dropTables();
       DB.createTables();
-      DB.readNodeCSV();
-      DB.readEdgeCSV();
+      CSVLoader.readNodes(this);
+      CSVLoader.readEdges(this);
       update();
     } else if (DB.getSizeNode() == 0 || DB.getSizeEdge() == 0) {
       DB.removeAll();
-      DB.readNodeCSV();
-      DB.readEdgeCSV();
+      CSVLoader.readNodes(this);
+      CSVLoader.readEdges(this);
       update();
     } else {
       update();
@@ -50,7 +48,7 @@ public class Graph {
    *
    * @return instance
    */
-  public static Graph getInstance() throws SQLException, IOException, CsvException {
+  public static Graph getInstance() {
     return (instance == null) ? (instance = new Graph()) : instance;
   }
 
@@ -87,7 +85,7 @@ public class Graph {
    * @param node Node to add to graph
    * @return Success / Failure
    */
-  public boolean addNode(Node node) throws SQLException {
+  public boolean addNode(Node node) {
     if ((node == null) || (nodes.containsKey(node.getNodeID()))) {
       // Skip if node doesn't exist or already is in the graph.
       return false;
@@ -110,13 +108,41 @@ public class Graph {
   }
 
   /**
+   * Changes a node's x/y coordinates on the graph
+   *
+   * @param x X coordinate
+   * @param y Y coordinate
+   * @return Success / Failure
+   */
+  public boolean moveNode(Node node, int x, int y) {
+    if ((node == null) || !(nodes.containsKey(node.getNodeID()))) {
+      return false;
+    }
+
+    boolean success =
+        DB.editNode(
+            node.getNodeID(),
+            x,
+            y,
+            node.getFloor(),
+            node.getBuilding(),
+            node.getStringType(),
+            node.getLongName(),
+            node.getShortName(),
+            node.getTeamAssigned());
+    update();
+
+    return success;
+  }
+
+  /**
    * Add a new edge (in both directions) to the graph and automatically calculate weight
    *
    * @param start First node of the edge
    * @param end Second node of the edge
    * @return Success / Failure
    */
-  public boolean addEdge(Node start, Node end) throws SQLException {
+  public boolean addEdge(Node start, Node end) {
     int weight = calcWeight(start, end);
     return addEdge(start, end, weight);
   }
@@ -129,7 +155,7 @@ public class Graph {
    * @param weight Weight of edge
    * @return Success / Failure
    */
-  public boolean addEdge(Node start, Node end, int weight) throws SQLException {
+  public boolean addEdge(Node start, Node end, int weight) {
     // Skip if either node doesn't exist
     if (start == null || end == null) return false;
 
@@ -160,7 +186,7 @@ public class Graph {
    * @param node Node to delete
    * @return Success / Failure
    */
-  public boolean deleteNode(Node node) throws SQLException {
+  public boolean deleteNode(Node node) {
     // Skip if node is null or is already in graph
     if ((node == null) || (!nodes.containsKey(node.getNodeID()))) return false;
 
@@ -172,9 +198,21 @@ public class Graph {
     nodes.remove(node.getNodeID());
 
     DB.removeEdgeByNode(node.getNodeID());
-    DB.deleteNode(node.getNodeID());
 
-    return true;
+    boolean success = DB.deleteNode(node.getNodeID());
+    if (success) {
+      return true;
+    } else {
+      // Add node back to graph map
+      nodes.put(node.getNodeID(), node);
+
+      // Add edges back to table if we failed to remove the node
+      toDelete.forEach(
+          edge -> {
+            addEdge(edge.getStart(), edge.getEnd());
+          });
+      return false;
+    }
   }
 
   /**
@@ -183,7 +221,7 @@ public class Graph {
    * @param nodeID ID of node to delete
    * @return Success / Failure
    */
-  public boolean deleteNode(String nodeID) throws SQLException {
+  public boolean deleteNode(String nodeID) {
     return deleteNode(nodes.get(nodeID));
   }
 
@@ -207,12 +245,10 @@ public class Graph {
 
     Edge reverse = forward.getReverseEdge();
     if (reverse == null) return false;
-    try {
-      DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID());
-      DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID());
-    } catch (SQLException e) {
 
-    }
+    DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID());
+    DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID());
+
     // Update edge count
     edgeCount--;
 
@@ -274,7 +310,7 @@ public class Graph {
    *
    * @return Success / Failure
    */
-  public boolean update() throws SQLException {
+  public boolean update() {
     HashMap<String, Node> newNodes = new HashMap<>();
     try {
       PreparedStatement pstmtNode = conn.prepareStatement("SELECT * FROM Node");
@@ -298,6 +334,7 @@ public class Graph {
       rsetNode.close();
       pstmtNode.close();
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
     try {
@@ -315,6 +352,7 @@ public class Graph {
       rsetEdge.close();
       pstmtEdge.close();
     } catch (SQLException e) {
+      e.printStackTrace();
       return false;
     }
     nodes = newNodes;
@@ -331,6 +369,9 @@ public class Graph {
 
     // Reset edge count
     edgeCount = 0;
+
+    // Clear the database
+    DB.removeAll();
   }
 
   public GraphDatabase getDB() {
