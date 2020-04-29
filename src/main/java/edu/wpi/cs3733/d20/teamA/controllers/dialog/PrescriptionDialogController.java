@@ -96,7 +96,6 @@ public class PrescriptionDialogController extends AbstractController implements 
 
     if (modify) {
       txtPatientName.setText(prescription.getPatientName());
-      txtDoctorName.setText(prescription.getDoctorName());
       txtPrescription.setText(prescription.getPrescription());
       txtPharmacy.setText(prescription.getPharmacy());
       txtDosage.setText(prescription.getDosage());
@@ -106,7 +105,6 @@ public class PrescriptionDialogController extends AbstractController implements 
 
     if (info) {
       txtPatientName.editableProperty().setValue(false);
-      txtDoctorName.editableProperty().setValue(false);
       txtPrescription.editableProperty().setValue(false);
       txtPharmacy.editableProperty().setValue(false);
       txtDosage.editableProperty().setValue(false);
@@ -119,10 +117,8 @@ public class PrescriptionDialogController extends AbstractController implements 
   // Scene switch & database addNode
   @FXML
   public void pressDone(ActionEvent e) {
-    int id = this.prescription.getPrescriptionID();
 
     String patientName = txtPatientName.getText();
-    String doctorName = txtDoctorName.getText();
     String prescription = txtPrescription.getText();
     String pharmacy = txtPharmacy.getText();
     String dosage = txtDosage.getText();
@@ -131,14 +127,14 @@ public class PrescriptionDialogController extends AbstractController implements 
 
     if (!modify) {
       prescriptionDatabase.addPrescription(
-          patientName, prescription, pharmacy, dosage, numberOfRefills, doctorName, notes);
+          patientName, prescription, pharmacy, dosage, numberOfRefills, notes);
     } else { // Modify each field
+      int id = this.prescription.getPrescriptionID();
       prescriptionDatabase.setPatient(id, patientName);
       prescriptionDatabase.setPrescription(id, prescription);
       prescriptionDatabase.setPharmacy(id, pharmacy);
       prescriptionDatabase.setDosage(id, dosage);
       prescriptionDatabase.setNumberOfRefills(id, numberOfRefills);
-      prescriptionDatabase.setDoctorUsername(id, doctorName);
       prescriptionDatabase.setNotes(id, notes);
     }
     dialog.close();
@@ -146,7 +142,6 @@ public class PrescriptionDialogController extends AbstractController implements 
 
   public void disableDoneText() {
     if (!(txtPatientName.getText().isEmpty()
-        || txtDoctorName.getText().isEmpty()
         || txtPrescription.getText().isEmpty()
         || txtPharmacy.getText().isEmpty()
         || txtDosage.getText().isEmpty()

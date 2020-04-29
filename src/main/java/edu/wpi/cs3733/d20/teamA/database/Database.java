@@ -164,6 +164,22 @@ public abstract class Database {
     }
   }
 
+  public String getNamefromUser(String username) {
+    String last;
+    try {
+      Statement priceStmt = getConnection().createStatement();
+      ResultSet rst =
+          priceStmt.executeQuery("SELECT * FROM Employees WHERE username = '" + username + "'");
+      ;
+      rst.next();
+      last = rst.getString("nameLast");
+      return last;
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return null;
+  }
+
   public int getRandomNumber() {
     return new Random().nextInt((999999999 - 100000000) + 1) + 100000000;
   }

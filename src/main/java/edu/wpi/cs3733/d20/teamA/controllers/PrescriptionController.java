@@ -37,10 +37,8 @@ public class PrescriptionController extends AbstractController {
     if (prescriptionDatabase.getSizePrescription() == -1) {
       prescriptionDatabase.dropTables();
       prescriptionDatabase.createTables();
-      prescriptionDatabase.readPrescriptionCSV();
     } else if (prescriptionDatabase.getSizePrescription() == 0) {
       prescriptionDatabase.removeAllPrescriptions();
-      prescriptionDatabase.readPrescriptionCSV();
     }
 
     // Set up icons for buttons and label

@@ -1,12 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.*;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -35,7 +29,7 @@ public class PrescriptionDatabase extends Database {
    */
   public boolean createTables() {
     return helperPrepared(
-        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT FK_DOCTOR FOREIGN KEY (doctorUsername) REFERENCES Employees(username), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
+        "CREATE TABLE PRESCRIPTION(prescriptionID INTEGER PRIMARY KEY, patientName VARCHAR(50) NOT NULL, prescription VARCHAR(50) NOT NULL, pharmacy VARCHAR(50), dosage VARCHAR(25), numberOfRefills INTEGER NOT NULL, doctorUsername VARCHAR(25) NOT NULL, notes VARCHAR(100), CONSTRAINT CH_NUMREFILL CHECK(numberOfRefills >= 0))");
   }
 
   /**
@@ -72,15 +66,18 @@ public class PrescriptionDatabase extends Database {
   /*
   Adds a prescription to the table
    */
-  public boolean addPrescription(
+  public int addPrescription(
       int prescriptionNum,
       String patient,
       String prescription,
       String pharmacy,
       String dosage,
       int numRefills,
-      String doctorName,
       String notes) {
+
+    String username = getLoggedIn();
+
+    String name = getNamefromUser(username);
 
     try {
       PreparedStatement pstmt =
@@ -93,71 +90,28 @@ public class PrescriptionDatabase extends Database {
       pstmt.setString(4, pharmacy);
       pstmt.setString(5, dosage);
       pstmt.setInt(6, numRefills);
-      pstmt.setString(7, doctorName);
+      pstmt.setString(7, name);
       pstmt.setString(8, notes);
       pstmt.executeUpdate();
       pstmt.close();
-      return true;
+      return prescriptionNum;
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return -1;
     }
   }
 
   /** Adds a prescription without a prescription number */
-  public boolean addPrescription(
+  public int addPrescription(
       String patient,
       String prescription,
       String pharmacy,
       String dosage,
       int numRefills,
-      String doctorName,
       String notes) {
     prescriptionNum = getRandomNumber();
     return addPrescription(
-        this.prescriptionNum,
-        patient,
-        prescription,
-        pharmacy,
-        dosage,
-        numRefills,
-        doctorName,
-        notes);
-  }
-
-  /** Reads the flower csv file into the database */
-  public boolean readPrescriptionCSV() {
-    try {
-      InputStream stream =
-          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Prescription.csv");
-      CSVReader reader = new CSVReader(new InputStreamReader(stream));
-      List<String[]> data = reader.readAll();
-      for (int i = 1; i < data.size(); i++) {
-        String patient, prescription, pharmacy, dosage, refillPer, doctorName, notes;
-        int prescriptionNum, numRefills;
-        prescriptionNum = Integer.parseInt(data.get(i)[0]);
-        patient = data.get(i)[1];
-        prescription = data.get(i)[2];
-        pharmacy = data.get(i)[3];
-        dosage = data.get(i)[4];
-        numRefills = Integer.parseInt(data.get(i)[5]);
-        doctorName = data.get(i)[6];
-        notes = data.get(i)[7];
-        addPrescription(
-            prescriptionNum,
-            patient,
-            prescription,
-            pharmacy,
-            dosage,
-            numRefills,
-            doctorName,
-            notes);
-      }
-      return true;
-    } catch (IOException | CsvException e) {
-      e.printStackTrace();
-      return false;
-    }
+        this.prescriptionNum, patient, prescription, pharmacy, dosage, numRefills, notes);
   }
 
   public String getPrescription(String patientName) {

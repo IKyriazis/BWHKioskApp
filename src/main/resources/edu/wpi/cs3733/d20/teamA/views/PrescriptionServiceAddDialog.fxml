@@ -4,6 +4,7 @@
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -36,7 +37,10 @@
                     </rowConstraints>
                      <children>
                         <JFXTextField fx:id="txtPatientName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Patient Name" GridPane.halignment="CENTER" />
-                        <JFXTextField fx:id="txtDoctorName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Doctor Name" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <JFXTextField fx:id="txtDoctorName" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Doctor Name" visible="false" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                           <effect>
+                              <Reflection />
+                           </effect></JFXTextField>
                         <JFXTextField fx:id="txtPrescription" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Prescription" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <JFXTextField fx:id="txtPharmacy" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Pharmacy" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <JFXTextField fx:id="txtDosage" alignment="CENTER" labelFloat="true" maxWidth="150.0" minWidth="150.0" onKeyTyped="#disableDoneText" prefWidth="150.0" promptText="Dosage" GridPane.halignment="CENTER" GridPane.rowIndex="2" />

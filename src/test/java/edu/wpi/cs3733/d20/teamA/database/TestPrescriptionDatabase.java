@@ -53,8 +53,7 @@ public class TestPrescriptionDatabase {
     employeesDatabase.removeAllEmployees();
     employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "Passwords123", "employee");
     prescriptionDatabase.removeAllPrescriptions();
-    prescriptionDatabase.addPrescription(
-        1, "Yash", "Ketamin", "CVS", "2 pills", 3, "yppatel", "Don't Die");
+    prescriptionDatabase.addPrescription(1, "Yash", "Ketamin", "CVS", "2 pills", 3, "Don't Die");
     Assertions.assertEquals(1, prescriptionDatabase.getSizePrescription());
     Assertions.assertEquals("Ketamin", prescriptionDatabase.getPrescription("Yash"));
     Assertions.assertEquals("CVS", prescriptionDatabase.getPharmacy("Yash"));
@@ -69,20 +68,19 @@ public class TestPrescriptionDatabase {
     employeesDatabase.removeAllEmployees();
     employeesDatabase.readEmployeeCSV();
     prescriptionDatabase.removeAllPrescriptions();
-    Assertions.assertTrue(prescriptionDatabase.readPrescriptionCSV());
     Assertions.assertTrue(prescriptionDatabase.setPatient(1, "Jacob White"));
     Assertions.assertEquals("Jacob White", prescriptionDatabase.getPatient(1));
-    Assertions.assertTrue(prescriptionDatabase.setPrescription("Jacob White", "Bengay"));
+    Assertions.assertTrue(prescriptionDatabase.setPrescription(1, "Bengay"));
     Assertions.assertEquals("Bengay", prescriptionDatabase.getPrescription("Jacob White"));
-    Assertions.assertTrue(prescriptionDatabase.setPharmacy("Jacob White", "Walgreens"));
+    Assertions.assertTrue(prescriptionDatabase.setPharmacy(1, "Walgreens"));
     Assertions.assertEquals("Walgreens", prescriptionDatabase.getPharmacy("Jacob White"));
-    Assertions.assertTrue(prescriptionDatabase.setDosage("Jacob White", "80 pills"));
+    Assertions.assertTrue(prescriptionDatabase.setDosage(1, "80 pills"));
     Assertions.assertEquals("80 pills", prescriptionDatabase.getDosage("Jacob White"));
-    Assertions.assertTrue(prescriptionDatabase.setNumberOfRefills("Jacob White", 7));
+    Assertions.assertTrue(prescriptionDatabase.setNumberOfRefills(1, 7));
     Assertions.assertEquals(7, prescriptionDatabase.getNumRefills("Jacob White"));
-    Assertions.assertTrue(prescriptionDatabase.setDoctorUsername("Jacob White", "staff"));
+    Assertions.assertTrue(prescriptionDatabase.setDoctorUsername(1, "staff"));
     Assertions.assertEquals("Yash Patel", prescriptionDatabase.getDoctor("Jacob White"));
-    Assertions.assertTrue(prescriptionDatabase.setNotes("Jacob White", "UGHH"));
+    Assertions.assertTrue(prescriptionDatabase.setNotes(1, "UGHH"));
     Assertions.assertEquals("UGHH", prescriptionDatabase.getNotes("Jacob White"));
   }
 
