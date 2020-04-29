@@ -102,12 +102,39 @@ public class LaundryController extends AbstractController {
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
 
+    roomList.setOnMouseClicked(
+        event -> {
+          allNodeList.clear();
+
+          allNodeList.addAll(
+              FXCollections.observableArrayList(
+                  Graph.getInstance().getNodes().values().stream()
+                      .filter(
+                          node ->
+                              node.getType() != NodeType.HALL
+                                  && node.getType() != NodeType.STAI
+                                  && node.getType() != NodeType.ELEV)
+                      .collect(Collectors.toList())));
+          allNodeList.sort(Comparator.comparing(Node::getLongName));
+
+          roomList.setItems(allNodeList);
+        });
+
     progressComboBox.getItems().addAll("Requested", "Collected", "Washing", "Drying", "Returned");
 
     ObservableList<Employee> allEmployeeList = eDB.employeeOl();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
     cleanerComboBox.setItems(allEmployeeList);
+    cleanerComboBox.setOnMouseClicked(
+        event -> {
+          allEmployeeList.clear();
+
+          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.sort(Comparator.comparing(Employee::toString));
+
+          cleanerComboBox.setItems(allEmployeeList);
+        });
   }
 
   @FXML
