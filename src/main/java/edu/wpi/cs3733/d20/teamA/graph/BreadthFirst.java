@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
-import com.sun.javafx.scene.traversal.Direction;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.util.*;
@@ -118,6 +117,17 @@ public class BreadthFirst implements IStrategyPath {
     double lastAngle = 0.0;
     // For every node in the path
     for (int i = 0; i < pathNodes.size() - 1; i++) {
+      int floorStart = pathNodes.get(i).getFloor();
+      int floorEnd = pathNodes.get(i + 1).getFloor();
+      if (floorEnd > floorStart) {
+        directions.add(Direction.UP);
+        continue;
+      } else if (floorEnd < floorStart) {
+        directions.add(Direction.DOWN);
+        continue;
+      }
+
+      // Account for nodes between floors
       int currX = pathNodes.get(i).getX();
       int currY = pathNodes.get(i).getY();
       int nextX = pathNodes.get(i + 1).getX();
@@ -157,7 +167,7 @@ public class BreadthFirst implements IStrategyPath {
       } else if (angleDiff <= (-Math.PI / 4) || (angleDiff >= (3 * Math.PI / 2))) {
         directions.add(Direction.RIGHT);
       } else {
-        directions.add(Direction.UP);
+        directions.add(Direction.NEXT);
       }
 
       lastAngle = angle;
@@ -175,30 +185,55 @@ public class BreadthFirst implements IStrategyPath {
             new Label(
                 "Turn left at " + pathNodes.get(j).getLongName(),
                 new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_LEFT)));
-      } else {
-        // else if it's straight keep track of how many nodes it is straight for
-        String end = "";
-        int nextNotStraight = j;
-        for (int k = j + 1; k < directions.size(); k++) {
-          if (directions.get(k) != Direction.UP) {
-            end = pathNodes.get(k).getLongName();
-            nextNotStraight = k;
-            break;
-          }
-        }
-        j = nextNotStraight - 1;
-        // If end is empty then there were no other turns
-        if (end.isEmpty()) {
+      } else if (directions.get(j) == Direction.UP) {
+        int sameLength = getSameLength(directions, j, Direction.UP);
+
+        if (sameLength >= 1) {
+          j += sameLength - 1;
           textPath.add(
               new Label(
-                  "Continue straight until destination",
+                  "Go up " + sameLength + " floors",
                   new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
-          break;
         } else {
           textPath.add(
               new Label(
-                  "Go straight until " + end,
+                  "Go up until destination",
                   new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+          break;
+        }
+      } else if (directions.get(j) == Direction.DOWN) {
+        int sameLength = getSameLength(directions, j, Direction.DOWN);
+
+        if (sameLength >= 1) {
+          j += sameLength - 1;
+          textPath.add(
+              new Label(
+                  "Go down " + sameLength + " floors",
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_DOWN)));
+        } else {
+          textPath.add(
+              new Label(
+                  "Go up until destination",
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_DOWN)));
+          break;
+        }
+
+      } else {
+        // else if it's straight keep track of how many nodes it is straight for
+        int sameLength = getSameLength(directions, j, Direction.NEXT);
+
+        if (sameLength >= 1) {
+          j += sameLength - 1;
+          textPath.add(
+              new Label(
+                  "Go straight until " + pathNodes.get(j + 1).getLongName(),
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
+        } else {
+          textPath.add(
+              new Label(
+                  "Continue straight until destination",
+                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
+          break;
         }
       }
     }
@@ -211,6 +246,15 @@ public class BreadthFirst implements IStrategyPath {
     return textPath;
   }
 
+  private int getSameLength(List<Direction> directions, int index, Direction direction) {
+    for (int i = index; i < directions.size(); i++) {
+      if (directions.get(i) != direction) {
+        return i - index;
+      }
+    }
+    return -1;
+  }
+
   /** Gets only the forward edges for the path */
   private void calculateEdges() {
     // Clear existing edge list
@@ -218,12 +262,37 @@ public class BreadthFirst implements IStrategyPath {
 
     for (int i = 0; i < (pathNodes.size() - 1); i++) {
       // Locate forward edges
+      boolean found = false;
       for (Edge edge : pathNodes.get(i).getEdges().values()) {
         if (edge.getEnd().equals(pathNodes.get(i + 1))) {
           // Forward edge found, add it to the list.
           pathEdges.add(edge);
+          found = true;
         }
       }
+      if (!found) {
+        pathEdges.clear();
+        pathNodes.clear();
+        return;
+      }
     }
+  }
+
+  public void update() {
+    ArrayList<Node> newNodes = new ArrayList<>();
+    pathNodes.forEach(
+        node -> {
+          Node newNode = Graph.getInstance().getNodeByID(node.getNodeID());
+          if (newNode == null) {
+            pathNodes.clear();
+            pathEdges.clear();
+          } else {
+            newNodes.add(newNode);
+          }
+        });
+
+    pathNodes.clear();
+    pathNodes.addAll(newNodes);
+    calculateEdges();
   }
 }

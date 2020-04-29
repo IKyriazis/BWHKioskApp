@@ -96,7 +96,15 @@ public class SimpleMapController {
         TabSwitchEvent.TAB_SWITCH,
         event -> {
           event.consume();
-          canvas.draw(1);
+
+          // Try to update path if possible
+          canvas.getPath().update();
+          if (canvas.getPath().getPathNodes().isEmpty()) {
+            pressedGo();
+          }
+
+          // Redraw map
+          canvas.draw(floor);
         });
 
     try {

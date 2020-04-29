@@ -31,4 +31,8 @@ public class ContextPath {
   public ArrayList<Node> getPathNodes() {
     return pathFindingAlgo.getPathNodes();
   }
+
+  public void update() {
+    pathFindingAlgo.update();
+  };
 }

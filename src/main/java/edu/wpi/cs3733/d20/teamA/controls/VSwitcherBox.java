@@ -90,7 +90,7 @@ public class VSwitcherBox extends VBox {
     if (selected != null) {
       selected.setStyle(buttonStyle + "-fx-background-color: white");
     }
-    newSelection.setStyle(buttonStyle + "-fx-background-color: rgba(21,101,191,0.63)");
+    newSelection.setStyle(buttonStyle + "-fx-background-color: -primary-color-light");
 
     selected = newSelection;
   }
