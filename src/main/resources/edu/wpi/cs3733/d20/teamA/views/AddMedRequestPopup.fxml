@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-
 <StackPane fx:id="dPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="217.0" prefWidth="307.0">
@@ -32,7 +31,7 @@
             <JFXTextField fx:id="roomNum" promptText="Room Number" GridPane.rowIndex="2" />
             <JFXButton fx:id="done" buttonType="RAISED" text="Done" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
             <JFXTextField fx:id="fBy" promptText="Fulfilled By" GridPane.rowIndex="3" />
-            <JFXTimePicker fx:id="pTime" defaultColor="#75a7a2" promptText="Administer Time" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <JFXTimePicker fx:id="pTime" defaultColor="#1565c0" promptText="Administer Time" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
