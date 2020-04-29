@@ -70,6 +70,17 @@ public class JanitorialController extends AbstractController {
     comboboxJanitorName.getItems().addAll(allEmployeeList);
     comboboxJanitorName.getItems().add(activeItems);
 
+    comboboxJanitorName.setOnMouseClicked(
+        event -> {
+          allEmployeeList.clear();
+
+          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.sort(Comparator.comparing(Employee::toString));
+
+          comboboxJanitorName.setItems(allEmployeeList);
+          comboboxJanitorName.getItems().add(activeItems);
+        });
+
     // Set up autofill for nodes
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(

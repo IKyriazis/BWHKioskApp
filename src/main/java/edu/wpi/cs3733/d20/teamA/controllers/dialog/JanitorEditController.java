@@ -85,6 +85,16 @@ public class JanitorEditController extends AbstractController implements IDialog
     activeItems.addAll("Unassigned");
 
     comboboxJanitor.getItems().add(activeItems);
+    comboboxJanitor.setOnMouseClicked(
+        event -> {
+          allEmployeeList.clear();
+
+          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.sort(Comparator.comparing(Employee::toString));
+
+          comboboxJanitor.setItems(allEmployeeList);
+          comboboxJanitor.getItems().add(activeItems);
+        });
     doneButton.setOnAction(this::isDone);
 
     // Set button icon
