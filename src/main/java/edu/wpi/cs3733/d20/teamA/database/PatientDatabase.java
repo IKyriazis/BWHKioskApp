@@ -138,6 +138,7 @@ public class PatientDatabase extends Database {
   public int addPatient(
       String firstName, String lastName, String healthInsurance, String dateOfBirth) {
     patientID = getRandomNumber();
+    System.out.println(getRandomNumber());
 
     return addPatient(this.patientID, firstName, lastName, healthInsurance, dateOfBirth);
   }

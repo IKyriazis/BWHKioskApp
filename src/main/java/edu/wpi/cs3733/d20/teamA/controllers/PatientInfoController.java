@@ -13,6 +13,7 @@ import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.awt.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -51,6 +52,18 @@ public class PatientInfoController extends AbstractController {
     // Setup Table
     patientTable = new SimpleTableView<>(new Patient(0, "", "", "", ""), 80.0);
     patientTablePane.getChildren().add(patientTable);
+    // Double click a row in the order table to bring up the dialog for that order
+    patientTable.setRowFactory(
+        tv -> {
+          TreeTableRow<Patient> row = new TreeTableRow<>();
+          row.setOnMouseClicked(
+              event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                  editPatient();
+                }
+              });
+          return row;
+        });
 
     // Add tab switch update listener
     patientPane.addEventHandler(
