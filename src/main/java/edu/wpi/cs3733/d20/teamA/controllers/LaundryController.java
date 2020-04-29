@@ -88,7 +88,11 @@ public class LaundryController extends AbstractController {
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
             Graph.getInstance().getNodes().values().stream()
-                .filter(node -> node.getType() != NodeType.HALL)
+                .filter(
+                    node ->
+                        node.getType() != NodeType.HALL
+                            && node.getType() != NodeType.STAI
+                            && node.getType() != NodeType.ELEV)
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));
 
