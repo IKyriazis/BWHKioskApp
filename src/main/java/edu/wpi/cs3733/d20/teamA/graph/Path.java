@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
-import com.sun.javafx.scene.traversal.Direction;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.util.*;
