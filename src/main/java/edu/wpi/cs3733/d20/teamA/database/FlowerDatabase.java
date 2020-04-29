@@ -26,8 +26,8 @@ public class FlowerDatabase extends Database {
     if (doesTableNotExist("FLOWERS") && doesTableNotExist("ORDERS")) {
       createTables();
     }
-    orderNum = getRandomNumber();
-    flowerNum = getRandomNumber();
+    orderNum = getSizeOrders() + 1;
+    flowerNum = getSizeFlowers();
   }
 
   /**
@@ -84,7 +84,9 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-      flowerNum = getRandomNumber();
+      int num = flowerNum;
+      while (idInUse(num)) num++;
+
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
@@ -96,6 +98,7 @@ public class FlowerDatabase extends Database {
       pstmt.setDouble(5, pricePer);
       pstmt.executeUpdate();
       pstmt.close();
+      flowerNum = num + 1;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -124,13 +127,11 @@ public class FlowerDatabase extends Database {
     }
 
     try {
-
-      flowerNum = getRandomNumber();
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, flowerNum);
+      pstmt.setInt(1, id);
       pstmt.setString(2, type);
       pstmt.setString(3, color);
       pstmt.setInt(4, qty);
