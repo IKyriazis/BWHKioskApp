@@ -93,12 +93,28 @@
     -jfx-focus-color: -primary-color;
 }
 
+.jfx-check-box {
+    -jfx-checked-color: -primary-color;
+    -jfx-unchecked-color: black;
+}
+
 .sidebar-button .glyph-icon {
     -fx-fill: -secondary-color-text;
 }
 
 .sidebar-button .jfx-rippler {
     -jfx-rippler-fill: -primary-color-light;
+}
+
+.popup-button {
+    -fx-font-size: 18pt;
+    -fx-background-radius: 0px;
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -secondary-color-text;
+}
+
+.popup-button .jfx-rippler {
+    -jfx-rippler-fill: -secondary-color-text;
 }
 
 .label {

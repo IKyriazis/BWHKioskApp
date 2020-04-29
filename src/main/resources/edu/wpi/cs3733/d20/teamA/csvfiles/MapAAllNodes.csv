@@ -74,12 +74,12 @@ OHALL01905,1248,407,5,Faulkner,HALL,Hallway Intersection 17 Level 5,Hallway O170
 CHALL00302,1435,1210,2,Faulkner,HALL,Hallway Intersection 3 Level 2,Hallway C0302,Team C
 AHALL00901,1409,520,1,Main,HALL,Hallway Intersection 9,N/A,Team A
 OHALL01105,1250,480,5,Faulkner,HALL,Hallway Intersection 9 Level 5,Hallway O0905,Team O
-MREST00344,1225,270,3,Faulkner,REST,Restroom00301,Restroom,Team M
-MREST00343,1295,270,3,Faulkner,REST,Restroom00302,Restroom,Team M
+MREST00344,1225,281,3,Faulkner,REST,Restroom00301,Restroom,Team M
+MREST00343,1293,283,3,Faulkner,REST,Restroom00302,Restroom,Team M
 ESERV00304,1866,1266,4,Faulkner,SERV,Compliance/Patient Relations 1,CPR1,E
 OSTAI00505,1318,393,5,Faulkner,STAI,North Staircase,North Stairs,Team O
 EHALL01804,1250,1219,4,Faulkner,HALL,Hallway N 1,HN1,E
-MSERV00315,1185,490,3,Faulkner,SERV,Family Patient Resources,Resources,Team M
+MSERV00315,1182,503,3,Faulkner,SERV,Family Patient Resources,Resources,Team M
 OELEV00Z05,1350,1144,5,Faulkner,ELEV,Z Elevator,Z Elev,Team O
 AHALL00801,871,520,1,Main,HALL,Hallway Intersection 8,N/A,Team A
 EHALL01004,1580,1219,4,Faulkner,HALL,Hallway E 3,HE3,E
@@ -94,7 +94,7 @@ ADEPT00701,1272,556,1,Main,DEPT,Pre-Admittance Screening,N/A,Team A
 EDEPT01704,1450,445,4,Faulkner,DEPT,Rheumatology Center,Rheumo,E
 EDEPT00404,1010,1130,4,Faulkner,DEPT,Department Offices Admin,DOA,E
 OCONF00205,1230,523,5,Faulkner,CONF,Suite 5945,S5945,Team O
-EHALL00704,267,1219,4,Faulkner,HALL,Hallway W 7,HW7,E
+EHALL00704,314,1219,4,Faulkner,HALL,Hallway W 7,HW7,E
 ADEPT01001,1990,759,1,Main,DEPT,Recovery,N/A,Team A
 EHALL02204,1250,848,4,Faulkner,HALL,Hallway N 5,HN5,E
 ESTAI00604,1285,416,4,Faulkner,STAI,Stairwell 6,Stair6,E
@@ -126,17 +126,17 @@ EHALL02304,1250,705,4,Faulkner,HALL,Hallway N 6,HN6,E
 AHALL01401,1258,830,1,Main,HALL,Hallway Intersection 14,N/A,Team A
 ODEPT01205,1272,260,5,Faulkner,DEPT,Orthopedic Association,Ortho,Team O
 ASTAI00401,2347,1226,1,Main,STAI,Staircase Intersection 4 Level 1,N/A,Team A
-MHALL00319,1365,470,3,Faulkner,HALL,Hall00302,Hall,Team M
-MHALL00318,1260,460,3,Faulkner,HALL,Hall00303,Hall,Team M
-MHALL00317,1150,460,3,Faulkner,HALL,Hall00304,Hall,Team M
-MHALL00316,1210,475,3,Faulkner,HALL,Hall00305,Hall,Team M
+MHALL00319,1367,481,3,Faulkner,HALL,Hall00302,Hall,Team M
+MHALL00318,1260,481,3,Faulkner,HALL,Hall00303,Hall,Team M
+MHALL00317,1143,482,3,Faulkner,HALL,Hall00304,Hall,Team M
+MHALL00316,1208,484,3,Faulkner,HALL,Hall00305,Hall,Team M
 OHALL01305,1143,311,5,Faulkner,HALL,Hallway Intersection 11 Level 5,Hallway O1105,Team O
 CHALL00902,1350,276,2,Faulkner,HALL,Hallway Intersection 9 Level 2,Hallway C0902,Team C
 ALABS00201,1241,761,1,Main,LABS,Special Testing,N/A,Team A
 MDEPT00324,1365,340,3,Faulkner,DEPT,Division of GYN,GYN,Team M
 ESERV00504,1920,1166,4,Faulkner,SERV,Finance 1,Fin1,E
 AELEV00Y01,1182,1160,1,Main,ELEV,Elevator Intersection 2 Level 2,N/A,Team A
-MDEPT00327,1250,265,3,Faulkner,DEPT,Roslindale Pediatric Association,Pediatrics,Team M
+MDEPT00327,1255,267,3,Faulkner,DEPT,Roslindale Pediatric Association,Pediatrics,Team M
 CHALL00102,750,660,2,Faulkner,HALL,Hallway Intersection 1 Level 2,Hallway C0102,Team C
 MDEPT00325,1365,290,3,Faulkner,DEPT,OB/GYN Association,OB/GYN,Team M
 OSTAI00305,2351,1243,5,Faulkner,STAI,Oncology Clinic Staircase,ONC Stairs,Team O
@@ -155,7 +155,7 @@ EHALL01204,1861,1219,4,Faulkner,HALL,Hallway E 5,HE5,E
 OHALL00905,1249,589,5,Faulkner,HALL,Hallway Intersection 7 Level 5,Hallway O0705,Team O
 AHALL00201,1258,307,1,Main,HALL,Hallway Intersection 2,N/A,Team A
 MHALL00329,1145,345,3,Faulkner,HALL,Hall00307,Hall,Team M
-MHALL00328,1145,290,3,Faulkner,HALL,Hall00308,Hall,Team M
+MHALL00328,1146,311,3,Faulkner,HALL,Hall00308,Hall,Team M
 OHALL00105,793,1213,5,Faulkner,HALL,Hallway Intersection 1 Level 5,Hallway O0105,Team O
 ESTAI00104,188,1220,4,Faulkner,STAI,Stairwell 1,Stair1,E
 ADEPT00901,1532,524,1,Main,DEPT,Radiology,N/A,Team A
@@ -194,8 +194,8 @@ ESERV01004,1325,975,4,Faulkner,SERV,House keeping,HK,E
 MELEV00322,1220,390,3,Faulkner,ELEV,Elevator,Elevator,Team M
 EHALL00204,987,1219,4,Faulkner,HALL,Hallway W 2,HW2,E
 AREST00101,1122,497,1,Main,REST,Restroom Female Level 1,N/A,Team A
-EDEPT00104,264,1267,4,Faulkner,DEPT,Medical Records,MR,E
 EHALL02504,1250,530,4,Faulkner,HALL,Hallway N 8,HN8,E
+EDEPT00104,314,1238,4,Main,DEPT,On-Call Room,OCR,Team A
 ESTAI00304,1778,1215,4,Faulkner,STAI,Stairwell 3,Stair3,E
 AHALL01601,1258,1077,1,Main,HALL,Hallway Intersection 16,N/A,Team A
 OHALL01505,1247,284,5,Faulkner,HALL,Hallway Intersection 13 Level 5,Hallway O1305,Team O

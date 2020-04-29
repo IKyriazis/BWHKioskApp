@@ -124,7 +124,7 @@ public class PatientEditController extends AbstractController implements IDialog
       if (checkDOBFormat(birthday)) {
 
         if (!modify) {
-          super.patientDatabase.addPatient(id, first, last, healthIns, birthday);
+          super.patientDatabase.addPatient(first, last, healthIns, birthday);
         } else {
           super.patientDatabase.updatePatient(
               myPatient.getPatientID(), first, last, healthIns, birthday);

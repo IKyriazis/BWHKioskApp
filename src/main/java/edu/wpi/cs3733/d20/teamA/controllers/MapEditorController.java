@@ -36,11 +36,8 @@ public class MapEditorController {
   @FXML private JFXButton floorUpButton;
   @FXML private JFXButton floorDownButton;
   @FXML private JFXButton exportCSVButton;
+  @FXML private JFXButton helpButton;
   @FXML private JFXTextField floorField;
-
-  @FXML private JFXButton aStarButton;
-  @FXML private JFXButton breadthFirstButton;
-  @FXML private JFXButton depthFirstButton;
 
   @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
@@ -182,7 +179,6 @@ public class MapEditorController {
         .textProperty()
         .addListener(
             observable -> {
-              infoDrawer.open();
               Platform.runLater(infoRippler.createManualRipple());
             });
 
@@ -211,12 +207,12 @@ public class MapEditorController {
             infoDrawer.open();
           }
         });
-    infoDrawer.open();
 
     // Setup button icons
     floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
     floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
     exportCSVButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SAVE));
+    helpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QUESTION_CIRCLE));
 
     // Try to get graph
     try {
@@ -224,16 +220,6 @@ public class MapEditorController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    aStarButton.setOnAction(
-        event -> {
-          MapSettings.setPath(new Path(graph));
-        });
-    depthFirstButton.setOnAction(event -> MapSettings.setPath(new DepthFirst(graph)));
-    breadthFirstButton.setOnAction(
-        event -> {
-          MapSettings.setPath(new BreadthFirst(graph));
-        });
 
     Platform.runLater(() -> canvas.draw(floor));
   }
@@ -258,14 +244,13 @@ public class MapEditorController {
     } else if (event.getButton() == MouseButton.SECONDARY) {
       JFXPopup popup = new JFXPopup();
       VBox buttonBox = new VBox();
-      String buttonStyle = "-fx-font-size: 18pt; -fx-background-radius: 0px";
 
       double popX = event.getX();
       double popY = event.getY();
 
       if (selections.size() == 0) {
         JFXButton newNodeButton = new JFXButton("New Node");
-        newNodeButton.setStyle(buttonStyle);
+        newNodeButton.getStyleClass().add("popup-button");
         newNodeButton.setOnAction(
             e -> {
               popup.hide();
@@ -275,7 +260,7 @@ public class MapEditorController {
         buttonBox.getChildren().add(newNodeButton);
       } else if (selections.size() == 1) {
         JFXButton infoButton = new JFXButton("Node Info");
-        infoButton.setStyle(buttonStyle);
+        infoButton.getStyleClass().add("popup-button");
         infoButton.setOnAction(
             e -> {
               buttonBox.getChildren().clear();
@@ -286,7 +271,7 @@ public class MapEditorController {
             });
 
         JFXButton editButton = new JFXButton("Edit Node");
-        editButton.setStyle(buttonStyle);
+        editButton.getStyleClass().add("popup-button");
         editButton.setOnAction(
             e -> {
               popup.hide();
@@ -297,7 +282,7 @@ public class MapEditorController {
         buttonBox.getChildren().addAll(infoButton, editButton);
       } else if (selections.size() == 2) {
         JFXButton addEdgeButton = new JFXButton("Add Edge");
-        addEdgeButton.setStyle(buttonStyle);
+        addEdgeButton.getStyleClass().add("popup-button");
         addEdgeButton.setOnAction(
             e -> {
               popup.hide();
@@ -306,7 +291,7 @@ public class MapEditorController {
             });
 
         JFXButton deleteEdgeButton = new JFXButton("Delete Edge");
-        deleteEdgeButton.setStyle(buttonStyle);
+        deleteEdgeButton.getStyleClass().add("popup-button");
         deleteEdgeButton.setOnAction(
             e -> {
               popup.hide();
@@ -318,7 +303,7 @@ public class MapEditorController {
 
       if (selections.size() >= 1) {
         JFXButton moveButton = new JFXButton("Move " + (selections.size() > 1 ? "Nodes" : "Node"));
-        moveButton.setStyle(buttonStyle);
+        moveButton.getStyleClass().add("popup-button");
         moveButton.setOnAction(
             e -> {
               popup.hide();
@@ -326,10 +311,9 @@ public class MapEditorController {
               editorTipLabel.setText("Click and Drag to Move Selection");
             });
 
-        // TODO; Find a way to not delete constrained nodes
         JFXButton deleteButton =
             new JFXButton("Delete " + (selections.size() > 1 ? "Nodes" : "Node"));
-        deleteButton.setStyle(buttonStyle);
+        deleteButton.getStyleClass().add("popup-button");
         deleteButton.setOnAction(
             e -> {
               popup.hide();
@@ -445,7 +429,15 @@ public class MapEditorController {
   }
 
   @FXML
-  public void setDepthFirst() {}
+  public void toggleDrawBelow(ActionEvent event) {
+    canvas.setDrawBelow(((JFXCheckBox) event.getSource()).isSelected());
+    canvas.draw(floor);
+  }
+
+  @FXML
+  public void helpClicked(ActionEvent actionEvent) {
+    infoDrawer.toggle();
+  }
 
   private String getNodeInfo(Node node) {
     return "Node ID: "
