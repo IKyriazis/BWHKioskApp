@@ -5,6 +5,7 @@
 
 .root {
     -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
 
     -primary-color: #1565c0;
     -primary-color-text: rgba(255, 255, 255, .84);
@@ -122,11 +123,11 @@
 }
 
 .small-text {
-    -fx-font-size: 10pt;
+    -fx-font-size: 12pt;
 }
 
 .regular-text {
-    -fx-font-size: 12pt;
+    -fx-font-size: 14pt;
 }
 
 .heading-text {

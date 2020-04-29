@@ -6,6 +6,7 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.JanitorEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
+import edu.wpi.cs3733.d20.teamA.database.Employee;
 import edu.wpi.cs3733.d20.teamA.database.JanitorService;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
@@ -31,8 +32,7 @@ public class JanitorialController extends AbstractController {
   @FXML private JFXButton btnChangeStatus;
 
   @FXML private JFXComboBox<String> comboboxNextStatus;
-
-  @FXML private JFXTextField textfieldEmployeeName;
+  @FXML private JFXComboBox comboboxJanitorName;
 
   @FXML private GridPane gridTableView;
 
@@ -63,6 +63,23 @@ public class JanitorialController extends AbstractController {
     String c = "Done";
     statusItems.addAll(a, b, c);
     comboboxNextStatus.getItems().addAll(statusItems);
+
+    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    allEmployeeList.sort(Comparator.comparing(Employee::toString));
+    activeItems.addAll("Unassigned");
+    comboboxJanitorName.getItems().addAll(allEmployeeList);
+    comboboxJanitorName.getItems().add(activeItems);
+
+    comboboxJanitorName.setOnMouseClicked(
+        event -> {
+          allEmployeeList.clear();
+
+          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.sort(Comparator.comparing(Employee::toString));
+
+          comboboxJanitorName.setItems(allEmployeeList);
+          comboboxJanitorName.getItems().add(activeItems);
+        });
 
     // Set up autofill for nodes
     ObservableList<Node> allNodeList =
@@ -130,10 +147,11 @@ public class JanitorialController extends AbstractController {
       if (comboboxNextStatus.getValue() == null) {
         DialogUtil.simpleErrorDialog(
             popupStackPane, "Error", "Please select the status of the request");
+      } else if (comboboxJanitorName.getValue() == null) {
+        DialogUtil.simpleErrorDialog(
+            popupStackPane, "Error", "Please select an employee to assign");
       } else {
-        System.out.println(textfieldEmployeeName.getText());
-        System.out.println(j.getEmployeeName());
-        if (textfieldEmployeeName.getText().equals("")) {
+        if (comboboxJanitorName.getValue().toString().equals("")) {
           janitorDatabase.updateRequest(
               j.getIndex(), j.getLongName(), comboboxNextStatus.getValue(), j.getEmployeeName());
         } else {
@@ -141,7 +159,7 @@ public class JanitorialController extends AbstractController {
               j.getIndex(),
               j.getLongName(),
               comboboxNextStatus.getValue(),
-              textfieldEmployeeName.getText());
+              comboboxJanitorName.getValue().toString());
         }
       }
     }

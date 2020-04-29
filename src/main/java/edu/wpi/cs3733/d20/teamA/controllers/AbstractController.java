@@ -23,6 +23,7 @@ public abstract class AbstractController {
   protected InternalTransportDatabase itDatabase;
   protected InterpreterDatabase iDB;
   protected PrescriptionDatabase prescriptionDatabase;
+  protected AnnouncementDatabase announcementDatabase;
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
@@ -39,5 +40,6 @@ public abstract class AbstractController {
     patientDatabase = new PatientDatabase(conn);
     itDatabase = new InternalTransportDatabase(conn);
     prescriptionDatabase = new PrescriptionDatabase(conn);
+    announcementDatabase = new AnnouncementDatabase(conn);
   }
 }

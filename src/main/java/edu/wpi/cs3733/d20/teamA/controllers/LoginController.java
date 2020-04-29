@@ -58,11 +58,11 @@ public class LoginController extends AbstractController {
     vSwitcherBox.addEntry(
         "Map Editor", new FontAwesomeIconView(FontAwesomeIcon.MAP_ALT), "views/MapEditor.fxml");
     vSwitcherBox.addEntry(
-        "Flowers - Will E",
+        "Flowers - Will",
         new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
         "views/flower/FlowerAdmin.fxml");
     vSwitcherBox.addEntry(
-        "Janitorial - Cory H",
+        "Janitorial - Cory",
         new FontAwesomeIconView(FontAwesomeIcon.CAR),
         "views/JanitorialGUI.fxml");
     vSwitcherBox.addEntry(
@@ -74,7 +74,7 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.MEDKIT),
         "views/MedicineRequest.fxml");
     vSwitcherBox.addEntry(
-        "Equipment Request Eva L",
+        "Equipment Request - Eva",
         new FontAwesomeIconView(FontAwesomeIcon.STETHOSCOPE),
         "views/EquipReq.fxml");
     vSwitcherBox.addEntry(
@@ -82,23 +82,23 @@ public class LoginController extends AbstractController {
         new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE),
         "views/LaundryGUI.fxml");
     vSwitcherBox.addEntry(
-        "IT Ticket Gabriel Dudlicek",
+        "IT Ticket - Gabriel",
         new FontAwesomeIconView(FontAwesomeIcon.LAPTOP),
         "views/ITServices.fxml");
     vSwitcherBox.addEntry(
-        "Patient Info - Tyler Looney",
+        "Patient Info - Tyler",
         new MaterialIconView(MaterialIcon.PERSON_ADD),
         "views/PatientsInfoService.fxml");
     vSwitcherBox.addEntry(
-        "Internal Transport - Ioannis K",
+        "Internal Transport - Ioannis",
         new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR),
         "views/InternalTransportAdmin.fxml");
     vSwitcherBox.addEntry(
-        "Interpreters - Dyllan Cole",
+        "Interpreters - Dyllan",
         new FontAwesomeIconView(FontAwesomeIcon.GLOBE),
         "views/InterpreterService.fxml");
     vSwitcherBox.addEntry(
-        "Prescriptions - Yash Patel",
+        "Prescriptions - Yash",
         new MaterialIconView(MaterialIcon.LOCAL_PHARMACY),
         "views/PrescriptionService.fxml");
     vSwitcherBox.addEntry(
