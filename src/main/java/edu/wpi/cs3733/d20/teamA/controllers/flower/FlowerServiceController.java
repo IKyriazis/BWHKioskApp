@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
-import com.jfoenix.controls.cells.editors.IntegerTextFieldEditorBuilder;
+import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -68,28 +68,41 @@ public class FlowerServiceController extends AbstractController {
     JFXTreeTableColumn<Flower, Double> column4 = new JFXTreeTableColumn<>("Unit Price");
     column4.setCellValueFactory(param -> param.getValue().getValue().pricePerProperty().asObject());
 
-    JFXTreeTableColumn<Flower, Integer> column5 = new JFXTreeTableColumn<>("Number");
+    JFXTreeTableColumn<Flower, String> column5 = new JFXTreeTableColumn<>("Number");
+    column5.setCellValueFactory(
+        param -> param.getValue().getValue().getQuantitySelectedProp().asObject().asString());
 
     column5.setCellFactory(
-        (TreeTableColumn<Flower, Integer> param) ->
-            new GenericEditableTreeTableCell<Flower, Integer>(new IntegerTextFieldEditorBuilder()));
+        (TreeTableColumn<Flower, String> param) -> {
+          GenericEditableTreeTableCell cell =
+              new GenericEditableTreeTableCell<Flower, String>(new TextFieldEditorBuilder());
+          return cell;
+        });
 
     column5.setOnEditCommit(
-        new EventHandler<TreeTableColumn.CellEditEvent<Flower, Integer>>() {
+        new EventHandler<TreeTableColumn.CellEditEvent<Flower, String>>() {
           @Override
-          public void handle(TreeTableColumn.CellEditEvent<Flower, Integer> t) {
+          public void handle(TreeTableColumn.CellEditEvent<Flower, String> t) {
             Flower f =
                 ((Flower)
                     t.getTreeTableView().getTreeItem(t.getTreeTablePosition().getRow()).getValue());
-            int i = t.getNewValue();
-            if (i <= f.getQty() && i >= 0) {
-              f.setQuantitySelected(t.getNewValue());
-            } else {
-              f.setQuantitySelected(t.getOldValue());
+            try {
+              int i = Integer.parseInt(t.getNewValue());
+              if (i <= f.getQty() && i >= 0) {
+                f.setQuantitySelected(i);
+              } else {
+                f.setQuantitySelected(0);
+                flowerTable.refresh();
+                DialogUtil.simpleErrorDialog(
+                    dialogPane,
+                    "Invalid number",
+                    "Please enter a number between 0 and the number of flowers in stock");
+              }
+            } catch (NumberFormatException e) {
+              f.setQuantitySelected(0);
+              flowerTable.refresh();
               DialogUtil.simpleErrorDialog(
-                  dialogPane,
-                  "Invalid number",
-                  "Please enter a number between 0 and the number of flowers in stock");
+                  dialogPane, "Invalid number", "Please enter a numeric value");
             }
             updateTotal();
           }
