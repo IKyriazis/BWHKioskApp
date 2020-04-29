@@ -11,4 +11,6 @@ public interface IStrategyPath {
   public ArrayList<Edge> getPathEdges();
 
   public ArrayList<Label> textualDirections();
+
+  public void update();
 }

@@ -94,12 +94,13 @@ public class FlowerEditController extends AbstractController implements IDialogC
       String name = txtName.getText();
       String color = txtColor.getText();
       int qty = Integer.parseInt(txtQty.getText());
-      double price = Double.parseDouble(txtCost.getText());
+      String price = txtCost.getText();
 
       if (!modify) {
-        super.flDatabase.addFlower(name, color, qty, price);
+        super.flDatabase.addFlower(name, color, qty, Double.parseDouble(price));
       } else {
-        super.flDatabase.updatePrice(myFlower.getTypeFlower(), myFlower.getColor(), price);
+        System.out.println(
+            super.flDatabase.updatePrice(myFlower.getTypeFlower(), myFlower.getColor(), price));
         super.flDatabase.updateQTY(myFlower.getTypeFlower(), myFlower.getColor(), qty);
       }
 

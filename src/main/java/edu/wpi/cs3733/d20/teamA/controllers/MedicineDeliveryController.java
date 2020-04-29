@@ -2,6 +2,8 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.EditMedRequestController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.MedInfoController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
@@ -11,16 +13,20 @@ import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
 public class MedicineDeliveryController extends AbstractController {
-
   @FXML private GridPane medList;
   @FXML private AnchorPane medPane;
   @FXML private StackPane dialogStackPane;
+
+  @FXML private JFXButton addBtn;
   @FXML private JFXButton editBtn;
+  @FXML private JFXButton deleteBtn;
+  @FXML private JFXButton infoBtn;
   @FXML private JFXComboBox<String> progBox;
   @FXML private JFXButton updateProgBtn;
   private SimpleTableView<MedRequest> tblMedReq;
@@ -35,6 +41,11 @@ public class MedicineDeliveryController extends AbstractController {
       medicineRequestDatabase.removeAll();
       medicineRequestDatabase.readFromCSV();
     }
+    // Set icon
+    addBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
+    editBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
+    deleteBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
+    infoBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QUESTION));
 
     medPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
@@ -51,6 +62,19 @@ public class MedicineDeliveryController extends AbstractController {
 
     tblMedReq = new SimpleTableView<>(new MedRequest("", "", "", "", "", 0, "", -1, -1, ""), 150.0);
     medList.getChildren().add(tblMedReq);
+
+    // Set up table to open edit controller when double clicking row
+    tblMedReq.setRowFactory(
+        tv -> {
+          TreeTableRow<MedRequest> row = new TreeTableRow<>();
+          row.setOnMouseClicked(
+              event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                  editRequest();
+                }
+              });
+          return row;
+        });
 
     update();
   }

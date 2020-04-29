@@ -5,11 +5,12 @@
 
 .root {
     -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
 
     -primary-color: #1565c0;
     -primary-color-text: rgba(255, 255, 255, .84);
 
-    -primary-color-light: #1976d2;
+    -primary-color-light: rgba(25, 118, 210, 0.70);
     -primary-color-light-text: rgba(255, 255, 255, 0.84);
 
     -primary-color-dark: #0D47A1;
@@ -93,6 +94,11 @@
     -jfx-focus-color: -primary-color;
 }
 
+.jfx-check-box {
+    -jfx-checked-color: -primary-color;
+    -jfx-unchecked-color: black;
+}
+
 .sidebar-button .glyph-icon {
     -fx-fill: -secondary-color-text;
 }
@@ -101,16 +107,27 @@
     -jfx-rippler-fill: -primary-color-light;
 }
 
+.popup-button {
+    -fx-font-size: 18pt;
+    -fx-background-radius: 0px;
+    -fx-background-color: -secondary-color;
+    -fx-text-fill: -secondary-color-text;
+}
+
+.popup-button .jfx-rippler {
+    -jfx-rippler-fill: -secondary-color-text;
+}
+
 .label {
     -fx-text-fill: black;
 }
 
 .small-text {
-    -fx-font-size: 10pt;
+    -fx-font-size: 12pt;
 }
 
 .regular-text {
-    -fx-font-size: 12pt;
+    -fx-font-size: 14pt;
 }
 
 .heading-text {
