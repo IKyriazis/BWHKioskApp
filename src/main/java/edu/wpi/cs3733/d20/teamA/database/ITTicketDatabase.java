@@ -124,8 +124,7 @@ public class ITTicketDatabase extends Database {
   public ObservableList<ITTicket> ITTicketObservableList() {
     ObservableList<ITTicket> ITTicketObservableList = FXCollections.observableArrayList();
     try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM ITTickets");
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM ITTickets");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         Timestamp ticketTime = rset.getTimestamp("ticketTime");
@@ -143,7 +142,6 @@ public class ITTicketDatabase extends Database {
       }
       rset.close();
       pstmt.close();
-      conn.close();
       return ITTicketObservableList;
     } catch (SQLException e) {
       e.printStackTrace();

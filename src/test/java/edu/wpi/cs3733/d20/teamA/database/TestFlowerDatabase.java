@@ -122,6 +122,7 @@ public class TestFlowerDatabase {
     Assertions.assertEquals(2, fDB.getSizeOrders());
     // Assertions.assertEquals(5, fDB.getFlowerQuantity("Daisy", "Blue"));
     fDB.removeAllOrders();
+    DB.removeAll();
   }
 
   @Test
@@ -142,6 +143,7 @@ public class TestFlowerDatabase {
     Assertions.assertTrue(r);
     Assertions.assertEquals(1, fDB.getSizeOrders());
     fDB.removeAllOrders();
+    DB.removeAll();
   }
 
   @Test
@@ -155,6 +157,7 @@ public class TestFlowerDatabase {
     boolean a = fDB.changeOrderStatus(5, "Order Received");
     Assertions.assertTrue(a);
     fDB.removeAllOrders();
+    DB.removeAll();
   }
 
   @Test

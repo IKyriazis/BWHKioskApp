@@ -110,5 +110,7 @@ public class TestInterpreterDatabase {
 
     boolean success = iDB.updateRequestStatus(id, "Completed");
     Assertions.assertTrue(success);
+    iDB.dropTables();
+    gDB.dropTables();
   }
 }
