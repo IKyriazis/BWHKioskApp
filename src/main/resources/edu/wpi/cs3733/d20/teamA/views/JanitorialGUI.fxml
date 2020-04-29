@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -68,7 +67,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" GridPane.columnIndex="1">
                                        <children>
-                                          <JFXTextField fx:id="textfieldEmployeeName" labelFloat="true" maxWidth="-Infinity" prefWidth="150.0" promptText="Employee Name" />
+                                          <JFXComboBox fx:id="comboboxJanitorName" labelFloat="true" prefWidth="150.0" promptText="Employee" />
                                           <JFXComboBox fx:id="comboboxNextStatus" labelFloat="true" prefWidth="150.0" promptText="Status">
                                              <VBox.margin>
                                                 <Insets left="75.0" right="75.0" />
