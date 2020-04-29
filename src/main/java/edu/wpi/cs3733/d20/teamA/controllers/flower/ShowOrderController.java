@@ -62,7 +62,7 @@ public class ShowOrderController extends AbstractController implements IDialogCo
       String flType = flDatabase.getFlowerTypeID(flNum);
       String flColor = flDatabase.getFlowerColorID(flNum);
 
-      TempFlower flow = new TempFlower(flColor + "   " + flType, flNum);
+      TempFlower flow = new TempFlower(flColor + "   " + flType, num);
       tblFlowers.getRoot().getChildren().add(new TreeItem<>(flow));
       s = s.substring(s.indexOf("|") + 1);
     }
