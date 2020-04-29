@@ -53,8 +53,7 @@ public class TestPrescriptionDatabase {
     employeesDatabase.removeAllEmployees();
     employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "Passwords123", "employee");
     prescriptionDatabase.removeAllPrescriptions();
-    prescriptionDatabase.addPrescription(
-        1, "Yash", "Ketamin", "CVS", "2 pills", 3, "yppatel", "Don't Die");
+    prescriptionDatabase.addPrescription(1, "Yash", "Ketamin", "CVS", "2 pills", 3, "Don't Die");
     Assertions.assertEquals(1, prescriptionDatabase.getSizePrescription());
     Assertions.assertEquals("Ketamin", prescriptionDatabase.getPrescription("Yash"));
     Assertions.assertEquals("CVS", prescriptionDatabase.getPharmacy("Yash"));
@@ -69,7 +68,6 @@ public class TestPrescriptionDatabase {
     employeesDatabase.removeAllEmployees();
     employeesDatabase.readEmployeeCSV();
     prescriptionDatabase.removeAllPrescriptions();
-    Assertions.assertTrue(prescriptionDatabase.readPrescriptionCSV());
     Assertions.assertTrue(prescriptionDatabase.setPatient(1, "Jacob White"));
     Assertions.assertEquals("Jacob White", prescriptionDatabase.getPatient(1));
     Assertions.assertTrue(prescriptionDatabase.setPrescription(1, "Bengay"));
