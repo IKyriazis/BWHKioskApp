@@ -155,10 +155,11 @@ public class DepthFirst implements IStrategyPath {
 
       double angleDiff = angle - lastAngle;
 
-      if ((angleDiff <= (-3 * Math.PI / 2))
-          || (angleDiff >= Math.PI / 4) && (angleDiff <= (3 * Math.PI / 4))) {
+      if (((angleDiff <= (-5 * Math.PI / 4)) && (angleDiff >= (-7 * Math.PI / 4)))
+          || ((angleDiff >= Math.PI / 4) && (angleDiff <= (3 * Math.PI / 4)))) {
         directions.add(Direction.LEFT);
-      } else if (angleDiff <= (-Math.PI / 4) || (angleDiff >= (3 * Math.PI / 2))) {
+      } else if ((angleDiff <= (-Math.PI / 4) && (angleDiff >= (-3 * Math.PI / 4)))
+          || ((angleDiff >= (5 * Math.PI / 4)) && (angleDiff <= (7 * Math.PI / 4)))) {
         directions.add(Direction.RIGHT);
       } else {
         directions.add(Direction.NEXT);
