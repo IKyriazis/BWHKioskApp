@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
@@ -27,7 +29,7 @@ public class CreateAcctController extends AbstractController {
         || pass.getText().isEmpty()
         || cPass.getText().isEmpty()) {
       // make popup that says one or more fields are empty
-      DialogUtil.simpleErrorDialog(
+      DialogUtil.simpleInfoDialog(
           dialogPane,
           "Empty fields",
           "You left some fields empty. Please make sure they are all filled.");
@@ -35,14 +37,14 @@ public class CreateAcctController extends AbstractController {
     }
     if (eDB.uNameExists(uName.getText())) {
       // make popup that says username already exists
-      DialogUtil.simpleErrorDialog(
+      DialogUtil.simpleInfoDialog(
           dialogPane,
           "Invalid Username",
           "The username you have chosen is already taken. Please choose another.");
       return;
     }
     if (pass.getText().length() < 8) {
-      DialogUtil.simpleErrorDialog(
+      DialogUtil.simpleInfoDialog(
           dialogPane,
           "Invalid Password",
           "Please make sure your password is at least 8 characters long.");
@@ -50,7 +52,7 @@ public class CreateAcctController extends AbstractController {
     }
     if (!cPass.getText().equals(pass.getText())) {
       // make popup that says passwords are not the same
-      DialogUtil.simpleErrorDialog(
+      DialogUtil.simpleInfoDialog(
           dialogPane,
           "Passwords Don't Match",
           "Please make sure that the password you entered in the confirm password field matches your intended password.");
@@ -60,24 +62,38 @@ public class CreateAcctController extends AbstractController {
       // make popup that says make sure password includes a number, lowercase letter, and uppercase
       // letter, and it's
       // less than 72 characters
-      DialogUtil.simpleErrorDialog(
+      DialogUtil.simpleInfoDialog(
           dialogPane,
           "Invalid Password",
           "Please create a password that includes a number, lowercase letter, and uppercase letter. Shorter than 72 characters.");
       return;
     }
-    if (eDB.addEmployee(
-        fName.getText(), lName.getText(), uName.getText(), cPass.getText(), title.getText())) {
-      // print that account has been created successfully
-      DialogUtil.simpleErrorDialog(
-          dialogPane, "Account Created", "You have successfully created an account.");
-    } else {
-      // print that for some reason the account couldn't be added
-      DialogUtil.simpleErrorDialog(
-          dialogPane,
-          "Account creation failed",
-          "For some reason we could not create your account.");
-    }
+
+    ThreadPool.runBackgroundTask(
+        () -> {
+          if (eDB.addEmployee(
+              fName.getText(),
+              lName.getText(),
+              uName.getText(),
+              cPass.getText(),
+              title.getText())) {
+            // print that account has been created successfully
+            Platform.runLater(
+                () -> {
+                  DialogUtil.simpleInfoDialog(
+                      dialogPane, "Account Created", "You have successfully created an account.");
+                });
+          } else {
+            // print that for some reason the account couldn't be added
+            Platform.runLater(
+                () -> {
+                  DialogUtil.simpleErrorDialog(
+                      dialogPane,
+                      "Account creation failed",
+                      "For some reason we could not create your account.");
+                });
+          }
+        });
   }
 
   public void clearFields() {

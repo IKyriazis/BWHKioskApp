@@ -107,15 +107,14 @@ public class EmployeesDatabase extends Database {
           getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
       pstmt.setString(1, uName);
       ResultSet rset = pstmt.executeQuery();
-      rset.next();
-      String uNameFromTable;
-      uNameFromTable = rset.getString("username");
-      pstmt.close();
-      return uName.equals(uNameFromTable);
+      if (rset.next()) {
+        return true;
+      }
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
     }
+
+    return false;
   }
 
   public synchronized boolean addEmployeeNoChecks(
