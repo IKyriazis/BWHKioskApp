@@ -305,7 +305,7 @@ public class MapCanvas extends Canvas {
     }
 
     // Set the color to black for the edge
-    graphicsContext.setLineWidth(5);
+    graphicsContext.setLineWidth(4);
     graphicsContext.setStroke(color);
 
     // Draw the line in between the points
