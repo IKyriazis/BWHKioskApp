@@ -74,7 +74,7 @@ public class LoginController extends AbstractController {
         new FontAwesomeIconView(FontAwesomeIcon.MEDKIT),
         "views/MedicineRequest.fxml");
     vSwitcherBox.addEntry(
-        "Equipment Request Eva",
+        "Equipment Request - Eva",
         new FontAwesomeIconView(FontAwesomeIcon.STETHOSCOPE),
         "views/EquipReq.fxml");
     vSwitcherBox.addEntry(
@@ -82,7 +82,7 @@ public class LoginController extends AbstractController {
         new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE),
         "views/LaundryGUI.fxml");
     vSwitcherBox.addEntry(
-        "IT Ticket Gabriel",
+        "IT Ticket - Gabriel",
         new FontAwesomeIconView(FontAwesomeIcon.LAPTOP),
         "views/ITServices.fxml");
     vSwitcherBox.addEntry(
