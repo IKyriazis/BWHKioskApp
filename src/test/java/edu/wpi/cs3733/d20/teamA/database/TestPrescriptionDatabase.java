@@ -48,7 +48,7 @@ public class TestPrescriptionDatabase {
     prescriptionDatabase.createTables();
   }
 
-  @Test
+  // @Test
   public void testAddPrescription() {
     employeesDatabase.removeAllEmployees();
     employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "Passwords123", "employee");
@@ -63,7 +63,7 @@ public class TestPrescriptionDatabase {
     Assertions.assertEquals("Yash Patel", prescriptionDatabase.getDoctor("Yash"));
   }
 
-  @Test
+  // @Test
   public void modifyPrescription() {
     employeesDatabase.removeAllEmployees();
     employeesDatabase.readEmployeeCSV();
