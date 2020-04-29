@@ -1,7 +1,7 @@
-package edu.wpi.cs3733.d20.teamA.controllers;
+package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Prescription;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.ActionEvent;
@@ -119,6 +119,7 @@ public class PrescriptionDialogController extends AbstractController implements 
   // Scene switch & database addNode
   @FXML
   public void pressDone(ActionEvent e) {
+    int id = this.prescription.getPrescriptionID();
 
     String patientName = txtPatientName.getText();
     String doctorName = txtDoctorName.getText();
@@ -131,8 +132,15 @@ public class PrescriptionDialogController extends AbstractController implements 
     if (!modify) {
       prescriptionDatabase.addPrescription(
           patientName, prescription, pharmacy, dosage, numberOfRefills, doctorName, notes);
+    } else { // Modify each field
+      prescriptionDatabase.setPatient(id, patientName);
+      prescriptionDatabase.setPrescription(id, prescription);
+      prescriptionDatabase.setPharmacy(id, pharmacy);
+      prescriptionDatabase.setDosage(id, dosage);
+      prescriptionDatabase.setNumberOfRefills(id, numberOfRefills);
+      prescriptionDatabase.setDoctorUsername(id, doctorName);
+      prescriptionDatabase.setNotes(id, notes);
     }
-
     dialog.close();
   }
 

@@ -6,9 +6,11 @@ import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import de.jensd.fx.glyphs.materialicons.MaterialIcon;
 import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
+import edu.wpi.cs3733.d20.teamA.database.Employee;
 import edu.wpi.cs3733.d20.teamA.database.Laundry;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.graph.NodeType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -34,7 +36,7 @@ public class LaundryController extends AbstractController {
   @FXML private Label serviceLabel;
   @FXML private Label requestTableLabel;
 
-  @FXML private JFXComboBox<String> cleanerComboBox;
+  @FXML private JFXComboBox<Employee> cleanerComboBox;
   @FXML private JFXComboBox<String> progressComboBox;
   @FXML private JFXComboBox<Node> roomList;
 
@@ -74,9 +76,9 @@ public class LaundryController extends AbstractController {
             removeRequestButton.disableProperty().setValue(false);
             progressComboBox.getSelectionModel().select(l.getProgress());
             if (l.getEmployeeWash() != null) {
-              cleanerComboBox.getSelectionModel().select(l.getEmployeeWash());
+              cleanerComboBox.getSelectionModel().select(eDB.findFromUsername(l.getEmployeeWash()));
             } else {
-              cleanerComboBox.getSelectionModel().clearSelection();
+              cleanerComboBox.getSelectionModel().select(null);
             }
           }
         });
@@ -86,7 +88,11 @@ public class LaundryController extends AbstractController {
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
             Graph.getInstance().getNodes().values().stream()
-                .filter(node -> node.getFloor() == 1)
+                .filter(
+                    node ->
+                        node.getType() != NodeType.HALL
+                            && node.getType() != NodeType.STAI
+                            && node.getType() != NodeType.ELEV)
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));
 
@@ -96,10 +102,39 @@ public class LaundryController extends AbstractController {
         .getEditor()
         .setOnKeyTyped(new NodeAutoCompleteHandler(roomList, roomList, allNodeList));
 
+    roomList.setOnMouseClicked(
+        event -> {
+          allNodeList.clear();
+
+          allNodeList.addAll(
+              FXCollections.observableArrayList(
+                  Graph.getInstance().getNodes().values().stream()
+                      .filter(
+                          node ->
+                              node.getType() != NodeType.HALL
+                                  && node.getType() != NodeType.STAI
+                                  && node.getType() != NodeType.ELEV)
+                      .collect(Collectors.toList())));
+          allNodeList.sort(Comparator.comparing(Node::getLongName));
+
+          roomList.setItems(allNodeList);
+        });
+
     progressComboBox.getItems().addAll("Requested", "Collected", "Washing", "Drying", "Returned");
 
-    // Will need to connect to employee database later
-    cleanerComboBox.getItems().addAll("admin", "staff");
+    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    allEmployeeList.sort(Comparator.comparing(Employee::toString));
+
+    cleanerComboBox.setItems(allEmployeeList);
+    cleanerComboBox.setOnMouseClicked(
+        event -> {
+          allEmployeeList.clear();
+
+          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.sort(Comparator.comparing(Employee::toString));
+
+          cleanerComboBox.setItems(allEmployeeList);
+        });
   }
 
   @FXML
@@ -108,7 +143,7 @@ public class LaundryController extends AbstractController {
     String loc = "";
     if (node != null) {
       loc = node.getLongName();
-      int l = lDB.addLaundry("admin", loc);
+      int l = lDB.addLaundry(eDB.getLoggedIn(), loc);
       if (l == 0) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot add request");
       } else {
@@ -133,24 +168,29 @@ public class LaundryController extends AbstractController {
     } else if (l == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
     }
+    tblLaundryView.getSelectionModel().clearSelection();
     update();
   }
 
   @FXML
   private void updateCleaner() {
     Laundry l = tblLaundryView.getSelected();
+    Employee e = cleanerComboBox.getSelectionModel().getSelectedItem();
     if (l != null) {
       if (progressComboBox.getValue() != null) {
         lDB.setProg(l.getRequestNum(), progressComboBox.getValue());
       }
       if (cleanerComboBox.getValue() != null) {
-        lDB.setEmpW(l.getRequestNum(), cleanerComboBox.getValue());
+        if (!lDB.setEmpW(l.getRequestNum(), eDB.getUsername(e.getId()))) {
+          DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot set Employee");
+        }
       }
     } else if (l == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
     }
     progressComboBox.getSelectionModel().clearSelection();
     cleanerComboBox.getSelectionModel().clearSelection();
+    tblLaundryView.getSelectionModel().clearSelection();
     update();
   }
 

@@ -56,10 +56,10 @@
                         </VBox>
                         <VBox alignment="CENTER" minHeight="-Infinity" onMouseClicked="#disableBtns" prefHeight="542.0" prefWidth="177.0" spacing="50.0" GridPane.rowIndex="1">
                            <children>
-                              <JFXTextField fx:id="ITTicketName" alignment="CENTER" focusColor="#64b5f6" labelFloat="true" maxWidth="-Infinity" onKeyTyped="#descriptionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Employee Name" />
-                              <JFXComboBox fx:id="ITTicketLocation" focusColor="#64b5f6" labelFloat="true" layoutX="114.0" layoutY="251.0" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Location" />
-                              <JFXComboBox fx:id="ITTicketCategory" focusColor="#64b5f6" labelFloat="true" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Category" />
-                              <JFXTextArea fx:id="ITTicketDescription" focusColor="#64b5f6" labelFloat="true" maxWidth="-Infinity" onKeyTyped="#descriptionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="198.0" promptText="Description (200 characters max.)" />
+                              <JFXTextField fx:id="ITTicketName" alignment="CENTER" labelFloat="true" maxWidth="-Infinity" onKeyTyped="#descriptionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Employee Name" />
+                              <JFXComboBox fx:id="ITTicketLocation" labelFloat="true" layoutX="114.0" layoutY="251.0" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Location" />
+                              <JFXComboBox fx:id="ITTicketCategory" labelFloat="true" onAction="#actionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="150.0" promptText="Category" />
+                              <JFXTextArea fx:id="ITTicketDescription" labelFloat="true" maxWidth="-Infinity" onKeyTyped="#descriptionCheckSubmit" onMouseClicked="#disableBtns" prefWidth="198.0" promptText="Description (200 characters max.)" />
                               <JFXButton fx:id="submitBtn" buttonType="RAISED" disable="true" onAction="#submitTicket" onMouseClicked="#disableBtns" prefWidth="150.0" text="Submit Ticket" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="15.0" />
@@ -114,8 +114,8 @@
                            <children>
                               <HBox alignment="BOTTOM_CENTER" maxWidth="1.7976931348623157E308" prefHeight="50.0" spacing="25.0">
                                  <children>
-                                    <JFXComboBox fx:id="statusChangeStatus" disable="true" focusColor="#64b5f6" labelFloat="true" onAction="#checkUpdateStatusBox" prefWidth="150.0" promptText="Status" />
-                                    <JFXTextField fx:id="statusChangeName" alignment="CENTER" disable="true" focusColor="#78909c" labelFloat="true" onKeyTyped="#checkUpdateStatusName" prefWidth="150.0" promptText="IT Assistant Name" />
+                                    <JFXComboBox fx:id="statusChangeStatus" disable="true" labelFloat="true" onAction="#checkUpdateStatusBox" prefWidth="150.0" promptText="Status" />
+                                    <JFXTextField fx:id="statusChangeName" alignment="CENTER" disable="true" labelFloat="true" onKeyTyped="#checkUpdateStatusName" prefWidth="150.0" promptText="IT Assistant Name" />
                                     <JFXButton fx:id="changeStatusBtn" buttonType="RAISED" disable="true" onAction="#changeStatus" onMouseClicked="#disableBtns" prefWidth="150.0" text="Update Status" textFill="WHITE">
                                        <font>
                                           <Font name="System Bold" size="12.0" />
