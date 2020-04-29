@@ -97,14 +97,16 @@ public class SimpleMapController {
         event -> {
           event.consume();
 
-          // Try to update path if possible
-          canvas.getPath().update();
-          if (canvas.getPath().getPathNodes().isEmpty()) {
-            pressedGo();
-          }
+          if (canvas.getPath() != null) {
+            // Try to update path if possible
+            canvas.getPath().update();
+            if (canvas.getPath().getPathNodes().isEmpty()) {
+              pressedGo();
+            }
 
-          // Redraw map
-          canvas.draw(floor);
+            // Redraw map
+            canvas.draw(floor);
+          }
         });
 
     try {
