@@ -139,17 +139,17 @@ public class JanitorDatabase extends Database {
    * Updates the rn with a certain progress
    *
    * @param rn request number
-   * @param name name
+   * @param longName name
    * @param progress progress
    * @return true if the progress has been updated
    */
-  public boolean updateRequest(int rn, String name, String progress, String employeeName) {
+  public boolean updateRequest(int rn, String longName, String progress, String employeeName) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "UPDATE JanitorRequest SET longName = ?, progress = ?, employeeName = ? Where requestNumber = ?");
-      pstmt.setString(1, name);
+      pstmt.setString(1, longName);
       pstmt.setString(2, progress);
       pstmt.setInt(4, rn);
       pstmt.setString(3, employeeName);
@@ -162,25 +162,25 @@ public class JanitorDatabase extends Database {
     }
   }
 
-  public boolean updateEmployeeName(int rn, String employeeName) {
-    try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = " + rn);
-      pstmt.executeUpdate();
-      ResultSet rset = pstmt.executeQuery();
-      rset.next();
-      String name = rset.getString("name");
-      String progress = rset.getString("progress");
-      rset.close();
-      pstmt.close();
-      updateRequest(rn, name, progress, employeeName);
-      return true;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
-    }
-  }
+  //  public boolean updateEmployeeName(int rn, String employeeName) {
+  //    try {
+  //      PreparedStatement pstmt =
+  //          getConnection()
+  //              .prepareStatement("SELECT * FROM JanitorRequest WHERE requestNumber = " + rn);
+  //      pstmt.executeUpdate();
+  //      ResultSet rset = pstmt.executeQuery();
+  //      rset.next();
+  //      String name = rset.getString("name");
+  //      String progress = rset.getString("progress");
+  //      rset.close();
+  //      pstmt.close();
+  //      updateRequest(rn, name, progress, employeeName);
+  //      return true;
+  //    } catch (SQLException e) {
+  //      e.printStackTrace();
+  //      return false;
+  //    }
+  //  }
 
   /** Prints out the table */
   public void printTable() {
@@ -197,7 +197,7 @@ public class JanitorDatabase extends Database {
                 + ", time: "
                 + rset.getTimestamp("time")
                 + ", name: "
-                + rset.getString("name")
+                + rset.getString("employeeName")
                 + ", progress: "
                 + rset.getString("progress")
                 + ", priority: "
@@ -220,12 +220,10 @@ public class JanitorDatabase extends Database {
       ResultSet rset = pstmt.executeQuery();
       rset.next();
       request =
-          "requestNumber: "
-              + rset.getInt("requestNumber")
-              + ", location: "
+          "location: "
               + rset.getString("location")
-              + ", name: "
-              + rset.getString("name")
+              + ", employeeName: "
+              + rset.getString("employeeName")
               + ", progress: "
               + rset.getString("progress")
               + ", priority: "

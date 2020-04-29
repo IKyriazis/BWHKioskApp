@@ -52,6 +52,7 @@ public abstract class Database {
       PreparedStatement pstmt = getConnection().prepareStatement("Select * From " + tableName);
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
+        System.out.println(rset.toString());
         count++;
       }
       rset.close();
