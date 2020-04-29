@@ -66,8 +66,9 @@ public class JanitorialController extends AbstractController {
 
     ObservableList<Employee> allEmployeeList = eDB.employeeOl();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
-
+    activeItems.addAll("Unassigned");
     comboboxJanitorName.getItems().addAll(allEmployeeList);
+    comboboxJanitorName.getItems().add(activeItems);
 
     // Set up autofill for nodes
     ObservableList<Node> allNodeList =
@@ -135,6 +136,9 @@ public class JanitorialController extends AbstractController {
       if (comboboxNextStatus.getValue() == null) {
         DialogUtil.simpleErrorDialog(
             popupStackPane, "Error", "Please select the status of the request");
+      } else if (comboboxJanitorName.getValue() == null) {
+        DialogUtil.simpleErrorDialog(
+            popupStackPane, "Error", "Please select an employee to assign");
       } else {
         if (comboboxJanitorName.getValue().toString().equals("")) {
           janitorDatabase.updateRequest(

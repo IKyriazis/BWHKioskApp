@@ -37,6 +37,8 @@ public class JanitorEditController extends AbstractController implements IDialog
 
   private Hashtable<String, String> nodeIDHash;
 
+  ObservableList activeItems = FXCollections.observableArrayList();
+
   public JanitorEditController() {
     super();
 
@@ -80,6 +82,9 @@ public class JanitorEditController extends AbstractController implements IDialog
 
     comboboxJanitor.getItems().addAll(allEmployeeList);
 
+    activeItems.addAll("Unassigned");
+
+    comboboxJanitor.getItems().add(activeItems);
     doneButton.setOnAction(this::isDone);
 
     // Set button icon
@@ -91,7 +96,8 @@ public class JanitorEditController extends AbstractController implements IDialog
   public void isDone(ActionEvent e) {
 
     if (comboboxLocation.getSelectionModel().isEmpty()
-        || comboboxPriority.getSelectionModel().isEmpty()) {
+        || comboboxPriority.getSelectionModel().isEmpty()
+        || comboboxJanitor.getSelectionModel().isEmpty()) {
       return;
     }
 
