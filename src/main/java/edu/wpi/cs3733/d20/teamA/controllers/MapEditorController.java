@@ -320,9 +320,7 @@ public class MapEditorController {
               selections.forEach(
                   node -> {
                     boolean success = graph.deleteNode(node);
-                    if (success) {
-                      selections.remove(node);
-                    } else {
+                    if (!success) {
                       DialogUtil.simpleErrorDialog(
                           dialogPane,
                           "Database Error",
