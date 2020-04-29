@@ -38,10 +38,6 @@ public class PrescriptionDatabase extends Database {
    * @return true if completed
    */
   public boolean dropTables() {
-    if (!(helperPrepared("ALTER TABLE PRESCRIPTION DROP CONSTRAINT FK_DOCTOR"))) {
-      return false;
-    }
-
     return helperPrepared("DROP TABLE PRESCRIPTION");
   }
 
