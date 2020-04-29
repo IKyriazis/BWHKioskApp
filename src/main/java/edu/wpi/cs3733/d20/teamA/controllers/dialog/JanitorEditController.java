@@ -3,10 +3,10 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXTextField;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
+import edu.wpi.cs3733.d20.teamA.database.Employee;
 import edu.wpi.cs3733.d20.teamA.database.JanitorService;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
@@ -30,7 +30,7 @@ public class JanitorEditController extends AbstractController implements IDialog
 
   @FXML private JFXButton doneButton;
 
-  @FXML private JFXTextField textboxEmployee;
+  @FXML private JFXComboBox comboboxJanitor;
 
   private JanitorService janitorService;
   private JFXDialog dialog;
@@ -75,6 +75,11 @@ public class JanitorEditController extends AbstractController implements IDialog
     priorityItems.addAll(a, b, c);
     comboboxPriority.getItems().addAll(priorityItems);
 
+    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    allEmployeeList.sort(Comparator.comparing(Employee::toString));
+
+    comboboxJanitor.getItems().addAll(allEmployeeList);
+
     doneButton.setOnAction(this::isDone);
 
     // Set button icon
@@ -99,7 +104,7 @@ public class JanitorEditController extends AbstractController implements IDialog
       String location = start.get().getNodeID();
       String priority = comboboxPriority.getValue().toString();
       String longName = comboboxLocation.getValue().toString();
-      String employee = textboxEmployee.getText();
+      String employee = comboboxJanitor.getValue().toString();
 
       if (modify) {
         super.janitorDatabase.deleteRequest(janitorService.getIndex());
