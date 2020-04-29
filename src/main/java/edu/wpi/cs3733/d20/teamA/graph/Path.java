@@ -170,16 +170,18 @@ public class Path implements IStrategyPath {
   public ArrayList<Label> textualDirections() {
     ArrayList<Label> textPath = new ArrayList<>();
     ArrayList<Direction> directions = new ArrayList<>();
-    double lastAngle = 0.0;
+    double lastAngle = -100.0;
     // For every node in the path
     for (int i = 0; i < pathNodes.size() - 1; i++) {
       int floorStart = pathNodes.get(i).getFloor();
       int floorEnd = pathNodes.get(i + 1).getFloor();
       if (floorEnd > floorStart) {
         directions.add(Direction.UP);
+        lastAngle = -100.0;
         continue;
       } else if (floorEnd < floorStart) {
         directions.add(Direction.DOWN);
+        lastAngle = -100.0;
         continue;
       }
 
@@ -211,7 +213,7 @@ public class Path implements IStrategyPath {
         angle = Math.PI;
       }
 
-      if (i == 0) {
+      if (lastAngle == -100.0) {
         lastAngle = angle;
       }
 
