@@ -1,15 +1,15 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import animatefx.animation.*;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.Stack;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -82,22 +82,25 @@ public class SceneSwitcherController {
     boolean first = contentPane.getChildren().isEmpty();
 
     Node top = sceneStack.peek();
+
+    // Fire off tab switch event to new scene
+    top.fireEvent(new TabSwitchEvent());
+
     contentPane.getChildren().add(top);
     if (!first) {
-      top.setTranslateX(right ? contentPane.getWidth() : -contentPane.getWidth());
-
       transitioning = true;
-      TranslateTransition transOut =
-          new TranslateTransition(Duration.millis(500), contentPane.getChildren().get(0));
-      transOut.setByX(right ? -contentPane.getWidth() : contentPane.getWidth());
+
+      AnimationFX transOut =
+          right
+              ? new FadeOutLeft(contentPane.getChildren().get(0))
+              : new FadeOutRight(contentPane.getChildren().get(0));
       transOut.setOnFinished(
           event -> {
             contentPane.getChildren().remove(transOut.getNode());
           });
       transOut.play();
 
-      TranslateTransition transIn = new TranslateTransition(Duration.millis(500), top);
-      transIn.setByX(right ? -contentPane.getWidth() : contentPane.getWidth());
+      AnimationFX transIn = right ? new FadeInRight(top) : new FadeInLeft(top);
       transIn.setOnFinished(
           event -> {
             transitioning = false;
