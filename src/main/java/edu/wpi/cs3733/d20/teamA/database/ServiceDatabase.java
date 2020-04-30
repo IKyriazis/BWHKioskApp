@@ -31,7 +31,7 @@ public class ServiceDatabase extends Database {
 
     if (doesTableNotExist("SERVICEREQ")) {
       return helperPrepared(
-          "CREATE TABLE SERVICEREQ (servType Varchar(10), reqID Varchar(6) PRIMARY KEY, didReqName Varchar(25), madeReqName Varchar(25), timeOfReq Timestamp, status Varchar(20), location Varchar(200), description Varchar(100), additional Varchar(2000), CONSTRAINT CK_TYPE CHECK (servType in ('janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq')), CONSTRAINT FK_Location FOREIGN KEY (location) REFERENCES Node(longName), CONSTRAINT CK_STAT CHECK (status in ('Request Made', 'In Progress', 'Completed')))");
+          "CREATE TABLE SERVICEREQ (servType Varchar(10), reqID Varchar(6) PRIMARY KEY, didReqName Varchar(25), madeReqName Varchar(25), timeOfReq Timestamp, status Varchar(20), location Varchar(200), description Varchar(100), additional Varchar(2000), CONSTRAINT CK_TYPE CHECK (servType in ('janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq')), CONSTRAINT FK_Location FOREIGN KEY (location) REFERENCES Node(longName), CONSTRAINT CK_STAT CHECK (status in ('Request Made', 'In Progress', 'Completed', 'Prescribed')))");
     }
     return false;
   }
@@ -106,6 +106,45 @@ public class ServiceDatabase extends Database {
       pstmt.setString(3, didReqName);
       pstmt.setString(4, madeReqName);
       pstmt.setTimestamp(5, timeOf);
+      pstmt.setString(6, status);
+      pstmt.setString(7, location);
+      pstmt.setString(8, description);
+      pstmt.setString(9, additional);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return reqID;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public synchronized String addServiceReq(
+      ServiceType servType, Timestamp t, String location, String description, String additional) {
+
+    long l = getRandomNumber();
+    String reqID = Long.toString(l, 36);
+    boolean c = checkIfExistsString("ServiceReq", "reqID", reqID);
+    while (c) {
+      l = getRandomNumber();
+      reqID = Long.toString(l, 36);
+      reqID = ("000000" + reqID).substring(reqID.length() - 1);
+      c = checkIfExistsString("ServiceReq", "reqID", reqID);
+    }
+    String madeReqName = getLoggedIn();
+    String didReqName = null;
+    String status = "Request Made";
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO SERVICEREQ (servType, reqID, didReqName, madeReqName, timeOfReq, status, location, description, additional) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, servType.toString());
+      pstmt.setString(2, reqID);
+      pstmt.setString(3, didReqName);
+      pstmt.setString(4, madeReqName);
+      pstmt.setTimestamp(5, t);
       pstmt.setString(6, status);
       pstmt.setString(7, location);
       pstmt.setString(8, description);

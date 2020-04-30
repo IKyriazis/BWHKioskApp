@@ -57,9 +57,9 @@ public class JanitorialController extends AbstractController {
 
     // Add the status items to the combobox
     statusItems.clear();
-    String a = "Reported";
-    String b = "Dispatched";
-    String c = "Done";
+    String a = "Request Made";
+    String b = "In Progress";
+    String c = "Completed";
     statusItems.addAll(a, b, c);
     comboboxNextStatus.getItems().addAll(statusItems);
 
@@ -154,9 +154,9 @@ public class JanitorialController extends AbstractController {
       } else {
         if (comboboxJanitorName.getValue().toString().equals("")) {
           primaryDB.setAssignedEmployee(j.getIndex(), j.getEmployeeName());
-          primaryDB.setAdditional(j.getIndex(), comboboxNextStatus.getValue());
+          primaryDB.setStatus(j.getIndex(), comboboxNextStatus.getValue());
         } else {
-          primaryDB.setAdditional(j.getIndex(), comboboxNextStatus.getValue());
+          primaryDB.setStatus(j.getIndex(), comboboxNextStatus.getValue());
         }
       }
     }
