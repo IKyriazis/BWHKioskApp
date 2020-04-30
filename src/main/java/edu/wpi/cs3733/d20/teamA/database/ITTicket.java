@@ -17,8 +17,10 @@ public class ITTicket implements ITableable<ITTicket> {
   @Setter private SimpleStringProperty description;
   @Setter private SimpleStringProperty status;
   @Setter private SimpleStringProperty completedBy;
+  @Setter private SimpleStringProperty id;
 
   public ITTicket(
+      String idNum,
       Timestamp ticketTime,
       String status,
       String category,
@@ -33,6 +35,7 @@ public class ITTicket implements ITableable<ITTicket> {
     this.description = new SimpleStringProperty(description);
     this.status = new SimpleStringProperty(status);
     this.completedBy = new SimpleStringProperty(completedBy);
+    this.id = new SimpleStringProperty(idNum);
   }
 
   public String getTicketTime() {
@@ -89,6 +92,10 @@ public class ITTicket implements ITableable<ITTicket> {
 
   public SimpleStringProperty completedByProperty() {
     return completedBy;
+  }
+
+  public String getId() {
+    return id.get();
   }
 
   @Override

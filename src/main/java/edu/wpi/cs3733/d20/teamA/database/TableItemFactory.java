@@ -41,7 +41,7 @@ public class TableItemFactory {
             timeOfReq); // Change requestID to a string
       case "ittix":
         return new ITTicket(
-            timeOfReq, status, "CATEGORY", location, "Name", didReqName, description);
+            reqID, timeOfReq, status, additional, location, madeReqName, didReqName, description);
       case "intrntrans":
         return new InternalTransportRequest(12, "Start", didReqName, "Time", status, "Name");
       case "interpret":

@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.ITTicket;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -38,26 +39,17 @@ public class ITServicesController extends AbstractController {
 
   private ITTicket selected;
 
-  private SimpleTableView<ITTicket> tblViewITTicket;
+  private SimpleTableView tblViewITTicket;
 
   /**
    * Sets up the ITTicket database, initializes the choices for comboBoxes, sets up the table, and
    * sets up an event handler to track when the mouse is selecting the table.
    */
   public void initialize() {
-    // Set up the ITTicket database
-    if (itTicketDatabase.getSizeITTickets() == -1) {
-      itTicketDatabase.dropTables();
-      itTicketDatabase.createTables();
-      itTicketDatabase.readITTicketsCSV();
-    } else if (itTicketDatabase.getSizeITTickets() == 0) {
-      itTicketDatabase.removeAllITTickets();
-      itTicketDatabase.readITTicketsCSV();
-    }
 
     // Initialize choices for comboBoxes
     ITTicketCategory.getItems().addAll("Wifi", "Email", "Login", "Kiosk", "Pager", "Other");
-    statusChangeStatus.getItems().addAll("Ticket Sent", "In Progress", "Complete");
+    statusChangeStatus.getItems().addAll("Request Made", "In Progress", "Completed");
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
             Graph.getInstance().getNodes().values().stream()
@@ -69,13 +61,14 @@ public class ITServicesController extends AbstractController {
     // Set up table
     tblViewITTicket =
         new SimpleTableView<>(
-            new ITTicket(new Timestamp(System.currentTimeMillis()), "", "", "", "", "", ""), 80.0);
+            new ITTicket(null, new Timestamp(System.currentTimeMillis()), "", "", "", "", "", ""),
+            80.0);
     ticketTablePane.getChildren().add(tblViewITTicket);
 
     // Track when the mouse has clicked on the table
     tblViewITTicket.setOnMouseClicked(
         event -> {
-          selected = tblViewITTicket.getSelected();
+          selected = (ITTicket) tblViewITTicket.getSelected();
           if (selected != null) {
             descriptionBtn.disableProperty().setValue(false);
             deleteBtn.disableProperty().setValue(false);
@@ -116,7 +109,7 @@ public class ITServicesController extends AbstractController {
     try {
       tblViewITTicket.clear();
 
-      tblViewITTicket.add(itTicketDatabase.ITTicketObservableList());
+      tblViewITTicket.add(primaryDB.observableList(ServiceType.IT_TICKET));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(ITStackPane, "Error", "Failed to update IT Ticket Table");
@@ -148,15 +141,8 @@ public class ITServicesController extends AbstractController {
     String requesterName = ITTicketName.getText();
     String completedBy = " ";
     String description = ITTicketDescription.getText();
-    boolean ticket =
-        itTicketDatabase.addTicket(
-            ticketTime,
-            status,
-            category,
-            location.getNodeID(),
-            requesterName,
-            completedBy,
-            description);
+    primaryDB.addServiceReq(ServiceType.IT_TICKET, location.getLongName(), description, category);
+    // Set up completed by if this is important
     ITTicketCategory.getSelectionModel().clearSelection();
     ITTicketLocation.getSelectionModel().clearSelection();
     ITTicketDescription.clear();
@@ -171,9 +157,9 @@ public class ITServicesController extends AbstractController {
    * @param actionEvent delete button
    */
   public void deleteRequest(ActionEvent actionEvent) {
-    selected = tblViewITTicket.getSelected();
+    selected = (ITTicket) tblViewITTicket.getSelected();
     if (selected != null) {
-      boolean i = itTicketDatabase.deleteTicket(Timestamp.valueOf(selected.getTicketTime()));
+      primaryDB.deleteServReq(selected.getId());
       tblViewITTicket.getSelectionModel().clearSelection();
       updateTable();
     }
@@ -185,13 +171,9 @@ public class ITServicesController extends AbstractController {
    * @param actionEvent Update status button
    */
   public void changeStatus(ActionEvent actionEvent) {
-    selected = tblViewITTicket.getSelected();
-    boolean i =
-        itTicketDatabase.changeStatus(
-            Timestamp.valueOf(selected.getTicketTime()),
-            statusChangeStatus.getSelectionModel().getSelectedItem(),
-            statusChangeName.getText());
-    System.out.println(Timestamp.valueOf(selected.getTicketTime()));
+    selected = (ITTicket) tblViewITTicket.getSelected();
+    primaryDB.setStatus(selected.getId(), statusChangeStatus.getSelectionModel().getSelectedItem());
+    primaryDB.setAssignedEmployee(selected.getId(), statusChangeName.getText());
     statusChangeName.clear();
     statusChangeStatus.getSelectionModel().clearSelection();
     tblViewITTicket.getSelectionModel().clearSelection();
@@ -204,7 +186,7 @@ public class ITServicesController extends AbstractController {
    * @param actionEvent description button
    */
   public void getDescription(ActionEvent actionEvent) {
-    selected = tblViewITTicket.getSelected();
+    selected = (ITTicket) tblViewITTicket.getSelected();
     if (selected != null) {
       DialogUtil.simpleInfoDialog(ITStackPane, "Description", selected.getDescription());
     }
@@ -233,7 +215,7 @@ public class ITServicesController extends AbstractController {
    * in fxml
    */
   public void checkUpdateStatus() {
-    selected = tblViewITTicket.getSelected();
+    selected = (ITTicket) tblViewITTicket.getSelected();
     if (selected != null
         && statusChangeStatus.getSelectionModel().getSelectedItem() != null
         && !statusChangeName.getText().isEmpty()) {
