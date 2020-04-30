@@ -15,17 +15,10 @@ public class TableItemFactory {
       String location,
       String description,
       String additional) {
-
     // 'janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq'
     switch (servType) {
       case "janitor":
-        return new JanitorService(
-            location,
-            "Priority",
-            status,
-            madeReqName,
-            0,
-            "If you are seeing this change long name in service factory"); // todo parse priority,
+        return new JanitorService(location, additional, status, madeReqName, reqID, didReqName);
         // what is index
       case "medicine":
         return new MedRequest(

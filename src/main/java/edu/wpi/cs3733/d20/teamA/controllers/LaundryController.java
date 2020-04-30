@@ -183,6 +183,7 @@ public class LaundryController extends AbstractController {
         primaryDB.editStatus(
             l.getRequestNum(), progressComboBox.getSelectionModel().getSelectedItem());
       }
+      primaryDB.setAssignedEmployee(l.getRequestNum(), e.getUsername());
     } else if (l == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
     }

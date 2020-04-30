@@ -31,7 +31,7 @@ public class ServiceDatabase extends Database {
 
     if (doesTableNotExist("SERVICEREQ")) {
       return helperPrepared(
-          "CREATE TABLE SERVICEREQ (servType Varchar(10), reqID Varchar(6) PRIMARY KEY, didReqName Varchar(25), madeReqName Varchar(25), timeOfReq Timestamp, status Varchar(20), location Varchar(200), description Varchar(100), additional Varchar(2000), CONSTRAINT CK_TYPE CHECK (servType in ('janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq')), CONSTRAINT FK_REQEMP FOREIGN KEY (didReqName) REFERENCES EMPLOYEES(username), CONSTRAINT FK_EmpUse FOREIGN KEY (madeReqName) REFERENCES EMPLOYEES(username), CONSTRAINT FK_Location FOREIGN KEY (location) REFERENCES Node(longName), CONSTRAINT CK_STAT CHECK (status in ('Request Made', 'In Progress', 'Completed')))");
+          "CREATE TABLE SERVICEREQ (servType Varchar(10), reqID Varchar(6) PRIMARY KEY, didReqName Varchar(25), madeReqName Varchar(25), timeOfReq Timestamp, status Varchar(20), location Varchar(200), description Varchar(100), additional Varchar(2000), CONSTRAINT CK_TYPE CHECK (servType in ('janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq')), CONSTRAINT FK_Location FOREIGN KEY (location) REFERENCES Node(longName), CONSTRAINT CK_STAT CHECK (status in ('Request Made', 'In Progress', 'Completed')))");
     }
     return false;
   }
@@ -50,6 +50,49 @@ public class ServiceDatabase extends Database {
     }
     String madeReqName = getLoggedIn();
     String didReqName = null;
+    Timestamp timeOf = new Timestamp(System.currentTimeMillis());
+    String status = "Request Made";
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO SERVICEREQ (servType, reqID, didReqName, madeReqName, timeOfReq, status, location, description, additional) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, servType.toString());
+      pstmt.setString(2, reqID);
+      pstmt.setString(3, didReqName);
+      pstmt.setString(4, madeReqName);
+      pstmt.setTimestamp(5, timeOf);
+      pstmt.setString(6, status);
+      pstmt.setString(7, location);
+      pstmt.setString(8, description);
+      pstmt.setString(9, additional);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return reqID;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public synchronized String addServiceReq(
+      ServiceType servType,
+      String location,
+      String didReqName,
+      String description,
+      String additional) {
+
+    long l = getRandomNumber();
+    String reqID = Long.toString(l, 36);
+    boolean c = checkIfExistsString("ServiceReq", "reqID", reqID);
+    while (c) {
+      l = getRandomNumber();
+      reqID = Long.toString(l, 36);
+      reqID = ("000000" + reqID).substring(reqID.length() - 1);
+      c = checkIfExistsString("ServiceReq", "reqID", reqID);
+    }
+    String madeReqName = getLoggedIn();
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     String status = "Request Made";
 
@@ -153,8 +196,26 @@ public class ServiceDatabase extends Database {
     return helperGetString(reqID, "status");
   }
   // Setters for various fields
+  public synchronized boolean setAssignedEmployee(String IDString, String didReqName) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE SERVICEREQ SET didReqName = '"
+                      + didReqName
+                      + "' WHERE reqID = '"
+                      + IDString
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 
-  public boolean setAssignedEmployee(String IDString, String madeReqName) {
+  public synchronized boolean setRequestingEmployee(String IDString, String madeReqName) {
     try {
       PreparedStatement pstmt =
           getConnection()
@@ -163,7 +224,7 @@ public class ServiceDatabase extends Database {
                       + madeReqName
                       + "' WHERE reqID = '"
                       + IDString
-                      + "''");
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -182,7 +243,7 @@ public class ServiceDatabase extends Database {
                       + status
                       + "' WHERE reqID = '"
                       + IDString
-                      + "''");
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
