@@ -363,7 +363,8 @@ public class JanitorDatabase extends Database {
         String longName = rset.getString("longName");
 
         JanitorService node =
-            new JanitorService(location, priority, status, employeeName, requestNumber, longName);
+            new JanitorService(
+                location, priority, status, employeeName, "" + requestNumber, longName);
         oList.add(node);
       }
       rset.close();

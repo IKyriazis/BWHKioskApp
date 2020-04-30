@@ -18,25 +18,15 @@ public class TableItemFactory {
     // 'janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq'
     switch (servType) {
       case "janitor":
-        return new JanitorService(
-            location,
-            "Priority",
-            status,
-            madeReqName,
-            0,
-            "If you are seeing this change long name in service factory"); // todo parse priority,
+        return new JanitorService(location, description, status, madeReqName, reqID, didReqName);
         // what is index
       case "medicine":
         return new MedRequest(
             reqID,
-            "First name",
-            "Last Name",
-            "doctor",
-            "Medicine",
-            11,
             status,
-            12,
-            12,
+            additional,
+            description,
+            timeOfReq,
             didReqName); // todo figure out how to pass in med request, probably need to change
         // parameters
       case "equipreq":

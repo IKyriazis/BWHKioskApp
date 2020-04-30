@@ -416,10 +416,10 @@ public class MedicineDeliveryDatabase extends Database {
 
         String fulfilledBy = rset.getString("fulfilledBy");
 
-        MedRequest node =
-            new MedRequest(
-                reqNum, fName, lName, doctor, medicine, room, progress, ho, mins, fulfilledBy);
-        oList.add(node);
+        /*MedRequest node =
+        new MedRequest(
+            reqNum, fName, lName, doctor, medicine, room, progress, ho, mins, fulfilledBy);*/
+        // oList.add(node);
       }
       rset.close();
       pstmt.close();

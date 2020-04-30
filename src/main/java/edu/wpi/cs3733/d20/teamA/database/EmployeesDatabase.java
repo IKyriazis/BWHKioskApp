@@ -330,7 +330,8 @@ public class EmployeesDatabase extends Database {
         String fName = rset.getString("nameFirst");
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
-        Employee e = new Employee(id, fName, lName, title);
+        String username = rset.getString("username");
+        Employee e = new Employee(id, fName, lName, title, username);
         eList.add(e);
       }
       rset.close();
@@ -458,7 +459,8 @@ public class EmployeesDatabase extends Database {
       String fName = rset.getString("nameFirst");
       String lName = rset.getString("nameLast");
       String title = rset.getString("title");
-      Employee e = new Employee(ID, fName, lName, title);
+      String username = rset.getString("username");
+      Employee e = new Employee(ID, fName, lName, title, username);
       rset.close();
       pstmt.close();
       return e;

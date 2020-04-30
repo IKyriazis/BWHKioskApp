@@ -94,7 +94,7 @@ public class Laundry implements ITableable<Laundry> {
     column4.setCellValueFactory(param -> param.getValue().getValue().progressProperty());
 
     JFXTreeTableColumn<Laundry, String> column5 = new JFXTreeTableColumn<>("Cleaner");
-    column5.setCellValueFactory(param -> param.getValue().getValue().employeeWashProperty());
+    column5.setCellValueFactory(param -> param.getValue().getValue().employeeWash);
 
     JFXTreeTableColumn<Laundry, String> column6 = new JFXTreeTableColumn<>("Request Time");
     column6.setCellValueFactory(param -> param.getValue().getValue().timeRequestedProperty());

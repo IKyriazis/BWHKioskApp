@@ -8,6 +8,7 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.JanitorEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Employee;
 import edu.wpi.cs3733.d20.teamA.database.JanitorService;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -38,7 +39,7 @@ public class JanitorialController extends AbstractController {
 
   @FXML private StackPane popupStackPane;
 
-  private SimpleTableView<JanitorService> tblServiceView;
+  private SimpleTableView tblServiceView;
 
   ObservableList statusItems = FXCollections.observableArrayList();
   ObservableList activeItems = FXCollections.observableArrayList();
@@ -47,20 +48,18 @@ public class JanitorialController extends AbstractController {
 
   public void initialize() throws SQLException, IOException, CsvException {
     // initialize the database
-    if (janitorDatabase.getRequestSize() == -1) {
-      janitorDatabase.dropTables();
-      janitorDatabase.createTables();
-      //      janitorDatabase.readFromCSV();
-    } else if (janitorDatabase.getRequestSize() == 0) {
-      janitorDatabase.removeAll();
-      //      janitorDatabase.readFromCSV();
+    if (primaryDB.getSizeReq() == -1) {
+      primaryDB.dropTables();
+      primaryDB.createTables();
+    } else if (primaryDB.getSizeReq() == 0) {
+      // janitorDatabase.removeAll(); TODO ADD THIS METHOD
     }
 
     // Add the status items to the combobox
     statusItems.clear();
-    String a = "Reported";
-    String b = "Dispatched";
-    String c = "Done";
+    String a = "Request Made";
+    String b = "In Progress";
+    String c = "Completed";
     statusItems.addAll(a, b, c);
     comboboxNextStatus.getItems().addAll(statusItems);
 
@@ -93,7 +92,7 @@ public class JanitorialController extends AbstractController {
     btnRemoveRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
     btnChangeStatus.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
 
-    tblServiceView = new SimpleTableView<>(new JanitorService("", "", "", "", 0, ""), 80.0);
+    tblServiceView = new SimpleTableView<>(new JanitorService("", "", "", "", "", ""), 80.0);
 
     gridTableView.getChildren().add(tblServiceView);
 
@@ -131,11 +130,13 @@ public class JanitorialController extends AbstractController {
       JanitorService j =
           (((TreeItem<JanitorService>) (tblServiceView.getSelectionModel().getSelectedItem()))
               .getValue());
-      janitorDatabase.deleteRequest(j.getIndex());
+      primaryDB.deleteServReq(j.getIndex());
       refreshActiveRequests();
     }
   }
 
+  // Update the status - this request uses unique status values, which will be put into the
+  // additional field to avoid causing errors
   @FXML
   private void updateRequest() throws SQLException {
     if (tblServiceView.getSelectionModel().getSelectedItem() == null) {
@@ -152,14 +153,10 @@ public class JanitorialController extends AbstractController {
             popupStackPane, "Error", "Please select an employee to assign");
       } else {
         if (comboboxJanitorName.getValue().toString().equals("")) {
-          janitorDatabase.updateRequest(
-              j.getIndex(), j.getLongName(), comboboxNextStatus.getValue(), j.getEmployeeName());
+          primaryDB.setAssignedEmployee(j.getIndex(), j.getEmployeeName());
+          primaryDB.setStatus(j.getIndex(), comboboxNextStatus.getValue());
         } else {
-          janitorDatabase.updateRequest(
-              j.getIndex(),
-              j.getLongName(),
-              comboboxNextStatus.getValue(),
-              comboboxJanitorName.getValue().toString());
+          primaryDB.setStatus(j.getIndex(), comboboxNextStatus.getValue());
         }
       }
     }
@@ -176,7 +173,7 @@ public class JanitorialController extends AbstractController {
     try {
       tblServiceView.clear();
 
-      tblServiceView.add(janitorDatabase.janitor01());
+      tblServiceView.add(primaryDB.observableList(ServiceType.JANITOR));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,33 +23,54 @@ public class MedRequest implements ITableable<MedRequest> {
   private SimpleObjectProperty<LocalTime> time;
   private SimpleStringProperty fulfilledBy;
 
+  // Content string is FIRST NAME|LASTNAME|DOCTOR|MEDICATION|ROOMNUM
+  // Use description to hold room number
   public MedRequest(
       String orderNum,
-      String firstName,
-      String lastName,
-      String doctor,
-      String medicine,
-      int roomNum,
-      String progress,
-      int hour,
-      int minute,
-      String fulfilledBy) {
+      String status,
+      String contentString,
+      String description,
+      Timestamp t,
+      String assignedEmployee)
+        /*
+        String orderNum,
+        String firstName,
+        String lastName,
+        String doctor,
+        String medicine,
+        int roomNum,
+        String progress,
+        int hour,
+        int minute,
+        String fulfilledBy)*/ {
+    if (contentString != null && description != null) {
+      // Parse the string
+      String first = contentString.substring(0, contentString.indexOf('|'));
+      contentString = contentString.substring(contentString.indexOf('|') + 1);
+      String last = contentString.substring(0, contentString.indexOf('|'));
+      contentString = contentString.substring(contentString.indexOf('|') + 1);
+      String doc = contentString.substring(0, contentString.indexOf('|'));
+      String med = contentString.substring(contentString.indexOf('|') + 1);
 
-    this.orderNum = new SimpleStringProperty(orderNum);
-    this.firstName = new SimpleStringProperty(firstName);
-    this.lastName = new SimpleStringProperty(lastName);
-    this.name = new SimpleStringProperty(firstName + " " + lastName);
-    this.doctor = new SimpleStringProperty(doctor);
-    this.medicine = new SimpleStringProperty(medicine);
-    this.roomNum = new SimpleIntegerProperty(roomNum);
-    this.progress = new SimpleStringProperty(progress);
-    this.time = new SimpleObjectProperty<LocalTime>();
+      this.orderNum = new SimpleStringProperty(orderNum);
+      this.firstName = new SimpleStringProperty(first);
+      this.lastName = new SimpleStringProperty(last);
+      this.name = new SimpleStringProperty(firstName.get() + " " + lastName.get());
+      this.doctor = new SimpleStringProperty(doc);
+      this.medicine = new SimpleStringProperty(med);
 
-    if (hour >= 0 && minute >= 0) {
-      time.set(LocalTime.of(hour, minute));
+      this.roomNum = new SimpleIntegerProperty(Integer.parseInt(description));
+      this.progress = new SimpleStringProperty(status);
+      this.time = new SimpleObjectProperty<LocalTime>();
+
+      int hour = t.getHours();
+      int minute = t.getMinutes();
+      if (hour >= 0 && minute >= 0) {
+        time.set(LocalTime.of(hour, minute));
+      }
+
+      this.fulfilledBy = new SimpleStringProperty(assignedEmployee);
     }
-
-    this.fulfilledBy = new SimpleStringProperty(fulfilledBy);
   }
 
   public void setOrderNum(String orderNum) {
