@@ -395,7 +395,7 @@ public class LaundryDatabase extends Database {
         String empW = rset.getString("employeeWash");
         Timestamp ts = rset.getTimestamp("timeRequested");
 
-        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        Laundry laundry = new Laundry("" + rNum, empE, loc, prog, empW, ts);
         oList.add(laundry);
       }
       rset.close();
@@ -427,7 +427,7 @@ public class LaundryDatabase extends Database {
         String empW = rset.getString("employeeWash");
         Timestamp ts = rset.getTimestamp("timeRequested");
 
-        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        Laundry laundry = new Laundry("" + rNum, empE, loc, prog, empW, ts);
         oList.add(laundry);
       }
       rset.close();
@@ -459,7 +459,7 @@ public class LaundryDatabase extends Database {
         String empW = rset.getString("employeeWash");
         Timestamp ts = rset.getTimestamp("timeRequested");
 
-        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        Laundry laundry = new Laundry("" + rNum, empE, loc, prog, empW, ts);
         oList.add(laundry);
       }
       rset.close();
