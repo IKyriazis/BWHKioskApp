@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.NotificationController;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -11,6 +9,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class SceneSwitcherController {
   @FXML private TabPane tabPane;
@@ -23,12 +24,12 @@ public class SceneSwitcherController {
   @FXML
   public void initialize() {
     // Setup tab icons
-    mapTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP));
-    serviceTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CUBES));
-    employeeLoginTab.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SIGN_IN));
+    mapTab.setGraphic(new FontIcon(FontAwesomeRegular.MAP));
+    serviceTab.setGraphic(new FontIcon(FontAwesomeSolid.CUBES));
+    employeeLoginTab.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_IN_ALT));
 
     // Settings button icon
-    informationButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BELL));
+    informationButton.setGraphic(new FontIcon(FontAwesomeRegular.BELL));
 
     // Setup dynamic tab resizing
     tabPane

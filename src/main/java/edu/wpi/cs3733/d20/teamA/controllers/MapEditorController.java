@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.NodeDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
@@ -26,6 +24,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class MapEditorController {
   @FXML private AnchorPane canvasPane;
@@ -209,10 +209,10 @@ public class MapEditorController {
         });
 
     // Setup button icons
-    floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
-    floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
-    exportCSVButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SAVE));
-    helpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QUESTION_CIRCLE));
+    floorUpButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_UP));
+    floorDownButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_DOWN));
+    exportCSVButton.setGraphic(new FontIcon(FontAwesomeSolid.SAVE));
+    helpButton.setGraphic(new FontIcon(FontAwesomeSolid.QUESTION_CIRCLE));
 
     // Try to get graph
     try {

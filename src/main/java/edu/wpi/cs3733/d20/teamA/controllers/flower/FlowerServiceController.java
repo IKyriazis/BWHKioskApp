@@ -3,8 +3,6 @@ package edu.wpi.cs3733.d20.teamA.controllers.flower;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -19,6 +17,9 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class FlowerServiceController extends AbstractController {
   @FXML private Label headerLabel;
@@ -49,9 +50,9 @@ public class FlowerServiceController extends AbstractController {
     }
 
     // Set up icons
-    headerLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.FILE));
-    trackButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.TRUCK));
-    orderButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_RIGHT));
+    headerLabel.setGraphic(new FontIcon(FontAwesomeRegular.FILE));
+    trackButton.setGraphic(new FontIcon(FontAwesomeSolid.TRUCK));
+    orderButton.setGraphic(new FontIcon(FontAwesomeRegular.ARROW_ALT_CIRCLE_RIGHT));
 
     // Add columns to table - please for the love of god dont use a simple table view here unless
     // you are really sure

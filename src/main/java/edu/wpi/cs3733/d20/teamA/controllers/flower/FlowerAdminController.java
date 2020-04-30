@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
@@ -15,6 +13,9 @@ import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class FlowerAdminController extends AbstractController {
   @FXML private GridPane flowerTablePane;
@@ -48,13 +49,13 @@ public class FlowerAdminController extends AbstractController {
     }
 
     // Setup label icons
-    flowerTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.FILE));
-    orderTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BARCODE));
+    flowerTblLbl.setGraphic(new FontIcon(FontAwesomeRegular.FILE));
+    orderTblLbl.setGraphic(new FontIcon(FontAwesomeSolid.BARCODE));
 
     // Setup button icons
-    addFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
-    editFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
-    deleteFlowerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
+    addFlowerButton.setGraphic(new FontIcon(FontAwesomeRegular.PLUS_SQUARE));
+    editFlowerButton.setGraphic(new FontIcon(FontAwesomeRegular.CHECK_SQUARE));
+    deleteFlowerButton.setGraphic(new FontIcon(FontAwesomeRegular.MINUS_SQUARE));
 
     // Add tab switch update listener
     flowerPane.addEventHandler(

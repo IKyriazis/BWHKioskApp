@@ -1,10 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialicons.MaterialIcon;
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.PrescriptionDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Prescription;
@@ -16,6 +12,8 @@ import javafx.scene.control.TreeTableRow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class PrescriptionController extends AbstractController {
   @FXML private Label lblTitle;
@@ -42,11 +40,11 @@ public class PrescriptionController extends AbstractController {
     }
 
     // Set up icons for buttons and label
-    lblTitle.setGraphic(new MaterialIconView(MaterialIcon.LOCAL_PHARMACY));
-    addPrescriptionBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
-    editPrescriptionBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
-    deletePrescriptionBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
-    infoPrescriptionBtn.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QUESTION));
+    lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.PILLS));
+    addPrescriptionBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
+    editPrescriptionBtn.setGraphic(new FontIcon(FontAwesomeSolid.PEN_SQUARE));
+    deletePrescriptionBtn.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
+    infoPrescriptionBtn.setGraphic(new FontIcon(FontAwesomeSolid.QUESTION));
 
     // Setup table
     tblViewPrescription =

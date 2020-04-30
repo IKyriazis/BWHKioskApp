@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controls;
 
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.GlyphIcon;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.HashMap;
@@ -17,6 +16,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class VSwitcherBox extends VBox {
   private final Pane destPane;
@@ -95,7 +95,7 @@ public class VSwitcherBox extends VBox {
     selected = newSelection;
   }
 
-  public void addEntry(String label, GlyphIcon graphic, String fxmlPath) {
+  public void addEntry(String label, FontIcon graphic, String fxmlPath) {
     JFXButton button = new JFXButton(label, graphic);
     button.getStyleClass().add("sidebar-button");
     button.setEllipsisString("");

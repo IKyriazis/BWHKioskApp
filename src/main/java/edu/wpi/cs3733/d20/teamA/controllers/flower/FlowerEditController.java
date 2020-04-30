@@ -3,8 +3,6 @@ package edu.wpi.cs3733.d20.teamA.controllers.flower;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
@@ -12,6 +10,8 @@ import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class FlowerEditController extends AbstractController implements IDialogController {
   private final boolean modify;
@@ -77,7 +77,7 @@ public class FlowerEditController extends AbstractController implements IDialogC
     doneButton.setOnAction(this::isDone);
 
     // Set button icon
-    doneButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
+    doneButton.setGraphic(new FontIcon(FontAwesomeRegular.CHECK_CIRCLE));
   }
 
   // Scene switch & database addNode

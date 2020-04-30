@@ -2,8 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
 import com.opencsv.exceptions.CsvException;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.JanitorEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Employee;
@@ -21,6 +19,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class JanitorialController extends AbstractController {
 
@@ -89,9 +90,9 @@ public class JanitorialController extends AbstractController {
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));
 
-    btnAddRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_TRIANGLE));
-    btnRemoveRequest.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CLOSE));
-    btnChangeStatus.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
+    btnAddRequest.setGraphic(new FontIcon(FontAwesomeSolid.EXCLAMATION_TRIANGLE));
+    btnRemoveRequest.setGraphic(new FontIcon(FontAwesomeRegular.WINDOW_CLOSE));
+    btnChangeStatus.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
 
     tblServiceView = new SimpleTableView<>(new JanitorService("", "", "", "", 0, ""), 80.0);
 
