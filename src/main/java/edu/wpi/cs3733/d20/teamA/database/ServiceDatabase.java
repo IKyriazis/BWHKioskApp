@@ -5,6 +5,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class ServiceDatabase extends Database{
 
@@ -47,32 +48,75 @@ public class ServiceDatabase extends Database{
 
         String reqID = null;
         String madeReqName = getLoggedIn();
-        String didReqName;
-        /*
+        String didReqName = null;
+        Timestamp timeOf = new Timestamp(System.currentTimeMillis());
+        String status = "Request Made";
+
         try {
             PreparedStatement pstmt =
                     getConnection()
                             .prepareStatement(
-                                    "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title) VALUES (?, ?, ?, ?, ?, ?)");
-            pstmt.setInt(1, employeeID);
-            pstmt.setString(2, nameFirst);
-            pstmt.setString(3, nameLast);
-            pstmt.setString(4, username);
-            pstmt.setString(5, storedPassword);
-            pstmt.setString(6, title);
+                                    "INSERT INTO SERVICEREQ (servType, reqID, didReqName, madeReqName, timeOfReq, status, location, description, additional) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            pstmt.setString(1, servType);
+            pstmt.setString(2, reqID);
+            pstmt.setString(3, didReqName);
+            pstmt.setString(4, madeReqName);
+            pstmt.setTimestamp(5, timeOf);
+            pstmt.setString(6, status);
+            pstmt.setString(7, location);
+            pstmt.setString(8, description);
+            pstmt.setString(9, additional);
             pstmt.executeUpdate();
             pstmt.close();
-            this.employeeID++;
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
-
-         */
-        return true;
     }
 
+    public boolean deleteServReq(String reqID) {
+        try {
+            PreparedStatement pstmt =
+                    getConnection()
+                            .prepareStatement(
+                                    "DELETE From SERVICEREQ Where reqID = '"
+                                            + reqID
+                                            + "'");
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
+    public int getSizeReq() {
+        return getSize("SERVICEREQ");
+    }
+
+    public boolean removeAllReqs() {
+        return helperPrepared("DELETE From SERVICEREQ");
+    }
+
+    public synchronized boolean editStatus(String reqID, String newStatus) {
+        try {
+            PreparedStatement pstmt =
+                    getConnection()
+                            .prepareStatement(
+                                    "UPDATE SERVICEREQ SET status = '"
+                                            + newStatus
+                                            + "' WHERE reqID = '"
+                                            + reqID
+                                            + "'");
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
