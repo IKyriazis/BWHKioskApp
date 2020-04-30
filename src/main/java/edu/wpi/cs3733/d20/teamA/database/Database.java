@@ -181,8 +181,10 @@ public abstract class Database {
   }
 
   public long getRandomNumber() {
-    long l = 2176782335L;
-    return new Random().nextLong() * l / Long.MAX_VALUE;
+    double lo = 2176782335L;
+    long result = (long) (new Random().nextLong() * (lo / (double) Long.MAX_VALUE));
+    result = Math.min(result, 2176782335L);
+    return Math.abs(result);
   }
 
   public int getRandomInt() {

@@ -11,6 +11,8 @@ public abstract class AbstractController {
 
   private DatabaseServiceProvider provider;
   private Connection conn;
+  protected ServiceDatabase primaryDB;
+
   protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
@@ -28,6 +30,7 @@ public abstract class AbstractController {
   public AbstractController() {
     provider = new DatabaseServiceProvider();
     conn = provider.provideConnection();
+
     graphDatabase = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
     flDatabase = new FlowerDatabase(conn);
@@ -35,11 +38,12 @@ public abstract class AbstractController {
     iDB = new InterpreterDatabase(conn);
     janitorDatabase = new JanitorDatabase(conn);
     medicineRequestDatabase = new MedicineDeliveryDatabase(conn);
-    lDB = new LaundryDatabase(conn);
+    // lDB = new LaundryDatabase(conn);
     itTicketDatabase = new ITTicketDatabase(conn);
     patientDatabase = new PatientDatabase(conn);
     itDatabase = new InternalTransportDatabase(conn);
     prescriptionDatabase = new PrescriptionDatabase(conn);
     announcementDatabase = new AnnouncementDatabase(conn);
+    primaryDB = new ServiceDatabase(conn);
   }
 }

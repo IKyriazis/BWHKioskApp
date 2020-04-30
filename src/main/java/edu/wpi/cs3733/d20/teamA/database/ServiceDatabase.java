@@ -1,6 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.sql.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class ServiceDatabase extends Database {
 
@@ -28,7 +31,7 @@ public class ServiceDatabase extends Database {
 
     if (doesTableNotExist("SERVICEREQ")) {
       return helperPrepared(
-          "CREATE TABLE SERVICEREQ (servType Varchar(10), reqID Varchar(6) PRIMARY KEY, didReqName Varchar(25), madeReqName Varchar(25), timeOfReq Timestamp, status Varchar(20), location Varchar(10), description Varchar(100), additional Varchar(2000), CONSTRAINT CK_TYPE CHECK (servType in ('janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq')), CONSTRAINT FK_REQEMP FOREIGN KEY (didReqName) REFERENCES EMPLOYEES(username), CONSTRAINT FK_EmpUse FOREIGN KEY (madeReqName) REFERENCES EMPLOYEES(username), CONSTRAINT FK_Loc FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CK_STAT CHECK (status in ('Request Made', 'In Progress', 'Completed')))");
+          "CREATE TABLE SERVICEREQ (servType Varchar(10), reqID Varchar(6) PRIMARY KEY, didReqName Varchar(25), madeReqName Varchar(25), timeOfReq Timestamp, status Varchar(20), location Varchar(200), description Varchar(100), additional Varchar(2000), CONSTRAINT CK_TYPE CHECK (servType in ('janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq')), CONSTRAINT FK_REQEMP FOREIGN KEY (didReqName) REFERENCES EMPLOYEES(username), CONSTRAINT FK_EmpUse FOREIGN KEY (madeReqName) REFERENCES EMPLOYEES(username), CONSTRAINT FK_Location FOREIGN KEY (location) REFERENCES Node(longName), CONSTRAINT CK_STAT CHECK (status in ('Request Made', 'In Progress', 'Completed')))");
     }
     return false;
   }
@@ -42,6 +45,7 @@ public class ServiceDatabase extends Database {
     while (c) {
       l = getRandomNumber();
       reqID = Long.toString(l, 36);
+      reqID = ("000000" + reqID).substring(reqID.length() - 1);
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
     String madeReqName = getLoggedIn();
@@ -105,6 +109,17 @@ public class ServiceDatabase extends Database {
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
+      String user = getLoggedIn();
+      PreparedStatement pstmt2 =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE SERVICEREQ SET didReqName = '"
+                      + user
+                      + "' WHERE reqID = '"
+                      + reqID
+                      + "'");
+      pstmt2.executeUpdate();
+      pstmt2.close();
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -136,5 +151,35 @@ public class ServiceDatabase extends Database {
 
   public String getStatus(String reqID) {
     return helperGetString(reqID, "status");
+  }
+
+  public synchronized ObservableList<ITableable> observableList(String type) {
+    ObservableList<ITableable> observableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("SELECT * FROM SERVICEREQ WHERE servType = '" + type + "'");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String id = rset.getString("reqID");
+        String didReq = rset.getString("didReqName");
+        String madeReq = rset.getString("madeReqName");
+        Timestamp t = rset.getTimestamp("timeOfReq");
+        String stat = rset.getString("status");
+        String loc = rset.getString("location");
+        String desc = rset.getString("description");
+        String additional = rset.getString("additional");
+
+        ITableable item =
+            TableItemFactory.get(type, id, didReq, madeReq, t, stat, loc, desc, additional);
+        observableList.add(item);
+      }
+      rset.close();
+      pstmt.close();
+      return observableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

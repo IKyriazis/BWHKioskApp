@@ -20,7 +20,7 @@ public class LaundryCompletedController extends AbstractController implements ID
 
     tblLaundryView =
         new SimpleTableView<>(
-            new Laundry(0, "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
+            new Laundry("", "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
     completedTablePane.getChildren().add(tblLaundryView);
 
     update();
@@ -28,9 +28,9 @@ public class LaundryCompletedController extends AbstractController implements ID
 
   public void update() {
     try {
-      tblLaundryView.clear();
+      // tblLaundryView.clear();
 
-      tblLaundryView.add(lDB.laundryOLCompleted());
+      // tblLaundryView.add(lDB.laundryOLCompleted());
     } catch (Exception e) {
       e.printStackTrace();
     }

@@ -44,9 +44,10 @@ public class LaundryController extends AbstractController {
   @FXML private StackPane dialogStackPane;
   @FXML private AnchorPane laundryPane;
 
-  private SimpleTableView<Laundry> tblLaundryView;
+  private SimpleTableView tblLaundryView;
 
   public void initialize() {
+    primaryDB.createTables();
 
     serviceLabel.setGraphic(new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE));
     requestTableLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LIST));
@@ -65,12 +66,12 @@ public class LaundryController extends AbstractController {
 
     tblLaundryView =
         new SimpleTableView<>(
-            new Laundry(0, "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
+            new Laundry("", "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
     orderTablePane.getChildren().add(tblLaundryView);
 
     tblLaundryView.setOnMouseClicked(
         event -> {
-          Laundry l = tblLaundryView.getSelected();
+          Laundry l = (Laundry) tblLaundryView.getSelected();
           if (l != null) {
             updateCleanerButton.disableProperty().setValue(false);
             removeRequestButton.disableProperty().setValue(false);
@@ -143,8 +144,8 @@ public class LaundryController extends AbstractController {
     String loc = "";
     if (node != null) {
       loc = node.getLongName();
-      int l = lDB.addLaundry(eDB.getLoggedIn(), loc);
-      if (l == 0) {
+      String l = primaryDB.addServiceReq("laundry", loc, "", "");
+      if (l == null) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot add request");
       } else {
         DialogUtil.simpleInfoDialog(
@@ -160,9 +161,9 @@ public class LaundryController extends AbstractController {
 
   @FXML
   private void removeRequest() {
-    Laundry l = tblLaundryView.getSelected();
+    Laundry l = (Laundry) tblLaundryView.getSelected();
     if (l != null) {
-      if (!lDB.deleteLaundry(l.getRequestNum())) {
+      if (!primaryDB.deleteServReq(l.getRequestNum())) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot remove request");
       }
     } else if (l == null) {
@@ -174,7 +175,7 @@ public class LaundryController extends AbstractController {
 
   @FXML
   private void updateCleaner() {
-    Laundry l = tblLaundryView.getSelected();
+    /*Laundry l = tblLaundryView.getSelected();
     Employee e = cleanerComboBox.getSelectionModel().getSelectedItem();
     if (l != null) {
       if (progressComboBox.getValue() != null) {
@@ -191,7 +192,7 @@ public class LaundryController extends AbstractController {
     progressComboBox.getSelectionModel().clearSelection();
     cleanerComboBox.getSelectionModel().clearSelection();
     tblLaundryView.getSelectionModel().clearSelection();
-    update();
+    update();*/
   }
 
   @FXML
@@ -222,7 +223,7 @@ public class LaundryController extends AbstractController {
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(lDB.laundryOLNotComplete());
+      tblLaundryView.add(primaryDB.observableList("laundry"));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

@@ -59,7 +59,7 @@ public class TestServiceDatabase {
     eDB.addEmployee("bacd", "ray", "jay", "Password56", "Intern");
     eDB.addLog("jay");
     sDB.addServiceReq(
-        "janitor", "biscuit", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+        "janitor", "balogna", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     Assertions.assertEquals(1, sDB.getSizeReq());
     sDB.removeAllReqs();
     eDB.removeAllLogs();
@@ -79,7 +79,7 @@ public class TestServiceDatabase {
     Assertions.assertEquals(1, eDB.getSizeLog());
     String req =
         sDB.addServiceReq(
-            "janitor", "biscuit", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            "janitor", "balogna", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     Assertions.assertEquals(1, sDB.getSizeReq());
     sDB.deleteServReq(req);
     Assertions.assertEquals(0, sDB.getSizeReq());
@@ -98,7 +98,7 @@ public class TestServiceDatabase {
     eDB.addLog("jay");
     String req =
         sDB.addServiceReq(
-            "janitor", "biscuit", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            "janitor", "balogna", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     sDB.editStatus(req, "Completed");
     Assertions.assertEquals("Completed", sDB.getStatus(req));
     sDB.removeAllReqs();

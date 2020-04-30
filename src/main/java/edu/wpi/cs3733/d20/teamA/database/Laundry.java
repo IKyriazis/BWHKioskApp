@@ -5,12 +5,11 @@ import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 
 public class Laundry implements ITableable<Laundry> {
-  @Setter private SimpleIntegerProperty requestNum;
+  @Setter private SimpleStringProperty requestNum;
   @Setter private SimpleStringProperty employeeEntered;
   @Setter private SimpleStringProperty location;
   @Setter private SimpleStringProperty progress;
@@ -18,13 +17,13 @@ public class Laundry implements ITableable<Laundry> {
   @Setter private SimpleStringProperty timeRequested;
 
   public Laundry(
-      int requestNum,
+      String requestNum,
       String employeeEntered,
       String location,
       String progress,
       String employeeWash,
       Timestamp timeRequested) {
-    this.requestNum = new SimpleIntegerProperty(requestNum);
+    this.requestNum = new SimpleStringProperty(requestNum);
     this.employeeEntered = new SimpleStringProperty(employeeEntered);
     this.location = new SimpleStringProperty(location);
     this.progress = new SimpleStringProperty(progress);
@@ -32,7 +31,7 @@ public class Laundry implements ITableable<Laundry> {
     this.timeRequested = new SimpleStringProperty(timeRequested.toString());
   }
 
-  public SimpleIntegerProperty requestNumProperty() {
+  public SimpleStringProperty requestNumProperty() {
     return requestNum;
   }
 
@@ -56,7 +55,7 @@ public class Laundry implements ITableable<Laundry> {
     return timeRequested;
   }
 
-  public int getRequestNum() {
+  public String getRequestNum() {
     return requestNum.get();
   }
 
@@ -82,9 +81,8 @@ public class Laundry implements ITableable<Laundry> {
 
   @Override
   public ArrayList<JFXTreeTableColumn<Laundry, ?>> getColumns() {
-    JFXTreeTableColumn<Laundry, Integer> column1 = new JFXTreeTableColumn<>("Request #");
-    column1.setCellValueFactory(
-        param -> param.getValue().getValue().requestNumProperty().asObject());
+    JFXTreeTableColumn<Laundry, String> column1 = new JFXTreeTableColumn<>("Request #");
+    column1.setCellValueFactory(param -> param.getValue().getValue().requestNumProperty());
 
     JFXTreeTableColumn<Laundry, String> column2 = new JFXTreeTableColumn<>("Requested By");
     column2.setCellValueFactory(param -> param.getValue().getValue().employeeEnteredProperty());
