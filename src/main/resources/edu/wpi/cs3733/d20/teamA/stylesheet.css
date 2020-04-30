@@ -5,6 +5,7 @@
 
 .root {
     -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
 
     -primary-color: #1565c0;
     -primary-color-text: rgba(255, 255, 255, .84);
@@ -143,6 +144,10 @@
 
 .large-text {
     -fx-font-size: 20pt;
+}
+
+.huge-text {
+    -fx-font-size: 24pt;
 }
 
 #informationButton {
