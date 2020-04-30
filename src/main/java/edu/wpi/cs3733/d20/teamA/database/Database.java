@@ -187,6 +187,13 @@ public abstract class Database {
     return Math.abs(result);
   }
 
+  public String getRandomString() {
+    long l = getRandomNumber();
+    String reqID = Long.toString(l, 36);
+    reqID = ("000000" + reqID).substring(reqID.length());
+    return reqID.toUpperCase();
+  }
+
   public int getRandomInt() {
     return new Random().nextInt((999999 - 100000) + 1) + 100000;
   }

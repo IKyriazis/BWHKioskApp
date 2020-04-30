@@ -39,13 +39,10 @@ public class ServiceDatabase extends Database {
   public synchronized String addServiceReq(
       ServiceType servType, String location, String description, String additional) {
 
-    long l = getRandomNumber();
-    String reqID = Long.toString(l, 36);
+    String reqID = getRandomString();
     boolean c = checkIfExistsString("ServiceReq", "reqID", reqID);
     while (c) {
-      l = getRandomNumber();
-      reqID = Long.toString(l, 36);
-      reqID = ("000000" + reqID).substring(reqID.length() - 1);
+      reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
     String madeReqName = getLoggedIn();
