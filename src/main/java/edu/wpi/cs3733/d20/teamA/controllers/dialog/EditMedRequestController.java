@@ -117,6 +117,7 @@ public class EditMedRequestController extends AbstractController implements IDia
         } catch (NullPointerException ex) {
         }
 
+        // Also not sure about this
         /*super.medicineRequestDatabase.updateMedicine(request.getOrderNum(), medicineText);
         super.medicineRequestDatabase.updateDoctor(request.getOrderNum(), doctorText);
         if (hour >= 0 && minute >= 0) {

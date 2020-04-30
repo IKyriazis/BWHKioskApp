@@ -16,8 +16,7 @@ public abstract class AbstractController {
   protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
-  protected EquipReqDatabase erDB;
-  // protected MedicineDeliveryDatabase medicineRequestDatabase;
+  // protected EquipReqDatabase erDB;
   protected ITTicketDatabase itTicketDatabase;
   protected PatientDatabase patientDatabase;
   protected InternalTransportDatabase itDatabase;
@@ -32,9 +31,8 @@ public abstract class AbstractController {
     graphDatabase = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
     flDatabase = new FlowerDatabase(conn);
-    erDB = new EquipReqDatabase(conn);
+    // erDB = new EquipReqDatabase(conn);
     iDB = new InterpreterDatabase(conn);
-    // medicineRequestDatabase = new MedicineDeliveryDatabase(conn);
     itTicketDatabase = new ITTicketDatabase(conn);
     patientDatabase = new PatientDatabase(conn);
     itDatabase = new InternalTransportDatabase(conn);

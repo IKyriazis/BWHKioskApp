@@ -30,7 +30,7 @@ public class TableItemFactory {
             didReqName); // todo figure out how to pass in med request, probably need to change
         // parameters
       case "equipreq":
-        return new EquipRequest("Name", "item", 12, location, "priority", timeOfReq, didReqName);
+        return new EquipRequest(reqID, location, madeReqName, timeOfReq, additional);
       case "laundry":
         return new Laundry(
             reqID,

@@ -10,29 +10,32 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class EquipRequest implements ITableable<EquipRequest> {
 
-  private final SimpleStringProperty name;
-  private final SimpleStringProperty item;
-  private final SimpleIntegerProperty qty;
-  private final SimpleStringProperty location;
-  private final SimpleStringProperty priority;
-  private final SimpleStringProperty time;
-  private final SimpleStringProperty username;
+  private SimpleStringProperty name;
+  private SimpleStringProperty item;
+  private SimpleIntegerProperty qty;
+  private SimpleStringProperty location;
+  private SimpleStringProperty priority;
+  private SimpleStringProperty time;
+  private SimpleStringProperty username;
+  private SimpleStringProperty ID;
 
-  public EquipRequest(
-      String name,
-      String item,
-      int qty,
-      String location,
-      String priority,
-      Timestamp time,
-      String username) {
-    this.username = new SimpleStringProperty(username);
-    this.name = new SimpleStringProperty(name);
-    this.item = new SimpleStringProperty(item);
-    this.qty = new SimpleIntegerProperty(qty);
-    this.location = new SimpleStringProperty(location);
-    this.priority = new SimpleStringProperty(priority);
-    this.time = new SimpleStringProperty(time.toString());
+  public EquipRequest(String idNum, String location, String nm, Timestamp time, String additional) {
+    // item+"|"+qty+"|"+priority
+    if (additional != null) {
+      String item = additional.substring(0, additional.indexOf('|'));
+      additional = additional.substring(additional.indexOf('|') + 1);
+      int qty = Integer.parseInt(additional.substring(0, additional.indexOf('|')));
+      String priority = additional.substring(additional.indexOf('|') + 1);
+
+      // this.username = new SimpleStringProperty(username); //Is this important
+      this.name = new SimpleStringProperty(nm);
+      this.item = new SimpleStringProperty(item);
+      this.qty = new SimpleIntegerProperty(qty);
+      this.location = new SimpleStringProperty(location);
+      this.priority = new SimpleStringProperty(priority);
+      this.time = new SimpleStringProperty(time.toString());
+      this.ID = new SimpleStringProperty(idNum);
+    }
   }
 
   public String getUsername() {
@@ -91,10 +94,14 @@ public class EquipRequest implements ITableable<EquipRequest> {
     return time;
   }
 
+  public String getID() {
+    return ID.get();
+  }
+
   @Override
   public ArrayList<JFXTreeTableColumn<EquipRequest, ?>> getColumns() {
     JFXTreeTableColumn<EquipRequest, String> col1 = new JFXTreeTableColumn<>("Name");
-    col1.setCellValueFactory(param -> param.getValue().getValue().nameProperty());
+    col1.setCellValueFactory(param -> param.getValue().getValue().name);
 
     JFXTreeTableColumn<EquipRequest, String> col2 = new JFXTreeTableColumn<>("Item");
     col2.setCellValueFactory(param -> param.getValue().getValue().itemProperty());

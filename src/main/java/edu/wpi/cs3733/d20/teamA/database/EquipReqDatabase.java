@@ -133,7 +133,7 @@ public class EquipReqDatabase extends Database {
         String priority = rset.getString("priority");
         String username = rset.getString("username");
 
-        EquipRequest node = new EquipRequest(name, item, qty, location, priority, timeOf, username);
+        EquipRequest node = new EquipRequest(name, item, null, null, "");
 
         rList.add(node);
       }
