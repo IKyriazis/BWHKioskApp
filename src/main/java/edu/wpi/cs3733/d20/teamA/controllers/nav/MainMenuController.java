@@ -2,7 +2,9 @@ package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -38,6 +40,13 @@ public class MainMenuController {
         event -> {
           SceneSwitcherController.pushScene("views/EmployeeHome.fxml");
         });
+
+    // Fix for weird button layout issues
+    Platform.runLater(
+        () -> {
+          GridPane buttonPane = (GridPane) mapButton.getParent();
+          buttonPane.requestLayout();
+        });
   }
 
   private void resizeButtons() {
@@ -64,11 +73,6 @@ public class MainMenuController {
       button.setMinHeight(maxHeight);
       button.setPrefHeight(maxHeight);
       button.setMaxHeight(maxHeight);
-
-      // You shouldn't resize directly, but for some reason this fixes a bug where the buttons are
-      // misaligned until you
-      // resize the window
-      button.resize(maxWidth, maxHeight);
     }
   }
 }
