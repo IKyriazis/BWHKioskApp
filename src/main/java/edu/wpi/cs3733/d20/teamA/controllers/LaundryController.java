@@ -1,10 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialicons.MaterialIcon;
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Employee;
 import edu.wpi.cs3733.d20.teamA.database.Laundry;
@@ -24,6 +20,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class LaundryController extends AbstractController {
 
@@ -48,13 +47,13 @@ public class LaundryController extends AbstractController {
 
   public void initialize() {
 
-    serviceLabel.setGraphic(new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE));
-    requestTableLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LIST));
+    serviceLabel.setGraphic(new FontIcon(FontAwesomeSolid.TINT));
+    requestTableLabel.setGraphic(new FontIcon(FontAwesomeRegular.LIST_ALT));
 
-    addRequestButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_CIRCLE));
-    removeRequestButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
-    updateCleanerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP));
-    seeCompletedButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
+    addRequestButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
+    removeRequestButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
+    updateCleanerButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+    seeCompletedButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
     laundryPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,

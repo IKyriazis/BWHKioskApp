@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.InterpreterDialogController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.InterpreterRequestDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
@@ -15,6 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class InterpreterController extends AbstractController {
   @FXML private GridPane interpreterTablePane;
@@ -45,12 +46,12 @@ public class InterpreterController extends AbstractController {
     }
 
     // Set up icons
-    interpreterLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.USERS));
-    requestLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PAGELINES));
-    registerButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_CIRCLE));
-    deleteButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_CIRCLE));
-    requestButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_RIGHT));
-    completeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
+    interpreterLabel.setGraphic(new FontIcon(FontAwesomeSolid.USERS));
+    requestLabel.setGraphic(new FontIcon(FontAwesomeRegular.PAPER_PLANE));
+    registerButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
+    deleteButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
+    requestButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT));
+    completeButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
     // Set up tables
     interpreterTable = new SimpleTableView<>(new Interpreter("", ""), 80.0);

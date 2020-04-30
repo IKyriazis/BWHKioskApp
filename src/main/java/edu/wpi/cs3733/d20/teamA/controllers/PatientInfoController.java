@@ -1,10 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialicons.MaterialIcon;
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.PatientEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Patient;
@@ -17,6 +13,8 @@ import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class PatientInfoController extends AbstractController {
   @FXML private Label lblTitle;
@@ -43,11 +41,11 @@ public class PatientInfoController extends AbstractController {
     }
 
     // Setup icons
-    lblTitle.setGraphic(new MaterialIconView(MaterialIcon.PERSON_ADD));
+    lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.USER_PLUS));
 
-    addPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
-    editPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
-    deletePatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
+    addPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
+    editPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_SQUARE));
+    deletePatientButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
 
     // Setup Table
     patientTable = new SimpleTableView<>(new Patient(0, "", "", "", ""), 80.0);

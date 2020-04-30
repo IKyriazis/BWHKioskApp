@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
@@ -22,6 +20,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class SimpleMapController {
   @FXML private BorderPane rootPane;
@@ -83,13 +83,13 @@ public class SimpleMapController {
         event -> textDirectionsDrawer.setMouseTransparent(false));
 
     // Set button icons
-    goButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCATION_ARROW));
-    swapBtn.setGraphic(new FontAwesomeIconView((FontAwesomeIcon.EXCHANGE)));
-    directionsButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MAP_SIGNS));
-    qrCodeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.QRCODE));
+    goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
+    swapBtn.setGraphic(new FontIcon((FontAwesomeSolid.EXCHANGE_ALT)));
+    directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
+    qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
 
-    floorUpButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_UP));
-    floorDownButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ARROW_DOWN));
+    floorUpButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_UP));
+    floorDownButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_DOWN));
 
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(

@@ -2,8 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
@@ -21,6 +19,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class FlowerOrderController extends AbstractController implements IDialogController {
   @FXML private JFXComboBox<Node> roomList;
@@ -76,7 +76,7 @@ public class FlowerOrderController extends AbstractController implements IDialog
     txtTotal.setText("Total cost: " + String.format("$%.2f", cost));
 
     // Set button icons
-    confirmButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK));
+    confirmButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK));
   }
 
   // Set up columns in table

@@ -1,9 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.util.*;
 import javafx.scene.control.Label;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class DepthFirst implements IStrategyPath {
   /** Represents a list of nodes along path */
@@ -155,10 +155,11 @@ public class DepthFirst implements IStrategyPath {
 
       double angleDiff = angle - lastAngle;
 
-      if ((angleDiff <= (-3 * Math.PI / 2))
-          || (angleDiff >= Math.PI / 4) && (angleDiff <= (3 * Math.PI / 4))) {
+      if (((angleDiff <= (-5 * Math.PI / 4)) && (angleDiff >= (-7 * Math.PI / 4)))
+          || ((angleDiff >= Math.PI / 4) && (angleDiff <= (3 * Math.PI / 4)))) {
         directions.add(Direction.LEFT);
-      } else if (angleDiff <= (-Math.PI / 4) || (angleDiff >= (3 * Math.PI / 2))) {
+      } else if ((angleDiff <= (-Math.PI / 4) && (angleDiff >= (-3 * Math.PI / 4)))
+          || ((angleDiff >= (5 * Math.PI / 4)) && (angleDiff <= (7 * Math.PI / 4)))) {
         directions.add(Direction.RIGHT);
       } else {
         directions.add(Direction.NEXT);
@@ -173,12 +174,12 @@ public class DepthFirst implements IStrategyPath {
         textPath.add(
             new Label(
                 "Turn right at " + pathNodes.get(j).getLongName(),
-                new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_RIGHT)));
+                new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT)));
       } else if (directions.get(j) == Direction.LEFT) {
         textPath.add(
             new Label(
                 "Turn left at " + pathNodes.get(j).getLongName(),
-                new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_LEFT)));
+                new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT)));
       } else if (directions.get(j) == Direction.UP) {
         int sameLength = getSameLength(directions, j, Direction.UP);
 
@@ -187,12 +188,10 @@ public class DepthFirst implements IStrategyPath {
           textPath.add(
               new Label(
                   "Go up " + sameLength + " floors",
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+                  new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
         } else {
           textPath.add(
-              new Label(
-                  "Go up until destination",
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_UP)));
+              new Label("Go up until destination", new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
           break;
         }
       } else if (directions.get(j) == Direction.DOWN) {
@@ -203,12 +202,11 @@ public class DepthFirst implements IStrategyPath {
           textPath.add(
               new Label(
                   "Go down " + sameLength + " floors",
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_DOWN)));
+                  new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN)));
         } else {
           textPath.add(
               new Label(
-                  "Go up until destination",
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_DOWN)));
+                  "Go up until destination", new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN)));
           break;
         }
 
@@ -221,12 +219,12 @@ public class DepthFirst implements IStrategyPath {
           textPath.add(
               new Label(
                   "Go straight until " + pathNodes.get(j + 1).getLongName(),
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
+                  new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP)));
         } else {
           textPath.add(
               new Label(
                   "Continue straight until destination",
-                  new FontAwesomeIconView(FontAwesomeIcon.ARROW_CIRCLE_ALT_UP)));
+                  new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP)));
           break;
         }
       }
@@ -235,7 +233,7 @@ public class DepthFirst implements IStrategyPath {
     textPath.add(
         new Label(
             "You have reached " + pathNodes.get(pathNodes.size() - 1).getLongName(),
-            new FontAwesomeIconView(FontAwesomeIcon.DOT_CIRCLE_ALT)));
+            new FontIcon(FontAwesomeSolid.DOT_CIRCLE)));
 
     return textPath;
   }

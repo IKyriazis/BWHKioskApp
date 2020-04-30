@@ -3,8 +3,6 @@ package edu.wpi.cs3733.d20.teamA.controllers.InternalTransport;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.InternalTransportRequest;
@@ -16,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class InternalTransportAdminController extends AbstractController {
 
@@ -47,10 +47,10 @@ public class InternalTransportAdminController extends AbstractController {
     }
 
     // Setup label icons
-    requestTblLbl.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR));
+    requestTblLbl.setGraphic(new FontIcon(FontAwesomeSolid.WHEELCHAIR));
 
     // Setup button icons
-    changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
+    changeProgressButton.setGraphic(new FontIcon(FontAwesomeSolid.EXCHANGE_ALT));
 
     // Add tab switch update listener
     internalTransportPane.addEventHandler(

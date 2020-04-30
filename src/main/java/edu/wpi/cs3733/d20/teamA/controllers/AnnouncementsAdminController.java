@@ -2,8 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Announcement;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -12,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class AnnouncementsAdminController extends AbstractController {
   @FXML private Label lblTitle;
@@ -31,9 +31,9 @@ public class AnnouncementsAdminController extends AbstractController {
 
   @FXML
   public void initialize() {
-    lblTitle.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.BULLHORN));
-    addButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE_ALT));
-    deleteButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE_ALT));
+    lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.BULLHORN));
+    addButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
+    deleteButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
 
     // Set up table
     tblAnnouncement = new SimpleTableView<>(new Announcement(0, ""), 80);

@@ -2,8 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.database.Employee;
@@ -12,6 +10,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class ShowOrderController extends AbstractController implements IDialogController {
 
@@ -71,8 +72,8 @@ public class ShowOrderController extends AbstractController implements IDialogCo
     txtMessage.setText(myOrder.getMessage());
     txtLocation.setText(myOrder.getLocation());
 
-    changeProgressButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.EXCHANGE));
-    changeEmployeeButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.ID_CARD));
+    changeProgressButton.setGraphic(new FontIcon(FontAwesomeSolid.EXCHANGE_ALT));
+    changeEmployeeButton.setGraphic(new FontIcon(FontAwesomeRegular.ID_CARD));
 
     txtPrevStat.setText(myOrder.getStatus());
     // Setup status change stuff

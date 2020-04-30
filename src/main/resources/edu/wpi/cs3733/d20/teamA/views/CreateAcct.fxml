@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="dialogPane" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.CreateAcctController">
    <children>
       <AnchorPane>
@@ -68,11 +67,6 @@
                         <Font size="21.0" />
                      </font>
                   </JFXTextField>
-                  <JFXTextField fx:id="title" promptText="Title" GridPane.rowIndex="6">
-                     <font>
-                        <Font size="21.0" />
-                     </font>
-                  </JFXTextField>
                   <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Create Account" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <font>
                         <Font size="33.0" />
@@ -88,6 +82,11 @@
                         <Font size="21.0" />
                      </font>
                   </JFXPasswordField>
+                  <JFXTextField fx:id="title" promptText="Title" GridPane.rowIndex="6">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </JFXTextField>
                </children>
             </GridPane>
          </children>

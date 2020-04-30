@@ -43,9 +43,9 @@ dependencies {
 
             'com.opencsv:opencsv:5.1',
 
-            'de.jensd:fontawesomefx-commons:11.0',
-            'de.jensd:fontawesomefx-fontawesome:4.7.0-11',
-            'de.jensd:fontawesomefx-materialicons:2.2.0-11',
+            'org.kordamp.ikonli:ikonli-core:11.4.0',
+            'org.kordamp.ikonli:ikonli-javafx:11.4.0',
+            'org.kordamp.ikonli:ikonli-fontawesome5-pack:11.4.0',
 
             'com.google.inject:guice:4.2.2',
 
@@ -53,7 +53,10 @@ dependencies {
             'com.google.zxing:javase:3.4.0',
 
             // bcrypt
-            'at.favre.lib:bcrypt:0.9.0'
+            'at.favre.lib:bcrypt:0.9.0',
+
+            // batik
+            'org.apache.xmlgraphics:batik-rasterizer:1.12'
     )
 
     testImplementation(

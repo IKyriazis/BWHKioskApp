@@ -1,10 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialicons.MaterialIcon;
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -19,6 +15,9 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class LoginController extends AbstractController {
   @FXML private VBox loginBox;
@@ -53,58 +52,47 @@ public class LoginController extends AbstractController {
       eDB.readEmployeeCSV();
     }
     // Setup switcher box
-    VSwitcherBox vSwitcherBox =
-        new VSwitcherBox(destPane, new FontAwesomeIconView(FontAwesomeIcon.COGS));
-    vSwitcherBox.addEntry(
-        "Map Editor", new FontAwesomeIconView(FontAwesomeIcon.MAP_ALT), "views/MapEditor.fxml");
+    VSwitcherBox vSwitcherBox = new VSwitcherBox(destPane, new FontIcon(FontAwesomeSolid.COGS));
+    vSwitcherBox.addEntry("Map Editor", new FontIcon(FontAwesomeSolid.MAP), "views/MapEditor.fxml");
     vSwitcherBox.addEntry(
         "Flowers - Will",
-        new MaterialIconView(MaterialIcon.LOCAL_FLORIST),
+        new FontIcon(FontAwesomeRegular.PAPER_PLANE),
         "views/flower/FlowerAdmin.fxml");
     vSwitcherBox.addEntry(
-        "Janitorial - Cory",
-        new FontAwesomeIconView(FontAwesomeIcon.CAR),
-        "views/JanitorialGUI.fxml");
+        "Janitorial - Cory", new FontIcon(FontAwesomeSolid.CAR), "views/JanitorialGUI.fxml");
     vSwitcherBox.addEntry(
-        "Announcements",
-        new FontAwesomeIconView(FontAwesomeIcon.BULLHORN),
-        "views/AnnouncementAdmin.fxml");
+        "Announcements", new FontIcon(FontAwesomeSolid.BULLHORN), "views/AnnouncementAdmin.fxml");
     vSwitcherBox.addEntry(
         "Medicine Delivery - Maddie",
-        new FontAwesomeIconView(FontAwesomeIcon.MEDKIT),
+        new FontIcon(FontAwesomeSolid.MEDKIT),
         "views/MedicineRequest.fxml");
     vSwitcherBox.addEntry(
         "Equipment Request - Eva",
-        new FontAwesomeIconView(FontAwesomeIcon.STETHOSCOPE),
+        new FontIcon(FontAwesomeSolid.STETHOSCOPE),
         "views/EquipReq.fxml");
     vSwitcherBox.addEntry(
-        "Laundry - Brennan",
-        new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE),
-        "views/LaundryGUI.fxml");
+        "Laundry - Brennan", new FontIcon(FontAwesomeSolid.TINT), "views/LaundryGUI.fxml");
     vSwitcherBox.addEntry(
-        "IT Ticket - Gabriel",
-        new FontAwesomeIconView(FontAwesomeIcon.LAPTOP),
-        "views/ITServices.fxml");
+        "IT Ticket - Gabriel", new FontIcon(FontAwesomeSolid.LAPTOP), "views/ITServices.fxml");
     vSwitcherBox.addEntry(
         "Patient Info - Tyler",
-        new MaterialIconView(MaterialIcon.PERSON_ADD),
+        new FontIcon(FontAwesomeSolid.USER_PLUS),
         "views/PatientsInfoService.fxml");
     vSwitcherBox.addEntry(
         "Internal Transport - Ioannis",
-        new FontAwesomeIconView(FontAwesomeIcon.WHEELCHAIR),
+        new FontIcon(FontAwesomeSolid.WHEELCHAIR),
         "views/InternalTransportAdmin.fxml");
     vSwitcherBox.addEntry(
         "Interpreters - Dyllan",
-        new FontAwesomeIconView(FontAwesomeIcon.GLOBE),
+        new FontIcon(FontAwesomeSolid.GLOBE),
         "views/InterpreterService.fxml");
     vSwitcherBox.addEntry(
         "Prescriptions - Yash",
-        new MaterialIconView(MaterialIcon.LOCAL_PHARMACY),
+        new FontIcon(FontAwesomeSolid.PILLS),
         "views/PrescriptionService.fxml");
     vSwitcherBox.addEntry(
-        "Manage Accounts", new FontAwesomeIconView(FontAwesomeIcon.USER), "views/CreateAcct.fxml");
-    vSwitcherBox.addEntry(
-        "Settings", new FontAwesomeIconView(FontAwesomeIcon.COG), "views/Settings.fxml");
+        "Manage Accounts", new FontIcon(FontAwesomeSolid.USER), "views/CreateAcct.fxml");
+    vSwitcherBox.addEntry("Settings", new FontIcon(FontAwesomeSolid.COG), "views/Settings.fxml");
     vSwitcherBox.setTransitionMillis(500);
 
     // Add switcher box to anchor pane and constrain it
@@ -119,8 +107,8 @@ public class LoginController extends AbstractController {
     loginBox.setEffect(dropShadow);
 
     // Setup button icons
-    loginButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LOCK));
-    logoutButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.SIGN_OUT));
+    loginButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCK));
+    logoutButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
 
     // Setup enter key to go from Username -> Password -> Login
     usernameBox.setOnAction(event -> passwordBox.requestFocus());

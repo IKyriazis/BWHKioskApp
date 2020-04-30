@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -13,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class NodeDialogController implements IDialogController {
   @FXML private JFXTextField nodeIDField;
@@ -104,7 +104,7 @@ public class NodeDialogController implements IDialogController {
     doneButton.setOnAction(this::pressedDone);
 
     // Set button icon
-    doneButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
+    doneButton.setGraphic(new FontIcon(FontAwesomeRegular.CHECK_CIRCLE));
 
     // Populate fields if modifying
     if (oldNode != null) {
