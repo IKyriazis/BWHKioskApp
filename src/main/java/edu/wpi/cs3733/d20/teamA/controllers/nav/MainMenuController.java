@@ -64,6 +64,11 @@ public class MainMenuController {
       button.setMinHeight(maxHeight);
       button.setPrefHeight(maxHeight);
       button.setMaxHeight(maxHeight);
+
+      // You shouldn't resize directly, but for some reason this fixes a bug where the buttons are
+      // misaligned until you
+      // resize the window
+      button.resize(maxWidth, maxHeight);
     }
   }
 }

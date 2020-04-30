@@ -10,11 +10,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class SceneSwitcherController {
   @FXML private ImageView backgroundImage;
   @FXML private StackPane rootPane;
   @FXML private JFXButton backButton;
+  @FXML private JFXButton loginButton;
   @FXML private GridPane contentPane;
 
   private static SceneSwitcherController instance;
@@ -22,6 +25,9 @@ public class SceneSwitcherController {
   private Stack<Node> sceneStack;
 
   private boolean transitioning;
+
+  private FontIcon homeIcon;
+  private FontIcon backIcon;
 
   @FXML
   public void initialize() {
@@ -40,6 +46,13 @@ public class SceneSwitcherController {
               backgroundImage.setFitHeight(rootPane.getHeight() + 50.0);
             });
 
+    // Setup home button
+    homeIcon = new FontIcon(FontAwesomeSolid.HOME);
+    backIcon = new FontIcon(FontAwesomeSolid.LONG_ARROW_ALT_LEFT);
+
+    // Setup login button icon
+    loginButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_IN_ALT));
+
     // Set this equal to instance
     instance = this;
 
@@ -47,6 +60,9 @@ public class SceneSwitcherController {
     sceneStack = new Stack<>();
 
     pushScene("views/nav/MainMenu.fxml");
+
+    // Sometimes buttons start selected for some reason
+    rootPane.requestFocus();
   }
 
   @FXML
@@ -90,10 +106,10 @@ public class SceneSwitcherController {
     }
 
     if (sceneStack.size() > 2) {
-      backButton.setText("Back");
+      backButton.setGraphic(backIcon);
       backButton.setVisible(true);
     } else if (sceneStack.size() == 2) {
-      backButton.setText("Home");
+      backButton.setGraphic(homeIcon);
       backButton.setVisible(true);
     } else {
       backButton.setVisible(false);
