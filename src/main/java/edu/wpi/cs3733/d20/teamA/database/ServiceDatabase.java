@@ -152,6 +152,45 @@ public class ServiceDatabase extends Database {
   public String getStatus(String reqID) {
     return helperGetString(reqID, "status");
   }
+  // Setters for various fields
+
+  public boolean setAssignedEmployee(String IDString, String madeReqName) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE SERVICEREQ SET madeReqName = '"
+                      + madeReqName
+                      + "' WHERE reqID = '"
+                      + IDString
+                      + "''");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean setStatus(String IDString, String status) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE SERVICEREQ SET status = '"
+                      + status
+                      + "' WHERE reqID = '"
+                      + IDString
+                      + "''");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 
   public synchronized ObservableList<ITableable> observableList(ServiceType type) {
     ObservableList<ITableable> observableList = FXCollections.observableArrayList();

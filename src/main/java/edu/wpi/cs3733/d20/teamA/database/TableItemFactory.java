@@ -15,6 +15,7 @@ public class TableItemFactory {
       String location,
       String description,
       String additional) {
+
     // 'janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq'
     switch (servType) {
       case "janitor":

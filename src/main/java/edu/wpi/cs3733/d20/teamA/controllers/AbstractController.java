@@ -19,7 +19,7 @@ public abstract class AbstractController {
   protected EquipReqDatabase erDB;
   protected JanitorDatabase janitorDatabase;
   protected MedicineDeliveryDatabase medicineRequestDatabase;
-  protected LaundryDatabase lDB;
+  // protected LaundryDatabase lDB;
   protected ITTicketDatabase itTicketDatabase;
   protected PatientDatabase patientDatabase;
   protected InternalTransportDatabase itDatabase;

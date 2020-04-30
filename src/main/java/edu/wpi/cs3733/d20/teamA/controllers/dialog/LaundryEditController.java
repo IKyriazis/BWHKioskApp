@@ -45,12 +45,12 @@ public class LaundryEditController extends AbstractController implements IDialog
 
   @FXML
   public void isDone(ActionEvent e) {
-    /*if (progressComboBox.getValue() != null) {
-      lDB.setProg(laundry.getRequestNum(), progressComboBox.getValue());
+    if (progressComboBox.getValue() != null) {
+      primaryDB.setStatus(laundry.getRequestNum(), progressComboBox.getValue());
     }
     if (cleanerComboBox.getValue() != null) {
-      lDB.setEmpW(laundry.getRequestNum(), cleanerComboBox.getValue());
-    }*/
+      primaryDB.setAssignedEmployee(laundry.getRequestNum(), cleanerComboBox.getValue());
+    }
     dialog.close();
   }
 
