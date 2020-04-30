@@ -8,6 +8,7 @@ import de.jensd.fx.glyphs.materialicons.MaterialIconView;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Employee;
 import edu.wpi.cs3733.d20.teamA.database.Laundry;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -144,7 +145,7 @@ public class LaundryController extends AbstractController {
     String loc = "";
     if (node != null) {
       loc = node.getLongName();
-      String l = primaryDB.addServiceReq("laundry", loc, "", "");
+      String l = primaryDB.addServiceReq(ServiceType.LAUNDRY, loc, "", "");
       if (l == null) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot add request");
       } else {
@@ -218,7 +219,7 @@ public class LaundryController extends AbstractController {
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(primaryDB.observableList("laundry"));
+      tblLaundryView.add(primaryDB.observableList(ServiceType.LAUNDRY));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

@@ -37,7 +37,7 @@ public class ServiceDatabase extends Database {
   }
 
   public synchronized String addServiceReq(
-      String servType, String location, String description, String additional) {
+      ServiceType servType, String location, String description, String additional) {
 
     long l = getRandomNumber();
     String reqID = Long.toString(l, 36);
@@ -58,7 +58,7 @@ public class ServiceDatabase extends Database {
           getConnection()
               .prepareStatement(
                   "INSERT INTO SERVICEREQ (servType, reqID, didReqName, madeReqName, timeOfReq, status, location, description, additional) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      pstmt.setString(1, servType);
+      pstmt.setString(1, servType.toString());
       pstmt.setString(2, reqID);
       pstmt.setString(3, didReqName);
       pstmt.setString(4, madeReqName);
@@ -153,12 +153,13 @@ public class ServiceDatabase extends Database {
     return helperGetString(reqID, "status");
   }
 
-  public synchronized ObservableList<ITableable> observableList(String type) {
+  public synchronized ObservableList<ITableable> observableList(ServiceType type) {
     ObservableList<ITableable> observableList = FXCollections.observableArrayList();
     try {
       PreparedStatement pstmt =
           getConnection()
-              .prepareStatement("SELECT * FROM SERVICEREQ WHERE servType = '" + type + "'");
+              .prepareStatement(
+                  "SELECT * FROM SERVICEREQ WHERE servType = '" + type.toString() + "'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         String id = rset.getString("reqID");
@@ -171,7 +172,8 @@ public class ServiceDatabase extends Database {
         String additional = rset.getString("additional");
 
         ITableable item =
-            TableItemFactory.get(type, id, didReq, madeReq, t, stat, loc, desc, additional);
+            TableItemFactory.get(
+                type.toString(), id, didReq, madeReq, t, stat, loc, desc, additional);
         observableList.add(item);
       }
       rset.close();
