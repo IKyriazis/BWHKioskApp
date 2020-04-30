@@ -1,11 +1,11 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 
 public class ServiceDatabase extends Database{
 
@@ -119,4 +119,31 @@ public class ServiceDatabase extends Database{
         }
     }
 
+    public synchronized ObservableList<ITableable> observableList(String type) {
+        ObservableList<ITableable> observableList = FXCollections.observableArrayList();
+        try {
+            PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM SERVICEREQ WHERE servType = '"+type+"'");
+            ResultSet rset = pstmt.executeQuery();
+            while (rset.next()) {
+                String id = rset.getString("reqID");
+                String didReq = rset.getString("didReqName");
+                String madeReq = rset.getString("madeReqName");
+                Timestamp t = rset.getTimestamp("timeOfReq");
+                String stat = rset.getString("status");
+                String loc = rset.getString("location");
+                String desc = rset.getString("description");
+                String additional = rset.getString("additional");
+
+
+                ITableable item = TableItemFactory.get(type,id,didReq,madeReq,t,stat,loc,desc,additional);
+                observableList.add(item);
+            }
+            rset.close();
+            pstmt.close();
+            return observableList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
