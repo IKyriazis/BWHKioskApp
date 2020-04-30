@@ -253,6 +253,44 @@ public class ServiceDatabase extends Database {
     }
   }
 
+  public synchronized boolean setAdditional(String IDString, String add) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE SERVICEREQ SET additional = '"
+                      + add
+                      + "' WHERE reqID = '"
+                      + IDString
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public synchronized boolean setDescription(String IDString, String desc) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "UPDATE SERVICEREQ SET description = '"
+                      + desc
+                      + "' WHERE reqID = '"
+                      + IDString
+                      + "'");
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
   public synchronized ObservableList<ITableable> observableList(ServiceType type) {
     ObservableList<ITableable> observableList = FXCollections.observableArrayList();
     try {

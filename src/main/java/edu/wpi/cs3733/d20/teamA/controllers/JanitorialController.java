@@ -135,6 +135,8 @@ public class JanitorialController extends AbstractController {
     }
   }
 
+  // Update the status - this request uses unique status values, which will be put into the
+  // additional field to avoid causing errors
   @FXML
   private void updateRequest() throws SQLException {
     if (tblServiceView.getSelectionModel().getSelectedItem() == null) {
@@ -152,9 +154,9 @@ public class JanitorialController extends AbstractController {
       } else {
         if (comboboxJanitorName.getValue().toString().equals("")) {
           primaryDB.setAssignedEmployee(j.getIndex(), j.getEmployeeName());
-          primaryDB.setStatus(j.getIndex(), comboboxNextStatus.getValue());
+          primaryDB.setAdditional(j.getIndex(), comboboxNextStatus.getValue());
         } else {
-          primaryDB.setStatus(j.getIndex(), comboboxNextStatus.getValue());
+          primaryDB.setAdditional(j.getIndex(), comboboxNextStatus.getValue());
         }
       }
     }

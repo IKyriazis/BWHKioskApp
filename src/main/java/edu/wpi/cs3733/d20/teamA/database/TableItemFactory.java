@@ -18,7 +18,8 @@ public class TableItemFactory {
     // 'janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq'
     switch (servType) {
       case "janitor":
-        return new JanitorService(location, additional, status, madeReqName, reqID, didReqName);
+        return new JanitorService(
+            location, description, additional, madeReqName, reqID, didReqName);
         // what is index
       case "medicine":
         return new MedRequest(

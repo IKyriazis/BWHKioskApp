@@ -129,7 +129,7 @@ public class JanitorEditController extends AbstractController implements IDialog
       if (modify) {
         primaryDB.deleteServReq(janitorService.getIndex());
       }
-      primaryDB.addServiceReq(ServiceType.JANITOR, location, employee, "", priority);
+      primaryDB.addServiceReq(ServiceType.JANITOR, location, employee, priority, "");
 
       dialog.close();
     } catch (Exception exception) {
