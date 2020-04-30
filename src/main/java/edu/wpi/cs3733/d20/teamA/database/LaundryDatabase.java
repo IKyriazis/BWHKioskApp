@@ -71,10 +71,10 @@ public class LaundryDatabase extends Database {
     try {
       boolean a = checkIfExistsString("Employees", "username", emp);
       boolean b = checkIfExistsString("Node", "longName", loc);
-      i = getRandomNumber();
+      i = getRandomInt();
       boolean c = checkIfExistsInt("Laundry", "requestNum", i);
       while (c) {
-        i = getRandomNumber();
+        i = getRandomInt();
         c = checkIfExistsInt("Laundry", "requestNum", i);
       }
       if (a && b && !c) {

@@ -23,7 +23,7 @@ public class EmployeesDatabase extends Database {
       createTables();
     }
 
-    employeeID = getRandomNumber();
+    employeeID = getRandomInt();
   }
 
   /**
@@ -120,12 +120,12 @@ public class EmployeesDatabase extends Database {
 
   public synchronized boolean addEmployeeNoChecks(
       String nameFirst, String nameLast, String username, String password, String title) {
-    return addEmployee(getRandomNumber(), nameFirst, nameLast, username, password, title);
+    return addEmployee(getRandomInt(), nameFirst, nameLast, username, password, title);
   }
 
   public synchronized boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
-    employeeID = getRandomNumber();
+    employeeID = getRandomInt();
     return checkSecurePass(password)
         && addEmployee(employeeID, nameFirst, nameLast, username, password, title);
   }

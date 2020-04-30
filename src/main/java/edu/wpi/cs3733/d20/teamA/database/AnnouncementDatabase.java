@@ -11,7 +11,7 @@ public class AnnouncementDatabase extends Database {
   public AnnouncementDatabase(Connection connection) {
     super(connection);
     createTables();
-    announcementID = getRandomNumber();
+    announcementID = getRandomInt();
   }
 
   public boolean createTables() {
@@ -68,7 +68,7 @@ public class AnnouncementDatabase extends Database {
   }
 
   public int addAnnouncement(String announcement) {
-    this.announcementID = getRandomNumber();
+    this.announcementID = getRandomInt();
     return addAnnouncement(this.announcementID, announcement);
   }
 

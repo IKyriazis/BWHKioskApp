@@ -13,7 +13,7 @@ public class InterpreterDatabase extends Database {
       createTables();
     }
 
-    requestNum = getRandomNumber();
+    requestNum = getRandomInt();
   }
 
   public boolean dropTables() {
@@ -90,7 +90,7 @@ public class InterpreterDatabase extends Database {
   }
 
   public int addRequest(String name, String language, String location, String status) {
-    requestNum = getRandomNumber();
+    requestNum = getRandomInt();
     try {
       PreparedStatement pstmt =
           getConnection()

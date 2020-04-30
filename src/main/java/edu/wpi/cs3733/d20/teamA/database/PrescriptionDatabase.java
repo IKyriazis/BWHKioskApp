@@ -19,7 +19,7 @@ public class PrescriptionDatabase extends Database {
     if (doesTableNotExist("PRESCRIPTION")) {
       createTables();
     }
-    prescriptionNum = getRandomNumber();
+    prescriptionNum = getRandomInt();
   }
 
   /**
@@ -109,7 +109,7 @@ public class PrescriptionDatabase extends Database {
       String dosage,
       int numRefills,
       String notes) {
-    prescriptionNum = getRandomNumber();
+    prescriptionNum = getRandomInt();
     return addPrescription(
         this.prescriptionNum, patient, prescription, pharmacy, dosage, numRefills, notes);
   }

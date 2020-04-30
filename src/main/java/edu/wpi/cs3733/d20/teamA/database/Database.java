@@ -180,7 +180,12 @@ public abstract class Database {
     return null;
   }
 
-  public int getRandomNumber() {
-    return new Random().nextInt((999999999 - 100000000) + 1) + 100000000;
+  public long getRandomNumber() {
+    long l = 2176782335L;
+    return new Random().nextLong() * l / Long.MAX_VALUE;
+  }
+
+  public int getRandomInt() {
+    return new Random().nextInt((999999 - 100000) + 1) + 100000;
   }
 }
