@@ -121,7 +121,7 @@ public class LaundryController extends AbstractController {
           roomList.setItems(allNodeList);
         });
 
-    progressComboBox.getItems().addAll("Requested", "Collected", "Washing", "Drying", "Returned");
+    progressComboBox.getItems().addAll("Request Made", "In Progress", "Completed");
 
     ObservableList<Employee> allEmployeeList = eDB.employeeOl();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
@@ -175,16 +175,11 @@ public class LaundryController extends AbstractController {
 
   @FXML
   private void updateCleaner() {
-    /*Laundry l = tblLaundryView.getSelected();
+    Laundry l = (Laundry) (tblLaundryView.getSelected());
     Employee e = cleanerComboBox.getSelectionModel().getSelectedItem();
     if (l != null) {
       if (progressComboBox.getValue() != null) {
-        lDB.setProg(l.getRequestNum(), progressComboBox.getValue());
-      }
-      if (cleanerComboBox.getValue() != null) {
-        if (!lDB.setEmpW(l.getRequestNum(), eDB.getUsername(e.getId()))) {
-          DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot set Employee");
-        }
+        primaryDB.editStatus(l.getRequestNum(), progressComboBox.getValue());
       }
     } else if (l == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
@@ -192,7 +187,7 @@ public class LaundryController extends AbstractController {
     progressComboBox.getSelectionModel().clearSelection();
     cleanerComboBox.getSelectionModel().clearSelection();
     tblLaundryView.getSelectionModel().clearSelection();
-    update();*/
+    update();
   }
 
   @FXML
