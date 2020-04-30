@@ -30,8 +30,8 @@ public class InternalTransportTrackerController extends AbstractController
   @FXML
   public void updateProgress() {
     try {
-      String s = itDatabase.getRequestStatus(Integer.parseInt(txtNumber.getText()));
-      String name = itDatabase.getName(Integer.parseInt(txtNumber.getText()));
+      String s = serviceDatabase.getStatus(txtNumber.getText());
+      String name = serviceDatabase.getAdditional(txtNumber.getText());
       if (s == null) {
         progressBar.setProgress(0);
         orderStatusLabel.setText("Input an order number");

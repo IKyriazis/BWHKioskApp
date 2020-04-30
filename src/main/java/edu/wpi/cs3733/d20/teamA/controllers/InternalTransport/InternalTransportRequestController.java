@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -49,12 +50,15 @@ public class InternalTransportRequestController extends AbstractController
       Node start = startList.getSelectionModel().getSelectedItem();
       Node end = destinationList.getSelectionModel().getSelectedItem();
       try {
-        int i = itDatabase.addRequest(start.getNodeID(), end.getNodeID());
+        String s =
+            serviceDatabase.addServiceReq(
+                ServiceType.INTERNAL_TRANSPORT, end.getLongName(), start.getLongName(), null);
+
         dialog.close();
         DialogUtil.simpleInfoDialog(
             dialog.getDialogContainer(),
             "Request Placed",
-            "Request #" + i + " placed successfully");
+            "Request #" + s + " placed successfully");
       } catch (Exception e) {
         e.printStackTrace();
       }

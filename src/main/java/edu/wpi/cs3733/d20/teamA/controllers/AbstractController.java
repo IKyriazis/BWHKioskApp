@@ -11,15 +11,13 @@ public abstract class AbstractController {
 
   private DatabaseServiceProvider provider;
   private Connection conn;
-  protected ServiceDatabase primaryDB;
 
+  protected ServiceDatabase serviceDatabase;
   protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
 
-  // protected ITTicketDatabase itTicketDatabase;
-  protected PatientDatabase patientDatabase;
-  protected InternalTransportDatabase itDatabase;
+  protected PatientDatabase patientDatabase; // Not usable as service request table line
   protected InterpreterDatabase iDB;
   protected PrescriptionDatabase prescriptionDatabase;
   protected AnnouncementDatabase announcementDatabase;
@@ -32,11 +30,10 @@ public abstract class AbstractController {
     eDB = new EmployeesDatabase(conn);
     flDatabase = new FlowerDatabase(conn);
     iDB = new InterpreterDatabase(conn);
-    // itTicketDatabase = new ITTicketDatabase(conn);
+
     patientDatabase = new PatientDatabase(conn);
-    itDatabase = new InternalTransportDatabase(conn);
     prescriptionDatabase = new PrescriptionDatabase(conn);
     announcementDatabase = new AnnouncementDatabase(conn);
-    primaryDB = new ServiceDatabase(conn);
+    serviceDatabase = new ServiceDatabase(conn);
   }
 }

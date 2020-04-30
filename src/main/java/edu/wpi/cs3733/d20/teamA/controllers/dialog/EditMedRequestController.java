@@ -98,7 +98,7 @@ public class EditMedRequestController extends AbstractController implements IDia
           time.setMinutes(minute);
           String add = fNameText + "|" + lNameText + "|" + doctorText + "|" + medicineText;
 
-          primaryDB.addServiceReq(
+          serviceDatabase.addServiceReq(
               ServiceType.MEDICINE,
               time,
               null,
@@ -124,7 +124,7 @@ public class EditMedRequestController extends AbstractController implements IDia
           super.medicineRequestDatabase.updateHo(request.getOrderNum(), hour);
           super.medicineRequestDatabase.updateMins(request.getOrderNum(), minute);
         }*/
-        primaryDB.setAssignedEmployee(request.getOrderNum(), fulfilledBy);
+        serviceDatabase.setAssignedEmployee(request.getOrderNum(), fulfilledBy);
       }
 
       dialog.close();

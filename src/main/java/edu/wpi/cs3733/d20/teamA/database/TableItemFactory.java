@@ -43,7 +43,13 @@ public class TableItemFactory {
         return new ITTicket(
             reqID, timeOfReq, status, additional, location, madeReqName, didReqName, description);
       case "intrntrans":
-        return new InternalTransportRequest(12, "Start", didReqName, "Time", status, "Name");
+        return new InternalTransportRequest(
+            reqID,
+            description,
+            location,
+            timeOfReq,
+            status,
+            additional); // Additional hold name because it doenst check table
       case "interpret":
         return new InterpreterRequest(9, "Name", "Language", location, status);
       case "rxreq":

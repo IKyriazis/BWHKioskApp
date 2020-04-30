@@ -263,10 +263,10 @@ public class InternalTransportDatabase extends Database {
         String progress = rset.getString("progress");
         String name = rset.getString("name");
 
-        InternalTransportRequest node =
+        /*  InternalTransportRequest node =
             new InternalTransportRequest(
                 orderNumber, start, destination, time.toString(), progress, name);
-        oList.add(node);
+        oList.add(node);*/
       }
       rset.close();
       pstmt.close();

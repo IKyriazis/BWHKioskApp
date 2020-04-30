@@ -231,6 +231,10 @@ public class ServiceDatabase extends Database {
   public String getStatus(String reqID) {
     return helperGetString(reqID, "status");
   }
+
+  public String getAdditional(String reqID) {
+    return helperGetString(reqID, "additional");
+  }
   // Setters for various fields
   public synchronized boolean setAssignedEmployee(String IDString, String didReqName) {
     try {

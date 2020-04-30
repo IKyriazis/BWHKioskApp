@@ -48,7 +48,7 @@ public class LaundryController extends AbstractController {
   private SimpleTableView tblLaundryView;
 
   public void initialize() {
-    primaryDB.createTables();
+    serviceDatabase.createTables();
 
     serviceLabel.setGraphic(new MaterialIconView(MaterialIcon.LOCAL_LAUNDRY_SERVICE));
     requestTableLabel.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.LIST));
@@ -145,7 +145,7 @@ public class LaundryController extends AbstractController {
     String loc = "";
     if (node != null) {
       loc = node.getLongName();
-      String l = primaryDB.addServiceReq(ServiceType.LAUNDRY, loc, "", "");
+      String l = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, loc, "", "");
       if (l == null) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot add request");
       } else {
@@ -164,7 +164,7 @@ public class LaundryController extends AbstractController {
   private void removeRequest() {
     Laundry l = (Laundry) tblLaundryView.getSelected();
     if (l != null) {
-      if (!primaryDB.deleteServReq(l.getRequestNum())) {
+      if (!serviceDatabase.deleteServReq(l.getRequestNum())) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot remove request");
       }
     } else if (l == null) {
@@ -180,10 +180,10 @@ public class LaundryController extends AbstractController {
     Employee e = cleanerComboBox.getSelectionModel().getSelectedItem();
     if (l != null) {
       if (progressComboBox.getValue() != null) {
-        primaryDB.editStatus(
+        serviceDatabase.editStatus(
             l.getRequestNum(), progressComboBox.getSelectionModel().getSelectedItem());
       }
-      primaryDB.setAssignedEmployee(l.getRequestNum(), e.getUsername());
+      serviceDatabase.setAssignedEmployee(l.getRequestNum(), e.getUsername());
     } else if (l == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
     }
@@ -221,7 +221,7 @@ public class LaundryController extends AbstractController {
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(primaryDB.observableList(ServiceType.LAUNDRY));
+      tblLaundryView.add(serviceDatabase.observableList(ServiceType.LAUNDRY));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

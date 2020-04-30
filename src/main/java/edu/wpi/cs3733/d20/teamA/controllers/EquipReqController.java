@@ -63,7 +63,7 @@ public class EquipReqController extends AbstractController {
     try {
 
       tblEquipView.clear();
-      tblEquipView.add(primaryDB.observableList(ServiceType.EQUIPMENT));
+      tblEquipView.add(serviceDatabase.observableList(ServiceType.EQUIPMENT));
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -80,7 +80,7 @@ public class EquipReqController extends AbstractController {
     Node location = locCombo.getSelectionModel().getSelectedItem();
     String item = itemField.getText();
     int qty = Integer.parseInt(qtyField.getText());
-    primaryDB.addServiceReq(
+    serviceDatabase.addServiceReq(
         ServiceType.EQUIPMENT, location.getLongName(), null, item + "|" + qty + "|" + priority);
 
     priCombo.getSelectionModel().clearSelection();
@@ -94,7 +94,7 @@ public class EquipReqController extends AbstractController {
 
     selected = (EquipRequest) tblEquipView.getSelected();
     if (selected != null) {
-      primaryDB.deleteServReq(selected.getID());
+      serviceDatabase.deleteServReq(selected.getID());
       updateTable();
     }
   }

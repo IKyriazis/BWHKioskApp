@@ -109,7 +109,7 @@ public class ITServicesController extends AbstractController {
     try {
       tblViewITTicket.clear();
 
-      tblViewITTicket.add(primaryDB.observableList(ServiceType.IT_TICKET));
+      tblViewITTicket.add(serviceDatabase.observableList(ServiceType.IT_TICKET));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(ITStackPane, "Error", "Failed to update IT Ticket Table");
@@ -141,7 +141,8 @@ public class ITServicesController extends AbstractController {
     String requesterName = ITTicketName.getText();
     String completedBy = " ";
     String description = ITTicketDescription.getText();
-    primaryDB.addServiceReq(ServiceType.IT_TICKET, location.getLongName(), description, category);
+    serviceDatabase.addServiceReq(
+        ServiceType.IT_TICKET, location.getLongName(), description, category);
     // Set up completed by if this is important
     ITTicketCategory.getSelectionModel().clearSelection();
     ITTicketLocation.getSelectionModel().clearSelection();
@@ -159,7 +160,7 @@ public class ITServicesController extends AbstractController {
   public void deleteRequest(ActionEvent actionEvent) {
     selected = (ITTicket) tblViewITTicket.getSelected();
     if (selected != null) {
-      primaryDB.deleteServReq(selected.getId());
+      serviceDatabase.deleteServReq(selected.getId());
       tblViewITTicket.getSelectionModel().clearSelection();
       updateTable();
     }
@@ -172,8 +173,9 @@ public class ITServicesController extends AbstractController {
    */
   public void changeStatus(ActionEvent actionEvent) {
     selected = (ITTicket) tblViewITTicket.getSelected();
-    primaryDB.setStatus(selected.getId(), statusChangeStatus.getSelectionModel().getSelectedItem());
-    primaryDB.setAssignedEmployee(selected.getId(), statusChangeName.getText());
+    serviceDatabase.setStatus(
+        selected.getId(), statusChangeStatus.getSelectionModel().getSelectedItem());
+    serviceDatabase.setAssignedEmployee(selected.getId(), statusChangeName.getText());
     statusChangeName.clear();
     statusChangeStatus.getSelectionModel().clearSelection();
     tblViewITTicket.getSelectionModel().clearSelection();
