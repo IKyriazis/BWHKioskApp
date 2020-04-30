@@ -78,8 +78,8 @@
     -fx-text-fill: -primary-color-text;
 }
 
-.jfx-button .glyph-icon {
-    -fx-fill: -primary-color-text;
+.jfx-button .ikonli-font-icon {
+    -fx-icon-color: -primary-color-text;
 }
 
 .jfx-button .jfx-rippler {
@@ -126,6 +126,12 @@
     -jfx-rippler-fill: -secondary-color-text;
 }
 
+.main-menu-button {
+    -fx-background-radius: 6.5em;
+    -fx-font-size: 100pt;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 10, 0.0, 5, 5);
+}
+
 .label {
     -fx-text-fill: black;
 }
@@ -136,6 +142,10 @@
 
 .regular-text {
     -fx-font-size: 12pt;
+}
+
+.medium-text {
+    -fx-font-size: 14pt;
 }
 
 .heading-text {
@@ -168,4 +178,8 @@
 
 #flowerServiceTablePane {
     -fx-font-size: 18pt;
+}
+
+#loginButton {
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
 }

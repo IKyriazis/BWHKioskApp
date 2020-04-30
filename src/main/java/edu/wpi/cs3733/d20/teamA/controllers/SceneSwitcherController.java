@@ -2,10 +2,8 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
-import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.util.Stack;
 import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
@@ -48,21 +46,7 @@ public class SceneSwitcherController {
     // Setup scene stack
     sceneStack = new Stack<>();
 
-    pushScene("views/NodeModifyPopup.fxml");
-    ThreadPool.runBackgroundTask(
-        () -> {
-          try {
-            Thread.currentThread().sleep(10000);
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-          Platform.runLater(
-              () -> {
-                SceneSwitcherController.pushScene("views/LaundryEdit.fxml");
-              });
-        });
-    //
-    // pushScene("views/MapEditor.fxml");
+    pushScene("views/nav/MainMenu.fxml");
   }
 
   @FXML
@@ -71,6 +55,9 @@ public class SceneSwitcherController {
       popScene();
     }
   }
+
+  @FXML
+  public void pressedLogin() {}
 
   private void transition(boolean right) {
     if (transitioning) {
@@ -111,6 +98,8 @@ public class SceneSwitcherController {
     } else {
       backButton.setVisible(false);
     }
+
+    rootPane.requestFocus();
   }
 
   private static void pushScene(Node newNode) {
