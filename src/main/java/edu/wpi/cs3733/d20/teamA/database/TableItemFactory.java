@@ -30,7 +30,7 @@ public class TableItemFactory {
             didReqName); // todo figure out how to pass in med request, probably need to change
         // parameters
       case "equipreq":
-        return new EquipRequest("Name", "item", 12, location, "priority", timeOfReq, didReqName);
+        return new EquipRequest(reqID, location, madeReqName, timeOfReq, additional);
       case "laundry":
         return new Laundry(
             reqID,
@@ -41,14 +41,19 @@ public class TableItemFactory {
             timeOfReq); // Change requestID to a string
       case "ittix":
         return new ITTicket(
-            timeOfReq, status, "CATEGORY", location, "Name", didReqName, description);
+            reqID, timeOfReq, status, additional, location, madeReqName, didReqName, description);
       case "intrntrans":
-        return new InternalTransportRequest(12, "Start", didReqName, "Time", status, "Name");
+        return new InternalTransportRequest(
+            reqID,
+            description,
+            location,
+            timeOfReq,
+            status,
+            additional); // Additional hold name because it doenst check table
       case "interpret":
         return new InterpreterRequest(9, "Name", "Language", location, status);
       case "rxreq":
-        return new Prescription(
-            2, "PatientName", "Prescription", "Pharmacy", "Dosage", 4, "Doc name", "Notes");
+        return new Prescription(reqID, description, additional);
       default:
         return null;
     }

@@ -77,7 +77,7 @@ public class MedicineDeliveryController extends AbstractController {
   public void update() {
     try {
       tblMedReq.clear();
-      tblMedReq.add(primaryDB.observableList(ServiceType.MEDICINE));
+      tblMedReq.add(serviceDatabase.observableList(ServiceType.MEDICINE));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -145,7 +145,7 @@ public class MedicineDeliveryController extends AbstractController {
     }
     if (lastOrder != null) {
       String s = progBox.getSelectionModel().getSelectedItem();
-      primaryDB.setStatus(lastOrder.getOrderNum(), s);
+      serviceDatabase.setStatus(lastOrder.getOrderNum(), s);
       lastOrder = null;
       update();
     } else {
@@ -162,7 +162,7 @@ public class MedicineDeliveryController extends AbstractController {
       String num = req.getOrderNum();
 
       try {
-        primaryDB.deleteServReq(num);
+        serviceDatabase.deleteServReq(num);
       } catch (Exception e) {
         e.printStackTrace();
         DialogUtil.simpleErrorDialog(

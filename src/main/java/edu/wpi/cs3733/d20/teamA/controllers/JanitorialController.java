@@ -48,10 +48,10 @@ public class JanitorialController extends AbstractController {
 
   public void initialize() throws SQLException, IOException, CsvException {
     // initialize the database
-    if (primaryDB.getSizeReq() == -1) {
-      primaryDB.dropTables();
-      primaryDB.createTables();
-    } else if (primaryDB.getSizeReq() == 0) {
+    if (serviceDatabase.getSizeReq() == -1) {
+      serviceDatabase.dropTables();
+      serviceDatabase.createTables();
+    } else if (serviceDatabase.getSizeReq() == 0) {
       // janitorDatabase.removeAll(); TODO ADD THIS METHOD
     }
 
@@ -130,7 +130,7 @@ public class JanitorialController extends AbstractController {
       JanitorService j =
           (((TreeItem<JanitorService>) (tblServiceView.getSelectionModel().getSelectedItem()))
               .getValue());
-      primaryDB.deleteServReq(j.getIndex());
+      serviceDatabase.deleteServReq(j.getIndex());
       refreshActiveRequests();
     }
   }
@@ -153,10 +153,10 @@ public class JanitorialController extends AbstractController {
             popupStackPane, "Error", "Please select an employee to assign");
       } else {
         if (comboboxJanitorName.getValue().toString().equals("")) {
-          primaryDB.setAssignedEmployee(j.getIndex(), j.getEmployeeName());
-          primaryDB.setStatus(j.getIndex(), comboboxNextStatus.getValue());
+          serviceDatabase.setAssignedEmployee(j.getIndex(), j.getEmployeeName());
+          serviceDatabase.setStatus(j.getIndex(), comboboxNextStatus.getValue());
         } else {
-          primaryDB.setStatus(j.getIndex(), comboboxNextStatus.getValue());
+          serviceDatabase.setStatus(j.getIndex(), comboboxNextStatus.getValue());
         }
       }
     }
@@ -173,7 +173,7 @@ public class JanitorialController extends AbstractController {
     try {
       tblServiceView.clear();
 
-      tblServiceView.add(primaryDB.observableList(ServiceType.JANITOR));
+      tblServiceView.add(serviceDatabase.observableList(ServiceType.JANITOR));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

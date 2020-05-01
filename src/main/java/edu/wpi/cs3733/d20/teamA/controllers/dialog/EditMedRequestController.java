@@ -98,7 +98,7 @@ public class EditMedRequestController extends AbstractController implements IDia
           time.setMinutes(minute);
           String add = fNameText + "|" + lNameText + "|" + doctorText + "|" + medicineText;
 
-          primaryDB.addServiceReq(
+          serviceDatabase.addServiceReq(
               ServiceType.MEDICINE,
               time,
               null,
@@ -117,13 +117,14 @@ public class EditMedRequestController extends AbstractController implements IDia
         } catch (NullPointerException ex) {
         }
 
+        // Also not sure about this
         /*super.medicineRequestDatabase.updateMedicine(request.getOrderNum(), medicineText);
         super.medicineRequestDatabase.updateDoctor(request.getOrderNum(), doctorText);
         if (hour >= 0 && minute >= 0) {
           super.medicineRequestDatabase.updateHo(request.getOrderNum(), hour);
           super.medicineRequestDatabase.updateMins(request.getOrderNum(), minute);
         }*/
-        primaryDB.setAssignedEmployee(request.getOrderNum(), fulfilledBy);
+        serviceDatabase.setAssignedEmployee(request.getOrderNum(), fulfilledBy);
       }
 
       dialog.close();

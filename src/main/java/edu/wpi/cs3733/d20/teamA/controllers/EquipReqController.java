@@ -5,11 +5,11 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.EquipRequest;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
-import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
@@ -33,17 +33,9 @@ public class EquipReqController extends AbstractController {
   @FXML StackPane reqStackPane;
 
   private EquipRequest selected;
-  private SimpleTableView<EquipRequest> tblEquipView;
+  private SimpleTableView tblEquipView;
 
   public void initialize() {
-
-    if (erDB.getSizeReq() == -1) {
-      eDB.dropTables();
-      eDB.createTables();
-    } else if (erDB.getSizeReq() == 0) {
-      erDB.removeAllReqs();
-    }
-
     qtyField.setTextFormatter(InputFormatUtil.getIntFilter());
 
     // initialize choices for combo
@@ -56,10 +48,7 @@ public class EquipReqController extends AbstractController {
     allNodeList.sort(Comparator.comparing(Node::getLongName));
     locCombo.setItems(allNodeList);
 
-    tblEquipView =
-        new SimpleTableView<>(
-            new EquipRequest("", "", 0, "", "", new Timestamp(System.currentTimeMillis()), ""),
-            80.0);
+    tblEquipView = new SimpleTableView<>(new EquipRequest("", null, null, null, null), 80.0);
     gridReq.getChildren().add(tblEquipView);
 
     tblEquipView.setOnMouseClicked(
@@ -74,7 +63,7 @@ public class EquipReqController extends AbstractController {
     try {
 
       tblEquipView.clear();
-      tblEquipView.add(erDB.ReqOl());
+      tblEquipView.add(serviceDatabase.observableList(ServiceType.EQUIPMENT));
 
     } catch (Exception e) {
       e.printStackTrace();
@@ -91,7 +80,9 @@ public class EquipReqController extends AbstractController {
     Node location = locCombo.getSelectionModel().getSelectedItem();
     String item = itemField.getText();
     int qty = Integer.parseInt(qtyField.getText());
-    boolean a = erDB.addReq(item, qty, location.getNodeID(), priority);
+    serviceDatabase.addServiceReq(
+        ServiceType.EQUIPMENT, location.getLongName(), null, item + "|" + qty + "|" + priority);
+
     priCombo.getSelectionModel().clearSelection();
     locCombo.getSelectionModel().clearSelection();
     itemField.clear();
@@ -101,9 +92,9 @@ public class EquipReqController extends AbstractController {
 
   public void delReq(ActionEvent actionEvent) {
 
-    selected = tblEquipView.getSelected();
+    selected = (EquipRequest) tblEquipView.getSelected();
     if (selected != null) {
-      boolean b = erDB.deleteReq(selected.getUsername(), selected.getTime());
+      serviceDatabase.deleteServReq(selected.getID());
       updateTable();
     }
   }

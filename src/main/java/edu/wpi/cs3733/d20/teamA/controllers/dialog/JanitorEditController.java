@@ -127,9 +127,9 @@ public class JanitorEditController extends AbstractController implements IDialog
         employee = comboboxJanitor.getSelectionModel().getSelectedItem().toString();
 
       if (modify) {
-        primaryDB.deleteServReq(janitorService.getIndex());
+        serviceDatabase.deleteServReq(janitorService.getIndex());
       }
-      primaryDB.addServiceReq(ServiceType.JANITOR, location, employee, priority, "");
+      serviceDatabase.addServiceReq(ServiceType.JANITOR, location, employee, priority, "");
 
       dialog.close();
     } catch (Exception exception) {
