@@ -59,8 +59,8 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" text="9:15 PM" />
-                        <Label style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" text="April 29th 2020" GridPane.rowIndex="1" />
+                        <Label fx:id="timeLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text"/>
+                        <Label fx:id="dateLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                </children>
