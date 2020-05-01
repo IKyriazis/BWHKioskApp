@@ -15,16 +15,16 @@ public class Flower extends RecursiveTreeObject<Flower> implements ITableable<Fl
   @Setter protected SimpleStringProperty color;
   @Setter protected SimpleIntegerProperty qty;
   @Setter protected SimpleDoubleProperty pricePer;
-  @Setter protected SimpleStringProperty flowerID;
+  @Setter protected SimpleIntegerProperty flowerID;
   private SimpleIntegerProperty quantitySelected;
 
-  public Flower(String id, String itemName, int quantity, Double unitPrice, String additional) {
+  public Flower(int id, String typeFlower, String color, int quantity, Double unitPrice) {
 
-    this.typeFlower = new SimpleStringProperty(itemName);
-    this.color = new SimpleStringProperty(additional);
+    this.typeFlower = new SimpleStringProperty(typeFlower);
+    this.color = new SimpleStringProperty(color);
     this.qty = new SimpleIntegerProperty(quantity);
     this.pricePer = new SimpleDoubleProperty(unitPrice);
-    this.flowerID = new SimpleStringProperty(id);
+    this.flowerID = new SimpleIntegerProperty(id);
     quantitySelected = new SimpleIntegerProperty(0);
   }
 
@@ -64,11 +64,11 @@ public class Flower extends RecursiveTreeObject<Flower> implements ITableable<Fl
     return pricePer.get();
   }
 
-  public String getFlowerID() {
+  public int getFlowerID() {
     return flowerID.get();
   }
 
-  public SimpleStringProperty flowerIDProperty() {
+  public SimpleIntegerProperty flowerIDProperty() {
     return flowerID;
   }
 

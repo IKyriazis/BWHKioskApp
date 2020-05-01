@@ -2,11 +2,9 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.SimpleStringProperty;
 
 // Add more methods to this class as needed
 public class Employee implements ITableable<Employee> {
@@ -32,14 +30,29 @@ public class Employee implements ITableable<Employee> {
     return fName.get() + " " + lName.get();
   }
 
-  public String getId() { return id.get(); }
+  public String getId() {
+    return id.get();
+  }
 
-  public SimpleStringProperty getIDProperty(){ return this.id; };
-  public SimpleStringProperty getfNameProperty(){ return this.fName; };
-  public SimpleStringProperty getlNameProperty(){ return this.lName; };
-  public SimpleStringProperty getTitleProperty(){ return this.title; };
-  public SimpleStringProperty getUsernameProperty(){ return this.username; };
+  public SimpleStringProperty getIDProperty() {
+    return this.id;
+  };
 
+  public SimpleStringProperty getfNameProperty() {
+    return this.fName;
+  };
+
+  public SimpleStringProperty getlNameProperty() {
+    return this.lName;
+  };
+
+  public SimpleStringProperty getTitleProperty() {
+    return this.title;
+  };
+
+  public SimpleStringProperty getUsernameProperty() {
+    return this.username;
+  };
 
   @Override
   public ArrayList<JFXTreeTableColumn<Employee, ?>> getColumns() {

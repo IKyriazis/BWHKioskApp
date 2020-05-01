@@ -11,8 +11,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class FlowerDatabase extends Database {
-  private int orderNum;
   private int flowerNum;
+  private int orderNum;
 
   /**
    * Creates the Flower database with given connection
@@ -38,11 +38,7 @@ public class FlowerDatabase extends Database {
    */
   public boolean dropTables() {
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE Flowers") && helperPrepared("DROP TABLE Orders"))) {
-      return false;
-    }
-
-    return true;
+    return helperPrepared("DROP TABLE Flowers") && helperPrepared("DROP TABLE Orders");
   }
 
   /**
@@ -59,7 +55,7 @@ public class FlowerDatabase extends Database {
 
     boolean b =
         helperPrepared(
-            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flower Varchar(50) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, message Varchar(200), employeeId INTEGER NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
+            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flower Varchar(50) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, message Varchar(200), employeeId VARCHAR(6) NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
 
     return a && b;
   }
@@ -74,36 +70,10 @@ public class FlowerDatabase extends Database {
    * @return boolean for test purposes. True is everything goes through without an SQL exception
    */
   public boolean addFlower(String type, String color, int qty, double pricePer) {
-
-    String text = Double.toString(Math.abs(pricePer));
-    int integerPlaces = text.indexOf('.');
-    int decimalPlaces = text.length() - integerPlaces - 1;
-
-    if (decimalPlaces > 2) {
-      return false;
-    }
-
-    try {
-      int num = flowerNum;
-      while (idInUse(num)) num++;
-
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "INSERT INTO Flowers (flowerID, typeFlower, color, qty, pricePer) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, flowerNum);
-      pstmt.setString(2, type);
-      pstmt.setString(3, color);
-      pstmt.setInt(4, qty);
-      pstmt.setDouble(5, pricePer);
-      pstmt.executeUpdate();
-      pstmt.close();
-      flowerNum = num + 1;
-      return true;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
-    }
+    int num = flowerNum;
+    while (idInUse(num)) num++;
+    flowerNum = num;
+    return addFlowerWithID(flowerNum, type, color, qty, pricePer);
   }
 
   /**
@@ -260,12 +230,15 @@ public class FlowerDatabase extends Database {
    * @param orderNum order to assign the employee to
    * @return
    */
-  public boolean assignEmployee(int orderNum, int id) {
+  public boolean assignEmployee(int orderNum, String employeeID) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "UPDATE Orders SET employeeId = " + id + " WHERE orderNumber = " + orderNum);
+                  "UPDATE Orders SET employeeId = '"
+                      + employeeID
+                      + "' WHERE orderNumber = "
+                      + orderNum);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -276,7 +249,6 @@ public class FlowerDatabase extends Database {
   }
 
   public boolean idInUse(int ID) {
-
     return checkIfExistsInt("Flowers", "flowerID", ID);
   }
 
@@ -437,7 +409,7 @@ public class FlowerDatabase extends Database {
         double pricePer = rset.getDouble("pricePer");
         int idNum = rset.getInt("flowerID");
 
-        Flower node = new Flower(typeFlower, color, qty, pricePer, idNum);
+        Flower node = new Flower(idNum, typeFlower, color, qty, pricePer);
         oList.add(node);
       }
       rset.close();

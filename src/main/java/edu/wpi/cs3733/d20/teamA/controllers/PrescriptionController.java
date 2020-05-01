@@ -71,12 +71,12 @@ public class PrescriptionController extends AbstractController {
     updateTable();
   }
 
-  /** Updates the table with the items in the ITTicket database. */
+  /** Updates the table with the items in the Prescription database. */
   public void updateTable() {
     try {
       tblViewPrescription.clear();
 
-      tblViewPrescription.add(serviceDatabase.observableList(ServiceType.PRESCRIPTION));
+      tblViewPrescription.add(serviceDatabase.getObservableListService(ServiceType.PRESCRIPTION));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

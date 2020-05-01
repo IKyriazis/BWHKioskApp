@@ -8,7 +8,6 @@ import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Interpreter;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.util.Comparator;
 import java.util.Optional;
@@ -73,22 +72,23 @@ public class InterpreterRequestDialogController extends AbstractController
       return;
     }
 
-    Interpreter interpreter = interpreterNameBox.getSelectionModel().getSelectedItem();
-    int id =
-        iDB.addRequest(
-            interpreter.getName(),
-            interpreter.getSecondLanguage(),
-            dest.get().getNodeID(),
-            "Submitted");
-    if (id < 0) {
-      DialogUtil.simpleErrorDialog(
-          dialog.getDialogContainer(),
-          "Database Error",
-          "Failed to submit request to database. Please try again later.");
-    } else {
-      DialogUtil.simpleInfoDialog(
-          dialog.getDialogContainer(), "Request Submitted", "Submitted translation request #" + id);
-    }
+    //    Interpreter interpreter = interpreterNameBox.getSelectionModel().getSelectedItem();
+    //    //int id =
+    //    //    iDB.addRequest(
+    //    //        interpreter.getName(),
+    //            interpreter.getSecondLanguage(),
+    //            dest.get().getNodeID(),
+    //            "Submitted");
+    //    if (id < 0) {
+    //      DialogUtil.simpleErrorDialog(
+    //          dialog.getDialogContainer(),
+    //          "Database Error",
+    //          "Failed to submit request to database. Please try again later.");
+    //    } else {
+    //      DialogUtil.simpleInfoDialog(
+    //          dialog.getDialogContainer(), "Request Submitted", "Submitted translation request #"
+    // + id);
+    //    }
     dialog.close();
   }
 

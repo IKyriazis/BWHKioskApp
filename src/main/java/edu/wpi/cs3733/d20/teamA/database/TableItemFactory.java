@@ -1,8 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
-
 import java.sql.Timestamp;
 
 public class TableItemFactory {
@@ -53,7 +51,7 @@ public class TableItemFactory {
             status,
             additional); // Additional hold name because it doenst check table
       case "interpret":
-        return new InterpreterRequest(9, "Name", "Language", location, status);
+        return new InterpreterRequest("", "Name", "Language", location, status);
       case "rxreq":
         return new Prescription(reqID, description, additional);
       default:
@@ -63,6 +61,7 @@ public class TableItemFactory {
 
   /**
    * Gets the Table for Inventory
+   *
    * @param itemID id
    * @param itemType type for switch case
    * @param itemName name
@@ -73,17 +72,15 @@ public class TableItemFactory {
    * @return table
    */
   public static ITableable getInventory(
-          String itemID,
-          String itemType,
-          String itemName,
-          int quantity,
-          Double unitPrice,
-          String description,
-          String additional) {
-    switch(itemType){
-      case("flower") :
-        return new Flower(itemID,itemName,quantity,unitPrice,additional);
-      default :
+      String itemID,
+      String itemType,
+      String itemName,
+      int quantity,
+      Double unitPrice,
+      String description,
+      String additional) {
+    switch (itemType) {
+      default:
         return null;
     }
   }

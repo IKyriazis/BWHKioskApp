@@ -73,7 +73,7 @@ public class InternalTransportAdminController extends AbstractController {
   public void update() {
     try {
       tblOrderView.clear();
-      tblOrderView.add(serviceDatabase.observableList(ServiceType.INTERNAL_TRANSPORT));
+      tblOrderView.add(serviceDatabase.getObservableListService(ServiceType.INTERNAL_TRANSPORT));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

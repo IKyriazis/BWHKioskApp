@@ -125,38 +125,23 @@ public class PrescriptionDialogController extends AbstractController implements 
     String dosage = txtDosage.getText();
     int numberOfRefills = Integer.parseInt(txtNumberOfRefills.getText());
     String notes = txtNotes.getText();
-
+    String additional =
+        patientName
+            + "|"
+            + prescription
+            + '|'
+            + pharmacy
+            + '|'
+            + dosage
+            + '|'
+            + numberOfRefills
+            + '|'
+            + notes;
     if (!modify) {
-      serviceDatabase.addServiceReq(
-          ServiceType.PRESCRIPTION,
-          null,
-          "",
-          patientName
-              + "|"
-              + prescription
-              + '|'
-              + pharmacy
-              + '|'
-              + dosage
-              + '|'
-              + numberOfRefills
-              + '|'
-              + notes);
+      serviceDatabase.addServiceReq(ServiceType.PRESCRIPTION, null, "", additional);
     } else { // Modify each field
       String id = this.prescription.getPrescriptionID();
-      String add =
-          patientName
-              + "|"
-              + prescription
-              + '|'
-              + pharmacy
-              + '|'
-              + dosage
-              + '|'
-              + numberOfRefills
-              + '|'
-              + notes;
-      serviceDatabase.setAdditional(id, "");
+      serviceDatabase.setAdditional(id, additional);
     }
     dialog.close();
   }

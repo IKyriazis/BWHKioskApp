@@ -31,7 +31,7 @@ public class LaundryCompletedController extends AbstractController implements ID
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(serviceDatabase.observableList(ServiceType.LAUNDRY));
+      tblLaundryView.add(serviceDatabase.getObservableListService(ServiceType.LAUNDRY));
     } catch (Exception e) {
       e.printStackTrace();
     }

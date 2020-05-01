@@ -48,10 +48,10 @@ public class JanitorialController extends AbstractController {
 
   public void initialize() throws SQLException, IOException, CsvException {
     // initialize the database
-    if (serviceDatabase.getSizeReq() == -1) {
+    if (serviceDatabase.getSize() == -1) {
       serviceDatabase.dropTables();
       serviceDatabase.createTables();
-    } else if (serviceDatabase.getSizeReq() == 0) {
+    } else if (serviceDatabase.getSize() == 0) {
       // janitorDatabase.removeAll(); TODO ADD THIS METHOD
     }
 
@@ -63,7 +63,7 @@ public class JanitorialController extends AbstractController {
     statusItems.addAll(a, b, c);
     comboboxNextStatus.getItems().addAll(statusItems);
 
-    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    ObservableList<Employee> allEmployeeList = eDB.getObservableList();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
     activeItems.addAll("Unassigned");
     comboboxJanitorName.getItems().addAll(allEmployeeList);
@@ -73,7 +73,7 @@ public class JanitorialController extends AbstractController {
         event -> {
           allEmployeeList.clear();
 
-          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.addAll(eDB.getObservableList());
           allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
           comboboxJanitorName.setItems(allEmployeeList);
@@ -173,7 +173,7 @@ public class JanitorialController extends AbstractController {
     try {
       tblServiceView.clear();
 
-      tblServiceView.add(serviceDatabase.observableList(ServiceType.JANITOR));
+      tblServiceView.add(serviceDatabase.getObservableListService(ServiceType.JANITOR));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

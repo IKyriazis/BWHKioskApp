@@ -89,7 +89,7 @@ public class ShowOrderController extends AbstractController implements IDialogCo
     } else {
       txtPrevEmp.setText("No employee assigned");
     }
-    txtNextEmp.getItems().addAll(eDB.employeeOl());
+    txtNextEmp.getItems().addAll(eDB.getObservableList());
   }
 
   public void setOrder(Order value) {

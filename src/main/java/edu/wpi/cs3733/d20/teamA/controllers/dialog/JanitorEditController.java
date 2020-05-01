@@ -78,7 +78,7 @@ public class JanitorEditController extends AbstractController implements IDialog
     priorityItems.addAll(a, b, c);
     comboboxPriority.getItems().addAll(priorityItems);
 
-    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    ObservableList<Employee> allEmployeeList = eDB.getObservableList();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
     comboboxJanitor.getItems().addAll(allEmployeeList);
@@ -90,7 +90,7 @@ public class JanitorEditController extends AbstractController implements IDialog
         event -> {
           allEmployeeList.clear();
 
-          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.addAll(eDB.getObservableList());
           allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
           comboboxJanitor.setItems(allEmployeeList);

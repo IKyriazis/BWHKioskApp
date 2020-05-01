@@ -8,12 +8,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
-
-import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class EmployeesDatabase extends Database implements IDatabase{
+public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   private final int numIterations = 14; // 2 ^ 16 = 16384 iterations
 
   public EmployeesDatabase(Connection connection) {
@@ -52,17 +50,17 @@ public class EmployeesDatabase extends Database implements IDatabase{
 
     boolean a =
         helperPrepared(
-            "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY," +
-                    " nameFirst Varchar(25), nameLast Varchar(25)," +
-                    " username Varchar(25) UNIQUE NOT NULL," +
-                    " password Varchar(60) NOT NULL, title Varchar(50))");
+            "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
+                + " nameFirst Varchar(25), nameLast Varchar(25),"
+                + " username Varchar(25) UNIQUE NOT NULL,"
+                + " password Varchar(60) NOT NULL, title Varchar(50))");
     boolean c =
         helperPrepared(
-            "CREATE TABLE LoggedIn (username Varchar(25)," +
-                    " timeLogged TIMESTAMP, flag BOOLEAN," +
-                    " CONSTRAINT FK_USE FOREIGN KEY (username)" +
-                    " REFERENCES Employees (username), CONSTRAINT" +
-                    " PK_UST PRIMARY KEY (username, timeLogged))");
+            "CREATE TABLE LoggedIn (username Varchar(25),"
+                + " timeLogged TIMESTAMP, flag BOOLEAN,"
+                + " CONSTRAINT FK_USE FOREIGN KEY (username)"
+                + " REFERENCES Employees (username), CONSTRAINT"
+                + " PK_UST PRIMARY KEY (username, timeLogged))");
     return a && c;
   }
 
@@ -85,9 +83,9 @@ public class EmployeesDatabase extends Database implements IDatabase{
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Employees (employeeID, nameFirst, nameLast," +
-                          " username, password, title)" +
-                          " VALUES (?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast,"
+                      + " username, password, title)"
+                      + " VALUES (?, ?, ?, ?, ?, ?)");
       pstmt.setString(1, employeeID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
@@ -319,8 +317,8 @@ public class EmployeesDatabase extends Database implements IDatabase{
    *
    * @return an observable list containing all employees in the table
    */
-  public synchronized ObservableList<ITableable> getObservableList() {
-    ObservableList<ITableable> eList = FXCollections.observableArrayList();
+  public synchronized ObservableList<Employee> getObservableList() {
+    ObservableList<Employee> eList = FXCollections.observableArrayList();
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees");
       ResultSet rset = pstmt.executeQuery();
@@ -356,7 +354,7 @@ public class EmployeesDatabase extends Database implements IDatabase{
       for (int i = 1; i < data.size(); i++) {
         String nameFirst, nameLast, username, password, title;
         String employeeID;
-        employeeID =data.get(i)[0];
+        employeeID = data.get(i)[0];
         nameFirst = data.get(i)[1];
         nameLast = data.get(i)[2];
         username = data.get(i)[3];
@@ -430,7 +428,7 @@ public class EmployeesDatabase extends Database implements IDatabase{
     return false;
   }
 
-  public boolean removeAll(){
+  public boolean removeAll() {
     return (removeAllEmployees() && removeAllLogs());
   }
 

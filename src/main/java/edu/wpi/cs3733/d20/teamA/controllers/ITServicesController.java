@@ -109,7 +109,7 @@ public class ITServicesController extends AbstractController {
     try {
       tblViewITTicket.clear();
 
-      tblViewITTicket.add(serviceDatabase.observableList(ServiceType.IT_TICKET));
+      tblViewITTicket.add(serviceDatabase.getObservableListService(ServiceType.IT_TICKET));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(ITStackPane, "Error", "Failed to update IT Ticket Table");

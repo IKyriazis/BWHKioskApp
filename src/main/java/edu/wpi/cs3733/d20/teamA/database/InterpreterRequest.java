@@ -4,34 +4,30 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class InterpreterRequest implements ITableable<InterpreterRequest> {
-  SimpleIntegerProperty requestNumber;
+  SimpleStringProperty requestID;
   SimpleStringProperty name;
   SimpleStringProperty language;
   SimpleStringProperty location;
   SimpleStringProperty status;
 
-  public InterpreterRequest(int num, String name, String language, String location, String status) {
-    this.requestNumber = new SimpleIntegerProperty(num);
+  public InterpreterRequest(
+      String id, String name, String language, String location, String status) {
+    this.requestID = new SimpleStringProperty(id);
     this.name = new SimpleStringProperty(name);
     this.language = new SimpleStringProperty(language);
     this.location = new SimpleStringProperty(location);
     this.status = new SimpleStringProperty(status);
   }
 
-  public int getRequestNumber() {
-    return requestNumber.get();
+  public String getRequestID() {
+    return requestID.get();
   }
 
-  public SimpleIntegerProperty requestNumberProperty() {
-    return requestNumber;
-  }
-
-  public void setRequestNumber(int requestNumber) {
-    this.requestNumber.set(requestNumber);
+  public SimpleStringProperty requestIDProperty() {
+    return requestID;
   }
 
   public String getName() {
@@ -52,10 +48,6 @@ public class InterpreterRequest implements ITableable<InterpreterRequest> {
 
   public SimpleStringProperty languageProperty() {
     return language;
-  }
-
-  public void setLanguage(String language) {
-    this.language.set(language);
   }
 
   public String getLocation() {
@@ -84,9 +76,8 @@ public class InterpreterRequest implements ITableable<InterpreterRequest> {
 
   @Override
   public ArrayList<JFXTreeTableColumn<InterpreterRequest, ?>> getColumns() {
-    JFXTreeTableColumn<InterpreterRequest, Integer> col0 = new JFXTreeTableColumn<>("Number");
-    col0.setCellValueFactory(
-        param -> param.getValue().getValue().requestNumberProperty().asObject());
+    JFXTreeTableColumn<InterpreterRequest, String> col0 = new JFXTreeTableColumn<>("Number");
+    col0.setCellValueFactory(param -> param.getValue().getValue().requestIDProperty());
 
     JFXTreeTableColumn<InterpreterRequest, String> col1 = new JFXTreeTableColumn<>("Name");
     col1.setCellValueFactory(param -> param.getValue().getValue().nameProperty());

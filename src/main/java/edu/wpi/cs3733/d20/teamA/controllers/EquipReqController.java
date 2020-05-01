@@ -63,7 +63,7 @@ public class EquipReqController extends AbstractController {
     try {
 
       tblEquipView.clear();
-      tblEquipView.add(serviceDatabase.observableList(ServiceType.EQUIPMENT));
+      tblEquipView.add(serviceDatabase.getObservableListService(ServiceType.EQUIPMENT));
 
     } catch (Exception e) {
       e.printStackTrace();

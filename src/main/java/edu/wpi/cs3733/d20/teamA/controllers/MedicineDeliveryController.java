@@ -77,7 +77,7 @@ public class MedicineDeliveryController extends AbstractController {
   public void update() {
     try {
       tblMedReq.clear();
-      tblMedReq.add(serviceDatabase.observableList(ServiceType.MEDICINE));
+      tblMedReq.add(serviceDatabase.getObservableListService(ServiceType.MEDICINE));
     } catch (Exception e) {
       e.printStackTrace();
     }

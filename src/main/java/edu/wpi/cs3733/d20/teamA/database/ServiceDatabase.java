@@ -5,7 +5,7 @@ import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class ServiceDatabase extends Database implements IDatabase{
+public class ServiceDatabase extends Database implements IDatabase<ITableable> {
 
   public ServiceDatabase(Connection connection) {
     super(connection);
@@ -325,7 +325,7 @@ public class ServiceDatabase extends Database implements IDatabase{
     }
   }
 
-  public synchronized ObservableList<ITableable> getObservableList(){
+  public synchronized ObservableList<ITableable> getObservableList() {
     ObservableList<ITableable> observableList = FXCollections.observableArrayList();
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM SERVICEREQ");
@@ -341,9 +341,16 @@ public class ServiceDatabase extends Database implements IDatabase{
         String description = rset.getString("description");
         String additional = rset.getString("additional");
         ITableable item =
-                TableItemFactory.getService(
-                        servType, id, didReqName, madeReqName,timeOfReq, status,
-                        location, description, additional);
+            TableItemFactory.getService(
+                servType,
+                id,
+                didReqName,
+                madeReqName,
+                timeOfReq,
+                status,
+                location,
+                description,
+                additional);
         observableList.add(item);
       }
       rset.close();

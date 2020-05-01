@@ -104,22 +104,12 @@ public class PatientEditController extends AbstractController implements IDialog
       return;
     }
 
-    if (myPatient == null) {
-      myPatient =
-          new Patient(
-              patientDatabase.getSizePatients() + 1,
-              txtFirstName.getText(),
-              txtLastName.getText(),
-              txtHealthInsurance.getText(),
-              txtDateOfBirth.getText());
-    }
+    String first = txtFirstName.getText();
+    String last = txtLastName.getText();
+    String healthIns = txtHealthInsurance.getText();
+    String birthday = txtDateOfBirth.getText();
 
     try {
-      int id = myPatient.getPatientID();
-      String first = txtFirstName.getText();
-      String last = txtLastName.getText();
-      String healthIns = txtHealthInsurance.getText();
-      String birthday = txtDateOfBirth.getText();
 
       if (checkDOBFormat(birthday)) {
 

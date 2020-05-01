@@ -18,7 +18,7 @@ public abstract class AbstractController {
   protected EmployeesDatabase eDB;
 
   protected PatientDatabase patientDatabase; // Not usable as service request table line
-  protected InterpreterDatabase iDB;//Have to separate the tables
+  protected InterpreterDatabase iDB; // Have to separate the tables
   protected AnnouncementDatabase announcementDatabase;
 
   public AbstractController() {

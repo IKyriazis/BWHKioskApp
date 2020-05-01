@@ -56,7 +56,7 @@ public class InterpreterController extends AbstractController {
     interpreterTable = new SimpleTableView<>(new Interpreter("", ""), 80.0);
     interpreterTablePane.getChildren().addAll(interpreterTable);
 
-    requestTable = new SimpleTableView<>(new InterpreterRequest(0, "", "", "", ""), 60.0);
+    requestTable = new SimpleTableView<>(new InterpreterRequest("", "", "", "", ""), 60.0);
     requestTablePane.getChildren().addAll(requestTable);
 
     rootPane.addEventHandler(
@@ -131,17 +131,17 @@ public class InterpreterController extends AbstractController {
 
   @FXML
   public void completeClicked() {
-    InterpreterRequest selected = requestTable.getSelected();
-    if (selected != null) {
-      boolean success = iDB.updateRequestStatus(selected.getRequestNumber(), "Completed");
-      if (success) {
-        updateTables();
-      } else {
-        DialogUtil.simpleErrorDialog(
-            dialogPane,
-            "Database Error",
-            "Failed to update status in database. Please try again later.");
-      }
-    }
+    //    InterpreterRequest selected = requestTable.getSelected();
+    //    if (selected != null) {
+    //      //boolean success = iDB.updateRequestStatus(selected.getRequestID(), "Completed");
+    //      if (success) {
+    //        updateTables();
+    //      } else {
+    //        DialogUtil.simpleErrorDialog(
+    //            dialogPane,
+    //            "Database Error",
+    //            "Failed to update status in database. Please try again later.");
+    //      }
+    //   }
   }
 }

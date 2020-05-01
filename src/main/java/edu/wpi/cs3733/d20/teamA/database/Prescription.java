@@ -18,18 +18,11 @@ public class Prescription implements ITableable<Prescription> {
   @Setter private SimpleStringProperty doctorName = null;
   @Setter private SimpleStringProperty notes = null;
 
-  public Prescription(String prescriptionID, String description, String additional)
-        /*String patientName,
-        String prescription,
-        String pharmacy,
-        String dosage,
-        int numberOfRefills,
-        String doctorName,
-        String notes*/ {
+  public Prescription(String prescriptionID, String description, String additional) {
     // patientName+"|"+prescription+'|'+pharmacy+'|'+dosage+'|'+numberOfRefills;
     if (additional != null) {
       String[] additionalArray = additional.split("|");
-      if(additionalArray.length == 6) {
+      if (additionalArray.length == 6) {
         String patientName = additionalArray[0];
         String prescription = additionalArray[1];
         String pharmacy = additionalArray[2];
