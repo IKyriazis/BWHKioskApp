@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
+import edu.wpi.cs3733.d20.teamA.database.ItemType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.fxml.FXML;
 
@@ -46,9 +47,12 @@ public class InterpreterDialogController extends AbstractController implements I
       return;
     }
 
-    boolean success = iDB.addInterpreter(nameField.getText(), languageField.getText());
+    String success =
+        inventoryDatabase.addItem(
+            ItemType.INTERPRETER, nameField.getText(), 0, 0.0, null, languageField.getText());
 
-    if (!success) {
+    if (success == null) // Set up actual error checking
+    {
       DialogUtil.simpleErrorDialog(
           dialog.getDialogContainer(),
           "Database Error",

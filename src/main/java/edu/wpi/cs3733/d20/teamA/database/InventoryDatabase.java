@@ -25,13 +25,13 @@ public class InventoryDatabase extends Database implements IDatabase {
           "CREATE TABLE Inventory (itemID Varchar(6) PRIMARY KEY, "
               + "itemType Varchar(20) NOT NULL, itemName Varchar(50) UNIQUE NOT NULL, "
               + "quantity INTEGER, unitPrice REAL, description Varchar(100), additional Varchar(2000), "
-              + "CONSTRAINT Check_IType CHECK (itemType in ('flower')))");
+              + "CONSTRAINT Check_IType CHECK (itemType in ('flower','interpreter')))");
     }
     return false;
   }
 
   public synchronized String addItem(
-      String type,
+      ItemType type,
       String name,
       int quantity,
       double unitPrice,
@@ -45,13 +45,13 @@ public class InventoryDatabase extends Database implements IDatabase {
       b = checkIfExistsString("Inventory", "itemID", itemID);
     }
     try {
-      if (a) {
+      if (!a) {
         PreparedStatement pstmt =
             getConnection()
                 .prepareStatement(
                     "INSERT INTO Inventory (itemID, itemType, itemName, quantity, unitPrice, description, additional) VALUES (?, ?, ?, ?, ?, ?, ?)");
         pstmt.setString(1, itemID);
-        pstmt.setString(2, type);
+        pstmt.setString(2, type.toString());
         pstmt.setString(3, name);
         pstmt.setInt(4, quantity);
         pstmt.setDouble(5, unitPrice);
@@ -111,6 +111,38 @@ public class InventoryDatabase extends Database implements IDatabase {
             TableItemFactory.getInventory(
                 itemID, itemType, itemName, quantity, unitPrice, description, additional);
         observableList.add(item);
+      }
+      rset.close();
+      pstmt.close();
+      return observableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public synchronized ObservableList<ITableable> getObservableListItem(ItemType item) {
+    ObservableList<ITableable> observableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Inventory");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String itemID = rset.getString("itemID");
+        String itemType = rset.getString("itemType");
+        String itemName = rset.getString("itemName");
+        int quantity = rset.getInt("quantity");
+        double unitPrice = rset.getDouble("unitPrice");
+        String description = rset.getString("description");
+        String additional = rset.getString("additional");
+
+        ITableable listItem = null;
+        if (item == ItemType.INTERPRETER) {
+          listItem = new Interpreter(itemID, itemName, additional);
+        }
+        /*ITableable item =
+        TableItemFactory.getInventory(
+            itemID, itemType, itemName, quantity, unitPrice, description, additional);*/
+        observableList.add(listItem);
       }
       rset.close();
       pstmt.close();
