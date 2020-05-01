@@ -81,6 +81,7 @@
                         <JFXRadioButton fx:id="aStarButton" selected="true" text="A*" />
                         <JFXRadioButton fx:id="dfsButton" text="Depth First Search" />
                         <JFXRadioButton fx:id="bfsButton" text="Breadth First Search" />
+                        <JFXRadioButton fx:id="djikstraButton" text="Djikstra" />
                      </children>
                   </VBox>
                </children>
