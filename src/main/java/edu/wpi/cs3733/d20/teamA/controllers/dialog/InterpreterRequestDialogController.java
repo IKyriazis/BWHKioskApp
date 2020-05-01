@@ -78,7 +78,7 @@ public class InterpreterRequestDialogController extends AbstractController
     Interpreter interpreter = interpreterNameBox.getSelectionModel().getSelectedItem();
     String id =
         serviceDatabase.addServiceReq(
-            ServiceType.INTERPRETER,
+            ServiceType.INTERPRETER_REQ,
             dest.get().getLongName(),
             interpreter.getName(),
             interpreter.getSecondLanguage());

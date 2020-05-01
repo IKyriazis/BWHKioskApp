@@ -69,7 +69,7 @@ public class InterpreterController extends AbstractController {
       interpreterTable.add(inventoryDatabase.getObservableListItem(ItemType.INTERPRETER));
 
       requestTable.clear();
-      requestTable.add(serviceDatabase.getObservableListService(ServiceType.INTERPRETER));
+      requestTable.add(serviceDatabase.getObservableListService(ServiceType.INTERPRETER_REQ));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(
