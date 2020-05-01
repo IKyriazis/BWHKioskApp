@@ -2,9 +2,6 @@ package edu.wpi.cs3733.d20.teamA.graph;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.control.Label;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
-import org.kordamp.ikonli.javafx.FontIcon;
 
 public abstract class PathAlgo {
 
@@ -70,8 +67,8 @@ public abstract class PathAlgo {
    *
    * @return textPath The array of Labels that write the path out
    */
-  public ArrayList<Label> textualDirections() {
-    ArrayList<Label> textPath = new ArrayList<>();
+  public ArrayList<String> textualDirections() {
+    ArrayList<String> textPath = new ArrayList<>();
     ArrayList<Direction> directions = new ArrayList<>();
     double lastAngle = -100.0;
     // For every node in the path
@@ -138,27 +135,17 @@ public abstract class PathAlgo {
     // Formulate the string of directions
     for (int j = 0; j < directions.size(); j++) {
       if (directions.get(j) == Direction.RIGHT) {
-        textPath.add(
-            new Label(
-                "Turn right at " + pathNodes.get(j).getLongName(),
-                new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT)));
+        textPath.add("Turn right at " + pathNodes.get(j).getLongName());
       } else if (directions.get(j) == Direction.LEFT) {
-        textPath.add(
-            new Label(
-                "Turn left at " + pathNodes.get(j).getLongName(),
-                new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT)));
+        textPath.add("Turn left at " + pathNodes.get(j).getLongName());
       } else if (directions.get(j) == Direction.UP) {
         int sameLength = getSameLength(directions, j, Direction.UP);
 
         if (sameLength >= 1) {
           j += sameLength - 1;
-          textPath.add(
-              new Label(
-                  "Go up " + sameLength + " floors",
-                  new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
+          textPath.add("Go up " + sameLength + " floors");
         } else {
-          textPath.add(
-              new Label("Go up until destination", new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
+          textPath.add("Go up until destination");
           break;
         }
       } else if (directions.get(j) == Direction.DOWN) {
@@ -166,14 +153,9 @@ public abstract class PathAlgo {
 
         if (sameLength >= 1) {
           j += sameLength - 1;
-          textPath.add(
-              new Label(
-                  "Go down " + sameLength + " floors",
-                  new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN)));
+          textPath.add("Go down " + sameLength + " floors");
         } else {
-          textPath.add(
-              new Label(
-                  "Go up until destination", new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN)));
+          textPath.add("Go up until destination");
           break;
         }
 
@@ -183,24 +165,15 @@ public abstract class PathAlgo {
 
         if (sameLength >= 1) {
           j += sameLength - 1;
-          textPath.add(
-              new Label(
-                  "Go straight until " + pathNodes.get(j + 1).getLongName(),
-                  new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP)));
+          textPath.add("Go straight until " + pathNodes.get(j + 1).getLongName());
         } else {
-          textPath.add(
-              new Label(
-                  "Continue straight until destination",
-                  new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP)));
+          textPath.add("Continue straight until destination");
           break;
         }
       }
     }
 
-    textPath.add(
-        new Label(
-            "You have reached " + pathNodes.get(pathNodes.size() - 1).getLongName(),
-            new FontIcon(FontAwesomeSolid.DOT_CIRCLE)));
+    textPath.add("You have reached " + pathNodes.get(pathNodes.size() - 1).getLongName());
 
     return textPath;
   }

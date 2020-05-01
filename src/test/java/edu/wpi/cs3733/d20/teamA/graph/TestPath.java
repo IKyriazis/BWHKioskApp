@@ -1,8 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
-import com.opencsv.exceptions.CsvException;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -26,9 +23,9 @@ public class TestPath {
   Node nodeH = new Node("NodeH", 3, 8, 1, "", NodeType.HALL, "hh", "", "");
   Node nodeI = new Node("NodeI", 6, 8, 1, "", NodeType.HALL, "ii", "", "");
 
-  public TestPath() throws SQLException, IOException, CsvException {}
+  public TestPath() {}
 
-  public void setupFirstGraph() throws SQLException {
+  public void setupFirstGraph() {
     graph.clearGraph();
 
     // Add Nodes to Graph
@@ -44,7 +41,7 @@ public class TestPath {
     graph.addEdge(node1, node4, 1);
   }
 
-  public void setupSecondGraph() throws SQLException {
+  public void setupSecondGraph() {
     graph.clearGraph();
 
     graph.addNode(nodeA);
@@ -76,7 +73,7 @@ public class TestPath {
   }
 
   @Test
-  public void testAStarGraph1() throws SQLException {
+  public void testAStarGraph1() {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(node1);
     realPath.add(node3);
@@ -93,7 +90,7 @@ public class TestPath {
   }
 
   @Test
-  public void testAStarGraph2() throws SQLException {
+  public void testAStarGraph2() {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(nodeG);
     realPath.add(nodeH);
@@ -112,7 +109,7 @@ public class TestPath {
   }
 
   @Test
-  public void testBreadthFirstGraph1() throws SQLException {
+  public void testBreadthFirstGraph1() {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(node1);
     realPath.add(node3);
@@ -129,7 +126,7 @@ public class TestPath {
   }
 
   @Test
-  public void testBreadthFirstGraph2() throws SQLException {
+  public void testBreadthFirstGraph2() {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(nodeG);
     realPath.add(nodeD);
@@ -148,7 +145,7 @@ public class TestPath {
   }
 
   @Test
-  public void testDepthFirstGraph1() throws SQLException {
+  public void testDepthFirstGraph1() {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(node1);
     realPath.add(node3);
@@ -164,7 +161,7 @@ public class TestPath {
   }
 
   @Test
-  public void testDepthFirstGraph2() throws SQLException {
+  public void testDepthFirstGraph2() {
     ArrayList<Node> realPath = new ArrayList<>();
     realPath.add(nodeG);
     realPath.add(nodeH);
@@ -182,18 +179,64 @@ public class TestPath {
   }
 
   @Test
-  public void testContextPath() throws SQLException {
+  public void testContextPath() {
     ContextPath path = new ContextPath();
     setupFirstGraph();
 
     path.setPath(new BreadthFirst(graph));
     Assertions.assertTrue(path.getPathFindingAlgo() instanceof BreadthFirst);
+    path.update();
 
     path.setPath(new DepthFirst(graph));
     Assertions.assertTrue(path.getPathFindingAlgo() instanceof DepthFirst);
+    path.update();
 
     path.setPath(new Path(graph));
     Assertions.assertTrue(path.getPathFindingAlgo() instanceof Path);
+
+    path.setPath(new Djikstras(graph));
+    Assertions.assertTrue(path.getPathFindingAlgo() instanceof Djikstras);
+    graph.clearGraph();
+  }
+
+  @Test
+  public void testDjikstrasGraph1() {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(node1);
+    realPath.add(node3);
+
+    setupFirstGraph();
+    Djikstras path = new Djikstras(graph);
+    path.findPath(node1, node3);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+    path.update();
+
+    Assertions.assertNotNull(pathNodes);
+
+    Assertions.assertEquals(realPath, pathNodes);
+    graph.clearGraph();
+  }
+
+  @Test
+  public void testDjikstrasGraph2() {
+    ArrayList<Node> realPath = new ArrayList<>();
+    realPath.add(nodeG);
+    realPath.add(nodeH);
+    realPath.add(nodeF);
+    realPath.add(nodeC);
+
+    setupSecondGraph();
+    Djikstras path = new Djikstras(graph);
+    path.findPath(nodeG, nodeC);
+    ArrayList<Node> pathNodes = path.getPathNodes();
+    ArrayList<Edge> pathEdges = path.getPathEdges();
+    Graph testGraph = path.getGraph();
+    ArrayList<String> textpath = path.textualDirections();
+
+    Assertions.assertNotNull(pathNodes);
+
+    Assertions.assertEquals(realPath, pathNodes);
+
     graph.clearGraph();
   }
 }

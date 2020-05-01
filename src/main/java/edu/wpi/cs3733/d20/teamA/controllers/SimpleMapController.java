@@ -193,7 +193,8 @@ public class SimpleMapController {
 
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
-        ArrayList<Label> directions = path.getPathFindingAlgo().textualDirections();
+        ArrayList<Label> directions =
+            texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections());
         directions.forEach(
             l -> {
               directionsList.getItems().add(l);
@@ -274,5 +275,33 @@ public class SimpleMapController {
     canvas.draw(floor);
     floorField.setText(String.valueOf(floor));
     canvas.draw(floor);
+  }
+
+  public ArrayList<Label> texDirectionsWithLabels(ArrayList<String> textualPath) {
+    ArrayList<Label> textPath = new ArrayList<>();
+    for (int j = 0; j < textualPath.size() - 1; j++) {
+      if (textualPath.get(j).contains("right")) {
+        textPath.add(
+            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT)));
+      } else if (textualPath.get(j).contains("left")) {
+        textPath.add(
+            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT)));
+      } else if (textualPath.get(j).contains("up")) {
+        textPath.add(new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
+      } else if (textualPath.get(j).contains("down")) {
+        textPath.add(
+            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN)));
+
+      } else {
+        textPath.add(
+            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP)));
+      }
+    }
+
+    textPath.add(
+        new Label(
+            textualPath.get(textualPath.size() - 1), new FontIcon(FontAwesomeSolid.DOT_CIRCLE)));
+
+    return textPath;
   }
 }
