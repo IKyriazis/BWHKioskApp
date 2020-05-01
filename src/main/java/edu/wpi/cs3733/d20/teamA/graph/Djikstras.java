@@ -38,11 +38,6 @@ public class Djikstras extends PathAlgo implements IStrategyPath {
       for (Edge edge : current.getEdges().values()) {
         Node neighbor = edge.getEnd();
 
-        // Only consider nodes on this floor for now.
-        // if (neighbor.getFloor() != start.getFloor()) {
-        //  continue;
-        // }
-
         // if the neighbor hasn't been visited
         if (!visited.contains(neighbor)) {
 
