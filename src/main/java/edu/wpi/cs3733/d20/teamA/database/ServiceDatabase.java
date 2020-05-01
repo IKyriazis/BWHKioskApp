@@ -5,7 +5,7 @@ import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class ServiceDatabase extends Database {
+public class ServiceDatabase extends Database{
 
   public ServiceDatabase(Connection connection) {
     super(connection);

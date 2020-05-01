@@ -154,10 +154,7 @@ public abstract class Database {
       }
       rset.close();
       pstm.close();
-      if (username != null) {
-        return username;
-      }
-      return null;
+      return username;
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
