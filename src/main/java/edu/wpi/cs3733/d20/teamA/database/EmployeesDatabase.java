@@ -6,10 +6,12 @@ import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.SecureRandom;
 import java.sql.*;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.apache.commons.codec.binary.Base32;
 
 public class EmployeesDatabase extends Database {
   int employeeID;
@@ -57,7 +59,7 @@ public class EmployeesDatabase extends Database {
 
     boolean a =
         helperPrepared(
-            "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(60) NOT NULL, title Varchar(50))");
+            "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32))");
     boolean c =
         helperPrepared(
             "CREATE TABLE LoggedIn (username Varchar(25), timeLogged TIMESTAMP, flag BOOLEAN, CONSTRAINT FK_USE FOREIGN KEY (username) REFERENCES Employees (username), CONSTRAINT PK_UST PRIMARY KEY (username, timeLogged))");
@@ -97,6 +99,68 @@ public class EmployeesDatabase extends Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
+    }
+  }
+
+  // copied from medium to create google authenticator secret key
+  public static String generateSecretKey() {
+    SecureRandom random = new SecureRandom();
+    byte[] bytes = new byte[20];
+    random.nextBytes(bytes);
+    Base32 base32 = new Base32();
+    return base32.encodeToString(bytes);
+  }
+
+  /**
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
+   */
+  public synchronized String addEmployeeGA(
+      String nameFirst, String nameLast, String username, String password, String title) {
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+    String secretKey = generateSecretKey();
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setInt(1, getRandomNumber());
+      pstmt.setString(2, nameFirst);
+      pstmt.setString(3, nameLast);
+      pstmt.setString(4, username);
+      pstmt.setString(5, storedPassword);
+      pstmt.setString(6, title);
+      pstmt.setString(7, secretKey);
+      pstmt.executeUpdate();
+      pstmt.close();
+      this.employeeID++;
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  // get the secret key (used for google authenticator) of the specified user
+  public synchronized String getSecretKey(String uname) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("Select secretKey From Employees Where username = '" + uname + "'");
+      ResultSet rset = pstmt.executeQuery();
+      String secretKey = "";
+      if (rset.next()) {
+        secretKey = rset.getString("secretKey");
+      }
+      rset.close();
+      pstmt.close();
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
     }
   }
 
