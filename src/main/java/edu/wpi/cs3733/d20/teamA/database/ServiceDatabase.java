@@ -23,9 +23,9 @@ public class ServiceDatabase extends Database{
   }
 
   /**
-   * Creates graph tables
+   * Creates Service Request table
    *
-   * @return False if tables couldn't be created
+   * @return False if table couldn't be created
    */
   public synchronized boolean createTables() {
 
@@ -80,13 +80,10 @@ public class ServiceDatabase extends Database{
       String description,
       String additional) {
 
-    long l = getRandomNumber();
-    String reqID = Long.toString(l, 36);
+    String reqID = getRandomString();
     boolean c = checkIfExistsString("ServiceReq", "reqID", reqID);
     while (c) {
-      l = getRandomNumber();
-      reqID = Long.toString(l, 36);
-      reqID = ("000000" + reqID).substring(reqID.length() - 1);
+      reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
     String madeReqName = getLoggedIn();
@@ -119,13 +116,10 @@ public class ServiceDatabase extends Database{
   public synchronized String addServiceReq(
       ServiceType servType, Timestamp t, String location, String description, String additional) {
 
-    long l = getRandomNumber();
-    String reqID = Long.toString(l, 36);
+    String reqID = getRandomString();
     boolean c = checkIfExistsString("ServiceReq", "reqID", reqID);
     while (c) {
-      l = getRandomNumber();
-      reqID = Long.toString(l, 36);
-      reqID = ("000000" + reqID).substring(reqID.length() - 1);
+      reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
     String madeReqName = getLoggedIn();
@@ -155,7 +149,7 @@ public class ServiceDatabase extends Database{
     }
   }
 
-  public boolean deleteServReq(String reqID) {
+  public synchronized boolean deleteServReq(String reqID) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("DELETE From SERVICEREQ Where reqID = '" + reqID + "'");
@@ -168,11 +162,11 @@ public class ServiceDatabase extends Database{
     }
   }
 
-  public int getSizeReq() {
+  public synchronized int getSizeReq() {
     return getSize("SERVICEREQ");
   }
 
-  public boolean removeAllReqs() {
+  public synchronized boolean removeAllReqs() {
     return helperPrepared("DELETE From SERVICEREQ");
   }
 
@@ -206,7 +200,7 @@ public class ServiceDatabase extends Database{
     }
   }
 
-  public String helperGetString(String s, String col) {
+  public synchronized String helperGetString(String s, String col) {
     try {
       boolean a = checkIfExistsString("SERVICEREQ", "reqID", s);
       if (a) {
@@ -228,7 +222,7 @@ public class ServiceDatabase extends Database{
     }
   }
 
-  public String getStatus(String reqID) {
+  public synchronized String getStatus(String reqID) {
     return helperGetString(reqID, "status");
   }
 
@@ -274,7 +268,7 @@ public class ServiceDatabase extends Database{
     }
   }
 
-  public boolean setStatus(String IDString, String status) {
+  public synchronized boolean setStatus(String IDString, String status) {
     try {
       PreparedStatement pstmt =
           getConnection()
