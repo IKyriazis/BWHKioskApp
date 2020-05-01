@@ -30,6 +30,7 @@ public class LoginController extends AbstractController {
   @FXML private JFXButton loginButton;
   @FXML private JFXButton authenticateButton;
   @FXML private JFXTextField usernameBox;
+  @FXML private JFXTextField gauthCode;
   @FXML private JFXPasswordField passwordBox;
   @FXML private StackPane dialogPane;
   @FXML private JFXButton logoutButton;
@@ -41,6 +42,7 @@ public class LoginController extends AbstractController {
 
   private boolean loggedIn = false;
   private boolean transitioning = false;
+  private String username;
 
   @FXML
   public void initialize() {
@@ -186,8 +188,44 @@ public class LoginController extends AbstractController {
                   loginButton.setDisable(false);
                 });
           } else {
+            if (eDB.getSecretKey(usernameBox.getText()) == null) {
+              System.out.println("Secret key is null");
+              Platform.runLater(
+                  () -> {
+                    eDB.addLog(usernameBox.getText());
+                    // Chuck the login box way off screen
+                    transitioning = true;
+                    TranslateTransition translate =
+                        new TranslateTransition(Duration.millis(1000), loginBox);
+                    translate.setByY(-2000f);
+                    translate.setOnFinished(
+                        event -> {
+                          // Clear username / password once they're off screen
+                          usernameBox.setText("");
+                          passwordBox.setText("");
+                          transitioning = false;
+
+                          // Reset visibility of stuff in box
+                          buttonBox.setDisable(false);
+                          buttonBox.setOpacity(1.0);
+                          spinner.setOpacity(0.0);
+                          loginButton.setDisable(false);
+                        });
+                    translate.play();
+
+                    // Fade out the background
+                    FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
+                    fade.setFromValue(1.0);
+                    fade.setToValue(0.0);
+                    fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
+                    fade.play();
+
+                    loggedIn = true;
+                  });
+            }
             Platform.runLater(
                 () -> {
+                  username = usernameBox.getText();
                   // Fade out spinner
                   FadeTransition spinnerOutFade = new FadeTransition(Duration.millis(250), spinner);
                   spinnerOutFade.setFromValue(1.0);
@@ -198,54 +236,47 @@ public class LoginController extends AbstractController {
                   gauth.setVisible(true);
                   loginButton.setVisible(false);
                   authenticateButton.setVisible(true);
-
-
                 });
-            //            eDB.addLog(usernameBox.getText());
-            //            Platform.runLater(
-            //                () -> {
-            //                  // Chuck the login box way off screen
-            //                  transitioning = true;
-            //                  TranslateTransition translate =
-            //                      new TranslateTransition(Duration.millis(1000), loginBox);
-            //                  translate.setByY(-2000f);
-            //                  translate.setOnFinished(
-            //                      event -> {
-            //                        // Clear username / password once they're off screen
-            //                        usernameBox.setText("");
-            //                        passwordBox.setText("");
-            //                        transitioning = false;
-            //
-            //                        // Reset visibility of stuff in box
-            //                        buttonBox.setDisable(false);
-            //                        buttonBox.setOpacity(1.0);
-            //                        spinner.setOpacity(0.0);
-            //                        loginButton.setDisable(false);
-            //                      });
-            //                  translate.play();
-            //
-            //                  // Fade out the background
-            //                  FadeTransition fade = new FadeTransition(Duration.millis(500),
-            // blockerPane);
-            //                  fade.setFromValue(1.0);
-            //                  fade.setToValue(0.0);
-            //                  fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
-            //                  fade.play();
-            //
-            //                  loggedIn = true;
-            //                });
           }
         });
   }
 
-  public boolean authenticate(String uname, String userCode) {
-    buttonBox.setVisible(false);
-    gauth.setVisible(true);
-    String secretKey = eDB.getSecretKey(uname);
-    return userCode.equals(getTOTPCode(secretKey));
-  }
+  public void authenticateButtonPressed() {
+    String secretKey = eDB.getSecretKey(username);
+    if (gauthCode.getText().equals(getTOTPCode(secretKey))) {
+      eDB.addLog(usernameBox.getText());
+      // Chuck the login box way off screen
+      transitioning = true;
+      TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
+      translate.setByY(-2000f);
+      translate.setOnFinished(
+          event -> {
+            // Clear username / password once they're off screen
+            usernameBox.setText("");
+            passwordBox.setText("");
+            transitioning = false;
 
-  public void authenticateButtonPressed() {}
+            // Reset visibility of stuff in box
+            buttonBox.setDisable(false);
+            buttonBox.setOpacity(1.0);
+            spinner.setOpacity(0.0);
+            loginButton.setDisable(false);
+          });
+      translate.play();
+
+      // Fade out the background
+      FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
+      fade.setFromValue(1.0);
+      fade.setToValue(0.0);
+      fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
+      fade.play();
+
+      loggedIn = true;
+    } else {
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "Incorrect code", "You have entered an incorrect Google Authenticator code.");
+    }
+  }
 
   public static String getTOTPCode(String secretKey) {
     Base32 base32 = new Base32();

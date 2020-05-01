@@ -147,9 +147,10 @@ public class EmployeesDatabase extends Database {
   public synchronized String getSecretKey(String uname) {
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("Select * From Employees Where username = " + uname);
+          getConnection()
+              .prepareStatement("Select secretKey From Employees Where username = '" + uname + "'");
       ResultSet rset = pstmt.executeQuery();
-      String secretKey = "Not found";
+      String secretKey = "";
       if (rset.next()) {
         secretKey = rset.getString("secretKey");
       }
@@ -158,7 +159,7 @@ public class EmployeesDatabase extends Database {
       return secretKey;
     } catch (SQLException e) {
       e.printStackTrace();
-      return "Not found";
+      return null;
     }
   }
 
