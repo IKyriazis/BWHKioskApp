@@ -189,3 +189,12 @@
 #flowerServiceTablePane {
     -fx-font-size: 18pt;
 }
+
+#submitBtn {
+    -fx-border-color: rgba(0, 0, 0, 0.40);
+}
+
+#laundryLabel {
+    -fx-font-family: "Roboto";
+    -fx-font-size: 18pt;
+}
