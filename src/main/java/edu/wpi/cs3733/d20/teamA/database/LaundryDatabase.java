@@ -71,10 +71,10 @@ public class LaundryDatabase extends Database {
     try {
       boolean a = checkIfExistsString("Employees", "username", emp);
       boolean b = checkIfExistsString("Node", "longName", loc);
-      i = getRandomNumber();
+      i = getRandomInt();
       boolean c = checkIfExistsInt("Laundry", "requestNum", i);
       while (c) {
-        i = getRandomNumber();
+        i = getRandomInt();
         c = checkIfExistsInt("Laundry", "requestNum", i);
       }
       if (a && b && !c) {
@@ -395,7 +395,7 @@ public class LaundryDatabase extends Database {
         String empW = rset.getString("employeeWash");
         Timestamp ts = rset.getTimestamp("timeRequested");
 
-        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        Laundry laundry = new Laundry("" + rNum, empE, loc, prog, empW, ts);
         oList.add(laundry);
       }
       rset.close();
@@ -427,7 +427,7 @@ public class LaundryDatabase extends Database {
         String empW = rset.getString("employeeWash");
         Timestamp ts = rset.getTimestamp("timeRequested");
 
-        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        Laundry laundry = new Laundry("" + rNum, empE, loc, prog, empW, ts);
         oList.add(laundry);
       }
       rset.close();
@@ -459,7 +459,7 @@ public class LaundryDatabase extends Database {
         String empW = rset.getString("employeeWash");
         Timestamp ts = rset.getTimestamp("timeRequested");
 
-        Laundry laundry = new Laundry(rNum, empE, loc, prog, empW, ts);
+        Laundry laundry = new Laundry("" + rNum, empE, loc, prog, empW, ts);
         oList.add(laundry);
       }
       rset.close();

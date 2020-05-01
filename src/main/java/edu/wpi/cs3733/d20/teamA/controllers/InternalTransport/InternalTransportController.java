@@ -17,16 +17,7 @@ public class InternalTransportController extends AbstractController {
 
   @FXML private Pane rootPane;
 
-  public void initialize() {
-    if (itDatabase.getRequestSize() == -1) {
-      itDatabase.dropTables();
-      itDatabase.createTables();
-      itDatabase.readInternalTransportCSV();
-    } else if (itDatabase.getRequestSize() == 0) {
-      itDatabase.removeAll();
-      itDatabase.readInternalTransportCSV();
-    }
-  }
+  public void initialize() {}
 
   @FXML
   public void placeOrder() {

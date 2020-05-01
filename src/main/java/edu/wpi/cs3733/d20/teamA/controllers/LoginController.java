@@ -50,11 +50,11 @@ public class LoginController extends AbstractController {
     loginButton.getStyleClass().add("submitButton");
 
     // Creates the table if it doesn't exit
-    if (eDB.getSizeEmployees() == -1) {
+    if (eDB.getSize() == -1) {
       eDB.dropTables();
       eDB.createTables();
       eDB.readEmployeeCSV();
-    } else if (eDB.getSizeEmployees() == 0) {
+    } else if (eDB.getSize() == 0) {
       eDB.removeAllEmployees();
       eDB.readEmployeeCSV();
     }

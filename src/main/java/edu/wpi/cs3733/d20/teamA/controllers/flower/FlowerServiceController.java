@@ -124,7 +124,7 @@ public class FlowerServiceController extends AbstractController {
             });
 
     // Null root flower node
-    TreeItem<Flower> rootFlower = new TreeItem(new Flower("", "", 0, 0.0, 0));
+    TreeItem<Flower> rootFlower = new TreeItem(new Flower(0, "", "", 0, 0.0));
 
     // Add other tree items below root item
     flDatabase.flowerOl().forEach(flower -> rootFlower.getChildren().add(new TreeItem(flower)));

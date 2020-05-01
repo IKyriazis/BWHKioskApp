@@ -154,10 +154,7 @@ public abstract class Database {
       }
       rset.close();
       pstm.close();
-      if (username != null) {
-        return username;
-      }
-      return null;
+      return username;
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
@@ -180,7 +177,21 @@ public abstract class Database {
     return null;
   }
 
-  public int getRandomNumber() {
-    return new Random().nextInt((999999999 - 100000000) + 1) + 100000000;
+  public long getRandomNumber() {
+    double lo = 2176782335L;
+    long result = (long) (new Random().nextLong() * (lo / (double) Long.MAX_VALUE));
+    result = Math.min(result, 2176782335L);
+    return Math.abs(result);
+  }
+
+  public String getRandomString() {
+    long l = getRandomNumber();
+    String reqID = Long.toString(l, 36);
+    reqID = ("000000" + reqID).substring(reqID.length());
+    return reqID.toUpperCase();
+  }
+
+  public int getRandomInt() {
+    return new Random().nextInt((999999 - 100000) + 1) + 100000;
   }
 }

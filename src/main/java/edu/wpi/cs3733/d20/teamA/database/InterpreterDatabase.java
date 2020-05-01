@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class InterpreterDatabase extends Database {
-  private int requestNum;
 
   public InterpreterDatabase(Connection connection) {
     super(connection);
@@ -12,8 +11,6 @@ public class InterpreterDatabase extends Database {
     if (doesTableNotExist("INTERPRETERS") && doesTableNotExist("INTERPRETERREQUESTS")) {
       createTables();
     }
-
-    requestNum = getRandomNumber();
   }
 
   public boolean dropTables() {
@@ -32,7 +29,7 @@ public class InterpreterDatabase extends Database {
 
     boolean b =
         helperPrepared(
-            "CREATE TABLE InterpreterRequests (requestNumber INTEGER PRIMARY KEY, name VARCHAR(64) NOT NULL, language VARCHAR(64) NOT NULL, location VARCHAR(10) NOT NULL, status VARCHAR(64) NOT NULL, CONSTRAINT FK_INID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT FK_RN FOREIGN KEY (name) REFERENCES Interpreters(name))");
+            "CREATE TABLE InterpreterRequests (requestID VARCHAR(6) PRIMARY KEY, name VARCHAR(64) NOT NULL, language VARCHAR(64) NOT NULL, location VARCHAR(10) NOT NULL, status VARCHAR(64) NOT NULL, CONSTRAINT FK_INID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT FK_RN FOREIGN KEY (name) REFERENCES Interpreters(name))");
 
     return a && b;
   }
@@ -50,7 +47,7 @@ public class InterpreterDatabase extends Database {
 
   public boolean addDummyRequests() {
     // Add dummy request
-    return (addRequest("Bobby", "French", "AINFO00101", "Submitted") != 0);
+    return (addRequest("Bobby", "French", "AINFO00101", "Submitted") != "");
   }
 
   public boolean addInterpreter(String name, String language) {
@@ -89,24 +86,24 @@ public class InterpreterDatabase extends Database {
     }
   }
 
-  public int addRequest(String name, String language, String location, String status) {
-    requestNum = getRandomNumber();
+  public String addRequest(String name, String language, String location, String status) {
+    String requestID = getRandomString();
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO InterpreterRequests (requestNumber, name, language, location, status) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, requestNum);
+      pstmt.setString(1, requestID);
       pstmt.setString(2, name);
       pstmt.setString(3, language);
       pstmt.setString(4, location);
       pstmt.setString(5, status);
       pstmt.executeUpdate();
       pstmt.close();
-      return requestNum;
+      return requestID;
     } catch (SQLException e) {
       e.printStackTrace();
-      return 0;
+      return "";
     }
   }
 
@@ -120,7 +117,7 @@ public class InterpreterDatabase extends Database {
         String name = set.getString("name");
         String language = set.getString("language");
 
-        interpreters.add(new Interpreter(name, language));
+        // interpreters.add(new Interpreter(name, language));
       }
       set.close();
       stmt.close();
@@ -145,7 +142,7 @@ public class InterpreterDatabase extends Database {
         String location = set.getString("location");
         String status = set.getString("status");
 
-        requests.add(new InterpreterRequest(num, name, language, location, status));
+        // requests.add(new InterpreterRequest(num, name, language, location, status));
       }
       set.close();
       stmt.close();

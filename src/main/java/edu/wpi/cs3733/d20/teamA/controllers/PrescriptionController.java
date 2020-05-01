@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.PrescriptionDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Prescription;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,17 +29,9 @@ public class PrescriptionController extends AbstractController {
 
   private Prescription selected;
 
-  private SimpleTableView<Prescription> tblViewPrescription;
+  private SimpleTableView tblViewPrescription;
 
   public void initialize() {
-    // Set up the database
-    if (prescriptionDatabase.getSizePrescription() == -1) {
-      prescriptionDatabase.dropTables();
-      prescriptionDatabase.createTables();
-    } else if (prescriptionDatabase.getSizePrescription() == 0) {
-      prescriptionDatabase.removeAllPrescriptions();
-    }
-
     // Set up icons for buttons and label
     lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.PILLS));
     addPrescriptionBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
@@ -47,8 +40,7 @@ public class PrescriptionController extends AbstractController {
     infoPrescriptionBtn.setGraphic(new FontIcon(FontAwesomeSolid.QUESTION));
 
     // Setup table
-    tblViewPrescription =
-        new SimpleTableView<>(new Prescription(0, "", "", "", "", 0, "", ""), 80.0);
+    tblViewPrescription = new SimpleTableView<>(new Prescription(null, null, null), 80.0);
     prescriptionTablePane.getChildren().addAll(tblViewPrescription);
     // Double click a row in the prescription table to bring up the dialog for that order
     tblViewPrescription.setRowFactory(
@@ -66,7 +58,7 @@ public class PrescriptionController extends AbstractController {
     // Track when the mouse has clicked the table
     tblViewPrescription.setOnMouseClicked(
         event -> {
-          selected = tblViewPrescription.getSelected();
+          selected = (Prescription) tblViewPrescription.getSelected();
           if (selected != null) {
             editPrescriptionBtn.disableProperty().setValue(false);
             deletePrescriptionBtn.disableProperty().setValue(false);
@@ -77,12 +69,12 @@ public class PrescriptionController extends AbstractController {
     updateTable();
   }
 
-  /** Updates the table with the items in the ITTicket database. */
+  /** Updates the table with the items in the Prescription database. */
   public void updateTable() {
     try {
       tblViewPrescription.clear();
 
-      tblViewPrescription.add(prescriptionDatabase.prescriptionObservableList());
+      tblViewPrescription.add(serviceDatabase.getObservableListService(ServiceType.PRESCRIPTION));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(
@@ -108,7 +100,7 @@ public class PrescriptionController extends AbstractController {
   }
 
   public void openEditDialog() {
-    selected = tblViewPrescription.getSelected();
+    selected = (Prescription) tblViewPrescription.getSelected();
     DialogUtil.complexDialog(
         prescriptionStackPane,
         "Edit Prescription",
@@ -119,9 +111,9 @@ public class PrescriptionController extends AbstractController {
   }
 
   public void openDeleteDialog(ActionEvent e) {
-    selected = tblViewPrescription.getSelected();
+    selected = (Prescription) tblViewPrescription.getSelected();
     if (selected != null) {
-      boolean i = prescriptionDatabase.deletePrescription(selected.getPrescriptionID());
+      serviceDatabase.deleteServReq(selected.getPrescriptionID());
       updateTable();
     }
   }

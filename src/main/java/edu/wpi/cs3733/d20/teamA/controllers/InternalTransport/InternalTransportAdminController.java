@@ -6,8 +6,10 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.InternalTransportRequest;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.sql.Timestamp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -34,18 +36,9 @@ public class InternalTransportAdminController extends AbstractController {
 
   private InternalTransportRequest lastOrder;
 
-  private SimpleTableView<InternalTransportRequest> tblOrderView;
+  private SimpleTableView tblOrderView;
 
   public void initialize() {
-    if (itDatabase.getRequestSize() == -1) {
-      itDatabase.dropTables();
-      itDatabase.createTables();
-      itDatabase.readInternalTransportCSV();
-    } else if (itDatabase.getRequestSize() == 0) {
-      itDatabase.removeAll();
-      itDatabase.readInternalTransportCSV();
-    }
-
     // Setup label icons
     requestTblLbl.setGraphic(new FontIcon(FontAwesomeSolid.WHEELCHAIR));
 
@@ -61,8 +54,9 @@ public class InternalTransportAdminController extends AbstractController {
         });
 
     // Set up tables
-
-    tblOrderView = new SimpleTableView<>(new InternalTransportRequest(0, "", "", "", "", ""), 40.0);
+    tblOrderView =
+        new SimpleTableView<>(
+            new InternalTransportRequest("", "", "", new Timestamp(0), "", ""), 40.0);
     requestTablePane.getChildren().addAll(tblOrderView);
 
     // Populate tables
@@ -72,15 +66,14 @@ public class InternalTransportAdminController extends AbstractController {
     tblOrderView.setOnMouseClicked(this::updateStatus);
 
     // Setup status change stuff
-    txtNext.getItems().addAll("Reported", "Dispatched", "Done");
+    txtNext.getItems().addAll("Request Made", "In Progress", "Completed");
     txtNext.getSelectionModel().select(0);
   }
 
   public void update() {
     try {
       tblOrderView.clear();
-
-      tblOrderView.add(itDatabase.requestOl());
+      tblOrderView.add(serviceDatabase.getObservableListService(ServiceType.INTERNAL_TRANSPORT));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(
@@ -89,7 +82,7 @@ public class InternalTransportAdminController extends AbstractController {
   }
 
   public void updateStatus(MouseEvent mouseEvent) {
-    InternalTransportRequest selected = tblOrderView.getSelected();
+    InternalTransportRequest selected = (InternalTransportRequest) tblOrderView.getSelected();
     if (selected != null) {
       // track the last selected order
       lastOrder = selected;
@@ -108,11 +101,11 @@ public class InternalTransportAdminController extends AbstractController {
 
   private int statusStringToValue(String status) {
     switch (status) {
-      case "Reported":
+      case "Request Made":
         return 0;
-      case "Dispatched":
+      case "In Progress":
         return 1;
-      case "Done":
+      case "Completed":
         return 2;
       default:
         return 999;
@@ -124,9 +117,10 @@ public class InternalTransportAdminController extends AbstractController {
       String s = txtNext.getSelectionModel().getSelectedItem();
       String name = txtName.getText();
       if (!name.isEmpty()) {
-        super.itDatabase.updateRequest(lastOrder.getRequestNumber(), name, s);
+        serviceDatabase.setStatus(lastOrder.getRequestNumber(), s);
+        serviceDatabase.setAdditional(lastOrder.getRequestNumber(), txtName.getText());
       } else {
-        super.itDatabase.updateRequest(lastOrder.getRequestNumber(), s);
+        serviceDatabase.setStatus(lastOrder.getRequestNumber(), s);
       }
       lastOrder = null;
       update();

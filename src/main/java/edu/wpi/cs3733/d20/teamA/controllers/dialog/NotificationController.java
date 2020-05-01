@@ -17,7 +17,7 @@ public class NotificationController extends AbstractController implements IDialo
   @FXML
   public void initialize() {
 
-    tblAnnouncement = new SimpleTableView<>(new Announcement(0, ""), 20);
+    tblAnnouncement = new SimpleTableView<>(new Announcement("", ""), 20);
     tblPaneAnnouncement.getChildren().addAll(tblAnnouncement);
     update();
   }

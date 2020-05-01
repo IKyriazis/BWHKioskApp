@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Laundry;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import java.sql.Timestamp;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -13,14 +14,14 @@ public class LaundryCompletedController extends AbstractController implements ID
 
   private JFXDialog dialog;
 
-  private SimpleTableView<Laundry> tblLaundryView;
+  private SimpleTableView tblLaundryView;
 
   @FXML
   public void initialize() {
 
     tblLaundryView =
         new SimpleTableView<>(
-            new Laundry(0, "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
+            new Laundry("", "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
     completedTablePane.getChildren().add(tblLaundryView);
 
     update();
@@ -30,7 +31,7 @@ public class LaundryCompletedController extends AbstractController implements ID
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(lDB.laundryOLCompleted());
+      tblLaundryView.add(serviceDatabase.getObservableListService(ServiceType.LAUNDRY));
     } catch (Exception e) {
       e.printStackTrace();
     }

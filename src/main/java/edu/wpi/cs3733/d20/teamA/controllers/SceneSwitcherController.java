@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
+import de.taimos.totp.TOTP;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -26,6 +27,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Hex;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -36,17 +39,21 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private JFXButton backButton;
   @FXML private JFXButton signInButton;
   @FXML private JFXButton loginButton;
+  @FXML private JFXButton authenticateButton;
   @FXML private JFXButton settingsButton;
 
   @FXML private JFXTextField usernameBox;
+  @FXML private JFXTextField gauthCode;
   @FXML private JFXPasswordField passwordBox;
   @FXML private JFXSpinner spinner;
 
   @FXML private AnchorPane signInPane;
   @FXML private GridPane blockerPane;
   @FXML private GridPane contentPane;
+
   @FXML private VBox loginBox;
   @FXML private VBox buttonBox;
+  @FXML private VBox gauth;
 
   @FXML private Label timeLabel;
   @FXML private Label dateLabel;
@@ -63,6 +70,7 @@ public class SceneSwitcherController extends AbstractController {
   private FontIcon backIcon;
 
   private Label usernameLabel;
+  private String username;
   private Date date;
 
   @FXML
@@ -71,11 +79,11 @@ public class SceneSwitcherController extends AbstractController {
     instance = this;
 
     // Create the employee table if it doesn't exist
-    if (eDB.getSizeEmployees() == -1) {
+    if (eDB.getSize() == -1) {
       eDB.dropTables();
       eDB.createTables();
       eDB.readEmployeeCSV();
-    } else if (eDB.getSizeEmployees() == 0) {
+    } else if (eDB.getSize() == 0) {
       eDB.removeAllEmployees();
       eDB.readEmployeeCSV();
     }
@@ -187,6 +195,7 @@ public class SceneSwitcherController extends AbstractController {
       settingsTrans.play();
 
       loggedIn = false;
+      username = "";
     } else {
       loginTransitioning = true;
 
@@ -278,63 +287,105 @@ public class SceneSwitcherController extends AbstractController {
                   loginButton.setDisable(false);
                 });
           } else {
-            eDB.addLog(usernameBox.getText());
-            Platform.runLater(
-                () -> {
-                  // Zoom out login box
-                  loginTransitioning = true;
-                  ZoomOutDown trans = new ZoomOutDown(loginBox);
-                  trans.setSpeed(2);
-                  trans.setOnFinished(
-                      event -> {
-                        // Clear username / password once they're off screen
-                        usernameBox.setText("");
-                        passwordBox.setText("");
+            if (eDB.getSecretKey(usernameBox.getText()) == null) {
+              Platform.runLater(this::login);
+            } else {
+              Platform.runLater(
+                  () -> {
+                    // W need to know the username to find the user's secret key
+                    username = usernameBox.getText();
 
-                        // Reset visibility of stuff in box
-                        buttonBox.setDisable(false);
-                        buttonBox.setOpacity(1.0);
-                        spinner.setOpacity(0.0);
-                        loginButton.setDisable(false);
+                    // Fade out spinner
+                    FadeTransition spinnerOutFade =
+                        new FadeTransition(Duration.millis(250), spinner);
+                    spinnerOutFade.setFromValue(1.0);
+                    spinnerOutFade.setToValue(0.0);
+                    spinnerOutFade.play();
 
-                        // Pass clicks through blocker pane again
-                        blockerPane.setMouseTransparent(true);
-
-                        // Toggle off transition flag
-                        loginTransitioning = false;
-                      });
-                  trans.play();
-
-                  // Update sign in button to serve as log out button
-                  signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
-
-                  // Enable settings button & zoom it in
-                  if (!settingsButton.isVisible()) {
-                    settingsButton.setVisible(true);
-                  }
-
-                  ZoomIn settingsTrans = new ZoomIn(settingsButton);
-                  settingsTrans.play();
-
-                  // Update username label
-                  usernameLabel.setText(eDB.getLoggedIn());
-                  if (!usernameLabel.isVisible()) {
-                    usernameLabel.setVisible(true);
-                  }
-
-                  // Slide in username label
-                  FadeInRight lblTrans = new FadeInRight(usernameLabel);
-                  lblTrans.play();
-
-                  loggedIn = true;
-                });
+                    buttonBox.setVisible(false);
+                    gauth.setVisible(true);
+                    loginButton.setVisible(false);
+                    authenticateButton.setVisible(true);
+                  });
+            }
           }
         });
   }
 
   @FXML
+  public void pressedAuthenticate() {
+    // gets the secret key of the user that just logged in
+    String secretKey = eDB.getSecretKey(username);
+
+    // check if the authenticator code given is correct, log in if it is
+    // show an error message if it isn't
+    if (gauthCode.getText().equals(getTOTPCode(secretKey))) {
+      login();
+    } else {
+      DialogUtil.simpleErrorDialog(
+          rootPane, "Incorrect Code", "You have entered an incorrect Google Authenticator code.");
+    }
+  }
+
+  @FXML
   public void pressedSettings() {
     pushScene("views/nav/Settings.fxml");
+  }
+
+  private void login() {
+    // Zoom out login box
+    loginTransitioning = true;
+    ZoomOutDown trans = new ZoomOutDown(loginBox);
+    trans.setSpeed(2);
+    trans.setOnFinished(
+        event -> {
+          // Clear username / password once they're off screen
+          usernameBox.setText("");
+          passwordBox.setText("");
+
+          // Reset visibility of stuff in box
+          buttonBox.setDisable(false);
+          buttonBox.setOpacity(1.0);
+          spinner.setOpacity(0.0);
+          loginButton.setDisable(false);
+
+          // Pass clicks through blocker pane again
+          blockerPane.setMouseTransparent(true);
+
+          // Toggle off transition flag
+          loginTransitioning = false;
+        });
+    trans.play();
+
+    // Update sign in button to serve as log out button
+    signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
+
+    // Enable settings button & zoom it in
+    if (!settingsButton.isVisible()) {
+      settingsButton.setVisible(true);
+    }
+
+    ZoomIn settingsTrans = new ZoomIn(settingsButton);
+    settingsTrans.play();
+
+    // Update username label
+    usernameLabel.setText(username);
+    if (!usernameLabel.isVisible()) {
+      usernameLabel.setVisible(true);
+    }
+
+    // Slide in username label
+    FadeInRight lblTrans = new FadeInRight(usernameLabel);
+    lblTrans.play();
+
+    loggedIn = true;
+
+    // Undo changes to login box done for auth purposes
+    gauthCode.setText("");
+    buttonBox.setVisible(true);
+    gauth.setVisible(false);
+    loginButton.setVisible(true);
+    authenticateButton.setVisible(false);
   }
 
   private void transition(boolean right) {
@@ -415,5 +466,12 @@ public class SceneSwitcherController extends AbstractController {
     }
 
     pushScene(node);
+  }
+
+  private static String getTOTPCode(String secretKey) {
+    Base32 base32 = new Base32();
+    byte[] bytes = base32.decode(secretKey);
+    String hexKey = Hex.encodeHexString(bytes);
+    return TOTP.getOTP(hexKey);
   }
 }

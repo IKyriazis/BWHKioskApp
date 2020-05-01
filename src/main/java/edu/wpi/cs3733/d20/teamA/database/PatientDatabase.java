@@ -4,9 +4,7 @@ import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class PatientDatabase extends Database {
-
-  private int patientID;
+public class PatientDatabase extends Database implements IDatabase<Patient> {
 
   public PatientDatabase(Connection connection) {
     super(connection);
@@ -14,8 +12,6 @@ public class PatientDatabase extends Database {
     if (doesTableNotExist("PATIENTS")) {
       createTables();
     }
-
-    patientID = getRandomNumber();
   }
 
   /**
@@ -27,11 +23,7 @@ public class PatientDatabase extends Database {
   public boolean dropTables() {
 
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE Patients"))) {
-      return false;
-    }
-
-    return true;
+    return helperPrepared("DROP TABLE Patients");
   }
 
   /**
@@ -42,10 +34,8 @@ public class PatientDatabase extends Database {
   public boolean createTables() {
 
     // Create the graph tables
-    boolean a =
-        helperPrepared(
-            "CREATE TABLE Patients (patientID INTEGER PRIMARY KEY, firstName Varchar(15), lastName Varchar(15), healthInsurance Varchar(30), dateOfBirth Varchar(15), CONSTRAINT IDNotNegative CHECK (patientID >= 0))");
-    return a;
+    return helperPrepared(
+        "CREATE TABLE Patients (patientID VARCHAR(6) PRIMARY KEY, firstName Varchar(15), lastName Varchar(15), healthInsurance Varchar(30), dateOfBirth Varchar(15))");
   }
 
   /**
@@ -53,7 +43,7 @@ public class PatientDatabase extends Database {
    *
    * @return the number of entries in the patients table
    */
-  public int getSizePatients() {
+  public int getSize() {
     return getSize("Patients");
   }
 
@@ -62,7 +52,7 @@ public class PatientDatabase extends Database {
    *
    * @return true if all the patients were removed, false otherwise
    */
-  public boolean removeAllPatients() {
+  public boolean removeAll() {
     return helperPrepared("DELETE From Patients");
   }
 
@@ -71,14 +61,14 @@ public class PatientDatabase extends Database {
    *
    * @return an observable list containing all the flowers in the table
    */
-  public ObservableList<Patient> patientOl() {
+  public ObservableList<Patient> getObservableList() {
     ObservableList<Patient> oList = FXCollections.observableArrayList();
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
       PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM Patients");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
-        int patientID = rset.getInt("patientID");
+        String patientID = rset.getString("patientID");
         String firstName = rset.getString("firstName");
         String lastName = rset.getString("lastName");
         String healthInsurance = rset.getString("healthInsurance");
@@ -97,8 +87,8 @@ public class PatientDatabase extends Database {
     }
   }
 
-  public int addPatient(
-      int patientID,
+  public String addPatient(
+      String patientID,
       String firstName,
       String lastName,
       String healthInsurance,
@@ -110,7 +100,7 @@ public class PatientDatabase extends Database {
           getConnection()
               .prepareStatement(
                   "INSERT INTO Patients (patientID, firstName, lastName, healthInsurance, dateOfBirth) VALUES (?, ?, ?, ?, ?)");
-      pstmt.setInt(1, patientID);
+      pstmt.setString(1, patientID);
       pstmt.setString(2, firstName);
       pstmt.setString(3, lastName);
       pstmt.setString(4, healthInsurance);
@@ -121,29 +111,31 @@ public class PatientDatabase extends Database {
       return patientID;
     } catch (SQLException e) {
       e.printStackTrace();
-      return -1;
+      return "";
     }
   }
 
   /**
    * Check to ensure that no duplicate IDs are present in the database
    *
-   * @param num
    * @return
    */
-  private boolean idInUse(int num) {
-    return checkIfExistsInt("PATIENTS", "patientID", num);
+  private boolean idInUse(String id) {
+    return checkIfExistsString("PATIENTS", "patientID", id);
   }
 
-  public int addPatient(
+  public String addPatient(
       String firstName, String lastName, String healthInsurance, String dateOfBirth) {
-    patientID = getRandomNumber();
 
-    return addPatient(this.patientID, firstName, lastName, healthInsurance, dateOfBirth);
+    return addPatient(getRandomString(), firstName, lastName, healthInsurance, dateOfBirth);
   }
 
   public boolean updatePatient(
-      int patientID, String firstName, String lastName, String newHealthIns, String dateOfBirth) {
+      String patientID,
+      String firstName,
+      String lastName,
+      String newHealthIns,
+      String dateOfBirth) {
 
     try {
       PreparedStatement pstmt =
@@ -157,8 +149,9 @@ public class PatientDatabase extends Database {
                       + lastName
                       + "', dateOfBirth = '"
                       + dateOfBirth
-                      + "' WHERE patientID = "
-                      + patientID);
+                      + "' WHERE patientID = '"
+                      + patientID
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -168,10 +161,10 @@ public class PatientDatabase extends Database {
     }
   }
 
-  public boolean deletePatient(int id) {
+  public boolean deletePatient(String id) {
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE From Patients WHERE patientID = " + id);
+          getConnection().prepareStatement("DELETE From Patients WHERE patientID = '" + id + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;

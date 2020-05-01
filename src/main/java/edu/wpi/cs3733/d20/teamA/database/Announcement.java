@@ -4,22 +4,21 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 
 public class Announcement implements ITableable<Announcement> {
 
-  @Setter private SimpleIntegerProperty announcementID;
+  @Setter private SimpleStringProperty announcementID;
   @Setter private SimpleStringProperty announcement;
 
-  public Announcement(int announcementID, String announcement) {
-    this.announcementID = new SimpleIntegerProperty(announcementID);
+  public Announcement(String announcementID, String announcement) {
+    this.announcementID = new SimpleStringProperty(announcementID);
     this.announcement = new SimpleStringProperty(announcement);
   }
 
   // Getters
-  public SimpleIntegerProperty getAnnouncementIDProperty() {
+  public SimpleStringProperty getAnnouncementIDProperty() {
     return this.announcementID;
   }
 
@@ -27,7 +26,7 @@ public class Announcement implements ITableable<Announcement> {
     return this.announcement;
   }
 
-  public int getAnnouncementID() {
+  public String getAnnouncementID() {
     return announcementID.get();
   };
 

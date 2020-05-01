@@ -5,7 +5,6 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 
@@ -15,7 +14,7 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
   @Setter private SimpleStringProperty priority;
   @Setter private SimpleStringProperty status;
   @Setter private SimpleStringProperty employeeName;
-  private SimpleIntegerProperty index;
+  private SimpleStringProperty index;
   @Setter private SimpleStringProperty longName;
 
   public JanitorService(
@@ -23,13 +22,13 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
       String priority,
       String status,
       String employeeName,
-      int index,
+      String id,
       String longName) {
     this.location = new SimpleStringProperty(location);
     this.priority = new SimpleStringProperty(priority);
     this.status = new SimpleStringProperty(status);
     this.employeeName = new SimpleStringProperty(employeeName);
-    this.index = new SimpleIntegerProperty(index);
+    this.index = new SimpleStringProperty(id);
     this.longName = new SimpleStringProperty(longName);
   }
 
@@ -49,7 +48,7 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
     return employeeName;
   }
 
-  public SimpleIntegerProperty index() {
+  public SimpleStringProperty index() {
     return index;
   }
 
@@ -69,7 +68,7 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
     return employeeName.get();
   }
 
-  public int getIndex() {
+  public String getIndex() {
     return index.get();
   }
 
@@ -80,7 +79,11 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
   @Override
   public ArrayList<JFXTreeTableColumn<JanitorService, ?>> getColumns() {
     JFXTreeTableColumn<JanitorService, String> column1 = new JFXTreeTableColumn<>("Location");
-    column1.setCellValueFactory(param -> param.getValue().getValue().longName);
+    column1.setCellValueFactory(param -> param.getValue().getValue().location);
+
+    JFXTreeTableColumn<JanitorService, String> column5 =
+        new JFXTreeTableColumn<>("Assigned employee");
+    column5.setCellValueFactory(param -> param.getValue().getValue().longName);
 
     JFXTreeTableColumn<JanitorService, String> column2 = new JFXTreeTableColumn<>("Priority");
     column2.setCellValueFactory(param -> param.getValue().getValue().priority);
@@ -88,9 +91,9 @@ public class JanitorService extends RecursiveTreeObject<JanitorService>
     JFXTreeTableColumn<JanitorService, String> column3 = new JFXTreeTableColumn<>("Status");
     column3.setCellValueFactory(param -> param.getValue().getValue().status);
 
-    JFXTreeTableColumn<JanitorService, String> column4 = new JFXTreeTableColumn<>("Employee Name");
+    JFXTreeTableColumn<JanitorService, String> column4 = new JFXTreeTableColumn<>("Created by");
     column4.setCellValueFactory(param -> param.getValue().getValue().employeeName);
 
-    return new ArrayList<>(List.of(column1, column2, column3, column4));
+    return new ArrayList<>(List.of(column1, column2, column3, column5, column4));
   }
 }

@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.Employee;
 import edu.wpi.cs3733.d20.teamA.database.JanitorService;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
@@ -77,23 +78,23 @@ public class JanitorEditController extends AbstractController implements IDialog
     priorityItems.addAll(a, b, c);
     comboboxPriority.getItems().addAll(priorityItems);
 
-    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    ObservableList<Employee> allEmployeeList = eDB.getObservableList();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
     comboboxJanitor.getItems().addAll(allEmployeeList);
 
     activeItems.addAll("Unassigned");
 
-    comboboxJanitor.getItems().add(activeItems);
+    comboboxJanitor.getItems().addAll(activeItems);
     comboboxJanitor.setOnMouseClicked(
         event -> {
           allEmployeeList.clear();
 
-          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.addAll(eDB.getObservableList());
           allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
           comboboxJanitor.setItems(allEmployeeList);
-          comboboxJanitor.getItems().add(activeItems);
+          comboboxJanitor.getItems().addAll(activeItems);
         });
     doneButton.setOnAction(this::isDone);
 
@@ -117,15 +118,18 @@ public class JanitorEditController extends AbstractController implements IDialog
               .filter(node -> node.toString().contains(comboboxLocation.getEditor().getText()))
               .findFirst();
 
-      String location = start.get().getNodeID();
+      String location = start.get().getLongName();
       String priority = comboboxPriority.getValue().toString();
       String longName = comboboxLocation.getValue().toString();
-      String employee = comboboxJanitor.getValue().toString();
+      String employee = "";
+
+      if (!comboboxJanitor.getSelectionModel().getSelectedItem().toString().equals("Unassigned"))
+        employee = comboboxJanitor.getSelectionModel().getSelectedItem().toString();
 
       if (modify) {
-        super.janitorDatabase.deleteRequest(janitorService.getIndex());
+        serviceDatabase.deleteServReq(janitorService.getIndex());
       }
-      super.janitorDatabase.addRequest(location, priority, employee, longName);
+      serviceDatabase.addServiceReq(ServiceType.JANITOR, location, employee, priority, "");
 
       dialog.close();
     } catch (Exception exception) {

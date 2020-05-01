@@ -66,7 +66,7 @@ public class FlowerAdminController extends AbstractController {
         });
 
     // Set up tables
-    tblFlowerView = new SimpleTableView<>(new Flower("", "", 0, 0, 0), 40.0);
+    tblFlowerView = new SimpleTableView<>(new Flower(0, "", "", 0, 0.0), 40.0);
     flowerTablePane.getChildren().add(tblFlowerView);
 
     tblOrderView = new SimpleTableView<Order>(new Order(0, 0, "", 0, "", "", "", -1), 40.0);

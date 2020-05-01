@@ -6,6 +6,8 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.InterpreterRequestDialogContr
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.Interpreter;
 import edu.wpi.cs3733.d20.teamA.database.InterpreterRequest;
+import edu.wpi.cs3733.d20.teamA.database.ItemType;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
@@ -31,19 +33,12 @@ public class InterpreterController extends AbstractController {
   @FXML private Label interpreterLabel;
   @FXML private Label requestLabel;
 
-  private SimpleTableView<Interpreter> interpreterTable;
-  private SimpleTableView<InterpreterRequest> requestTable;
+  private SimpleTableView interpreterTable;
+  private SimpleTableView requestTable;
 
   @FXML
   public void initialize() {
     // Set up DB if not yet populated.
-    if (iDB.getSizeInterpreters() <= 0) {
-      iDB.addDummyInterpreters();
-    }
-
-    if (iDB.getSizeRequests() <= 0) {
-      iDB.addDummyRequests();
-    }
 
     // Set up icons
     interpreterLabel.setGraphic(new FontIcon(FontAwesomeSolid.USERS));
@@ -54,10 +49,10 @@ public class InterpreterController extends AbstractController {
     completeButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
     // Set up tables
-    interpreterTable = new SimpleTableView<>(new Interpreter("", ""), 80.0);
+    interpreterTable = new SimpleTableView<>(new Interpreter("", "", ""), 80.0);
     interpreterTablePane.getChildren().addAll(interpreterTable);
 
-    requestTable = new SimpleTableView<>(new InterpreterRequest(0, "", "", "", ""), 60.0);
+    requestTable = new SimpleTableView<>(new InterpreterRequest("", "", "", "", ""), 60.0);
     requestTablePane.getChildren().addAll(requestTable);
 
     rootPane.addEventHandler(
@@ -72,10 +67,10 @@ public class InterpreterController extends AbstractController {
   public void updateTables() {
     try {
       interpreterTable.clear();
-      interpreterTable.add(iDB.getInterpreters());
+      interpreterTable.add(inventoryDatabase.getObservableListItem(ItemType.INTERPRETER));
 
       requestTable.clear();
-      requestTable.add(iDB.getRequests());
+      requestTable.add(serviceDatabase.getObservableListService(ServiceType.INTERPRETER_REQ));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(
@@ -100,9 +95,9 @@ public class InterpreterController extends AbstractController {
 
   @FXML
   public void deleteClicked() {
-    Interpreter selected = interpreterTable.getSelected();
+    Interpreter selected = (Interpreter) interpreterTable.getSelected();
     if (selected != null) {
-      boolean success = iDB.deleteInterpreter(selected.getName());
+      boolean success = inventoryDatabase.removeItem(selected.getId());
       if (success) {
         updateTables();
       } else {
@@ -132,9 +127,9 @@ public class InterpreterController extends AbstractController {
 
   @FXML
   public void completeClicked() {
-    InterpreterRequest selected = requestTable.getSelected();
+    InterpreterRequest selected = (InterpreterRequest) requestTable.getSelected();
     if (selected != null) {
-      boolean success = iDB.updateRequestStatus(selected.getRequestNumber(), "Completed");
+      boolean success = serviceDatabase.setStatus(selected.getRequestID(), "Completed");
       if (success) {
         updateTables();
       } else {

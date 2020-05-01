@@ -19,7 +19,7 @@ public class PrescriptionDatabase extends Database {
     if (doesTableNotExist("PRESCRIPTION")) {
       createTables();
     }
-    prescriptionNum = getRandomNumber();
+    prescriptionNum = getRandomInt();
   }
 
   /**
@@ -105,7 +105,7 @@ public class PrescriptionDatabase extends Database {
       String dosage,
       int numRefills,
       String notes) {
-    prescriptionNum = getRandomNumber();
+    prescriptionNum = getRandomInt();
     return addPrescription(
         this.prescriptionNum, patient, prescription, pharmacy, dosage, numRefills, notes);
   }
@@ -386,7 +386,7 @@ public class PrescriptionDatabase extends Database {
         String doctorUsername = rset.getString("doctorUsername");
         String notes = rset.getString("notes");
 
-        Prescription node =
+        /*Prescription node =
             new Prescription(
                 prescriptionID,
                 patientName,
@@ -396,7 +396,7 @@ public class PrescriptionDatabase extends Database {
                 numberOfRefills,
                 doctorUsername,
                 notes);
-        prescriptionObservableList.add(node);
+        prescriptionObservableList.add(node);*/
       }
       rset.close();
       pstmt.close();

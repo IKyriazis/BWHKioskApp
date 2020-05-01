@@ -2,14 +2,14 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class InternalTransportRequest implements ITableable<InternalTransportRequest> {
 
-  private final SimpleIntegerProperty requestNumber;
+  private final SimpleStringProperty requestNumber;
   private final SimpleStringProperty start;
   private final SimpleStringProperty destination;
   private final SimpleStringProperty time;
@@ -17,25 +17,25 @@ public class InternalTransportRequest implements ITableable<InternalTransportReq
   private final SimpleStringProperty name;
 
   public InternalTransportRequest(
-      int requestNumber,
+      String requestNumber,
       String start,
       String destination,
-      String time,
+      Timestamp time,
       String progress,
       String name) {
-    this.requestNumber = new SimpleIntegerProperty(requestNumber);
+    this.requestNumber = new SimpleStringProperty(requestNumber);
     this.start = new SimpleStringProperty(start);
     this.destination = new SimpleStringProperty(destination);
-    this.time = new SimpleStringProperty(time);
+    this.time = new SimpleStringProperty(time.toString());
     this.progress = new SimpleStringProperty(progress);
     this.name = new SimpleStringProperty(name);
   }
 
-  public int getRequestNumber() {
+  public String getRequestNumber() {
     return requestNumber.get();
   }
 
-  public SimpleIntegerProperty requestNumberProperty() {
+  public SimpleStringProperty requestNumberProperty() {
     return requestNumber;
   }
 
@@ -81,10 +81,9 @@ public class InternalTransportRequest implements ITableable<InternalTransportReq
 
   @Override
   public ArrayList<JFXTreeTableColumn<InternalTransportRequest, ?>> getColumns() {
-    JFXTreeTableColumn<InternalTransportRequest, Integer> col1 =
+    JFXTreeTableColumn<InternalTransportRequest, String> col1 =
         new JFXTreeTableColumn<>("Request #");
-    col1.setCellValueFactory(
-        param -> param.getValue().getValue().requestNumberProperty().asObject());
+    col1.setCellValueFactory(param -> param.getValue().getValue().requestNumberProperty());
 
     JFXTreeTableColumn<InternalTransportRequest, String> col2 = new JFXTreeTableColumn<>("Start");
     col2.setCellValueFactory(param -> param.getValue().getValue().startProperty());

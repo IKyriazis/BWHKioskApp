@@ -6,8 +6,10 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.EditMedRequestController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.MedInfoController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.MedRequest;
+import edu.wpi.cs3733.d20.teamA.database.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.sql.Timestamp;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -29,18 +31,10 @@ public class MedicineDeliveryController extends AbstractController {
   @FXML private JFXButton infoBtn;
   @FXML private JFXComboBox<String> progBox;
   @FXML private JFXButton updateProgBtn;
-  private SimpleTableView<MedRequest> tblMedReq;
+  private SimpleTableView tblMedReq;
   private MedRequest lastOrder;
 
   public void initialize() {
-    if (medicineRequestDatabase.getRequestSize() == -1) {
-      medicineRequestDatabase.dropTables();
-      medicineRequestDatabase.createTables();
-      medicineRequestDatabase.readFromCSV();
-    } else if (medicineRequestDatabase.getRequestSize() == 0) {
-      medicineRequestDatabase.removeAll();
-      medicineRequestDatabase.readFromCSV();
-    }
     // Set icon
     addBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
     editBtn.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_SQUARE));
@@ -55,12 +49,13 @@ public class MedicineDeliveryController extends AbstractController {
         });
 
     ObservableList<String> progs = FXCollections.observableArrayList();
+    progs.add("Request Made");
     progs.add("Prescribed");
-    progs.add("Dispatched");
-    progs.add("Done");
+    progs.add("Completed");
     progBox.setItems(progs);
 
-    tblMedReq = new SimpleTableView<>(new MedRequest("", "", "", "", "", 0, "", -1, -1, ""), 150.0);
+    tblMedReq =
+        new SimpleTableView<>(new MedRequest("", "", null, null, new Timestamp(0), ""), 150.0);
     medList.getChildren().add(tblMedReq);
 
     // Set up table to open edit controller when double clicking row
@@ -82,7 +77,7 @@ public class MedicineDeliveryController extends AbstractController {
   public void update() {
     try {
       tblMedReq.clear();
-      tblMedReq.add(medicineRequestDatabase.requests());
+      tblMedReq.add(serviceDatabase.getObservableListService(ServiceType.MEDICINE));
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -99,7 +94,7 @@ public class MedicineDeliveryController extends AbstractController {
   }
 
   public void clickInfo() {
-    MedRequest req = tblMedReq.getSelected();
+    MedRequest req = (MedRequest) tblMedReq.getSelected();
     if (req != null) {
       // Figure out whether any outstanding orders depend on this flower type, in which case we
       // can't change the name / type
@@ -121,7 +116,7 @@ public class MedicineDeliveryController extends AbstractController {
   }
 
   public void editRequest() {
-    MedRequest req = tblMedReq.getSelected();
+    MedRequest req = (MedRequest) tblMedReq.getSelected();
     if (req != null) {
       // Figure out whether any outstanding orders depend on this flower type, in which case we
       // can't change the name / type
@@ -143,14 +138,14 @@ public class MedicineDeliveryController extends AbstractController {
   }
 
   public void updateProg() {
-    MedRequest selected = tblMedReq.getSelected();
+    MedRequest selected = (MedRequest) tblMedReq.getSelected();
     if (selected != null) {
       // track the last selected order
       lastOrder = selected;
     }
     if (lastOrder != null) {
       String s = progBox.getSelectionModel().getSelectedItem();
-      super.medicineRequestDatabase.updateProgress(lastOrder.getOrderNum(), s);
+      serviceDatabase.setStatus(lastOrder.getOrderNum(), s);
       lastOrder = null;
       update();
     } else {
@@ -162,12 +157,12 @@ public class MedicineDeliveryController extends AbstractController {
   }
 
   public void deleteRequest() {
-    MedRequest req = tblMedReq.getSelected();
+    MedRequest req = (MedRequest) tblMedReq.getSelected();
     if (req != null) {
       String num = req.getOrderNum();
 
       try {
-        super.medicineRequestDatabase.deleteRequest(num);
+        serviceDatabase.deleteServReq(num);
       } catch (Exception e) {
         e.printStackTrace();
         DialogUtil.simpleErrorDialog(

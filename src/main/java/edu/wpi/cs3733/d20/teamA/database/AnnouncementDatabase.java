@@ -4,20 +4,17 @@ import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class AnnouncementDatabase extends Database {
-
-  int announcementID;
+public class AnnouncementDatabase extends Database implements IDatabase<Announcement> {
 
   public AnnouncementDatabase(Connection connection) {
     super(connection);
     createTables();
-    announcementID = getRandomNumber();
   }
 
   public boolean createTables() {
     if (doesTableNotExist("ANNOUNCEMENTS")) {
       return helperPrepared(
-          "CREATE TABLE ANNOUNCEMENTS(announcementID INTEGER PRIMARY KEY, announcement VARCHAR(50))");
+          "CREATE TABLE ANNOUNCEMENTS(announcementID VARCHAR(6) PRIMARY KEY, announcement VARCHAR(50))");
     }
     return false;
   }
@@ -37,8 +34,29 @@ public class AnnouncementDatabase extends Database {
    *
    * @return
    */
-  public boolean removeAllAnnouncements() {
+  public boolean removeAll() {
     return helperPrepared("DELETE From ANNOUNCEMENTS");
+  }
+
+  @Override
+  public ObservableList<Announcement> getObservableList() {
+    ObservableList<Announcement> list = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String id = rset.getString("announcementID");
+        String announcement = rset.getString("announcement");
+        Announcement e = new Announcement(id, announcement);
+        list.add(e);
+      }
+      rset.close();
+      pstmt.close();
+      return list;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   /**
@@ -46,30 +64,29 @@ public class AnnouncementDatabase extends Database {
    *
    * @return int size
    */
-  public int getSizeAnnouncements() {
+  public int getSize() {
     return getSize("ANNOUNCEMENTS");
   }
 
-  public int addAnnouncement(int announcementID, String announcement) {
+  public String addAnnouncement(String announcementID, String announcement) {
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
                   "INSERT INTO ANNOUNCEMENTS (announcementID, announcement) VALUES (?, ?)");
-      pstmt.setInt(1, announcementID);
+      pstmt.setString(1, announcementID);
       pstmt.setString(2, announcement);
       pstmt.executeUpdate();
       pstmt.close();
       return announcementID;
     } catch (SQLException e) {
       e.printStackTrace();
-      return -1;
+      return "";
     }
   }
 
-  public int addAnnouncement(String announcement) {
-    this.announcementID = getRandomNumber();
-    return addAnnouncement(this.announcementID, announcement);
+  public String addAnnouncement(String announcement) {
+    return addAnnouncement(getRandomString(), announcement);
   }
 
   public String getAnnouncement(int id) {
@@ -86,7 +103,7 @@ public class AnnouncementDatabase extends Database {
     }
   }
 
-  public boolean removeAnnouncement(int id) {
+  public boolean removeAnnouncement(String id) {
     return helperPrepared("DELETE From ANNOUNCEMENTS WHERE announcementID = " + id);
   }
 
@@ -96,7 +113,7 @@ public class AnnouncementDatabase extends Database {
       PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM ANNOUNCEMENTS");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
-        int announcementID = rset.getInt("announcementID");
+        String announcementID = rset.getString("announcementID");
         String announcement = rset.getString("announcement");
 
         Announcement node = new Announcement(announcementID, announcement);
