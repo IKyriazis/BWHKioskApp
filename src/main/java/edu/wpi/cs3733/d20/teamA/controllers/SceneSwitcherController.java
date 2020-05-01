@@ -28,6 +28,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private JFXButton backButton;
   @FXML private JFXButton signInButton;
   @FXML private JFXButton loginButton;
+  @FXML private JFXButton settingsButton;
 
   @FXML private JFXTextField usernameBox;
   @FXML private JFXPasswordField passwordBox;
@@ -89,6 +90,9 @@ public class SceneSwitcherController extends AbstractController {
     // Setup login button icon
     loginButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCK));
 
+    // Setup settings button icon
+    settingsButton.setGraphic(new FontIcon(FontAwesomeSolid.COG));
+
     // Set this equal to instance
     instance = this;
 
@@ -139,7 +143,13 @@ public class SceneSwitcherController extends AbstractController {
       FadeOutRight lblTrans = new FadeOutRight(usernameLabel);
       lblTrans.play();
 
+      // Turn sign in button graphic back
       signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_IN_ALT));
+
+      // Hide settings button
+      ZoomOut settingsTrans = new ZoomOut(settingsButton);
+      settingsTrans.play();
+
       loggedIn = false;
     } else {
       loginTransitioning = true;
@@ -149,7 +159,8 @@ public class SceneSwitcherController extends AbstractController {
       }
       blockerPane.setMouseTransparent(false);
 
-      ZoomIn trans = new ZoomIn(loginBox);
+      ZoomInDown trans = new ZoomInDown(loginBox);
+      trans.setSpeed(2);
       trans.setOnFinished(
           event -> {
             loginTransitioning = false;
@@ -166,7 +177,8 @@ public class SceneSwitcherController extends AbstractController {
 
     loginTransitioning = true;
 
-    ZoomOut trans = new ZoomOut(loginBox);
+    ZoomOutDown trans = new ZoomOutDown(loginBox);
+    trans.setSpeed(2);
     trans.setOnFinished(
         event -> {
           loginTransitioning = false;
@@ -235,7 +247,8 @@ public class SceneSwitcherController extends AbstractController {
                 () -> {
                   // Zoom out login box
                   loginTransitioning = true;
-                  ZoomOut trans = new ZoomOut(loginBox);
+                  ZoomOutDown trans = new ZoomOutDown(loginBox);
+                  trans.setSpeed(2);
                   trans.setOnFinished(
                       event -> {
                         // Clear username / password once they're off screen
@@ -259,6 +272,14 @@ public class SceneSwitcherController extends AbstractController {
                   // Update sign in button to serve as log out button
                   signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
 
+                  // Enable settings button & zoom it in
+                  if (!settingsButton.isVisible()) {
+                    settingsButton.setVisible(true);
+                  }
+
+                  ZoomIn settingsTrans = new ZoomIn(settingsButton);
+                  settingsTrans.play();
+
                   // Update username label
                   usernameLabel.setText(eDB.getLoggedIn());
                   if (!usernameLabel.isVisible()) {
@@ -273,6 +294,11 @@ public class SceneSwitcherController extends AbstractController {
                 });
           }
         });
+  }
+
+  @FXML
+  public void pressedSettings() {
+    pushScene("views/nav/Settings.fxml");
   }
 
   private void transition(boolean right) {

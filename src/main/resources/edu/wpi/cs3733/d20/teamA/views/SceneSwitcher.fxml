@@ -83,18 +83,19 @@
                   <AnchorPane pickOnBounds="false" prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <JFXButton fx:id="backButton" layoutX="85.0" layoutY="54.0" onAction="#pressedBack" styleClass="heading-text" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                        <AnchorPane fx:id="signInPane" layoutX="1186.0" layoutY="8.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                        <AnchorPane fx:id="signInPane" layoutX="1186.0" layoutY="8.0" pickOnBounds="false" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <children>
                               <JFXButton fx:id="signInButton" onAction="#pressedSignIn" styleClass="heading-text" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
+                        <JFXButton fx:id="settingsButton" layoutX="95.0" layoutY="64.0" onAction="#pressedSettings" styleClass="heading-text" visible="false" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="65.0" />
                      </children>
                   </AnchorPane>
                </children>
             </StackPane>
          </center>
       </BorderPane>
-      <GridPane fx:id="blockerPane" mouseTransparent="true">
+      <GridPane fx:id="blockerPane" mouseTransparent="true" onMouseClicked="#clickedBlockerPane">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>
