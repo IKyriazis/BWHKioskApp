@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
+import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -40,6 +41,11 @@ public class MainMenuController {
         event -> {
           SceneSwitcherController.pushScene("views/EmployeeHome.fxml");
         });
+
+    // Preload scenes into FXML cache
+    FXMLCache.preLoadFXML("views/SimpleMap.fxml");
+    FXMLCache.preLoadFXML("views/ServiceHome.fxml");
+    FXMLCache.preLoadFXML("views/EmployeeHome.fxml");
 
     // Fix for weird button layout issues
     Platform.runLater(
