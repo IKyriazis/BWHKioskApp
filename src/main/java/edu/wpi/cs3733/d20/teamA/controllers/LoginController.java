@@ -188,8 +188,8 @@ public class LoginController extends AbstractController {
                   loginButton.setDisable(false);
                 });
           } else {
-              // if there is no secret key associated with the user (admin and staff)
-              // then log in
+            // if there is no secret key associated with the user (admin and staff)
+            // then log in
             if (eDB.getSecretKey(usernameBox.getText()) == null) {
               Platform.runLater(
                   () -> {
@@ -198,7 +198,7 @@ public class LoginController extends AbstractController {
             }
             Platform.runLater(
                 () -> {
-                    // we need to know the username to find the user's secret key
+                  // we need to know the username to find the user's secret key
                   username = usernameBox.getText();
 
                   // prepare to receive authentication code
@@ -219,51 +219,52 @@ public class LoginController extends AbstractController {
   }
 
   // function that moves windows around and stuff when a user logs in
-    // refactored this because we use it multiple times for 2fa
+  // refactored this because we use it multiple times for 2fa
   public void logIn() {
-      eDB.addLog(usernameBox.getText());
-      // Chuck the login box way off screen
-      transitioning = true;
-      TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
-      translate.setByY(-2000f);
-      translate.setOnFinished(
-              event -> {
-                  // Clear username / password once they're off screen
-                  usernameBox.setText("");
-                  passwordBox.setText("");
-                  transitioning = false;
+    eDB.addLog(usernameBox.getText());
+    // Chuck the login box way off screen
+    transitioning = true;
+    TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
+    translate.setByY(-2000f);
+    translate.setOnFinished(
+        event -> {
+          // Clear username / password once they're off screen
+          usernameBox.setText("");
+          passwordBox.setText("");
+          transitioning = false;
 
-                  // Reset visibility of stuff in box
-                  buttonBox.setDisable(false);
-                  buttonBox.setOpacity(1.0);
-                  spinner.setOpacity(0.0);
-                  loginButton.setDisable(false);
-              });
-      translate.play();
+          // Reset visibility of stuff in box
+          buttonBox.setDisable(false);
+          buttonBox.setOpacity(1.0);
+          spinner.setOpacity(0.0);
+          loginButton.setDisable(false);
+        });
+    translate.play();
 
-      // Fade out the background
-      FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
-      fade.setFromValue(1.0);
-      fade.setToValue(0.0);
-      fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
-      fade.play();
+    // Fade out the background
+    FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
+    fade.setFromValue(1.0);
+    fade.setToValue(0.0);
+    fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
+    fade.play();
 
-      loggedIn = true;
+    loggedIn = true;
 
-      // undo the stuff that we needed to do for authentication
-      buttonBox.setVisible(true);
-      gauth.setVisible(false);
-      loginButton.setVisible(true);
-      authenticateButton.setVisible(false);
+    // undo the stuff that we needed to do for authentication
+    gauthCode.setText("");
+    buttonBox.setVisible(true);
+    gauth.setVisible(false);
+    loginButton.setVisible(true);
+    authenticateButton.setVisible(false);
   }
 
   // function that gets called when the user presses the authenticate button
   public void authenticateButtonPressed() {
-      // gets the secret key of the user that just logged in
+    // gets the secret key of the user that just logged in
     String secretKey = eDB.getSecretKey(username);
 
     // check if the authenticator code given is correct, log in if it is
-      // show an error message if it isn't
+    // show an error message if it isn't
     if (gauthCode.getText().equals(getTOTPCode(secretKey))) {
       logIn();
     } else {

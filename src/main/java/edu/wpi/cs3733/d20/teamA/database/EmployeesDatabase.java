@@ -144,6 +144,7 @@ public class EmployeesDatabase extends Database {
     }
   }
 
+  // get the secret key (used for google authenticator) of the specified user
   public synchronized String getSecretKey(String uname) {
     try {
       PreparedStatement pstmt =
