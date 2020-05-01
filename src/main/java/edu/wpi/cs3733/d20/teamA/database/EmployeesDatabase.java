@@ -39,11 +39,7 @@ public class EmployeesDatabase extends Database {
       return false;
     }
     // Drop the tables
-    if (!(helperPrepared("DROP TABLE Employees") && helperPrepared("DROP TABLE LoggedIn"))) {
-      return false;
-    }
-
-    return true;
+    return helperPrepared("DROP TABLE Employees") && helperPrepared("DROP TABLE LoggedIn");
   }
 
   /**
