@@ -25,7 +25,6 @@ public class DepthFirst extends PathAlgo implements IStrategyPath {
       for (Edge edge : current.getEdges().values()) {
         Node neighbor = edge.getEnd();
 
-
         if (!visited.contains(neighbor)) {
           visited.add(neighbor);
           stack.push(neighbor);
