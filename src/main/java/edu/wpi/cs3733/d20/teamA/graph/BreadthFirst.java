@@ -24,18 +24,13 @@ public class BreadthFirst extends PathAlgo implements IStrategyPath {
 
     while (queue.size() != 0) {
       Node current = queue.poll();
-      // visited.add(current);
+
       // Early exit
       if (current.equals(end) || queue.contains(end)) break;
 
       // Check the current nodes neighbors
       for (Edge edge : current.getEdges().values()) {
         Node neighbor = edge.getEnd();
-
-        // Only consider nodes on this floor for now.
-        // if (neighbor.getFloor() != start.getFloor()) {
-        //  continue;
-        // }
 
         // if the neighbor hasn't been visited then mark it as visited and enqueue it
         // add it to the path with the neighbor and where it came from
