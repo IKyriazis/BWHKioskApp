@@ -33,6 +33,14 @@ public abstract class PathAlgo {
     return this.pathEdges;
   }
 
+  public Graph getGraph() {
+    return graph;
+  }
+
+  public void setGraph(Graph graph) {
+    this.graph = graph;
+  }
+
   /** Gets only the forward edges for the path */
   protected void calculateEdges() {
     // Clear existing edge list
