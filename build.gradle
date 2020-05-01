@@ -61,7 +61,11 @@ dependencies {
             'org.apache.xmlgraphics:batik-rasterizer:1.12',
 
             // AnimateFX
-            'io.github.typhon0:AnimateFX:1.2.1'
+            'io.github.typhon0:AnimateFX:1.2.1',
+
+            // stuff for google authenticator
+            'de.taimos:totp:1.0',
+            'commons-codec:commons-codec:1.10'
     )
 
     testImplementation(
