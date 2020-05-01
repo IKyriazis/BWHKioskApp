@@ -280,12 +280,16 @@ public class SimpleMapController {
   public ArrayList<Label> texDirectionsWithLabels(ArrayList<String> textualPath) {
     ArrayList<Label> textPath = new ArrayList<>();
     for (int j = 0; j < textualPath.size() - 1; j++) {
-      if (textualPath.get(j).contains("right")) {
+      if (textualPath.get(j).contains("Turn right")) {
         textPath.add(
             new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT)));
-      } else if (textualPath.get(j).contains("left")) {
+      } else if (textualPath.get(j).contains("Turn left")) {
         textPath.add(
             new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT)));
+      } else if (textualPath.get(j).contains("slight left")) {
+        textPath.add(new Label(textualPath.get(j)));
+      } else if (textualPath.get(j).contains("slight right")) {
+        textPath.add(new Label(textualPath.get(j)));
       } else if (textualPath.get(j).contains("up")) {
         textPath.add(new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
       } else if (textualPath.get(j).contains("down")) {

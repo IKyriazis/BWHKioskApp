@@ -119,6 +119,39 @@ public abstract class PathAlgo {
 
       double angleDiff = angle - lastAngle;
 
+      // Left
+      if (((angleDiff >= (Math.PI / 3)) && (angleDiff <= (2 * Math.PI / 3)))
+          || ((angleDiff <= (-4 * Math.PI / 3)) && (angleDiff >= (-5 * Math.PI / 3)))) {
+        directions.add(Direction.LEFT);
+      }
+
+      // Right
+      else if (((angleDiff <= (-Math.PI / 3)) && (angleDiff >= (-2 * Math.PI / 3)))
+          || ((angleDiff >= (4 * Math.PI / 3)) && (angleDiff <= (5 * Math.PI / 3)))) {
+        directions.add(Direction.RIGHT);
+      }
+
+      // Slight Left
+      else if (((angleDiff >= (Math.PI / 6)) && (angleDiff <= (Math.PI / 3)))
+          || ((angleDiff >= (-11 * Math.PI / 6)) && (angleDiff <= (-5 * Math.PI / 3)))
+          || ((angleDiff >= (2 * Math.PI / 3)) && (angleDiff <= (5 * Math.PI / 6)))
+          || ((angleDiff >= (-4 * Math.PI / 3)) && (angleDiff <= (-7 * Math.PI / 6)))) {
+
+        directions.add(Direction.SLIGHTLEFT);
+      }
+
+      // Slight Right
+      else if (((angleDiff <= (-Math.PI / 6)) && (angleDiff >= (-Math.PI / 3)))
+          || ((angleDiff <= (11 * Math.PI / 6)) && (angleDiff >= (5 * Math.PI / 3)))
+          || ((angleDiff <= (-2 * Math.PI / 3)) && (angleDiff >= (-5 * Math.PI / 6)))
+          || ((angleDiff <= (4 * Math.PI / 3)) && (angleDiff >= (7 * Math.PI / 6)))) {
+
+        directions.add(Direction.SLIGHTRIGHT);
+      } else {
+        directions.add(Direction.NEXT);
+      }
+
+      /*
       if (((angleDiff <= (-5 * Math.PI / 4)) && (angleDiff >= (-7 * Math.PI / 4)))
           || ((angleDiff >= Math.PI / 4) && (angleDiff <= (3 * Math.PI / 4)))) {
         directions.add(Direction.LEFT);
@@ -127,7 +160,7 @@ public abstract class PathAlgo {
         directions.add(Direction.RIGHT);
       } else {
         directions.add(Direction.NEXT);
-      }
+      } */
 
       lastAngle = angle;
     }
@@ -138,6 +171,10 @@ public abstract class PathAlgo {
         textPath.add("Turn right at " + pathNodes.get(j).getLongName());
       } else if (directions.get(j) == Direction.LEFT) {
         textPath.add("Turn left at " + pathNodes.get(j).getLongName());
+      } else if (directions.get(j) == Direction.SLIGHTLEFT) {
+        textPath.add("Make a slight left at " + pathNodes.get(j).getLongName());
+      } else if (directions.get(j) == Direction.SLIGHTRIGHT) {
+        textPath.add("Make a slight right at " + pathNodes.get(j).getLongName());
       } else if (directions.get(j) == Direction.UP) {
         int sameLength = getSameLength(directions, j, Direction.UP);
 
