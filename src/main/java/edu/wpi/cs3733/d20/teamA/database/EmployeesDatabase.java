@@ -144,6 +144,24 @@ public class EmployeesDatabase extends Database {
     }
   }
 
+  public synchronized String getSecretKey(String uname) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("Select * From Employees Where username = " + uname);
+      ResultSet rset = pstmt.executeQuery();
+      String secretKey = "Not found";
+      if (rset.next()) {
+        secretKey = rset.getString("secretKey");
+      }
+      rset.close();
+      pstmt.close();
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "Not found";
+    }
+  }
+
   // returns true if the username isn't in the database
   public synchronized boolean uNameExists(String uName) {
     try {

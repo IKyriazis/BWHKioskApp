@@ -90,7 +90,7 @@ public class CreateAcctController extends AbstractController {
                 () -> {
                   DialogUtil.complexDialog(
                       dialogPane,
-                      "Direction QR Code",
+                      "You must scan the QR code in Google Authenticator and use it for logging in",
                       "views/QRCodePopup.fxml",
                       true,
                       null,

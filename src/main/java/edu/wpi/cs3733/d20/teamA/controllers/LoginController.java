@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
+import de.taimos.totp.TOTP;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -15,6 +16,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import org.apache.commons.codec.binary.Base32;
+import org.apache.commons.codec.binary.Hex;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -22,8 +25,10 @@ import org.kordamp.ikonli.javafx.FontIcon;
 public class LoginController extends AbstractController {
   @FXML private VBox loginBox;
   @FXML private VBox buttonBox;
+  @FXML private VBox gauth;
   @FXML private JFXSpinner spinner;
   @FXML private JFXButton loginButton;
+  @FXML private JFXButton authenticateButton;
   @FXML private JFXTextField usernameBox;
   @FXML private JFXPasswordField passwordBox;
   @FXML private StackPane dialogPane;
@@ -181,40 +186,72 @@ public class LoginController extends AbstractController {
                   loginButton.setDisable(false);
                 });
           } else {
-            eDB.addLog(usernameBox.getText());
             Platform.runLater(
                 () -> {
-                  // Chuck the login box way off screen
-                  transitioning = true;
-                  TranslateTransition translate =
-                      new TranslateTransition(Duration.millis(1000), loginBox);
-                  translate.setByY(-2000f);
-                  translate.setOnFinished(
-                      event -> {
-                        // Clear username / password once they're off screen
-                        usernameBox.setText("");
-                        passwordBox.setText("");
-                        transitioning = false;
+                  // Fade out spinner
+                  FadeTransition spinnerOutFade = new FadeTransition(Duration.millis(250), spinner);
+                  spinnerOutFade.setFromValue(1.0);
+                  spinnerOutFade.setToValue(0.0);
+                  spinnerOutFade.play();
 
-                        // Reset visibility of stuff in box
-                        buttonBox.setDisable(false);
-                        buttonBox.setOpacity(1.0);
-                        spinner.setOpacity(0.0);
-                        loginButton.setDisable(false);
-                      });
-                  translate.play();
+                  buttonBox.setVisible(false);
+                  gauth.setVisible(true);
+                  loginButton.setVisible(false);
+                  authenticateButton.setVisible(true);
 
-                  // Fade out the background
-                  FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
-                  fade.setFromValue(1.0);
-                  fade.setToValue(0.0);
-                  fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
-                  fade.play();
 
-                  loggedIn = true;
                 });
+            //            eDB.addLog(usernameBox.getText());
+            //            Platform.runLater(
+            //                () -> {
+            //                  // Chuck the login box way off screen
+            //                  transitioning = true;
+            //                  TranslateTransition translate =
+            //                      new TranslateTransition(Duration.millis(1000), loginBox);
+            //                  translate.setByY(-2000f);
+            //                  translate.setOnFinished(
+            //                      event -> {
+            //                        // Clear username / password once they're off screen
+            //                        usernameBox.setText("");
+            //                        passwordBox.setText("");
+            //                        transitioning = false;
+            //
+            //                        // Reset visibility of stuff in box
+            //                        buttonBox.setDisable(false);
+            //                        buttonBox.setOpacity(1.0);
+            //                        spinner.setOpacity(0.0);
+            //                        loginButton.setDisable(false);
+            //                      });
+            //                  translate.play();
+            //
+            //                  // Fade out the background
+            //                  FadeTransition fade = new FadeTransition(Duration.millis(500),
+            // blockerPane);
+            //                  fade.setFromValue(1.0);
+            //                  fade.setToValue(0.0);
+            //                  fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
+            //                  fade.play();
+            //
+            //                  loggedIn = true;
+            //                });
           }
         });
+  }
+
+  public boolean authenticate(String uname, String userCode) {
+    buttonBox.setVisible(false);
+    gauth.setVisible(true);
+    String secretKey = eDB.getSecretKey(uname);
+    return userCode.equals(getTOTPCode(secretKey));
+  }
+
+  public void authenticateButtonPressed() {}
+
+  public static String getTOTPCode(String secretKey) {
+    Base32 base32 = new Base32();
+    byte[] bytes = base32.decode(secretKey);
+    String hexKey = Hex.encodeHexString(bytes);
+    return TOTP.getOTP(hexKey);
   }
 
   @FXML
