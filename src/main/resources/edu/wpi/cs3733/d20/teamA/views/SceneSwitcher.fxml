@@ -90,7 +90,7 @@
             </StackPane>
          </center>
       </BorderPane>
-      <GridPane fx:id="blockerPane" mouseTransparent="true" onMouseClicked="#clickedBlockerPane">
+      <GridPane fx:id="blockerPane" mouseTransparent="true">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
          </columnConstraints>

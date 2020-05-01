@@ -76,6 +76,8 @@
 .jfx-button {
     -fx-background-color: -primary-color;
     -fx-text-fill: -primary-color-text;
+    -fx-background-radius: 1em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
 }
 
 .jfx-button .ikonli-font-icon {
@@ -179,8 +181,4 @@
 
 #flowerServiceTablePane {
     -fx-font-size: 18pt;
-}
-
-#signInButton {
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
 }

@@ -112,17 +112,26 @@ public class SceneSwitcherController extends AbstractController {
       return;
     }
 
-    loginTransitioning = true;
+    if (loggedIn) {
+      eDB.changeFlag();
 
-    loginBox.setVisible(true);
-    blockerPane.setMouseTransparent(false);
+      signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_IN_ALT));
+      loggedIn = false;
+    } else {
+      loginTransitioning = true;
 
-    ZoomIn trans = new ZoomIn(loginBox);
-    trans.setOnFinished(
-        event -> {
-          loginTransitioning = false;
-        });
-    trans.play();
+      if (!loginBox.isVisible()) {
+        loginBox.setVisible(true);
+      }
+      blockerPane.setMouseTransparent(false);
+
+      ZoomIn trans = new ZoomIn(loginBox);
+      trans.setOnFinished(
+          event -> {
+            loginTransitioning = false;
+          });
+      trans.play();
+    }
   }
 
   @FXML
@@ -144,7 +153,7 @@ public class SceneSwitcherController extends AbstractController {
 
   @FXML
   public void pressedLogin() {
-    if (loginTransitioning || loggedIn) {
+    if (loginTransitioning) {
       return;
     }
 
@@ -208,23 +217,23 @@ public class SceneSwitcherController extends AbstractController {
                         // Clear username / password once they're off screen
                         usernameBox.setText("");
                         passwordBox.setText("");
-                        loginTransitioning = false;
 
                         // Reset visibility of stuff in box
                         buttonBox.setDisable(false);
                         buttonBox.setOpacity(1.0);
                         spinner.setOpacity(0.0);
                         loginButton.setDisable(false);
+
+                        // Pass clicks through blocker pane again
+                        blockerPane.setMouseTransparent(true);
+
+                        // Toggle off transition flag
+                        loginTransitioning = false;
                       });
                   trans.play();
 
-                  // Fade out the background
-                  FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
-                  fade.setFromValue(1.0);
-                  fade.setToValue(0.0);
-                  fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
-                  fade.play();
-
+                  // Update sign in button to serve as log out button
+                  signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
                   loggedIn = true;
                 });
           }
