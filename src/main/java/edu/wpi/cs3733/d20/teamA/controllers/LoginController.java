@@ -188,50 +188,21 @@ public class LoginController extends AbstractController {
                   loginButton.setDisable(false);
                 });
           } else {
+              // if there is no secret key associated with the user (admin and staff)
+              // then log in
             if (eDB.getSecretKey(usernameBox.getText()) == null) {
-              System.out.println("Secret key is null");
               Platform.runLater(
                   () -> {
-                    eDB.addLog(usernameBox.getText());
-                    // Chuck the login box way off screen
-                    transitioning = true;
-                    TranslateTransition translate =
-                        new TranslateTransition(Duration.millis(1000), loginBox);
-                    translate.setByY(-2000f);
-                    translate.setOnFinished(
-                        event -> {
-                          // Clear username / password once they're off screen
-                          usernameBox.setText("");
-                          passwordBox.setText("");
-                          transitioning = false;
-
-                          // Reset visibility of stuff in box
-                          buttonBox.setDisable(false);
-                          buttonBox.setOpacity(1.0);
-                          spinner.setOpacity(0.0);
-                          loginButton.setDisable(false);
-                        });
-                    translate.play();
-
-                    // Fade out the background
-                    FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
-                    fade.setFromValue(1.0);
-                    fade.setToValue(0.0);
-                    fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
-                    fade.play();
-
-                    // undo the stuff that we needed to do for authentication
-                    buttonBox.setVisible(true);
-                    gauth.setVisible(false);
-                    loginButton.setVisible(true);
-                    authenticateButton.setVisible(false);
-
-                    loggedIn = true;
+                    logIn();
                   });
             }
             Platform.runLater(
                 () -> {
+                    // we need to know the username to find the user's secret key
                   username = usernameBox.getText();
+
+                  // prepare to receive authentication code
+
                   // Fade out spinner
                   FadeTransition spinnerOutFade = new FadeTransition(Duration.millis(250), spinner);
                   spinnerOutFade.setFromValue(1.0);
@@ -247,27 +218,27 @@ public class LoginController extends AbstractController {
         });
   }
 
-  public void authenticateButtonPressed() {
-    String secretKey = eDB.getSecretKey(username);
-    if (gauthCode.getText().equals(getTOTPCode(secretKey))) {
+  // function that moves windows around and stuff when a user logs in
+    // refactored this because we use it multiple times for 2fa
+  public void logIn() {
       eDB.addLog(usernameBox.getText());
       // Chuck the login box way off screen
       transitioning = true;
       TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);
       translate.setByY(-2000f);
       translate.setOnFinished(
-          event -> {
-            // Clear username / password once they're off screen
-            usernameBox.setText("");
-            passwordBox.setText("");
-            transitioning = false;
+              event -> {
+                  // Clear username / password once they're off screen
+                  usernameBox.setText("");
+                  passwordBox.setText("");
+                  transitioning = false;
 
-            // Reset visibility of stuff in box
-            buttonBox.setDisable(false);
-            buttonBox.setOpacity(1.0);
-            spinner.setOpacity(0.0);
-            loginButton.setDisable(false);
-          });
+                  // Reset visibility of stuff in box
+                  buttonBox.setDisable(false);
+                  buttonBox.setOpacity(1.0);
+                  spinner.setOpacity(0.0);
+                  loginButton.setDisable(false);
+              });
       translate.play();
 
       // Fade out the background
@@ -278,17 +249,30 @@ public class LoginController extends AbstractController {
       fade.play();
 
       loggedIn = true;
+
       // undo the stuff that we needed to do for authentication
       buttonBox.setVisible(true);
       gauth.setVisible(false);
       loginButton.setVisible(true);
       authenticateButton.setVisible(false);
+  }
+
+  // function that gets called when the user presses the authenticate button
+  public void authenticateButtonPressed() {
+      // gets the secret key of the user that just logged in
+    String secretKey = eDB.getSecretKey(username);
+
+    // check if the authenticator code given is correct, log in if it is
+      // show an error message if it isn't
+    if (gauthCode.getText().equals(getTOTPCode(secretKey))) {
+      logIn();
     } else {
       DialogUtil.simpleErrorDialog(
           dialogPane, "Incorrect code", "You have entered an incorrect Google Authenticator code.");
     }
   }
 
+  // function ripped from medium that gets the curent valid authenticator code
   public static String getTOTPCode(String secretKey) {
     Base32 base32 = new Base32();
     byte[] bytes = base32.decode(secretKey);
@@ -320,6 +304,8 @@ public class LoginController extends AbstractController {
     fade.setToValue(1.0);
     fade.setOnFinished(event -> blockerPane.setMouseTransparent(false));
     fade.play();
+
+    username = null;
 
     loggedIn = false;
   }
