@@ -53,8 +53,7 @@ public class TableItemFactory {
       case "interpret":
         return new InterpreterRequest(9, "Name", "Language", location, status);
       case "rxreq":
-        return new Prescription(
-            2, "PatientName", "Prescription", "Pharmacy", "Dosage", 4, "Doc name", "Notes");
+        return new Prescription(reqID, description, additional);
       default:
         return null;
     }
