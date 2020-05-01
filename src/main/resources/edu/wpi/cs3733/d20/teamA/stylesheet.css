@@ -141,6 +141,13 @@
     -fx-padding: 0 1em 0 .25em;
 }
 
+.rounded-pane {
+    -fx-background-color: #F5F5F5;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
+}
+
 .label {
     -fx-text-fill: black;
 }
@@ -169,17 +176,14 @@
     -fx-font-size: 24pt;
 }
 
+.chonky-text {
+    -fx-font-size: 36pt;
+}
+
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
     -fx-background-color: rgba(255, 255, 255, 0);
-}
-
-#loginBox, #centerPane {
-    -fx-background-color: #F5F5F5;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
 }
 
 #logoutButton {

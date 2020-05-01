@@ -292,15 +292,15 @@ public class SceneSwitcherController extends AbstractController {
 
       AnimationFX transOut =
           right
-              ? new FadeOutLeft(contentPane.getChildren().get(0))
-              : new FadeOutRight(contentPane.getChildren().get(0));
+              ? new FadeOutLeftBig(contentPane.getChildren().get(0))
+              : new FadeOutRightBig(contentPane.getChildren().get(0));
       transOut.setOnFinished(
           event -> {
             contentPane.getChildren().remove(transOut.getNode());
           });
       transOut.play();
 
-      AnimationFX transIn = right ? new FadeInRight(top) : new FadeInLeft(top);
+      AnimationFX transIn = right ? new FadeInRightBig(top) : new FadeInLeftBig(top);
       transIn.setOnFinished(
           event -> {
             transitioning = false;
@@ -322,7 +322,7 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   private static void pushScene(Node newNode) {
-    if (instance == null) {
+    if (instance == null || instance.transitioning) {
       return;
     }
 
@@ -330,14 +330,13 @@ public class SceneSwitcherController extends AbstractController {
     instance.transition(true);
   }
 
-  private static Node popScene() {
+  private static void popScene() {
     if (instance == null || instance.sceneStack.size() <= 1) {
-      return null;
+      return;
     }
 
     Node old = instance.sceneStack.pop();
     instance.transition(false);
-    return old;
   }
 
   public static void pushScene(String fxmlPath) {
