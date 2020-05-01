@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
@@ -11,8 +12,9 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.material.Material;
 
-public class ServiceHomeController {
+public class ServiceHomeController extends AbstractController {
   @FXML private AnchorPane rootPane;
   @FXML private GridPane buttonPane;
 
@@ -31,13 +33,32 @@ public class ServiceHomeController {
   private void buildButtonPane() {
     buttonPane.getChildren().clear();
 
+    // Services available to the public
+    addButton(new FontIcon(Material.LOCAL_FLORIST), "views/flower/FlowerService.fxml", "Flowers");
     addButton(
-        new FontIcon(FontAwesomeSolid.TOILET_PAPER), "views/flower/FlowerService.fxml", "Flowers");
-    for (int i = 0; i < 9; i++) {
+        new FontIcon(FontAwesomeSolid.WHEELCHAIR),
+        "views/InternalTransportService.fxml",
+        "Internal\nTransport");
+
+    // Services available to employees
+    if (eDB.getLoggedIn() != null) {
+      addButton(new FontIcon(FontAwesomeSolid.BROOM), "views/JanitorialGUI.fxml", "Janitorial");
       addButton(
-          new FontIcon(FontAwesomeSolid.WHEELCHAIR),
-          "views/InternalTransportService.fxml",
-          "Internal\nTransport");
+          new FontIcon(FontAwesomeSolid.BULLHORN), "views/AnnouncementAdmin.fxml", "Announcements");
+      addButton(
+          new FontIcon(FontAwesomeSolid.MEDKIT),
+          "views/MedicineRequest.fxml",
+          "Medicine\nDelivery");
+      addButton(
+          new FontIcon(FontAwesomeSolid.STETHOSCOPE), "views/EquipReq.fxml", "Equipment\nRequest");
+      addButton(new FontIcon(Material.LOCAL_LAUNDRY_SERVICE), "views/LaundryGUI.fxml", "Laundry");
+      addButton(new FontIcon(FontAwesomeSolid.LAPTOP), "views/ITServices.fxml", "Tech\nSupport");
+      addButton(
+          new FontIcon(FontAwesomeSolid.USER), "views/PatientsInfoService.fxml", "Patient\nInfo");
+      addButton(
+          new FontIcon(FontAwesomeSolid.GLOBE), "views/InterpreterService.fxml", "Interpreters");
+      addButton(
+          new FontIcon(FontAwesomeSolid.PILLS), "views/PrescriptionService.fxml", "Prescriptions");
     }
 
     equalizeButtonGrid();
