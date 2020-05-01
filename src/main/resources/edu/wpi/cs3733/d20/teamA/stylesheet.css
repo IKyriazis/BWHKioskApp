@@ -134,6 +134,13 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 10, 0.0, 5, 5);
 }
 
+.button-tag-label {
+    -fx-background-color: #F5F5F5;
+    -fx-background-radius: 1em 0 0 1em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
+    -fx-padding: 0 1em 0 .25em;
+}
+
 .label {
     -fx-text-fill: black;
 }

@@ -82,8 +82,12 @@
                   </GridPane>
                   <AnchorPane pickOnBounds="false" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <JFXButton fx:id="backButton" layoutX="85.0" layoutY="54.0" onAction="#pressedBack" styleClass="medium-text" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
-                        <JFXButton fx:id="signInButton" layoutX="95.0" layoutY="64.0" onAction="#pressedSignIn" styleClass="medium-text" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <JFXButton fx:id="backButton" layoutX="85.0" layoutY="54.0" onAction="#pressedBack" styleClass="heading-text" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <AnchorPane fx:id="signInPane" layoutX="1186.0" layoutY="8.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <children>
+                              <JFXButton fx:id="signInButton" onAction="#pressedSignIn" styleClass="heading-text" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </children>

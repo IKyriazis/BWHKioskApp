@@ -14,10 +14,9 @@ import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -34,6 +33,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private JFXPasswordField passwordBox;
   @FXML private JFXSpinner spinner;
 
+  @FXML private AnchorPane signInPane;
   @FXML private GridPane blockerPane;
   @FXML private GridPane contentPane;
   @FXML private VBox loginBox;
@@ -49,6 +49,8 @@ public class SceneSwitcherController extends AbstractController {
 
   private FontIcon homeIcon;
   private FontIcon backIcon;
+
+  private Label usernameLabel;
 
   @FXML
   public void initialize() {
@@ -92,8 +94,27 @@ public class SceneSwitcherController extends AbstractController {
 
     // Setup scene stack
     sceneStack = new Stack<>();
-
     pushScene("views/nav/MainMenu.fxml");
+
+    // Creat username label
+    usernameLabel = new Label();
+
+    usernameLabel.getStyleClass().add("button-tag-label");
+    usernameLabel.getStyleClass().add("heading-text");
+
+    usernameLabel.setPrefSize(Region.USE_COMPUTED_SIZE, Region.USE_COMPUTED_SIZE);
+    usernameLabel.setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
+    usernameLabel
+        .widthProperty()
+        .addListener(
+            observable -> {
+              AnchorPane.setTopAnchor(
+                  usernameLabel, (signInButton.getHeight() - usernameLabel.getHeight()) / 2);
+              AnchorPane.setRightAnchor(usernameLabel, signInButton.getWidth() * 2 / 3);
+            });
+
+    usernameLabel.setVisible(false);
+    signInPane.getChildren().add(0, usernameLabel);
 
     // Sometimes buttons start selected for some reason
     rootPane.requestFocus();
@@ -114,6 +135,9 @@ public class SceneSwitcherController extends AbstractController {
 
     if (loggedIn) {
       eDB.changeFlag();
+
+      FadeOutRight lblTrans = new FadeOutRight(usernameLabel);
+      lblTrans.play();
 
       signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_IN_ALT));
       loggedIn = false;
@@ -234,6 +258,17 @@ public class SceneSwitcherController extends AbstractController {
 
                   // Update sign in button to serve as log out button
                   signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
+
+                  // Update username label
+                  usernameLabel.setText(eDB.getLoggedIn());
+                  if (!usernameLabel.isVisible()) {
+                    usernameLabel.setVisible(true);
+                  }
+
+                  // Slide in username label
+                  FadeInRight lblTrans = new FadeInRight(usernameLabel);
+                  lblTrans.play();
+
                   loggedIn = true;
                 });
           }
