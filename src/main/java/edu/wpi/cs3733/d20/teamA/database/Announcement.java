@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 

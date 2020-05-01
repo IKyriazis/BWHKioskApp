@@ -69,7 +69,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
    * @param nameLast last name
    * @return returns true if the employee is added
    */
-  public synchronized boolean addEmployee(
+  public synchronized String addEmployee(
       String employeeID,
       String nameFirst,
       String nameLast,
@@ -94,10 +94,10 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
-      return true;
+      return employeeID;
     } catch (SQLException e) {
       e.printStackTrace();
-      return false;
+      return "";
     }
   }
 
@@ -119,15 +119,18 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     }
   }
 
-  public synchronized boolean addEmployeeNoChecks(
+  public synchronized String addEmployeeNoChecks(
       String nameFirst, String nameLast, String username, String password, String title) {
     return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
   }
 
-  public synchronized boolean addEmployee(
+  public synchronized String addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
-    return checkSecurePass(password)
-        && addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
+    if (checkSecurePass(password)) {
+      return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
+    } else {
+      return "";
+    }
   }
 
   /**

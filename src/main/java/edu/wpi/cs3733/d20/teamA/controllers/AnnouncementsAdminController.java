@@ -36,7 +36,7 @@ public class AnnouncementsAdminController extends AbstractController {
     deleteButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE_ALT));
 
     // Set up table
-    tblAnnouncement = new SimpleTableView<>(new Announcement(0, ""), 80);
+    tblAnnouncement = new SimpleTableView<>(new Announcement("", ""), 80);
     tableGridPane.getChildren().add(tblAnnouncement);
 
     // Track when the mouse has clicked on the table
@@ -60,7 +60,7 @@ public class AnnouncementsAdminController extends AbstractController {
     }
 
     String announcement = textAnn.getText();
-    int id = announcementDatabase.addAnnouncement(announcement);
+    announcementDatabase.addAnnouncement(announcement);
     textAnn.setText("");
     update();
   }

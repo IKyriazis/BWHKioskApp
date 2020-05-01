@@ -166,8 +166,42 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     return getSize("SERVICEREQ");
   }
 
+  public synchronized int getSize(ServiceType service) {
+    String serviceString = service.toString();
+    int count = 0;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("SELECT FROM SERVICEREQ WHERE servType = '" + serviceString + "'");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        count++;
+      }
+      rset.close();
+      pstmt.close();
+      return count;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return -1;
+    }
+  }
+
   public synchronized boolean removeAll() {
     return helperPrepared("DELETE From SERVICEREQ");
+  }
+
+  public synchronized boolean removeAll(ServiceType service) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("DELETE FROM SERVICEREQ WHERE servType = '" + service + "'");
+      pstmt.executeQuery();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 
   public synchronized boolean editStatus(String reqID, String newStatus) {

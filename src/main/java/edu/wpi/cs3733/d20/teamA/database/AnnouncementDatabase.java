@@ -4,7 +4,7 @@ import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class AnnouncementDatabase extends Database implements IDatabase<Announcement>{
+public class AnnouncementDatabase extends Database implements IDatabase<Announcement> {
 
   public AnnouncementDatabase(Connection connection) {
     super(connection);
@@ -103,7 +103,7 @@ public class AnnouncementDatabase extends Database implements IDatabase<Announce
     }
   }
 
-  public boolean removeAnnouncement(int id) {
+  public boolean removeAnnouncement(String id) {
     return helperPrepared("DELETE From ANNOUNCEMENTS WHERE announcementID = " + id);
   }
 

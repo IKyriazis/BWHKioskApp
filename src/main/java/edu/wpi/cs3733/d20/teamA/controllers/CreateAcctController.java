@@ -67,7 +67,8 @@ public class CreateAcctController extends AbstractController {
       return;
     }
     if (eDB.addEmployee(
-        fName.getText(), lName.getText(), uName.getText(), cPass.getText(), title.getText())) {
+            fName.getText(), lName.getText(), uName.getText(), cPass.getText(), title.getText())
+        != "") {
       // print that account has been created successfully
       DialogUtil.simpleErrorDialog(
           dialogPane, "Account Created", "You have successfully created an account.");
