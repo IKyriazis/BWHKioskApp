@@ -117,7 +117,7 @@ public class InterpreterDatabase extends Database {
         String name = set.getString("name");
         String language = set.getString("language");
 
-        interpreters.add(new Interpreter(name, language));
+        // interpreters.add(new Interpreter(name, language));
       }
       set.close();
       stmt.close();

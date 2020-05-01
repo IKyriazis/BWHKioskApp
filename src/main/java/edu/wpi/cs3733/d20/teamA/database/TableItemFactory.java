@@ -51,7 +51,12 @@ public class TableItemFactory {
             status,
             additional); // Additional hold name because it doenst check table
       case "interpret":
-        return new InterpreterRequest("", "Name", "Language", location, status);
+        return new InterpreterRequest(
+            reqID,
+            description,
+            additional,
+            location,
+            status); // Hold interpreter name in description to avoid the employee ID restriction
       case "rxreq":
         return new Prescription(reqID, description, additional);
       default:

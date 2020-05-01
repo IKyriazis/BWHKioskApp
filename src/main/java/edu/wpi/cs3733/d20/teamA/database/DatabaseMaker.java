@@ -29,5 +29,4 @@ public class DatabaseMaker {
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
   }
-
 }

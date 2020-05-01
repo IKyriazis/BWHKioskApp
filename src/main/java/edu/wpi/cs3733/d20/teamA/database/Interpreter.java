@@ -7,10 +7,12 @@ import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Interpreter implements ITableable<Interpreter> {
+  private SimpleStringProperty id;
   private SimpleStringProperty name;
   private SimpleStringProperty secondLanguage;
 
-  public Interpreter(String name, String secondLanguage) {
+  public Interpreter(String id, String name, String secondLanguage) {
+    this.id = new SimpleStringProperty(id);
     this.name = new SimpleStringProperty(name);
     this.secondLanguage = new SimpleStringProperty(secondLanguage);
   }
@@ -53,5 +55,9 @@ public class Interpreter implements ITableable<Interpreter> {
   @Override
   public String toString() {
     return nameProperty().getValue();
+  }
+
+  public String getId() {
+    return id.get();
   }
 }
