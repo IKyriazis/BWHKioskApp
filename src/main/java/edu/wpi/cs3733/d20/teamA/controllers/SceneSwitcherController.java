@@ -196,6 +196,12 @@ public class SceneSwitcherController extends AbstractController {
 
       loggedIn = false;
       username = "";
+
+      // Kick user back to home screen.
+      while (sceneStack.size() > 1) {
+        sceneStack.pop();
+      }
+      transition(false);
     } else {
       loginTransitioning = true;
 
