@@ -273,7 +273,7 @@ public class LoginController extends AbstractController {
     }
   }
 
-  // function ripped from medium that gets the curent valid authenticator code
+  // function ripped from medium that gets the current valid authenticator code
   public static String getTOTPCode(String secretKey) {
     Base32 base32 = new Base32();
     byte[] bytes = base32.decode(secretKey);
