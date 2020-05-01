@@ -9,9 +9,17 @@ import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Stack;
+import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -40,6 +48,9 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private VBox loginBox;
   @FXML private VBox buttonBox;
 
+  @FXML private Label timeLabel;
+  @FXML private Label dateLabel;
+
   private static SceneSwitcherController instance;
 
   private Stack<Node> sceneStack;
@@ -52,6 +63,7 @@ public class SceneSwitcherController extends AbstractController {
   private FontIcon backIcon;
 
   private Label usernameLabel;
+  private Date date;
 
   @FXML
   public void initialize() {
@@ -122,6 +134,30 @@ public class SceneSwitcherController extends AbstractController {
 
     // Sometimes buttons start selected for some reason
     rootPane.requestFocus();
+
+    this.date = new Date();
+    SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
+
+    this.dateLabel.setText(dateFormat.format(this.date));
+    bindToTime();
+  }
+
+  private void bindToTime() {
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0),
+                new EventHandler<ActionEvent>() {
+                  @Override
+                  public void handle(ActionEvent actionEvent) {
+                    Calendar time = Calendar.getInstance();
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm aa");
+                    timeLabel.setText(simpleDateFormat.format(time.getTime()));
+                  }
+                }),
+            new KeyFrame(Duration.seconds(1)));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
   }
 
   @FXML
