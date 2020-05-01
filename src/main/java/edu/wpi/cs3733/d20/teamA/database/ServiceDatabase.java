@@ -5,7 +5,7 @@ import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class ServiceDatabase extends Database{
+public class ServiceDatabase extends Database implements IDatabase{
 
   public ServiceDatabase(Connection connection) {
     super(connection);
@@ -162,11 +162,11 @@ public class ServiceDatabase extends Database{
     }
   }
 
-  public synchronized int getSizeReq() {
+  public synchronized int getSize() {
     return getSize("SERVICEREQ");
   }
 
-  public synchronized boolean removeAllReqs() {
+  public synchronized boolean removeAll() {
     return helperPrepared("DELETE From SERVICEREQ");
   }
 
@@ -325,7 +325,37 @@ public class ServiceDatabase extends Database{
     }
   }
 
-  public synchronized ObservableList<ITableable> observableList(ServiceType type) {
+  public synchronized ObservableList<ITableable> getObservableList(){
+    ObservableList<ITableable> observableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM SERVICEREQ");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String servType = rset.getString("servType");
+        String id = rset.getString("reqID");
+        String didReqName = rset.getString("didReqName");
+        String madeReqName = rset.getString("madeReqName");
+        Timestamp timeOfReq = rset.getTimestamp("timeOfReq");
+        String status = rset.getString("status");
+        String location = rset.getString("location");
+        String description = rset.getString("description");
+        String additional = rset.getString("additional");
+        ITableable item =
+                TableItemFactory.getService(
+                        servType, id, didReqName, madeReqName,timeOfReq, status,
+                        location, description, additional);
+        observableList.add(item);
+      }
+      rset.close();
+      pstmt.close();
+      return observableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public synchronized ObservableList<ITableable> getObservableListService(ServiceType type) {
     ObservableList<ITableable> observableList = FXCollections.observableArrayList();
     try {
       PreparedStatement pstmt =
@@ -344,7 +374,7 @@ public class ServiceDatabase extends Database{
         String additional = rset.getString("additional");
 
         ITableable item =
-            TableItemFactory.get(
+            TableItemFactory.getService(
                 type.toString(), id, didReq, madeReq, t, stat, loc, desc, additional);
         observableList.add(item);
       }

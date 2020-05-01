@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 
-public class InventoryDatabase extends Database {
+public class InventoryDatabase extends Database implements IDatabase{
 
     public InventoryDatabase(Connection connection) {
         super(connection);
@@ -82,7 +82,7 @@ public class InventoryDatabase extends Database {
     public synchronized boolean removeAll() {
         return helperPrepared("DELETE FROM Inventory");
     }
-    /*
+
     public synchronized ObservableList<ITableable> getObservableList() {
         ObservableList<ITableable> observableList = FXCollections.observableArrayList();
         try {
@@ -101,8 +101,7 @@ public class InventoryDatabase extends Database {
                 String additional = rset.getString("additional");
 
                 ITableable item =
-                        TableItemFactory.get(
-                                type.toString(), id, didReq, madeReq, t, stat, loc, desc, additional);
+                        TableItemFactory.getInventory(itemID,itemType,itemName,quantity,unitPrice,description,additional);
                 observableList.add(item);
             }
             rset.close();
@@ -112,5 +111,5 @@ public class InventoryDatabase extends Database {
             e.printStackTrace();
             return null;
         }
-    }*/
+    }
 }

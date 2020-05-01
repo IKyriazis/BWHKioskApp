@@ -1,11 +1,13 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
+
 import java.sql.Timestamp;
 
 public class TableItemFactory {
 
-  public static ITableable get(
+  public static ITableable getService(
       String servType,
       String reqID,
       String didReqName,
@@ -55,6 +57,33 @@ public class TableItemFactory {
       case "rxreq":
         return new Prescription(reqID, description, additional);
       default:
+        return null;
+    }
+  }
+
+  /**
+   * Gets the Table for Inventory
+   * @param itemID id
+   * @param itemType type for switch case
+   * @param itemName name
+   * @param quantity quantity
+   * @param unitPrice price
+   * @param description description
+   * @param additional additional
+   * @return table
+   */
+  public static ITableable getInventory(
+          String itemID,
+          String itemType,
+          String itemName,
+          int quantity,
+          Double unitPrice,
+          String description,
+          String additional) {
+    switch(itemType){
+      case("flower") :
+        return new Flower(itemID,itemName,quantity,unitPrice,additional);
+      default :
         return null;
     }
   }

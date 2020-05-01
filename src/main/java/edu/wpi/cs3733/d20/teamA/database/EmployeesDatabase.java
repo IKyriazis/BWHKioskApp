@@ -322,9 +322,6 @@ public class EmployeesDatabase extends Database implements IDatabase{
   public synchronized ObservableList<ITableable> getObservableList() {
     ObservableList<ITableable> eList = FXCollections.observableArrayList();
     try {
-      // CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast
-      // Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title
-      // Varchar(50))"
       PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
@@ -341,7 +338,7 @@ public class EmployeesDatabase extends Database implements IDatabase{
       return eList;
     } catch (SQLException e) {
       e.printStackTrace();
-      return eList;
+      return null;
     }
   }
 
