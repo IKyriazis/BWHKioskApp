@@ -51,7 +51,8 @@ public class ServiceHomeController extends AbstractController {
           "Medicine\nDelivery");
       addButton(
           new FontIcon(FontAwesomeSolid.STETHOSCOPE), "views/EquipReq.fxml", "Equipment\nRequest");
-      addButton(new FontIcon(Material.LOCAL_LAUNDRY_SERVICE), "views/LaundryGUI.fxml", "Laundry");
+      addButton(
+          new FontIcon(Material.LOCAL_LAUNDRY_SERVICE), "views/LaundryService.fxml", "Laundry");
       addButton(new FontIcon(FontAwesomeSolid.LAPTOP), "views/ITServices.fxml", "Tech\nSupport");
       addButton(
           new FontIcon(FontAwesomeSolid.USER), "views/PatientsInfoService.fxml", "Patient\nInfo");
