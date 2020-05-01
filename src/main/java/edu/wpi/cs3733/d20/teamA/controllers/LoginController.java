@@ -220,6 +220,12 @@ public class LoginController extends AbstractController {
                     fade.setOnFinished(event -> blockerPane.setMouseTransparent(true));
                     fade.play();
 
+                    // undo the stuff that we needed to do for authentication
+                    buttonBox.setVisible(true);
+                    gauth.setVisible(false);
+                    loginButton.setVisible(true);
+                    authenticateButton.setVisible(false);
+
                     loggedIn = true;
                   });
             }
@@ -272,6 +278,11 @@ public class LoginController extends AbstractController {
       fade.play();
 
       loggedIn = true;
+      // undo the stuff that we needed to do for authentication
+      buttonBox.setVisible(true);
+      gauth.setVisible(false);
+      loginButton.setVisible(true);
+      authenticateButton.setVisible(false);
     } else {
       DialogUtil.simpleErrorDialog(
           dialogPane, "Incorrect code", "You have entered an incorrect Google Authenticator code.");
@@ -296,6 +307,12 @@ public class LoginController extends AbstractController {
     translate.setByY(2000f);
     translate.setOnFinished(event -> transitioning = false);
     translate.play();
+
+    // undo the stuff that we needed to do for authentication
+    buttonBox.setVisible(true);
+    gauth.setVisible(false);
+    loginButton.setVisible(true);
+    authenticateButton.setVisible(false);
 
     // Fade in the background
     FadeTransition fade = new FadeTransition(Duration.millis(500), blockerPane);
