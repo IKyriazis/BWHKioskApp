@@ -288,6 +288,7 @@ public class SceneSwitcherController extends AbstractController {
                 });
           } else {
             if (eDB.getSecretKey(usernameBox.getText()) == null) {
+              username = usernameBox.getText();
               Platform.runLater(this::login);
             } else {
               Platform.runLater(
