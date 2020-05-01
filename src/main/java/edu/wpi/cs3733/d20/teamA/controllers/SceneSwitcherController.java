@@ -55,6 +55,9 @@ public class SceneSwitcherController extends AbstractController {
 
   @FXML
   public void initialize() {
+    // Setup instance
+    instance = this;
+
     // Create the employee table if it doesn't exist
     if (eDB.getSizeEmployees() == -1) {
       eDB.dropTables();
@@ -92,9 +95,6 @@ public class SceneSwitcherController extends AbstractController {
 
     // Setup settings button icon
     settingsButton.setGraphic(new FontIcon(FontAwesomeSolid.COG));
-
-    // Set this equal to instance
-    instance = this;
 
     // Setup scene stack
     sceneStack = new Stack<>();
@@ -367,6 +367,17 @@ public class SceneSwitcherController extends AbstractController {
 
   public static void pushScene(String fxmlPath) {
     Node node = FXMLCache.loadFXML(fxmlPath);
+
+    // Disallow duplicate scenes in the stack
+    if (instance != null && !instance.sceneStack.isEmpty()) {
+      Stack<Node> sceneStack = instance.sceneStack;
+      for (Node scene : sceneStack) {
+        if (scene == node) {
+          return;
+        }
+      }
+    }
+
     pushScene(node);
   }
 }
