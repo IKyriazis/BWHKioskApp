@@ -2,24 +2,12 @@ package edu.wpi.cs3733.d20.teamA.graph;
 
 import java.util.*;
 
-/** Represents a path along the graph */
-public class Path extends PathAlgo implements IStrategyPath {
+public class Djikstras extends PathAlgo implements IStrategyPath {
 
-  /**
-   * Creates a new Path based off what graph we are trying to path find on
-   *
-   * @param graph Graph to that the path will be found on
-   */
-  public Path(Graph graph) {
+  public Djikstras(Graph graph) {
     super(graph);
   }
 
-  /**
-   * Uses the A Star algorithm to locate the optimal path between the given start and end node
-   *
-   * @param start the starting location to path find
-   * @param end the ending location/ destination
-   */
   @Override
   public void findPath(Node start, Node end) {
     Map<Node, Node> path = new HashMap<>();
@@ -50,17 +38,11 @@ public class Path extends PathAlgo implements IStrategyPath {
       for (Edge edge : current.getEdges().values()) {
         Node neighbor = edge.getEnd();
 
-        // Only consider nodes on this floor for now.
-        // if (neighbor.getFloor() != start.getFloor()) {
-        //  continue;
-        // }
-
         // if the neighbor hasn't been visited
         if (!visited.contains(neighbor)) {
 
           // Calculate the new cost of getting there with the heuristic
-          int newCost =
-              Math.abs(current.getCost() + edge.getWeight() + calcHeuristic(neighbor, end));
+          int newCost = Math.abs(current.getCost() + edge.getWeight());
 
           // If the new cost is less than the current cost, set the total cost to get there to new
           // cost
@@ -96,20 +78,5 @@ public class Path extends PathAlgo implements IStrategyPath {
     Collections.reverse(pathNodes);
 
     calculateEdges();
-  }
-
-  /**
-   * Calculate the Euclidean distance between the current node and goal node So that nodes closer to
-   * the end will be given a higher priority
-   *
-   * @param current The node you are currently at in the path
-   * @param goal The next node you are visiting in the path
-   * @return int The Euclidean distance between the nodes
-   */
-  private static int calcHeuristic(Node current, Node goal) {
-    double xDist = Math.pow((goal.getX() - current.getX()), 2);
-    double yDist = Math.pow((goal.getY() - current.getY()), 2);
-
-    return (int) Math.sqrt(xDist + yDist);
   }
 }
