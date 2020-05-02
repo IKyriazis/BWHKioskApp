@@ -66,7 +66,10 @@ dependencies {
 
             // stuff for google authenticator
             'de.taimos:totp:1.0',
-            'commons-codec:commons-codec:1.10'
+            'commons-codec:commons-codec:1.10',
+
+            // for comms with arduino
+            'com.fazecast:jSerialComm:2.6.2'
     )
 
     testImplementation(
