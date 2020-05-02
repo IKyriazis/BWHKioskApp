@@ -2,13 +2,12 @@ package edu.wpi.cs3733.d20.teamA.database.service.itticket;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import edu.wpi.cs3733.d20.teamA.database.Database;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
-
-import edu.wpi.cs3733.d20.teamA.database.Database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

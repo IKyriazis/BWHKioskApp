@@ -1,9 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database.announcement;
 
-import java.sql.*;
-
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
+import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
