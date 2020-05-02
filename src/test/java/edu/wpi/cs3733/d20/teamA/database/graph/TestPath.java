@@ -1,6 +1,8 @@
-package edu.wpi.cs3733.d20.teamA.graph;
+package edu.wpi.cs3733.d20.teamA.database.graph;
 
 import java.util.ArrayList;
+
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

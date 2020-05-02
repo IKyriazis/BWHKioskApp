@@ -16,10 +16,9 @@ public class EquipRequest implements ITableable<EquipRequest> {
   private SimpleStringProperty location;
   private SimpleStringProperty priority;
   private SimpleStringProperty time;
-  private SimpleStringProperty username;
   private SimpleStringProperty ID;
 
-  public EquipRequest(String idNum, String location, String nm, Timestamp time, String additional) {
+  public EquipRequest(String idNum, String location, String name, Timestamp time, String additional) {
     // item+"|"+qty+"|"+priority
     if (additional != null) {
       String item = additional.substring(0, additional.indexOf('|'));
@@ -27,8 +26,7 @@ public class EquipRequest implements ITableable<EquipRequest> {
       int qty = Integer.parseInt(additional.substring(0, additional.indexOf('|')));
       String priority = additional.substring(additional.indexOf('|') + 1);
 
-      // this.username = new SimpleStringProperty(username); //Is this important
-      this.name = new SimpleStringProperty(nm);
+      this.name = new SimpleStringProperty(name);
       this.item = new SimpleStringProperty(item);
       this.qty = new SimpleIntegerProperty(qty);
       this.location = new SimpleStringProperty(location);
@@ -36,14 +34,6 @@ public class EquipRequest implements ITableable<EquipRequest> {
       this.time = new SimpleStringProperty(time.toString());
       this.ID = new SimpleStringProperty(idNum);
     }
-  }
-
-  public String getUsername() {
-    return username.get();
-  }
-
-  public SimpleStringProperty usernameProperty() {
-    return username;
   }
 
   public String getName() {

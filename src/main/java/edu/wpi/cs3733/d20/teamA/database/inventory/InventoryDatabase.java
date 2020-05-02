@@ -97,6 +97,23 @@ public class InventoryDatabase extends Database implements IDatabase {
     return helperPrepared("DELETE FROM Inventory");
   }
 
+  public synchronized String getID(String itemName){
+    try {
+      PreparedStatement pstmt =
+              getConnection().prepareStatement("SELECT * FROM INVENTORY WHERE itemName = ?");
+      pstmt.setString(1, itemName);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String id = rset.getString("itemID");
+      rset.close();
+      pstmt.close();
+      return id;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
   public synchronized ObservableList<ITableable> getObservableList() {
     ObservableList<ITableable> observableList = FXCollections.observableArrayList();
     try {
