@@ -3,7 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Announcement;
+import edu.wpi.cs3733.d20.teamA.database.announcement.Announcement;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
 

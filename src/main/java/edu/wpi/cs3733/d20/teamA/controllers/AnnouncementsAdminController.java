@@ -3,7 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Announcement;
+import edu.wpi.cs3733.d20.teamA.database.announcement.Announcement;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import java.sql.Timestamp;
+
+import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicket;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

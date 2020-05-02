@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
-import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import java.sql.*;
 import java.util.*;

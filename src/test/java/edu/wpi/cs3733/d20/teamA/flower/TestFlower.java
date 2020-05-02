@@ -1,6 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.flower;
 
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
+import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

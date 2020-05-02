@@ -2,7 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.service.request;
 
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;

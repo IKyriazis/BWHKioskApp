@@ -1,6 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.interpreter;
 
-import edu.wpi.cs3733.d20.teamA.database.Interpreter;
+import edu.wpi.cs3733.d20.teamA.database.service.interpreter.Interpreter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

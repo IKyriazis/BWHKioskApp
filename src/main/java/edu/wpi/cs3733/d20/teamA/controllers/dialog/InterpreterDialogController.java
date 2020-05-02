@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.ItemType;
+import edu.wpi.cs3733.d20.teamA.database.inventory.ItemType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.fxml.FXML;
 

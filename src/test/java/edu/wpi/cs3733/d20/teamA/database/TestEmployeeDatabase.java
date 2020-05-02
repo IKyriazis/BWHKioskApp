@@ -4,6 +4,8 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
