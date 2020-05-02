@@ -1,8 +1,10 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.employee;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+import edu.wpi.cs3733.d20.teamA.database.Database;
+import edu.wpi.cs3733.d20.teamA.database.IDatabase;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

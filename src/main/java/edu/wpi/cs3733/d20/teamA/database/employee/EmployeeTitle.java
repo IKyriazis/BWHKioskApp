@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.employee;
 
 public enum EmployeeTitle {
   ADMIN("admin"),

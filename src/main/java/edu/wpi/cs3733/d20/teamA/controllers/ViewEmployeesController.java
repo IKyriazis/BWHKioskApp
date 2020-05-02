@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Employee;
+import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
@@ -63,7 +63,7 @@ public class ViewEmployeesController extends AbstractController {
     try {
       tblEmployees.clear();
 
-      tblEmployees.add(database.getEmployeeObservableList());
+      tblEmployees.add(eDB.getObservableList());
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(empPane, "Error", "Failed to update employee table");
