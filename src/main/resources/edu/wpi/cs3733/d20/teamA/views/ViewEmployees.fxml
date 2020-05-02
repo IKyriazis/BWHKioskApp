@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ViewEmployeesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ViewEmployeesController">
    <children>
       <StackPane fx:id="empPane" prefHeight="450.0" prefWidth="700.0">
          <children>
@@ -33,7 +33,7 @@
                   <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">
                      <children>
                         <Label fx:id="img" />
-                        <Label text="Employees" />
+                        <Label stylesheets="@../stylesheet.css" text="Employees" />
                      </children>
                   </HBox>
                   <GridPane fx:id="empList" GridPane.rowIndex="1">

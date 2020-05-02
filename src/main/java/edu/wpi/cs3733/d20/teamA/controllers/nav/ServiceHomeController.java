@@ -39,48 +39,58 @@ public class ServiceHomeController extends AbstractNavPaneController {
         "Internal\nTransport");
 
     // Services available to employees
-    // if (eDB.getLoggedIn() != null) {
-    addButton(
-        buttonPane,
-        new FontIcon(FontAwesomeSolid.BROOM),
-        "views/service/JanitorRequest.fxml",
-        "Janitorial");
-    addButton(
-        buttonPane,
-        new FontIcon(FontAwesomeSolid.MEDKIT),
-        "views/service/MedicineRequest.fxml",
-        "Medicine\nDelivery");
-    addButton(
-        buttonPane,
-        new FontIcon(FontAwesomeSolid.STETHOSCOPE),
-        "views/EquipReq.fxml",
-        "Equipment\nRequest");
-    addButton(
-        buttonPane,
-        new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
-        "views/service/LaundryRequest.fxml",
-        "Laundry");
-    addButton(
-        buttonPane,
-        new FontIcon(FontAwesomeSolid.LAPTOP),
-        "views/service/ITRequest.fxml",
-        "Tech\nSupport");
-    addButton(
-        buttonPane,
-        new FontIcon(FontAwesomeSolid.USER),
-        "views/PatientsInfoService.fxml",
-        "Patient\nInfo");
-    addButton(
-        buttonPane,
-        new FontIcon(FontAwesomeSolid.GLOBE),
-        "views/InterpreterService.fxml",
-        "Interpreters");
-    addButton(
-        buttonPane,
-        new FontIcon(FontAwesomeSolid.PILLS),
-        "views/PrescriptionService.fxml",
-        "Prescriptions");
-    // }
+    if (eDB.getLoggedIn() != null) {
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.BROOM),
+          "views/JanitorialGUI.fxml",
+          "Janitorial");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.BULLHORN),
+          "views/AnnouncementAdmin.fxml",
+          "Announcements");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.MEDKIT),
+          "views/MedicineRequest.fxml",
+          "Medicine\nDelivery");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.STETHOSCOPE),
+          "views/EquipReq.fxml",
+          "Equipment\nRequest");
+      addButton(
+          buttonPane,
+          new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
+          "views/LaundryService.fxml",
+          "Laundry");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.LAPTOP),
+          "views/ITServices.fxml",
+          "Tech\nSupport");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.USER),
+          "views/PatientsInfoService.fxml",
+          "Patient\nInfo");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.GLOBE),
+          "views/InterpreterService.fxml",
+          "Interpreters");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.PILLS),
+          "views/PrescriptionService.fxml",
+          "Prescriptions");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.USER),
+          "views/ViewEmployees.fxml",
+          "Manage Employees");
+    }
 
     equalizeButtonGrid(buttonPane);
   }
