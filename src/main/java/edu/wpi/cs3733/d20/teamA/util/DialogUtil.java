@@ -15,6 +15,8 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class DialogUtil {
+  private static StackPane defaultStackPane;
+
   private static JFXButton createCloseButton() {
     JFXButton closeButton = new JFXButton("Close");
     closeButton.setButtonType(JFXButton.ButtonType.RAISED);
@@ -57,6 +59,22 @@ public class DialogUtil {
     simpleDialog(dialogPane, heading, body, new FontIcon(FontAwesomeSolid.EXCLAMATION_TRIANGLE));
   }
 
+  public static void simpleInfoDialog(String heading, String body) {
+    if (defaultStackPane == null) {
+      return;
+    }
+
+    simpleInfoDialog(defaultStackPane, heading, body);
+  }
+
+  public static void simpleErrorDialog(String heading, String body) {
+    if (defaultStackPane == null) {
+      return;
+    }
+
+    simpleErrorDialog(defaultStackPane, heading, body);
+  }
+
   public static void complexDialog(
       StackPane dialogPane,
       String heading,
@@ -96,5 +114,9 @@ public class DialogUtil {
       e.printStackTrace();
       simpleErrorDialog(dialogPane, "Error", "Unable to load complex dialog for: " + path);
     }
+  }
+
+  public static void setDefaultStackPane(StackPane defaultStackPane) {
+    DialogUtil.defaultStackPane = defaultStackPane;
   }
 }

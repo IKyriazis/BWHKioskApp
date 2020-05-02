@@ -1,11 +1,13 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
-import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /** Represents locations on the map in an 'undirected' Graph */
 public class Graph {
@@ -23,9 +25,15 @@ public class Graph {
   /** Count of bidirectional edges */
   private int edgeCount = 0;
 
+  /** Observable list of nodes, used for UI stuff */
+  private ObservableList<Node> nodeObservableList;
+
   /** Create a new empty graph, private b/c this is a singleton */
   private Graph() {
     nodes = new HashMap<>();
+
+    // Create observable list of nodes and keep it sorted
+    nodeObservableList = FXCollections.observableArrayList();
 
     if (DB.getSizeNode() == -1 || DB.getSizeEdge() == -1) {
       DB.dropTables();
@@ -92,6 +100,8 @@ public class Graph {
     }
 
     nodes.put(node.getNodeID(), node);
+    nodeObservableList.add(node);
+    nodeObservableList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
 
     DB.addNode(
         node.getNodeID(),
@@ -196,6 +206,7 @@ public class Graph {
 
     // Delete node
     nodes.remove(node.getNodeID());
+    nodeObservableList.remove(node);
 
     DB.removeEdgeByNode(node.getNodeID());
 
@@ -205,6 +216,8 @@ public class Graph {
     } else {
       // Add node back to graph map
       nodes.put(node.getNodeID(), node);
+      nodeObservableList.add(node);
+      nodeObservableList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
 
       // Add edges back to table if we failed to remove the node
       toDelete.forEach(
@@ -355,7 +368,18 @@ public class Graph {
       e.printStackTrace();
       return false;
     }
+
     nodes = newNodes;
+
+    // Update observable list
+    nodes
+        .values()
+        .forEach(
+            node -> {
+              nodeObservableList.add(node);
+            });
+    nodeObservableList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
+
     return true;
   }
 
@@ -367,11 +391,23 @@ public class Graph {
     // Delete nodes
     nodes.clear();
 
+    // Clear observable list of nodes
+    nodeObservableList.clear();
+
     // Reset edge count
     edgeCount = 0;
 
     // Clear the database
     DB.removeAll();
+  }
+
+  /**
+   * Get the nodes in this graph
+   *
+   * @return An observable list for use in various JavaFX controls
+   */
+  public ObservableList<Node> getNodeObservableList() {
+    return nodeObservableList;
   }
 
   public GraphDatabase getDB() {

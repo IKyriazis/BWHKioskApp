@@ -4,7 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
+import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.ArrayList;
@@ -124,7 +124,7 @@ public class FlowerServiceController extends AbstractController {
             });
 
     // Null root flower node
-    TreeItem<Flower> rootFlower = new TreeItem(new Flower("", "", 0, 0.0, 0));
+    TreeItem<Flower> rootFlower = new TreeItem(new Flower(0, "", "", 0, 0.0));
 
     // Add other tree items below root item
     flDatabase.flowerOl().forEach(flower -> rootFlower.getChildren().add(new TreeItem(flower)));

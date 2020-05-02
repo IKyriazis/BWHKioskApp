@@ -5,6 +5,7 @@
 
 .root {
     -fx-font-family: "Roboto";
+    -fx-font-size: 12pt;
 
     -primary-color: #1565c0;
     -primary-color-text: rgba(255, 255, 255, .84);
@@ -75,10 +76,12 @@
 .jfx-button {
     -fx-background-color: -primary-color;
     -fx-text-fill: -primary-color-text;
+    -fx-background-radius: 1em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
 }
 
-.jfx-button .glyph-icon {
-    -fx-fill: -primary-color-text;
+.jfx-button .ikonli-font-icon {
+    -fx-icon-color: -primary-color-text;
 }
 
 .jfx-button .jfx-rippler {
@@ -106,6 +109,12 @@
     -fx-stroke: -primary-color;
 }
 
+.jfx-time-picker {
+    -jfx-default-color: -primary-color;
+    -fx-fill: -secondary-color-text;
+    -fx-text-fill: -secondary-color-text;
+}
+
 .sidebar-button .glyph-icon {
     -fx-fill: -secondary-color-text;
 }
@@ -125,8 +134,30 @@
     -jfx-rippler-fill: -secondary-color-text;
 }
 
-.label {
-    -fx-text-fill: black;
+.main-menu-button {
+    -fx-background-radius: 6.5em;
+    -fx-font-size: 100pt;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 10, 0.0, 5, 5);
+}
+
+.button-tag-label {
+    -fx-background-color: #F5F5F5;
+    -fx-background-radius: 1em 0 0 1em;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
+    -fx-padding: 0 1em 0 .25em;
+}
+
+.rounded-pane {
+    -fx-background-color: #F5F5F5;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
+}
+
+.title-label {
+    -fx-border-width: 0 0 .1em 0;
+    -fx-padding: 0 0 .1em 0;
+    -fx-border-color: -primary-color;
 }
 
 .small-text {
@@ -137,6 +168,10 @@
     -fx-font-size: 12pt;
 }
 
+.medium-text {
+    -fx-font-size: 14pt;
+}
+
 .heading-text {
     -fx-font-size: 18pt;
 }
@@ -145,16 +180,18 @@
     -fx-font-size: 20pt;
 }
 
+.huge-text {
+    -fx-font-size: 24pt;
+}
+
+.chonky-text {
+    -fx-font-size: 36pt;
+}
+
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
     -fx-background-color: rgba(255, 255, 255, 0);
-}
-
-#loginBox, #centerPane {
-    -fx-background-color: #F5F5F5;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
 }
 
 #logoutButton {
@@ -162,5 +199,10 @@
 }
 
 #flowerServiceTablePane {
+    -fx-font-size: 18pt;
+}
+
+#laundryLabel {
+    -fx-font-family: "Roboto";
     -fx-font-size: 18pt;
 }

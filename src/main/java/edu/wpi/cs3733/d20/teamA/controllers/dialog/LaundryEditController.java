@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.Laundry;
+import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -46,10 +46,10 @@ public class LaundryEditController extends AbstractController implements IDialog
   @FXML
   public void isDone(ActionEvent e) {
     if (progressComboBox.getValue() != null) {
-      lDB.setProg(laundry.getRequestNum(), progressComboBox.getValue());
+      serviceDatabase.setStatus(laundry.getRequestNum(), progressComboBox.getValue());
     }
     if (cleanerComboBox.getValue() != null) {
-      lDB.setEmpW(laundry.getRequestNum(), cleanerComboBox.getValue());
+      serviceDatabase.setAssignedEmployee(laundry.getRequestNum(), cleanerComboBox.getValue());
     }
     dialog.close();
   }

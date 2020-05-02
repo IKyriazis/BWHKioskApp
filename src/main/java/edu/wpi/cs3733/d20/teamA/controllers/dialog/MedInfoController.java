@@ -3,7 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.MedRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
 import javafx.fxml.FXML;
 
 public class MedInfoController extends AbstractController implements IDialogController {

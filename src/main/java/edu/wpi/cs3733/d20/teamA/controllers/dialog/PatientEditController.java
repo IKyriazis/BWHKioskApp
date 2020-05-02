@@ -4,7 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.Patient;
+import edu.wpi.cs3733.d20.teamA.database.patient.Patient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -104,22 +104,12 @@ public class PatientEditController extends AbstractController implements IDialog
       return;
     }
 
-    if (myPatient == null) {
-      myPatient =
-          new Patient(
-              patientDatabase.getSizePatients() + 1,
-              txtFirstName.getText(),
-              txtLastName.getText(),
-              txtHealthInsurance.getText(),
-              txtDateOfBirth.getText());
-    }
+    String first = txtFirstName.getText();
+    String last = txtLastName.getText();
+    String healthIns = txtHealthInsurance.getText();
+    String birthday = txtDateOfBirth.getText();
 
     try {
-      int id = myPatient.getPatientID();
-      String first = txtFirstName.getText();
-      String last = txtLastName.getText();
-      String healthIns = txtHealthInsurance.getText();
-      String birthday = txtDateOfBirth.getText();
 
       if (checkDOBFormat(birthday)) {
 

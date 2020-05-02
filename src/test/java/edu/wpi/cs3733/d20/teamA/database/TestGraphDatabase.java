@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import java.sql.*;
+
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
