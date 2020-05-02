@@ -109,6 +109,12 @@
     -fx-stroke: -primary-color;
 }
 
+.jfx-time-picker {
+    -jfx-default-color: -primary-color;
+    -fx-fill: -secondary-color-text;
+    -fx-text-fill: -secondary-color-text;
+}
+
 .sidebar-button .glyph-icon {
     -fx-fill: -secondary-color-text;
 }
