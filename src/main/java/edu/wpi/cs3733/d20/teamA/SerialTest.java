@@ -13,7 +13,7 @@ public class SerialTest {
 
         byte[] readBuffer = new byte[comPort.bytesAvailable()];
         int numRead = comPort.readBytes(readBuffer, readBuffer.length);
-        System.out.println(readBuffer.toString());
+        System.out.println(new String(readBuffer, "UTF-8"));
         System.out.println("Read " + numRead + " bytes.");
       }
     } catch (Exception e) {
