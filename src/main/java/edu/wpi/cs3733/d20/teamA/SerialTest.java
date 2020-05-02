@@ -9,7 +9,7 @@ public class SerialTest {
     comPort.openPort();
     try {
       while (true) {
-        while (comPort.bytesAvailable() == 0) Thread.sleep(20);
+        while (comPort.bytesAvailable() != 14) Thread.sleep(20);
 
         byte[] readBuffer = new byte[comPort.bytesAvailable()];
         int numRead = comPort.readBytes(readBuffer, readBuffer.length);
