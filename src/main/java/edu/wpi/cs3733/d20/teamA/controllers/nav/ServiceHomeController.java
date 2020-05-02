@@ -83,7 +83,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.PILLS),
-        "views/PrescriptionService.fxml",
+        "views/service/PrescriptionRequest.fxml",
         "Prescriptions");
     addButton(
         buttonPane,
