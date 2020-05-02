@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.validation.NumberValidator?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
@@ -30,6 +31,7 @@
               <rowConstraints>
                 <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="-Infinity" minHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
@@ -49,8 +51,9 @@
                         <Insets top="15.0" />
                      </padding>
                   </HBox>
-                  <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" GridPane.rowIndex="2" />
-                  <JFXComboBox fx:id="nodeBox" editable="true" labelFloat="true" prefWidth="200.0" promptText="Request Location" GridPane.rowIndex="1" />
+                  <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" GridPane.rowIndex="3" />
+                  <JFXComboBox fx:id="nodeBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Request Location" GridPane.rowIndex="1" />
+                  <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.rowIndex="2" />
                </children>
                <padding>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

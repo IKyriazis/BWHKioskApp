@@ -399,7 +399,7 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   private void transition(boolean right) {
-    if (transitioning) {
+    if (transitioning || contentPane.getChildren().contains(sceneStack.peek())) {
       return;
     }
     boolean first = contentPane.getChildren().isEmpty();

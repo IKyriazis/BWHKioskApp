@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.service.request;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.database.ServiceType;
@@ -19,10 +20,22 @@ public class LaundryRequestController extends AbstractController {
   @FXML private Label headerLabel;
   @FXML private JFXComboBox<Node> nodeBox;
   @FXML private JFXButton submitButton;
+  @FXML private JFXTextArea descriptionArea;
 
   public void initialize() {
     headerLabel.setGraphic(new FontIcon(Material.LOCAL_LAUNDRY_SERVICE));
 
+    // Limit text length in description area to 100 chars
+    descriptionArea
+        .textProperty()
+        .addListener(
+            (observable, oldValue, newValue) -> {
+              if (newValue.length() > 100) {
+                descriptionArea.setText(newValue.substring(0, 100));
+              }
+            });
+
+    // Set up node box
     nodeBox.setItems(Graph.getInstance().getNodeObservableList());
     nodeBox
         .getEditor()
@@ -40,7 +53,8 @@ public class LaundryRequestController extends AbstractController {
     if (selected.isPresent()) {
       String loc = selected.get().getLongName();
 
-      String l = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, loc, "", "");
+      String l =
+          serviceDatabase.addServiceReq(ServiceType.LAUNDRY, loc, descriptionArea.getText(), "");
       if (l == null) {
         DialogUtil.simpleErrorDialog("Error", "Cannot add request");
       } else {
