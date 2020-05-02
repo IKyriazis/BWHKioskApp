@@ -148,8 +148,10 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
 }
 
-.label {
-    -fx-text-fill: black;
+.title-label {
+    -fx-border-width: 0 0 .1em 0;
+    -fx-padding: 0 0 .1em 0;
+    -fx-border-color: -primary-color;
 }
 
 .small-text {
@@ -192,10 +194,6 @@
 
 #flowerServiceTablePane {
     -fx-font-size: 18pt;
-}
-
-#submitBtn {
-    -fx-border-color: rgba(0, 0, 0, 0.40);
 }
 
 #laundryLabel {

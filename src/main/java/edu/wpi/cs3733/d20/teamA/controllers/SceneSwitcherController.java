@@ -88,6 +88,9 @@ public class SceneSwitcherController extends AbstractController {
       eDB.readEmployeeCSV();
     }
 
+    // Set default dialog pane
+    DialogUtil.setDefaultStackPane(rootPane);
+
     // Bind background image to just outside the bounds of the window for proper formatting
     rootPane
         .widthProperty()
@@ -120,7 +123,7 @@ public class SceneSwitcherController extends AbstractController {
     sceneStack = new Stack<>();
     pushScene("views/nav/MainMenu.fxml");
 
-    // Creat username label
+    // Create username label
     usernameLabel = new Label();
 
     usernameLabel.getStyleClass().add("button-tag-label");
@@ -450,7 +453,7 @@ public class SceneSwitcherController extends AbstractController {
     instance.transition(true);
   }
 
-  private static void popScene() {
+  public static void popScene() {
     if (instance == null || instance.sceneStack.size() <= 1) {
       return;
     }
