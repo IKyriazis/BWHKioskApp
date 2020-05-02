@@ -39,7 +39,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
         "Internal\nTransport");
 
     // Services available to employees
-    if (eDB.getLoggedIn() != null) {
+    //if (eDB.getLoggedIn() != null) {
       addButton(
           buttonPane,
           new FontIcon(FontAwesomeSolid.BROOM),
@@ -90,7 +90,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
           new FontIcon(FontAwesomeSolid.USER),
           "views/ViewEmployees.fxml",
           "Manage Employees");
-    }
+    //}
 
     equalizeButtonGrid(buttonPane);
   }
