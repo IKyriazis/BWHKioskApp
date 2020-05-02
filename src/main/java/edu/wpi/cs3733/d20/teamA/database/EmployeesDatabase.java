@@ -539,7 +539,8 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public ObservableList<Employee> getObservableListType(EmployeeTitle title) {
     ObservableList<Employee> eList = FXCollections.observableArrayList();
     try {
-      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees WHERE title = ?");
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE title = ?");
       pstmt.setString(1, title.toString());
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
