@@ -57,7 +57,8 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
             "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
                 + " nameFirst Varchar(25), nameLast Varchar(25),"
                 + " username Varchar(25) UNIQUE NOT NULL,"
-                + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32))");
+                + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32),"
+                + "rfid Varchar(10))");
     boolean c =
         helperPrepared(
             "CREATE TABLE LoggedIn (username Varchar(25),"
