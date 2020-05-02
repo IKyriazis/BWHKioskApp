@@ -19,7 +19,7 @@ public class JanitorDatabase extends Database {
       createTables();
     }
 
-    requestCount = getRandomNumber();
+    requestCount = getRandomInt();
   }
 
   /**
@@ -72,7 +72,7 @@ public class JanitorDatabase extends Database {
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     // default status is reported
     String progress = "Reported";
-    requestCount = getRandomNumber();
+    requestCount = getRandomInt();
     try {
       // creates the prepared statement that will be sent to the database
       PreparedStatement pstmt =
@@ -363,7 +363,8 @@ public class JanitorDatabase extends Database {
         String longName = rset.getString("longName");
 
         JanitorService node =
-            new JanitorService(location, priority, status, employeeName, requestNumber, longName);
+            new JanitorService(
+                location, priority, status, employeeName, "" + requestNumber, longName);
         oList.add(node);
       }
       rset.close();

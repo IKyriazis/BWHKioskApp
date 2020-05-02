@@ -9,36 +9,47 @@ import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 
 public class Prescription implements ITableable<Prescription> {
-  @Setter private SimpleIntegerProperty prescriptionID;
-  @Setter private SimpleStringProperty patientName;
-  @Setter private SimpleStringProperty prescription;
-  @Setter private SimpleStringProperty pharmacy;
-  @Setter private SimpleStringProperty dosage;
-  @Setter private SimpleIntegerProperty numberOfRefills;
-  @Setter private SimpleStringProperty doctorName;
-  @Setter private SimpleStringProperty notes;
+  @Setter private SimpleStringProperty prescriptionID = null;
+  @Setter private SimpleStringProperty patientName = null;
+  @Setter private SimpleStringProperty prescription = null;
+  @Setter private SimpleStringProperty pharmacy = null;
+  @Setter private SimpleStringProperty dosage = null;
+  @Setter private SimpleIntegerProperty numberOfRefills = null;
+  @Setter private SimpleStringProperty doctorName = null;
+  @Setter private SimpleStringProperty notes = null;
 
-  public Prescription(
-      int prescriptionID,
-      String patientName,
-      String prescription,
-      String pharmacy,
-      String dosage,
-      int numberOfRefills,
-      String doctorName,
-      String notes) {
-    this.prescriptionID = new SimpleIntegerProperty(prescriptionID);
-    this.patientName = new SimpleStringProperty(patientName);
-    this.prescription = new SimpleStringProperty(prescription);
-    this.pharmacy = new SimpleStringProperty(pharmacy);
-    this.dosage = new SimpleStringProperty(dosage);
-    this.numberOfRefills = new SimpleIntegerProperty(numberOfRefills);
-    this.doctorName = new SimpleStringProperty(doctorName);
-    this.notes = new SimpleStringProperty(notes);
+  public Prescription(String prescriptionID, String description, String additional)
+        /*String patientName,
+        String prescription,
+        String pharmacy,
+        String dosage,
+        int numberOfRefills,
+        String doctorName,
+        String notes*/ {
+    // patientName+"|"+prescription+'|'+pharmacy+'|'+dosage+'|'+numberOfRefills;
+    if (additional != null) {
+      String[] additionalArray = additional.split("|");
+      if(additionalArray.length == 6) {
+        String patientName = additionalArray[0];
+        String prescription = additionalArray[1];
+        String pharmacy = additionalArray[2];
+        String dosage = additionalArray[3];
+        int numberOfRefills = Integer.parseInt(additionalArray[4]);
+        String notes = additionalArray[5];
+        this.prescriptionID = new SimpleStringProperty(prescriptionID);
+        this.patientName = new SimpleStringProperty(patientName);
+        this.prescription = new SimpleStringProperty(prescription);
+        this.pharmacy = new SimpleStringProperty(pharmacy);
+        this.dosage = new SimpleStringProperty(dosage);
+        this.numberOfRefills = new SimpleIntegerProperty(numberOfRefills);
+        this.doctorName = new SimpleStringProperty(description);
+        this.notes = new SimpleStringProperty(notes);
+      }
+    }
   }
 
   // Getters for Simple Properties
-  public SimpleIntegerProperty getPrescriptionIDProperty() {
+  public SimpleStringProperty getPrescriptionIDProperty() {
     return prescriptionID;
   }
 
@@ -71,7 +82,7 @@ public class Prescription implements ITableable<Prescription> {
   }
 
   // Getters for Primitive Type
-  public int getPrescriptionID() {
+  public String getPrescriptionID() {
     return prescriptionID.get();
   }
 
@@ -105,9 +116,8 @@ public class Prescription implements ITableable<Prescription> {
 
   @Override
   public ArrayList<JFXTreeTableColumn<Prescription, ?>> getColumns() {
-    JFXTreeTableColumn<Prescription, Integer> column1 = new JFXTreeTableColumn<>("Prescription ID");
-    column1.setCellValueFactory(
-        param -> param.getValue().getValue().getPrescriptionIDProperty().asObject());
+    JFXTreeTableColumn<Prescription, String> column1 = new JFXTreeTableColumn<>("Prescription ID");
+    column1.setCellValueFactory(param -> param.getValue().getValue().getPrescriptionIDProperty());
 
     JFXTreeTableColumn<Prescription, String> column2 = new JFXTreeTableColumn<>("Patient Name");
     column2.setCellValueFactory(param -> param.getValue().getValue().getPatientNameProperty());

@@ -135,10 +135,10 @@ public class ITTicketDatabase extends Database {
         String completedBy = rset.getString("completedBy");
         String description = rset.getString("description");
 
-        ITTicket node =
-            new ITTicket(
+        /*ITTicket node =
+            new ITTicket
                 ticketTime, status, category, location, requesterName, completedBy, description);
-        ITTicketObservableList.add(node);
+        ITTicketObservableList.add(node);*/
       }
       rset.close();
       pstmt.close();

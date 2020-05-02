@@ -8,11 +8,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.List;
+
+import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class EmployeesDatabase extends Database {
-  int employeeID;
+public class EmployeesDatabase extends Database implements IDatabase{
   private final int numIterations = 14; // 2 ^ 16 = 16384 iterations
 
   public EmployeesDatabase(Connection connection) {
@@ -22,8 +23,6 @@ public class EmployeesDatabase extends Database {
     if (doesTableNotExist("EMPLOYEES") && doesTableNotExist("LoggedIn")) {
       createTables();
     }
-
-    employeeID = getRandomNumber();
   }
 
   /**
@@ -53,10 +52,17 @@ public class EmployeesDatabase extends Database {
 
     boolean a =
         helperPrepared(
-            "CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(60) NOT NULL, title Varchar(50))");
+            "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY," +
+                    " nameFirst Varchar(25), nameLast Varchar(25)," +
+                    " username Varchar(25) UNIQUE NOT NULL," +
+                    " password Varchar(60) NOT NULL, title Varchar(50))");
     boolean c =
         helperPrepared(
-            "CREATE TABLE LoggedIn (username Varchar(25), timeLogged TIMESTAMP, flag BOOLEAN, CONSTRAINT FK_USE FOREIGN KEY (username) REFERENCES Employees (username), CONSTRAINT PK_UST PRIMARY KEY (username, timeLogged))");
+            "CREATE TABLE LoggedIn (username Varchar(25)," +
+                    " timeLogged TIMESTAMP, flag BOOLEAN," +
+                    " CONSTRAINT FK_USE FOREIGN KEY (username)" +
+                    " REFERENCES Employees (username), CONSTRAINT" +
+                    " PK_UST PRIMARY KEY (username, timeLogged))");
     return a && c;
   }
 
@@ -66,7 +72,7 @@ public class EmployeesDatabase extends Database {
    * @return returns true if the employee is added
    */
   public synchronized boolean addEmployee(
-      int employeeID,
+      String employeeID,
       String nameFirst,
       String nameLast,
       String username,
@@ -79,8 +85,10 @@ public class EmployeesDatabase extends Database {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title) VALUES (?, ?, ?, ?, ?, ?)");
-      pstmt.setInt(1, employeeID);
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast," +
+                          " username, password, title)" +
+                          " VALUES (?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, employeeID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
       pstmt.setString(4, username);
@@ -88,7 +96,6 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(6, title);
       pstmt.executeUpdate();
       pstmt.close();
-      this.employeeID++;
       return true;
     } catch (SQLException e) {
       e.printStackTrace();
@@ -115,14 +122,13 @@ public class EmployeesDatabase extends Database {
 
   public synchronized boolean addEmployeeNoChecks(
       String nameFirst, String nameLast, String username, String password, String title) {
-    return addEmployee(getRandomNumber(), nameFirst, nameLast, username, password, title);
+    return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
   }
 
   public synchronized boolean addEmployee(
       String nameFirst, String nameLast, String username, String password, String title) {
-    employeeID = getRandomNumber();
     return checkSecurePass(password)
-        && addEmployee(employeeID, nameFirst, nameLast, username, password, title);
+        && addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
   }
 
   /**
@@ -145,7 +151,7 @@ public class EmployeesDatabase extends Database {
   }
 
   /** @return returns the size of the table */
-  public synchronized int getSizeEmployees() {
+  public synchronized int getSize() {
     return getSize("Employees");
   }
 
@@ -312,20 +318,18 @@ public class EmployeesDatabase extends Database {
    *
    * @return an observable list containing all employees in the table
    */
-  public synchronized ObservableList<Employee> employeeOl() {
-    ObservableList<Employee> eList = FXCollections.observableArrayList();
+  public synchronized ObservableList<ITableable> getObservableList() {
+    ObservableList<ITableable> eList = FXCollections.observableArrayList();
     try {
-      // CREATE TABLE Employees (employeeID INTEGER PRIMARY KEY, nameFirst Varchar(25), nameLast
-      // Varchar(25), username Varchar(25) UNIQUE NOT NULL, password Varchar(25) NOT NULL, title
-      // Varchar(50))"
       PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
-        int id = rset.getInt("employeeID");
+        String id = rset.getString("employeeID");
         String fName = rset.getString("nameFirst");
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
-        Employee e = new Employee(id, fName, lName, title);
+        String username = rset.getString("username");
+        Employee e = new Employee(id, fName, lName, title, username);
         eList.add(e);
       }
       rset.close();
@@ -333,7 +337,7 @@ public class EmployeesDatabase extends Database {
       return eList;
     } catch (SQLException e) {
       e.printStackTrace();
-      return eList;
+      return null;
     }
   }
 
@@ -350,8 +354,8 @@ public class EmployeesDatabase extends Database {
       List<String[]> data = reader.readAll();
       for (int i = 1; i < data.size(); i++) {
         String nameFirst, nameLast, username, password, title;
-        int employeeID;
-        employeeID = Integer.parseInt(data.get(i)[0]);
+        String employeeID;
+        employeeID =data.get(i)[0];
         nameFirst = data.get(i)[1];
         nameLast = data.get(i)[2];
         username = data.get(i)[3];
@@ -425,6 +429,10 @@ public class EmployeesDatabase extends Database {
     return false;
   }
 
+  public boolean removeAll(){
+    return (removeAllEmployees() && removeAllLogs());
+  }
+
   public String getUsername(int ID) {
     try {
       PreparedStatement pstmt =
@@ -449,11 +457,12 @@ public class EmployeesDatabase extends Database {
       pstmt.setString(1, un);
       ResultSet rset = pstmt.executeQuery();
       rset.next();
-      int ID = rset.getInt("employeeID");
+      String id = rset.getString("employeeID");
       String fName = rset.getString("nameFirst");
       String lName = rset.getString("nameLast");
       String title = rset.getString("title");
-      Employee e = new Employee(ID, fName, lName, title);
+      String username = rset.getString("username");
+      Employee e = new Employee(id, fName, lName, title, username);
       rset.close();
       pstmt.close();
       return e;
