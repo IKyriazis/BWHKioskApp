@@ -1,8 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database.service.prescription;
 
-import java.sql.*;
-
 import edu.wpi.cs3733.d20.teamA.database.Database;
+import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -73,7 +72,7 @@ public class PrescriptionDatabase extends Database {
       int numRefills,
       String notes) {
 
-    String username = getLoggedIn();
+    String username = getLoggedIn().getUsername();
 
     String name = getNamefromUser(username);
 

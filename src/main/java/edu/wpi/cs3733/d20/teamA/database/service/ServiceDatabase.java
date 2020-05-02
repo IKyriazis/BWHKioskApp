@@ -1,11 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.database.service;
 
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
-import java.sql.*;
-
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
 import edu.wpi.cs3733.d20.teamA.database.TableItemFactory;
+import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -49,7 +48,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn();
+    String madeReqName = getLoggedIn().getUsername();
     String didReqName = null;
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     String status = "Request Made";
@@ -90,7 +89,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn();
+    String madeReqName = getLoggedIn().getUsername();
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     String status = "Request Made";
 
@@ -126,7 +125,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn();
+    String madeReqName = getLoggedIn().getUsername();
     String didReqName = null;
     String status = "Request Made";
 
@@ -220,7 +219,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
-      String user = getLoggedIn();
+      String user = getLoggedIn().getUsername();
       PreparedStatement pstmt2 =
           getConnection()
               .prepareStatement(

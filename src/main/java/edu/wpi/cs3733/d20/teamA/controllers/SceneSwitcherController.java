@@ -84,7 +84,7 @@ public class SceneSwitcherController extends AbstractController {
       eDB.createTables();
       eDB.readEmployeeCSV();
     } else if (eDB.getSize() == 0) {
-      eDB.removeAllEmployees();
+      eDB.removeAll();
       eDB.readEmployeeCSV();
     }
 

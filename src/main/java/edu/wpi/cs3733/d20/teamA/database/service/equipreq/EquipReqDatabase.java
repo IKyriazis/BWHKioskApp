@@ -1,8 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database.service.equipreq;
 
-import java.sql.*;
-
 import edu.wpi.cs3733.d20.teamA.database.Database;
+import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -52,7 +51,7 @@ public class EquipReqDatabase extends Database {
   }
 
   public boolean addReq(String item, int qty, String location, String priority) {
-    String username = getLoggedIn();
+    String username = getLoggedIn().getUsername();
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     if (username == null) {
       return false;

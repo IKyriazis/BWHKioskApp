@@ -17,14 +17,12 @@ import org.apache.commons.codec.binary.Base32;
 
 public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   private final int numIterations = 14; // 2 ^ 16 = 16384 iterations
-  private String loggedIn = "";
 
   public EmployeesDatabase(Connection connection) {
 
     super(connection);
 
     createTables();
-
   }
 
   /**
@@ -49,13 +47,13 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public synchronized boolean createTables() {
 
     // Create the graph tables
-    if(doesTableNotExist("EMPLOYEES")) {
+    if (doesTableNotExist("EMPLOYEES")) {
       return helperPrepared(
-                      "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
-                              + " nameFirst Varchar(25), nameLast Varchar(25),"
-                              + " username Varchar(25) UNIQUE NOT NULL,"
-                              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), "
-                              + "CONSTRAINT Check_Title CHECK (title in ('admin', 'doctor', 'nurse', 'janitor', 'interpreter', 'receptionist', 'retail')))");
+          "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
+              + " nameFirst Varchar(25), nameLast Varchar(25),"
+              + " username Varchar(25) UNIQUE NOT NULL,"
+              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), "
+              + "CONSTRAINT Check_Title CHECK (title in ('admin', 'doctor', 'nurse', 'janitor', 'interpreter', 'receptionist', 'retail')))");
     }
     return false;
   }
@@ -388,7 +386,8 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
         String username = rset.getString("username");
-        Employee e = new Employee(id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username);
+        Employee e =
+            new Employee(id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username);
         eList.add(e);
       }
       rset.close();
@@ -415,7 +414,13 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         username = data.get(i)[3];
         password = data.get(i)[4];
         title = data.get(i)[5];
-        addEmployee(employeeID, nameFirst, nameLast, username, password, EmployeeTitle.valueOf(title.toUpperCase()));
+        addEmployee(
+            employeeID,
+            nameFirst,
+            nameLast,
+            username,
+            password,
+            EmployeeTitle.valueOf(title.toUpperCase()));
       }
     } catch (IOException | CsvException e) {
       e.printStackTrace();
@@ -476,7 +481,8 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String lName = rset.getString("nameLast");
       String title = rset.getString("title");
       String username = rset.getString("username");
-      Employee e = new Employee(id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username);
+      Employee e =
+          new Employee(id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username);
       rset.close();
       pstmt.close();
       return e;
@@ -499,36 +505,13 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         String lName = rset.getString("nameLast");
         String type = rset.getString("title");
         String username = rset.getString("username");
-        Employee e = new Employee(id, fName, lName, EmployeeTitle.valueOf(type.toUpperCase()), username);
+        Employee e =
+            new Employee(id, fName, lName, EmployeeTitle.valueOf(type.toUpperCase()), username);
         eList.add(e);
       }
       rset.close();
       pstmt.close();
       return eList;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
-  /**
-   * Makes an employee object for the person who is logged in currently
-   * @return The employee object
-   */
-  public Employee getLoggedIn() {
-    try {
-      if(checkIfExistsString("Employees", "username", loggedIn)) {
-        PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
-        pstmt.setString(1, loggedIn);
-        ResultSet rset = pstmt.executeQuery();
-        rset.next();
-        String ID = rset.getString("employeeID");
-        String fName = rset.getString("nameFirst");
-        String lName = rset.getString("nameLast");
-        String title = rset.getString("title");
-        return new Employee(ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn);
-      }
-      return null;
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
