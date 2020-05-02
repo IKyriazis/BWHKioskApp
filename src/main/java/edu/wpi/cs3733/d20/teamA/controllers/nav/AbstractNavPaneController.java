@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.nav;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
+import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -28,7 +29,7 @@ public abstract class AbstractNavPaneController extends AbstractController {
     button.setGraphic(icon);
     button.setOnAction(
         event -> {
-          SceneSwitcherController.pushScene(fxmlPath);
+          SceneSwitcherController.pushScene(fxmlPath, TransitionType.ZOOM);
         });
 
     Label buttonLabel = new Label(label);

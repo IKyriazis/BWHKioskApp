@@ -4,7 +4,6 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
-
 import java.io.*;
 import java.sql.*;
 import java.util.List;

@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database.graph;
 
 import edu.wpi.cs3733.d20.teamA.database.Database;
-
 import java.io.*;
 import java.sql.*;
 

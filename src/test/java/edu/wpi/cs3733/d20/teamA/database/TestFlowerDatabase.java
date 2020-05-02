@@ -4,11 +4,10 @@ import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
 import edu.wpi.cs3733.d20.teamA.database.flower.FlowerDatabase;
 import edu.wpi.cs3733.d20.teamA.database.flower.FlowerEmployee;
 import edu.wpi.cs3733.d20.teamA.database.flower.Order;
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

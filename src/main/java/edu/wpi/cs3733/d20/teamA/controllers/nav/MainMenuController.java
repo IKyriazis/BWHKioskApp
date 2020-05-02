@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.nav;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
+import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -32,7 +33,7 @@ public class MainMenuController {
     // Set up scene switching callbacks
     mapButton.setOnAction(
         event -> {
-          SceneSwitcherController.pushScene("views/SimpleMap.fxml");
+          SceneSwitcherController.pushScene("views/SimpleMap.fxml", TransitionType.FADE);
         });
 
     transitButton.setOnAction(
@@ -49,7 +50,7 @@ public class MainMenuController {
 
     serviceButton.setOnAction(
         event -> {
-          SceneSwitcherController.pushScene("views/nav/ServiceHome.fxml");
+          SceneSwitcherController.pushScene("views/nav/ServiceHome.fxml", TransitionType.FADE);
         });
 
     // Preload scenes into FXML cache

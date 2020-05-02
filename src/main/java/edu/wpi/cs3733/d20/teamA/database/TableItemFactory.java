@@ -9,7 +9,6 @@ import edu.wpi.cs3733.d20.teamA.database.service.janitor.JanitorService;
 import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
 import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
 import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
-
 import java.sql.Timestamp;
 
 public class TableItemFactory {

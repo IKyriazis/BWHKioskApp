@@ -1,8 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import java.sql.Timestamp;
-
 import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
+import java.sql.Timestamp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

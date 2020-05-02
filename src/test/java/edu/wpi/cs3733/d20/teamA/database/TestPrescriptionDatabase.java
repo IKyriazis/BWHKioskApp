@@ -1,12 +1,11 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
+import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
+import edu.wpi.cs3733.d20.teamA.database.service.prescription.PrescriptionDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
-import edu.wpi.cs3733.d20.teamA.database.service.prescription.PrescriptionDatabase;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
