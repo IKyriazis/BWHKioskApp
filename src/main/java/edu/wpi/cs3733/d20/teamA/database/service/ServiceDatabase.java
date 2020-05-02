@@ -1,11 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.database.service;
 
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
-import java.sql.*;
-
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
 import edu.wpi.cs3733.d20.teamA.database.TableItemFactory;
+import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

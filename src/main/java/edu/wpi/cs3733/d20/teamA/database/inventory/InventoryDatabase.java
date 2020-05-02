@@ -1,12 +1,11 @@
 package edu.wpi.cs3733.d20.teamA.database.inventory;
 
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
-import java.sql.*;
-
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
-import edu.wpi.cs3733.d20.teamA.database.service.interpreter.Interpreter;
 import edu.wpi.cs3733.d20.teamA.database.TableItemFactory;
+import edu.wpi.cs3733.d20.teamA.database.service.interpreter.Interpreter;
+import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

@@ -1,8 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database.service.laundry;
 
-import java.sql.*;
-
 import edu.wpi.cs3733.d20.teamA.database.Database;
+import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
