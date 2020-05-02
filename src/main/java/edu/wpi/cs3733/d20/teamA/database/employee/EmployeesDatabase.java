@@ -147,6 +147,39 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     }
   }
 
+  /**
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
+   */
+  public synchronized String addEmployeeGA(
+          String nameFirst, String nameLast, String username, String password, String title, String rfid) {
+    String storedPassword =
+            BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+    String secretKey = generateSecretKey();
+
+    try {
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement(
+                              "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey, rfid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, getRandomString());
+      pstmt.setString(2, nameFirst);
+      pstmt.setString(3, nameLast);
+      pstmt.setString(4, username);
+      pstmt.setString(5, storedPassword);
+      pstmt.setString(6, title);
+      pstmt.setString(7, secretKey);
+      pstmt.setString(8, rfid);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   // get the secret key (used for google authenticator) of the specified user
   public synchronized String getSecretKey(String uname) {
     try {
