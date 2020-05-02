@@ -2,7 +2,8 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.Prescription;
+import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -124,18 +125,23 @@ public class PrescriptionDialogController extends AbstractController implements 
     String dosage = txtDosage.getText();
     int numberOfRefills = Integer.parseInt(txtNumberOfRefills.getText());
     String notes = txtNotes.getText();
-
+    String additional =
+        patientName
+            + "|"
+            + prescription
+            + '|'
+            + pharmacy
+            + '|'
+            + dosage
+            + '|'
+            + numberOfRefills
+            + '|'
+            + notes;
     if (!modify) {
-      prescriptionDatabase.addPrescription(
-          patientName, prescription, pharmacy, dosage, numberOfRefills, notes);
+      serviceDatabase.addServiceReq(ServiceType.PRESCRIPTION, null, "", additional);
     } else { // Modify each field
-      int id = this.prescription.getPrescriptionID();
-      prescriptionDatabase.setPatient(id, patientName);
-      prescriptionDatabase.setPrescription(id, prescription);
-      prescriptionDatabase.setPharmacy(id, pharmacy);
-      prescriptionDatabase.setDosage(id, dosage);
-      prescriptionDatabase.setNumberOfRefills(id, numberOfRefills);
-      prescriptionDatabase.setNotes(id, notes);
+      String id = this.prescription.getPrescriptionID();
+      serviceDatabase.setAdditional(id, additional);
     }
     dialog.close();
   }

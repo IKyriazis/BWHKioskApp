@@ -3,8 +3,11 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
@@ -71,17 +74,27 @@ public class CreateAcctController extends AbstractController {
 
     ThreadPool.runBackgroundTask(
         () -> {
-          if (eDB.addEmployee(
-              fName.getText(),
-              lName.getText(),
-              uName.getText(),
-              cPass.getText(),
-              title.getText())) {
+          String secretKey =
+              eDB.addEmployeeGA(
+                  fName.getText(),
+                  lName.getText(),
+                  uName.getText(),
+                  cPass.getText(),
+                  title.getText());
+          String companyName = "Amethyst Asgardians";
+          String barCodeUrl =
+              getGoogleAuthenticatorBarCode(secretKey, uName.getText(), companyName);
+          if (secretKey != null) {
             // print that account has been created successfully
             Platform.runLater(
                 () -> {
-                  DialogUtil.simpleInfoDialog(
-                      dialogPane, "Account Created", "You have successfully created an account.");
+                  DialogUtil.complexDialog(
+                      dialogPane,
+                      "You must scan the QR code in Google Authenticator and use it for logging in",
+                      "views/QRCodePopup.fxml",
+                      true,
+                      null,
+                      new QRDialogController(barCodeUrl));
                 });
           } else {
             // print that for some reason the account couldn't be added
@@ -94,6 +107,20 @@ public class CreateAcctController extends AbstractController {
                 });
           }
         });
+  }
+
+  public String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
+    try {
+      return "otpauth://totp/"
+          + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
+          + "?secret="
+          + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
+          + "&issuer="
+          + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
+    } catch (UnsupportedEncodingException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 
   public void clearFields() {

@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
 import com.opencsv.exceptions.CsvException;
-import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;

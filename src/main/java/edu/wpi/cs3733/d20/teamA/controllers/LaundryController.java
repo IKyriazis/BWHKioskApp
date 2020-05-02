@@ -2,8 +2,9 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Employee;
-import edu.wpi.cs3733.d20.teamA.database.Laundry;
+import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -43,9 +44,10 @@ public class LaundryController extends AbstractController {
   @FXML private StackPane dialogStackPane;
   @FXML private AnchorPane laundryPane;
 
-  private SimpleTableView<Laundry> tblLaundryView;
+  private SimpleTableView tblLaundryView;
 
   public void initialize() {
+    serviceDatabase.createTables();
 
     serviceLabel.setGraphic(new FontIcon(FontAwesomeSolid.TINT));
     requestTableLabel.setGraphic(new FontIcon(FontAwesomeRegular.LIST_ALT));
@@ -64,12 +66,12 @@ public class LaundryController extends AbstractController {
 
     tblLaundryView =
         new SimpleTableView<>(
-            new Laundry(0, "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
+            new Laundry("", "", "", "", "", new Timestamp(System.currentTimeMillis())), 80.0);
     orderTablePane.getChildren().add(tblLaundryView);
 
     tblLaundryView.setOnMouseClicked(
         event -> {
-          Laundry l = tblLaundryView.getSelected();
+          Laundry l = (Laundry) tblLaundryView.getSelected();
           if (l != null) {
             updateCleanerButton.disableProperty().setValue(false);
             removeRequestButton.disableProperty().setValue(false);
@@ -119,9 +121,9 @@ public class LaundryController extends AbstractController {
           roomList.setItems(allNodeList);
         });
 
-    progressComboBox.getItems().addAll("Requested", "Collected", "Washing", "Drying", "Returned");
+    progressComboBox.getItems().addAll("Request Made", "In Progress", "Completed");
 
-    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    ObservableList<Employee> allEmployeeList = eDB.getObservableList();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
     cleanerComboBox.setItems(allEmployeeList);
@@ -129,7 +131,7 @@ public class LaundryController extends AbstractController {
         event -> {
           allEmployeeList.clear();
 
-          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.addAll(eDB.getObservableList());
           allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
           cleanerComboBox.setItems(allEmployeeList);
@@ -142,8 +144,8 @@ public class LaundryController extends AbstractController {
     String loc = "";
     if (node != null) {
       loc = node.getLongName();
-      int l = lDB.addLaundry(eDB.getLoggedIn(), loc);
-      if (l == 0) {
+      String l = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, loc, "", "");
+      if (l == null) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot add request");
       } else {
         DialogUtil.simpleInfoDialog(
@@ -159,9 +161,9 @@ public class LaundryController extends AbstractController {
 
   @FXML
   private void removeRequest() {
-    Laundry l = tblLaundryView.getSelected();
+    Laundry l = (Laundry) tblLaundryView.getSelected();
     if (l != null) {
-      if (!lDB.deleteLaundry(l.getRequestNum())) {
+      if (!serviceDatabase.deleteServReq(l.getRequestNum())) {
         DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot remove request");
       }
     } else if (l == null) {
@@ -173,17 +175,14 @@ public class LaundryController extends AbstractController {
 
   @FXML
   private void updateCleaner() {
-    Laundry l = tblLaundryView.getSelected();
+    Laundry l = (Laundry) (tblLaundryView.getSelected());
     Employee e = cleanerComboBox.getSelectionModel().getSelectedItem();
     if (l != null) {
       if (progressComboBox.getValue() != null) {
-        lDB.setProg(l.getRequestNum(), progressComboBox.getValue());
+        serviceDatabase.editStatus(
+            l.getRequestNum(), progressComboBox.getSelectionModel().getSelectedItem());
       }
-      if (cleanerComboBox.getValue() != null) {
-        if (!lDB.setEmpW(l.getRequestNum(), eDB.getUsername(e.getId()))) {
-          DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot set Employee");
-        }
-      }
+      serviceDatabase.setAssignedEmployee(l.getRequestNum(), e.getUsername());
     } else if (l == null) {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a request");
     }
@@ -221,7 +220,7 @@ public class LaundryController extends AbstractController {
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(lDB.laundryOLNotComplete());
+      tblLaundryView.add(serviceDatabase.getObservableListService(ServiceType.LAUNDRY));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

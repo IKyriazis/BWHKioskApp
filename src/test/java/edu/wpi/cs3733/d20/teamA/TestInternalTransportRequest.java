@@ -1,6 +1,6 @@
 package edu.wpi.cs3733.d20.teamA;
 
-import edu.wpi.cs3733.d20.teamA.database.InternalTransportRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.internaltransport.InternalTransportRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

@@ -4,7 +4,7 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
+import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;

@@ -3,8 +3,8 @@ package edu.wpi.cs3733.d20.teamA.controllers.flower;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
+import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
+import edu.wpi.cs3733.d20.teamA.database.flower.Order;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
@@ -66,7 +66,7 @@ public class FlowerAdminController extends AbstractController {
         });
 
     // Set up tables
-    tblFlowerView = new SimpleTableView<>(new Flower("", "", 0, 0, 0), 40.0);
+    tblFlowerView = new SimpleTableView<>(new Flower(0, "", "", 0, 0.0), 40.0);
     flowerTablePane.getChildren().add(tblFlowerView);
 
     tblOrderView = new SimpleTableView<Order>(new Order(0, 0, "", 0, "", "", "", -1), 40.0);

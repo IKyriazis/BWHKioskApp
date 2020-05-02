@@ -27,4 +27,8 @@ public class FXMLCache {
       return null;
     }
   }
+
+  public static void preLoadFXML(String file) {
+    loadFXML(file);
+  }
 }

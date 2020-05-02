@@ -2,9 +2,11 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.MedRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -91,11 +93,21 @@ public class EditMedRequestController extends AbstractController implements IDia
           pTime.getValue();
           hour = pTime.getValue().getHour();
           minute = pTime.getValue().getMinute();
-          super.medicineRequestDatabase.addRequest(
-              fNameText, lNameText, doctorText, medicineText, rnum, hour, minute);
+          Timestamp time = new Timestamp(0);
+          time.setHours(hour);
+          time.setMinutes(minute);
+          String add = fNameText + "|" + lNameText + "|" + doctorText + "|" + medicineText;
+
+          serviceDatabase.addServiceReq(
+              ServiceType.MEDICINE,
+              time,
+              null,
+              "" + roomNum.getText(),
+              add); // fNameText, lNameText, doctorText, medicineText, rnum
         } catch (NullPointerException ex) {
-          super.medicineRequestDatabase.addRequest(
-              fNameText, lNameText, doctorText, medicineText, rnum);
+          /*super.medicineRequestDatabase.addRequest(
+          fNameText, lNameText, doctorText, medicineText, rnum);*/
+          // Not sure what to do here, sorry
         }
       } else {
         try {
@@ -105,14 +117,14 @@ public class EditMedRequestController extends AbstractController implements IDia
         } catch (NullPointerException ex) {
         }
 
-        super.medicineRequestDatabase.updateMedicine(request.getOrderNum(), medicineText);
+        // Also not sure about this
+        /*super.medicineRequestDatabase.updateMedicine(request.getOrderNum(), medicineText);
         super.medicineRequestDatabase.updateDoctor(request.getOrderNum(), doctorText);
         if (hour >= 0 && minute >= 0) {
           super.medicineRequestDatabase.updateHo(request.getOrderNum(), hour);
           super.medicineRequestDatabase.updateMins(request.getOrderNum(), minute);
-        }
-
-        super.medicineRequestDatabase.updateFulfilledBy(request.getOrderNum(), fulfilledBy);
+        }*/
+        serviceDatabase.setAssignedEmployee(request.getOrderNum(), fulfilledBy);
       }
 
       dialog.close();
