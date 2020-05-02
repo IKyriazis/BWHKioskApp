@@ -535,4 +535,28 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       return null;
     }
   }
+
+  public ObservableList<Employee> getObservableListType(EmployeeTitle title) {
+    ObservableList<Employee> eList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees WHERE title = ?");
+      pstmt.setString(1, title.toString());
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String id = rset.getString("employeeID");
+        String fName = rset.getString("nameFirst");
+        String lName = rset.getString("nameLast");
+        String type = rset.getString("title");
+        String username = rset.getString("username");
+        Employee e = new Employee(id, fName, lName, type, username);
+        eList.add(e);
+      }
+      rset.close();
+      pstmt.close();
+      return eList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
 }
