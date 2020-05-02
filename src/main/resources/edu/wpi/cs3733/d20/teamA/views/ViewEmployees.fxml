@@ -11,7 +11,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ViewEmployeesController">
    <children>
-      <StackPane fx:id="empPane" prefHeight="450.0" prefWidth="700.0">
+      <StackPane fx:id="empPane" prefHeight="450.0" prefWidth="750.0">
          <children>
             <GridPane style="-fx-background-color: white; -fx-background-radius: 10;">
               <columnConstraints>

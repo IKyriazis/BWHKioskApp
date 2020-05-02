@@ -1,5 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
+import edu.wpi.cs3733.d20.teamA.database.Employee;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -7,40 +11,40 @@ import javafx.scene.layout.StackPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class ViewEmployeesController {
+public class ViewEmployeesController extends AbstractController {
 
   @FXML private GridPane empList;
   @FXML private StackPane empPane;
   @FXML private Label img;
-  // private SimpleTableView<Employee> tblEmployees;
+  private SimpleTableView<Employee> tblEmployees;
 
   public void initialize() {
     img.setGraphic(new FontIcon(FontAwesomeSolid.USER));
 
     /*
-    // Set icon
-    addBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
-    editBtn.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_SQUARE));
-    deleteBtn.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
-    infoBtn.setGraphic(new FontIcon(FontAwesomeSolid.QUESTION));
+        // Set icon
+        addBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
+        editBtn.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_SQUARE));
+        deleteBtn.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
+        infoBtn.setGraphic(new FontIcon(FontAwesomeSolid.QUESTION));
 
 
-
+    */
     empPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-                event.consume();
-                update();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          update();
+        });
 
-
-    tblEmployees = new SimpleTableView<>(new Employee(0, "", "", ""), 150.0);
+    tblEmployees = new SimpleTableView<>(new Employee("", "", "", "", ""), 150.0);
     empList.getChildren().add(tblEmployees);
 
     // Set up table to open edit controller when double clicking row
+    /*
     tblEmployees.setRowFactory(
             tv -> {
-                TreeTableRow<MedRequest> row = new TreeTableRow<>();
+                TreeTableRow<Employee> row = new TreeTableRow<>();
                 row.setOnMouseClicked(
                         event -> {
                             if (event.getClickCount() == 2 && (!row.isEmpty())) {
@@ -50,10 +54,19 @@ public class ViewEmployeesController {
                 return row;
             });
 
-    update();
-
-
-
      */
+
+    update();
+  }
+
+  public void update() {
+    try {
+      tblEmployees.clear();
+
+      tblEmployees.add(database.getEmployeeObservableList());
+    } catch (Exception e) {
+      e.printStackTrace();
+      DialogUtil.simpleErrorDialog(empPane, "Error", "Failed to update employee table");
+    }
   }
 }
