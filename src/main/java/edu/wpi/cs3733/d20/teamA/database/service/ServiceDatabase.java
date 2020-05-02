@@ -399,6 +399,43 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     }
   }
 
+  public synchronized ObservableList<ServiceRequest> getGenericObservableList() {
+    ObservableList<ServiceRequest> observableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM SERVICEREQ");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        ServiceType servType = ServiceType.getServiceType(rset.getString("servType"));
+        String id = rset.getString("reqID");
+        String didReqName = rset.getString("didReqName");
+        String madeReqName = rset.getString("madeReqName");
+        Timestamp timeOfReq = rset.getTimestamp("timeOfReq");
+        String status = rset.getString("status");
+        String location = rset.getString("location");
+        String description = rset.getString("description");
+        String additional = rset.getString("additional");
+        ServiceRequest request =
+            new ServiceRequest(
+                servType,
+                id,
+                didReqName,
+                madeReqName,
+                timeOfReq.toString(),
+                status,
+                location,
+                description,
+                additional);
+        observableList.add(request);
+      }
+      rset.close();
+      pstmt.close();
+      return observableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   public synchronized ObservableList<ITableable> getObservableListService(ServiceType type) {
     ObservableList<ITableable> observableList = FXCollections.observableArrayList();
     try {
