@@ -69,7 +69,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
           String nameLast,
           String username,
           String password,
-          EmployeeTitle title, Long pagerNum) {
+          EmployeeTitle title, long pagerNum) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
@@ -194,12 +194,12 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
 
 
   public synchronized String addEmployeeNoChecks(
-      String nameFirst, String nameLast, String username, String password, EmployeeTitle title, Long pagerNum) {
+      String nameFirst, String nameLast, String username, String password, EmployeeTitle title, long pagerNum) {
     return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
   }
 
   public synchronized String addEmployee(
-      String nameFirst, String nameLast, String username, String password, EmployeeTitle title, Long pagerNum) {
+      String nameFirst, String nameLast, String username, String password, EmployeeTitle title, long pagerNum) {
     if (checkSecurePass(password)) {
       return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
     } else {

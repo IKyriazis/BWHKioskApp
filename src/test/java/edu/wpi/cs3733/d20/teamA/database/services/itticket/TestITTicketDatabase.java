@@ -34,7 +34,7 @@ public class TestITTicketDatabase {
       graphDatabase.addNode(
           "MDEPT00325", 1, 1, 1, "Main", "DEPT", "LongName", "ShortName", "Team A");
       employeesDatabase = new EmployeesDatabase(conn);
-      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 8837263943l);
       employeesDatabase.logIn("yppatel", "YashPatel1");
     } catch (SQLException e) {
       e.printStackTrace();

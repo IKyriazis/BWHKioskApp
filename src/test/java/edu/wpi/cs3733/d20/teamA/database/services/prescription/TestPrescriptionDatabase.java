@@ -55,7 +55,7 @@ public class TestPrescriptionDatabase {
   // @Test
   public void testAddPrescription() {
     employeesDatabase.removeAll();
-    employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "Passwords123", EmployeeTitle.ADMIN);
+    employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "Passwords123", EmployeeTitle.ADMIN, 7778886664l);
     prescriptionDatabase.removeAllPrescriptions();
     prescriptionDatabase.addPrescription(1, "Yash", "Ketamin", "CVS", "2 pills", 3, "Don't Die");
     Assertions.assertEquals(1, prescriptionDatabase.getSizePrescription());

@@ -48,7 +48,7 @@ public class TestJanitorDatabase {
     employeeDatabase.removeAll();
     // need nodeID "biscuit" in node table so addrequest works
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN);
+    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, 7736499283l);
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(
@@ -63,8 +63,8 @@ public class TestJanitorDatabase {
   public void testUpdateRequest() {
     graphDatabase.removeAllNodes();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN);
-    employeeDatabase.addEmployee("Nisha", "Goel", "ngoel", "SweetGirl2", EmployeeTitle.ADMIN);
+    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, 8847736283l);
+    employeeDatabase.addEmployee("Nisha", "Goel", "ngoel", "SweetGirl2", EmployeeTitle.ADMIN, 6635266683l);
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(

@@ -194,13 +194,13 @@ public abstract class Database {
 
   }
 
-  public synchronized Long getPager(String username){
+  public synchronized long getPager(String username){
 
     try {
       PreparedStatement pstmt =
               getConnection().prepareStatement("Select * From Employees Where username = '" + username + "'");
       ResultSet rset = pstmt.executeQuery();
-      Long page = null;
+      long page = 0;
       if (rset.next()) {
         page = rset.getLong("pagerNum");
       }
@@ -209,7 +209,7 @@ public abstract class Database {
       return page;
     } catch (SQLException e) {
       e.printStackTrace();
-      return null;
+      return 0;
     }
 
   }

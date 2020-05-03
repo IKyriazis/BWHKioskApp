@@ -27,9 +27,9 @@ public class TestLaundryDatabase {
     gDB = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
-    eDB.addEmployee("Bob", "Roberts", "brob", "AbCd1234", EmployeeTitle.ADMIN);
-    eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", EmployeeTitle.ADMIN);
-    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+    eDB.addEmployee("Bob", "Roberts", "brob", "AbCd1234", EmployeeTitle.ADMIN, 1234586792l);
+    eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", EmployeeTitle.ADMIN, 1234567843l);
+    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 5678923450l);
     eDB.logIn("yppatel", "YashPatel1");
     gDB.addNode("AWASH00101", 123, 456, 1, "main", "HALL", "washing hall", "WH", "TeamA");
   }
