@@ -13,7 +13,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -132,7 +131,12 @@ public class MapCanvas extends Canvas {
 
     // Setup zoom property
     zoom = new SimpleDoubleProperty(0.0);
-    zoom.addListener(observable -> draw(lastDrawnFloor));
+    zoom.addListener(
+        observable -> {
+          transition.stop();
+          group.getChildren().clear();
+          draw(lastDrawnFloor);
+        });
 
     // Create list of nodes to highlight
     highlights = new ArrayList<>();
