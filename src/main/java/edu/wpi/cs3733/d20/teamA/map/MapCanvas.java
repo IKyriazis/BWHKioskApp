@@ -398,9 +398,10 @@ public class MapCanvas extends Canvas {
 
     javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
     boolean firstTime = true;
+    Point2D point;
 
     for (Node node : path.getPathNodes()) {
-      Point2D point = graphToCanvas(new Point2D(xcoord, ycoord));
+      point = graphToCanvas(new Point2D(xcoord, ycoord));
       double canvasPointX = point.getX();
       double canvasPointY = point.getY();
       if (firstTime && node.getFloor() == floor) {
@@ -420,6 +421,9 @@ public class MapCanvas extends Canvas {
         ycoord = node.getY();
       }
     }
+
+    point = graphToCanvas(new Point2D(xcoord, ycoord));
+    animatedPath.getElements().add(new LineTo(point.getX(), point.getY()));
 
     transition.setDuration(Duration.seconds(length / 250.0));
     transition.setPath(animatedPath);
