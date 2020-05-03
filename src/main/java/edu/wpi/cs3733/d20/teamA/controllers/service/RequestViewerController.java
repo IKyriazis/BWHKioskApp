@@ -4,6 +4,7 @@ import animatefx.animation.*;
 import com.jfoenix.controls.JFXTreeTableView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.service.edit.AbstractViewerController;
+import edu.wpi.cs3733.d20.teamA.controllers.service.edit.ITTicketViewerController;
 import edu.wpi.cs3733.d20.teamA.controllers.service.edit.JanitorViewerController;
 import edu.wpi.cs3733.d20.teamA.controllers.service.edit.LaundryViewerController;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
@@ -102,6 +103,7 @@ public class RequestViewerController extends AbstractController {
 
     Node newNode = promptLabel;
     if (req != null && !categoryItems.containsValue(selected)) {
+      String path = "";
       switch (req.getServiceType()) {
         case JANITOR:
           newNode =
@@ -121,7 +123,12 @@ public class RequestViewerController extends AbstractController {
           newNode = FXMLCache.loadFXML("views/service/edit/InterpreterRequestViewer.fxml");
           break;
         case IT_TICKET:
-          newNode = FXMLCache.loadFXML("views/service/edit/ITTicketViewer.fxml");
+          newNode =
+              FXMLCache.loadServiceFXML(
+                  "views/service/edit/ITTicketViewer.fxml", new ITTicketViewerController(req));
+          ((AbstractViewerController)
+                  FXMLCache.getController("views/service/edit/ITTicketViewer.fxml"))
+              .reset(req);
           break;
         case LAUNDRY:
           newNode =
