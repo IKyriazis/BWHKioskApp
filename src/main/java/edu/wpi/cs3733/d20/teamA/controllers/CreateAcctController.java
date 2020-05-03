@@ -151,7 +151,7 @@ public class CreateAcctController extends AbstractController {
                     lName.getText(),
                     uName.getText(),
                     cPass.getText(),
-                    EmployeeTitle.valueOf(title.getText().toUpperCase()));
+                    EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
           }
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
