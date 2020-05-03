@@ -1,7 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import com.sun.source.tree.AssertTree;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicketDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +20,7 @@ public class TestITTicketDatabse {
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
   ServiceDatabase serviceDatabase;
-  GraphDatabase DB;
+  GraphDatabase graphDatabase;
 
   public TestITTicketDatabse() {}
 
@@ -26,9 +28,9 @@ public class TestITTicketDatabse {
   public void init() {
     try {
       conn = DriverManager.getConnection(jdbcUrl);
-      DB = new GraphDatabase(conn);
-      tDB = new ITTicketDatabase(conn);
-      DB.addNode("MDEPT00325", 1, 1, 1, "Main", "DEPT", "LongName", "ShortName", "Team A");
+      graphDatabase = new GraphDatabase(conn);
+      serviceDatabase = new ServiceDatabase(conn);
+      graphDatabase.addNode("MDEPT00325", 1, 1, 1, "Main", "DEPT", "LongName", "ShortName", "Team A");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -44,71 +46,20 @@ public class TestITTicketDatabse {
   }
 
   @Test
-  public void testTable() {
-    tDB.dropTables();
-    boolean dropTables = tDB.dropTables();
-    Assertions.assertFalse(dropTables);
-    boolean makeTables = tDB.createTables();
-    Assertions.assertTrue(makeTables);
-    boolean dropTables2 = tDB.dropTables();
-    Assertions.assertTrue(dropTables2);
-    tDB.createTables();
+  public void testAddITTicket(){
+    serviceDatabase.removeAll();
+    String a = serviceDatabase.addServiceReq(ServiceType.IT_TICKET, "LongName", "Machine Broke", "WIFI");
+    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
+    Assertions.assertEquals(1, serviceDatabase.getSize());
   }
 
   @Test
-  public void testAddITTicket() throws SQLException {
-    tDB.removeAllITTickets();
-    boolean a =
-        tDB.addTicket(
-            new Timestamp(System.currentTimeMillis()),
-            "In Progress",
-            "Email",
-            "MDEPT00325",
-            "Luke",
-            "Adam",
-            "this is a test");
-    Assertions.assertTrue(a);
-    boolean d =
-        tDB.addTicket(
-            new Timestamp(System.currentTimeMillis()),
-            "Ticket Sent",
-            "Wifi",
-            "MDEPT00325",
-            "Sam",
-            "Peter",
-            "this is a test");
-    Assertions.assertTrue(d);
-    boolean b =
-        tDB.addTicket(
-            new Timestamp(System.currentTimeMillis()),
-            "Sent",
-            "Wifi",
-            "MDEPT00325",
-            "Sam",
-            "Peter",
-            "this is a test");
-    Assertions.assertFalse(b);
-    boolean c =
-        tDB.addTicket(
-            new Timestamp(System.currentTimeMillis()),
-            "Ticket Sent",
-            "Wifi",
-            "t",
-            "Sam",
-            "Peter",
-            "this is a test");
-    Assertions.assertFalse(c);
-    Assertions.assertEquals(2, tDB.getSizeITTickets());
-  }
-
-  @Test
-  public void testUpdateStatus() throws SQLException {
-    tDB.removeAllITTickets();
+  public void testUpdateStatus() {
+    serviceDatabase.removeAll();
     Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
-    tDB.addTicket(
-        ticketTime, "In Progress", "Email", "MDEPT00325", "Luke", "Adam", "this is a test");
-
-    Assertions.assertTrue(tDB.changeStatus(ticketTime, "Ticket Sent", "Joe"));
-    tDB.removeAllITTickets();
+    String a = serviceDatabase.addServiceReq(ServiceType.IT_TICKET, "LongName", "Machine Broke", "WIFI");
+    boolean b = serviceDatabase.setStatus(a, "Completed");
+    Assertions.assertTrue(b);
+    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "status", "Completed"));
   }
 }

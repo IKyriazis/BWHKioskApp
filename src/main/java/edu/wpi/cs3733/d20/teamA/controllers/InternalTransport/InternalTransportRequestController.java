@@ -25,7 +25,7 @@ public class InternalTransportRequestController extends AbstractController
   private JFXDialog dialog;
 
   @FXML
-  public void initialize() throws Exception {
+  public void initialize(){
     // Setup list of destination nodes
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(

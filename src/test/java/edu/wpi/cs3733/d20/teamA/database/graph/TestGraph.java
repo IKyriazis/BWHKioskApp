@@ -17,14 +17,14 @@ public class TestGraph {
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
-  GraphDatabase DB;
+  GraphDatabase graphDatabase;
 
   Graph graph = Graph.getInstance();
 
   @BeforeEach
   public void init() throws SQLException {
     conn = DriverManager.getConnection(jdbcUrl);
-    DB = new GraphDatabase(conn);
+    graphDatabase = new GraphDatabase(conn);
   }
 
   @AfterEach
