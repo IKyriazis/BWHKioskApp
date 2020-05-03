@@ -105,6 +105,7 @@ public class RequestViewerController extends AbstractController {
           newNode =
               FXMLCache.loadServiceFXML(
                   "views/service/edit/JanitorRequestViewer.fxml", new JanitorViewerController(req));
+          JanitorViewerController.setReq(req);
           break;
         case EQUIPMENT:
           newNode = FXMLCache.loadFXML("views/service/edit/EquipmentViewer.fxml");

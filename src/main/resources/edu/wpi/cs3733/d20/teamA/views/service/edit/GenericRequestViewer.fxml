@@ -27,7 +27,6 @@
             <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <JFXComboBox fx:id="nodeBox" editable="true" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Request Location" GridPane.columnIndex="1" />
             <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
@@ -39,11 +38,12 @@
             </GridPane>
             <JFXTextField fx:id="requestIDField" editable="false" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Request ID" />
             <JFXTextField fx:id="requestorField" editable="false" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Requesting Employee" GridPane.rowIndex="1" />
-            <JFXComboBox fx:id="assigneeBox" editable="true" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Assigned Employee" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <JFXComboBox fx:id="assigneeBox" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Assigned Employee" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <JFXTextField fx:id="timeStampField" editable="false" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Time Stamp" GridPane.rowIndex="2" />
-            <JFXComboBox fx:id="statusBox" editable="true" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Request Status" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXComboBox fx:id="statusBox" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Request Status" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <JFXTextField fx:id="locationField" editable="false" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="250.0" promptText="Request Location" GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <JFXTextArea fx:id="descriptionArea" editable="false" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="525.0" promptText="Description" GridPane.rowIndex="1" />
+      <JFXTextArea fx:id="descriptionArea" labelFloat="true" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="100.0" prefWidth="525.0" promptText="Description" GridPane.rowIndex="1" />
    </children>
 </GridPane>

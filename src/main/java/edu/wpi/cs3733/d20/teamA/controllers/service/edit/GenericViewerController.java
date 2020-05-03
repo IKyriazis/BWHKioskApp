@@ -11,7 +11,7 @@ import javafx.fxml.FXML;
 
 public class GenericViewerController extends AbstractRequestController {
   @FXML private JFXTextField requestIDField;
-  @FXML private JFXComboBox<String> nodeBox;
+  @FXML private JFXTextField locationField;
   @FXML private JFXTextField requestorField;
   @FXML private JFXComboBox<Employee> assigneeBox;
   @FXML private JFXTextField timeStampField;
@@ -20,16 +20,13 @@ public class GenericViewerController extends AbstractRequestController {
 
   public void fillFields(ServiceRequest request) {
     requestIDField.setText(request.getReqID());
-
-    nodeBox.getItems().add(request.getLocation());
-    nodeBox.getSelectionModel().select(request.getLocation());
-
+    locationField.setText(request.getLocation());
     requestorField.setText(request.getMadeReqName());
 
     setupEmployeeBox(assigneeBox);
     // Locate employee object corresponding to assigned
     eDB.getObservableList().stream()
-        .filter(employee1 -> employee1.getUsername().equals(request.getMadeReqName()))
+        .filter(employee1 -> employee1.getUsername().equals(request.getDidReqName()))
         .findFirst()
         .ifPresent(value -> assigneeBox.getSelectionModel().select(value));
 
@@ -38,6 +35,7 @@ public class GenericViewerController extends AbstractRequestController {
     statusBox.getItems().add(request.getStatus());
     statusBox.getSelectionModel().select(request.getStatus());
 
+    setupDescriptionArea(descriptionArea);
     descriptionArea.setText(request.getDescription());
   }
 
@@ -48,5 +46,33 @@ public class GenericViewerController extends AbstractRequestController {
             statusBox.getItems().add(s);
           }
         });
+  }
+
+  protected boolean updateRequestFromFields(ServiceRequest req) {
+    boolean success = true;
+    if (!assigneeBox
+        .getSelectionModel()
+        .getSelectedItem()
+        .getUsername()
+        .equals(req.getDidReqName())) {
+      success =
+          success
+              && serviceDatabase.setAssignedEmployee(
+                  req.getReqID(), assigneeBox.getSelectionModel().getSelectedItem().getUsername());
+    }
+
+    if (!statusBox.getSelectionModel().getSelectedItem().equals(req.getStatus())) {
+      success =
+          success
+              && serviceDatabase.setStatus(
+                  req.getReqID(), statusBox.getSelectionModel().getSelectedItem());
+    }
+
+    if (!descriptionArea.getText().equals(req.getDescription())) {
+      success =
+          success && serviceDatabase.setDescription(req.getReqID(), descriptionArea.getText());
+    }
+
+    return success;
   }
 }

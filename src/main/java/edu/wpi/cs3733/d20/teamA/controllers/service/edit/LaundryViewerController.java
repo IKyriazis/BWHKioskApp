@@ -1,3 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.controllers.service.edit;
 
-public class LaundryViewerController extends AbstractViewerController {}
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
+
+public class LaundryViewerController extends AbstractViewerController {
+  public LaundryViewerController(ServiceRequest req) {
+    super(req);
+  }
+
+  @Override
+  public void initialize() {}
+}

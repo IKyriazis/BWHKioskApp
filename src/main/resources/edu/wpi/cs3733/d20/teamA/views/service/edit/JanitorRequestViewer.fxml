@@ -50,7 +50,7 @@
                      </padding>
                   </HBox>
                   <fx:include fx:id="generic" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" source="GenericRequestViewer.fxml" GridPane.rowIndex="1" />
-                  <JFXComboBox labelFloat="true" prefWidth="250.0" promptText="Priority" GridPane.rowIndex="2" />
+                  <JFXComboBox fx:id="priorityBox" labelFloat="true" prefWidth="250.0" promptText="Priority" GridPane.rowIndex="2" />
                   <GridPane GridPane.rowIndex="3">
                     <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -59,7 +59,7 @@
                       <RowConstraints vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXButton fx:id="saveButton" styleClass="large-text" text="Save" />
+                        <JFXButton fx:id="saveButton" onAction="#pressedSave" styleClass="large-text" text="Save" />
                      </children>
                   </GridPane>
                </children>
