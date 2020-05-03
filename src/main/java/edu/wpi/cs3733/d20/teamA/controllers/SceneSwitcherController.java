@@ -267,8 +267,6 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   public String scanRFID() {
-    // put rfid scanner on background thread
-
     try {
       comPort.openPort();
       while (true) {

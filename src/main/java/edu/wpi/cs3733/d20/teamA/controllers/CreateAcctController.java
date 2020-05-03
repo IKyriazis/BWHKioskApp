@@ -28,17 +28,50 @@ public class CreateAcctController extends AbstractController {
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
 
+  private SerialPort comPort = null;
+
   public void initialize() {
+
+    // find arduino
+    if (comPort == null) {
+      comPort = SerialPort.getCommPorts()[0];
+    }
+
     ArrayList<String> titles = new ArrayList<String>(7);
     titles.add("Choose one:");
-    titles.add("admin");
-    titles.add("doctor");
-    titles.add("nurse");
-    titles.add("janitor");
-    titles.add("interpreter");
-    titles.add("receptionist");
-    titles.add("retail");
+    titles.add("Admin");
+    titles.add("Doctor");
+    titles.add("Nurse");
+    titles.add("Janitor");
+    titles.add("Interpreter");
+    titles.add("Receptionist");
+    titles.add("Retail");
     title.setItems(FXCollections.observableList(titles));
+  }
+
+  public String scanRFID() {
+    try {
+      comPort.openPort();
+      while (true) {
+        while (comPort.bytesAvailable() != 14) Thread.sleep(20);
+
+        byte[] readBuffer = new byte[comPort.bytesAvailable()];
+        int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+        String scannedString = new String(readBuffer, "UTF-8");
+        String[] scannedArray = scannedString.split(" ");
+        if (scannedArray[1].contains("p")) {
+          comPort.closePort();
+          return scannedArray[0];
+        } else {
+          comPort.closePort();
+          return null;
+        }
+      }
+    } catch (Exception e) {
+      comPort.closePort();
+      e.printStackTrace();
+      return null;
+    }
   }
 
   public void submitEmployee() {
@@ -95,55 +128,38 @@ public class CreateAcctController extends AbstractController {
           // an rfid card
           if (addRFID.isSelected()) {
             // popup message saying that we are scanning for rfid card
-
-            SerialPort comPort = SerialPort.getCommPorts()[0];
-            comPort.openPort();
-            try {
-              while (true) {
-                Platform.runLater(
-                    () -> {
-                      // tell user we are scanning for a card
-                      DialogUtil.simpleErrorDialog(
-                          dialogPane, "Started Scanning", "We are looking for your card.");
-                    });
-                while (comPort.bytesAvailable() != 14) Thread.sleep(20);
-
-                byte[] readBuffer = new byte[comPort.bytesAvailable()];
-                int numRead = comPort.readBytes(readBuffer, readBuffer.length);
-                String scannedString = new String(readBuffer, "UTF-8");
-                String[] scannedArray = scannedString.split(" ");
-                if (scannedArray[1].contains("p")) {
-                  secretKey =
-                      eDB.addEmployeeGA(
-                          fName.getText(),
-                          lName.getText(),
-                          uName.getText(),
-                          cPass.getText(),
-                          title.getValue().toString(),
-                          scannedArray[0]);
-                  Platform.runLater(
-                      () -> {
-                        // tell user we are scanning for a card
-                        DialogUtil.simpleErrorDialog(
-                            dialogPane, "Finished Scanning", "We have found your card");
-                      });
-                } else {
-                  // error reading since checksum didn't pass
-                  Platform.runLater(
-                      () -> {
-                        DialogUtil.simpleErrorDialog(
-                            dialogPane,
-                            "Read Fail",
-                            "There was an error reading the card please try again");
-                      });
-                  clearFields();
-                  return;
-                }
-              }
-            } catch (Exception e) {
-              e.printStackTrace();
+            Platform.runLater(
+                () -> {
+                  // tell user we are scanning for a card
+                  DialogUtil.simpleErrorDialog(
+                      dialogPane, "Started Scanning", "We are looking for your card.");
+                });
+            String rfid = scanRFID();
+            if (rfid != null) {
+              secretKey =
+                  eDB.addEmployeeGA(
+                      fName.getText(),
+                      lName.getText(),
+                      uName.getText(),
+                      cPass.getText(),
+                      title.getValue().toString(),
+                      rfid);
+              Platform.runLater(
+                  () -> {
+                    // tell user we are scanning for a card
+                    DialogUtil.simpleErrorDialog(
+                        dialogPane, "Finished Scanning", "We have found your card");
+                  });
+            } else {
+              Platform.runLater(
+                  () -> {
+                    DialogUtil.simpleErrorDialog(
+                        dialogPane,
+                        "Read Fail",
+                        "There was an error reading the card please try again");
+                  });
+              clearFields();
             }
-
           } else {
             secretKey =
                 eDB.addEmployeeGA(
