@@ -275,7 +275,13 @@ public class SimpleMapController {
     floor = Math.min(5, floor + 1);
     canvas.draw(floor);
     floorField.setText(String.valueOf(floor));
+    if (!canvas.getGroup().getChildren().isEmpty()) {
+      canvas.getGroup().getChildren().clear();
+      canvas.setGroup(new Group());
+      canvas.setTransition(new PathTransition());
+    }
     canvas.draw(floor);
+    canvasPane.getChildren().add(canvas.getGroup());
   }
 
   @FXML
