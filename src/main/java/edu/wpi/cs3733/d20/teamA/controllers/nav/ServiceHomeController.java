@@ -58,7 +58,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.STETHOSCOPE),
-        "views/EquipReq.fxml",
+        "views/service/EquipRequest.fxml",
         "Equipment\nRequest");
     addButton(
         buttonPane,
