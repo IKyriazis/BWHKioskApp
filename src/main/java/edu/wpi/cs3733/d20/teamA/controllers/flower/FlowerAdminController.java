@@ -164,6 +164,7 @@ public class FlowerAdminController extends AbstractController {
   }
 
   public void deleteFlower() {
+    /*
     Flower f = tblFlowerView.getSelected();
     if (f != null) {
       if (!hasDependentOrder(f)) {
@@ -190,7 +191,7 @@ public class FlowerAdminController extends AbstractController {
           dialogStackPane,
           "No Flower Selected",
           "Please select a flower by clicking a row in the table");
-    }
+    }*/
   }
 
   public void update() {

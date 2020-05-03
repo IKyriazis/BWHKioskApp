@@ -3,10 +3,12 @@ package edu.wpi.cs3733.d20.teamA.controllers.flower;
 import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;
+import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.ObservableList;
@@ -171,7 +173,9 @@ public class FlowerServiceController extends AbstractController {
   }
 
   @FXML
-  public void placeOrder() {
+  public void placeOrder() throws IOException {
+    myapi.App.run(0, 0, 0, 0, App.class.getResource("stylesheet.css").getPath(), null, null);
+    /*
     List<Flower> myList = getOrderList();
     if (myList.size() != 0) {
       FlowerOrderController cont = new FlowerOrderController();
@@ -186,7 +190,7 @@ public class FlowerServiceController extends AbstractController {
     } else {
       DialogUtil.simpleErrorDialog(
           dialogPane, "Cannot add order", "Please select flowers before placing your order");
-    }
+    }*/
   }
   // Generate a list of flowers to pass to the order controller
   private List<Flower> getOrderList() {
