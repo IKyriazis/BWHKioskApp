@@ -317,39 +317,4 @@ public class SimpleMapController {
 
     return textPath;
   }
-
-  /*private void animatePath(ContextPath path) {
-    Circle circ = new Circle(10);
-    circ.setFill(Color.AQUA);
-    double xcoord = path.getPathNodes().get(0).getX();
-    double ycoord = path.getPathNodes().get(0).getY();
-    double length = 0;
-
-    javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
-    animatedPath.getElements().add(new MoveTo(xcoord, ycoord));
-
-    for (Node node : path.getPathNodes()) {
-      // if the node is on the same floor then animate the path on the floor
-      if (node.getFloor() == floor) {
-        animatedPath.getElements().add(new LineTo(node.getX(), node.getY()));
-        length += getDistance(xcoord, node.getX(), ycoord, node.getY());
-        xcoord = node.getX();
-        ycoord = node.getY();
-      }
-    }
-
-    PathTransition transition = new PathTransition();
-    transition.setDuration(Duration.seconds(length / 250.0));
-    transition.setPath(animatedPath);
-    transition.setNode(circ);
-    transition.setCycleCount(Timeline.INDEFINITE);
-    transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-    transition.play();
-
-    canvasPane.getChildren().add(circ);
-  }
-
-  public double getDistance(double x, double newX, double y, double newY) {
-    return Math.sqrt((Math.pow((newX - x), 2)) + (Math.pow((newY - y), 2)));
-  }*/
 }
