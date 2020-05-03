@@ -395,6 +395,9 @@ public class SceneSwitcherController extends AbstractController {
 
     loggedIn = true;
 
+    // Fire tab switch event off to top scene to get it to update
+    sceneStack.peek().fireEvent(new TabSwitchEvent());
+
     // Undo changes to login box done for auth purposes
     gauthCode.setText("");
     buttonBox.setVisible(true);
