@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database.interpreter;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.ItemType;
@@ -20,6 +21,7 @@ public class TestInterpreterDatabase {
   private Connection conn;
   ServiceDatabase serviceDatabase;
   InventoryDatabase inventoryDatabase;
+  EmployeesDatabase employeesDatabase;
   GraphDatabase gDB;
 
   public TestInterpreterDatabase() {}
@@ -28,6 +30,7 @@ public class TestInterpreterDatabase {
   public void init() throws SQLException {
     conn = DriverManager.getConnection(jdbcUrl);
     gDB = new GraphDatabase(conn);
+    employeesDatabase = new EmployeesDatabase(conn);
     inventoryDatabase = new InventoryDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
   }

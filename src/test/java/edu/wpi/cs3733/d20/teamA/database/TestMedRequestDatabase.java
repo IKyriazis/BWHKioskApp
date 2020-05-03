@@ -82,42 +82,11 @@ public class TestMedRequestDatabase {
     serviceDatabase.removeAll();
   }
 
-  /*
-  @Test
-  public void testUpdateTime() throws SQLException {
-    mDB.createTables();
-    mDB.removeAll();
-
-    mDB.addRequest("Joe", "Schmoe", "Dr. Phil", "Xanax", 212);
-    boolean a = mDB.updateHo("JoeSchmoeXanax212", -2);
-    Assertions.assertFalse(a);
-
-    boolean c = mDB.updateHo("JoeSchmoeXanax212", 3);
-    Assertions.assertTrue(c);
-
-    boolean b = mDB.updateMins("JoeSchmoeXanax212", -6);
-    Assertions.assertFalse(b);
-
-    boolean d = mDB.updateMins("JoeSchmoeXanax212", 22);
-    Assertions.assertTrue(d);
-
-    mDB.removeAll();
-  }
-
-   */
-
   @Test
   public void testMedRequest() {
     MedRequest request =
         new MedRequest(
-            "1",
-            "Done",
-            "FIRST NAME|LASTNAME|DOCTOR|MEDICATION|ROOMNUM",
-            "211",
-            new Timestamp(0),
-            "joe");
-    Assertions.assertEquals("FIRST NAME", request.getFirstName());
-    Assertions.assertEquals("LAST NAME", request.getLastName());
+            "1", "Done", "FIRSTNAME_LASTNAME|DOCTOR|MEDICATION", "211", new Timestamp(0), "joe");
     Assertions.assertEquals("DOCTOR", request.getDoctor());
     Assertions.assertEquals("MEDICATION", request.getMedicine());
     Assertions.assertEquals(211, request.getRoomNum());

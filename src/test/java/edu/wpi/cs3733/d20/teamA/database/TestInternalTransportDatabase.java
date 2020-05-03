@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
@@ -17,7 +18,7 @@ public class TestInternalTransportDatabase {
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
   GraphDatabase gDB;
-
+  EmployeesDatabase employeesDatabase;
   ServiceDatabase serviceDatabase;
 
   @BeforeEach
@@ -25,6 +26,7 @@ public class TestInternalTransportDatabase {
     try {
       conn = DriverManager.getConnection(jdbcUrl);
       gDB = new GraphDatabase(conn);
+      employeesDatabase = new EmployeesDatabase(conn);
       serviceDatabase = new ServiceDatabase(conn);
     } catch (SQLException e) {
       e.printStackTrace();

@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import de.taimos.totp.TOTP;
+import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -13,6 +14,7 @@ import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Stack;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
@@ -61,6 +63,7 @@ public class SceneSwitcherController extends AbstractController {
   private static SceneSwitcherController instance;
 
   private Stack<Node> sceneStack;
+  private HashMap<Node, TransitionType> sceneTrans;
 
   private boolean transitioning = false;
   private boolean loginTransitioning = false;
@@ -84,7 +87,7 @@ public class SceneSwitcherController extends AbstractController {
       eDB.createTables();
       eDB.readEmployeeCSV();
     } else if (eDB.getSize() == 0) {
-      eDB.removeAllEmployees();
+      eDB.removeAll();
       eDB.readEmployeeCSV();
     }
 
@@ -121,7 +124,8 @@ public class SceneSwitcherController extends AbstractController {
 
     // Setup scene stack
     sceneStack = new Stack<>();
-    pushScene("views/nav/MainMenu.fxml");
+    sceneTrans = new HashMap<>();
+    pushScene("views/nav/MainMenu.fxml", TransitionType.FADE);
 
     // Create username label
     usernameLabel = new Label();
@@ -204,7 +208,7 @@ public class SceneSwitcherController extends AbstractController {
       while (sceneStack.size() > 1) {
         sceneStack.pop();
       }
-      transition(false);
+      transition(TransitionType.ZOOM, false);
     } else {
       loginTransitioning = true;
 
@@ -339,7 +343,7 @@ public class SceneSwitcherController extends AbstractController {
 
   @FXML
   public void pressedSettings() {
-    pushScene("views/nav/Settings.fxml");
+    pushScene("views/nav/Settings.fxml", TransitionType.FADE);
   }
 
   private void login() {
@@ -398,7 +402,7 @@ public class SceneSwitcherController extends AbstractController {
     authenticateButton.setVisible(false);
   }
 
-  private void transition(boolean right) {
+  private void transition(TransitionType trans, boolean additive) {
     if (transitioning || contentPane.getChildren().contains(sceneStack.peek())) {
       return;
     }
@@ -413,17 +417,14 @@ public class SceneSwitcherController extends AbstractController {
     if (!first) {
       transitioning = true;
 
-      AnimationFX transOut =
-          right
-              ? new FadeOutLeftBig(contentPane.getChildren().get(0))
-              : new FadeOutRightBig(contentPane.getChildren().get(0));
+      AnimationFX transOut = trans.getTransitionOut(contentPane.getChildren().get(0), additive);
       transOut.setOnFinished(
           event -> {
             contentPane.getChildren().remove(transOut.getNode());
           });
       transOut.play();
 
-      AnimationFX transIn = right ? new FadeInRightBig(top) : new FadeInLeftBig(top);
+      AnimationFX transIn = trans.getTransitionIn(top, additive);
       transIn.setOnFinished(
           event -> {
             transitioning = false;
@@ -444,13 +445,15 @@ public class SceneSwitcherController extends AbstractController {
     rootPane.requestFocus();
   }
 
-  private static void pushScene(Node newNode) {
+  private static void pushScene(Node newNode, TransitionType trans) {
     if (instance == null || instance.transitioning) {
       return;
     }
 
     instance.sceneStack.push(newNode);
-    instance.transition(true);
+    instance.sceneTrans.put(newNode, trans);
+
+    instance.transition(trans, true);
   }
 
   public static void popScene() {
@@ -459,10 +462,10 @@ public class SceneSwitcherController extends AbstractController {
     }
 
     Node old = instance.sceneStack.pop();
-    instance.transition(false);
+    instance.transition(instance.sceneTrans.get(old), false);
   }
 
-  public static void pushScene(String fxmlPath) {
+  public static void pushScene(String fxmlPath, TransitionType trans) {
     Node node = FXMLCache.loadFXML(fxmlPath);
 
     // Disallow duplicate scenes in the stack
@@ -475,7 +478,7 @@ public class SceneSwitcherController extends AbstractController {
       }
     }
 
-    pushScene(node);
+    pushScene(node, trans);
   }
 
   private static String getTOTPCode(String secretKey) {

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class TestITTicketDatabse {
+public class TestITTicketDatabase {
 
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
@@ -20,7 +20,7 @@ public class TestITTicketDatabse {
   ServiceDatabase serviceDatabase;
   GraphDatabase graphDatabase;
 
-  public TestITTicketDatabse() {}
+  public TestITTicketDatabase() {}
 
   @BeforeEach
   public void init() {

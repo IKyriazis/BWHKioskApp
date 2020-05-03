@@ -41,7 +41,10 @@ public class ServiceHomeController extends AbstractNavPaneController {
     // Services available to employees
     // if (eDB.getLoggedIn() != null) {
     addButton(
-        buttonPane, new FontIcon(FontAwesomeSolid.BROOM), "views/JanitorialGUI.fxml", "Janitorial");
+        buttonPane,
+        new FontIcon(FontAwesomeSolid.BROOM),
+        "views/service/JanitorRequest.fxml",
+        "Janitorial");
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.BULLHORN),
@@ -50,22 +53,22 @@ public class ServiceHomeController extends AbstractNavPaneController {
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.MEDKIT),
-        "views/MedicineRequest.fxml",
+        "views/service/MedicineRequest.fxml",
         "Medicine\nDelivery");
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.STETHOSCOPE),
-        "views/EquipReq.fxml",
+        "views/service/EquipRequest.fxml",
         "Equipment\nRequest");
     addButton(
         buttonPane,
         new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
-        "views/LaundryService.fxml",
+        "views/service/LaundryRequest.fxml",
         "Laundry");
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.LAPTOP),
-        "views/ITServices.fxml",
+        "views/service/ITRequest.fxml",
         "Tech\nSupport");
     addButton(
         buttonPane,
@@ -80,7 +83,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.PILLS),
-        "views/PrescriptionService.fxml",
+        "views/service/PrescriptionRequest.fxml",
         "Prescriptions");
     addButton(
         buttonPane,

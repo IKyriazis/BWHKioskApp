@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
@@ -47,7 +48,7 @@ public class TestJanitorDatabase {
     employeeDatabase.removeAll();
     // need nodeID "biscuit" in node table so addrequest works
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", "ADMIN");
+    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN);
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(
@@ -62,8 +63,8 @@ public class TestJanitorDatabase {
   public void testUpdateRequest() {
     graphDatabase.removeAllNodes();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", "ADMIN");
-    employeeDatabase.addEmployee("Nisha", "Goel", "ngoel", "SweetGirl2", "ADMIN");
+    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN);
+    employeeDatabase.addEmployee("Nisha", "Goel", "ngoel", "SweetGirl2", EmployeeTitle.ADMIN);
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(

@@ -12,8 +12,6 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class MedRequest implements ITableable<MedRequest> {
   private SimpleStringProperty orderNum;
-  private SimpleStringProperty firstName;
-  private SimpleStringProperty lastName;
   private SimpleStringProperty name;
   private SimpleStringProperty doctor;
   private SimpleStringProperty medicine;
@@ -23,7 +21,6 @@ public class MedRequest implements ITableable<MedRequest> {
   private SimpleObjectProperty<LocalTime> time;
   private SimpleStringProperty fulfilledBy;
 
-  // Content string is FIRST NAME|LASTNAME|DOCTOR|MEDICATION|ROOMNUM
   // Use description to hold room number
   public MedRequest(
       String orderNum,
@@ -31,45 +28,32 @@ public class MedRequest implements ITableable<MedRequest> {
       String contentString,
       String description,
       Timestamp t,
-      String assignedEmployee)
-        /*
-        String orderNum,
-        String firstName,
-        String lastName,
-        String doctor,
-        String medicine,
-        int roomNum,
-        String progress,
-        int hour,
-        int minute,
-        String fulfilledBy)*/ {
+      String assignedEmployee) {
+
+    // Additional: fNameText| doctorText| medicineText
     if (contentString != null && description != null) {
       // Parse the string
-      String first = contentString.substring(0, contentString.indexOf('|'));
-      contentString = contentString.substring(contentString.indexOf('|') + 1);
-      String last = contentString.substring(0, contentString.indexOf('|'));
-      contentString = contentString.substring(contentString.indexOf('|') + 1);
-      String doc = contentString.substring(0, contentString.indexOf('|'));
-      String med = contentString.substring(contentString.indexOf('|') + 1);
+      String[] arr = contentString.split("|");
+      if (arr.length == 3) {
+        String patientName = arr[0];
+        String doctorName = arr[1];
+        String medicine = arr[2];
+        this.orderNum = new SimpleStringProperty(orderNum);
+        this.name = new SimpleStringProperty(patientName);
+        this.doctor = new SimpleStringProperty(doctorName);
+        this.medicine = new SimpleStringProperty(medicine);
 
-      this.orderNum = new SimpleStringProperty(orderNum);
-      this.firstName = new SimpleStringProperty(first);
-      this.lastName = new SimpleStringProperty(last);
-      this.name = new SimpleStringProperty(firstName.get() + " " + lastName.get());
-      this.doctor = new SimpleStringProperty(doc);
-      this.medicine = new SimpleStringProperty(med);
+        this.roomNum = new SimpleIntegerProperty(Integer.parseInt(description));
+        this.progress = new SimpleStringProperty(status);
+        this.time = new SimpleObjectProperty<LocalTime>();
 
-      this.roomNum = new SimpleIntegerProperty(Integer.parseInt(description));
-      this.progress = new SimpleStringProperty(status);
-      this.time = new SimpleObjectProperty<LocalTime>();
-
-      int hour = t.getHours();
-      int minute = t.getMinutes();
-      if (hour >= 0 && minute >= 0) {
-        time.set(LocalTime.of(hour, minute));
+        int hour = t.getHours();
+        int minute = t.getMinutes();
+        if (hour >= 0 && minute >= 0) {
+          time.set(LocalTime.of(hour, minute));
+        }
+        this.fulfilledBy = new SimpleStringProperty(assignedEmployee);
       }
-
-      this.fulfilledBy = new SimpleStringProperty(assignedEmployee);
     }
   }
 
@@ -77,12 +61,8 @@ public class MedRequest implements ITableable<MedRequest> {
     this.orderNum.set(orderNum);
   }
 
-  public void setFirstName(String firstName) {
-    this.firstName.set(firstName);
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName.set(lastName);
+  public void setName(String patientName) {
+    this.name.set(patientName);
   }
 
   public void setDoctor(String doctor) {
@@ -113,20 +93,12 @@ public class MedRequest implements ITableable<MedRequest> {
     return orderNum;
   }
 
-  public String getFirstName() {
-    return firstName.get();
+  public String getName() {
+    return name.get();
   }
 
-  public SimpleStringProperty firstNameProperty() {
-    return firstName;
-  }
-
-  public String getLastName() {
-    return lastName.get();
-  }
-
-  public SimpleStringProperty lastNameProperty() {
-    return lastName;
+  public SimpleStringProperty nameProperty() {
+    return name;
   }
 
   public String getDoctor() {
@@ -188,18 +160,6 @@ public class MedRequest implements ITableable<MedRequest> {
     } catch (NullPointerException ex) {
       return new SimpleStringProperty();
     }
-  }
-
-  public String getName() {
-    return name.get();
-  }
-
-  public SimpleStringProperty nameProperty() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name.set(name);
   }
 
   @Override

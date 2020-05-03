@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database.services;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
@@ -45,15 +46,13 @@ public class TestEquipReqDatabase {
   @Test
   public void testAddReq() {
     serviceDatabase.removeAll();
-    employeeDatabase.removeAllLogs();
     graphDatabase.removeAll();
     Assertions.assertEquals(0, serviceDatabase.getSize());
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee("bacd", "ray", "jay", "Password56", "Intern");
+    employeeDatabase.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER);
     serviceDatabase.addServiceReq(ServiceType.EQUIPMENT, "balogna", null, "item|2|High");
     Assertions.assertEquals(1, serviceDatabase.getSize());
     serviceDatabase.removeAll();
-    employeeDatabase.removeAllLogs();
   }
 
   @Test
@@ -62,14 +61,12 @@ public class TestEquipReqDatabase {
     graphDatabase.removeAll();
     Assertions.assertEquals(0, serviceDatabase.getSize());
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee("bacd", "ray", "jay", "Password54", "Intern");
-    employeeDatabase.addLog("jay");
+    employeeDatabase.addEmployee("bacd", "ray", "jay", "Password54", EmployeeTitle.INTERPRETER);
     String a = serviceDatabase.addServiceReq(ServiceType.EQUIPMENT, "balogna", null, "item|2|High");
     Assertions.assertEquals(1, serviceDatabase.getSize());
     serviceDatabase.deleteServReq(a);
     Assertions.assertEquals(0, serviceDatabase.getSize());
     serviceDatabase.removeAll();
-    employeeDatabase.removeAllLogs();
   }
 
   @Test

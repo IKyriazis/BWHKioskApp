@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
@@ -26,8 +27,8 @@ public class TestLaundryDatabase {
     gDB = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
-    eDB.addEmployee("Bob", "Roberts", "brob", "AbCd1234", "desk clerk");
-    eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", "cleaner");
+    eDB.addEmployee("Bob", "Roberts", "brob", "AbCd1234", EmployeeTitle.ADMIN);
+    eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", EmployeeTitle.ADMIN);
     gDB.addNode("AWASH00101", 123, 456, 1, "main", "HALL", "washing hall", "WH", "TeamA");
   }
 
@@ -86,38 +87,4 @@ public class TestLaundryDatabase {
     boolean b = serviceDatabase.deleteServReq(a);
     Assertions.assertTrue(b);
   }
-  /*
-   @Test
-   public void testGetters() {
-     serviceDatabase.createTables();
-     serviceDatabase.removeAll();
-     String a = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "washing hall", "brob", "");
-
-     Assertions.assertEquals("brob", serviceDatabase.get);
-     Assertions.assertEquals("washing hall", lDB.getLoc(a));
-     Assertions.assertEquals("Requested", lDB.getProg(a));
-     Assertions.assertNull(lDB.getEmpW(a));
-     Assertions.assertNotNull(lDB.getTimeRequested(a));
-     Assertions.assertNull(lDB.getEmpE(0));
-   }
-
-   @Test
-   public void testSetters() {
-     lDB.createTables();
-     lDB.removeAll();
-     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-     int a = lDB.addLaundry("brob", "washing hall");
-     Assertions.assertTrue(lDB.setEmpE(a, "rbob"));
-     Assertions.assertFalse(lDB.setEmpE(a, "steve"));
-     Assertions.assertTrue(lDB.setLoc(a, "washing hall"));
-     Assertions.assertFalse(lDB.setLoc(a, "notanode"));
-     Assertions.assertTrue(lDB.setProg(a, "Collected"));
-     Assertions.assertFalse(lDB.setProg(a, "notaprog"));
-     Assertions.assertTrue(lDB.setEmpW(a, "rbob"));
-     Assertions.assertFalse(lDB.setEmpW(a, "steve"));
-     Assertions.assertTrue(lDB.setTimestamp(a, timestamp));
-     Assertions.assertFalse(lDB.setEmpE(0, "rbob"));
-   }
-
-  */
 }
