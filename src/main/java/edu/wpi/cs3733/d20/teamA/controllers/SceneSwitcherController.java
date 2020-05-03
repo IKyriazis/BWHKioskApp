@@ -493,4 +493,10 @@ public class SceneSwitcherController extends AbstractController {
     String hexKey = Hex.encodeHexString(bytes);
     return TOTP.getOTP(hexKey);
   }
+
+  public void announcementBtn(ActionEvent actionEvent) {
+    pushScene("views/AnnouncementWall.fxml", TransitionType.ZOOM);
+  }
+
+  public void openAbout(ActionEvent actionEvent) {}
 }

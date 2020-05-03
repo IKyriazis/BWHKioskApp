@@ -48,7 +48,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXButton fx:id="aboutBtn" alignment="CENTER" contentDisplay="CENTER" style="-fx-background-color: transparent;" styleClass="chonky-text" GridPane.columnIndex="3" />
+                  <JFXButton fx:id="aboutBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#openAbout" style="-fx-background-color: transparent;" styleClass="chonky-text" GridPane.columnIndex="3" />
                   <ImageView fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.vgrow="NEVER">
                      <image>
                         <Image url="@../images/icon.png" />
@@ -67,7 +67,7 @@
                         <Label fx:id="dateLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <JFXButton fx:id="announcementBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" style="-fx-background-color: transparent;" styleClass="chonky-text" textAlignment="CENTER" GridPane.columnIndex="1" />
+                  <JFXButton fx:id="announcementBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" onAction="#announcementBtn" style="-fx-background-color: transparent;" styleClass="chonky-text" textAlignment="CENTER" GridPane.columnIndex="1" />
                </children>
                <effect>
                   <DropShadow height="24.0" radius="11.5" width="24.0" />
