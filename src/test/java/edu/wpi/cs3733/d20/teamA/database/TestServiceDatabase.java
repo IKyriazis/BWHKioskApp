@@ -1,7 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -52,28 +54,31 @@ public class TestServiceDatabase {
 
   @Test
   public void testAddReq() {
-    sDB.removeAllReqs();
+    sDB.removeAll();
     eDB.removeAllLogs();
     DB.removeAll();
-    Assertions.assertEquals(0, sDB.getSizeReq());
+    Assertions.assertEquals(0, sDB.getSize());
     Assertions.assertEquals(0, eDB.getSizeLog());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     eDB.addEmployee("bacd", "ray", "jay", "Password56", "Intern");
     eDB.addLog("jay");
     sDB.addServiceReq(
-        "janitor", "balogna", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    Assertions.assertEquals(1, sDB.getSizeReq());
-    sDB.removeAllReqs();
+        ServiceType.JANITOR,
+        "balogna",
+        "Janitor needed at balogna",
+        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    Assertions.assertEquals(1, sDB.getSize());
+    sDB.removeAll();
     eDB.removeAllLogs();
     DB.removeAll();
   }
 
   @Test
   public void testDelReq() {
-    sDB.removeAllReqs();
+    sDB.removeAll();
     eDB.removeAllLogs();
     DB.removeAll();
-    Assertions.assertEquals(0, sDB.getSizeReq());
+    Assertions.assertEquals(0, sDB.getSize());
     Assertions.assertEquals(0, eDB.getSizeLog());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     eDB.addEmployee("bacd", "ray", "jay", "Password54", "Intern");
@@ -81,18 +86,21 @@ public class TestServiceDatabase {
     Assertions.assertEquals(1, eDB.getSizeLog());
     String req =
         sDB.addServiceReq(
-            "janitor", "balogna", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-    Assertions.assertEquals(1, sDB.getSizeReq());
+            ServiceType.JANITOR,
+            "balogna",
+            "Janitor needed at balogna",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    Assertions.assertEquals(1, sDB.getSize());
     sDB.deleteServReq(req);
-    Assertions.assertEquals(0, sDB.getSizeReq());
-    sDB.removeAllReqs();
+    Assertions.assertEquals(0, sDB.getSize());
+    sDB.removeAll();
     eDB.removeAllLogs();
     DB.removeAll();
   }
 
   @Test
   public void testEditStatus() {
-    sDB.removeAllReqs();
+    sDB.removeAll();
     eDB.removeAllLogs();
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -100,10 +108,13 @@ public class TestServiceDatabase {
     eDB.addLog("jay");
     String req =
         sDB.addServiceReq(
-            "janitor", "balogna", "Janitor needed at balogna", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            ServiceType.JANITOR,
+            "balogna",
+            "Janitor needed at balogna",
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     sDB.editStatus(req, "Completed");
     Assertions.assertEquals("Completed", sDB.getStatus(req));
-    sDB.removeAllReqs();
+    sDB.removeAll();
     eDB.removeAllLogs();
     DB.removeAll();
   }

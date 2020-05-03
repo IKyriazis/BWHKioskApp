@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
 import edu.wpi.cs3733.d20.teamA.database.service.prescription.PrescriptionDatabase;
 import java.sql.Connection;
@@ -89,8 +90,8 @@ public class TestPrescriptionDatabase {
   @Test
   public void createPrescriptionObject() {
     Prescription p =
-        new Prescription(1, "Yash", "Ketamin", "CVS", "2 pills", 3, "yppatel", "Don't Die");
-    Assertions.assertEquals(1, p.getPrescriptionID());
+        new Prescription("1", "Pillies", "Yash|Ketamin|CVS|2 pills|3|yppatel|Don't Die");
+    Assertions.assertEquals("1", p.getPrescriptionID());
     Assertions.assertEquals("Yash", p.getPatientName());
     Assertions.assertEquals("Ketamin", p.getPrescription());
     Assertions.assertEquals("CVS", p.getPharmacy());
