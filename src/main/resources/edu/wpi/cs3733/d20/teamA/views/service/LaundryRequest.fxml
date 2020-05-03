@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import com.jfoenix.validation.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.service.request.LaundryRequestController">
+  <columnConstraints>
+      <ColumnConstraints maxWidth="-Infinity" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" />
+  </rowConstraints>
+   <children>
+      <StackPane maxHeight="-Infinity" maxWidth="-Infinity" GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES">
+         <children>
+            <GridPane hgap="50.0" maxHeight="-Infinity" maxWidth="-Infinity" vgap="50.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="50.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <HBox alignment="CENTER" spacing="5.0">
+                     <children>
+                        <Label fx:id="headerLabel" alignment="CENTER" lineSpacing="2.0" text="Laundry Request">
+                           <font>
+                              <Font size="22.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="title-label" />
+                              <String fx:value="large-text" />
+                           </styleClass>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets top="15.0" />
+                     </padding>
+                  </HBox>
+                  <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" GridPane.rowIndex="3" />
+                  <JFXComboBox fx:id="nodeBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Request Location" GridPane.rowIndex="1" />
+                  <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.rowIndex="2" />
+               </children>
+               <padding>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </padding>
+            </GridPane>
+         </children></StackPane>
+      <NumberValidator />
+   </children>
+</GridPane>

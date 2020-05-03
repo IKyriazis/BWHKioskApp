@@ -3,10 +3,9 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.PatientEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Patient;
+import edu.wpi.cs3733.d20.teamA.database.patient.Patient;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
-import java.awt.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeTableRow;
@@ -31,12 +30,12 @@ public class PatientInfoController extends AbstractController {
   public PatientInfoController() {}
 
   public void initialize() {
-    if (patientDatabase.getSizePatients() == -1) {
+    if (patientDatabase.getSize() == -1) {
       patientDatabase.dropTables();
       patientDatabase.createTables();
       // patientDatabase.readPatientCSV();
-    } else if (patientDatabase.getSizePatients() == 0) {
-      patientDatabase.removeAllPatients();
+    } else if (patientDatabase.getSize() == 0) {
+      patientDatabase.removeAll();
       // patientDatabase.readFlowersCSV();
     }
 
@@ -48,7 +47,7 @@ public class PatientInfoController extends AbstractController {
     deletePatientButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
 
     // Setup Table
-    patientTable = new SimpleTableView<>(new Patient(0, "", "", "", ""), 80.0);
+    patientTable = new SimpleTableView<>(new Patient("", "", "", "", ""), 80.0);
     patientTablePane.getChildren().add(patientTable);
     // Double click a row in the order table to bring up the dialog for that order
     patientTable.setRowFactory(
@@ -78,7 +77,7 @@ public class PatientInfoController extends AbstractController {
     try {
       patientTable.clear();
 
-      patientTable.add(patientDatabase.patientOl());
+      patientTable.add(patientDatabase.getObservableList());
     } catch (Exception e) {
       e.printStackTrace();
       // DialogUtil.simpleErrorDialog(
@@ -121,7 +120,7 @@ public class PatientInfoController extends AbstractController {
   public void deletePatient() {
     Patient patient = patientTable.getSelected();
     if (patient != null) {
-      int id = patient.getPatientID();
+      String id = patient.getPatientID();
 
       try {
         super.patientDatabase.deletePatient(id);

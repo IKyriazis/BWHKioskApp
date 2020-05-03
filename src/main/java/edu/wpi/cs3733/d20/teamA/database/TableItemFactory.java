@@ -1,8 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Flower;
-
+import edu.wpi.cs3733.d20.teamA.database.service.equipreq.EquipRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.internaltransport.InternalTransportRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.interpreter.InterpreterRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicket;
+import edu.wpi.cs3733.d20.teamA.database.service.janitor.JanitorService;
+import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
+import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
 import java.sql.Timestamp;
 
 public class TableItemFactory {
@@ -53,7 +59,12 @@ public class TableItemFactory {
             status,
             additional); // Additional hold name because it doenst check table
       case "interpret":
-        return new InterpreterRequest(9, "Name", "Language", location, status);
+        return new InterpreterRequest(
+            reqID,
+            description,
+            additional,
+            location,
+            status); // Hold interpreter name in description to avoid the employee ID restriction
       case "rxreq":
         return new Prescription(reqID, description, additional);
       default:
@@ -63,6 +74,7 @@ public class TableItemFactory {
 
   /**
    * Gets the Table for Inventory
+   *
    * @param itemID id
    * @param itemType type for switch case
    * @param itemName name
@@ -73,17 +85,15 @@ public class TableItemFactory {
    * @return table
    */
   public static ITableable getInventory(
-          String itemID,
-          String itemType,
-          String itemName,
-          int quantity,
-          Double unitPrice,
-          String description,
-          String additional) {
-    switch(itemType){
-      case("flower") :
-        return new Flower(itemID,itemName,quantity,unitPrice,additional);
-      default :
+      String itemID,
+      String itemType,
+      String itemName,
+      int quantity,
+      Double unitPrice,
+      String description,
+      String additional) {
+    switch (itemType) {
+      default:
         return null;
     }
   }

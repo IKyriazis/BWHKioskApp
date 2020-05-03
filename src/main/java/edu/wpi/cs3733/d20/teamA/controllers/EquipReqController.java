@@ -4,8 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.EquipRequest;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.equipreq.EquipRequest;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -63,7 +63,7 @@ public class EquipReqController extends AbstractController {
     try {
 
       tblEquipView.clear();
-      tblEquipView.add(serviceDatabase.observableList(ServiceType.EQUIPMENT));
+      tblEquipView.add(serviceDatabase.getObservableListService(ServiceType.EQUIPMENT));
 
     } catch (Exception e) {
       e.printStackTrace();

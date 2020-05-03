@@ -3,7 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Announcement;
+import edu.wpi.cs3733.d20.teamA.database.announcement.Announcement;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -36,7 +36,7 @@ public class AnnouncementsAdminController extends AbstractController {
     deleteButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
 
     // Set up table
-    tblAnnouncement = new SimpleTableView<>(new Announcement(0, ""), 80);
+    tblAnnouncement = new SimpleTableView<>(new Announcement("", ""), 80);
     tableGridPane.getChildren().add(tblAnnouncement);
 
     // Track when the mouse has clicked on the table
@@ -60,7 +60,7 @@ public class AnnouncementsAdminController extends AbstractController {
     }
 
     String announcement = textAnn.getText();
-    int id = announcementDatabase.addAnnouncement(announcement);
+    announcementDatabase.addAnnouncement(announcement);
     textAnn.setText("");
     update();
   }

@@ -5,8 +5,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.ITTicket;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicket;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -109,7 +109,7 @@ public class ITServicesController extends AbstractController {
     try {
       tblViewITTicket.clear();
 
-      tblViewITTicket.add(serviceDatabase.observableList(ServiceType.IT_TICKET));
+      tblViewITTicket.add(serviceDatabase.getObservableListService(ServiceType.IT_TICKET));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(ITStackPane, "Error", "Failed to update IT Ticket Table");

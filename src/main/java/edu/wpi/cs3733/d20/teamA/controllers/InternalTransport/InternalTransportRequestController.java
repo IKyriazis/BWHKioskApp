@@ -5,7 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -25,7 +25,7 @@ public class InternalTransportRequestController extends AbstractController
   private JFXDialog dialog;
 
   @FXML
-  public void initialize() throws Exception {
+  public void initialize() {
     // Setup list of destination nodes
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(

@@ -2,9 +2,9 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Employee;
-import edu.wpi.cs3733.d20.teamA.database.Laundry;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -123,7 +123,7 @@ public class LaundryController extends AbstractController {
 
     progressComboBox.getItems().addAll("Request Made", "In Progress", "Completed");
 
-    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    ObservableList<Employee> allEmployeeList = eDB.getObservableList();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
     cleanerComboBox.setItems(allEmployeeList);
@@ -131,7 +131,7 @@ public class LaundryController extends AbstractController {
         event -> {
           allEmployeeList.clear();
 
-          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.addAll(eDB.getObservableList());
           allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
           cleanerComboBox.setItems(allEmployeeList);
@@ -220,7 +220,7 @@ public class LaundryController extends AbstractController {
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(serviceDatabase.observableList(ServiceType.LAUNDRY));
+      tblLaundryView.add(serviceDatabase.getObservableListService(ServiceType.LAUNDRY));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

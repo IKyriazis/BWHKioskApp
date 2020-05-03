@@ -5,8 +5,8 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.InternalTransportRequest;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.internaltransport.InternalTransportRequest;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.sql.Timestamp;
@@ -73,7 +73,7 @@ public class InternalTransportAdminController extends AbstractController {
   public void update() {
     try {
       tblOrderView.clear();
-      tblOrderView.add(serviceDatabase.observableList(ServiceType.INTERNAL_TRANSPORT));
+      tblOrderView.add(serviceDatabase.getObservableListService(ServiceType.INTERNAL_TRANSPORT));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

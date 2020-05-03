@@ -4,9 +4,9 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.Employee;
-import edu.wpi.cs3733.d20.teamA.database.JanitorService;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.janitor.JanitorService;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
@@ -78,7 +78,7 @@ public class JanitorEditController extends AbstractController implements IDialog
     priorityItems.addAll(a, b, c);
     comboboxPriority.getItems().addAll(priorityItems);
 
-    ObservableList<Employee> allEmployeeList = eDB.employeeOl();
+    ObservableList<Employee> allEmployeeList = eDB.getObservableList();
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
     comboboxJanitor.getItems().addAll(allEmployeeList);
@@ -90,7 +90,7 @@ public class JanitorEditController extends AbstractController implements IDialog
         event -> {
           allEmployeeList.clear();
 
-          allEmployeeList.addAll(eDB.employeeOl());
+          allEmployeeList.addAll(eDB.getObservableList());
           allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
           comboboxJanitor.setItems(allEmployeeList);

@@ -5,8 +5,8 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.EditMedRequestController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.MedInfoController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.MedRequest;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.sql.Timestamp;
@@ -77,7 +77,7 @@ public class MedicineDeliveryController extends AbstractController {
   public void update() {
     try {
       tblMedReq.clear();
-      tblMedReq.add(serviceDatabase.observableList(ServiceType.MEDICINE));
+      tblMedReq.add(serviceDatabase.getObservableListService(ServiceType.MEDICINE));
     } catch (Exception e) {
       e.printStackTrace();
     }

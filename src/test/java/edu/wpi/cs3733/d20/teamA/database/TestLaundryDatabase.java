@@ -1,5 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import java.sql.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -10,7 +15,7 @@ public class TestLaundryDatabase {
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
-  LaundryDatabase lDB;
+  ServiceDatabase serviceDatabase;
   GraphDatabase gDB;
   EmployeesDatabase eDB;
 
@@ -21,9 +26,11 @@ public class TestLaundryDatabase {
     conn = DriverManager.getConnection(jdbcUrl);
     gDB = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
-    lDB = new LaundryDatabase(conn);
-    eDB.addEmployee("Bob", "Roberts", "brob", "AbCd1234", "desk clerk");
-    eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", "cleaner");
+    serviceDatabase = new ServiceDatabase(conn);
+    eDB.addEmployee("Bob", "Roberts", "brob", "AbCd1234", EmployeeTitle.ADMIN);
+    eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", EmployeeTitle.ADMIN);
+    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+    eDB.logIn("yppatel", "YashPatel1");
     gDB.addNode("AWASH00101", 123, 456, 1, "main", "HALL", "washing hall", "WH", "TeamA");
   }
 
@@ -39,77 +46,47 @@ public class TestLaundryDatabase {
 
   @Test
   public void testTables() {
-    lDB.dropTables();
-    boolean dropTables = lDB.dropTables();
+    serviceDatabase.dropTables();
+    boolean dropTables = serviceDatabase.dropTables();
     Assertions.assertFalse(dropTables);
-    boolean makeTables = lDB.createTables();
+    boolean makeTables = serviceDatabase.createTables();
     Assertions.assertTrue(makeTables);
-    boolean dropTables2 = lDB.dropTables();
+    boolean dropTables2 = serviceDatabase.dropTables();
     Assertions.assertTrue(dropTables2);
+    serviceDatabase.createTables();
   }
 
   @Test
   public void testGetSize() {
-    lDB.createTables();
-    lDB.removeAll();
-    Assertions.assertEquals(0, lDB.getSizeLaundry());
-    lDB.addLaundry("brob", "washing hall");
-    Assertions.assertEquals(1, lDB.getSizeLaundry());
+    serviceDatabase.createTables();
+    serviceDatabase.getSize(ServiceType.LAUNDRY);
+    Assertions.assertEquals(0, serviceDatabase.getSize(ServiceType.LAUNDRY));
+    serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "washing hall", "brob", "");
+    Assertions.assertEquals(1, serviceDatabase.getSize(ServiceType.LAUNDRY));
   }
 
   @Test
   public void testAddLaundry() {
-    lDB.createTables();
-    lDB.removeAll();
-    int a = lDB.addLaundry("brob", "washing hall");
-    Assertions.assertTrue(lDB.checkIfExistsInt("Laundry", "requestNum", a));
-    int b = lDB.addLaundry("rbob", "washing hall");
-    Assertions.assertTrue(lDB.checkIfExistsInt("Laundry", "requestNum", b));
+    serviceDatabase.removeAll();
+    String a = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "washing hall", "brob", "");
+    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
+    String b = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "washing hall", "rbob", "");
+    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", b));
+    /*
     int c = lDB.addLaundry("steve", "washing hall");
     Assertions.assertFalse(lDB.checkIfExistsInt("Laundry", "requestNum", c));
     int d = lDB.addLaundry("rbob", "notanode");
     Assertions.assertFalse(lDB.checkIfExistsInt("Laundry", "requestNum", d));
+
+     */
   }
 
   @Test
   public void testDeleteLaundry() {
-    lDB.createTables();
-    lDB.removeAll();
-    int l = lDB.addLaundry("brob", "washing hall");
-    boolean a = lDB.deleteLaundry(l);
-    Assertions.assertTrue(a);
-    boolean b = lDB.deleteLaundry(l);
-    Assertions.assertFalse(b);
-  }
-
-  @Test
-  public void testGetters() {
-    lDB.createTables();
-    lDB.removeAll();
-    int a = lDB.addLaundry("brob", "washing hall");
-    Assertions.assertEquals("brob", lDB.getEmpE(a));
-    Assertions.assertEquals("washing hall", lDB.getLoc(a));
-    Assertions.assertEquals("Requested", lDB.getProg(a));
-    Assertions.assertNull(lDB.getEmpW(a));
-    Assertions.assertNotNull(lDB.getTimeRequested(a));
-    Assertions.assertNull(lDB.getEmpE(0));
-  }
-
-  @Test
-  public void testSetters() {
-    lDB.createTables();
-    lDB.removeAll();
-    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    int a = lDB.addLaundry("brob", "washing hall");
-    Assertions.assertTrue(lDB.setEmpE(a, "rbob"));
-    Assertions.assertFalse(lDB.setEmpE(a, "steve"));
-    Assertions.assertTrue(lDB.setLoc(a, "washing hall"));
-    Assertions.assertFalse(lDB.setLoc(a, "notanode"));
-    Assertions.assertTrue(lDB.setProg(a, "Collected"));
-    Assertions.assertFalse(lDB.setProg(a, "notaprog"));
-    Assertions.assertTrue(lDB.setEmpW(a, "rbob"));
-    Assertions.assertFalse(lDB.setEmpW(a, "steve"));
-    Assertions.assertTrue(lDB.setTimestamp(a, timestamp));
-    Assertions.assertFalse(lDB.setEmpE(0, "rbob"));
+    serviceDatabase.removeAll();
+    String a = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "washing hall", "brob", "");
+    boolean b = serviceDatabase.deleteServReq(a);
+    Assertions.assertTrue(b);
+    serviceDatabase.removeAll();
   }
 }

@@ -3,8 +3,8 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.PrescriptionDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Prescription;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -69,12 +69,12 @@ public class PrescriptionController extends AbstractController {
     updateTable();
   }
 
-  /** Updates the table with the items in the ITTicket database. */
+  /** Updates the table with the items in the Prescription database. */
   public void updateTable() {
     try {
       tblViewPrescription.clear();
 
-      tblViewPrescription.add(serviceDatabase.observableList(ServiceType.PRESCRIPTION));
+      tblViewPrescription.add(serviceDatabase.getObservableListService(ServiceType.PRESCRIPTION));
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

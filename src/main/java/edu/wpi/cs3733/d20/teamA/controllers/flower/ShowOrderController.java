@@ -4,8 +4,8 @@ import com.jfoenix.controls.*;
 import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
-import edu.wpi.cs3733.d20.teamA.database.Employee;
-import edu.wpi.cs3733.d20.teamA.database.flowerTableItems.Order;
+import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
+import edu.wpi.cs3733.d20.teamA.database.flower.Order;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -90,7 +90,7 @@ public class ShowOrderController extends AbstractController implements IDialogCo
     } else {
       txtPrevEmp.setText("No employee assigned");
     }
-    txtNextEmp.getItems().addAll(eDB.employeeOl());
+    txtNextEmp.getItems().addAll(eDB.getObservableList());
   }
 
   public void setOrder(Order value) {

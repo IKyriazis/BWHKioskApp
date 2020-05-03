@@ -3,8 +3,8 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 import com.jfoenix.controls.JFXDialog;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Laundry;
-import edu.wpi.cs3733.d20.teamA.database.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
 import java.sql.Timestamp;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -31,7 +31,7 @@ public class LaundryCompletedController extends AbstractController implements ID
     try {
       tblLaundryView.clear();
 
-      tblLaundryView.add(serviceDatabase.observableList(ServiceType.LAUNDRY));
+      tblLaundryView.add(serviceDatabase.getObservableListService(ServiceType.LAUNDRY));
     } catch (Exception e) {
       e.printStackTrace();
     }
