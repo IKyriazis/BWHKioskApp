@@ -246,8 +246,10 @@ public class SceneSwitcherController extends AbstractController {
                   String localUsername = eDB.getUsername(scannedArray[0]);
                   System.out.println(localUsername);
                   if (!localUsername.isEmpty()) {
+                    comPort.closePort();
                     username = localUsername;
                     Platform.runLater(this::login);
+                    break;
                   } else {
                     // popup that rfid is not in the database
                     Platform.runLater(

@@ -44,7 +44,6 @@ public class CreateAcctController extends AbstractController {
     if (fName.getText().isEmpty()
         || lName.getText().isEmpty()
         || uName.getText().isEmpty()
-        || !title.getValue().equals("Choose one")
         || pass.getText().isEmpty()
         || cPass.getText().isEmpty()) {
       // make popup that says one or more fields are empty
@@ -100,14 +99,12 @@ public class CreateAcctController extends AbstractController {
             comPort.openPort();
             try {
               while (true) {
-                Platform.runLater(() -> {
-                  // tell user we are scanning for a card
-                  DialogUtil.simpleErrorDialog(
-                          dialogPane,
-                          "Started Scanning",
-                          "We are looking for your card.");
-
-                });
+                Platform.runLater(
+                    () -> {
+                      // tell user we are scanning for a card
+                      DialogUtil.simpleErrorDialog(
+                          dialogPane, "Started Scanning", "We are looking for your card.");
+                    });
                 while (comPort.bytesAvailable() != 14) Thread.sleep(20);
 
                 byte[] readBuffer = new byte[comPort.bytesAvailable()];
@@ -115,31 +112,29 @@ public class CreateAcctController extends AbstractController {
                 String scannedString = new String(readBuffer, "UTF-8");
                 String[] scannedArray = scannedString.split(" ");
                 if (scannedArray[1].contains("p")) {
-                  secretKey = eDB.addEmployeeGA(
+                  secretKey =
+                      eDB.addEmployeeGA(
                           fName.getText(),
                           lName.getText(),
                           uName.getText(),
                           cPass.getText(),
                           title.getValue().toString(),
                           scannedArray[0]);
-                  Platform.runLater(() -> {
-                    // tell user we are scanning for a card
-                    DialogUtil.simpleErrorDialog(
-                            dialogPane,
-                            "Finished Scanning",
-                            "We have found your card");
-
-                  });
-                }
-                else {
+                  Platform.runLater(
+                      () -> {
+                        // tell user we are scanning for a card
+                        DialogUtil.simpleErrorDialog(
+                            dialogPane, "Finished Scanning", "We have found your card");
+                      });
+                } else {
                   // error reading since checksum didn't pass
                   Platform.runLater(
-                          () -> {
-                            DialogUtil.simpleErrorDialog(
-                                    dialogPane,
-                                    "Read Fail",
-                                    "There was an error reading the card please try again");
-                          });
+                      () -> {
+                        DialogUtil.simpleErrorDialog(
+                            dialogPane,
+                            "Read Fail",
+                            "There was an error reading the card please try again");
+                      });
                   clearFields();
                   return;
                 }
@@ -150,12 +145,12 @@ public class CreateAcctController extends AbstractController {
 
           } else {
             secretKey =
-                    eDB.addEmployeeGA(
-                            fName.getText(),
-                            lName.getText(),
-                            uName.getText(),
-                            cPass.getText(),
-                            title.getValue().toString());
+                eDB.addEmployeeGA(
+                    fName.getText(),
+                    lName.getText(),
+                    uName.getText(),
+                    cPass.getText(),
+                    title.getValue().toString());
           }
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
