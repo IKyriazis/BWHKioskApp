@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -89,13 +90,73 @@ public class CreateAcctController extends AbstractController {
 
     ThreadPool.runBackgroundTask(
         () -> {
-          String secretKey =
-              eDB.addEmployeeGA(
-                  fName.getText(),
-                  lName.getText(),
-                  uName.getText(),
-                  cPass.getText(),
-                  title.getValue().toString());
+          String secretKey = "";
+          // must add rfid card if the user checks they want to add
+          // an rfid card
+          if (addRFID.isSelected()) {
+            // popup message saying that we are scanning for rfid card
+
+            SerialPort comPort = SerialPort.getCommPorts()[0];
+            comPort.openPort();
+            try {
+              while (true) {
+                Platform.runLater(() -> {
+                  // tell user we are scanning for a card
+                  DialogUtil.simpleErrorDialog(
+                          dialogPane,
+                          "Started Scanning",
+                          "We are looking for your card.");
+
+                });
+                while (comPort.bytesAvailable() != 14) Thread.sleep(20);
+
+                byte[] readBuffer = new byte[comPort.bytesAvailable()];
+                int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+                String scannedString = new String(readBuffer, "UTF-8");
+                String[] scannedArray = scannedString.split(" ");
+                if (scannedArray[1].contains("p")) {
+                  secretKey = eDB.addEmployeeGA(
+                          fName.getText(),
+                          lName.getText(),
+                          uName.getText(),
+                          cPass.getText(),
+                          title.getValue().toString(),
+                          scannedArray[0]);
+                  Platform.runLater(() -> {
+                    // tell user we are scanning for a card
+                    DialogUtil.simpleErrorDialog(
+                            dialogPane,
+                            "Finished Scanning",
+                            "We have found your card");
+
+                  });
+                }
+                else {
+                  // error reading since checksum didn't pass
+                  Platform.runLater(
+                          () -> {
+                            DialogUtil.simpleErrorDialog(
+                                    dialogPane,
+                                    "Read Fail",
+                                    "There was an error reading the card please try again");
+                          });
+                  clearFields();
+                  return;
+                }
+              }
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+
+          } else {
+            secretKey =
+                    eDB.addEmployeeGA(
+                            fName.getText(),
+                            lName.getText(),
+                            uName.getText(),
+                            cPass.getText(),
+                            title.getValue().toString());
+          }
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
               getGoogleAuthenticatorBarCode(secretKey, uName.getText(), companyName);
