@@ -2,9 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextArea?>
 <?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTimePicker?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -16,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.service.request.MedicineRequestController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.service.request.EquipReqController">
   <columnConstraints>
       <ColumnConstraints maxWidth="-Infinity" />
   </columnConstraints>
@@ -38,7 +36,7 @@
                <children>
                   <HBox alignment="CENTER" spacing="5.0">
                      <children>
-                        <Label fx:id="headerLabel" alignment="CENTER" lineSpacing="2.0" text="Medicine Delivery">
+                        <Label fx:id="headerLabel" alignment="CENTER" lineSpacing="2.0" text="Equipment Request">
                            <font>
                               <Font size="22.0" />
                            </font>
@@ -61,16 +59,13 @@
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXComboBox fx:id="doctorBox" labelFloat="true" prefWidth="250.0" promptText="Doctor Name" GridPane.columnIndex="1" />
-                              <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <JFXTextField fx:id="patientName" labelFloat="true" prefWidth="250.0" promptText="Patient Name" />
-                              <JFXComboBox fx:id="locationBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Location" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <JFXTextField fx:id="medicineField" labelFloat="true" promptText="Medicine" GridPane.rowIndex="1" />
-                              <JFXTimePicker fx:id="administerTime" maxWidth="1.7976931348623157E308" promptText="Administer Time" GridPane.rowIndex="2" />
+                              <JFXComboBox fx:id="nodeBox" editable="true" prefWidth="250.0" promptText="Location" GridPane.columnIndex="1" />
+                              <JFXTextField fx:id="itemField" labelFloat="true" promptText="Item" GridPane.rowIndex="1" />
+                              <JFXComboBox fx:id="priCombo" prefWidth="250.0" promptText="Priority" />
+                              <JFXTextField fx:id="qtyField" labelFloat="true" promptText="Quantity" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
                         <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" />

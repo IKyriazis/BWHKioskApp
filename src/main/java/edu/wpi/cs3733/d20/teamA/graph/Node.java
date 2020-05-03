@@ -113,7 +113,7 @@ public class Node implements Comparable<Node> {
    * @param node Destination node
    * @return Edge Exists / Doesn't
    */
-  protected boolean hasEdgeTo(Node node) {
+  public boolean hasEdgeTo(Node node) {
     return edges.containsKey(node);
   }
 

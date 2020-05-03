@@ -1,7 +1,9 @@
-package edu.wpi.cs3733.d20.teamA.graph;
+package edu.wpi.cs3733.d20.teamA.database.graph;
 
 import com.opencsv.exceptions.CsvException;
-import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.graph.Graph;
+import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.graph.NodeType;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,14 +17,14 @@ public class TestGraph {
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
-  GraphDatabase DB;
+  GraphDatabase graphDatabase;
 
   Graph graph = Graph.getInstance();
 
   @BeforeEach
   public void init() throws SQLException {
     conn = DriverManager.getConnection(jdbcUrl);
-    DB = new GraphDatabase(conn);
+    graphDatabase = new GraphDatabase(conn);
   }
 
   @AfterEach

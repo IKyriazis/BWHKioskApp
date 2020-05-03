@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.io.UnsupportedEncodingException;
@@ -150,7 +151,7 @@ public class CreateAcctController extends AbstractController {
                     lName.getText(),
                     uName.getText(),
                     cPass.getText(),
-                    title.getValue().toString());
+                    EmployeeTitle.valueOf(title.getText().toUpperCase()));
           }
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =

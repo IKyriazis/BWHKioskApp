@@ -72,7 +72,7 @@ public class PrescriptionDatabase extends Database {
       int numRefills,
       String notes) {
 
-    String username = getLoggedIn();
+    String username = getLoggedIn().getUsername();
 
     String name = getNamefromUser(username);
 

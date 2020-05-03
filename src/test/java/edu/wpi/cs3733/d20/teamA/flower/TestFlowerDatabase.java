@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.flower;
 
 import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
 import edu.wpi.cs3733.d20.teamA.database.flower.FlowerDatabase;
@@ -164,12 +164,12 @@ public class TestFlowerDatabase {
 
   @Test
   public void testFlowers() {
-    Flower flr = new Flower("Daisy", "Blue", 9, 9.20, 3);
+    Flower flr = new Flower(1, "Daisy", "Blue", 9, 9.20);
     Assertions.assertEquals("Daisy", flr.getTypeFlower());
     Assertions.assertEquals("Blue", flr.getColor());
     Assertions.assertEquals(9, flr.getQty());
     Assertions.assertEquals(9.20, flr.getPricePer());
-    Assertions.assertEquals(3, flr.getFlowerID());
+    Assertions.assertEquals(1, flr.getFlowerID());
   }
 
   @Test
