@@ -248,6 +248,7 @@ public class SceneSwitcherController extends AbstractController {
                 // popup that rfid is not in the database
                 Platform.runLater(
                     () -> {
+                      clickedBlockerPane();
                       DialogUtil.simpleErrorDialog(
                           rootPane, "Invalid Card", "The card you used doesn't belong to anyone");
                     });

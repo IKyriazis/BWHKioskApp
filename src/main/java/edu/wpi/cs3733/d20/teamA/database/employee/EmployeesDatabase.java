@@ -199,8 +199,8 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public synchronized String getUsername(String rfid) {
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement("Select username From Employees Where rfid = '" + rfid + "'");
+          getConnection()
+              .prepareStatement("Select username From Employees Where rfid = '" + rfid + "'");
       ResultSet rset = pstmt.executeQuery();
       String username = "";
       if (rset.next()) {
