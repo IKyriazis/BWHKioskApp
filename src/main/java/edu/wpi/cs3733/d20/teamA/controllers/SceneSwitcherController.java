@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import animatefx.animation.*;
+import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
@@ -224,6 +225,27 @@ public class SceneSwitcherController extends AbstractController {
             loginTransitioning = false;
           });
       trans.play();
+
+      ThreadPool.runBackgroundTask(
+          () -> {
+            // put rfid scanner on background thread
+            SerialPort comPort = SerialPort.getCommPorts()[0];
+            comPort.openPort();
+            try {
+              while (true) {
+                while (comPort.bytesAvailable() != 14) Thread.sleep(20);
+
+                byte[] readBuffer = new byte[comPort.bytesAvailable()];
+                int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+                String scannedString = new String(readBuffer, "UTF-8");
+                if (scannedString.split(" ")[1].contains("p")) {
+                  System.out.println("Passed");
+                }
+              }
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          });
     }
   }
 

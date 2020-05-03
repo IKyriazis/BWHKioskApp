@@ -1,12 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
-import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
-import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
@@ -59,25 +57,7 @@ public class MainMenuController {
     FXMLCache.preLoadFXML("views/SimpleMap.fxml");
     // FXMLCache.preLoadFXML();
     FXMLCache.preLoadFXML("views/nav/ServiceHome.fxml");
-    // put rfid scanner on background thread
-    SerialPort comPort = SerialPort.getCommPorts()[0];
-    comPort.openPort();
-    ThreadPool.runBackgroundTask(
-        () -> {
-          try {
-            while (true) {
-              while (comPort.bytesAvailable() != 14) Thread.sleep(20);
 
-              byte[] readBuffer = new byte[comPort.bytesAvailable()];
-              int numRead = comPort.readBytes(readBuffer, readBuffer.length);
-              System.out.println(new String(readBuffer, "UTF-8"));
-              System.out.println("Read " + numRead + " bytes.");
-              System.out.println("HI");
-            }
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
-        });
     // Fix for weird button layout issues
     Platform.runLater(
         () -> {
