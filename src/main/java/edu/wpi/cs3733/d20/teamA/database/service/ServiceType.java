@@ -20,4 +20,14 @@ public enum ServiceType {
   public String toString() {
     return name;
   }
+
+  public static ServiceType getServiceType(String str) {
+    for (ServiceType type : values()) {
+      if (type.name.equals(str) || type.toString().equals(str)) {
+        return type;
+      }
+    }
+
+    return JANITOR;
+  }
 }

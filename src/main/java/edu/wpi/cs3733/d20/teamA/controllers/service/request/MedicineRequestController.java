@@ -6,8 +6,6 @@ import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import java.sql.Timestamp;
-import java.time.LocalTime;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -55,29 +53,18 @@ public class MedicineRequestController extends AbstractRequestController {
     String patientNameText = patientName.getText();
     String medicine = medicineField.getText();
 
-    Timestamp timestamp = new Timestamp(0);
-
-    try {
-      LocalTime time = administerTime.getValue();
-      int hour = time.getHour();
-      int minute = time.getMinute();
-
-      timestamp.setHours(hour);
-      timestamp.setMinutes(minute);
-    } catch (Exception e) {
-      DialogUtil.simpleInfoDialog("Invalid Time", "Please select a valid time and try again");
-      return;
-    }
-
-    String additional = patientNameText + "|" + doctor.getUsername() + "|" + medicine;
+    String additional =
+        patientNameText
+            + "|"
+            + doctor.getUsername()
+            + "|"
+            + medicine
+            + "|"
+            + administerTime.getValue().toString();
 
     String l =
         serviceDatabase.addServiceReq(
-            ServiceType.MEDICINE,
-            timestamp,
-            location.getLongName(),
-            descriptionArea.getText(),
-            additional);
+            ServiceType.MEDICINE, location.getLongName(), descriptionArea.getText(), additional);
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {
