@@ -1,10 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
 import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedicineDeliveryDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,7 +19,7 @@ public class TestMedRequestDatabase {
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
-  MedicineDeliveryDatabase mDB;
+  ServiceDatabase serviceDatabase;
 
   public TestMedRequestDatabase() {}
 
@@ -23,7 +27,7 @@ public class TestMedRequestDatabase {
   public void init() {
     try {
       conn = DriverManager.getConnection(jdbcUrl);
-      mDB = new MedicineDeliveryDatabase(conn);
+      serviceDatabase = new ServiceDatabase(conn);
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -38,70 +42,43 @@ public class TestMedRequestDatabase {
     }
   }
 
+
   @Test
-  public void testTables() {
-    mDB.dropTables();
-    boolean dropTables = mDB.dropTables();
-    Assertions.assertFalse(dropTables);
-    boolean makeTables = mDB.createTables();
-    Assertions.assertTrue(makeTables);
-    boolean dropTables2 = mDB.dropTables();
-    Assertions.assertTrue(dropTables2);
-    mDB.createTables();
+  public void testAddRequest()  {
+    serviceDatabase.createTables();
+    serviceDatabase.removeAll();
+    String a = serviceDatabase.addServiceReq(ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
+    Assertions.assertEquals(1, serviceDatabase.getSize(ServiceType.MEDICINE));
+    String d = serviceDatabase.addServiceReq(ServiceType.MEDICINE, "washing hall", "200", "Tom|Hank|Dr. Bob|Zoloft");
+    Assertions.assertEquals(2, serviceDatabase.getSize(ServiceType.MEDICINE));
+    serviceDatabase.removeAll();
   }
 
   @Test
-  public void testAddRequest() throws SQLException {
-    mDB.createTables();
-    mDB.removeAll();
-    boolean a = mDB.addRequest("Joe", "Schmoe", "Dr. Phil", "Xanax", 212);
+  public void testUpdateMedicine() {
+    serviceDatabase.createTables();
+    serviceDatabase.removeAll();
+
+    String d = serviceDatabase.addServiceReq(ServiceType.MEDICINE, "washing hall", "212", "Joe|Schmoe|Dr. Phil|Xanax");
+    boolean a = serviceDatabase.setAdditional(d, "Joe|Schmoe|Dr. Phil|help");
     Assertions.assertTrue(a);
-    boolean d = mDB.addRequest("Tom", "Hank", "Dr. Bob", "Zoloft", 7, 7, 45);
-    Assertions.assertTrue(d);
-    boolean b = mDB.addRequest("Joe", "Steve", "Dr. Phil", "Xanax", 233, -1, -13);
-    Assertions.assertFalse(b);
-
-    Assertions.assertEquals(2, mDB.getRequestSize());
-    mDB.removeAll();
+    serviceDatabase.removeAll();
   }
 
-  @Test
-  public void testUpdateMedicine() throws SQLException {
-    mDB.createTables();
-    mDB.removeAll();
-
-    mDB.addRequest("Joe", "Schmoe", "Dr. Phil", "Xanax", 212);
-    boolean a = mDB.updateMedicine("JoeSchmoeXanax212", "help");
-    Assertions.assertTrue(a);
-    mDB.removeAll();
-  }
 
   @Test
-  public void testUpdateDoctor() throws SQLException {
-    mDB.createTables();
-    mDB.removeAll();
+  public void testUpdateProgress(){
+    serviceDatabase.createTables();
+    serviceDatabase.removeAll();
 
-    mDB.addRequest("Joe", "Schmoe", "Dr. Phil", "Xanax", 212);
-    boolean a = mDB.updateDoctor("JoeSchmoeXanax212", "Dr. Brown");
-    Assertions.assertTrue(a);
-    mDB.removeAll();
-  }
-
-  @Test
-  public void testUpdateProgress() throws SQLException {
-    mDB.createTables();
-    mDB.removeAll();
-
-    mDB.addRequest("Joe", "Schmoe", "Dr. Phil", "Xanax", 212);
-    boolean a = mDB.updateProgress("JoeSchmoeXanax212", "");
-    Assertions.assertFalse(a);
-
-    boolean b = mDB.updateProgress("JoeSchmoeXanax212", "Done");
+    String a = serviceDatabase.addServiceReq(ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
+    boolean b = serviceDatabase.setStatus(a, "Done");
     Assertions.assertTrue(b);
 
-    mDB.removeAll();
+    serviceDatabase.removeAll();
   }
 
+  /*
   @Test
   public void testUpdateTime() throws SQLException {
     mDB.createTables();
@@ -123,26 +100,24 @@ public class TestMedRequestDatabase {
     mDB.removeAll();
   }
 
+   */
+
   @Test
   public void testMedRequest() {
     MedRequest request =
         new MedRequest(
-            "JoeSchmoeXanax211",
-            "Joe",
-            "Schmoe",
-            "Dr.Phil",
-            "Xanax",
-            211,
-            "Dispatched",
-            5,
-            25,
-            "Tom");
-    Assertions.assertEquals("Joe", request.getFirstName());
-    Assertions.assertEquals("Schmoe", request.getLastName());
-    Assertions.assertEquals("Dr.Phil", request.getDoctor());
-    Assertions.assertEquals("Xanax", request.getMedicine());
+            "1",
+            "Done",
+            "FIRST NAME|LASTNAME|DOCTOR|MEDICATION|ROOMNUM",
+            "211",
+            new Timestamp(0),
+            "joe");
+    Assertions.assertEquals("FIRST NAME", request.getFirstName());
+    Assertions.assertEquals("LAST NAME", request.getLastName());
+    Assertions.assertEquals("DOCTOR", request.getDoctor());
+    Assertions.assertEquals("MEDICATION", request.getMedicine());
     Assertions.assertEquals(211, request.getRoomNum());
-    Assertions.assertEquals("Dispatched", request.getProgress());
-    Assertions.assertEquals("Tom", request.getFulfilledBy());
+    Assertions.assertEquals("Done", request.getProgress());
+    Assertions.assertEquals("joe", request.getFulfilledBy());
   }
 }
