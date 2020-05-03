@@ -35,7 +35,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.WHEELCHAIR),
-        "views/InternalTransportService.fxml",
+        "views/service/InternalTransportRequest.fxml",
         "Internal\nTransport");
 
     // Services available to employees
