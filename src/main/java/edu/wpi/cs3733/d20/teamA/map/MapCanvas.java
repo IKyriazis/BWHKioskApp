@@ -51,6 +51,7 @@ public class MapCanvas extends Canvas {
 
   private ContextPath path;
   Group group = new Group();
+  PathTransition transition = new PathTransition();
 
   public MapCanvas(boolean dragEnabled) {
     super();
@@ -81,6 +82,8 @@ public class MapCanvas extends Canvas {
     dragStartHandler =
         event -> {
           if (event.getButton() == dragMapButton) {
+            transition.stop();
+            group.getChildren().clear();
             dragLast = new Point2D(event.getX(), event.getY());
             setCursor(Cursor.MOVE);
           }
@@ -88,6 +91,8 @@ public class MapCanvas extends Canvas {
     dragHandler =
         event -> {
           if (event.getButton() == dragMapButton) {
+            transition.stop();
+            group.getChildren().clear();
             Point2D startGraphPos = canvasToGraph(dragLast);
             Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
 
@@ -423,7 +428,6 @@ public class MapCanvas extends Canvas {
       }
     }
 
-    PathTransition transition = new PathTransition();
     transition.setDuration(Duration.seconds(length / 250.0));
     transition.setPath(animatedPath);
     transition.setNode(circ);
