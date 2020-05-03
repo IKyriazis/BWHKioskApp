@@ -43,6 +43,8 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private JFXButton loginButton;
   @FXML private JFXButton authenticateButton;
   @FXML private JFXButton settingsButton;
+  @FXML private JFXButton announcementBtn;
+  @FXML private JFXButton aboutBtn;
 
   @FXML private JFXTextField usernameBox;
   @FXML private JFXTextField gauthCode;
@@ -121,6 +123,10 @@ public class SceneSwitcherController extends AbstractController {
 
     // Setup settings button icon
     settingsButton.setGraphic(new FontIcon(FontAwesomeSolid.COG));
+
+    announcementBtn.setGraphic(new FontIcon(FontAwesomeSolid.BULLHORN));
+
+    aboutBtn.setGraphic(new FontIcon(FontAwesomeSolid.INFO_CIRCLE));
 
     // Setup scene stack
     sceneStack = new Stack<>();
