@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.InterpreterDialogController;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.InterpreterRequestDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.inventory.ItemType;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
@@ -113,17 +112,7 @@ public class InterpreterController extends AbstractController {
   }
 
   @FXML
-  public void requestClicked() {
-    DialogUtil.complexDialog(
-        dialogPane,
-        "New Interpreter Request",
-        "views/InterpreterRequestDialog.fxml",
-        false,
-        event -> {
-          updateTables();
-        },
-        new InterpreterRequestDialogController());
-  }
+  public void requestClicked() {}
 
   @FXML
   public void completeClicked() {

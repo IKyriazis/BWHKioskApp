@@ -214,7 +214,7 @@ public class SceneSwitcherController extends AbstractController {
       while (sceneStack.size() > 1) {
         sceneStack.pop();
       }
-      transition(TransitionType.ZOOM, false);
+      transition(TransitionType.FADE, false);
     } else {
       loginTransitioning = true;
 
@@ -322,6 +322,7 @@ public class SceneSwitcherController extends AbstractController {
                     spinnerOutFade.setToValue(0.0);
                     spinnerOutFade.play();
 
+                    // Reset login box
                     buttonBox.setVisible(false);
                     gauth.setVisible(true);
                     loginButton.setVisible(false);
@@ -400,6 +401,9 @@ public class SceneSwitcherController extends AbstractController {
 
     loggedIn = true;
 
+    // Fire tab switch event off to top scene to get it to update
+    sceneStack.peek().fireEvent(new TabSwitchEvent());
+
     // Undo changes to login box done for auth purposes
     gauthCode.setText("");
     buttonBox.setVisible(true);
@@ -424,6 +428,7 @@ public class SceneSwitcherController extends AbstractController {
       transitioning = true;
 
       AnimationFX transOut = trans.getTransitionOut(contentPane.getChildren().get(0), additive);
+      transOut.setResetOnFinished(true);
       transOut.setOnFinished(
           event -> {
             contentPane.getChildren().remove(transOut.getNode());
@@ -431,6 +436,7 @@ public class SceneSwitcherController extends AbstractController {
       transOut.play();
 
       AnimationFX transIn = trans.getTransitionIn(top, additive);
+      transIn.setResetOnFinished(true);
       transIn.setOnFinished(
           event -> {
             transitioning = false;

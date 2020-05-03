@@ -3,7 +3,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.EditMedRequestController;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.MedInfoController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
@@ -99,14 +98,6 @@ public class MedicineDeliveryController extends AbstractController {
       // Figure out whether any outstanding orders depend on this flower type, in which case we
       // can't change the name / type
 
-      MedInfoController controller = new MedInfoController(req);
-      DialogUtil.complexDialog(
-          dialogStackPane,
-          "View Medicine Request",
-          "views/MedRequestInfoPopup.fxml",
-          false,
-          event -> update(),
-          controller);
     } else {
       DialogUtil.simpleInfoDialog(
           dialogStackPane,

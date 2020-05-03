@@ -54,15 +54,15 @@ public class TestInternalTransportDatabase {
     gDB.addNode("gravy", 2, 4, 2, "White House", "CONF", "basket", "b", "Team A");
     serviceDatabase.removeAll();
     String a =
-        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "basket", null);
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "basket");
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
     Assertions.assertEquals(1, serviceDatabase.getSize());
     String b =
-        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "yolk", "balogna", null);
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "yolk", null, "balogna");
     Assertions.assertNull(b);
     Assertions.assertEquals(1, serviceDatabase.getSize());
     String c =
-        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "balogna", null);
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "balogna");
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", c));
     Assertions.assertEquals(2, serviceDatabase.getSize());
 
@@ -77,7 +77,7 @@ public class TestInternalTransportDatabase {
     gDB.addNode("gravy", 2, 4, 2, "White House", "CONF", "basket", "b", "Team A");
     gDB.addNode("help", 2, 4, 2, "White House", "CONF", "water", "b", "Team A");
     String a =
-        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "basket", null);
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "basket");
     boolean b = serviceDatabase.setDescription(a, "water");
     Assertions.assertTrue(b);
 
@@ -92,7 +92,7 @@ public class TestInternalTransportDatabase {
     gDB.addNode("help", 2, 4, 2, "White House", "CONF", "water", "b", "Team A");
     serviceDatabase.removeAll();
     String a =
-        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "water", null);
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "water");
     boolean b = serviceDatabase.setStatus(a, "In Progress");
     Assertions.assertTrue(
         serviceDatabase.checkIfExistsString("SERVICEREQ", "status", "In Progress"));

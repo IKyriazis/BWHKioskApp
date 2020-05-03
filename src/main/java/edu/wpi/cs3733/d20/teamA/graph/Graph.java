@@ -372,6 +372,7 @@ public class Graph {
     nodes = newNodes;
 
     // Update observable list
+    nodeObservableList.clear();
     nodes
         .values()
         .forEach(

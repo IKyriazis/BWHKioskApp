@@ -18,12 +18,12 @@
             <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Tyler Looney - Assistant Lead Software Engineer" />
             <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Gabriel Dudlicek - Project Manager" />
             <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Eva Labbe - Scrum Master" />
-            <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Ioannis Kyriazis - Documentation Analysis" />
+            <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Ioannis Kyriazis - Documentation Analyst" />
             <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Cory Helmuth - Product Owner" />
             <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Brennan Aubuchon - Software Engineer" />
             <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Maddison Caten - Software Engineer" />
             <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="William Engdahl - Software Engineer" />
-            <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Special thank you to Andrew Shinn his time and input" />
+            <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Special thanks to Andrew Shinn for his time and input" />
             <JFXButton onAction="#exitAbout" styleClass="jfx-button" stylesheets="@../stylesheet.css" text="Exit" />
          </children>
       </VBox>

@@ -36,7 +36,9 @@ public class SimpleTableView<T extends ITableable<T>> extends JFXTreeTableView {
         rootItem.getChildren().get(0).getValue().getColumns();
     columns.forEach(
         col -> {
-          col.setMinWidth(minColumnWidth);
+          if (getMinWidth() != -1) {
+            col.setMinWidth(minColumnWidth);
+          }
           col.setReorderable(false);
         });
 
