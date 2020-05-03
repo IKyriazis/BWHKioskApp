@@ -94,8 +94,6 @@ public class Path extends PathAlgo implements IStrategyPath {
 
     // Flip to correct path direction
     Collections.reverse(pathNodes);
-
-    calculateEdges();
   }
 
   /**

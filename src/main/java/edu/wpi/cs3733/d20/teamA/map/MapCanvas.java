@@ -11,6 +11,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -310,7 +311,14 @@ public class MapCanvas extends Canvas {
 
     // Draw the line in between the points
     if ((edge.getStart().getFloor() == edge.getEnd().getFloor()) || drawMultifloorEdge) {
-      graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
+
+      graphicsContext.beginPath();
+      graphicsContext.moveTo(start.getX(), start.getY());
+      graphicsContext.lineTo(end.getX(), end.getY());
+      graphicsContext.fill();
+      graphicsContext.closePath();
+      graphicsContext.stroke();
+      // graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
     }
 
     if (showArrows) {

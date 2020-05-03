@@ -12,4 +12,6 @@ public interface IStrategyPath {
   public ArrayList<String> textualDirections();
 
   public void update();
+
+  public void pathFind(Node start, Node end);
 }
