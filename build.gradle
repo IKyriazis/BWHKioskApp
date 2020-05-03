@@ -55,6 +55,7 @@ dependencies {
             'com.google.zxing:core:3.4.0',
             'com.google.zxing:javase:3.4.0',
 
+
             // bcrypt
             'at.favre.lib:bcrypt:0.9.0',
 
@@ -66,8 +67,9 @@ dependencies {
 
             // stuff for google authenticator
             'de.taimos:totp:1.0',
-            'commons-codec:commons-codec:1.10'
-    )
+            'commons-codec:commons-codec:1.10')
+
+            compile group: 'net.aksingh', name: 'owm-japis', version: '2.5.2.1'
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
@@ -159,6 +161,7 @@ jacocoTestCoverageVerification {
 check.dependsOn jacocoTestCoverageVerification
 jacocoTestCoverageVerification.dependsOn jacocoTestReport
 compileJava.dependsOn 'spotlessApply'
+
 
 // uncomment to enable spotless checking
 spotless {

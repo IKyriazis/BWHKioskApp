@@ -12,10 +12,7 @@ import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -29,6 +26,9 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import net.aksingh.owmjapis.api.APIException;
+import net.aksingh.owmjapis.core.OWM;
+import net.aksingh.owmjapis.model.CurrentWeather;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -61,6 +61,7 @@ public class SceneSwitcherController extends AbstractController {
 
   @FXML private Label timeLabel;
   @FXML private Label dateLabel;
+  @FXML private Label tempLabel;
 
   private static SceneSwitcherController instance;
 
@@ -161,6 +162,19 @@ public class SceneSwitcherController extends AbstractController {
 
     this.dateLabel.setText(dateFormat.format(this.date));
     bindToTime();
+
+    OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
+    try {
+      // getting current weather data for the "London" city
+      CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
+      Double d = cwd.getMainData().getTemp();
+      System.out.println(d.doubleValue() + " ");
+      double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
+      String tem = f + "";
+      tempLabel.setText(tem.substring(0, 5) + (char) 0x00B0 + " F");
+    } catch (APIException e) {
+      e.printStackTrace();
+    }
   }
 
   private void bindToTime() {
