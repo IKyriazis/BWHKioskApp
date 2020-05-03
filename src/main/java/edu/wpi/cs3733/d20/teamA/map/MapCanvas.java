@@ -124,6 +124,9 @@ public class MapCanvas extends Canvas {
         event -> {
           double diff = event.getDeltaY() / 10.0;
           zoom.set(Math.min(100, Math.max(0, zoom.getValue() + diff)));
+          transition.stop();
+          group.getChildren().clear();
+          draw(lastDrawnFloor);
         });
 
     // Setup zoom property
