@@ -92,6 +92,9 @@ public class SceneSwitcherController extends AbstractController {
       eDB.readEmployeeCSV();
     }
 
+    // create account with rfid
+    eDB.addEmployeeGA("Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", "CEO", "7100250198");
+
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);
 
@@ -238,9 +241,32 @@ public class SceneSwitcherController extends AbstractController {
                 byte[] readBuffer = new byte[comPort.bytesAvailable()];
                 int numRead = comPort.readBytes(readBuffer, readBuffer.length);
                 String scannedString = new String(readBuffer, "UTF-8");
-                System.out.println(scannedString);
-                if (scannedString.split(" ")[1].contains("p")) {
-                  System.out.println("Passed");
+                String[] scannedArray = scannedString.split(" ");
+                if (scannedArray[1].contains("p")) {
+                  String localUsername = eDB.getUsername(scannedArray[0]);
+                  System.out.println(localUsername);
+                  if (!localUsername.isEmpty()) {
+                    username = localUsername;
+                    Platform.runLater(this::login);
+                  } else {
+                    // popup that rfid is not in the database
+                    Platform.runLater(
+                        () -> {
+                          DialogUtil.simpleErrorDialog(
+                              rootPane,
+                              "Invalid Card",
+                              "The card you used doesn't belong to anyone");
+                        });
+                  }
+                } else {
+                  // popup that rfid scan went wrong
+                  Platform.runLater(
+                      () -> {
+                        DialogUtil.simpleErrorDialog(
+                            rootPane,
+                            "Failed Read",
+                            "Something went wrong while scanning the card");
+                      });
                 }
               }
             } catch (Exception e) {
