@@ -151,7 +151,13 @@ public class RequestViewerController extends AbstractController {
           newNode = FXMLCache.loadFXML("views/service/edit/MedicineViewer.fxml");
           break;
         case PRESCRIPTION:
-          newNode = FXMLCache.loadFXML("views/service/edit/PrescriptionViewer.fxml");
+          newNode =
+              FXMLCache.loadServiceFXML(
+                  "views/service/edit/PrescriptionRequestViewer.fxml",
+                  new PrescriptionViewerController(req));
+          ((AbstractViewerController)
+                  FXMLCache.getController("views/service/edit/PrescriptionRequestViewer.fxml"))
+              .reset(req);
           break;
         default:
           break;

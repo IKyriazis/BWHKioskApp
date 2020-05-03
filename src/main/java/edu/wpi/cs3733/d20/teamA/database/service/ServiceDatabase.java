@@ -104,7 +104,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       pstmt.setString(4, madeReqName);
       pstmt.setTimestamp(5, timeOf);
       pstmt.setString(6, status);
-      pstmt.setString(7, location);
+      pstmt.setString(7, (location == null || location.isEmpty()) ? null : location);
       pstmt.setString(8, description);
       pstmt.setString(9, additional);
       pstmt.executeUpdate();
