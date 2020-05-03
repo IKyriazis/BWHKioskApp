@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.*;
 import de.taimos.totp.TOTP;
 import edu.wpi.cs3733.d20.teamA.controls.VSwitcherBox;

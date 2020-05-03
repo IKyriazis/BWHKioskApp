@@ -153,16 +153,21 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
    * @return returns true if the employee is added
    */
   public synchronized String addEmployeeGA(
-          String nameFirst, String nameLast, String username, String password, String title, String rfid) {
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      String title,
+      String rfid) {
     String storedPassword =
-            BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
     String secretKey = generateSecretKey();
 
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey, rfid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey, rfid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
       pstmt.setString(1, getRandomString());
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
