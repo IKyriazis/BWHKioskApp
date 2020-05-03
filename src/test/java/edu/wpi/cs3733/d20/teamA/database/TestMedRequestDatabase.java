@@ -3,12 +3,10 @@ package edu.wpi.cs3733.d20.teamA.database;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
-import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedicineDeliveryDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,14 +40,17 @@ public class TestMedRequestDatabase {
     }
   }
 
-
   @Test
-  public void testAddRequest()  {
+  public void testAddRequest() {
     serviceDatabase.createTables();
     serviceDatabase.removeAll();
-    String a = serviceDatabase.addServiceReq(ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
+    String a =
+        serviceDatabase.addServiceReq(
+            ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
     Assertions.assertEquals(1, serviceDatabase.getSize(ServiceType.MEDICINE));
-    String d = serviceDatabase.addServiceReq(ServiceType.MEDICINE, "washing hall", "200", "Tom|Hank|Dr. Bob|Zoloft");
+    String d =
+        serviceDatabase.addServiceReq(
+            ServiceType.MEDICINE, "washing hall", "200", "Tom|Hank|Dr. Bob|Zoloft");
     Assertions.assertEquals(2, serviceDatabase.getSize(ServiceType.MEDICINE));
     serviceDatabase.removeAll();
   }
@@ -59,19 +60,22 @@ public class TestMedRequestDatabase {
     serviceDatabase.createTables();
     serviceDatabase.removeAll();
 
-    String d = serviceDatabase.addServiceReq(ServiceType.MEDICINE, "washing hall", "212", "Joe|Schmoe|Dr. Phil|Xanax");
+    String d =
+        serviceDatabase.addServiceReq(
+            ServiceType.MEDICINE, "washing hall", "212", "Joe|Schmoe|Dr. Phil|Xanax");
     boolean a = serviceDatabase.setAdditional(d, "Joe|Schmoe|Dr. Phil|help");
     Assertions.assertTrue(a);
     serviceDatabase.removeAll();
   }
 
-
   @Test
-  public void testUpdateProgress(){
+  public void testUpdateProgress() {
     serviceDatabase.createTables();
     serviceDatabase.removeAll();
 
-    String a = serviceDatabase.addServiceReq(ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
+    String a =
+        serviceDatabase.addServiceReq(
+            ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
     boolean b = serviceDatabase.setStatus(a, "Done");
     Assertions.assertTrue(b);
 

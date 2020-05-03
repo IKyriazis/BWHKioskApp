@@ -8,7 +8,16 @@ import org.junit.jupiter.api.Test;
 public class TestITTicket {
   @Test
   public void testITTicket() {
-    ITTicket t = new ITTicket("SPIDER", new Timestamp(System.currentTimeMillis()), "In Progress", "WIFI", "ADEPT00101", "Harold", "James", "WIFI Broke");
+    ITTicket t =
+        new ITTicket(
+            "SPIDER",
+            new Timestamp(System.currentTimeMillis()),
+            "In Progress",
+            "WIFI",
+            "ADEPT00101",
+            "Harold",
+            "James",
+            "WIFI Broke");
     Assertions.assertEquals(t.getCategory(), "WIFI");
     Assertions.assertEquals(t.getName(), "Harold");
     Assertions.assertEquals(t.getLocation(), "ADEPT00101");

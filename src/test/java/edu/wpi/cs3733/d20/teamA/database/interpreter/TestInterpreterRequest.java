@@ -9,7 +9,7 @@ public class TestInterpreterRequest {
   public void testRequest() {
     InterpreterRequest req = new InterpreterRequest("0", "Yash", "Latin", "Worcester", "Submitted");
 
-    Assertions.assertEquals(req.getRequestID(), "");
+    Assertions.assertEquals(req.getRequestID(), "0");
     Assertions.assertEquals(req.getName(), "Yash");
     Assertions.assertEquals(req.getLanguage(), "Latin");
     Assertions.assertEquals(req.getLocation(), "Worcester");

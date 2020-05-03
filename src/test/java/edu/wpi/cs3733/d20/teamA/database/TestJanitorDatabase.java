@@ -4,7 +4,6 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
-import edu.wpi.cs3733.d20.teamA.database.service.janitor.JanitorDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -50,7 +49,9 @@ public class TestJanitorDatabase {
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", "ADMIN");
     serviceDatabase.removeAll();
-    String a = serviceDatabase.addServiceReq(ServiceType.JANITOR, "balogna", "yppatel", "Request Made", "");
+    String a =
+        serviceDatabase.addServiceReq(
+            ServiceType.JANITOR, "balogna", "yppatel", "Request Made", "");
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
 
     serviceDatabase.removeAll();
@@ -58,13 +59,15 @@ public class TestJanitorDatabase {
   }
 
   @Test
-  public void testUpdateRequest(){
+  public void testUpdateRequest() {
     graphDatabase.removeAllNodes();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", "ADMIN");
     employeeDatabase.addEmployee("Nisha", "Goel", "ngoel", "SweetGirl2", "ADMIN");
     serviceDatabase.removeAll();
-    String a = serviceDatabase.addServiceReq(ServiceType.JANITOR, "balogna", "yppatel", "Request Made", "");
+    String a =
+        serviceDatabase.addServiceReq(
+            ServiceType.JANITOR, "balogna", "yppatel", "Request Made", "");
     boolean b = serviceDatabase.setAssignedEmployee(a, "ngoel");
     Assertions.assertTrue(b);
     String c = serviceDatabase.getStatus(a);

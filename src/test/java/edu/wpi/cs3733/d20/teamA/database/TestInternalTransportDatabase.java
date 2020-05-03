@@ -3,7 +3,6 @@ package edu.wpi.cs3733.d20.teamA.database;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
-import edu.wpi.cs3733.d20.teamA.database.service.internaltransport.InternalTransportDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -49,13 +48,16 @@ public class TestInternalTransportDatabase {
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     gDB.addNode("gravy", 2, 4, 2, "White House", "CONF", "basket", "b", "Team A");
     serviceDatabase.removeAll();
-    String a = serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "basket", null);
-    Assertions.assertEquals(a, serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
+    String a =
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "basket", null);
+    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
     Assertions.assertEquals(1, serviceDatabase.getSize());
-    String b = serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "yolk", null);
+    String b =
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "yolk", null);
     Assertions.assertNull(b);
     Assertions.assertEquals(1, serviceDatabase.getSize());
-    String c = serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "balogna", null);
+    String c =
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "balogna", null);
     Assertions.assertEquals(c, serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", c));
     Assertions.assertEquals(2, serviceDatabase.getSize());
 
@@ -69,7 +71,8 @@ public class TestInternalTransportDatabase {
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     gDB.addNode("gravy", 2, 4, 2, "White House", "CONF", "basket", "b", "Team A");
     gDB.addNode("help", 2, 4, 2, "White House", "CONF", "water", "b", "Team A");
-    String a = serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "basket", null);
+    String a =
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "basket", null);
     boolean b = serviceDatabase.setDescription(a, "water");
     Assertions.assertTrue(b);
 
@@ -83,9 +86,11 @@ public class TestInternalTransportDatabase {
     gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     gDB.addNode("help", 2, 4, 2, "White House", "CONF", "water", "b", "Team A");
     serviceDatabase.removeAll();
-    String a = serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "water", null);
+    String a =
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "water", null);
     boolean b = serviceDatabase.setStatus(a, "In Progress");
-    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "status", "In Progress"));
+    Assertions.assertTrue(
+        serviceDatabase.checkIfExistsString("SERVICEREQ", "status", "In Progress"));
     Assertions.assertTrue(b);
 
     serviceDatabase.removeAll();

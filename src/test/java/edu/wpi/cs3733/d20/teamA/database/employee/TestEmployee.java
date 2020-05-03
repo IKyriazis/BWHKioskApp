@@ -15,14 +15,14 @@ public class TestEmployee {
   @Test
   public void testGetters() {
     Employee employee = new Employee("EEEEEEE", "Yash", "Patel", "ADMIN", "yppatel");
-    Assertions.assertEquals("EEEEEE", employee.getId());
+    Assertions.assertEquals("EEEEEEE", employee.getId());
     Assertions.assertEquals("Yash Patel", employee.toString());
     Assertions.assertEquals("yppatel", employee.getUsername());
 
-    Assertions.assertEquals(new SimpleStringProperty("EEEEEE"), employee.getIDProperty());
-    Assertions.assertEquals(new SimpleStringProperty("Yash"), employee.getfNameProperty());
-    Assertions.assertEquals(new SimpleStringProperty("Patel"), employee.getlNameProperty());
-    Assertions.assertEquals(new SimpleStringProperty("ADMIN"), employee.getTitleProperty());
-    Assertions.assertEquals(new SimpleStringProperty("yppatel"), employee.getUsernameProperty());
+    Assertions.assertEquals("EEEEEE", employee.getIDProperty().get());
+    Assertions.assertEquals("Yash", employee.getfNameProperty().get());
+    Assertions.assertEquals("Patel", employee.getlNameProperty().get());
+    Assertions.assertEquals("ADMIN", employee.getTitleProperty().get());
+    Assertions.assertEquals("yppatel", employee.getUsernameProperty().get());
   }
 }

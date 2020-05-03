@@ -9,8 +9,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,10 +83,10 @@ public class TestEquipReqDatabase {
     Assertions.assertEquals("Low", eq.getPriority());
     Assertions.assertEquals(2, eq.getQty());
     Assertions.assertEquals("Mask", eq.getItem());
-    Assertions.assertEquals(new SimpleStringProperty("location"), eq.locationProperty());
-    Assertions.assertEquals(new SimpleStringProperty("Low"), eq.priorityProperty());
-    Assertions.assertEquals(new SimpleStringProperty("Mask"), eq.itemProperty());
-    Assertions.assertEquals(new SimpleStringProperty("Ave"), eq.nameProperty());
-    Assertions.assertEquals(new SimpleIntegerProperty(2), eq.qtyProperty());
+    Assertions.assertEquals("location", eq.locationProperty().get());
+    Assertions.assertEquals("Low", eq.priorityProperty().get());
+    Assertions.assertEquals("Mask", eq.itemProperty().get());
+    Assertions.assertEquals("Ave", eq.nameProperty().get());
+    Assertions.assertEquals(2, eq.qtyProperty().get());
   }
 }

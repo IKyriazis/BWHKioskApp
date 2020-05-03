@@ -1,10 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import com.sun.source.tree.AssertTree;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
-import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicketDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -30,7 +28,8 @@ public class TestITTicketDatabse {
       conn = DriverManager.getConnection(jdbcUrl);
       graphDatabase = new GraphDatabase(conn);
       serviceDatabase = new ServiceDatabase(conn);
-      graphDatabase.addNode("MDEPT00325", 1, 1, 1, "Main", "DEPT", "LongName", "ShortName", "Team A");
+      graphDatabase.addNode(
+          "MDEPT00325", 1, 1, 1, "Main", "DEPT", "LongName", "ShortName", "Team A");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -46,9 +45,10 @@ public class TestITTicketDatabse {
   }
 
   @Test
-  public void testAddITTicket(){
+  public void testAddITTicket() {
     serviceDatabase.removeAll();
-    String a = serviceDatabase.addServiceReq(ServiceType.IT_TICKET, "LongName", "Machine Broke", "WIFI");
+    String a =
+        serviceDatabase.addServiceReq(ServiceType.IT_TICKET, "LongName", "Machine Broke", "WIFI");
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
     Assertions.assertEquals(1, serviceDatabase.getSize());
   }
@@ -57,7 +57,8 @@ public class TestITTicketDatabse {
   public void testUpdateStatus() {
     serviceDatabase.removeAll();
     Timestamp ticketTime = new Timestamp(System.currentTimeMillis());
-    String a = serviceDatabase.addServiceReq(ServiceType.IT_TICKET, "LongName", "Machine Broke", "WIFI");
+    String a =
+        serviceDatabase.addServiceReq(ServiceType.IT_TICKET, "LongName", "Machine Broke", "WIFI");
     boolean b = serviceDatabase.setStatus(a, "Completed");
     Assertions.assertTrue(b);
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "status", "Completed"));

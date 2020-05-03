@@ -70,9 +70,9 @@ public class TestInterpreterDatabase {
     Assertions.assertEquals(d, inventoryDatabase.getID("Yash2"));
 
     String f = inventoryDatabase.addItem(ItemType.INTERPRETER, "Yash2", 1, 0.0, null, "Latin");
-    Assertions.assertEquals("", f);
+    Assertions.assertNull(f);
 
-    Assertions.assertEquals(4, inventoryDatabase.getSize("INVENTORY"));
+    Assertions.assertEquals(2, inventoryDatabase.getSize("INVENTORY"));
     inventoryDatabase.removeAll();
   }
 
