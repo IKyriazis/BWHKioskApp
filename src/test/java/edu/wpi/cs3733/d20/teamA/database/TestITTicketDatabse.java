@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicketDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +17,7 @@ public class TestITTicketDatabse {
   private static final String jdbcUrl = "jdbc:derby:memory:BWDatabase;create=true";
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
-  ITTicketDatabase tDB;
+  ServiceDatabase serviceDatabase;
   GraphDatabase DB;
 
   public TestITTicketDatabse() {}
