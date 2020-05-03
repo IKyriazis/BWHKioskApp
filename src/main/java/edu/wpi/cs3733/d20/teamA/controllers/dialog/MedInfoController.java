@@ -8,8 +8,7 @@ import javafx.fxml.FXML;
 
 public class MedInfoController extends AbstractController implements IDialogController {
   private JFXDialog dialog;
-  @FXML private JFXTextField fName;
-  @FXML private JFXTextField lName;
+  @FXML private JFXTextField name;
   @FXML private JFXTextField doctor;
   @FXML private JFXTextField medicine;
   @FXML private JFXTextField roomNum;
@@ -28,8 +27,7 @@ public class MedInfoController extends AbstractController implements IDialogCont
   }
 
   public void initialize() {
-    fName.setText(request.getFirstName());
-    lName.setText(request.getLastName());
+    name.setText(request.getName());
     doctor.setText(request.getDoctor());
     medicine.setText(request.getMedicine());
     fBy.setText(request.getFulfilledBy());

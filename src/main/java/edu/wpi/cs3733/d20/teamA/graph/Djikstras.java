@@ -58,7 +58,6 @@ public class Djikstras extends PathAlgo implements IStrategyPath {
         }
       }
     }
-
     // If the path doesn't exist return null
     if (!path.containsKey(end)) return;
 
@@ -76,7 +75,5 @@ public class Djikstras extends PathAlgo implements IStrategyPath {
 
     // Flip to correct path direction
     Collections.reverse(pathNodes);
-
-    calculateEdges();
   }
 }

@@ -7,8 +7,11 @@ import org.junit.jupiter.api.Test;
 public class TestFlower {
   @Test
   public void testFlower() {
-    Flower f = new Flower("Name", "Color", 4, 2.35, 1);
+    Flower f = new Flower(12, "Name", "Blue", 4, 3.12);
     Assertions.assertEquals(f.getQty(), 4);
-    Assertions.assertEquals(f.getPricePer(), 2.35);
+    Assertions.assertEquals(f.getPricePer(), 3.12);
+    Assertions.assertEquals(f.getColor(), "Blue");
+    Assertions.assertEquals("Name", f.getTypeFlower());
+    Assertions.assertEquals(0, f.getQuantitySelected());
   }
 }
