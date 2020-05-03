@@ -91,7 +91,7 @@ public class FlowerEditController extends AbstractController implements IDialogC
     }
 
     try {
-      String name = txtName.getText();
+      /*String name = txtName.getText();
       String color = txtColor.getText();
       int qty = Integer.parseInt(txtQty.getText());
       String price = txtCost.getText();
@@ -102,7 +102,7 @@ public class FlowerEditController extends AbstractController implements IDialogC
         System.out.println(
             super.flDatabase.updatePrice(myFlower.getTypeFlower(), myFlower.getColor(), price));
         super.flDatabase.updateQTY(myFlower.getTypeFlower(), myFlower.getColor(), qty);
-      }
+      }*/
 
       dialog.close();
     } catch (Exception exception) {

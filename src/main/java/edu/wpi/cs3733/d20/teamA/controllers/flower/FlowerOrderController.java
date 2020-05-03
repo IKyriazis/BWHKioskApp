@@ -7,7 +7,6 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.util.Comparator;
 import java.util.List;
@@ -114,7 +113,7 @@ public class FlowerOrderController extends AbstractController implements IDialog
 
       String message = txtMessage.getText();
       try {
-        int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID(), message, cost);
+        /*int i = flDatabase.addOrder(numFlowers, flowerString, node.getNodeID(), message, cost);
         dialog.close();
         // Once the order is placed, remove the flowers from the list
         for (Flower f : orderContent) {
@@ -122,7 +121,7 @@ public class FlowerOrderController extends AbstractController implements IDialog
               f.getTypeFlower(), f.getColor(), f.getQty() - f.getQuantitySelected());
         }
         DialogUtil.simpleInfoDialog(
-            dialog.getDialogContainer(), "Order Placed", "Order #" + i + " placed successfully");
+            dialog.getDialogContainer(), "Order Placed", "Order #" + i + " placed successfully");*/
       } catch (Exception e) {
         e.printStackTrace();
       }

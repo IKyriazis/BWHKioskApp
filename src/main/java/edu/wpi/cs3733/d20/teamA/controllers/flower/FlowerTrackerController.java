@@ -29,7 +29,7 @@ public class FlowerTrackerController extends AbstractController implements IDial
   @FXML
   public void updateProgress() {
     try {
-      String s = flDatabase.getOrderStatus(Integer.parseInt(txtNumber.getText()));
+      /*String s = flDatabase.getOrderStatus(Integer.parseInt(txtNumber.getText()));
       if (s == null) {
         progressBar.setProgress(0);
         orderStatusLabel.setText("Input an order number");
@@ -51,7 +51,7 @@ public class FlowerTrackerController extends AbstractController implements IDial
       } else {
         progressBar.setProgress(0);
         orderStatusLabel.setText("Input an order number");
-      }
+      }*/
     } catch (Exception e) {
       e.printStackTrace();
     }
