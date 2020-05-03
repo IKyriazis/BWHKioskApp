@@ -192,6 +192,7 @@ public class SimpleMapController {
       }
 
       if (!canvas.getGroup().getChildren().isEmpty()) {
+        canvas.getGroup().getChildren().clear();
         canvas.setGroup(new Group());
         canvas.setTransition(new PathTransition());
       }
