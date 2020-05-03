@@ -200,6 +200,32 @@ public class SimpleMapController {
               directionsList.getItems().add(l);
             });
 
+        /*Circle circ = new Circle(10);
+        circ.setFill(Color.AQUA);
+
+        javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
+        animatedPath
+            .getElements()
+            .add(new MoveTo(path.getPathNodes().get(0).getX(), path.getPathNodes().get(0).getY()));
+        for (int i = 0; i < path.getPathNodes().size() - 1; i++) {
+          animatedPath
+              .getElements()
+              .add(
+                  new LineTo(
+                      path.getPathNodes().get(i + 1).getX() - path.getPathNodes().get(i).getX(),
+                      path.getPathNodes().get(i + 1).getY() - path.getPathNodes().get(i).getY()));
+        }
+
+        PathTransition transition = new PathTransition();
+        transition.setDuration(Duration.millis(4000));
+        transition.setPath(animatedPath);
+        transition.setNode(circ);
+        transition.setCycleCount(Timeline.INDEFINITE);
+        transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+        transition.play();
+
+        canvasPane.getChildren().add(circ);*/
+
         // Generate QR code
         StringBuilder dirs = new StringBuilder();
         directions.forEach(l -> dirs.append(l.getText()).append('\n'));

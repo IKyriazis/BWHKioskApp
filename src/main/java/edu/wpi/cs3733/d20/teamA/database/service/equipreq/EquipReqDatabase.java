@@ -51,7 +51,7 @@ public class EquipReqDatabase extends Database {
   }
 
   public boolean addReq(String item, int qty, String location, String priority) {
-    String username = getLoggedIn();
+    String username = getLoggedIn().getUsername();
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     if (username == null) {
       return false;

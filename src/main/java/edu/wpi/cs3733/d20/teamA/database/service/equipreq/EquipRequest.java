@@ -16,34 +16,29 @@ public class EquipRequest implements ITableable<EquipRequest> {
   private SimpleStringProperty location;
   private SimpleStringProperty priority;
   private SimpleStringProperty time;
-  private SimpleStringProperty username;
   private SimpleStringProperty ID;
 
-  public EquipRequest(String idNum, String location, String nm, Timestamp time, String additional) {
-    // item+"|"+qty+"|"+priority
+  public EquipRequest(
+      String idNum, String location, String name, Timestamp time, String additional) {
+    // Additional: item|qty|priority
     if (additional != null) {
-      String item = additional.substring(0, additional.indexOf('|'));
-      additional = additional.substring(additional.indexOf('|') + 1);
-      int qty = Integer.parseInt(additional.substring(0, additional.indexOf('|')));
-      String priority = additional.substring(additional.indexOf('|') + 1);
 
-      // this.username = new SimpleStringProperty(username); //Is this important
-      this.name = new SimpleStringProperty(nm);
-      this.item = new SimpleStringProperty(item);
-      this.qty = new SimpleIntegerProperty(qty);
-      this.location = new SimpleStringProperty(location);
-      this.priority = new SimpleStringProperty(priority);
-      this.time = new SimpleStringProperty(time.toString());
-      this.ID = new SimpleStringProperty(idNum);
+      String[] arr = additional.split("\\|");
+      if (arr.length == 3) {
+
+        String item = arr[0];
+        int qty = Integer.parseInt(arr[1]);
+        String priority = arr[2];
+
+        this.name = new SimpleStringProperty(name);
+        this.item = new SimpleStringProperty(item);
+        this.qty = new SimpleIntegerProperty(qty);
+        this.location = new SimpleStringProperty(location);
+        this.priority = new SimpleStringProperty(priority);
+        this.time = new SimpleStringProperty(time.toString());
+        this.ID = new SimpleStringProperty(idNum);
+      }
     }
-  }
-
-  public String getUsername() {
-    return username.get();
-  }
-
-  public SimpleStringProperty usernameProperty() {
-    return username;
   }
 
   public String getName() {

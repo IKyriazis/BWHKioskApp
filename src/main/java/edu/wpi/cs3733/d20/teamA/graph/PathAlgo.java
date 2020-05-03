@@ -3,7 +3,7 @@ package edu.wpi.cs3733.d20.teamA.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PathAlgo {
+public abstract class PathAlgo implements IStrategyPath {
 
   /** Represents a list of nodes along path */
   protected ArrayList<Node> pathNodes;
@@ -14,12 +14,23 @@ public abstract class PathAlgo {
   /** Represents the graph the path is being calculated for */
   protected Graph graph;
 
+  protected ArrayList<String> writtenDirections;
+
   public abstract void findPath(Node start, Node end);
+
+  public final void pathFind(Node start, Node end) {
+    findPath(start, end);
+
+    calculateEdges();
+
+    writtenDirections = textualDirections();
+  }
 
   public PathAlgo(Graph graph) {
     this.graph = graph;
     this.pathNodes = new ArrayList<>();
     this.pathEdges = new ArrayList<>();
+    this.writtenDirections = new ArrayList<>();
   }
 
   public ArrayList<Node> getPathNodes() {
