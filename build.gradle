@@ -77,7 +77,8 @@ dependencies {
     testRuntimeOnly(
             'org.testfx:openjfx-monocle:jdk-11+26',
     )
-    compile files('C:\\Users\\William Engdahl\\IdeaProjects\\APIFlower\\build\\libs\\APIFlower.jar')
+    //To run the API, replace the URL here with your local path to the JAR, will soon set up API to be hosted online to avoid this
+    // compile files('C:\\Users\\William Engdahl\\IdeaProjects\\APIFlower\\build\\libs\\APIFlower.jar')
 }
 
 javafx {

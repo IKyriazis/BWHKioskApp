@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
@@ -63,14 +62,16 @@ public class FlowerServiceController extends AbstractController {
   @FXML
   public void placeOrder() throws IOException {
     if (cmbSelect.getSelectionModel().getSelectedItem() != null) {
-      myapi.App.run(
-          0,
-          0,
-          0,
-          0,
-          App.class.getResource("stylesheet.css").toExternalForm(),
-          cmbSelect.getSelectionModel().getSelectedItem().getNodeID(),
-          null);
+      DialogUtil.simpleErrorDialog(
+          dialogPane, "API needed", "The API isnt currently set up, sorry");
+      /*myapi.App.run(
+      0,
+      0,
+      0,
+      0,
+      App.class.getResource("stylesheet.css").toExternalForm(),
+      cmbSelect.getSelectionModel().getSelectedItem().getNodeID(),
+      null);*/
     } else {
       DialogUtil.simpleErrorDialog(
           dialogPane, "Unable to place order", "Please select a location to deliver the order to");
@@ -79,7 +80,8 @@ public class FlowerServiceController extends AbstractController {
 
   @FXML
   public void openAdmin() throws IOException {
-    myapi.App.runAdmin(
-        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), null, null);
+    DialogUtil.simpleErrorDialog(dialogPane, "API needed", "The API isnt currently set up, sorry");
+    /*myapi.App.runAdmin(
+    0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), null, null);*/
   }
 }
