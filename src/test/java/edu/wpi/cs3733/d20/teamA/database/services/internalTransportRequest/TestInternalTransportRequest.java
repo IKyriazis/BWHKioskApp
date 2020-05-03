@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA;
+package edu.wpi.cs3733.d20.teamA.database.services.internalTransportRequest;
 
 import edu.wpi.cs3733.d20.teamA.database.service.internaltransport.InternalTransportRequest;
 import java.sql.Timestamp;
