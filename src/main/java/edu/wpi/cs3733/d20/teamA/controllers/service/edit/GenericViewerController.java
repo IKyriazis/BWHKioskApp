@@ -32,7 +32,9 @@ public class GenericViewerController extends AbstractRequestController {
 
     timeStampField.setText(request.getTimestamp());
 
-    statusBox.getItems().add(request.getStatus());
+    if (!statusBox.getItems().contains(request.getStatus())) {
+      statusBox.getItems().add(request.getStatus());
+    }
     statusBox.getSelectionModel().select(request.getStatus());
 
     setupDescriptionArea(descriptionArea);

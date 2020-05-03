@@ -9,6 +9,7 @@ import javafx.scene.Node;
 @SuppressWarnings("DuplicatedCode")
 public class FXMLCache {
   private static final HashMap<String, Node> map = new HashMap<>();
+  private static final HashMap<String, Object> controllerMap = new HashMap<>();
 
   // Load FXML files from a cache if possible. Please note that this will not reset controllers in
   // any way shape or form.
@@ -22,7 +23,10 @@ public class FXMLCache {
       FXMLLoader loader = new FXMLLoader();
       loader.setLocation(App.class.getResource(file));
       Node node = loader.load();
+
       map.put(file, node);
+      controllerMap.put(file, loader.getController());
+
       return node;
     } catch (Exception e) {
       e.printStackTrace();
@@ -40,7 +44,10 @@ public class FXMLCache {
       loader.setLocation(App.class.getResource(file));
       loader.setController(controller);
       Node node = loader.load();
+
       map.put(file, node);
+      controllerMap.put(file, controller);
+
       return node;
     } catch (Exception e) {
       e.printStackTrace();
@@ -50,5 +57,9 @@ public class FXMLCache {
 
   public static void preLoadFXML(String file) {
     loadFXML(file);
+  }
+
+  public static Object getController(String file) {
+    return controllerMap.get(file);
   }
 }

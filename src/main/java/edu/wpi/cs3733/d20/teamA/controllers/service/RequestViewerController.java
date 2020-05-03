@@ -3,7 +3,9 @@ package edu.wpi.cs3733.d20.teamA.controllers.service;
 import animatefx.animation.*;
 import com.jfoenix.controls.JFXTreeTableView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
+import edu.wpi.cs3733.d20.teamA.controllers.service.edit.AbstractViewerController;
 import edu.wpi.cs3733.d20.teamA.controllers.service.edit.JanitorViewerController;
+import edu.wpi.cs3733.d20.teamA.controllers.service.edit.LaundryViewerController;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
@@ -105,7 +107,9 @@ public class RequestViewerController extends AbstractController {
           newNode =
               FXMLCache.loadServiceFXML(
                   "views/service/edit/JanitorRequestViewer.fxml", new JanitorViewerController(req));
-          JanitorViewerController.setReq(req);
+          ((AbstractViewerController)
+                  FXMLCache.getController("views/service/edit/JanitorRequestViewer.fxml"))
+              .reset(req);
           break;
         case EQUIPMENT:
           newNode = FXMLCache.loadFXML("views/service/edit/EquipmentViewer.fxml");
@@ -120,7 +124,12 @@ public class RequestViewerController extends AbstractController {
           newNode = FXMLCache.loadFXML("views/service/edit/ITTicketViewer.fxml");
           break;
         case LAUNDRY:
-          newNode = FXMLCache.loadFXML("views/service/edit/LaundryViewer.fxml");
+          newNode =
+              FXMLCache.loadServiceFXML(
+                  "views/service/edit/LaundryRequestViewer.fxml", new LaundryViewerController(req));
+          ((AbstractViewerController)
+                  FXMLCache.getController("views/service/edit/LaundryRequestViewer.fxml"))
+              .reset(req);
           break;
         case MEDICINE:
           newNode = FXMLCache.loadFXML("views/service/edit/MedicineViewer.fxml");

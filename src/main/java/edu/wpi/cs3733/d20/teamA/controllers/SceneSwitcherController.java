@@ -316,6 +316,7 @@ public class SceneSwitcherController extends AbstractController {
                     spinnerOutFade.setToValue(0.0);
                     spinnerOutFade.play();
 
+                    // Reset login box
                     buttonBox.setVisible(false);
                     gauth.setVisible(true);
                     loginButton.setVisible(false);

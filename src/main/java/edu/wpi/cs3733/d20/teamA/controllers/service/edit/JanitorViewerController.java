@@ -16,12 +16,8 @@ public class JanitorViewerController extends AbstractViewerController {
   @FXML private JFXButton saveButton;
   @FXML private JFXComboBox<String> priorityBox;
 
-  private static JanitorViewerController instance;
-
   public JanitorViewerController(ServiceRequest req) {
     super(req);
-
-    instance = this;
   }
 
   @Override
@@ -52,9 +48,14 @@ public class JanitorViewerController extends AbstractViewerController {
         req.getReqID(), priorityBox.getSelectionModel().getSelectedItem());
   }
 
-  public static void setReq(ServiceRequest req) {
-    if (instance != null) {
-      instance.reset(req);
-    }
+  @Override
+  public void reset(ServiceRequest req) {
+    super.reset(req);
+
+    // Update priority box
+    priorityBox.getSelectionModel().select(req.getAdditional());
+
+    // Update standard fields
+    genericController.fillFields(req);
   }
 }
