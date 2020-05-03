@@ -14,6 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -389,12 +390,19 @@ public class MapCanvas extends Canvas {
 
   public Group animatePath(ContextPath path, int floor) {
 
+    Image image = new Image("/edu/wpi/cs3733/d20/teamA/images/blue_right.png");
+    ImageView imageView = new ImageView();
+    imageView.setPreserveRatio(true);
+    imageView.setFitHeight(30);
+    imageView.setImage(image);
+    imageView.setVisible(false);
+
     Circle circ = new Circle(10);
     circ.setFill(Color.AQUA);
     double xcoord = path.getPathNodes().get(0).getX();
     double ycoord = path.getPathNodes().get(0).getY();
     double length = 0;
-    group.getChildren().add(circ);
+    // group.getChildren().add(circ);
 
     javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
     boolean firstTime = true;
@@ -419,6 +427,7 @@ public class MapCanvas extends Canvas {
         length += getDistance(xcoord, node.getX(), ycoord, node.getY());
         xcoord = node.getX();
         ycoord = node.getY();
+        imageView.setVisible(true);
       }
     }
 
@@ -427,10 +436,11 @@ public class MapCanvas extends Canvas {
 
     transition.setDuration(Duration.seconds(length / 250.0));
     transition.setPath(animatedPath);
-    transition.setNode(circ);
+    transition.setNode(imageView);
     transition.setCycleCount(Timeline.INDEFINITE);
     transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
     transition.play();
+    group.getChildren().add(imageView);
     return group;
   }
 
