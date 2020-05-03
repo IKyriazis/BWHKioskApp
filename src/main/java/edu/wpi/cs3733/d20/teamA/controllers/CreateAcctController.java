@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
@@ -28,14 +27,7 @@ public class CreateAcctController extends AbstractController {
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
 
-  private SerialPort comPort = null;
-
   public void initialize() {
-
-    // find arduino
-    if (comPort == null) {
-      comPort = SerialPort.getCommPorts()[0];
-    }
 
     ArrayList<String> titles = new ArrayList<String>(7);
     titles.add("Choose one:");
@@ -47,31 +39,6 @@ public class CreateAcctController extends AbstractController {
     titles.add("Receptionist");
     titles.add("Retail");
     title.setItems(FXCollections.observableList(titles));
-  }
-
-  public String scanRFID() {
-    try {
-      comPort.openPort();
-      while (true) {
-        while (comPort.bytesAvailable() != 14) Thread.sleep(20);
-
-        byte[] readBuffer = new byte[comPort.bytesAvailable()];
-        int numRead = comPort.readBytes(readBuffer, readBuffer.length);
-        String scannedString = new String(readBuffer, "UTF-8");
-        String[] scannedArray = scannedString.split(" ");
-        if (scannedArray[1].contains("p")) {
-          comPort.closePort();
-          return scannedArray[0];
-        } else {
-          comPort.closePort();
-          return null;
-        }
-      }
-    } catch (Exception e) {
-      comPort.closePort();
-      e.printStackTrace();
-      return null;
-    }
   }
 
   public void submitEmployee() {

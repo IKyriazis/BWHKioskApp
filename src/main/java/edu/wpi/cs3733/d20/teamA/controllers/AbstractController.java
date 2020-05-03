@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.fazecast.jSerialComm.SerialPort;
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.announcement.AnnouncementDatabase;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
@@ -11,6 +12,8 @@ import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import java.sql.Connection;
 
 public abstract class AbstractController {
+
+  private SerialPort comPort = null;
 
   private DatabaseServiceProvider provider;
   private Connection conn;
@@ -37,5 +40,34 @@ public abstract class AbstractController {
     patientDatabase = new PatientDatabase(conn);
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
+
+    if (comPort == null) {
+      comPort = SerialPort.getCommPorts()[0];
+    }
+  }
+
+  public String scanRFID() {
+    try {
+      comPort.openPort();
+      while (true) {
+        while (comPort.bytesAvailable() != 14) Thread.sleep(20);
+
+        byte[] readBuffer = new byte[comPort.bytesAvailable()];
+        int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+        String scannedString = new String(readBuffer, "UTF-8");
+        String[] scannedArray = scannedString.split(" ");
+        if (scannedArray[1].contains("p")) {
+          comPort.closePort();
+          return scannedArray[0];
+        } else {
+          comPort.closePort();
+          return null;
+        }
+      }
+    } catch (Exception e) {
+      comPort.closePort();
+      e.printStackTrace();
+      return null;
+    }
   }
 }

@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import animatefx.animation.*;
-import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXSpinner;
@@ -77,17 +76,10 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
-  private SerialPort comPort = null;
-
   @FXML
   public void initialize() {
     // Setup instance
     instance = this;
-
-    // find arduino
-    if (comPort == null) {
-      comPort = SerialPort.getCommPorts()[0];
-    }
 
     // Create the employee table if it doesn't exist
     if (eDB.getSize() == -1) {
@@ -263,31 +255,6 @@ public class SceneSwitcherController extends AbstractController {
                   });
             }
           });
-    }
-  }
-
-  public String scanRFID() {
-    try {
-      comPort.openPort();
-      while (true) {
-        while (comPort.bytesAvailable() != 14) Thread.sleep(20);
-
-        byte[] readBuffer = new byte[comPort.bytesAvailable()];
-        int numRead = comPort.readBytes(readBuffer, readBuffer.length);
-        String scannedString = new String(readBuffer, "UTF-8");
-        String[] scannedArray = scannedString.split(" ");
-        if (scannedArray[1].contains("p")) {
-          comPort.closePort();
-          return scannedArray[0];
-        } else {
-          comPort.closePort();
-          return null;
-        }
-      }
-    } catch (Exception e) {
-      comPort.closePort();
-      e.printStackTrace();
-      return null;
     }
   }
 
