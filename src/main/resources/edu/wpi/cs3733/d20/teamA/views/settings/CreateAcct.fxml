@@ -90,7 +90,7 @@
                         <Font size="21.0" />
                      </font>
                   </JFXCheckBox>
-                  <JFXComboBox fx:id="title" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Title" GridPane.rowIndex="6" />
+                  <JFXComboBox fx:id="title" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.rowIndex="6" />
                </children>
             </GridPane>
          </children>

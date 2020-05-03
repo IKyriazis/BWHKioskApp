@@ -56,6 +56,7 @@ public abstract class AbstractController {
         int numRead = comPort.readBytes(readBuffer, readBuffer.length);
         String scannedString = new String(readBuffer, "UTF-8");
         String[] scannedArray = scannedString.split(" ");
+        System.out.println(scannedString);
         if (scannedArray[1].contains("p")) {
           comPort.closePort();
           return scannedArray[0];

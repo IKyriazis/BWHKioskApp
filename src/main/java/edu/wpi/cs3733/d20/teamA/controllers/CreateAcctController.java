@@ -39,6 +39,7 @@ public class CreateAcctController extends AbstractController {
     titles.add("Receptionist");
     titles.add("Retail");
     title.setItems(FXCollections.observableList(titles));
+    title.getSelectionModel().selectFirst();
   }
 
   public void submitEmployee() {
@@ -46,6 +47,7 @@ public class CreateAcctController extends AbstractController {
         || lName.getText().isEmpty()
         || uName.getText().isEmpty()
         || pass.getText().isEmpty()
+        || title.getValue().toString().equals("Choose one:")
         || cPass.getText().isEmpty()) {
       // make popup that says one or more fields are empty
       DialogUtil.simpleInfoDialog(
