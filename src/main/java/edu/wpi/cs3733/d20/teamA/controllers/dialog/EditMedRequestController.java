@@ -98,7 +98,7 @@ public class EditMedRequestController extends AbstractController implements IDia
               time,
               null,
               "" + roomNum.getText(),
-              add); // fNameText, lNameText, doctorText, medicineText, rnum
+              add); // fNameText| doctorText| medicineText
         } catch (NullPointerException ex) {
           /*super.medicineRequestDatabase.addRequest(
           fNameText, lNameText, doctorText, medicineText, rnum);*/

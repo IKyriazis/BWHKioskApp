@@ -51,36 +51,36 @@ public class TestPatientDatabase {
   }
 
   @Test
-  public void testAddPatient() throws SQLException {
-    pDB.removeAllPatients();
-    int a = pDB.addPatient(0, "Tyler", "Looney", "Health Insurance", "01/01/2000");
-    Assertions.assertEquals(0, a);
-    int d = pDB.addPatient(1, "Yash", "Patel", "Yash Health", "01/02/2000");
-    Assertions.assertEquals(1, d);
-    int b = pDB.addPatient(0, "Eva", "Labbe", "Eva Health", "01/03/2000");
-    Assertions.assertEquals(-1, b);
-    int e = pDB.addPatient(2, "Brennan", "Aubuchon", "Brennan Insurance", "01/04/2000");
-    Assertions.assertEquals(2, e);
-    int c = pDB.addPatient(-1, "Lily", "Green", "Lily Insurance", "01/04/2000");
-    Assertions.assertEquals(-1, c);
-    Assertions.assertEquals(3, pDB.getSizePatients());
-    pDB.removeAllPatients();
+  public void testAddPatient() {
+    pDB.removeAll();
+    String a = pDB.addPatient("0", "Tyler", "Looney", "Health Insurance", "01/01/2000");
+    Assertions.assertEquals("0", a);
+    String d = pDB.addPatient("1", "Yash", "Patel", "Yash Health", "01/02/2000");
+    Assertions.assertEquals("1", d);
+    String b = pDB.addPatient("0", "Eva", "Labbe", "Eva Health", "01/03/2000");
+    Assertions.assertEquals("", b);
+    String e = pDB.addPatient("2", "Brennan", "Aubuchon", "Brennan Insurance", "01/04/2000");
+    Assertions.assertEquals("2", e);
+    String c = pDB.addPatient("-1", "Lily", "Green", "Lily Insurance", "01/04/2000");
+    Assertions.assertEquals("-1", c);
+    Assertions.assertEquals(4, pDB.getSize());
+    pDB.removeAll();
   }
 
   @Test
-  public void testDeletePatient() throws SQLException {
+  public void testDeletePatient() {
     pDB.createTables();
-    pDB.removeAllPatients();
-    pDB.addPatient(1, "Rose", "Yellow", "Flower health", "01/04/2000");
-    pDB.deletePatient(1);
-    Assertions.assertEquals(0, pDB.getSizePatients());
-    pDB.removeAllPatients();
+    pDB.removeAll();
+    pDB.addPatient("1", "Rose", "Yellow", "Flower health", "01/04/2000");
+    pDB.deletePatient("1");
+    Assertions.assertEquals(0, pDB.getSize());
+    pDB.removeAll();
   }
 
   @Test
   public void testPatient() {
-    Patient patient = new Patient(1, "Daisy", "Blue", "health", "01/01/2000");
-    Assertions.assertEquals(1, patient.getPatientID());
+    Patient patient = new Patient("1", "Daisy", "Blue", "health", "01/01/2000");
+    Assertions.assertEquals("1", patient.getPatientID());
     Assertions.assertEquals("Daisy", patient.getFirstName());
     Assertions.assertEquals("Blue", patient.getLastName());
     Assertions.assertEquals("health", patient.getHealthInsurance());

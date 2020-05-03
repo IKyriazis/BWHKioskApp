@@ -175,7 +175,8 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     try {
       PreparedStatement pstmt =
           getConnection()
-              .prepareStatement("SELECT FROM SERVICEREQ WHERE servType = '" + serviceString + "'");
+              .prepareStatement(
+                  "SELECT * FROM SERVICEREQ WHERE servType = '" + serviceString + "'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         count++;

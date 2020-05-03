@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
 import edu.wpi.cs3733.d20.teamA.database.service.prescription.PrescriptionDatabase;
@@ -53,8 +54,8 @@ public class TestPrescriptionDatabase {
 
   // @Test
   public void testAddPrescription() {
-    employeesDatabase.removeAllEmployees();
-    employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "Passwords123", "employee");
+    employeesDatabase.removeAll();
+    employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "Passwords123", EmployeeTitle.ADMIN);
     prescriptionDatabase.removeAllPrescriptions();
     prescriptionDatabase.addPrescription(1, "Yash", "Ketamin", "CVS", "2 pills", 3, "Don't Die");
     Assertions.assertEquals(1, prescriptionDatabase.getSizePrescription());
@@ -68,7 +69,7 @@ public class TestPrescriptionDatabase {
 
   // @Test
   public void modifyPrescription() {
-    employeesDatabase.removeAllEmployees();
+    employeesDatabase.removeAll();
     employeesDatabase.readEmployeeCSV();
     prescriptionDatabase.removeAllPrescriptions();
     Assertions.assertTrue(prescriptionDatabase.setPatient(1, "Jacob White"));
@@ -89,9 +90,8 @@ public class TestPrescriptionDatabase {
 
   @Test
   public void createPrescriptionObject() {
-    Prescription p =
-        new Prescription(1, "Yash", "Ketamin", "CVS", "2 pills", 3, "yppatel", "Don't Die");
-    Assertions.assertEquals(1, p.getPrescriptionID());
+    Prescription p = new Prescription("1", "yppatel", "Yash|Ketamin|CVS|2 pills|3|Don't Die");
+    Assertions.assertEquals("1", p.getPrescriptionID());
     Assertions.assertEquals("Yash", p.getPatientName());
     Assertions.assertEquals("Ketamin", p.getPrescription());
     Assertions.assertEquals("CVS", p.getPharmacy());

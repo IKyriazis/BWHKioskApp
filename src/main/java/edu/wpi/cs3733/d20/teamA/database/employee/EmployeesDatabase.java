@@ -33,7 +33,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public synchronized boolean dropTables() {
 
     // Drop the tables
-    if (doesTableNotExist("EMPLOYEES")) {
+    if (!(doesTableNotExist("EMPLOYEES"))) {
       return helperPrepared("DROP TABLE Employees");
     }
     return false;
@@ -153,6 +153,24 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
+    }
+  }
+
+  public synchronized String getEmployeeID(String username) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, username);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String id = rset.getString("employeeID");
+      rset.close();
+      pstmt.close();
+      return id;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
     }
   }
 

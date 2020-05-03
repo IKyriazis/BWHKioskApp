@@ -78,7 +78,6 @@ public abstract class Database {
       if (!(tables.next())) {
         return true;
       }
-
       return false;
     } catch (SQLException e) {
       e.printStackTrace();
