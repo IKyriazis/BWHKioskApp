@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.patient;
 
 import edu.wpi.cs3733.d20.teamA.database.patient.Patient;
 import edu.wpi.cs3733.d20.teamA.database.patient.PatientDatabase;

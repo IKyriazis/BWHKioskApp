@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.services.janitor;
 
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
