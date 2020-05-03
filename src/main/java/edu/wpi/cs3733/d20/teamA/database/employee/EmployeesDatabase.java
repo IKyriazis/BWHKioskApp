@@ -1,17 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.database.employee;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.sql.*;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.commons.codec.binary.Base32;
@@ -64,12 +57,13 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
    * @return returns true if the employee is added
    */
   public synchronized String addEmployee(
-          String employeeID,
-          String nameFirst,
-          String nameLast,
-          String username,
-          String password,
-          EmployeeTitle title, long pagerNum) {
+      String employeeID,
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      long pagerNum) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
@@ -77,16 +71,16 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "INSERT INTO Employees (employeeID, nameFirst, nameLast," +
-                          " username, password, title, pagerNum)" +
-                          " VALUES (?, ?, ?, ?, ?, ?, ?)");
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast,"
+                      + " username, password, title, pagerNum)"
+                      + " VALUES (?, ?, ?, ?, ?, ?, ?)");
       pstmt.setString(1, employeeID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
       pstmt.setString(4, username);
       pstmt.setString(5, storedPassword);
-      pstmt.setObject(6, title);
-      pstmt.setObject(7, pagerNum);
+      pstmt.setString(6, title.toString());
+      pstmt.setLong(7, pagerNum);
       pstmt.executeUpdate();
       pstmt.close();
       return employeeID;
@@ -192,16 +186,26 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     return false;
   }
 
-
   public synchronized String addEmployeeNoChecks(
-      String nameFirst, String nameLast, String username, String password, EmployeeTitle title, long pagerNum) {
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      long pagerNum) {
     return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
   }
 
   public synchronized String addEmployee(
-      String nameFirst, String nameLast, String username, String password, EmployeeTitle title, long pagerNum) {
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      long pagerNum) {
     if (checkSecurePass(password)) {
-      return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
+      return addEmployee(
+          getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
     } else {
       return "";
     }
@@ -418,7 +422,6 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       return null;
     }
   }
-
 
   /** @return true if all all employee are removed */
   public synchronized boolean removeAllEmployees() {

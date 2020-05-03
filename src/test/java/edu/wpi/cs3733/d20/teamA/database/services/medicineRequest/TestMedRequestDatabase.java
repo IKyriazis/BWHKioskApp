@@ -33,7 +33,8 @@ public class TestMedRequestDatabase {
       graphDatabase = new GraphDatabase(conn);
       graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
       employeesDatabase = new EmployeesDatabase(conn);
-      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 8837726619l);
+      employeesDatabase.addEmployee(
+          "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 8837726619l);
       employeesDatabase.logIn("yppatel", "YashPatel1");
       serviceDatabase = new ServiceDatabase(conn);
     } catch (SQLException e) {

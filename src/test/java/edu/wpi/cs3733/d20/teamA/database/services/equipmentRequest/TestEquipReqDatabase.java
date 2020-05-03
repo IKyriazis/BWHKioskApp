@@ -32,7 +32,8 @@ public class TestEquipReqDatabase {
     graphDatabase = new GraphDatabase(conn);
     employeeDatabase = new EmployeesDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
-    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 2432774837l);
+    employeeDatabase.addEmployee(
+        "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 2432774837l);
     employeeDatabase.logIn("yppatel", "YashPatel1");
   }
 
@@ -51,7 +52,8 @@ public class TestEquipReqDatabase {
     graphDatabase.removeAll();
     Assertions.assertEquals(0, serviceDatabase.getSize());
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER, 8736453726l);
+    employeeDatabase.addEmployee(
+        "bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER, 8736453726l);
     serviceDatabase.addServiceReq(ServiceType.EQUIPMENT, "balogna", null, "item|2|High");
     Assertions.assertEquals(1, serviceDatabase.getSize());
     serviceDatabase.removeAll();
@@ -63,7 +65,8 @@ public class TestEquipReqDatabase {
     graphDatabase.removeAll();
     Assertions.assertEquals(0, serviceDatabase.getSize());
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee("bacd", "ray", "jay", "Password54", EmployeeTitle.INTERPRETER, 6635273645l);
+    employeeDatabase.addEmployee(
+        "bacd", "ray", "jay", "Password54", EmployeeTitle.INTERPRETER, 6635273645l);
     String a = serviceDatabase.addServiceReq(ServiceType.EQUIPMENT, "balogna", null, "item|2|High");
     Assertions.assertEquals(1, serviceDatabase.getSize());
     serviceDatabase.deleteServReq(a);

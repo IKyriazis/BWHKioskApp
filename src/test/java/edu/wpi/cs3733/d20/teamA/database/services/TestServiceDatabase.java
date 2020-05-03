@@ -30,7 +30,7 @@ public class TestServiceDatabase {
     DB = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
     sDB = new ServiceDatabase(conn);
-    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 2637994872l);
     eDB.logIn("yppatel", "YashPatel1");
   }
 
@@ -61,7 +61,7 @@ public class TestServiceDatabase {
     DB.removeAll();
     Assertions.assertEquals(0, sDB.getSize());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER);
+    eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER, 9947758821l);
     sDB.addServiceReq(
         ServiceType.JANITOR,
         "balogna",
@@ -78,7 +78,7 @@ public class TestServiceDatabase {
     DB.removeAll();
     Assertions.assertEquals(0, sDB.getSize());
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    eDB.addEmployee("bacd", "ray", "jay", "Password54", EmployeeTitle.NURSE);
+    eDB.addEmployee("bacd", "ray", "jay", "Password54", EmployeeTitle.NURSE, 8847392010l);
     String req =
         sDB.addServiceReq(
             ServiceType.JANITOR,
@@ -97,7 +97,7 @@ public class TestServiceDatabase {
     sDB.removeAll();
     DB.removeAll();
     DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.ADMIN);
+    eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.ADMIN, 9900990094l);
     String req =
         sDB.addServiceReq(
             ServiceType.JANITOR,

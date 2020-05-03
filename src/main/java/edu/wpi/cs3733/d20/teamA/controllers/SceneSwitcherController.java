@@ -87,10 +87,8 @@ public class SceneSwitcherController extends AbstractController {
     if (eDB.getSize() == -1) {
       eDB.dropTables();
       eDB.createTables();
-      eDB.readEmployeeCSV();
     } else if (eDB.getSize() == 0) {
       eDB.removeAll();
-      eDB.readEmployeeCSV();
     }
 
     // Set default dialog pane

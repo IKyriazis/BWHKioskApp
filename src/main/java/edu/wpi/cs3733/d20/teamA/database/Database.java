@@ -1,11 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
-import java.math.BigInteger;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import java.sql.*;
 import java.util.Random;
-import java.lang.Math;
 
 public abstract class Database {
   /*
@@ -163,7 +161,7 @@ public abstract class Database {
     try {
       Statement priceStmt = getConnection().createStatement();
       ResultSet rst =
-              priceStmt.executeQuery("SELECT * FROM Employees WHERE username = '" + username + "'");
+          priceStmt.executeQuery("SELECT * FROM Employees WHERE username = '" + username + "'");
       ;
       rst.next();
       first = rst.getString("nameFirst");
@@ -174,11 +172,12 @@ public abstract class Database {
     return null;
   }
 
-  public synchronized String getTitle(String username){
+  public synchronized String getTitle(String username) {
 
     try {
       PreparedStatement pstmt =
-              getConnection().prepareStatement("Select * From Employees Where username = '" + username + "'");
+          getConnection()
+              .prepareStatement("Select * From Employees Where username = '" + username + "'");
       ResultSet rset = pstmt.executeQuery();
       String title = "Not found";
       if (rset.next()) {
@@ -191,14 +190,14 @@ public abstract class Database {
       e.printStackTrace();
       return "Not found";
     }
-
   }
 
-  public synchronized long getPager(String username){
+  public synchronized long getPager(String username) {
 
     try {
       PreparedStatement pstmt =
-              getConnection().prepareStatement("Select * From Employees Where username = '" + username + "'");
+          getConnection()
+              .prepareStatement("Select * From Employees Where username = '" + username + "'");
       ResultSet rset = pstmt.executeQuery();
       long page = 0;
       if (rset.next()) {
@@ -211,7 +210,6 @@ public abstract class Database {
       e.printStackTrace();
       return 0;
     }
-
   }
 
   public long getRandomNumber() {
