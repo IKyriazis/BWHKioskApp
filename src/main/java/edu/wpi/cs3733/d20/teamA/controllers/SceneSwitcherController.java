@@ -208,7 +208,7 @@ public class SceneSwitcherController extends AbstractController {
       while (sceneStack.size() > 1) {
         sceneStack.pop();
       }
-      transition(TransitionType.ZOOM, false);
+      transition(TransitionType.FADE, false);
     } else {
       loginTransitioning = true;
 
@@ -419,6 +419,7 @@ public class SceneSwitcherController extends AbstractController {
       transitioning = true;
 
       AnimationFX transOut = trans.getTransitionOut(contentPane.getChildren().get(0), additive);
+      transOut.setResetOnFinished(true);
       transOut.setOnFinished(
           event -> {
             contentPane.getChildren().remove(transOut.getNode());
@@ -426,6 +427,7 @@ public class SceneSwitcherController extends AbstractController {
       transOut.play();
 
       AnimationFX transIn = trans.getTransitionIn(top, additive);
+      transIn.setResetOnFinished(true);
       transIn.setOnFinished(
           event -> {
             transitioning = false;
