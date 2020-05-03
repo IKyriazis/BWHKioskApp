@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database.interpreter;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
@@ -33,6 +34,8 @@ public class TestInterpreterDatabase {
     employeesDatabase = new EmployeesDatabase(conn);
     inventoryDatabase = new InventoryDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
+    employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+    employeesDatabase.logIn("yppatel", "YashPatel1");
   }
 
   @AfterEach

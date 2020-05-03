@@ -33,7 +33,7 @@ public class MedRequest implements ITableable<MedRequest> {
     // Additional: fNameText| doctorText| medicineText
     if (contentString != null && description != null) {
       // Parse the string
-      String[] arr = contentString.split("|");
+      String[] arr = contentString.split("\\|");
       if (arr.length == 3) {
         String patientName = arr[0];
         String doctorName = arr[1];

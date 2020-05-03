@@ -23,7 +23,7 @@ public class EquipRequest implements ITableable<EquipRequest> {
     // Additional: item|qty|priority
     if (additional != null) {
 
-      String[] arr = additional.split("|");
+      String[] arr = additional.split("\\|");
       if (arr.length == 3) {
 
         String item = arr[0];

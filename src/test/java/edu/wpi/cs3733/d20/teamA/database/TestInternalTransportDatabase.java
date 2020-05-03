@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
@@ -28,6 +29,8 @@ public class TestInternalTransportDatabase {
       gDB = new GraphDatabase(conn);
       employeesDatabase = new EmployeesDatabase(conn);
       serviceDatabase = new ServiceDatabase(conn);
+      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+      employeesDatabase.logIn("yppatel", "YashPatel1");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -55,12 +58,12 @@ public class TestInternalTransportDatabase {
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
     Assertions.assertEquals(1, serviceDatabase.getSize());
     String b =
-        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "yolk", null);
+        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "yolk", "balogna", null);
     Assertions.assertNull(b);
     Assertions.assertEquals(1, serviceDatabase.getSize());
     String c =
         serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", "balogna", null);
-    Assertions.assertEquals(c, serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", c));
+    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", c));
     Assertions.assertEquals(2, serviceDatabase.getSize());
 
     serviceDatabase.removeAll();

@@ -32,6 +32,8 @@ public class TestEquipReqDatabase {
     graphDatabase = new GraphDatabase(conn);
     employeeDatabase = new EmployeesDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
+    employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+    employeeDatabase.logIn("yppatel", "YashPatel1");
   }
 
   @AfterEach

@@ -29,6 +29,8 @@ public class TestLaundryDatabase {
     serviceDatabase = new ServiceDatabase(conn);
     eDB.addEmployee("Bob", "Roberts", "brob", "AbCd1234", EmployeeTitle.ADMIN);
     eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", EmployeeTitle.ADMIN);
+    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+    eDB.logIn("yppatel", "YashPatel1");
     gDB.addNode("AWASH00101", 123, 456, 1, "main", "HALL", "washing hall", "WH", "TeamA");
   }
 
@@ -51,6 +53,7 @@ public class TestLaundryDatabase {
     Assertions.assertTrue(makeTables);
     boolean dropTables2 = serviceDatabase.dropTables();
     Assertions.assertTrue(dropTables2);
+    serviceDatabase.createTables();
   }
 
   @Test
@@ -64,12 +67,11 @@ public class TestLaundryDatabase {
 
   @Test
   public void testAddLaundry() {
-    serviceDatabase.createTables();
     serviceDatabase.removeAll();
     String a = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "washing hall", "brob", "");
-    Assertions.assertTrue(serviceDatabase.checkIfExistsString("Laundry", "reqID", a));
+    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
     String b = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "washing hall", "rbob", "");
-    Assertions.assertTrue(serviceDatabase.checkIfExistsString("Laundry", "reqID", b));
+    Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", b));
     /*
     int c = lDB.addLaundry("steve", "washing hall");
     Assertions.assertFalse(lDB.checkIfExistsInt("Laundry", "requestNum", c));
@@ -81,10 +83,10 @@ public class TestLaundryDatabase {
 
   @Test
   public void testDeleteLaundry() {
-    serviceDatabase.createTables();
     serviceDatabase.removeAll();
     String a = serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "washing hall", "brob", "");
     boolean b = serviceDatabase.deleteServReq(a);
     Assertions.assertTrue(b);
+    serviceDatabase.removeAll();
   }
 }

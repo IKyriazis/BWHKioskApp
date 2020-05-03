@@ -16,7 +16,7 @@ public class TestInternalTransportRequest {
             new Timestamp(System.currentTimeMillis()),
             "done",
             "harry");
-    Assertions.assertEquals(1, itr.getRequestNumber());
+    Assertions.assertEquals("AAAAAA", itr.getRequestNumber());
   }
 
   @Test

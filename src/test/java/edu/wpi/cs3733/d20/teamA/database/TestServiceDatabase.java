@@ -30,6 +30,8 @@ public class TestServiceDatabase {
     DB = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
     sDB = new ServiceDatabase(conn);
+    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+    eDB.logIn("yppatel", "YashPatel1");
   }
 
   @AfterEach

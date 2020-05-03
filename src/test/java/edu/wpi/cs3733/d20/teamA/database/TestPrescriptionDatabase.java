@@ -90,8 +90,7 @@ public class TestPrescriptionDatabase {
 
   @Test
   public void createPrescriptionObject() {
-    Prescription p =
-        new Prescription("1", "Pillies", "Yash|Ketamin|CVS|2 pills|3|yppatel|Don't Die");
+    Prescription p = new Prescription("1", "yppatel", "Yash|Ketamin|CVS|2 pills|3|Don't Die");
     Assertions.assertEquals("1", p.getPrescriptionID());
     Assertions.assertEquals("Yash", p.getPatientName());
     Assertions.assertEquals("Ketamin", p.getPrescription());

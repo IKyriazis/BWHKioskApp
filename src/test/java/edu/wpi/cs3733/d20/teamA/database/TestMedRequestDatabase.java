@@ -1,5 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
@@ -18,6 +21,8 @@ public class TestMedRequestDatabase {
   private static final String closeUrl = "jdbc:derby:memory:BWDatabase;drop=true";
   private Connection conn;
   ServiceDatabase serviceDatabase;
+  EmployeesDatabase employeesDatabase;
+  GraphDatabase graphDatabase;
 
   public TestMedRequestDatabase() {}
 
@@ -25,6 +30,11 @@ public class TestMedRequestDatabase {
   public void init() {
     try {
       conn = DriverManager.getConnection(jdbcUrl);
+      graphDatabase = new GraphDatabase(conn);
+      graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+      employeesDatabase = new EmployeesDatabase(conn);
+      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+      employeesDatabase.logIn("yppatel", "YashPatel1");
       serviceDatabase = new ServiceDatabase(conn);
     } catch (SQLException e) {
       e.printStackTrace();
@@ -46,11 +56,11 @@ public class TestMedRequestDatabase {
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(
-            ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
+            ServiceType.MEDICINE, "balogna", "212", "Schmoe|Dr. Phil|Xanax");
     Assertions.assertEquals(1, serviceDatabase.getSize(ServiceType.MEDICINE));
     String d =
         serviceDatabase.addServiceReq(
-            ServiceType.MEDICINE, "washing hall", "200", "Tom|Hank|Dr. Bob|Zoloft");
+            ServiceType.MEDICINE, "balogna", "200", "Tom|Hank|Dr. Bob|Zoloft");
     Assertions.assertEquals(2, serviceDatabase.getSize(ServiceType.MEDICINE));
     serviceDatabase.removeAll();
   }

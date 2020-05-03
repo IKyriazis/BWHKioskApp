@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
@@ -19,6 +21,7 @@ public class TestITTicketDatabase {
   private Connection conn;
   ServiceDatabase serviceDatabase;
   GraphDatabase graphDatabase;
+  EmployeesDatabase employeesDatabase;
 
   public TestITTicketDatabase() {}
 
@@ -30,6 +33,9 @@ public class TestITTicketDatabase {
       serviceDatabase = new ServiceDatabase(conn);
       graphDatabase.addNode(
           "MDEPT00325", 1, 1, 1, "Main", "DEPT", "LongName", "ShortName", "Team A");
+      employeesDatabase = new EmployeesDatabase(conn);
+      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+      employeesDatabase.logIn("yppatel", "YashPatel1");
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -41,6 +47,7 @@ public class TestITTicketDatabase {
       conn.close();
       DriverManager.getConnection(closeUrl);
     } catch (SQLException ignored) {
+      ignored.printStackTrace();
     }
   }
 

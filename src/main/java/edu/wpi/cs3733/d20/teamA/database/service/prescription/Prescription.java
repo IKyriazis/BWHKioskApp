@@ -21,7 +21,7 @@ public class Prescription implements ITableable<Prescription> {
   public Prescription(String prescriptionID, String description, String additional) {
     // patientName+"|"+prescription+'|'+pharmacy+'|'+dosage+'|'+numberOfRefills;
     if (additional != null) {
-      String[] additionalArray = additional.split("|");
+      String[] additionalArray = additional.split("\\|");
       if (additionalArray.length == 6) {
         String patientName = additionalArray[0];
         String prescription = additionalArray[1];

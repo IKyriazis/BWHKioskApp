@@ -63,7 +63,7 @@ public class TestPatientDatabase {
     Assertions.assertEquals("2", e);
     String c = pDB.addPatient("-1", "Lily", "Green", "Lily Insurance", "01/04/2000");
     Assertions.assertEquals("-1", c);
-    Assertions.assertEquals(3, pDB.getSize());
+    Assertions.assertEquals(4, pDB.getSize());
     pDB.removeAll();
   }
 
