@@ -404,6 +404,11 @@ public class MapCanvas extends Canvas {
       double canvasPointX = point.getX();
       double canvasPointY = point.getY();
       if (firstTime && node.getFloor() == floor) {
+        xcoord = node.getX();
+        ycoord = node.getY();
+        point = graphToCanvas(new Point2D(xcoord, ycoord));
+        canvasPointX = point.getX();
+        canvasPointY = point.getY();
         animatedPath.getElements().add(new MoveTo(canvasPointX, canvasPointY));
         firstTime = false;
       }
