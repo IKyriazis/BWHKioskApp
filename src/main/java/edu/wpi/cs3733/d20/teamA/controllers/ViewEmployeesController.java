@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
@@ -37,7 +38,7 @@ public class ViewEmployeesController extends AbstractController {
           update();
         });
 
-    tblEmployees = new SimpleTableView<>(new Employee("", "", "", "", ""), 150.0);
+    tblEmployees = new SimpleTableView<>(new Employee("", "", "", EmployeeTitle.DOCTOR, ""), 150.0);
     empList.getChildren().add(tblEmployees);
 
     // Set up table to open edit controller when double clicking row

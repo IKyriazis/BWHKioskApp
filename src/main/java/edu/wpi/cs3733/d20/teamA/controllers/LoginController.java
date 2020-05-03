@@ -55,7 +55,7 @@ public class LoginController extends AbstractController {
       eDB.createTables();
       eDB.readEmployeeCSV();
     } else if (eDB.getSize() == 0) {
-      eDB.removeAllEmployees();
+      eDB.removeAll();
       eDB.readEmployeeCSV();
     }
     // Setup switcher box
@@ -221,7 +221,6 @@ public class LoginController extends AbstractController {
   // function that moves windows around and stuff when a user logs in
   // refactored this because we use it multiple times for 2fa
   public void logIn() {
-    eDB.addLog(usernameBox.getText());
     // Chuck the login box way off screen
     transitioning = true;
     TranslateTransition translate = new TranslateTransition(Duration.millis(1000), loginBox);

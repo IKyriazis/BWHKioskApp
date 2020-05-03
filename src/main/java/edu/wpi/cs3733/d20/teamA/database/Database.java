@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import java.sql.*;
 import java.util.Random;
 
@@ -9,6 +11,7 @@ public abstract class Database {
   */
 
   private final Connection connection;
+  public static String loggedIn = "";
 
   public Database(Connection connection) {
     this.connection = connection;
@@ -138,29 +141,6 @@ public abstract class Database {
     }
   }
 
-  /**
-   * get's the username of whoever is currently logged in
-   *
-   * @return the username
-   */
-  public String getLoggedIn() {
-    String username = null;
-    try {
-      PreparedStatement pstm =
-          getConnection().prepareStatement("Select username From LoggedIn Where flag = true");
-      ResultSet rset = pstm.executeQuery();
-      while (rset.next()) {
-        username = rset.getString("username");
-      }
-      rset.close();
-      pstm.close();
-      return username;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return null;
-    }
-  }
-
   public String getNamefromUser(String username) {
     String last;
     try {
@@ -193,5 +173,31 @@ public abstract class Database {
 
   public int getRandomInt() {
     return new Random().nextInt((999999 - 100000) + 1) + 100000;
+  }
+
+  /**
+   * Makes an employee object for the person who is logged in currently
+   *
+   * @return The employee object
+   */
+  public Employee getLoggedIn() {
+    try {
+      if (checkIfExistsString("Employees", "username", loggedIn)) {
+        PreparedStatement pstmt =
+            getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+        pstmt.setString(1, loggedIn);
+        ResultSet rset = pstmt.executeQuery();
+        rset.next();
+        String ID = rset.getString("employeeID");
+        String fName = rset.getString("nameFirst");
+        String lName = rset.getString("nameLast");
+        String title = rset.getString("title");
+        return new Employee(ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn);
+      }
+      return null;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }
