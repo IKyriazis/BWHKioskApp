@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.services.itticket;
 
 import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicket;
 import java.sql.Timestamp;

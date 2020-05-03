@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.services.laundry;
 
 import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
 import java.sql.Timestamp;
