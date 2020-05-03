@@ -14,11 +14,11 @@ public class Employee implements ITableable<Employee> {
   private SimpleStringProperty title;
   private SimpleStringProperty username;
 
-  public Employee(String id, String fName, String lName, String title, String username) {
+  public Employee(String id, String fName, String lName, EmployeeTitle title, String username) {
     this.id = new SimpleStringProperty(id);
     this.fName = new SimpleStringProperty(fName);
     this.lName = new SimpleStringProperty(lName);
-    this.title = new SimpleStringProperty(title);
+    this.title = new SimpleStringProperty(title.toString());
     this.username = new SimpleStringProperty(username);
   }
 

@@ -106,7 +106,7 @@ public class AnnouncementDatabase extends Database implements IDatabase<Announce
   }
 
   public boolean removeAnnouncement(String id) {
-    return helperPrepared("DELETE From ANNOUNCEMENTS WHERE announcementID = " + id);
+    return helperPrepared("DELETE From ANNOUNCEMENTS WHERE announcementID = '" + id + "'");
   }
 
   public ObservableList<Announcement> announcementObservableList() {

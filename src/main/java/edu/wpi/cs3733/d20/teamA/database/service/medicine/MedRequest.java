@@ -21,7 +21,6 @@ public class MedRequest implements ITableable<MedRequest> {
   private SimpleObjectProperty<LocalTime> time;
   private SimpleStringProperty fulfilledBy;
 
-  // Content string is FIRST NAME|LASTNAME|DOCTOR|MEDICATION|ROOMNUM
   // Use description to hold room number
   public MedRequest(
       String orderNum,
@@ -29,41 +28,32 @@ public class MedRequest implements ITableable<MedRequest> {
       String contentString,
       String description,
       Timestamp t,
-      String assignedEmployee)
-        /*
-        String orderNum,
-        String firstName,
-        String lastName,
-        String doctor,
-        String medicine,
-        int roomNum,
-        String progress,
-        int hour,
-        int minute,
-        String fulfilledBy)*/ {
+      String assignedEmployee) {
+
+    // Additional: fNameText| doctorText| medicineText
     if (contentString != null && description != null) {
       // Parse the string
-      String patientName = contentString.substring(0, contentString.indexOf('|'));
-      contentString = contentString.substring(contentString.indexOf('|') + 1);
-      String doc = contentString.substring(0, contentString.indexOf('|'));
-      String med = contentString.substring(contentString.indexOf('|') + 1);
+      String[] arr = contentString.split("\\|");
+      if (arr.length == 3) {
+        String patientName = arr[0];
+        String doctorName = arr[1];
+        String medicine = arr[2];
+        this.orderNum = new SimpleStringProperty(orderNum);
+        this.name = new SimpleStringProperty(patientName);
+        this.doctor = new SimpleStringProperty(doctorName);
+        this.medicine = new SimpleStringProperty(medicine);
 
-      this.orderNum = new SimpleStringProperty(orderNum);
-      this.name = new SimpleStringProperty(patientName);
-      this.doctor = new SimpleStringProperty(doc);
-      this.medicine = new SimpleStringProperty(med);
+        this.roomNum = new SimpleIntegerProperty(Integer.parseInt(description));
+        this.progress = new SimpleStringProperty(status);
+        this.time = new SimpleObjectProperty<LocalTime>();
 
-      this.roomNum = new SimpleIntegerProperty(Integer.parseInt(description));
-      this.progress = new SimpleStringProperty(status);
-      this.time = new SimpleObjectProperty<LocalTime>();
-
-      int hour = t.getHours();
-      int minute = t.getMinutes();
-      if (hour >= 0 && minute >= 0) {
-        time.set(LocalTime.of(hour, minute));
+        int hour = t.getHours();
+        int minute = t.getMinutes();
+        if (hour >= 0 && minute >= 0) {
+          time.set(LocalTime.of(hour, minute));
+        }
+        this.fulfilledBy = new SimpleStringProperty(assignedEmployee);
       }
-
-      this.fulfilledBy = new SimpleStringProperty(assignedEmployee);
     }
   }
 
