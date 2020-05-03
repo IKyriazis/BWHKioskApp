@@ -4,6 +4,8 @@ import edu.wpi.cs3733.d20.teamA.graph.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
@@ -15,6 +17,10 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.util.Duration;
 
 public class MapCanvas extends Canvas {
   private final Image[] floorImages;
@@ -355,6 +361,42 @@ public class MapCanvas extends Canvas {
         // drawNode(node, Color.BLACK);
       }
     }
+
+    animatePath(path, floor);
+  }
+
+  private void animatePath(ContextPath path, int floor) {
+    GraphicsContext graphicsContext = getGraphicsContext2D();
+    Circle circ = new Circle(10);
+    circ.setFill(Color.AQUA);
+    double xcoord = path.getPathNodes().get(0).getX();
+    double ycoord = path.getPathNodes().get(0).getY();
+    double length = 0;
+
+    javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
+    animatedPath.getElements().add(new MoveTo(xcoord, ycoord));
+
+    for (Node node : path.getPathNodes()) {
+      // if the node is on the same floor then animate the path on the floor
+      if (node.getFloor() == floor) {
+        animatedPath.getElements().add(new LineTo(node.getX(), node.getY()));
+        length += getDistance(xcoord, node.getX(), ycoord, node.getY());
+        xcoord = node.getX();
+        ycoord = node.getY();
+      }
+    }
+
+    PathTransition transition = new PathTransition();
+    transition.setDuration(Duration.seconds(length / 250.0));
+    transition.setPath(animatedPath);
+    transition.setNode(circ);
+    transition.setCycleCount(Timeline.INDEFINITE);
+    transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+    transition.play();
+  }
+
+  public double getDistance(double x, double newX, double y, double newY) {
+    return Math.sqrt((Math.pow((newX - x), 2)) + (Math.pow((newY - y), 2)));
   }
 
   // Draws a rubber-band selection box
