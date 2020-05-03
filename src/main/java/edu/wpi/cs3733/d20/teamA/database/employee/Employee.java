@@ -74,4 +74,13 @@ public class Employee implements ITableable<Employee> {
 
     return new ArrayList<>(List.of(column1, column2, column3, column4, column5));
   }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Employee) {
+      return username.getValue().equals(((Employee) obj).getUsername());
+    }
+
+    return false;
+  }
 }

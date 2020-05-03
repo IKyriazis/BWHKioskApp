@@ -21,7 +21,6 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     if (!doesTableNotExist("SERVICEREQ")) {
       return (helperPrepared("DROP TABLE SERVICEREQ"));
     }
-
     return false;
   }
 
@@ -104,7 +103,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       pstmt.setString(4, madeReqName);
       pstmt.setTimestamp(5, timeOf);
       pstmt.setString(6, status);
-      pstmt.setString(7, location);
+      pstmt.setString(7, (location == null || location.isEmpty()) ? null : location);
       pstmt.setString(8, description);
       pstmt.setString(9, additional);
       pstmt.executeUpdate();
@@ -264,6 +263,10 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     return helperGetString(reqID, "status");
   }
 
+  public synchronized String getDidReqName(String reqID) {
+    return helperGetString(reqID, "didReqName");
+  }
+
   public String getAdditional(String reqID) {
     return helperGetString(reqID, "additional");
   }
@@ -390,6 +393,43 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
                 description,
                 additional);
         observableList.add(item);
+      }
+      rset.close();
+      pstmt.close();
+      return observableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public synchronized ObservableList<ServiceRequest> getGenericObservableList() {
+    ObservableList<ServiceRequest> observableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM SERVICEREQ");
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        ServiceType servType = ServiceType.getServiceType(rset.getString("servType"));
+        String id = rset.getString("reqID");
+        String didReqName = rset.getString("didReqName");
+        String madeReqName = rset.getString("madeReqName");
+        Timestamp timeOfReq = rset.getTimestamp("timeOfReq");
+        String status = rset.getString("status");
+        String location = rset.getString("location");
+        String description = rset.getString("description");
+        String additional = rset.getString("additional");
+        ServiceRequest request =
+            new ServiceRequest(
+                servType,
+                id,
+                didReqName,
+                madeReqName,
+                timeOfReq.toString(),
+                status,
+                location,
+                description,
+                additional);
+        observableList.add(request);
       }
       rset.close();
       pstmt.close();
