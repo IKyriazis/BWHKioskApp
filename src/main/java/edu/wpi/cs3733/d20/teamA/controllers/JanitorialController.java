@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
 import com.opencsv.exceptions.CsvException;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.JanitorEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
@@ -107,13 +106,6 @@ public class JanitorialController extends AbstractController {
    */
   @FXML
   private void addServiceRequest() throws SQLException {
-    DialogUtil.complexDialog(
-        popupStackPane,
-        "Make a Janitorial Request",
-        "views/AddJanitorPopup.fxml",
-        false,
-        event -> refreshActiveRequests(),
-        new JanitorEditController());
     refreshActiveRequests();
   }
 

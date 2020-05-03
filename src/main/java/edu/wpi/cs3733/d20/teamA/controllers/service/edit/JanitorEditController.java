@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.controllers.dialog;
+package edu.wpi.cs3733.d20.teamA.controllers.service.edit;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -22,7 +22,7 @@ import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class JanitorEditController extends AbstractController implements IDialogController {
+public class JanitorEditController extends AbstractController {
   private final boolean modify;
 
   @FXML private GridPane modPane;
@@ -135,10 +135,5 @@ public class JanitorEditController extends AbstractController implements IDialog
     } catch (Exception exception) {
       exception.printStackTrace();
     }
-  }
-
-  @Override
-  public void setDialog(JFXDialog dialog) {
-    this.dialog = dialog;
   }
 }
