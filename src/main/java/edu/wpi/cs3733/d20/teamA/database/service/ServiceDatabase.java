@@ -263,6 +263,10 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     return helperGetString(reqID, "status");
   }
 
+  public synchronized String getDidReqName(String reqID) {
+    return helperGetString(reqID, "didReqName");
+  }
+
   public String getAdditional(String reqID) {
     return helperGetString(reqID, "additional");
   }
