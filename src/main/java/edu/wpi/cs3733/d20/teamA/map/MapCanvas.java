@@ -74,10 +74,18 @@ public class MapCanvas extends Canvas {
 
     widthProperty()
         .addListener(
-            (observable, oldValue, newValue) -> resize(newValue.doubleValue(), getHeight()));
+            (observable, oldValue, newValue) -> {
+              transition.stop();
+              group.getChildren().clear();
+              resize(newValue.doubleValue(), getHeight());
+            });
     heightProperty()
         .addListener(
-            (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
+            (observable, oldValue, newValue) -> {
+              transition.stop();
+              group.getChildren().clear();
+              resize(getWidth(), newValue.doubleValue());
+            });
 
     // Create drag event handlers
     dragStartHandler =
