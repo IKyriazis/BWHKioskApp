@@ -1,54 +1,46 @@
 package edu.wpi.cs3733.d20.teamA.controllers.service.request;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
-import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-@SuppressWarnings("DuplicatedCode")
 public class InternalTransportRequestController extends AbstractRequestController {
   @FXML private Label headerLabel;
-  @FXML private JFXComboBox<Node> nodeBox;
-  @FXML private JFXComboBox<Employee> employeeBox;
-  @FXML private JFXComboBox<String> categoryBox;
-  @FXML private JFXButton submitButton;
-  @FXML private JFXTextArea descriptionArea;
+  @FXML private JFXComboBox<Node> pickupLocationBox;
+  @FXML private JFXComboBox<Node> destinationLocationBox;
+  @FXML private JFXButton submitBtn;
+  @FXML private JFXTextField trackingCodeField;
+  @FXML private JFXButton trackBtn;
+  @FXML private Label statusLabel;
+  @FXML private JFXProgressBar progressBar;
 
   public void initialize() {
     // Setup icons
-    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.LAPTOP));
-    submitButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
+    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.WHEELCHAIR));
+    submitBtn.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
-    // Limit text length in description area to 100 chars
-    setupDescriptionArea(descriptionArea);
+    // Set up pickup box
+    setupNodeBox(pickupLocationBox, submitBtn);
 
-    // Set up node box
-    setupNodeBox(nodeBox, submitButton);
+    // Set up track box
+    setupNodeBox(destinationLocationBox, submitBtn);
 
-    // Set up employee box
-    setupEmployeeBox(employeeBox);
-
-    // Set up category box
-    categoryBox.getItems().addAll("Wifi", "Email", "Login", "Kiosk", "Pager", "Other");
+    // Set the progress to 0
+    progressBar.setProgress(0);
   }
 
-  public void pressedSubmit() {
-    Employee selectedEmployee = employeeBox.getSelectionModel().getSelectedItem();
-    Node selectedNode = getSelectedNode(nodeBox);
-    String selectedCategory = categoryBox.getSelectionModel().getSelectedItem();
+  public void pressedSubmitBtn() {
+    Node selectedPickupLocation = getSelectedNode(pickupLocationBox);
+    Node selectedDestinationLocation = getSelectedNode(destinationLocationBox);
 
-    if (selectedEmployee == null
-        || selectedNode == null
-        || selectedCategory == null
-        || selectedCategory.isEmpty()) {
+    if (selectedPickupLocation == null || selectedDestinationLocation == null) {
       DialogUtil.simpleInfoDialog(
           "Empty Fields", "Please fully fill out the service request form and try again.");
       return;
@@ -56,10 +48,10 @@ public class InternalTransportRequestController extends AbstractRequestControlle
 
     String l =
         serviceDatabase.addServiceReq(
-            ServiceType.IT_TICKET,
-            selectedNode.getLongName(),
-            descriptionArea.getText(),
-            selectedCategory);
+            ServiceType.INTERNAL_TRANSPORT,
+            selectedPickupLocation.getLongName(),
+            null,
+            selectedDestinationLocation.getLongName());
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {
@@ -67,9 +59,41 @@ public class InternalTransportRequestController extends AbstractRequestControlle
       SceneSwitcherController.popScene();
     }
 
-    nodeBox.getSelectionModel().clearSelection();
-    descriptionArea.clear();
-    employeeBox.getSelectionModel().clearSelection();
-    categoryBox.getSelectionModel().clearSelection();
+    pickupLocationBox.getSelectionModel().clearSelection();
+    destinationLocationBox.getSelectionModel().clearSelection();
+  }
+
+  public void pressedTrackBtn(ActionEvent actionEvent) {
+    String trackingCode = trackingCodeField.getText();
+
+    if (trackingCodeField.getText().isEmpty()) {
+      DialogUtil.simpleInfoDialog(
+          "Empty Fields", "Please fully fill out the service request form and try again.");
+      return;
+    }
+    try {
+      String s = serviceDatabase.getStatus(trackingCodeField.getText());
+      String name = serviceDatabase.getDidReqName(trackingCodeField.getText());
+      if (s == null) {
+        progressBar.setProgress(0);
+        statusLabel.setText("Status");
+        return;
+      }
+      if (s.equals("Reported")) {
+        progressBar.setProgress(.1);
+        statusLabel.setText("No one has been assigned to your request");
+      } else if (s.equals("Dispatched")) {
+        progressBar.setProgress(.5);
+        statusLabel.setText("Your request has been assigned! " + name + " is on the way!");
+      } else if (s.equals("Done")) {
+        progressBar.setProgress(1);
+        statusLabel.setText(name + " brought you to your destination.");
+      } else {
+        progressBar.setProgress(0);
+        statusLabel.setText("Status");
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }
