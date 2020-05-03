@@ -397,15 +397,15 @@ public class MapCanvas extends Canvas {
     group.getChildren().add(circ);
 
     javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
-    boolean firstTime = false;
+    boolean firstTime = true;
 
     for (Node node : path.getPathNodes()) {
       Point2D point = graphToCanvas(new Point2D(xcoord, ycoord));
       double canvasPointX = point.getX();
       double canvasPointY = point.getY();
-      if (!firstTime) {
+      if (firstTime && node.getFloor() == floor) {
         animatedPath.getElements().add(new MoveTo(canvasPointX, canvasPointY));
-        firstTime = true;
+        firstTime = false;
       }
       // if the node is on the same floor then animate the path on the floor
       if (node.getFloor() == floor) {
