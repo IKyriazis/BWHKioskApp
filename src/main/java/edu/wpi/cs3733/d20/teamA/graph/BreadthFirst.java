@@ -59,6 +59,5 @@ public class BreadthFirst extends PathAlgo implements IStrategyPath {
 
     // Flip to correct path direction
     Collections.reverse(pathNodes);
-    calculateEdges();
   }
 }

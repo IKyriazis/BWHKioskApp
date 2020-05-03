@@ -3,7 +3,7 @@ package edu.wpi.cs3733.d20.teamA.graph;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PathAlgo {
+public abstract class PathAlgo implements IStrategyPath {
 
   /** Represents a list of nodes along path */
   protected ArrayList<Node> pathNodes;
@@ -14,12 +14,23 @@ public abstract class PathAlgo {
   /** Represents the graph the path is being calculated for */
   protected Graph graph;
 
+  protected ArrayList<String> writtenDirections;
+
   public abstract void findPath(Node start, Node end);
+
+  public final void pathFind(Node start, Node end) {
+    findPath(start, end);
+
+    calculateEdges();
+
+    writtenDirections = textualDirections();
+  }
 
   public PathAlgo(Graph graph) {
     this.graph = graph;
     this.pathNodes = new ArrayList<>();
     this.pathEdges = new ArrayList<>();
+    this.writtenDirections = new ArrayList<>();
   }
 
   public ArrayList<Node> getPathNodes() {
@@ -119,6 +130,39 @@ public abstract class PathAlgo {
 
       double angleDiff = angle - lastAngle;
 
+      // Left
+      if (((angleDiff >= (Math.PI / 3)) && (angleDiff <= (2 * Math.PI / 3)))
+          || ((angleDiff <= (-4 * Math.PI / 3)) && (angleDiff >= (-5 * Math.PI / 3)))) {
+        directions.add(Direction.LEFT);
+      }
+
+      // Right
+      else if (((angleDiff <= (-Math.PI / 3)) && (angleDiff >= (-2 * Math.PI / 3)))
+          || ((angleDiff >= (4 * Math.PI / 3)) && (angleDiff <= (5 * Math.PI / 3)))) {
+        directions.add(Direction.RIGHT);
+      }
+
+      // Slight Left
+      else if (((angleDiff >= (Math.PI / 6)) && (angleDiff <= (Math.PI / 3)))
+          || ((angleDiff >= (-11 * Math.PI / 6)) && (angleDiff <= (-5 * Math.PI / 3)))
+          || ((angleDiff >= (2 * Math.PI / 3)) && (angleDiff <= (5 * Math.PI / 6)))
+          || ((angleDiff >= (-4 * Math.PI / 3)) && (angleDiff <= (-7 * Math.PI / 6)))) {
+
+        directions.add(Direction.SLIGHTLEFT);
+      }
+
+      // Slight Right
+      else if (((angleDiff <= (-Math.PI / 6)) && (angleDiff >= (-Math.PI / 3)))
+          || ((angleDiff <= (11 * Math.PI / 6)) && (angleDiff >= (5 * Math.PI / 3)))
+          || ((angleDiff <= (-2 * Math.PI / 3)) && (angleDiff >= (-5 * Math.PI / 6)))
+          || ((angleDiff <= (4 * Math.PI / 3)) && (angleDiff >= (7 * Math.PI / 6)))) {
+
+        directions.add(Direction.SLIGHTRIGHT);
+      } else {
+        directions.add(Direction.NEXT);
+      }
+
+      /*
       if (((angleDiff <= (-5 * Math.PI / 4)) && (angleDiff >= (-7 * Math.PI / 4)))
           || ((angleDiff >= Math.PI / 4) && (angleDiff <= (3 * Math.PI / 4)))) {
         directions.add(Direction.LEFT);
@@ -127,7 +171,7 @@ public abstract class PathAlgo {
         directions.add(Direction.RIGHT);
       } else {
         directions.add(Direction.NEXT);
-      }
+      } */
 
       lastAngle = angle;
     }
@@ -138,6 +182,10 @@ public abstract class PathAlgo {
         textPath.add("Turn right at " + pathNodes.get(j).getLongName());
       } else if (directions.get(j) == Direction.LEFT) {
         textPath.add("Turn left at " + pathNodes.get(j).getLongName());
+      } else if (directions.get(j) == Direction.SLIGHTLEFT) {
+        textPath.add("Make a slight left at " + pathNodes.get(j).getLongName());
+      } else if (directions.get(j) == Direction.SLIGHTRIGHT) {
+        textPath.add("Make a slight right at " + pathNodes.get(j).getLongName());
       } else if (directions.get(j) == Direction.UP) {
         int sameLength = getSameLength(directions, j, Direction.UP);
 
