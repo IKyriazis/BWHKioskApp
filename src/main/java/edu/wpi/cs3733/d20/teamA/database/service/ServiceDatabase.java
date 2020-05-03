@@ -48,7 +48,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn();
+    String madeReqName = getLoggedIn().getUsername();
     String didReqName = null;
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     String status = "Request Made";
@@ -89,7 +89,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn();
+    String madeReqName = getLoggedIn().getUsername();
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     String status = "Request Made";
 
@@ -125,7 +125,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn();
+    String madeReqName = getLoggedIn().getUsername();
     String didReqName = null;
     String status = "Request Made";
 
@@ -175,7 +175,8 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     try {
       PreparedStatement pstmt =
           getConnection()
-              .prepareStatement("SELECT FROM SERVICEREQ WHERE servType = '" + serviceString + "'");
+              .prepareStatement(
+                  "SELECT * FROM SERVICEREQ WHERE servType = '" + serviceString + "'");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         count++;
@@ -219,7 +220,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
                       + "'");
       pstmt.executeUpdate();
       pstmt.close();
-      String user = getLoggedIn();
+      String user = getLoggedIn().getUsername();
       PreparedStatement pstmt2 =
           getConnection()
               .prepareStatement(

@@ -1,6 +1,5 @@
-package edu.wpi.cs3733.d20.teamA.database;
+package edu.wpi.cs3733.d20.teamA.database.announcement;
 
-import edu.wpi.cs3733.d20.teamA.database.announcement.AnnouncementDatabase;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -49,19 +48,19 @@ public class TestAnnouncementDatabase {
 
   @Test
   public void addAnnouncement() {
-    announcementDatabase.removeAllAnnouncements();
+    announcementDatabase.removeAll();
     announcementDatabase.addAnnouncement("First Announcement");
     announcementDatabase.addAnnouncement("Second Announcement");
-    Assertions.assertEquals(2, announcementDatabase.getSizeAnnouncements());
-    announcementDatabase.removeAllAnnouncements();
+    Assertions.assertEquals(2, announcementDatabase.getSize());
+    announcementDatabase.removeAll();
   }
 
   @Test
   public void deleteAnnouncement() {
-    announcementDatabase.removeAllAnnouncements();
-    int id = announcementDatabase.addAnnouncement("Cake at the Main Hall");
-    Assertions.assertEquals(1, announcementDatabase.getSizeAnnouncements());
+    announcementDatabase.removeAll();
+    String id = announcementDatabase.addAnnouncement("Cake at the Main Hall");
+    Assertions.assertEquals(1, announcementDatabase.getSize());
     announcementDatabase.removeAnnouncement(id);
-    Assertions.assertEquals(0, announcementDatabase.getSizeAnnouncements());
+    Assertions.assertEquals(0, announcementDatabase.getSize());
   }
 }
