@@ -21,7 +21,6 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     if (!doesTableNotExist("SERVICEREQ")) {
       return (helperPrepared("DROP TABLE SERVICEREQ"));
     }
-
     return false;
   }
 
@@ -262,6 +261,10 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
 
   public synchronized String getStatus(String reqID) {
     return helperGetString(reqID, "status");
+  }
+
+  public synchronized String getDidReqName(String reqID) {
+    return helperGetString(reqID, "didReqName");
   }
 
   public String getAdditional(String reqID) {
