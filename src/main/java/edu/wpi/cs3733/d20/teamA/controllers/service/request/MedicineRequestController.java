@@ -4,8 +4,8 @@ import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
 import java.sql.Timestamp;
 import java.time.LocalTime;
 import javafx.fxml.FXML;
@@ -15,11 +15,10 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 public class MedicineRequestController extends AbstractRequestController {
   @FXML private Label headerLabel;
-  @FXML private JFXTextField firstNameField;
-  @FXML private JFXTextField lastNameField;
+  @FXML private JFXTextField patientName;
   @FXML private JFXComboBox<Employee> doctorBox;
   @FXML private JFXTextField medicineField;
-  @FXML private JFXTextField roomField;
+  @FXML private JFXComboBox<Node> locationBox;
   @FXML private JFXTimePicker administerTime;
   @FXML private JFXTextArea descriptionArea;
   @FXML private JFXButton submitButton;
@@ -35,29 +34,26 @@ public class MedicineRequestController extends AbstractRequestController {
     // Set up employee box
     setupEmployeeBox(doctorBox);
 
-    // Set text formatter for room number
-    roomField.setTextFormatter(InputFormatUtil.getIntFilter());
+    // Set up node box
+    setupNodeBox(locationBox, submitButton);
   }
 
   @FXML
   public void pressedSubmit() {
     Employee doctor = doctorBox.getSelectionModel().getSelectedItem();
-
-    if (firstNameField.getText().isEmpty()
-        || lastNameField.getText().isEmpty()
+    Node location = getSelectedNode(locationBox);
+    if (patientName.getText().isEmpty()
         || doctor == null
         || medicineField.getText().isEmpty()
-        || roomField.getText().isEmpty()
+        || location == null
         || administerTime.getEditor().getText().isEmpty()) {
       DialogUtil.simpleInfoDialog(
           "Empty Fields", "Please fully fill out the service request form and try again.");
       return;
     }
 
-    String fName = firstNameField.getText();
-    String lName = lastNameField.getText();
+    String patientNameText = patientName.getText();
     String medicine = medicineField.getText();
-    int room = Integer.parseInt(roomField.getText());
 
     Timestamp timestamp = new Timestamp(0);
 
@@ -73,11 +69,15 @@ public class MedicineRequestController extends AbstractRequestController {
       return;
     }
 
-    String additional = fName + "|" + lName + "|" + doctor.getUsername() + "|" + medicine;
+    String additional = patientNameText + "|" + doctor.getUsername() + "|" + medicine;
 
     String l =
         serviceDatabase.addServiceReq(
-            ServiceType.MEDICINE, timestamp, null, String.valueOf(room), additional);
+            ServiceType.MEDICINE,
+            timestamp,
+            location.getLongName(),
+            descriptionArea.getText(),
+            additional);
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {
@@ -85,11 +85,10 @@ public class MedicineRequestController extends AbstractRequestController {
       SceneSwitcherController.popScene();
     }
 
-    firstNameField.clear();
-    lastNameField.clear();
+    patientName.clear();
     doctorBox.getSelectionModel().clearSelection();
     medicineField.clear();
-    roomField.clear();
+    locationBox.getSelectionModel().clearSelection();
     administerTime.getEditor().clear();
     descriptionArea.clear();
   }
