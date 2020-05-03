@@ -1,14 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
@@ -17,18 +17,33 @@ public class CreateAcctController extends AbstractController {
   @FXML private JFXTextField fName;
   @FXML private JFXTextField lName;
   @FXML private JFXTextField uName;
-  @FXML private JFXTextField title;
   @FXML private JFXPasswordField pass;
   @FXML private JFXPasswordField cPass;
   @FXML private StackPane dialogPane;
+  @FXML private JFXCheckBox addRFID;
+  @FXML private JFXComboBox title;
+
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
+
+  public void initialize() {
+    ArrayList<String> titles = new ArrayList<String>(7);
+    titles.add("Choose one:");
+    titles.add("admin");
+    titles.add("doctor");
+    titles.add("nurse");
+    titles.add("janitor");
+    titles.add("interpreter");
+    titles.add("receptionist");
+    titles.add("retail");
+    title.setItems(FXCollections.observableList(titles));
+  }
 
   public void submitEmployee() {
     if (fName.getText().isEmpty()
         || lName.getText().isEmpty()
         || uName.getText().isEmpty()
-        || title.getText().isEmpty()
+        || !title.getValue().equals("Choose one")
         || pass.getText().isEmpty()
         || cPass.getText().isEmpty()) {
       // make popup that says one or more fields are empty
@@ -80,7 +95,7 @@ public class CreateAcctController extends AbstractController {
                   lName.getText(),
                   uName.getText(),
                   cPass.getText(),
-                  title.getText());
+                  title.getValue().toString());
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
               getGoogleAuthenticatorBarCode(secretKey, uName.getText(), companyName);
@@ -127,7 +142,7 @@ public class CreateAcctController extends AbstractController {
     fName.clear();
     lName.clear();
     uName.clear();
-    title.clear();
+    title.setValue("Choose one:");
     pass.clear();
     cPass.clear();
   }

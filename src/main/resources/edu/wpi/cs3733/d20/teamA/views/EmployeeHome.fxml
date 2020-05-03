@@ -40,7 +40,14 @@
                   </GridPane>
                </children>
             </AnchorPane>
-            <Pane fx:id="blockerPane" style="-fx-background-color: white;" />
+            <Pane fx:id="blockerPane" style="-fx-background-color: white;">
+               <children>
+                  <AnchorPane layoutX="298.0" layoutY="-58.0" pickOnBounds="false">
+                     <children>
+                        <JFXButton fx:id="logoutButton" buttonType="RAISED" onAction="#logoutButtonPressed" styleClass="white-button" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                     </children>
+                  </AnchorPane>
+               </children></Pane>
             <VBox fx:id="loginBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0">
                <padding>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
@@ -53,6 +60,7 @@
                            <children>
                               <JFXTextField fx:id="usernameBox" labelFloat="true" promptText="Username" styleClass="heading-text" />
                               <JFXPasswordField fx:id="passwordBox" labelFloat="true" promptText="Password" styleClass="heading-text" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Or use your RFID card to sign in" />
                            </children>
                         </VBox>
                         <VBox fx:id="gauth" pickOnBounds="false" visible="false">
@@ -95,11 +103,6 @@
                   </StackPane>
                </children>
             </VBox>
-            <AnchorPane pickOnBounds="false">
-               <children>
-                  <JFXButton fx:id="logoutButton" buttonType="RAISED" onAction="#logoutButtonPressed" styleClass="white-button" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0" />
-               </children>
-            </AnchorPane>
          </children>
       </StackPane>
    </children>
