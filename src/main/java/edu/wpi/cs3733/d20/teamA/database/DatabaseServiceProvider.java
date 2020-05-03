@@ -13,6 +13,8 @@ import java.sql.SQLException;
  */
 public class DatabaseServiceProvider extends AbstractModule {
 
+  private final String remoteDbUrl =
+      "jdbc:derby://db.dcole.dev:1527/BWDatabase;user=santa;password=c|@aus";
   private final String realDbUrl = "jdbc:derby:BWDatabase;create=true";
 
   @Override
@@ -23,7 +25,14 @@ public class DatabaseServiceProvider extends AbstractModule {
   @Singleton
   public Connection provideConnection() {
     try {
-      return DriverManager.getConnection(realDbUrl);
+      Connection connRemote = DriverManager.getConnection(remoteDbUrl);
+      return connRemote;
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    try {
+      Connection connEmbedded = DriverManager.getConnection(realDbUrl);
+      return connEmbedded;
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
