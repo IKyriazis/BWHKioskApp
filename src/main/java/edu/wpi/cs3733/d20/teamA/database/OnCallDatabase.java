@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -49,7 +51,7 @@ public class OnCallDatabase extends Database implements IDatabase{
         // Create the graph tables
 
         return helperPrepared(
-                "CREATE TABLE OnCall (username Varchar(25), status Varchar(9), CONSTRAINT FK_OCID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT CK_ST CHECK (status in('Available', 'Busy', 'Out')))");
+                "CREATE TABLE OnCall (username Varchar(25) PRIMARY KEY, status Varchar(9), CONSTRAINT FK_OCID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT CK_ST CHECK (status in('Available', 'Busy', 'Out')))");
     }
 
     @Override
@@ -88,6 +90,58 @@ public class OnCallDatabase extends Database implements IDatabase{
         } catch (SQLException e) {
             e.printStackTrace();
             return eList;
+        }
+    }
+
+    public synchronized boolean updateStatus(String username, String newStatus) {
+        try {
+            PreparedStatement pstmt =
+                    getConnection()
+                            .prepareStatement(
+                                    "UPDATE OnCall SET status = '"
+                                            + newStatus
+                                            + "' WHERE username = '"
+                                            + username
+                                            + "'");
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public synchronized boolean signOntoShift(String username) {
+
+        try {
+            PreparedStatement pstmt =
+                    getConnection()
+                            .prepareStatement(
+                                    "INSERT INTO OnCall (username, status)" +
+                                            " VALUES (?, ?)");
+            pstmt.setString(1, username);
+            pstmt.setString(2, "Available");
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public synchronized boolean signOffShift(String username) {
+        try {
+            PreparedStatement pstmt =
+                    getConnection().prepareStatement("DELETE From OnCall Where username = ?");
+            pstmt.setString(1, username);
+            pstmt.executeUpdate();
+            pstmt.close();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
