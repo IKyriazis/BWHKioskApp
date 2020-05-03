@@ -111,14 +111,21 @@ public class RequestViewerController extends AbstractController {
               .reset(req);
           break;
         case EQUIPMENT:
-          newNode = FXMLCache.loadFXML("views/service/edit/EquipmentViewer.fxml");
+          newNode =
+              FXMLCache.loadServiceFXML(
+                  "views/service/edit/EquipmentRequestViewer.fxml",
+                  new EquipmentViewerController(req));
+          ((AbstractViewerController)
+                  FXMLCache.getController("views/service/edit/EquipmentRequestViewer.fxml"))
+              .reset(req);
           break;
         case INTERNAL_TRANSPORT:
           newNode =
               FXMLCache.loadServiceFXML(
-                  "views/service/edit/InternalTransportViewer.fxml", new InternalTransportViewerController(req));
+                  "views/service/edit/InternalTransportViewer.fxml",
+                  new InternalTransportViewerController(req));
           ((AbstractViewerController)
-              FXMLCache.getController("views/service/edit/InternalTransportViewer.fxml"))
+                  FXMLCache.getController("views/service/edit/InternalTransportViewer.fxml"))
               .reset(req);
           break;
         case INTERPRETER_REQ:

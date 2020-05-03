@@ -8,7 +8,6 @@ import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
 import java.util.ArrayList;
 import java.util.List;
-
 import javafx.fxml.FXML;
 
 public class GenericViewerController extends AbstractRequestController {
@@ -60,11 +59,12 @@ public class GenericViewerController extends AbstractRequestController {
 
   protected boolean updateRequestFromFields(ServiceRequest req) {
     boolean success = true;
-    if (!assigneeBox
-        .getSelectionModel()
-        .getSelectedItem()
-        .getUsername()
-        .equals(req.getDidReqName())) {
+    if (assigneeBox.getSelectionModel().getSelectedItem() != null
+        && !assigneeBox
+            .getSelectionModel()
+            .getSelectedItem()
+            .getUsername()
+            .equals(req.getDidReqName())) {
       success =
           success
               && serviceDatabase.setAssignedEmployee(
@@ -78,7 +78,8 @@ public class GenericViewerController extends AbstractRequestController {
                   req.getReqID(), statusBox.getSelectionModel().getSelectedItem());
     }
 
-    if (!descriptionArea.getText().equals(req.getDescription())) {
+    if (descriptionArea.getText() != null
+        && !descriptionArea.getText().equals(req.getDescription())) {
       success =
           success && serviceDatabase.setDescription(req.getReqID(), descriptionArea.getText());
     }

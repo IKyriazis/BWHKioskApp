@@ -2,8 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers.service.edit;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;

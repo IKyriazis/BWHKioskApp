@@ -1,16 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.controllers.service.edit;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InternalTransportViewerController extends AbstractViewerController {
   @FXML private GenericViewerController genericController;
