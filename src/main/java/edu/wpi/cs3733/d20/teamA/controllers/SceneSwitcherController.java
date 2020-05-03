@@ -77,7 +77,7 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
-  private SerialPort comPort;
+  private SerialPort comPort = null;
 
   @FXML
   public void initialize() {
@@ -85,7 +85,9 @@ public class SceneSwitcherController extends AbstractController {
     instance = this;
 
     // find arduino
-    comPort = SerialPort.getCommPorts()[0];
+    if (comPort == null) {
+      comPort = SerialPort.getCommPorts()[0];
+    }
 
     // Create the employee table if it doesn't exist
     if (eDB.getSize() == -1) {
