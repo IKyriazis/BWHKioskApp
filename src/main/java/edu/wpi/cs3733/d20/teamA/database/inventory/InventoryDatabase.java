@@ -97,10 +97,10 @@ public class InventoryDatabase extends Database implements IDatabase {
     return helperPrepared("DELETE FROM Inventory");
   }
 
-  public synchronized String getID(String itemName){
+  public synchronized String getID(String itemName) {
     try {
       PreparedStatement pstmt =
-              getConnection().prepareStatement("SELECT * FROM INVENTORY WHERE itemName = ?");
+          getConnection().prepareStatement("SELECT * FROM INVENTORY WHERE itemName = ?");
       pstmt.setString(1, itemName);
       ResultSet rset = pstmt.executeQuery();
       rset.next();

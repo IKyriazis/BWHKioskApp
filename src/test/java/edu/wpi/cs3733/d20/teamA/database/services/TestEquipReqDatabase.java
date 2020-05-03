@@ -4,13 +4,11 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
-import edu.wpi.cs3733.d20.teamA.database.service.equipreq.EquipReqDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.equipreq.EquipRequest;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.junit.jupiter.api.AfterEach;
@@ -78,7 +76,9 @@ public class TestEquipReqDatabase {
 
   @Test
   public void testEquipObject() {
-    EquipRequest eq = new EquipRequest("Spider", "location", "Ave", new Timestamp(System.currentTimeMillis()), "Mask|2|Low");
+    EquipRequest eq =
+        new EquipRequest(
+            "Spider", "location", "Ave", new Timestamp(System.currentTimeMillis()), "Mask|2|Low");
     Assertions.assertEquals("Spider", eq.getID());
     Assertions.assertEquals("location", eq.getLocation());
     Assertions.assertEquals("Ave", eq.getName());

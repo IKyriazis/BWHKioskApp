@@ -1,15 +1,13 @@
 package edu.wpi.cs3733.d20.teamA.database.graph;
 
 import com.opencsv.exceptions.CsvException;
-import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.graph.Graph;
+import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.graph.NodeType;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.graph.NodeType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

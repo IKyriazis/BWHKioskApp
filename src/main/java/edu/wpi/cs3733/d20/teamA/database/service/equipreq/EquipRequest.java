@@ -18,7 +18,8 @@ public class EquipRequest implements ITableable<EquipRequest> {
   private SimpleStringProperty time;
   private SimpleStringProperty ID;
 
-  public EquipRequest(String idNum, String location, String name, Timestamp time, String additional) {
+  public EquipRequest(
+      String idNum, String location, String name, Timestamp time, String additional) {
     // item+"|"+qty+"|"+priority
     if (additional != null) {
       String item = additional.substring(0, additional.indexOf('|'));

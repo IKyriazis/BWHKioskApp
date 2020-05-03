@@ -62,16 +62,14 @@ public class TestInterpreterDatabase {
     serviceDatabase.removeAll();
     inventoryDatabase.removeAll();
 
-    String a = inventoryDatabase.addItem(ItemType.INTERPRETER, "Sam Har",1,0.0,
-            null, "Portugese");
+    String a =
+        inventoryDatabase.addItem(ItemType.INTERPRETER, "Sam Har", 1, 0.0, null, "Portugese");
     Assertions.assertEquals(a, inventoryDatabase.getID("Sam Har"));
 
-    String d = inventoryDatabase.addItem(ItemType.INTERPRETER, "Yash2",1,0.0,
-            null, "French");
+    String d = inventoryDatabase.addItem(ItemType.INTERPRETER, "Yash2", 1, 0.0, null, "French");
     Assertions.assertEquals(d, inventoryDatabase.getID("Yash2"));
 
-    String f = inventoryDatabase.addItem(ItemType.INTERPRETER, "Yash2",1,0.0,
-            null, "Latin");
+    String f = inventoryDatabase.addItem(ItemType.INTERPRETER, "Yash2", 1, 0.0, null, "Latin");
     Assertions.assertEquals("", f);
 
     Assertions.assertEquals(4, inventoryDatabase.getSize("INVENTORY"));
@@ -98,5 +96,4 @@ public class TestInterpreterDatabase {
     inventoryDatabase.removeAll();
     gDB.removeAll();
   }
-
 }

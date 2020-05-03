@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.database.graph;
 
-import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import java.sql.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -16,11 +15,11 @@ public class TestGraphDatabase {
   public TestGraphDatabase() {}
 
   @BeforeEach
-  public void init(){
+  public void init() {
     try {
       conn = DriverManager.getConnection(jdbcUrl);
       graphDatabase = new GraphDatabase(conn);
-    } catch (SQLException e){
+    } catch (SQLException e) {
       e.printStackTrace();
     }
   }
@@ -35,7 +34,7 @@ public class TestGraphDatabase {
   }
 
   // @Test
-  public void testgraphDatabase(){
+  public void testgraphDatabase() {
     boolean test = false;
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
@@ -59,7 +58,7 @@ public class TestGraphDatabase {
   }
 
   @Test
-  public void testGetSizeNode()  {
+  public void testGetSizeNode() {
     graphDatabase.createTables();
     graphDatabase.removeAllNodes();
     Assertions.assertEquals(0, graphDatabase.getSizeNode());
@@ -69,7 +68,7 @@ public class TestGraphDatabase {
   }
 
   @Test
-  public void testGetSizeEdge()  {
+  public void testGetSizeEdge() {
     graphDatabase.createTables();
     graphDatabase.removeAll();
     Assertions.assertEquals(0, graphDatabase.getSizeEdge());
@@ -81,27 +80,35 @@ public class TestGraphDatabase {
   }
 
   @Test
-  public void testAddNode()  {
+  public void testAddNode() {
     graphDatabase.createTables();
     graphDatabase.removeAllNodes();
-    boolean a = graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    boolean a =
+        graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
     Assertions.assertTrue(a);
-    boolean b = graphDatabase.addNode("nugget", 0, 0, 2, "White House", "CONF", "balogna2", "b", "Team A");
+    boolean b =
+        graphDatabase.addNode("nugget", 0, 0, 2, "White House", "CONF", "balogna2", "b", "Team A");
     Assertions.assertTrue(b);
-    boolean c = graphDatabase.addNode("mashedP", 2, -1, 2, "White House", "CONF", "balogna3", "b", "Team A");
+    boolean c =
+        graphDatabase.addNode(
+            "mashedP", 2, -1, 2, "White House", "CONF", "balogna3", "b", "Team A");
     Assertions.assertFalse(c);
-    boolean d = graphDatabase.addNode("BBQSauce", 2, 5, 0, "White House", "CONF", "balogna4", "b", "Team A");
+    boolean d =
+        graphDatabase.addNode(
+            "BBQSauce", 2, 5, 0, "White House", "CONF", "balogna4", "b", "Team A");
     Assertions.assertFalse(d);
-    boolean e = graphDatabase.addNode("banana", 2, 5, 11, "White House", "CONF", "balogna5", "b", "Team A");
+    boolean e =
+        graphDatabase.addNode("banana", 2, 5, 11, "White House", "CONF", "balogna5", "b", "Team A");
     Assertions.assertFalse(e);
     boolean f =
-        graphDatabase.addNode("banana", 2, 5, 1, "White House", "abacabadabacaba", "balogna6", "b", "Team A");
+        graphDatabase.addNode(
+            "banana", 2, 5, 1, "White House", "abacabadabacaba", "balogna6", "b", "Team A");
     Assertions.assertFalse(f);
     graphDatabase.removeAllNodes();
   }
 
   @Test
-  public void testAddEdge()  {
+  public void testAddEdge() {
     graphDatabase.createTables();
     graphDatabase.removeAll();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -114,7 +121,7 @@ public class TestGraphDatabase {
   }
 
   @Test
-  public void testDeleteEdge()  {
+  public void testDeleteEdge() {
     graphDatabase.createTables();
     graphDatabase.removeAll();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -128,7 +135,7 @@ public class TestGraphDatabase {
   }
 
   @Test
-  public void testDeleteNode()  {
+  public void testDeleteNode() {
     graphDatabase.createTables();
     graphDatabase.removeAllNodes();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -141,7 +148,7 @@ public class TestGraphDatabase {
   }
 
   @Test
-  public void testEditNode()  {
+  public void testEditNode() {
     graphDatabase.createTables();
     graphDatabase.removeAll();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -151,7 +158,7 @@ public class TestGraphDatabase {
   }
 
   @Test
-  public void testGetters()  {
+  public void testGetters() {
     graphDatabase.createTables();
     graphDatabase.removeAll();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
@@ -167,7 +174,7 @@ public class TestGraphDatabase {
   }
 
   @Test
-  public void testSetters()  {
+  public void testSetters() {
     graphDatabase.createTables();
     graphDatabase.removeAll();
     graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
