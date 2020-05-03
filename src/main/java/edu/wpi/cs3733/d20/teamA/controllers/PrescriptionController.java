@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.PrescriptionDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.prescription.Prescription;
@@ -89,25 +88,10 @@ public class PrescriptionController extends AbstractController {
     infoPrescriptionBtn.disableProperty().setValue(true);
   }
 
-  public void openAddDialog(ActionEvent e) {
-    DialogUtil.complexDialog(
-        prescriptionStackPane,
-        "Add Prescription",
-        "views/PrescriptionServiceAddDialog.fxml",
-        false,
-        event -> updateTable(),
-        new PrescriptionDialogController());
-  }
+  public void openAddDialog(ActionEvent e) {}
 
   public void openEditDialog() {
     selected = (Prescription) tblViewPrescription.getSelected();
-    DialogUtil.complexDialog(
-        prescriptionStackPane,
-        "Edit Prescription",
-        "views/PrescriptionServiceAddDialog.fxml",
-        false,
-        event -> updateTable(),
-        new PrescriptionDialogController(selected, true, false));
   }
 
   public void openDeleteDialog(ActionEvent e) {
@@ -118,13 +102,5 @@ public class PrescriptionController extends AbstractController {
     }
   }
 
-  public void openInfoDialog(ActionEvent e) {
-    DialogUtil.complexDialog(
-        prescriptionStackPane,
-        "Info Prescription",
-        "views/PrescriptionServiceAddDialog.fxml",
-        false,
-        event -> updateTable(),
-        new PrescriptionDialogController(selected, true, true));
-  }
+  public void openInfoDialog(ActionEvent e) {}
 }

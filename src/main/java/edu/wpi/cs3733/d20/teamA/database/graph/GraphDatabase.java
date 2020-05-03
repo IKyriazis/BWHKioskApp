@@ -20,7 +20,6 @@ public class GraphDatabase extends Database {
    *     and tables are dropped correctly
    */
   public boolean dropTables() {
-
     boolean a = false;
     boolean b = false;
     // if the helper returns false this method should too
