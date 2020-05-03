@@ -27,7 +27,7 @@ public class MedicineViewerController extends AbstractViewerController {
   @Override
   public void initialize() {
     // Set up icons
-    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.STETHOSCOPE));
+    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.MEDKIT));
     saveButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
     // Strip out additional info
