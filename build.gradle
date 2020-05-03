@@ -68,6 +68,7 @@ dependencies {
             'de.taimos:totp:1.0',
             'commons-codec:commons-codec:1.10'
     )
+
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
             'org.testfx:testfx-junit5:4.0.16-alpha',
@@ -77,8 +78,6 @@ dependencies {
     testRuntimeOnly(
             'org.testfx:openjfx-monocle:jdk-11+26',
     )
-    //To run the API, replace the URL here with your local path to the JAR, will soon set up API to be hosted online to avoid this
-    // compile files('C:\\Users\\William Engdahl\\IdeaProjects\\APIFlower\\build\\libs\\APIFlower.jar')
 }
 
 javafx {

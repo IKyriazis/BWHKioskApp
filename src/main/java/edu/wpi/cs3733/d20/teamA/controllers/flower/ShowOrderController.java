@@ -60,11 +60,11 @@ public class ShowOrderController extends AbstractController implements IDialogCo
       int flNum = Integer.parseInt(s.substring(0, s.indexOf("/")));
       int num = Integer.parseInt(s.substring(s.indexOf("/") + 1, s.indexOf("|")));
 
-      /*String flType = flDatabase.getFlowerTypeID(flNum);
+      String flType = flDatabase.getFlowerTypeID(flNum);
       String flColor = flDatabase.getFlowerColorID(flNum);
 
-      TempFlower flow = new TempFlower(flColor + "   " + flType, num);*/
-      // tblFlowers.getRoot().getChildren().add(new TreeItem<>(flow));
+      TempFlower flow = new TempFlower(flColor + "   " + flType, num);
+      tblFlowers.getRoot().getChildren().add(new TreeItem<>(flow));
       s = s.substring(s.indexOf("|") + 1);
     }
 
@@ -103,7 +103,7 @@ public class ShowOrderController extends AbstractController implements IDialogCo
   }
 
   public void changeProgress() {
-    /*String s = txtNextStat.getSelectionModel().getSelectedItem();
+    String s = txtNextStat.getSelectionModel().getSelectedItem();
     super.flDatabase.changeOrderStatus(myOrder.getOrderNumber(), s);
     // Set fields to reflect this
     txtPrevStat.setText(s);
@@ -113,18 +113,18 @@ public class ShowOrderController extends AbstractController implements IDialogCo
             Math.min(
                 statusStringToValue(flDatabase.getOrderStatus(myOrder.getOrderNumber())) + 1,
                 3)); // Make sure to grab status from database because the locally stored order does
-    // not reflect that*/
+    // not reflect that
   }
 
   public void changeEmployee() {
-    /*Employee e = txtNextEmp.getSelectionModel().getSelectedItem();
+    Employee e = txtNextEmp.getSelectionModel().getSelectedItem();
 
     if (e != null) {
       super.flDatabase.assignEmployee(myOrder.getOrderNumber(), e.getId());
       // Set fields to reflect this
       txtPrevEmp.setText(e.toString());
       txtNextEmp.getSelectionModel().clearSelection();
-    }*/
+    }
   }
 
   private int statusStringToValue(String status) {
