@@ -51,6 +51,13 @@ public class MainMenuController {
     serviceButton.setOnAction(
         event -> {
           SceneSwitcherController.pushScene("views/nav/ServiceHome.fxml", TransitionType.FADE);
+          try {
+            Media media = new Media(App.class.getResource("sounds/yo.mp3").toURI().toString());
+            AudioClip audioClip = new AudioClip(media.getSource());
+            audioClip.play();
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
         });
 
     // Preload scenes into FXML cache

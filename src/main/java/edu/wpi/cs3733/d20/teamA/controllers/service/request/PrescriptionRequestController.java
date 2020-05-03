@@ -59,21 +59,11 @@ public class PrescriptionRequestController extends AbstractRequestController {
     Timestamp timestamp = new Timestamp(0);
 
     String additional =
-        patientName
-            + "|"
-            + prescription
-            + "|"
-            + dosage
-            + "|"
-            + numberOfRefills
-            + "|"
-            + pharmacy
-            + "|"
-            + doctor.getUsername();
+        patientName + "|" + prescription + "|" + dosage + "|" + numberOfRefills + "|" + pharmacy;
 
     String l =
         serviceDatabase.addServiceReq(
-            ServiceType.PRESCRIPTION, timestamp, null, txtNotes.getText(), additional);
+            ServiceType.PRESCRIPTION, "", doctor.getUsername(), txtNotes.getText(), additional);
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {
