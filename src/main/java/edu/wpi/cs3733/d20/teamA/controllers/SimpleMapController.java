@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javafx.animation.PathTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -189,6 +191,10 @@ public class SimpleMapController {
         floorField.setText(String.valueOf(floor));
       }
 
+      if (!canvas.getGroup().getChildren().isEmpty()) {
+        canvas.setGroup(new Group());
+        canvas.setTransition(new PathTransition());
+      }
       canvas.draw(floor);
 
       directionsList.getItems().clear();
@@ -200,8 +206,7 @@ public class SimpleMapController {
               directionsList.getItems().add(l);
             });
 
-        // animatePath(path);
-        canvasPane.getChildren().add(canvas.animatePath(path, floor));
+        canvasPane.getChildren().add(canvas.getGroup());
 
         // Generate QR code
         StringBuilder dirs = new StringBuilder();

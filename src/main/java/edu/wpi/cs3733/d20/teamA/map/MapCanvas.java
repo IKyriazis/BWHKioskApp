@@ -381,33 +381,6 @@ public class MapCanvas extends Canvas {
     double length = 0;
     group.getChildren().add(circ);
 
-    /*DoubleProperty x = new SimpleDoubleProperty();
-    DoubleProperty y = new SimpleDoubleProperty();
-
-
-    Timeline timeline =
-        new Timeline(
-            new KeyFrame(Duration.seconds(0), new KeyValue(x, 0), new KeyValue(y, 0)),
-            new KeyFrame(
-                Duration.seconds(3),
-                new KeyValue(x, viewSpace.getWidth() - 20),
-                new KeyValue(y, viewSpace.getHeight() - 20)));
-
-    timeline.setCycleCount(Timeline.INDEFINITE);
-
-    AnimationTimer timer =
-        new AnimationTimer() {
-          @Override
-          public void handle(long now) {
-            GraphicsContext graphicsContext = getGraphicsContext2D();
-            graphicsContext.setFill(Color.AQUA);
-            graphicsContext.fillOval(x.doubleValue(), y.doubleValue(), 20, 20);
-          }
-        };
-
-    timer.start();
-    timeline.play();*/
-
     javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
     boolean firstTime = false;
 
@@ -435,6 +408,22 @@ public class MapCanvas extends Canvas {
     transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
     transition.play();
     return group;
+  }
+
+  public Group getGroup() {
+    return group;
+  }
+
+  public void setGroup(Group group) {
+    this.group = group;
+  }
+
+  public PathTransition getTransition() {
+    return transition;
+  }
+
+  public void setTransition(PathTransition transition) {
+    this.transition = transition;
   }
 
   public double getDistance(double x, double newX, double y, double newY) {
