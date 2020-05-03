@@ -77,10 +77,15 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
+  private SerialPort comPort;
+
   @FXML
   public void initialize() {
     // Setup instance
     instance = this;
+
+    // find arduino
+    comPort = SerialPort.getCommPorts()[0];
 
     // Create the employee table if it doesn't exist
     if (eDB.getSize() == -1) {
@@ -231,50 +236,56 @@ public class SceneSwitcherController extends AbstractController {
 
       ThreadPool.runBackgroundTask(
           () -> {
-            // put rfid scanner on background thread
-            SerialPort comPort = SerialPort.getCommPorts()[0];
-            comPort.openPort();
-            try {
-              while (true) {
-                while (comPort.bytesAvailable() != 14) Thread.sleep(20);
-
-                byte[] readBuffer = new byte[comPort.bytesAvailable()];
-                int numRead = comPort.readBytes(readBuffer, readBuffer.length);
-                String scannedString = new String(readBuffer, "UTF-8");
-                String[] scannedArray = scannedString.split(" ");
-                if (scannedArray[1].contains("p")) {
-                  String localUsername = eDB.getUsername(scannedArray[0]);
-                  System.out.println(localUsername);
-                  if (!localUsername.isEmpty()) {
-                    comPort.closePort();
-                    username = localUsername;
-                    Platform.runLater(this::login);
-                    break;
-                  } else {
-                    // popup that rfid is not in the database
-                    Platform.runLater(
-                        () -> {
-                          DialogUtil.simpleErrorDialog(
-                              rootPane,
-                              "Invalid Card",
-                              "The card you used doesn't belong to anyone");
-                        });
-                  }
-                } else {
-                  // popup that rfid scan went wrong
-                  Platform.runLater(
-                      () -> {
-                        DialogUtil.simpleErrorDialog(
-                            rootPane,
-                            "Failed Read",
-                            "Something went wrong while scanning the card");
-                      });
-                }
+            String scannedCode = scanRFID();
+            if (scannedCode != null) {
+              String localUsername = eDB.getUsername(scannedCode);
+              if (!localUsername.isEmpty()) {
+                username = localUsername;
+                Platform.runLater(this::login);
+              } else {
+                // popup that rfid is not in the database
+                Platform.runLater(
+                    () -> {
+                      DialogUtil.simpleErrorDialog(
+                          rootPane, "Invalid Card", "The card you used doesn't belong to anyone");
+                    });
               }
-            } catch (Exception e) {
-              e.printStackTrace();
+            } else {
+              // popup that rfid scan went wrong
+              Platform.runLater(
+                  () -> {
+                    DialogUtil.simpleErrorDialog(
+                        rootPane, "Failed Read", "Something went wrong while scanning the card");
+                  });
             }
           });
+    }
+  }
+
+  public String scanRFID() {
+    // put rfid scanner on background thread
+
+    try {
+      comPort.openPort();
+      while (true) {
+        while (comPort.bytesAvailable() != 14) Thread.sleep(20);
+
+        byte[] readBuffer = new byte[comPort.bytesAvailable()];
+        int numRead = comPort.readBytes(readBuffer, readBuffer.length);
+        String scannedString = new String(readBuffer, "UTF-8");
+        String[] scannedArray = scannedString.split(" ");
+        if (scannedArray[1].contains("p")) {
+          comPort.closePort();
+          return scannedArray[0];
+        } else {
+          comPort.closePort();
+          return null;
+        }
+      }
+    } catch (Exception e) {
+      comPort.closePort();
+      e.printStackTrace();
+      return null;
     }
   }
 
