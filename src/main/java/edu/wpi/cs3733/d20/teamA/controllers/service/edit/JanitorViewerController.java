@@ -34,9 +34,7 @@ public class JanitorViewerController extends AbstractViewerController {
     genericController.fillFields(req);
 
     // Set up statuses
-    ArrayList<String> statuses =
-        new ArrayList<>(List.of("Request Made", "In Progress", "Completed"));
-    genericController.setStatusList(statuses);
+    genericController.fillStandardStatusList();
   }
 
   public void pressedSave() {

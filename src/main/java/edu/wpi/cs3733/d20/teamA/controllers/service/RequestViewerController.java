@@ -3,10 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.service;
 import animatefx.animation.*;
 import com.jfoenix.controls.JFXTreeTableView;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.controllers.service.edit.AbstractViewerController;
-import edu.wpi.cs3733.d20.teamA.controllers.service.edit.ITTicketViewerController;
-import edu.wpi.cs3733.d20.teamA.controllers.service.edit.JanitorViewerController;
-import edu.wpi.cs3733.d20.teamA.controllers.service.edit.LaundryViewerController;
+import edu.wpi.cs3733.d20.teamA.controllers.service.edit.*;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
@@ -117,7 +114,12 @@ public class RequestViewerController extends AbstractController {
           newNode = FXMLCache.loadFXML("views/service/edit/EquipmentViewer.fxml");
           break;
         case INTERNAL_TRANSPORT:
-          newNode = FXMLCache.loadFXML("views/service/edit/InternalTransportViewer.fxml");
+          newNode =
+              FXMLCache.loadServiceFXML(
+                  "views/service/edit/InternalTransportViewer.fxml", new InternalTransportViewerController(req));
+          ((AbstractViewerController)
+              FXMLCache.getController("views/service/edit/InternalTransportViewer.fxml"))
+              .reset(req);
           break;
         case INTERPRETER_REQ:
           newNode = FXMLCache.loadFXML("views/service/edit/InterpreterRequestViewer.fxml");

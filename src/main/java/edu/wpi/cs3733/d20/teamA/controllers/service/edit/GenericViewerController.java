@@ -7,6 +7,8 @@ import edu.wpi.cs3733.d20.teamA.controllers.service.request.AbstractRequestContr
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
 import java.util.ArrayList;
+import java.util.List;
+
 import javafx.fxml.FXML;
 
 public class GenericViewerController extends AbstractRequestController {
@@ -39,6 +41,12 @@ public class GenericViewerController extends AbstractRequestController {
 
     setupDescriptionArea(descriptionArea);
     descriptionArea.setText(request.getDescription());
+  }
+
+  protected void fillStandardStatusList() {
+    ArrayList<String> statuses =
+        new ArrayList<>(List.of("Request Made", "In Progress", "Completed"));
+    setStatusList(statuses);
   }
 
   protected void setStatusList(ArrayList<String> statusList) {
