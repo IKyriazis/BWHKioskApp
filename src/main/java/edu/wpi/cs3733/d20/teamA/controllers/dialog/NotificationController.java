@@ -27,7 +27,7 @@ public class NotificationController extends AbstractController implements IDialo
     try {
       tblAnnouncement.clear();
 
-      tblAnnouncement.add(announcementDatabase.announcementObservableList());
+      tblAnnouncement.add(announcementDatabase.getObservableList());
     } catch (Exception e) {
       e.printStackTrace();
     }
