@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database.interpreter;
+package edu.wpi.cs3733.d20.teamA.database.services.interpreter;
 
 import edu.wpi.cs3733.d20.teamA.database.service.interpreter.Interpreter;
 import org.junit.jupiter.api.Assertions;

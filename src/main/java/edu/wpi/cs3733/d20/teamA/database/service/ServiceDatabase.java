@@ -21,7 +21,6 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
     if (!doesTableNotExist("SERVICEREQ")) {
       return (helperPrepared("DROP TABLE SERVICEREQ"));
     }
-
     return false;
   }
 
