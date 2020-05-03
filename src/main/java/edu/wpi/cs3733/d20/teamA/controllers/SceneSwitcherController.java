@@ -257,6 +257,7 @@ public class SceneSwitcherController extends AbstractController {
               // popup that rfid scan went wrong
               Platform.runLater(
                   () -> {
+                    clickedBlockerPane();
                     DialogUtil.simpleErrorDialog(
                         rootPane, "Failed Read", "Something went wrong while scanning the card");
                   });
