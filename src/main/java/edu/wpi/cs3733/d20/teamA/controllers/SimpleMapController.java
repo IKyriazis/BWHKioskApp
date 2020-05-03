@@ -201,6 +201,7 @@ public class SimpleMapController {
             });
 
         // animatePath(path);
+        canvasPane.getChildren().add(canvas.animatePath(path, floor));
 
         // Generate QR code
         StringBuilder dirs = new StringBuilder();

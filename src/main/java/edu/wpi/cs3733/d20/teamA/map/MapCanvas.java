@@ -4,13 +4,13 @@ import edu.wpi.cs3733.d20.teamA.graph.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javafx.animation.PathTransition;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -50,6 +50,7 @@ public class MapCanvas extends Canvas {
   private Point2D selectionEnd;
 
   private ContextPath path;
+  Group group = new Group();
 
   public MapCanvas(boolean dragEnabled) {
     super();
@@ -276,6 +277,7 @@ public class MapCanvas extends Canvas {
     // Draw path if it exists
     if (path != null) {
       drawPath(path, floor);
+      animatePath(path, floor);
     }
 
     lastDrawnFloor = floor;
@@ -365,21 +367,56 @@ public class MapCanvas extends Canvas {
     animatePath(path, floor);
   }
 
-  private void animatePath(ContextPath path, int floor) {
-    GraphicsContext graphicsContext = getGraphicsContext2D();
+  public Group animatePath(ContextPath path, int floor) {
+
     Circle circ = new Circle(10);
     circ.setFill(Color.AQUA);
     double xcoord = path.getPathNodes().get(0).getX();
     double ycoord = path.getPathNodes().get(0).getY();
     double length = 0;
+    group.getChildren().add(circ);
+
+    /*DoubleProperty x = new SimpleDoubleProperty();
+    DoubleProperty y = new SimpleDoubleProperty();
+
+
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(Duration.seconds(0), new KeyValue(x, 0), new KeyValue(y, 0)),
+            new KeyFrame(
+                Duration.seconds(3),
+                new KeyValue(x, viewSpace.getWidth() - 20),
+                new KeyValue(y, viewSpace.getHeight() - 20)));
+
+    timeline.setCycleCount(Timeline.INDEFINITE);
+
+    AnimationTimer timer =
+        new AnimationTimer() {
+          @Override
+          public void handle(long now) {
+            GraphicsContext graphicsContext = getGraphicsContext2D();
+            graphicsContext.setFill(Color.AQUA);
+            graphicsContext.fillOval(x.doubleValue(), y.doubleValue(), 20, 20);
+          }
+        };
+
+    timer.start();
+    timeline.play();*/
 
     javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
-    animatedPath.getElements().add(new MoveTo(xcoord, ycoord));
+    boolean firstTime = false;
 
     for (Node node : path.getPathNodes()) {
+      Point2D point = graphToCanvas(new Point2D(xcoord, ycoord));
+      double canvasPointX = point.getX();
+      double canvasPointY = point.getY();
+      if (!firstTime) {
+        animatedPath.getElements().add(new MoveTo(canvasPointX, canvasPointY));
+        firstTime = true;
+      }
       // if the node is on the same floor then animate the path on the floor
       if (node.getFloor() == floor) {
-        animatedPath.getElements().add(new LineTo(node.getX(), node.getY()));
+        animatedPath.getElements().add(new LineTo(canvasPointX, canvasPointY));
         length += getDistance(xcoord, node.getX(), ycoord, node.getY());
         xcoord = node.getX();
         ycoord = node.getY();
@@ -393,6 +430,7 @@ public class MapCanvas extends Canvas {
     transition.setCycleCount(Timeline.INDEFINITE);
     transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
     transition.play();
+    return group;
   }
 
   public double getDistance(double x, double newX, double y, double newY) {
