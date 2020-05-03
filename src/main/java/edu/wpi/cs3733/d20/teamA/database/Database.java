@@ -1,7 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.Random;
+import java.lang.Math;
 
 public abstract class Database {
   /*
@@ -175,6 +177,62 @@ public abstract class Database {
       ex.printStackTrace();
     }
     return null;
+  }
+
+  public String getNamefromUserF(String username) {
+    String first;
+    try {
+      Statement priceStmt = getConnection().createStatement();
+      ResultSet rst =
+              priceStmt.executeQuery("SELECT * FROM Employees WHERE username = '" + username + "'");
+      ;
+      rst.next();
+      first = rst.getString("nameFirst");
+      return first;
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return null;
+  }
+
+  public synchronized String getTitle(String username){
+
+    try {
+      PreparedStatement pstmt =
+              getConnection().prepareStatement("Select * From Employees Where username = '" + username + "'");
+      ResultSet rset = pstmt.executeQuery();
+      String title = "Not found";
+      if (rset.next()) {
+        title = rset.getString("title");
+      }
+      rset.close();
+      pstmt.close();
+      return title;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "Not found";
+    }
+
+  }
+
+  public synchronized Long getPager(String username){
+
+    try {
+      PreparedStatement pstmt =
+              getConnection().prepareStatement("Select * From Employees Where username = '" + username + "'");
+      ResultSet rset = pstmt.executeQuery();
+      Long page = null;
+      if (rset.next()) {
+        page = rset.getLong("pagerNum");
+      }
+      rset.close();
+      pstmt.close();
+      return page;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+
   }
 
   public long getRandomNumber() {

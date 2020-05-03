@@ -4,6 +4,7 @@ import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.math.BigInteger;
 import java.sql.*;
 
 public class OnCallDatabase extends Database implements IDatabase{
@@ -62,33 +63,34 @@ public class OnCallDatabase extends Database implements IDatabase{
     }
 
     @Override
-    public ObservableList<ITableable> getObservableList() {
-        ObservableList<ITableable> rList = FXCollections.observableArrayList();
+    public ObservableList<PublicEmployee> getObservableList() {
+        ObservableList<PublicEmployee> eList = FXCollections.observableArrayList();
         try {
             Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM EquipReq");
+            PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM OnCall");
             ResultSet rset = pstmt.executeQuery();
             while (rset.next()) {
-                String name = getNamefromUser(rset.getString("username"));
-                Timestamp timeOf = rset.getTimestamp("timeOF");
-                String item = rset.getString("item");
-                int qty = rset.getInt("qty");
-                String location = rset.getString("location");
-                String priority = rset.getString("priority");
                 String username = rset.getString("username");
+                String nameF = getNamefromUserF(username);
+                String nameL = getNamefromUser(username);
+                String status = rset.getString("status");
+                String title = getTitle(username);
+                Long pageNum = getPager(username);
 
-                EquipRequest node = new EquipRequest(name, item, null, null, "");
+                PublicEmployee node = new PublicEmployee(status, nameF, nameL, title, pageNum, username);
 
-                rList.add(node);
+                eList.add(node);
             }
             rset.close();
             pstmt.close();
             conn.close();
-            return rList;
+            return eList;
         } catch (SQLException e) {
             e.printStackTrace();
-            return rList;
+            return eList;
         }
     }
+
+
 
 }

@@ -6,6 +6,7 @@ import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.sql.*;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class EmployeesDatabase extends Database implements IDatabase{
             "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY," +
                     " nameFirst Varchar(25), nameLast Varchar(25)," +
                     " username Varchar(25) UNIQUE NOT NULL," +
-                    " password Varchar(60) NOT NULL, title Varchar(50))");
+                    " password Varchar(60) NOT NULL, title Varchar(50), pagerNum BigInt NOT NULL, CONSTRAINT CK_PG CHECK (pagerNum BETWEEN 1000000000 and 9999999999))");
     boolean c =
         helperPrepared(
             "CREATE TABLE LoggedIn (username Varchar(25)," +
@@ -72,12 +73,12 @@ public class EmployeesDatabase extends Database implements IDatabase{
    * @return returns true if the employee is added
    */
   public synchronized boolean addEmployee(
-      String employeeID,
-      String nameFirst,
-      String nameLast,
-      String username,
-      String password,
-      String title) {
+          String employeeID,
+          String nameFirst,
+          String nameLast,
+          String username,
+          String password,
+          String title, BigInteger pagerNum) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
@@ -86,14 +87,15 @@ public class EmployeesDatabase extends Database implements IDatabase{
           getConnection()
               .prepareStatement(
                   "INSERT INTO Employees (employeeID, nameFirst, nameLast," +
-                          " username, password, title)" +
-                          " VALUES (?, ?, ?, ?, ?, ?)");
+                          " username, password, title, pagerNum)" +
+                          " VALUES (?, ?, ?, ?, ?, ?, ?)");
       pstmt.setString(1, employeeID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
       pstmt.setString(4, username);
       pstmt.setString(5, storedPassword);
       pstmt.setString(6, title);
+      pstmt.setObject(7, pagerNum);
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -121,14 +123,14 @@ public class EmployeesDatabase extends Database implements IDatabase{
   }
 
   public synchronized boolean addEmployeeNoChecks(
-      String nameFirst, String nameLast, String username, String password, String title) {
-    return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
+      String nameFirst, String nameLast, String username, String password, String title, BigInteger pagerNum) {
+    return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
   }
 
   public synchronized boolean addEmployee(
-      String nameFirst, String nameLast, String username, String password, String title) {
+      String nameFirst, String nameLast, String username, String password, String title, BigInteger pagerNum) {
     return checkSecurePass(password)
-        && addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
+        && addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
   }
 
   /**
@@ -341,11 +343,13 @@ public class EmployeesDatabase extends Database implements IDatabase{
     }
   }
 
+
   /** @return true if all all employee are removed */
   public synchronized boolean removeAllEmployees() {
     return helperPrepared("DELETE From Employees");
   }
 
+  /*
   public synchronized void readEmployeeCSV() {
     try {
       InputStream stream =
@@ -367,6 +371,8 @@ public class EmployeesDatabase extends Database implements IDatabase{
       e.printStackTrace();
     }
   }
+
+   */
 
   public boolean addLog(String username) {
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
