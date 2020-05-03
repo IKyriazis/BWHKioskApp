@@ -36,7 +36,7 @@ public class FlowerAdminController extends AbstractController {
   private SimpleTableView<Order> tblOrderView;
 
   public void initialize() {
-    /*if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
+    if (flDatabase.getSizeFlowers() == -1 || flDatabase.getSizeFlowers() == -1) {
       flDatabase.dropTables();
       flDatabase.createTables();
       flDatabase.readFlowersCSV();
@@ -46,7 +46,7 @@ public class FlowerAdminController extends AbstractController {
       flDatabase.removeAllFlowers();
       flDatabase.readFlowersCSV();
       flDatabase.readFlowerOrderCSV();
-    }*/
+    }
 
     // Setup label icons
     flowerTblLbl.setGraphic(new FontIcon(FontAwesomeRegular.FILE));
@@ -127,11 +127,11 @@ public class FlowerAdminController extends AbstractController {
   private boolean hasDependentOrder(Flower flower) {
     boolean constrained = false;
     try {
-      /*for (Order order : flDatabase.orderOl()) {
+      for (Order order : flDatabase.orderOl()) {
         if (order.getFlowerString().contains(flower.getFlowerID() + "/")) {
           constrained = true;
         }
-      }*/
+      }
     } catch (Exception e) {
       DialogUtil.simpleErrorDialog(
           dialogStackPane,
@@ -164,7 +164,6 @@ public class FlowerAdminController extends AbstractController {
   }
 
   public void deleteFlower() {
-    /*
     Flower f = tblFlowerView.getSelected();
     if (f != null) {
       if (!hasDependentOrder(f)) {
@@ -191,7 +190,7 @@ public class FlowerAdminController extends AbstractController {
           dialogStackPane,
           "No Flower Selected",
           "Please select a flower by clicking a row in the table");
-    }*/
+    }
   }
 
   public void update() {
@@ -199,8 +198,8 @@ public class FlowerAdminController extends AbstractController {
       tblFlowerView.clear();
       tblOrderView.clear();
 
-      /* tblFlowerView.add(flDatabase.flowerOl());
-      tblOrderView.add(flDatabase.orderOl());*/
+      tblFlowerView.add(flDatabase.flowerOl());
+      tblOrderView.add(flDatabase.orderOl());
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(
