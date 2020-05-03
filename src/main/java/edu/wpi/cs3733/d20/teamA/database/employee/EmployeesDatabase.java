@@ -205,6 +205,27 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     }
   }
 
+  // gets the username of the user who has the given rfid key
+  // associated with their account
+  public synchronized String getUsername(String rfid) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("Select username From Employees Where rfid = '" + rfid + "'");
+      ResultSet rset = pstmt.executeQuery();
+      String username = "";
+      if (rset.next()) {
+        username = rset.getString("username");
+      }
+      rset.close();
+      pstmt.close();
+      return username;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   // returns true if the username isn't in the database
   public synchronized boolean uNameExists(String uName) {
     try {

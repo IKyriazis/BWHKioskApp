@@ -238,6 +238,7 @@ public class SceneSwitcherController extends AbstractController {
                 byte[] readBuffer = new byte[comPort.bytesAvailable()];
                 int numRead = comPort.readBytes(readBuffer, readBuffer.length);
                 String scannedString = new String(readBuffer, "UTF-8");
+                System.out.println(scannedString);
                 if (scannedString.split(" ")[1].contains("p")) {
                   System.out.println("Passed");
                 }
