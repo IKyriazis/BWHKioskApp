@@ -4,7 +4,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
-import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -17,7 +16,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 public class ITRequestController extends AbstractRequestController {
   @FXML private Label headerLabel;
   @FXML private JFXComboBox<Node> nodeBox;
-  @FXML private JFXComboBox<Employee> employeeBox;
   @FXML private JFXComboBox<String> categoryBox;
   @FXML private JFXButton submitButton;
   @FXML private JFXTextArea descriptionArea;
@@ -33,22 +31,15 @@ public class ITRequestController extends AbstractRequestController {
     // Set up node box
     setupNodeBox(nodeBox, submitButton);
 
-    // Set up employee box
-    setupEmployeeBox(employeeBox);
-
     // Set up category box
     categoryBox.getItems().addAll("Wifi", "Email", "Login", "Kiosk", "Pager", "Other");
   }
 
   public void pressedSubmit() {
-    Employee selectedEmployee = employeeBox.getSelectionModel().getSelectedItem();
     Node selectedNode = getSelectedNode(nodeBox);
     String selectedCategory = categoryBox.getSelectionModel().getSelectedItem();
 
-    if (selectedEmployee == null
-        || selectedNode == null
-        || selectedCategory == null
-        || selectedCategory.isEmpty()) {
+    if (selectedNode == null || selectedCategory == null || selectedCategory.isEmpty()) {
       DialogUtil.simpleInfoDialog(
           "Empty Fields", "Please fully fill out the service request form and try again.");
       return;
@@ -69,7 +60,6 @@ public class ITRequestController extends AbstractRequestController {
 
     nodeBox.getSelectionModel().clearSelection();
     descriptionArea.clear();
-    employeeBox.getSelectionModel().clearSelection();
     categoryBox.getSelectionModel().clearSelection();
   }
 }
