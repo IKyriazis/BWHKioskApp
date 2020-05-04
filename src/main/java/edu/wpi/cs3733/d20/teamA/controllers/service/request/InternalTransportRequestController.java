@@ -25,6 +25,7 @@ public class InternalTransportRequestController extends AbstractRequestControlle
     // Setup icons
     headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.WHEELCHAIR));
     submitBtn.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
+    trackBtn.setGraphic(new FontIcon(FontAwesomeSolid.WHEELCHAIR));
 
     // Set up pickup box
     setupNodeBox(pickupLocationBox, submitBtn);
