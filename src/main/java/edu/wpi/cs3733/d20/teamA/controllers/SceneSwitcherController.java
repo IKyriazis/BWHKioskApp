@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import de.taimos.totp.TOTP;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -94,7 +95,8 @@ public class SceneSwitcherController extends AbstractController {
     }
 
     // create account with rfid
-    eDB.addEmployeeGA("Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", "CEO", "7100250198");
+    eDB.addEmployeeGA(
+        "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
 
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);

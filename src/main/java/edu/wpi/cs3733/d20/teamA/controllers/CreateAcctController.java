@@ -105,13 +105,14 @@ public class CreateAcctController extends AbstractController {
                 });
             String rfid = scanRFID();
             if (rfid != null) {
+
               secretKey =
                   eDB.addEmployeeGA(
                       fName.getText(),
                       lName.getText(),
                       uName.getText(),
                       cPass.getText(),
-                      title.getValue().toString(),
+                      EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
                       rfid);
             } else {
               Platform.runLater(

@@ -146,7 +146,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String nameLast,
       String username,
       String password,
-      String title,
+      EmployeeTitle title,
       String rfid) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
@@ -162,7 +162,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       pstmt.setString(3, nameLast);
       pstmt.setString(4, username);
       pstmt.setString(5, storedPassword);
-      pstmt.setString(6, title);
+      pstmt.setString(6, title.toString());
       pstmt.setString(7, secretKey);
       pstmt.setString(8, rfid);
       pstmt.executeUpdate();
