@@ -97,11 +97,16 @@ jar {
     manifest {
         attributes 'Main-Class': mainClassName
     }
+	
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     } {
-        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/services/org.kordamp.ikonli.IkonHandler'
     }
+	
+	from('src/main/resources/edu/wpi/cs3733/d20/teamA/fuckikonli') {
+		include 'META-INF/services/org.kordamp.ikonli.IkonHandler'
+	}
 }
 
 // Exclude trivial App / Main classes, and UI-related classes b/c Prof. Wong advised us to not waste time on lengthy and
@@ -172,8 +177,3 @@ spotless {
         lineEndings(LineEnding.PLATFORM_NATIVE)
     }
 }
-
-shadowJar {
-    mergeServiceFiles()
-}
-jar.dependsOn(shadowJar)
