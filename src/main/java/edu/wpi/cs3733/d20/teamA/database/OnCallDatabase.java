@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.database;
 
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -59,6 +60,26 @@ public class OnCallDatabase extends Database implements IDatabase {
     return helperPrepared("DELETE From OnCall");
   }
 
+  public synchronized String getStatus(String username) {
+    String pass = null;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("Select * From OnCall Where username = '" + username + "'");
+      ResultSet rset = pstmt.executeQuery();
+      String status = "Not found";
+      if (rset.next()) {
+        status = rset.getString("status");
+      }
+      rset.close();
+      pstmt.close();
+      return status;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "Not found";
+    }
+  }
+
   @Override
   public ObservableList<PublicEmployee> getObservableList() {
     ObservableList<PublicEmployee> eList = FXCollections.observableArrayList();
@@ -71,7 +92,7 @@ public class OnCallDatabase extends Database implements IDatabase {
         String nameF = getNamefromUserF(username);
         String nameL = getNamefromUser(username);
         String status = rset.getString("status");
-        String title = getTitle(username);
+        EmployeeTitle title = getTitle(username);
         long pageNum = getPager(username);
 
         PublicEmployee node = new PublicEmployee(status, nameF, nameL, title, pageNum, username);

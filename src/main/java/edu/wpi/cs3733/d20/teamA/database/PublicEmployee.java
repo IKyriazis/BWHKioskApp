@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleObjectProperty;
@@ -17,11 +18,16 @@ public class PublicEmployee implements ITableable<PublicEmployee> {
   private SimpleStringProperty username;
 
   public PublicEmployee(
-      String status, String fName, String lName, String title, Long pagerNum, String username) {
+      String status,
+      String fName,
+      String lName,
+      EmployeeTitle title,
+      Long pagerNum,
+      String username) {
     this.status = new SimpleStringProperty(status);
     this.fName = new SimpleStringProperty(fName);
     this.lName = new SimpleStringProperty(lName);
-    this.title = new SimpleStringProperty(title);
+    this.title = new SimpleStringProperty(title.toString());
     this.pagerNum = new SimpleObjectProperty<Long>(pagerNum);
     this.username = new SimpleStringProperty(username);
   }

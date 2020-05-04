@@ -172,23 +172,25 @@ public abstract class Database {
     return null;
   }
 
-  public synchronized String getTitle(String username) {
+  public synchronized EmployeeTitle getTitle(String username) {
 
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement("Select * From Employees Where username = '" + username + "'");
       ResultSet rset = pstmt.executeQuery();
-      String title = "Not found";
+      EmployeeTitle title = null;
+      String titleString = null;
       if (rset.next()) {
-        title = rset.getString("title");
+        titleString = rset.getString("title");
+        title = EmployeeTitle.valueOf(titleString.toUpperCase());
       }
       rset.close();
       pstmt.close();
       return title;
     } catch (SQLException e) {
       e.printStackTrace();
-      return "Not found";
+      return null;
     }
   }
 
