@@ -5,6 +5,7 @@ import edu.wpi.cs3733.d20.teamA.database.flower.FlowerDatabase;
 import edu.wpi.cs3733.d20.teamA.database.flower.FlowerEmployee;
 import edu.wpi.cs3733.d20.teamA.database.flower.Order;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -114,9 +115,10 @@ public class TestFlowerDatabase {
     DB.createTables();
     fDB.createTables();
     fDB.removeAllOrders();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
     Assertions.assertEquals(0, fDB.getSizeOrders());
-    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     fDB.addFlowerWithID(1, "Daisy", "Blue", 10, 1.20);
     fDB.addOrder(5, "1/5|", "biscuit", "stuff", 6);
     fDB.addOrder(-1, "1/-1|", "biscuit", "thing", 0);
@@ -124,7 +126,7 @@ public class TestFlowerDatabase {
     Assertions.assertEquals(2, fDB.getSizeOrders());
     // Assertions.assertEquals(5, fDB.getFlowerQuantity("Daisy", "Blue"));
     fDB.removeAllOrders();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
   }
 
   @Test
@@ -132,8 +134,9 @@ public class TestFlowerDatabase {
     DB.createTables();
     fDB.createTables();
     fDB.removeAllOrders();
-    DB.removeAll();
-    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.removeAll(Campus.FAULKNER);
+    DB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     fDB.addFlower("Daisy", "Blue", 20, 1.20);
     fDB.addOrder(5, "1/5|", "biscuit", "mess", 2);
     boolean a = fDB.deleteOrder(1);
@@ -145,7 +148,7 @@ public class TestFlowerDatabase {
     Assertions.assertTrue(r);
     Assertions.assertEquals(1, fDB.getSizeOrders());
     fDB.removeAllOrders();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
   }
 
   @Test
@@ -153,13 +156,14 @@ public class TestFlowerDatabase {
     DB.createTables();
     fDB.createTables();
     fDB.removeAllOrders();
-    DB.removeAll();
-    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.removeAll(Campus.FAULKNER);
+    DB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     fDB.addOrder(5, "1/5|", "biscuit", "Mess", 2.3);
     boolean a = fDB.changeOrderStatus(5, "Order Received");
     Assertions.assertTrue(a);
     fDB.removeAllOrders();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
   }
 
   @Test

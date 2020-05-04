@@ -5,6 +5,7 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -48,10 +49,11 @@ public class TestInternalTransportDatabase {
   @Test
   public void testAddRequest() {
 
-    gDB.removeAllNodes();
+    gDB.removeAllNodes(Campus.FAULKNER);
     // need nodeID "biscuit" in node table so addrequest works
-    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("gravy", 2, 4, 2, "White House", "CONF", "basket", "b", "Team A");
+    gDB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    gDB.addNode("gravy", 2, 4, 2, "White House", "CONF", "basket", "b", "Team A", Campus.FAULKNER);
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "basket");
@@ -67,29 +69,31 @@ public class TestInternalTransportDatabase {
     Assertions.assertEquals(2, serviceDatabase.getSize());
 
     serviceDatabase.removeAll();
-    gDB.removeAllNodes();
+    gDB.removeAllNodes(Campus.FAULKNER);
   }
 
   @Test
   public void testUpdateRequest() {
-    gDB.removeAllNodes();
-    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("gravy", 2, 4, 2, "White House", "CONF", "basket", "b", "Team A");
-    gDB.addNode("help", 2, 4, 2, "White House", "CONF", "water", "b", "Team A");
+    gDB.removeAllNodes(Campus.FAULKNER);
+    gDB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    gDB.addNode("gravy", 2, 4, 2, "White House", "CONF", "basket", "b", "Team A", Campus.FAULKNER);
+    gDB.addNode("help", 2, 4, 2, "White House", "CONF", "water", "b", "Team A", Campus.FAULKNER);
     String a =
         serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "basket");
     boolean b = serviceDatabase.setDescription(a, "water");
     Assertions.assertTrue(b);
 
     serviceDatabase.removeAll();
-    gDB.removeAllNodes();
+    gDB.removeAllNodes(Campus.FAULKNER);
   }
 
   @Test
   public void testGetRequestStatus() {
-    gDB.removeAllNodes();
-    gDB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    gDB.addNode("help", 2, 4, 2, "White House", "CONF", "water", "b", "Team A");
+    gDB.removeAllNodes(Campus.FAULKNER);
+    gDB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    gDB.addNode("help", 2, 4, 2, "White House", "CONF", "water", "b", "Team A", Campus.FAULKNER);
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "water");
@@ -99,6 +103,6 @@ public class TestInternalTransportDatabase {
     Assertions.assertTrue(b);
 
     serviceDatabase.removeAll();
-    gDB.removeAllNodes();
+    gDB.removeAllNodes(Campus.FAULKNER);
   }
 }

@@ -1,8 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database.graph;
 
-import java.sql.*;
-
 import edu.wpi.cs3733.d20.teamA.graph.Campus;
+import java.sql.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +53,8 @@ public class TestGraphDatabase {
     graphDatabase.createTables();
     graphDatabase.removeAllNodes(Campus.FAULKNER);
     Assertions.assertEquals(0, graphDatabase.getSizeNode(Campus.FAULKNER));
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     Assertions.assertEquals(1, graphDatabase.getSizeNode(Campus.FAULKNER));
     graphDatabase.removeAllNodes(Campus.FAULKNER);
   }
@@ -64,8 +64,10 @@ public class TestGraphDatabase {
     graphDatabase.createTables();
     graphDatabase.removeAll(Campus.FAULKNER);
     Assertions.assertEquals(0, graphDatabase.getSizeEdge(Campus.FAULKNER));
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-    graphDatabase.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
     graphDatabase.addEdge("biscuit_nugget", "biscuit", "nugget", Campus.FAULKNER);
     Assertions.assertEquals(1, graphDatabase.getSizeEdge(Campus.FAULKNER));
     graphDatabase.removeAll(Campus.FAULKNER);
@@ -76,10 +78,12 @@ public class TestGraphDatabase {
     graphDatabase.createTables();
     graphDatabase.removeAllNodes(Campus.FAULKNER);
     boolean a =
-        graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+        graphDatabase.addNode(
+            "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     Assertions.assertTrue(a);
     boolean b =
-        graphDatabase.addNode("nugget", 0, 0, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
+        graphDatabase.addNode(
+            "nugget", 0, 0, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
     Assertions.assertTrue(b);
     boolean c =
         graphDatabase.addNode(
@@ -90,11 +94,21 @@ public class TestGraphDatabase {
             "BBQSauce", 2, 5, 0, "White House", "CONF", "balogna4", "b", "Team A", Campus.FAULKNER);
     Assertions.assertFalse(d);
     boolean e =
-        graphDatabase.addNode("banana", 2, 5, 11, "White House", "CONF", "balogna5", "b", "Team A", Campus.FAULKNER);
+        graphDatabase.addNode(
+            "banana", 2, 5, 11, "White House", "CONF", "balogna5", "b", "Team A", Campus.FAULKNER);
     Assertions.assertFalse(e);
     boolean f =
         graphDatabase.addNode(
-            "banana", 2, 5, 1, "White House", "abacabadabacaba", "balogna6", "b", "Team A", Campus.FAULKNER);
+            "banana",
+            2,
+            5,
+            1,
+            "White House",
+            "abacabadabacaba",
+            "balogna6",
+            "b",
+            "Team A",
+            Campus.FAULKNER);
     Assertions.assertFalse(f);
     graphDatabase.removeAllNodes(Campus.FAULKNER);
   }
@@ -103,8 +117,10 @@ public class TestGraphDatabase {
   public void testAddEdge() {
     graphDatabase.createTables();
     graphDatabase.removeAll(Campus.FAULKNER);
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-    graphDatabase.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
     boolean a = graphDatabase.addEdge("biscuit_nugget", "biscuit", "nugget", Campus.FAULKNER);
     Assertions.assertTrue(a);
     boolean b = graphDatabase.addEdge("biscuit_mashedP", "biscuit", "mashedP", Campus.FAULKNER);
@@ -116,8 +132,10 @@ public class TestGraphDatabase {
   public void testDeleteEdge() {
     graphDatabase.createTables();
     graphDatabase.removeAll(Campus.FAULKNER);
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-    graphDatabase.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
     graphDatabase.addEdge("biscuit_nugget", "biscuit", "nugget", Campus.FAULKNER);
     Assertions.assertEquals(1, graphDatabase.getSizeEdge(Campus.FAULKNER));
     boolean a = graphDatabase.deleteEdge("biscuit_nugget", Campus.FAULKNER);
@@ -130,8 +148,10 @@ public class TestGraphDatabase {
   public void testDeleteNode() {
     graphDatabase.createTables();
     graphDatabase.removeAllNodes(Campus.FAULKNER);
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-    graphDatabase.addNode("nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "nugget", 4, 10, 2, "White House", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
     Assertions.assertEquals(2, graphDatabase.getSizeNode(Campus.FAULKNER));
     boolean a = graphDatabase.deleteNode("nugget", Campus.FAULKNER);
     Assertions.assertTrue(a);
@@ -143,8 +163,10 @@ public class TestGraphDatabase {
   public void testEditNode() {
     graphDatabase.createTables();
     graphDatabase.removeAll(Campus.FAULKNER);
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-    graphDatabase.editNode("biscuit", 2, 7, 3, "White Hose", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.editNode(
+        "biscuit", 2, 7, 3, "White Hose", "CONF", "balogna2", "b", "Team A", Campus.FAULKNER);
     Assertions.assertEquals("White Hose", graphDatabase.getBuilding("biscuit", Campus.FAULKNER));
     graphDatabase.removeAll(Campus.FAULKNER);
   }
@@ -153,7 +175,8 @@ public class TestGraphDatabase {
   public void testGetters() {
     graphDatabase.createTables();
     graphDatabase.removeAll(Campus.FAULKNER);
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     Assertions.assertEquals(2, graphDatabase.getX("biscuit", Campus.FAULKNER));
     Assertions.assertEquals(5, graphDatabase.getY("biscuit", Campus.FAULKNER));
     Assertions.assertEquals(2, graphDatabase.getFloor("biscuit", Campus.FAULKNER));
@@ -169,7 +192,8 @@ public class TestGraphDatabase {
   public void testSetters() {
     graphDatabase.createTables();
     graphDatabase.removeAll(Campus.FAULKNER);
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     Assertions.assertTrue(graphDatabase.setX("biscuit", 3, Campus.FAULKNER));
     Assertions.assertTrue(graphDatabase.setY("biscuit", 6, Campus.FAULKNER));
     Assertions.assertTrue(graphDatabase.setFloor("biscuit", 3, Campus.FAULKNER));
