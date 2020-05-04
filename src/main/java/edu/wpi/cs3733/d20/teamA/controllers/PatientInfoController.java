@@ -9,7 +9,6 @@ import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeTableRow;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -23,7 +22,7 @@ public class PatientInfoController extends AbstractController {
 
   @FXML private SimpleTableView<Patient> patientTable;
 
-  @FXML private AnchorPane patientPane;
+  @FXML private GridPane patientPane;
   @FXML private StackPane dialogStackPane;
   @FXML private GridPane patientTablePane;
 
