@@ -414,7 +414,7 @@ public class MapEditorController {
 
   @FXML
   public void floorUp() {
-    floor = Math.min(5, floor + 1);
+    floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
     currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
   }
@@ -475,6 +475,8 @@ public class MapEditorController {
       currCanvas.setVisible(false);
       newCanvas.setVisible(true);
 
+      floor = 1;
+      floorField.setText(String.valueOf(floor));
       currCanvas = newCanvas;
       currCanvas.draw(floor);
 

@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
 import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -70,13 +71,13 @@ public class MapCanvas extends Canvas {
     ArrayList<String> imageLocations = new ArrayList<>();
     for (int i = 0; i < maxFloor; i++) {
       String imgName = (campus == Campus.FAULKNER ? "Faulkner" : "Main") + (i + 1);
-      imageLocations.add("/edu/wpi/cs3733/d20/teamA/images/" + imgName + ".png");
+      imageLocations.add("images/" + imgName + ".png");
     }
 
     // Load floor images in parallel
     floorImages = new Image[maxFloor];
     List<Image> images =
-        imageLocations.parallelStream().map(Image::new).collect(Collectors.toList());
+        imageLocations.parallelStream().map(ImageCache::loadImage).collect(Collectors.toList());
     for (int i = 0; i < maxFloor; i++) {
       floorImages[i] = images.get(i);
     }
@@ -392,8 +393,7 @@ public class MapCanvas extends Canvas {
   }
 
   public Group animatePath(ContextPath path, int floor) {
-
-    Image image = new Image("/edu/wpi/cs3733/d20/teamA/images/blue_right.png");
+    Image image = ImageCache.loadImage("images/blue_right.png");
     ImageView imageView = new ImageView();
     imageView.setPreserveRatio(true);
     imageView.setFitHeight(30);
