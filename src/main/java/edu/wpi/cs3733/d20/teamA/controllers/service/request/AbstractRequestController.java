@@ -17,7 +17,7 @@ public abstract class AbstractRequestController extends AbstractController {
         .textProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              if (newValue.length() > 100) {
+              if (newValue != null && newValue.length() > 100) {
                 descriptionArea.setText(newValue.substring(0, 100));
               }
             });

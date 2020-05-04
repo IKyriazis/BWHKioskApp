@@ -118,7 +118,8 @@ def codeCoverageExcludes = [
         'edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent',
         'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil',
         'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.1',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.2'
+        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.2',
+        'edu.wpi.cs3733.d20.teamA.util.ThreadPool'
 ]
 
 jacoco {

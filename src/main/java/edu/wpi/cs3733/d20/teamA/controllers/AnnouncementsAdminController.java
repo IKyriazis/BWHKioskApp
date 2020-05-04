@@ -77,7 +77,7 @@ public class AnnouncementsAdminController extends AbstractController {
   public void update() {
     try {
       tblAnnouncement.clear();
-      tblAnnouncement.add(announcementDatabase.announcementObservableList());
+      tblAnnouncement.add(announcementDatabase.getObservableList());
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(dialogPane, "Error", "Failed to update Announcement Table");

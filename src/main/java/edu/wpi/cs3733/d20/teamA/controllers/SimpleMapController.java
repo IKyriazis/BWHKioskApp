@@ -11,12 +11,14 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javafx.animation.PathTransition;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -189,6 +191,11 @@ public class SimpleMapController {
         floorField.setText(String.valueOf(floor));
       }
 
+      if (!canvas.getGroup().getChildren().isEmpty()) {
+        canvas.getGroup().getChildren().clear();
+        canvas.setGroup(new Group());
+        canvas.setTransition(new PathTransition());
+      }
       canvas.draw(floor);
 
       directionsList.getItems().clear();
@@ -199,6 +206,8 @@ public class SimpleMapController {
             l -> {
               directionsList.getItems().add(l);
             });
+
+        canvasPane.getChildren().add(canvas.getGroup());
 
         // Generate QR code
         StringBuilder dirs = new StringBuilder();
@@ -266,7 +275,13 @@ public class SimpleMapController {
     floor = Math.min(5, floor + 1);
     canvas.draw(floor);
     floorField.setText(String.valueOf(floor));
+    if (!canvas.getGroup().getChildren().isEmpty()) {
+      canvas.getGroup().getChildren().clear();
+      canvas.setGroup(new Group());
+      canvas.setTransition(new PathTransition());
+    }
     canvas.draw(floor);
+    canvasPane.getChildren().add(canvas.getGroup());
   }
 
   @FXML
@@ -274,18 +289,28 @@ public class SimpleMapController {
     floor = Math.max(1, floor - 1);
     canvas.draw(floor);
     floorField.setText(String.valueOf(floor));
+    if (!canvas.getGroup().getChildren().isEmpty()) {
+      canvas.getGroup().getChildren().clear();
+      canvas.setGroup(new Group());
+      canvas.setTransition(new PathTransition());
+    }
     canvas.draw(floor);
+    canvasPane.getChildren().add(canvas.getGroup());
   }
 
   public ArrayList<Label> texDirectionsWithLabels(ArrayList<String> textualPath) {
     ArrayList<Label> textPath = new ArrayList<>();
     for (int j = 0; j < textualPath.size() - 1; j++) {
-      if (textualPath.get(j).contains("right")) {
+      if (textualPath.get(j).contains("Turn right")) {
         textPath.add(
             new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT)));
-      } else if (textualPath.get(j).contains("left")) {
+      } else if (textualPath.get(j).contains("Turn left")) {
         textPath.add(
             new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT)));
+      } else if (textualPath.get(j).contains("slight left")) {
+        textPath.add(new Label(textualPath.get(j)));
+      } else if (textualPath.get(j).contains("slight right")) {
+        textPath.add(new Label(textualPath.get(j)));
       } else if (textualPath.get(j).contains("up")) {
         textPath.add(new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
       } else if (textualPath.get(j).contains("down")) {

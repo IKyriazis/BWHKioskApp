@@ -13,5 +13,8 @@ public class TestFlowerOrder {
         o.getOrderNumber(), 4); // Order is a very simple class, comprehensive tests not required
     Assertions.assertEquals("1/15", o.getFlowerString());
     Assertions.assertEquals("1/15", o.flowerStringProperty().get());
+    Assertions.assertEquals("location", o.getLocation());
+    Assertions.assertEquals("Hi mom", o.getMessage());
+    Assertions.assertFalse(o.employeeAssigned());
   }
 }

@@ -4,17 +4,24 @@ import edu.wpi.cs3733.d20.teamA.graph.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javafx.animation.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.util.Duration;
 
 public class MapCanvas extends Canvas {
   private final Image[] floorImages;
@@ -44,6 +51,8 @@ public class MapCanvas extends Canvas {
   private Point2D selectionEnd;
 
   private ContextPath path;
+  Group group = new Group();
+  PathTransition transition = new PathTransition();
 
   public MapCanvas(boolean dragEnabled) {
     super();
@@ -65,15 +74,25 @@ public class MapCanvas extends Canvas {
 
     widthProperty()
         .addListener(
-            (observable, oldValue, newValue) -> resize(newValue.doubleValue(), getHeight()));
+            (observable, oldValue, newValue) -> {
+              transition.stop();
+              group.getChildren().clear();
+              resize(newValue.doubleValue(), getHeight());
+            });
     heightProperty()
         .addListener(
-            (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
+            (observable, oldValue, newValue) -> {
+              transition.stop();
+              group.getChildren().clear();
+              resize(getWidth(), newValue.doubleValue());
+            });
 
     // Create drag event handlers
     dragStartHandler =
         event -> {
           if (event.getButton() == dragMapButton) {
+            transition.stop();
+            group.getChildren().clear();
             dragLast = new Point2D(event.getX(), event.getY());
             setCursor(Cursor.MOVE);
           }
@@ -81,6 +100,8 @@ public class MapCanvas extends Canvas {
     dragHandler =
         event -> {
           if (event.getButton() == dragMapButton) {
+            transition.stop();
+            group.getChildren().clear();
             Point2D startGraphPos = canvasToGraph(dragLast);
             Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
 
@@ -112,11 +133,19 @@ public class MapCanvas extends Canvas {
         event -> {
           double diff = event.getDeltaY() / 10.0;
           zoom.set(Math.min(100, Math.max(0, zoom.getValue() + diff)));
+          transition.stop();
+          group.getChildren().clear();
+          draw(lastDrawnFloor);
         });
 
     // Setup zoom property
     zoom = new SimpleDoubleProperty(0.0);
-    zoom.addListener(observable -> draw(lastDrawnFloor));
+    zoom.addListener(
+        observable -> {
+          transition.stop();
+          group.getChildren().clear();
+          draw(lastDrawnFloor);
+        });
 
     // Create list of nodes to highlight
     highlights = new ArrayList<>();
@@ -270,6 +299,7 @@ public class MapCanvas extends Canvas {
     // Draw path if it exists
     if (path != null) {
       drawPath(path, floor);
+      animatePath(path, floor);
     }
 
     lastDrawnFloor = floor;
@@ -310,7 +340,14 @@ public class MapCanvas extends Canvas {
 
     // Draw the line in between the points
     if ((edge.getStart().getFloor() == edge.getEnd().getFloor()) || drawMultifloorEdge) {
-      graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
+
+      graphicsContext.beginPath();
+      graphicsContext.moveTo(start.getX(), start.getY());
+      graphicsContext.lineTo(end.getX(), end.getY());
+      graphicsContext.fill();
+      graphicsContext.closePath();
+      graphicsContext.stroke();
+      // graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
     }
 
     if (showArrows) {
@@ -355,6 +392,84 @@ public class MapCanvas extends Canvas {
         // drawNode(node, Color.BLACK);
       }
     }
+
+    animatePath(path, floor);
+  }
+
+  public Group animatePath(ContextPath path, int floor) {
+
+    Image image = new Image("/edu/wpi/cs3733/d20/teamA/images/blue_right.png");
+    ImageView imageView = new ImageView();
+    imageView.setPreserveRatio(true);
+    imageView.setFitHeight(30);
+    imageView.setImage(image);
+    imageView.setVisible(false);
+
+    Circle circ = new Circle(10);
+    circ.setFill(Color.AQUA);
+    double xcoord = path.getPathNodes().get(0).getX();
+    double ycoord = path.getPathNodes().get(0).getY();
+    double length = 0;
+    // group.getChildren().add(circ);
+
+    javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
+    boolean firstTime = true;
+    Point2D point;
+
+    for (Node node : path.getPathNodes()) {
+      point = graphToCanvas(new Point2D(xcoord, ycoord));
+      double canvasPointX = point.getX();
+      double canvasPointY = point.getY();
+      if (firstTime && node.getFloor() == floor) {
+        xcoord = node.getX();
+        ycoord = node.getY();
+        point = graphToCanvas(new Point2D(xcoord, ycoord));
+        canvasPointX = point.getX();
+        canvasPointY = point.getY();
+        animatedPath.getElements().add(new MoveTo(canvasPointX, canvasPointY));
+        firstTime = false;
+      }
+      // if the node is on the same floor then animate the path on the floor
+      if (node.getFloor() == floor) {
+        animatedPath.getElements().add(new LineTo(canvasPointX, canvasPointY));
+        length += getDistance(xcoord, node.getX(), ycoord, node.getY());
+        xcoord = node.getX();
+        ycoord = node.getY();
+        imageView.setVisible(true);
+      }
+    }
+
+    point = graphToCanvas(new Point2D(xcoord, ycoord));
+    animatedPath.getElements().add(new LineTo(point.getX(), point.getY()));
+
+    transition.setDuration(Duration.seconds(length / 250.0));
+    transition.setPath(animatedPath);
+    transition.setNode(imageView);
+    transition.setCycleCount(Timeline.INDEFINITE);
+    transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+    transition.play();
+    group.getChildren().add(imageView);
+    return group;
+  }
+
+  public Group getGroup() {
+    return group;
+  }
+
+  public void setGroup(Group group) {
+    this.group = group;
+  }
+
+  public PathTransition getTransition() {
+    return transition;
+  }
+
+  public void setTransition(PathTransition transition) {
+    this.transition = transition;
+  }
+
+  public double getDistance(double x, double newX, double y, double newY) {
+    return Math.sqrt((Math.pow((newX - x), 2)) + (Math.pow((newY - y), 2)));
   }
 
   // Draws a rubber-band selection box

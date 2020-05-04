@@ -17,7 +17,7 @@ public class ContextPath {
   }
 
   public void findPath(Node start, Node end) {
-    pathFindingAlgo.findPath(start, end);
+    pathFindingAlgo.pathFind(start, end);
   }
 
   public IStrategyPath getPathFindingAlgo() {
