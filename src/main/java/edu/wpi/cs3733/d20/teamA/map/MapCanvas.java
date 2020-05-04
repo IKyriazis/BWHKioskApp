@@ -44,9 +44,9 @@ public class MapCanvas extends Canvas {
 
   private boolean dragEnabled;
   private MouseButton dragMapButton = MouseButton.PRIMARY;
-  private EventHandler<MouseEvent> dragStartHandler;
-  private EventHandler<MouseEvent> dragHandler;
-  private EventHandler<MouseEvent> dragEndHandler;
+  private final EventHandler<MouseEvent> dragStartHandler;
+  private final EventHandler<MouseEvent> dragHandler;
+  private final EventHandler<MouseEvent> dragEndHandler;
 
   private ArrayList<Node> highlights;
   private Color highlightColor = Color.DEEPSKYBLUE;
@@ -283,9 +283,7 @@ public class MapCanvas extends Canvas {
 
         // Draw all edges
         floorNodes.forEach(
-            node -> {
-              node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true, true));
-            });
+            node -> node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true, true)));
 
         // Draw nodes
         floorNodes.forEach(
@@ -398,8 +396,6 @@ public class MapCanvas extends Canvas {
       } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)
           && node.getFloor() == floor) {
         drawNode(node, Color.TOMATO);
-      } else if (node.getFloor() == floor) {
-        // drawNode(node, Color.BLACK);
       }
     }
 
