@@ -7,7 +7,6 @@ import java.sql.*;
 public class GraphDatabase extends Database {
 
   public GraphDatabase(Connection connection) {
-
     super(connection);
 
     createTables();

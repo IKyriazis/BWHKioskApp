@@ -36,6 +36,7 @@ public class MapCanvas extends Canvas {
   private boolean drawAllNodes = false;
   private boolean drawBelow = false;
   private SimpleDoubleProperty zoom;
+  private final double zoomScalar = 2.0;
 
   private BoundingBox viewSpace;
   private Point2D center;
@@ -192,7 +193,7 @@ public class MapCanvas extends Canvas {
 
     double aspectRatio = (imageWidth / getWidth()) / (imageHeight / getHeight());
 
-    double zoomFactor = (1.0 + (zoom.getValue() / 100));
+    double zoomFactor = (1.0 + ((zoom.getValue() / 100) * zoomScalar));
     double width = ((aspectRatio < 1.0) ? imageWidth : (imageWidth / aspectRatio)) / zoomFactor;
     double height = ((aspectRatio > 1.0) ? imageHeight : (imageHeight * aspectRatio)) / zoomFactor;
 
@@ -200,24 +201,24 @@ public class MapCanvas extends Canvas {
     double startY = center.getY() - (height / 2);
 
     // Correct center if view is too far away from image
-    if (startX < -(imageWidth / 4)) {
-      center = center.add((-(imageWidth / 4) - startX), 0);
-      startX = -(imageWidth / 4);
+    if (startX < 0) {
+      center = center.add(-startX, 0);
+      startX = 0;
     }
 
-    if (startY < (-imageHeight / 4)) {
-      center = center.add(0, (-(imageHeight / 4) - startY));
-      startY = -(imageHeight / 4);
+    if (startY < 0) {
+      center = center.add(0, (-startY));
+      startY = 0;
     }
 
-    if ((startX + width) > (5 * imageWidth / 4)) {
-      double xDiff = (startX + width) - (5 * imageWidth / 4);
+    if ((startX + width) > imageWidth) {
+      double xDiff = (startX + width) - imageWidth;
       center = center.subtract(xDiff, 0);
       startX -= xDiff;
     }
 
-    if ((startY + height) > (5 * imageHeight / 4)) {
-      double yDiff = (startY + height) - (5 * imageHeight / 4);
+    if ((startY + height) > imageHeight) {
+      double yDiff = (startY + height) - imageHeight;
       center = center.subtract(0, yDiff);
       startY -= yDiff;
     }
@@ -359,7 +360,7 @@ public class MapCanvas extends Canvas {
       // graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
     }
 
-    if (showArrows) {
+    /*if (showArrows) {
       Point2D pos = (drawMultifloorEdge) ? end : start;
       // Draw up / down arrow if floor changed
       if (edge.getEnd().getFloor() < edge.getStart().getFloor()) {
@@ -367,7 +368,7 @@ public class MapCanvas extends Canvas {
       } else if (edge.getEnd().getFloor() > edge.getStart().getFloor()) {
         graphicsContext.drawImage(upImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
       }
-    }
+    }*/
   }
 
   // Draws a node on the map
