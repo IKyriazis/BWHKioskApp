@@ -1,15 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.GridPane;
-import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -39,25 +36,27 @@ public class MainMenuController {
     transitButton.setOnAction(
         event -> {
           // SceneSwitcherController.pushScene("views/nav/ServiceHome.fxml");
-          try {
-            Media media = new Media(App.class.getResource("sounds/no.mp3").toURI().toString());
-            AudioClip audioClip = new AudioClip(media.getSource());
-            audioClip.play();
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
+          //          try {
+          //            Media media = new
+          // Media(App.class.getResource("sounds/no.mp3").toURI().toString());
+          //            AudioClip audioClip = new AudioClip(media.getSource());
+          //            audioClip.play();
+          //          } catch (Exception e) {
+          //            e.printStackTrace();
+          //          }
         });
 
     serviceButton.setOnAction(
         event -> {
           SceneSwitcherController.pushScene("views/nav/ServiceHome.fxml", TransitionType.FADE);
-          try {
-            Media media = new Media(App.class.getResource("sounds/yo.mp3").toURI().toString());
-            AudioClip audioClip = new AudioClip(media.getSource());
-            audioClip.play();
-          } catch (Exception e) {
-            e.printStackTrace();
-          }
+          //          try {
+          //            Media media = new
+          // Media(App.class.getResource("sounds/yo.mp3").toURI().toString());
+          //            AudioClip audioClip = new AudioClip(media.getSource());
+          //            audioClip.play();
+          //          } catch (Exception e) {
+          //            e.printStackTrace();
+          //          }
         });
 
     // Preload scenes into FXML cache
