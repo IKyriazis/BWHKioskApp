@@ -41,7 +41,7 @@ public abstract class AbstractController {
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
 
-    if (comPort == null) {
+    if (comPort != null) {
       comPort = SerialPort.getCommPorts()[0];
     }
   }
