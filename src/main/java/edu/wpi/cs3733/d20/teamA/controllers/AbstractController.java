@@ -15,6 +15,7 @@ import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.sql.Connection;
+import java.util.Optional;
 
 public abstract class AbstractController {
 
@@ -83,5 +84,14 @@ public abstract class AbstractController {
         .setOnKeyTyped(
             new NodeAutoCompleteHandler(
                 box, toFocus, Graph.getInstance(Campus.FAULKNER).getNodeObservableList()));
+  }
+
+  protected Node getSelectedNode(JFXComboBox<Node> nodeBox) {
+    Optional<Node> selected =
+        nodeBox.getItems().stream()
+            .filter(node -> node.toString().equals(nodeBox.getEditor().getText()))
+            .findFirst();
+
+    return selected.orElse(null);
   }
 }

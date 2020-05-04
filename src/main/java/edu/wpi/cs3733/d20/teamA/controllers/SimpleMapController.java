@@ -137,21 +137,15 @@ public class SimpleMapController extends AbstractController {
 
   @FXML
   public void pressedGo() {
-    Optional<Node> start =
-        startingLocationBox.getItems().stream()
-            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
-            .findFirst();
-    Optional<Node> end =
-        destinationBox.getItems().stream()
-            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
-            .findFirst();
-    if (start.isPresent() && end.isPresent()) {
+    Node start = getSelectedNode(startingLocationBox);
+    Node end = getSelectedNode(destinationBox);
+    if ((start != null) && (end != null)) {
       ContextPath path = MapSettings.getPath();
-      path.findPath(start.get(), end.get());
+      path.findPath(start, end);
       canvas.setPath(path);
 
-      if (start.get().getFloor() != floor) {
-        floor = Math.min(5, start.get().getFloor());
+      if (start.getFloor() != floor) {
+        floor = Math.min(5, start.getFloor());
         floorField.setText(String.valueOf(floor));
       }
 
@@ -196,18 +190,12 @@ public class SimpleMapController extends AbstractController {
 
   @FXML
   public void pressedSwap() {
-    Optional<Node> start =
-        startingLocationBox.getItems().stream()
-            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
-            .findFirst();
-    Optional<Node> end =
-        destinationBox.getItems().stream()
-            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
-            .findFirst();
+    Node start = getSelectedNode(startingLocationBox);
+    Node end = getSelectedNode(destinationBox);
 
-    if (start.isPresent() && end.isPresent()) {
-      startingLocationBox.setValue(end.get());
-      destinationBox.setValue(start.get());
+    if ((start != null) && (end != null)) {
+      startingLocationBox.setValue(end);
+      destinationBox.setValue(start);
     }
   }
 

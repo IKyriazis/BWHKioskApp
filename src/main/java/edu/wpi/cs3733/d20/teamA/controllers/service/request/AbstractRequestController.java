@@ -36,13 +36,4 @@ public abstract class AbstractRequestController extends AbstractController {
           employeeBox.setItems(allEmployeeList);
         });
   }
-
-  protected Node getSelectedNode(JFXComboBox<Node> nodeBox) {
-    Optional<Node> selected =
-        nodeBox.getItems().stream()
-            .filter(node -> node.toString().equals(nodeBox.getEditor().getText()))
-            .findFirst();
-
-    return selected.orElse(null);
-  }
 }
