@@ -10,7 +10,6 @@ import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.patient.PatientDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
-import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
@@ -79,11 +78,10 @@ public abstract class AbstractController {
   }
 
   protected void setupNodeBox(JFXComboBox<Node> box, javafx.scene.Node toFocus) {
-    box.setItems(Graph.getInstance(Campus.FAULKNER).getNodeObservableList());
+    box.setItems(Graph.getAllCampusObservableList());
     box.getEditor()
         .setOnKeyTyped(
-            new NodeAutoCompleteHandler(
-                box, toFocus, Graph.getInstance(Campus.FAULKNER).getNodeObservableList()));
+            new NodeAutoCompleteHandler(box, toFocus, Graph.getAllCampusObservableList()));
   }
 
   protected Node getSelectedNode(JFXComboBox<Node> nodeBox) {

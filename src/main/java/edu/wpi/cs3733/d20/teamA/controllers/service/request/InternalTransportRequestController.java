@@ -50,9 +50,9 @@ public class InternalTransportRequestController extends AbstractRequestControlle
     String l =
         serviceDatabase.addServiceReq(
             ServiceType.INTERNAL_TRANSPORT,
-            selectedPickupLocation.getLongName(),
+            selectedPickupLocation.toString(),
             null,
-            selectedDestinationLocation.getLongName());
+            selectedDestinationLocation.toString());
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {

@@ -4,9 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
-import edu.wpi.cs3733.d20.teamA.graph.Node;
 import java.util.Comparator;
-import java.util.Optional;
 import javafx.collections.ObservableList;
 
 public abstract class AbstractRequestController extends AbstractController {

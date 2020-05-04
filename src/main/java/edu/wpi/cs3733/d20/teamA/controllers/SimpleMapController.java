@@ -7,7 +7,6 @@ import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.ArrayList;
-import java.util.Optional;
 import javafx.animation.PathTransition;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

@@ -7,6 +7,7 @@ import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 
 /** Represents locations on the map in an 'undirected' Graph */
@@ -20,6 +21,31 @@ public class Graph {
 
   /** Singleton graph instance */
   private static HashMap<Campus, Graph> campusGraphs = new HashMap<>();
+
+  /** Combined observable list of all campuses */
+  private static ObservableList<Node> allCampusObservableList = FXCollections.observableArrayList();
+
+  /** Combined observable list of non-navigation only nodes */
+  private static ObservableList<Node> allValidDestinationList = FXCollections.observableArrayList();
+
+  static {
+    allCampusObservableList.addListener(
+        (ListChangeListener<Node>)
+            c -> {
+              while (c.next()) {
+                if (c.wasAdded()) {
+                  allValidDestinationList.addAll(
+                      c.getAddedSubList().stream()
+                          .filter(node -> node.getType() != NodeType.HALL)
+                          .collect(Collectors.toList()));
+                }
+
+                if (c.wasRemoved()) {
+                  allValidDestinationList.removeAll(c.getRemoved());
+                }
+              }
+            });
+  }
 
   /** Count of bidirectional edges */
   private int edgeCount = 0;
@@ -105,7 +131,9 @@ public class Graph {
 
     nodes.put(node.getNodeID(), node);
     nodeObservableList.add(node);
-    nodeObservableList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
+    allCampusObservableList.add(node);
+    nodeObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+    allCampusObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
 
     DB.addNode(
         node.getNodeID(),
@@ -215,6 +243,7 @@ public class Graph {
     // Delete node
     nodes.remove(node.getNodeID());
     nodeObservableList.remove(node);
+    allCampusObservableList.remove(node);
 
     DB.removeEdgeByNode(node.getNodeID(), campus);
 
@@ -225,7 +254,9 @@ public class Graph {
       // Add node back to graph map
       nodes.put(node.getNodeID(), node);
       nodeObservableList.add(node);
-      nodeObservableList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
+      allCampusObservableList.add(node);
+      nodeObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+      allCampusObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
 
       // Add edges back to table if we failed to remove the node
       toDelete.forEach(
@@ -389,14 +420,14 @@ public class Graph {
     nodes = newNodes;
 
     // Update observable list
+    allCampusObservableList.removeAll(nodeObservableList);
     nodeObservableList.clear();
-    nodes
-        .values()
-        .forEach(
-            node -> {
-              nodeObservableList.add(node);
-            });
-    nodeObservableList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
+
+    nodeObservableList.addAll(nodes.values());
+    allCampusObservableList.addAll(nodeObservableList);
+
+    nodeObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+    allCampusObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
 
     return true;
   }
@@ -410,6 +441,7 @@ public class Graph {
     nodes.clear();
 
     // Clear observable list of nodes
+    allCampusObservableList.removeAll(nodeObservableList);
     nodeObservableList.clear();
 
     // Reset edge count
@@ -426,6 +458,22 @@ public class Graph {
    */
   public ObservableList<Node> getNodeObservableList() {
     return nodeObservableList;
+  }
+
+  public static ObservableList<Node> getAllCampusObservableList() {
+    // Init both campuses in case they don't already exist
+    Graph faulkner = getInstance(Campus.FAULKNER);
+    Graph main = getInstance(Campus.MAIN);
+
+    return allCampusObservableList;
+  }
+
+  public static ObservableList<Node> getAllValidDestinationList() {
+    // Init both campuses in case they don't already exist
+    Graph faulkner = getInstance(Campus.FAULKNER);
+    Graph main = getInstance(Campus.MAIN);
+
+    return allValidDestinationList;
   }
 
   public GraphDatabase getDB() {
