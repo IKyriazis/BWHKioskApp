@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database.graph;
 
 import edu.wpi.cs3733.d20.teamA.database.Database;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.io.*;
 import java.sql.*;
 
@@ -22,15 +23,23 @@ public class GraphDatabase extends Database {
   public boolean dropTables() {
     boolean a = false;
     boolean b = false;
+    boolean c = false;
+    boolean d = false;
     // if the helper returns false this method should too
     // drop the constraints first
-    if (!doesTableNotExist("EDGE")) {
-      a = helperPrepared("DROP TABLE Edge");
+    if (!doesTableNotExist("EDGEFAULKNER")) {
+      a = helperPrepared("DROP TABLE EdgeFaulkner");
     }
-    if (!doesTableNotExist("NODE")) {
-      b = helperPrepared("DROP TABLE Node");
+    if (!doesTableNotExist("NODEFAULKNER")) {
+      b = helperPrepared("DROP TABLE NodeFaulkner");
     }
-    return a && b;
+    if (!doesTableNotExist("EDGEMAIN")) {
+      c = helperPrepared("DROP TABLE EdgeMain");
+    }
+    if (!doesTableNotExist("NODEMAIN")) {
+      d = helperPrepared("DROP TABLE NodeMain");
+    }
+    return a && b && c && d;
   }
 
   /**
@@ -42,24 +51,42 @@ public class GraphDatabase extends Database {
 
     boolean a = false;
     boolean b = false;
+    boolean c = false;
+    boolean d = false;
     // Create the graph tables
-    if (doesTableNotExist("NODE")) {
+    if (doesTableNotExist("NODEFAULKNER")) {
       b =
           helperPrepared(
-              "CREATE TABLE Node (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
+              "CREATE TABLE NodeFaulkner (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
                   + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
                   + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(25), "
                   + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
                   + "CONSTRAINT CHK_Coords CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
     }
-    if (doesTableNotExist("EDGE")) {
+    if (doesTableNotExist("EDGEFAULKNER")) {
       a =
           helperPrepared(
-              "CREATE TABLE Edge (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, "
-                  + "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES Node(nodeID), "
-                  + "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES Node(nodeID))");
+              "CREATE TABLE EdgeFaulkner (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, "
+                  + "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SN FOREIGN KEY (startNode) REFERENCES NodeFaulkner(nodeID), "
+                  + "CONSTRAINT FK_EN FOREIGN KEY (endNode) REFERENCES NodeFaulkner(nodeID))");
     }
-    return a && b;
+    if (doesTableNotExist("NODEMAIN")) {
+      c =
+          helperPrepared(
+              "CREATE TABLE NodeMain (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
+                  + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
+                  + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(25), "
+                  + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_FloorMain CHECK (floor >= 1 AND floor<= 10), "
+                  + "CONSTRAINT CHK_CoordsMain CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_TypeMain CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
+    }
+    if (doesTableNotExist("EDGEMAIN")) {
+      d =
+          helperPrepared(
+              "CREATE TABLE EdgeMain (edgeID Varchar(21) PRIMARY KEY, startNode Varchar(10) NOT NULL, "
+                  + "endNode Varchar(10) NOT NULL, CONSTRAINT FK_SNMain FOREIGN KEY (startNode) REFERENCES NodeMain(nodeID), "
+                  + "CONSTRAINT FK_ENMain FOREIGN KEY (endNode) REFERENCES NodeMain(nodeID))");
+    }
+    return a && b && c && d;
   }
 
   /**
@@ -68,7 +95,7 @@ public class GraphDatabase extends Database {
    * @return True if this was successful
    */
   public boolean removeAllNodes() {
-    return helperPrepared("DELETE From Node");
+    return helperPrepared("DELETE From NodeFaulkner") && helperPrepared("DELETE From NodeMain");
   }
 
   /**
@@ -77,7 +104,7 @@ public class GraphDatabase extends Database {
    * @return True if this was successful
    */
   public boolean removeAllEdges() {
-    return helperPrepared("DELETE From Edge");
+    return helperPrepared("DELETE From EdgeFaulkner") && helperPrepared("DELETE From EdgeMain");
   }
 
   /**
@@ -94,8 +121,13 @@ public class GraphDatabase extends Database {
    *
    * @return The size of the node table
    */
-  public int getSizeNode() {
-    return getSize("Node");
+  public int getSizeNode(Campus c) {
+    if (c == Campus.FAULKER) {
+      return getSize("NodeFaulkner");
+    } else if (c == Campus.MAIN) {
+      return getSize("NodeMain");
+    }
+    return -1;
   }
 
   /**
@@ -103,8 +135,33 @@ public class GraphDatabase extends Database {
    *
    * @return The size of the edge table
    */
-  public int getSizeEdge() {
-    return getSize("Edge");
+  public int getSizeEdge(Campus c) {
+    if (c == Campus.FAULKER) {
+      return getSize("EdgeFaulkner");
+    } else if (c == Campus.MAIN) {
+      return getSize("EdgeMain");
+    }
+    return -1;
+  }
+
+  public String getCampusEdge(Campus c) {
+    String tblName = "";
+    if (c == Campus.FAULKER) {
+      tblName = "EdgeFaulkner";
+    } else if (c == Campus.MAIN) {
+      tblName = "EdgeMain";
+    }
+    return tblName;
+  }
+
+  public String getCampusNode(Campus c) {
+    String tblName = "";
+    if (c == Campus.FAULKER) {
+      tblName = "NodeFaulkner";
+    } else if (c == Campus.MAIN) {
+      tblName = "NodeMain";
+    }
+    return tblName;
   }
 
   /**
@@ -119,6 +176,7 @@ public class GraphDatabase extends Database {
    * @param longName - The long name that describes the node
    * @param shortName - Shorthand name for the long name
    * @param teamAssigned - The team that made the node
+   * @param c - The campus
    * @return True if the add was successful
    */
   public boolean addNode(
@@ -130,24 +188,31 @@ public class GraphDatabase extends Database {
       String nodeType,
       String longName,
       String shortName,
-      String teamAssigned) {
+      String teamAssigned,
+      Campus c) {
+    String tblName = getCampusNode(c);
     try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "INSERT INTO Node (nodeID, xcoord, ycoord, floor, building, nodeType, longName, shortName, teamAssigned) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-      pstmt.setString(1, nodeID);
-      pstmt.setInt(2, xcoord);
-      pstmt.setInt(3, ycoord);
-      pstmt.setInt(4, floor);
-      pstmt.setString(5, building);
-      pstmt.setString(6, nodeType);
-      pstmt.setString(7, longName);
-      pstmt.setString(8, shortName);
-      pstmt.setString(9, teamAssigned);
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
+      if (!checkIfExistsString(tblName, "nodeID", nodeID)) {
+        PreparedStatement pstmt =
+            getConnection()
+                .prepareStatement(
+                    "INSERT INTO "
+                        + tblName
+                        + " (nodeID, xcoord, ycoord, floor, building, nodeType, longName, shortName, teamAssigned) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        pstmt.setString(1, nodeID);
+        pstmt.setInt(2, xcoord);
+        pstmt.setInt(3, ycoord);
+        pstmt.setInt(4, floor);
+        pstmt.setString(5, building);
+        pstmt.setString(6, nodeType);
+        pstmt.setString(7, longName);
+        pstmt.setString(8, shortName);
+        pstmt.setString(9, teamAssigned);
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      }
+      return false;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
@@ -162,17 +227,22 @@ public class GraphDatabase extends Database {
    * @param endNode - The node that the edge ends on
    * @return True if the add was successful
    */
-  public boolean addEdge(String edgeID, String startNode, String endNode) {
+  public boolean addEdge(String edgeID, String startNode, String endNode, Campus c) {
+    String tblName = getCampusEdge(c);
     try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement("INSERT INTO Edge (edgeID, startNode, endNode) VALUES (?, ?, ?)");
-      pstmt.setString(1, edgeID);
-      pstmt.setString(2, startNode);
-      pstmt.setString(3, endNode);
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
+      if (!checkIfExistsString(tblName, "edgeID", edgeID)) {
+        PreparedStatement pstmt =
+            getConnection()
+                .prepareStatement(
+                    "INSERT INTO " + tblName + " (edgeID, startNode, endNode) VALUES (?, ?, ?)");
+        pstmt.setString(1, edgeID);
+        pstmt.setString(2, startNode);
+        pstmt.setString(3, endNode);
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      }
+      return false;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
@@ -185,10 +255,11 @@ public class GraphDatabase extends Database {
    * @param edgeID - The ID of the edge to delete
    * @return True if the deletion was successful
    */
-  public boolean deleteEdge(String edgeID) {
+  public boolean deleteEdge(String edgeID, Campus c) {
+    String tblName = getCampusEdge(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE From Edge Where edgeID = ?");
+          getConnection().prepareStatement("DELETE From " + tblName + " Where edgeID = ?");
       pstmt.setString(1, edgeID);
       pstmt.executeUpdate();
       pstmt.close();
@@ -205,10 +276,11 @@ public class GraphDatabase extends Database {
    * @param nodeID - The ID of the node to be deleted
    * @return True if the deletion was successful
    */
-  public boolean deleteNode(String nodeID) {
+  public boolean deleteNode(String nodeID, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE From Node Where nodeID = ?");
+          getConnection().prepareStatement("DELETE From " + tblName + " Where nodeID = ?");
       pstmt.setString(1, nodeID);
       pstmt.executeUpdate();
       pstmt.close();
@@ -242,24 +314,31 @@ public class GraphDatabase extends Database {
       String nodeType,
       String longName,
       String shortName,
-      String teamAssigned) {
+      String teamAssigned,
+      Campus c) {
+    String tblName = getCampusNode(c);
     try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE Node SET xcoord = ?, ycoord = ?, floor = ?, building = ?, nodeType = ?, longName = ?, shortName = ?, teamAssigned = ? WHERE nodeID = ?");
-      pstmt.setInt(1, xcoord);
-      pstmt.setInt(2, ycoord);
-      pstmt.setInt(3, floor);
-      pstmt.setString(4, building);
-      pstmt.setString(5, nodeType);
-      pstmt.setString(6, longName);
-      pstmt.setString(7, shortName);
-      pstmt.setString(8, teamAssigned);
-      pstmt.setString(9, nodeID);
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
+      if (checkIfExistsString(tblName, "nodeID", nodeID)) {
+        PreparedStatement pstmt =
+            getConnection()
+                .prepareStatement(
+                    "UPDATE "
+                        + tblName
+                        + " SET xcoord = ?, ycoord = ?, floor = ?, building = ?, nodeType = ?, longName = ?, shortName = ?, teamAssigned = ? WHERE nodeID = ?");
+        pstmt.setInt(1, xcoord);
+        pstmt.setInt(2, ycoord);
+        pstmt.setInt(3, floor);
+        pstmt.setString(4, building);
+        pstmt.setString(5, nodeType);
+        pstmt.setString(6, longName);
+        pstmt.setString(7, shortName);
+        pstmt.setString(8, teamAssigned);
+        pstmt.setString(9, nodeID);
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      }
+      return false;
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
@@ -272,10 +351,12 @@ public class GraphDatabase extends Database {
    * @param nodeID - The node to delete edges from
    * @return True if the edges were deleted successfully
    */
-  public boolean removeEdgeByNode(String nodeID) {
+  public boolean removeEdgeByNode(String nodeID, Campus c) {
+    String tblName = getCampusEdge(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("DELETE FROM Edge WHERE startNode = ? OR endNode = ?");
+          getConnection()
+              .prepareStatement("DELETE FROM " + tblName + " WHERE startNode = ? OR endNode = ?");
       pstmt.setString(1, nodeID);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -294,10 +375,11 @@ public class GraphDatabase extends Database {
    * @param col - The name of the column with the int
    * @return The int
    */
-  public int helperGetIntG(String nodeID, String col) {
+  public int helperGetIntG(String nodeID, String col, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
+          getConnection().prepareStatement("SELECT * FROM " + tblName + " WHERE nodeID = ?");
       pstmt.setString(1, nodeID);
       ResultSet rset = pstmt.executeQuery();
       rset.next();
@@ -318,10 +400,11 @@ public class GraphDatabase extends Database {
    * @param col - The name of the column with the String
    * @return The String
    */
-  public String helperGetStringG(String nodeID, String col) {
+  public String helperGetStringG(String nodeID, String col, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("SELECT * FROM Node WHERE nodeID = ?");
+          getConnection().prepareStatement("SELECT * FROM " + tblName + " WHERE nodeID = ?");
       pstmt.setString(1, nodeID);
       ResultSet rset = pstmt.executeQuery();
       rset.next();
@@ -342,10 +425,11 @@ public class GraphDatabase extends Database {
    * @param col - The column name with the String
    * @return The String
    */
-  public String helperGetStringEdgeG(String edgeID, String col) {
+  public String helperGetStringEdgeG(String edgeID, String col, Campus c) {
+    String tblName = getCampusEdge(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("SELECT * FROM Edge WHERE nodeID = ?");
+          getConnection().prepareStatement("SELECT * FROM " + tblName + " WHERE nodeID = ?");
       pstmt.setString(1, edgeID);
       ResultSet rset = pstmt.executeQuery();
       rset.next();
@@ -359,50 +443,52 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public int getX(String nodeID) {
-    return helperGetIntG(nodeID, "xcoord");
+  public int getX(String nodeID, Campus c) {
+    return helperGetIntG(nodeID, "xcoord", c);
   }
 
-  public int getY(String nodeID) {
-    return helperGetIntG(nodeID, "ycoord");
+  public int getY(String nodeID, Campus c) {
+    return helperGetIntG(nodeID, "ycoord", c);
   }
 
-  public int getFloor(String nodeID) {
-    return helperGetIntG(nodeID, "floor");
+  public int getFloor(String nodeID, Campus c) {
+    return helperGetIntG(nodeID, "floor", c);
   }
 
-  public String getBuilding(String nodeID) {
-    return helperGetStringG(nodeID, "building");
+  public String getBuilding(String nodeID, Campus c) {
+    return helperGetStringG(nodeID, "building", c);
   }
 
-  public String getNodeType(String nodeID) {
-    return helperGetStringG(nodeID, "nodeType");
+  public String getNodeType(String nodeID, Campus c) {
+    return helperGetStringG(nodeID, "nodeType", c);
   }
 
-  public String getLongName(String nodeID) {
-    return helperGetStringG(nodeID, "longName");
+  public String getLongName(String nodeID, Campus c) {
+    return helperGetStringG(nodeID, "longName", c);
   }
 
-  public String getShortName(String nodeID) {
-    return helperGetStringG(nodeID, "shortName");
+  public String getShortName(String nodeID, Campus c) {
+    return helperGetStringG(nodeID, "shortName", c);
   }
 
-  public String getTeamAssigned(String nodeID) {
-    return helperGetStringG(nodeID, "teamAssigned");
+  public String getTeamAssigned(String nodeID, Campus c) {
+    return helperGetStringG(nodeID, "teamAssigned", c);
   }
 
-  public String getStartNode(String edgeID) {
-    return helperGetStringEdgeG(edgeID, "startNode");
+  public String getStartNode(String edgeID, Campus c) {
+    return helperGetStringEdgeG(edgeID, "startNode", c);
   }
 
-  public String getEndNode(String edgeID) {
-    return helperGetStringEdgeG(edgeID, "endNode");
+  public String getEndNode(String edgeID, Campus c) {
+    return helperGetStringEdgeG(edgeID, "endNode", c);
   }
 
-  public boolean setX(String nodeID, int i) {
+  public boolean setX(String nodeID, int i, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Node SET xcoord = ? WHERE nodeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET xcoord = ? WHERE nodeID = ?");
       pstmt.setInt(1, i);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -414,10 +500,12 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setY(String nodeID, int i) {
+  public boolean setY(String nodeID, int i, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Node SET ycoord = ? WHERE nodeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET ycoord = ? WHERE nodeID = ?");
       pstmt.setInt(1, i);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -429,10 +517,11 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setFloor(String nodeID, int i) {
+  public boolean setFloor(String nodeID, int i, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Node SET floor = ? WHERE nodeID = ?");
+          getConnection().prepareStatement("UPDATE " + tblName + " SET floor = ? WHERE nodeID = ?");
       pstmt.setInt(1, i);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -444,10 +533,12 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setBuilding(String nodeID, String s) {
+  public boolean setBuilding(String nodeID, String s, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Node SET building = ? WHERE nodeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET building = ? WHERE nodeID = ?");
       pstmt.setString(1, s);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -459,10 +550,12 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setNodeType(String nodeID, String s) {
+  public boolean setNodeType(String nodeID, String s, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Node SET nodeType = ? WHERE nodeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET nodeType = ? WHERE nodeID = ?");
       pstmt.setString(1, s);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -474,10 +567,12 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setLongName(String nodeID, String s) {
+  public boolean setLongName(String nodeID, String s, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Node SET longName = ? WHERE nodeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET longName = ? WHERE nodeID = ?");
       pstmt.setString(1, s);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -489,10 +584,12 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setShortName(String nodeID, String s) {
+  public boolean setShortName(String nodeID, String s, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Node SET shortName = ? WHERE nodeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET shortName = ? WHERE nodeID = ?");
       pstmt.setString(1, s);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -504,10 +601,12 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setTeamAssigned(String nodeID, String s) {
+  public boolean setTeamAssigned(String nodeID, String s, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Node SET teamAssigned = ? WHERE nodeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET teamAssigned = ? WHERE nodeID = ?");
       pstmt.setString(1, s);
       pstmt.setString(2, nodeID);
       pstmt.executeUpdate();
@@ -519,10 +618,12 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setStartNode(String edgeID, String s) {
+  public boolean setStartNode(String edgeID, String s, Campus c) {
+    String tblName = getCampusEdge(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Edge SET startNode = ? WHERE edgeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET startNode = ? WHERE edgeID = ?");
       pstmt.setString(1, s);
       pstmt.setString(2, edgeID);
       pstmt.executeUpdate();
@@ -534,10 +635,12 @@ public class GraphDatabase extends Database {
     }
   }
 
-  public boolean setEndNode(String edgeID, String s) {
+  public boolean setEndNode(String edgeID, String s, Campus c) {
+    String tblName = getCampusNode(c);
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("UPDATE Edge SET endNode = ? WHERE edgeID = ?");
+          getConnection()
+              .prepareStatement("UPDATE " + tblName + " SET endNode = ? WHERE edgeID = ?");
       pstmt.setString(1, s);
       pstmt.setString(2, edgeID);
       pstmt.executeUpdate();

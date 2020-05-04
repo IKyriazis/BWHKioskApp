@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.io.*;
 import java.sql.*;
 import java.util.List;
@@ -55,7 +56,7 @@ public class FlowerDatabase extends Database {
 
     boolean b =
         helperPrepared(
-            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flower Varchar(50) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, message Varchar(200), employeeId VARCHAR(6) NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES Node(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
+            "CREATE TABLE Orders (orderNumber INTEGER PRIMARY KEY, numFlowers INTEGER NOT NULL, flower Varchar(50) NOT NULL, price DOUBLE NOT NULL, status Varchar(50) NOT NULL, location Varchar(10) NOT NULL, message Varchar(200), employeeId VARCHAR(6) NOT NULL, CONSTRAINT FK_NID FOREIGN KEY (location) REFERENCES NodeFaulkner(nodeID), CONSTRAINT CHK_STAT CHECK (status in ('Order Sent', 'Order Received', 'Flowers Sent', 'Flowers Delivered')), CONSTRAINT CHK_FLNUM CHECK (numFlowers > 0))");
 
     return a && b;
   }
@@ -444,7 +445,7 @@ public class FlowerDatabase extends Database {
         int empId = rset.getInt("employeeId");
         // Open up graph database for node name
         GraphDatabase graphDatabase = new GraphDatabase(conn);
-        String longLocationName = graphDatabase.getLongName(id);
+        String longLocationName = graphDatabase.getLongName(id, Campus.FAULKER);
 
         Order node =
             new Order(

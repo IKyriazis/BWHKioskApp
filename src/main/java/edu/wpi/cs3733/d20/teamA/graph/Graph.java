@@ -28,20 +28,22 @@ public class Graph {
   /** Observable list of nodes, used for UI stuff */
   private ObservableList<Node> nodeObservableList;
 
-  /** Create a new empty graph, private b/c this is a singleton */
-  private Graph() {
-    nodes = new HashMap<>();
+  Campus campus;
 
+  /** Create a new empty graph, private b/c this is a singleton */
+  private Graph(Campus campus) {
+    nodes = new HashMap<>();
+    this.campus = campus;
     // Create observable list of nodes and keep it sorted
     nodeObservableList = FXCollections.observableArrayList();
 
-    if (DB.getSizeNode() == -1 || DB.getSizeEdge() == -1) {
+    if (DB.getSizeNode(campus) == -1 || DB.getSizeEdge(campus) == -1) {
       DB.dropTables();
       DB.createTables();
       CSVLoader.readNodes(this);
       CSVLoader.readEdges(this);
       update();
-    } else if (DB.getSizeNode() == 0 || DB.getSizeEdge() == 0) {
+    } else if (DB.getSizeNode(campus) == 0 || DB.getSizeEdge(campus) == 0) {
       DB.removeAll();
       CSVLoader.readNodes(this);
       CSVLoader.readEdges(this);
@@ -58,7 +60,7 @@ public class Graph {
    */
   public static Graph getInstance(Campus campus) {
     if (!campusGraphs.containsKey(campus)) {
-      campusGraphs.put(campus, new Graph());
+      campusGraphs.put(campus, new Graph(campus));
     }
 
     return campusGraphs.get(campus);
@@ -116,7 +118,8 @@ public class Graph {
         node.getStringType(),
         node.getLongName(),
         node.getShortName(),
-        node.getTeamAssigned());
+        node.getTeamAssigned(),
+        campus);
 
     return true;
   }
@@ -143,7 +146,8 @@ public class Graph {
             node.getStringType(),
             node.getLongName(),
             node.getShortName(),
-            node.getTeamAssigned());
+            node.getTeamAssigned(),
+            campus);
     update();
 
     return success;
@@ -189,8 +193,10 @@ public class Graph {
     // Update edge count
     edgeCount++;
 
-    DB.addEdge(start.getNodeID() + "_" + end.getNodeID(), start.getNodeID(), end.getNodeID());
-    DB.addEdge(end.getNodeID() + "_" + start.getNodeID(), end.getNodeID(), start.getNodeID());
+    DB.addEdge(
+        start.getNodeID() + "_" + end.getNodeID(), start.getNodeID(), end.getNodeID(), campus);
+    DB.addEdge(
+        end.getNodeID() + "_" + start.getNodeID(), end.getNodeID(), start.getNodeID(), campus);
     return true;
   }
 
@@ -212,9 +218,9 @@ public class Graph {
     nodes.remove(node.getNodeID());
     nodeObservableList.remove(node);
 
-    DB.removeEdgeByNode(node.getNodeID());
+    DB.removeEdgeByNode(node.getNodeID(), campus);
 
-    boolean success = DB.deleteNode(node.getNodeID());
+    boolean success = DB.deleteNode(node.getNodeID(), campus);
     if (success) {
       return true;
     } else {
@@ -263,8 +269,8 @@ public class Graph {
     Edge reverse = forward.getReverseEdge();
     if (reverse == null) return false;
 
-    DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID());
-    DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID());
+    DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID(), campus);
+    DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID(), campus);
 
     // Update edge count
     edgeCount--;
@@ -329,8 +335,17 @@ public class Graph {
    */
   public boolean update() {
     HashMap<String, Node> newNodes = new HashMap<>();
+    String tblNameNode = "";
+    String tblNameEdge = "";
+    if (campus == Campus.FAULKER) {
+      tblNameNode = "NodeFaulkner";
+      tblNameEdge = "EdgeFaulkner";
+    } else if (campus == Campus.MAIN) {
+      tblNameNode = "NodeMain";
+      tblNameEdge = "EdgeMain";
+    }
     try {
-      PreparedStatement pstmtNode = conn.prepareStatement("SELECT * FROM Node");
+      PreparedStatement pstmtNode = conn.prepareStatement("SELECT * FROM " + tblNameNode);
       ResultSet rsetNode = pstmtNode.executeQuery();
       while (rsetNode.next()) {
         String nodeID = rsetNode.getString("nodeID");
@@ -355,7 +370,7 @@ public class Graph {
       return false;
     }
     try {
-      PreparedStatement pstmtEdge = conn.prepareStatement("SELECT * FROM Edge");
+      PreparedStatement pstmtEdge = conn.prepareStatement("SELECT * FROM " + tblNameEdge);
       ResultSet rsetEdge = pstmtEdge.executeQuery();
       while (rsetEdge.next()) {
         String startNode = rsetEdge.getString("startNode");
