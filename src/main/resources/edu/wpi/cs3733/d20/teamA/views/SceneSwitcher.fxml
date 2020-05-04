@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -98,7 +99,22 @@
                   </GridPane>
                   <AnchorPane pickOnBounds="false" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <JFXButton fx:id="backButton" layoutX="85.0" layoutY="54.0" onAction="#pressedBack" styleClass="heading-text" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <HBox layoutX="8.0" layoutY="8.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <children>
+                              <JFXButton fx:id="backButton" onAction="#pressedBack">
+                                 <styleClass>
+                                    <String fx:value="heading-text" />
+                                    <String fx:value="button-rounded-left" />
+                                 </styleClass>
+                              </JFXButton>
+                              <JFXButton fx:id="homeButton" onAction="#pressedHome">
+                                 <styleClass>
+                                    <String fx:value="heading-text" />
+                                    <String fx:value="button-rounded-right" />
+                                 </styleClass>
+                              </JFXButton>
+                           </children>
+                        </HBox>
                         <AnchorPane fx:id="signInPane" layoutX="1186.0" layoutY="8.0" pickOnBounds="false" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <children>
                               <JFXButton fx:id="signInButton" onAction="#pressedSignIn" styleClass="heading-text" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

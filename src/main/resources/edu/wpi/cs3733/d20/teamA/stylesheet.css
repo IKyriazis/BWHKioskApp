@@ -160,6 +160,14 @@
     -fx-border-color: -primary-color;
 }
 
+.button-rounded-right {
+    -fx-background-radius: 0 1em 1em 0;
+}
+
+.button-rounded-left {
+    -fx-background-radius: 1em 0 0 1em;
+}
+
 .small-text {
     -fx-font-size: 10pt;
 }
