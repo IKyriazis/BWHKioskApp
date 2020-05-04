@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import de.taimos.totp.TOTP;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -92,6 +93,10 @@ public class SceneSwitcherController extends AbstractController {
       eDB.removeAll();
       eDB.readEmployeeCSV();
     }
+
+    // create account with rfid
+    eDB.addEmployeeGA(
+        "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
 
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);
@@ -230,6 +235,34 @@ public class SceneSwitcherController extends AbstractController {
             loginTransitioning = false;
           });
       trans.play();
+
+      ThreadPool.runBackgroundTask(
+          () -> {
+            String scannedCode = scanRFID();
+            if (scannedCode != null) {
+              String localUsername = eDB.getUsername(scannedCode);
+              if (!localUsername.isEmpty()) {
+                username = localUsername;
+                Platform.runLater(this::login);
+              } else {
+                // popup that rfid is not in the database
+                Platform.runLater(
+                    () -> {
+                      clickedBlockerPane();
+                      DialogUtil.simpleErrorDialog(
+                          rootPane, "Invalid Card", "The card you used doesn't belong to anyone");
+                    });
+              }
+            } else {
+              // popup that rfid scan went wrong
+              Platform.runLater(
+                  () -> {
+                    clickedBlockerPane();
+                    DialogUtil.simpleErrorDialog(
+                        rootPane, "Failed Read", "Something went wrong while scanning the card");
+                  });
+            }
+          });
     }
   }
 
