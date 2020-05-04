@@ -32,9 +32,9 @@ public class PatientInfoController extends AbstractController {
     // Setup icons
     lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.USER_PLUS));
 
-    addPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
-    editPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_SQUARE));
-    deletePatientButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
+    addPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
+    editPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.EDIT));
+    deletePatientButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
 
     // Setup Table
     patientTable = new SimpleTableView<>(new Patient("", "", "", "", ""), 80.0);
