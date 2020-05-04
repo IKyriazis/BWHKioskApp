@@ -2,7 +2,7 @@ package edu.wpi.cs3733.d20.teamA;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDecorator;
-import java.io.IOException;
+import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
@@ -22,7 +22,7 @@ public class App extends Application {
   }
 
   @Override
-  public void start(Stage primaryStage) throws IOException {
+  public void start(Stage primaryStage) throws Exception {
     // Load FXML file
     FXMLLoader loader = new FXMLLoader();
 
@@ -58,6 +58,7 @@ public class App extends Application {
 
     // Display the stage
     primaryStage.show();
+    AppointmentRequest.run(10, 10, 100, 100, null, null, null);
   }
 
   @Override
