@@ -1,15 +1,15 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXPasswordField;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
 
@@ -18,19 +18,36 @@ public class CreateAcctController extends AbstractController {
   @FXML private JFXTextField fName;
   @FXML private JFXTextField lName;
   @FXML private JFXTextField uName;
-  @FXML private JFXTextField title;
   @FXML private JFXPasswordField pass;
   @FXML private JFXPasswordField cPass;
   @FXML private StackPane dialogPane;
+  @FXML private JFXCheckBox addRFID;
+  @FXML private JFXComboBox title;
+
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
+
+  public void initialize() {
+
+    ArrayList<String> titles = new ArrayList<String>(7);
+    titles.add("Choose one:");
+    titles.add("Admin");
+    titles.add("Doctor");
+    titles.add("Nurse");
+    titles.add("Janitor");
+    titles.add("Interpreter");
+    titles.add("Receptionist");
+    titles.add("Retail");
+    title.setItems(FXCollections.observableList(titles));
+    title.getSelectionModel().selectFirst();
+  }
 
   public void submitEmployee() {
     if (fName.getText().isEmpty()
         || lName.getText().isEmpty()
         || uName.getText().isEmpty()
-        || title.getText().isEmpty()
         || pass.getText().isEmpty()
+        || title.getValue().toString().equals("Choose one:")
         || cPass.getText().isEmpty()) {
       // make popup that says one or more fields are empty
       DialogUtil.simpleInfoDialog(
@@ -75,13 +92,47 @@ public class CreateAcctController extends AbstractController {
 
     ThreadPool.runBackgroundTask(
         () -> {
-          String secretKey =
-              eDB.addEmployeeGA(
-                  fName.getText(),
-                  lName.getText(),
-                  uName.getText(),
-                  cPass.getText(),
-                  EmployeeTitle.valueOf(title.getText().toUpperCase()));
+          String secretKey = "";
+          // must add rfid card if the user checks they want to add
+          // an rfid card
+          if (addRFID.isSelected()) {
+            // popup message saying that we are scanning for rfid card
+            Platform.runLater(
+                () -> {
+                  // tell user we are scanning for a card
+                  DialogUtil.simpleErrorDialog(
+                      dialogPane, "Started Scanning", "We are looking for your card.");
+                });
+            String rfid = scanRFID();
+            if (rfid != null) {
+
+              secretKey =
+                  eDB.addEmployeeGA(
+                      fName.getText(),
+                      lName.getText(),
+                      uName.getText(),
+                      cPass.getText(),
+                      EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
+                      rfid);
+            } else {
+              Platform.runLater(
+                  () -> {
+                    DialogUtil.simpleErrorDialog(
+                        dialogPane,
+                        "Read Fail",
+                        "There was an error reading the card please try again");
+                  });
+              clearFields();
+            }
+          } else {
+            secretKey =
+                eDB.addEmployeeGA(
+                    fName.getText(),
+                    lName.getText(),
+                    uName.getText(),
+                    cPass.getText(),
+                    EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
+          }
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
               getGoogleAuthenticatorBarCode(secretKey, uName.getText(), companyName);
@@ -128,7 +179,7 @@ public class CreateAcctController extends AbstractController {
     fName.clear();
     lName.clear();
     uName.clear();
-    title.clear();
+    title.setValue("Choose one:");
     pass.clear();
     cPass.clear();
   }
