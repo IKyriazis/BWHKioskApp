@@ -38,7 +38,7 @@ public class MainMenuController {
 
     transitButton.setOnAction(
         event -> {
-          // SceneSwitcherController.pushScene("views/nav/ServiceHome.fxml");
+          SceneSwitcherController.pushScene("views/mapping/GluonMap.fxml", TransitionType.FADE);
           try {
             Media media = new Media(App.class.getResource("sounds/no.mp3").toURI().toString());
             AudioClip audioClip = new AudioClip(media.getSource());
