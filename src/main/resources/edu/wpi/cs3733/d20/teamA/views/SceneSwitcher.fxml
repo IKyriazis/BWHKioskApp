@@ -7,8 +7,8 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -29,7 +29,7 @@
                   <Image url="@../images/hospital.jpg" />
                </image>
                <effect>
-                  <BoxBlur height="25.0" iterations="3" width="25.0" />
+                  <GaussianBlur radius="7.0" />
                </effect>
             </ImageView>
          </children>
@@ -48,6 +48,17 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
+                  <GridPane GridPane.columnIndex="4">
+                    <columnConstraints>
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label fx:id="tempLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" />
+                     </children>
+                  </GridPane>
                   <JFXButton fx:id="aboutBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#openAbout" style="-fx-background-color: transparent;" styleClass="chonky-text" GridPane.columnIndex="3" />
                   <ImageView fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.vgrow="NEVER">
                      <image>
