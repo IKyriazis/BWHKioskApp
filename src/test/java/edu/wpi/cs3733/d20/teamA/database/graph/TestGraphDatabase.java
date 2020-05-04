@@ -27,22 +27,12 @@ public class TestGraphDatabase {
   @AfterEach
   public void teardown() {
     try {
+      graphDatabase.removeAll();
+      graphDatabase.dropTables();
       conn.close();
       DriverManager.getConnection(closeUrl);
     } catch (SQLException ignored) {
     }
-  }
-
-  // @Test
-  public void testgraphDatabase() {
-    boolean test = false;
-    try {
-      Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
-      test = true;
-    } catch (SQLException e) {
-
-    }
-    Assertions.assertTrue(test);
   }
 
   @Test

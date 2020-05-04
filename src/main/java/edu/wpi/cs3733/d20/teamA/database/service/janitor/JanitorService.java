@@ -1,15 +1,13 @@
 package edu.wpi.cs3733.d20.teamA.database.service.janitor;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
-import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.beans.property.SimpleStringProperty;
 import lombok.Setter;
 
-public class JanitorService extends RecursiveTreeObject<JanitorService>
-    implements ITableable<JanitorService> {
+public class JanitorService implements ITableable<JanitorService> {
   @Setter private SimpleStringProperty location;
   @Setter private SimpleStringProperty priority;
   @Setter private SimpleStringProperty status;

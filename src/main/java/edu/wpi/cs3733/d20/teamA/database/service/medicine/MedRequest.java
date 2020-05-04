@@ -25,15 +25,15 @@ public class MedRequest implements ITableable<MedRequest> {
   public MedRequest(
       String orderNum,
       String status,
-      String contentString,
+      String additional,
       String description,
       Timestamp t,
       String assignedEmployee) {
 
     // Additional: fNameText| doctorText| medicineText
-    if (contentString != null && description != null) {
+    if (additional != null && description != null) {
       // Parse the string
-      String[] arr = contentString.split("\\|");
+      String[] arr = additional.split("\\|");
       if (arr.length == 3) {
         String patientName = arr[0];
         String doctorName = arr[1];

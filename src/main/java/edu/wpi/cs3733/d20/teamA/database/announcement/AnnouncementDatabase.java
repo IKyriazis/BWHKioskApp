@@ -16,7 +16,7 @@ public class AnnouncementDatabase extends Database implements IDatabase<Announce
   public boolean createTables() {
     if (doesTableNotExist("ANNOUNCEMENTS")) {
       return helperPrepared(
-          "CREATE TABLE ANNOUNCEMENTS(announcementID VARCHAR(6) PRIMARY KEY, announcement VARCHAR(50))");
+          "CREATE TABLE ANNOUNCEMENTS(announcementID VARCHAR(6) PRIMARY KEY, announcement VARCHAR(250))");
     }
     return false;
   }
@@ -44,7 +44,7 @@ public class AnnouncementDatabase extends Database implements IDatabase<Announce
   public ObservableList<Announcement> getObservableList() {
     ObservableList<Announcement> list = FXCollections.observableArrayList();
     try {
-      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Employees");
+      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM ANNOUNCEMENTS");
       ResultSet rset = pstmt.executeQuery();
       while (rset.next()) {
         String id = rset.getString("announcementID");
@@ -91,11 +91,12 @@ public class AnnouncementDatabase extends Database implements IDatabase<Announce
     return addAnnouncement(getRandomString(), announcement);
   }
 
-  public String getAnnouncement(int id) {
+  public String getAnnouncement(String id) {
     String announcement;
     try {
       Statement stmt = getConnection().createStatement();
-      ResultSet rst = stmt.executeQuery("SELECT * FROM ANNOUNCEMENTS WHERE announcementID = " + id);
+      ResultSet rst =
+          stmt.executeQuery("SELECT * FROM ANNOUNCEMENTS WHERE announcementID = '" + id + "'");
       rst.next();
       announcement = rst.getString("announcement");
       return announcement;
@@ -107,26 +108,5 @@ public class AnnouncementDatabase extends Database implements IDatabase<Announce
 
   public boolean removeAnnouncement(String id) {
     return helperPrepared("DELETE From ANNOUNCEMENTS WHERE announcementID = '" + id + "'");
-  }
-
-  public ObservableList<Announcement> announcementObservableList() {
-    ObservableList<Announcement> announcementObservableList = FXCollections.observableArrayList();
-    try {
-      PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM ANNOUNCEMENTS");
-      ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        String announcementID = rset.getString("announcementID");
-        String announcement = rset.getString("announcement");
-
-        Announcement node = new Announcement(announcementID, announcement);
-        announcementObservableList.add(node);
-      }
-      rset.close();
-      pstmt.close();
-      return announcementObservableList;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return null;
-    }
   }
 }

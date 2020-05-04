@@ -20,15 +20,7 @@ public class InternalTransportController extends AbstractController {
   public void initialize() {}
 
   @FXML
-  public void placeOrder() {
-    DialogUtil.complexDialog(
-        dialogPane,
-        "Request Internal Transportation",
-        "views/InternalTransportRequestDialog.fxml",
-        false,
-        null,
-        new InternalTransportRequestController());
-  }
+  public void placeOrder() {}
 
   @FXML
   public void trackOrder() {

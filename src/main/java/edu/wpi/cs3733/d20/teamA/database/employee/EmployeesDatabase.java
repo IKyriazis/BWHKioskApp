@@ -52,7 +52,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
           "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
               + " nameFirst Varchar(25), nameLast Varchar(25),"
               + " username Varchar(25) UNIQUE NOT NULL,"
-              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), "
+              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), rfid Varchar(10),"
               + "CONSTRAINT Check_Title CHECK (title in ('admin', 'doctor', 'nurse', 'janitor', 'interpreter', 'receptionist', 'retail')))");
     }
     return false;
@@ -136,6 +136,44 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     }
   }
 
+  /**
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
+   */
+  public synchronized String addEmployeeGA(
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      String rfid) {
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+    String secretKey = generateSecretKey();
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey, rfid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, getRandomString());
+      pstmt.setString(2, nameFirst);
+      pstmt.setString(3, nameLast);
+      pstmt.setString(4, username);
+      pstmt.setString(5, storedPassword);
+      pstmt.setString(6, title.toString());
+      pstmt.setString(7, secretKey);
+      pstmt.setString(8, rfid);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   // get the secret key (used for google authenticator) of the specified user
   public synchronized String getSecretKey(String uname) {
     try {
@@ -150,6 +188,27 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       rset.close();
       pstmt.close();
       return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  // gets the username of the user who has the given rfid key
+  // associated with their account
+  public synchronized String getUsername(String rfid) {
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("Select username From Employees Where rfid = '" + rfid + "'");
+      ResultSet rset = pstmt.executeQuery();
+      String username = "";
+      if (rset.next()) {
+        username = rset.getString("username");
+      }
+      rset.close();
+      pstmt.close();
+      return username;
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
