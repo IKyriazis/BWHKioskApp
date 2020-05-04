@@ -53,7 +53,7 @@ public class ITServicesController extends AbstractController {
     statusChangeStatus.getItems().addAll("Request Made", "In Progress", "Completed");
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
-            Graph.getInstance(Campus.FAULKER).getNodes().values().stream()
+            Graph.getInstance(Campus.FAULKNER).getNodes().values().stream()
                 .filter(node -> node.getFloor() == 1)
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));

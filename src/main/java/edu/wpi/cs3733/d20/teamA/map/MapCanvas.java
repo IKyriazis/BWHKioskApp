@@ -24,9 +24,13 @@ import javafx.scene.shape.MoveTo;
 import javafx.util.Duration;
 
 public class MapCanvas extends Canvas {
+  private Graph graph;
+
   private final Image[] floorImages;
   private final Image upImage;
   private final Image downImage;
+
+  private final int maxFloor;
 
   private int lastDrawnFloor = 1;
   private boolean drawAllNodes = false;
@@ -54,15 +58,20 @@ public class MapCanvas extends Canvas {
   Group group = new Group();
   PathTransition transition = new PathTransition();
 
-  public MapCanvas(boolean dragEnabled) {
+  public MapCanvas(boolean dragEnabled, Campus campus) {
     super();
+
+    graph = Graph.getInstance(campus);
+
+    maxFloor = campus == Campus.FAULKNER ? 5 : 6;
 
     this.dragEnabled = dragEnabled;
 
     // Load floor images
-    floorImages = new Image[5];
-    for (int i = 0; i < 5; i++) {
-      floorImages[i] = new Image("/edu/wpi/cs3733/d20/teamA/images/Floor" + (i + 1) + ".jpg");
+    floorImages = new Image[maxFloor];
+    for (int i = 0; i < maxFloor; i++) {
+      String imgName = (campus == Campus.FAULKNER ? "Faulkner" : "Main") + (i + 1);
+      floorImages[i] = new Image("/edu/wpi/cs3733/d20/teamA/images/" + imgName + ".png");
     }
 
     // Load up/down arrow images
@@ -221,8 +230,8 @@ public class MapCanvas extends Canvas {
     getGraphicsContext2D().setFill(Color.web("F4F4F4"));
     getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
 
-    // Clamp floor to between 1 and 5
-    floor = Math.max(1, Math.min(floor, 5));
+    // Clamp floor to between 1 and [maxFloor]
+    floor = Math.max(1, Math.min(floor, maxFloor));
 
     // Update view space
     calcViewSpace(floor);
@@ -237,7 +246,7 @@ public class MapCanvas extends Canvas {
         if (drawBelow) {
           // Get all the nodes on the floor below
           List<Node> belowNodes =
-              Graph.getInstance(Campus.FAULKER).getNodes().values().stream()
+              graph.getNodes().values().stream()
                   .filter(node -> node.getFloor() == finalFloor - 1)
                   .collect(Collectors.toList());
           Color belowColor = Color.rgb(0, 0, 0, 0.25);
@@ -267,7 +276,7 @@ public class MapCanvas extends Canvas {
 
         // Get all the nodes on this floor
         List<Node> floorNodes =
-            Graph.getInstance(Campus.FAULKER).getNodes().values().stream()
+            graph.getNodes().values().stream()
                 .filter(node -> node.getFloor() == finalFloor)
                 .collect(Collectors.toList());
 
@@ -499,7 +508,7 @@ public class MapCanvas extends Canvas {
   // Get the closest node to a position on the canvas (within a given radius in canvas space)
   public Optional<Node> getClosestNode(int floor, Point2D point, double maxDistance) {
     try {
-      Stream<Node> nodeStream = Graph.getInstance(Campus.FAULKER).getNodes().values().stream();
+      Stream<Node> nodeStream = graph.getNodes().values().stream();
 
       return nodeStream
           .filter(node -> node.getFloor() == floor)

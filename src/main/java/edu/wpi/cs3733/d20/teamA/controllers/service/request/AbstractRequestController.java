@@ -25,11 +25,11 @@ public abstract class AbstractRequestController extends AbstractController {
   }
 
   protected void setupNodeBox(JFXComboBox<Node> box, javafx.scene.Node toFocus) {
-    box.setItems(Graph.getInstance(Campus.FAULKER).getNodeObservableList());
+    box.setItems(Graph.getInstance(Campus.FAULKNER).getNodeObservableList());
     box.getEditor()
         .setOnKeyTyped(
             new NodeAutoCompleteHandler(
-                box, toFocus, Graph.getInstance(Campus.FAULKER).getNodeObservableList()));
+                box, toFocus, Graph.getInstance(Campus.FAULKNER).getNodeObservableList()));
   }
 
   protected void setupEmployeeBox(JFXComboBox<Employee> employeeBox) {

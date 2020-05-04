@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA.database.graph;
 
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.graph.Campus;
-import java.io.*;
 import java.sql.*;
 
 public class GraphDatabase extends Database {
@@ -59,7 +58,7 @@ public class GraphDatabase extends Database {
           helperPrepared(
               "CREATE TABLE NodeFaulkner (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
                   + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
-                  + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(25), "
+                  + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(50), "
                   + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_Floor CHECK (floor >= 1 AND floor<= 10), "
                   + "CONSTRAINT CHK_Coords CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_Type CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
     }
@@ -75,7 +74,7 @@ public class GraphDatabase extends Database {
           helperPrepared(
               "CREATE TABLE NodeMain (nodeID Varchar(10) PRIMARY KEY, xcoord INTEGER NOT NULL, "
                   + "ycoord INTEGER NOT NULL, floor INTEGER NOT NULL, building Varchar(50), "
-                  + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(25), "
+                  + "nodeType Varchar(4) NOT NULL, longName Varchar(200) UNIQUE NOT NULL, shortName Varchar(50), "
                   + "teamAssigned Varchar(10) NOT NULL, CONSTRAINT CHK_FloorMain CHECK (floor >= 1 AND floor<= 10), "
                   + "CONSTRAINT CHK_CoordsMain CHECK (xcoord >= 0 AND ycoord >= 0), CONSTRAINT CHK_TypeMain CHECK (nodeType in ('HALL', 'ELEV', 'REST', 'STAI', 'DEPT', 'LABS', 'INFO', 'CONF', 'EXIT', 'RETL', 'SERV')))");
     }
@@ -122,7 +121,7 @@ public class GraphDatabase extends Database {
    * @return The size of the node table
    */
   public int getSizeNode(Campus c) {
-    if (c == Campus.FAULKER) {
+    if (c == Campus.FAULKNER) {
       return getSize("NodeFaulkner");
     } else if (c == Campus.MAIN) {
       return getSize("NodeMain");
@@ -136,7 +135,7 @@ public class GraphDatabase extends Database {
    * @return The size of the edge table
    */
   public int getSizeEdge(Campus c) {
-    if (c == Campus.FAULKER) {
+    if (c == Campus.FAULKNER) {
       return getSize("EdgeFaulkner");
     } else if (c == Campus.MAIN) {
       return getSize("EdgeMain");
@@ -146,7 +145,7 @@ public class GraphDatabase extends Database {
 
   public String getCampusEdge(Campus c) {
     String tblName = "";
-    if (c == Campus.FAULKER) {
+    if (c == Campus.FAULKNER) {
       tblName = "EdgeFaulkner";
     } else if (c == Campus.MAIN) {
       tblName = "EdgeMain";
@@ -156,7 +155,7 @@ public class GraphDatabase extends Database {
 
   public String getCampusNode(Campus c) {
     String tblName = "";
-    if (c == Campus.FAULKER) {
+    if (c == Campus.FAULKNER) {
       tblName = "NodeFaulkner";
     } else if (c == Campus.MAIN) {
       tblName = "NodeMain";

@@ -43,7 +43,7 @@ public class EquipReqController extends AbstractController {
     priCombo.getItems().addAll("High", "Medium", "Low");
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
-            Graph.getInstance(Campus.FAULKER).getNodes().values().stream()
+            Graph.getInstance(Campus.FAULKNER).getNodes().values().stream()
                 .filter(node -> node.getFloor() == 1)
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));

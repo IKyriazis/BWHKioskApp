@@ -445,7 +445,7 @@ public class FlowerDatabase extends Database {
         int empId = rset.getInt("employeeId");
         // Open up graph database for node name
         GraphDatabase graphDatabase = new GraphDatabase(conn);
-        String longLocationName = graphDatabase.getLongName(id, Campus.FAULKER);
+        String longLocationName = graphDatabase.getLongName(id, Campus.FAULKNER);
 
         Order node =
             new Order(

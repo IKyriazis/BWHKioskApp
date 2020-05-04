@@ -17,7 +17,7 @@ public class MapSettings {
   }
 
   public static void setup() {
-    Graph graph = Graph.getInstance(Campus.FAULKER);
+    Graph graph = Graph.getInstance(Campus.FAULKNER);
     path = new ContextPath();
     path.setPath(new Path(graph));
     setup = true;

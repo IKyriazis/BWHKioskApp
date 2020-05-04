@@ -142,7 +142,7 @@ public class MapEditorController {
   @FXML
   public void initialize() {
     // Setup map canvas
-    canvas = new MapCanvas(false);
+    canvas = new MapCanvas(false, Campus.MAIN);
     canvas.setDrawAllNodes(true);
     canvasPane.getChildren().add(0, canvas);
     canvas.widthProperty().bind(canvasPane.widthProperty());
@@ -216,7 +216,7 @@ public class MapEditorController {
 
     // Try to get graph
     try {
-      graph = Graph.getInstance(Campus.FAULKER);
+      graph = Graph.getInstance(Campus.FAULKNER);
     } catch (Exception e) {
       e.printStackTrace();
     }

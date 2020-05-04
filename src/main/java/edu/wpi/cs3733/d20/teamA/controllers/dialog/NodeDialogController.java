@@ -46,7 +46,7 @@ public class NodeDialogController implements IDialogController {
     }
 
     try {
-      graph = Graph.getInstance(Campus.FAULKER);
+      graph = Graph.getInstance(Campus.FAULKNER);
     } catch (Exception e) {
       e.printStackTrace();
     }

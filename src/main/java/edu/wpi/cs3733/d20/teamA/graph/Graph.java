@@ -28,7 +28,8 @@ public class Graph {
   /** Observable list of nodes, used for UI stuff */
   private ObservableList<Node> nodeObservableList;
 
-  Campus campus;
+  /** Campus that this graph is for */
+  private Campus campus;
 
   /** Create a new empty graph, private b/c this is a singleton */
   private Graph(Campus campus) {
@@ -337,7 +338,7 @@ public class Graph {
     HashMap<String, Node> newNodes = new HashMap<>();
     String tblNameNode = "";
     String tblNameEdge = "";
-    if (campus == Campus.FAULKER) {
+    if (campus == Campus.FAULKNER) {
       tblNameNode = "NodeFaulkner";
       tblNameEdge = "EdgeFaulkner";
     } else if (campus == Campus.MAIN) {
@@ -432,5 +433,9 @@ public class Graph {
 
   public GraphDatabase getDB() {
     return DB;
+  }
+
+  public Campus getCampus() {
+    return campus;
   }
 }
