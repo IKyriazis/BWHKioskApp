@@ -41,8 +41,11 @@ public abstract class AbstractController {
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
 
-    if (comPort != null) {
-      comPort = SerialPort.getCommPorts()[0];
+    if (comPort == null) {
+      SerialPort[] comPorts = SerialPort.getCommPorts();
+      if (comPorts.length > 0) {
+        comPort = SerialPort.getCommPorts()[0];
+      }
     }
   }
 
@@ -50,13 +53,16 @@ public abstract class AbstractController {
     try {
       comPort.openPort();
       while (true) {
-        while (comPort.bytesAvailable() != 14) Thread.sleep(20);
+        while (comPort.bytesAvailable() == 0) Thread.sleep(20);
 
         byte[] readBuffer = new byte[comPort.bytesAvailable()];
         int numRead = comPort.readBytes(readBuffer, readBuffer.length);
         String scannedString = new String(readBuffer, "UTF-8");
-        String[] scannedArray = scannedString.split(" ");
         System.out.println(scannedString);
+        String[] scannedArray = scannedString.split(" ");
+        if (scannedArray[0].length() != 10) {
+          continue;
+        }
         if (scannedArray[1].contains("p")) {
           comPort.closePort();
           return scannedArray[0];
