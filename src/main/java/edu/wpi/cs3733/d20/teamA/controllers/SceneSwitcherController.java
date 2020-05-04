@@ -196,7 +196,6 @@ public class SceneSwitcherController extends AbstractController {
                   public void handle(ActionEvent actionEvent) {
                     OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
                     try {
-                      // getting current weather data for the "London" city
                       CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
                       Double d = cwd.getMainData().getTemp();
                       double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
