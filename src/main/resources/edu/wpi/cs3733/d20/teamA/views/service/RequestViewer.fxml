@@ -39,9 +39,9 @@
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" />
                     </columnConstraints>
                     <rowConstraints>
-                      <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints percentHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints percentHeight="5.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
                         <GridPane fx:id="editPane" style="-fx-background-radius: 0 5px 5px 0;" styleClass="rounded-pane" GridPane.rowIndex="1">

@@ -59,7 +59,7 @@ public class SimpleMapController {
     textDirectionsDrawer.close();
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
-    canvas = new MapCanvas(true);
+    canvas = new MapCanvas(true, Campus.FAULKNER);
     canvasPane.getChildren().add(0, canvas);
     canvas.widthProperty().bind(canvasPane.widthProperty());
     canvas.heightProperty().bind(canvasPane.heightProperty());
@@ -113,7 +113,7 @@ public class SimpleMapController {
 
     try {
       // Load graph info
-      graph = Graph.getInstance();
+      graph = Graph.getInstance(Campus.FAULKNER);
 
       allNodeList =
           FXCollections.observableArrayList(

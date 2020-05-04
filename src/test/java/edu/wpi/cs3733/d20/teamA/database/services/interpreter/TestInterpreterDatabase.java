@@ -7,6 +7,7 @@ import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.ItemType;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -84,8 +85,8 @@ public class TestInterpreterDatabase {
 
   @Test
   public void testAddRequest() {
-    gDB.removeAll();
-    gDB.addNode("cookie", 5, 5, 1, "Main", NodeType.HALL.name(), "", "", "");
+    gDB.removeAll(Campus.FAULKNER);
+    gDB.addNode("cookie", 5, 5, 1, "Main", NodeType.HALL.name(), "", "", "", Campus.FAULKNER);
 
     inventoryDatabase.removeAll();
     serviceDatabase.removeAll();
@@ -100,6 +101,6 @@ public class TestInterpreterDatabase {
 
     serviceDatabase.removeAll();
     inventoryDatabase.removeAll();
-    gDB.removeAll();
+    gDB.removeAll(Campus.FAULKNER);
   }
 }
