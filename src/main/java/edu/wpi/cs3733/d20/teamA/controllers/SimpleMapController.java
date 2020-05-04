@@ -113,7 +113,7 @@ public class SimpleMapController {
 
     try {
       // Load graph info
-      graph = Graph.getInstance();
+      graph = Graph.getInstance(Campus.FAULKER);
 
       allNodeList =
           FXCollections.observableArrayList(

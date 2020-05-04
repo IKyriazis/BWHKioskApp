@@ -1,9 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import edu.wpi.cs3733.d20.teamA.graph.ContextPath;
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.IStrategyPath;
-import edu.wpi.cs3733.d20.teamA.graph.Path;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 
 public class MapSettings {
   private static ContextPath path;
@@ -20,7 +17,7 @@ public class MapSettings {
   }
 
   public static void setup() {
-    Graph graph = Graph.getInstance();
+    Graph graph = Graph.getInstance(Campus.FAULKER);
     path = new ContextPath();
     path.setPath(new Path(graph));
     setup = true;

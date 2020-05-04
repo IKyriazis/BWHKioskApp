@@ -20,7 +20,7 @@ public class Graph {
   private HashMap<String, Node> nodes;
 
   /** Singleton graph instance */
-  private static Graph instance;
+  private static HashMap<Campus, Graph> campusGraphs = new HashMap<>();
 
   /** Count of bidirectional edges */
   private int edgeCount = 0;
@@ -56,8 +56,12 @@ public class Graph {
    *
    * @return instance
    */
-  public static Graph getInstance() {
-    return (instance == null) ? (instance = new Graph()) : instance;
+  public static Graph getInstance(Campus campus) {
+    if (!campusGraphs.containsKey(campus)) {
+      campusGraphs.put(campus, new Graph());
+    }
+
+    return campusGraphs.get(campus);
   }
 
   /**

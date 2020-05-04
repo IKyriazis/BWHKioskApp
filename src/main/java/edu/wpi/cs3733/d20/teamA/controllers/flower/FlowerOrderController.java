@@ -5,6 +5,7 @@ import com.jfoenix.controls.datamodels.treetable.RecursiveTreeObject;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import edu.wpi.cs3733.d20.teamA.database.flower.Flower;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -45,7 +46,7 @@ public class FlowerOrderController extends AbstractController implements IDialog
     // TODO get nodes for all floors
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
-            Graph.getInstance().getNodes().values().stream()
+            Graph.getInstance(Campus.FAULKER).getNodes().values().stream()
                 .filter(node -> node.getFloor() == 1)
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));

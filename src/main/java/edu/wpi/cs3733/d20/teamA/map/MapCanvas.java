@@ -237,7 +237,7 @@ public class MapCanvas extends Canvas {
         if (drawBelow) {
           // Get all the nodes on the floor below
           List<Node> belowNodes =
-              Graph.getInstance().getNodes().values().stream()
+              Graph.getInstance(Campus.FAULKER).getNodes().values().stream()
                   .filter(node -> node.getFloor() == finalFloor - 1)
                   .collect(Collectors.toList());
           Color belowColor = Color.rgb(0, 0, 0, 0.25);
@@ -267,7 +267,7 @@ public class MapCanvas extends Canvas {
 
         // Get all the nodes on this floor
         List<Node> floorNodes =
-            Graph.getInstance().getNodes().values().stream()
+            Graph.getInstance(Campus.FAULKER).getNodes().values().stream()
                 .filter(node -> node.getFloor() == finalFloor)
                 .collect(Collectors.toList());
 
@@ -499,7 +499,7 @@ public class MapCanvas extends Canvas {
   // Get the closest node to a position on the canvas (within a given radius in canvas space)
   public Optional<Node> getClosestNode(int floor, Point2D point, double maxDistance) {
     try {
-      Stream<Node> nodeStream = Graph.getInstance().getNodes().values().stream();
+      Stream<Node> nodeStream = Graph.getInstance(Campus.FAULKER).getNodes().values().stream();
 
       return nodeStream
           .filter(node -> node.getFloor() == floor)

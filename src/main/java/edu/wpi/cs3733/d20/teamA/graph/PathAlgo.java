@@ -239,7 +239,7 @@ public abstract class PathAlgo implements IStrategyPath {
     ArrayList<Node> newNodes = new ArrayList<>();
     pathNodes.forEach(
         node -> {
-          Node newNode = Graph.getInstance().getNodeByID(node.getNodeID());
+          Node newNode = Graph.getInstance(Campus.FAULKER).getNodeByID(node.getNodeID());
           if (newNode == null) {
             pathNodes.clear();
             pathEdges.clear();

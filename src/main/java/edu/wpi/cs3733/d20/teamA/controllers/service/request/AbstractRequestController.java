@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
@@ -24,10 +25,11 @@ public abstract class AbstractRequestController extends AbstractController {
   }
 
   protected void setupNodeBox(JFXComboBox<Node> box, javafx.scene.Node toFocus) {
-    box.setItems(Graph.getInstance().getNodeObservableList());
+    box.setItems(Graph.getInstance(Campus.FAULKER).getNodeObservableList());
     box.getEditor()
         .setOnKeyTyped(
-            new NodeAutoCompleteHandler(box, toFocus, Graph.getInstance().getNodeObservableList()));
+            new NodeAutoCompleteHandler(
+                box, toFocus, Graph.getInstance(Campus.FAULKER).getNodeObservableList()));
   }
 
   protected void setupEmployeeBox(JFXComboBox<Employee> employeeBox) {

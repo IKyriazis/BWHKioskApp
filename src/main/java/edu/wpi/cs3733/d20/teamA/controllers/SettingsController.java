@@ -47,28 +47,28 @@ public class SettingsController {
     aStarButton.setOnAction(
         event -> {
           if (aStarButton.isSelected()) {
-            MapSettings.setPath(new Path(Graph.getInstance()));
+            MapSettings.setPath(new Path(Graph.getInstance(Campus.FAULKER)));
           }
         });
 
     bfsButton.setOnAction(
         event -> {
           if (bfsButton.isSelected()) {
-            MapSettings.setPath(new BreadthFirst(Graph.getInstance()));
+            MapSettings.setPath(new BreadthFirst(Graph.getInstance(Campus.FAULKER)));
           }
         });
 
     dfsButton.setOnAction(
         event -> {
           if (dfsButton.isSelected()) {
-            MapSettings.setPath(new DepthFirst(Graph.getInstance()));
+            MapSettings.setPath(new DepthFirst(Graph.getInstance(Campus.FAULKER)));
           }
         });
 
     djikstraButton.setOnAction(
         event -> {
           if (djikstraButton.isSelected()) {
-            MapSettings.setPath(new Djikstras(Graph.getInstance()));
+            MapSettings.setPath(new Djikstras(Graph.getInstance(Campus.FAULKER)));
           }
         });
   }

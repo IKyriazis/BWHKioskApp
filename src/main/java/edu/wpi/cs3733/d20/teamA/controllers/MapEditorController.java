@@ -216,7 +216,7 @@ public class MapEditorController {
 
     // Try to get graph
     try {
-      graph = Graph.getInstance();
+      graph = Graph.getInstance(Campus.FAULKER);
     } catch (Exception e) {
       e.printStackTrace();
     }
