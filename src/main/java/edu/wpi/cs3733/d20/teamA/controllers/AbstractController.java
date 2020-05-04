@@ -78,10 +78,10 @@ public abstract class AbstractController {
   }
 
   protected void setupNodeBox(JFXComboBox<Node> box, javafx.scene.Node toFocus) {
-    box.setItems(Graph.getAllCampusObservableList());
+    box.setItems(Graph.getAllValidDestinationList());
     box.getEditor()
         .setOnKeyTyped(
-            new NodeAutoCompleteHandler(box, toFocus, Graph.getAllCampusObservableList()));
+            new NodeAutoCompleteHandler(box, toFocus, Graph.getAllValidDestinationList()));
   }
 
   protected Node getSelectedNode(JFXComboBox<Node> nodeBox) {
