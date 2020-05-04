@@ -113,12 +113,6 @@ public class CreateAcctController extends AbstractController {
                       cPass.getText(),
                       title.getValue().toString(),
                       rfid);
-              Platform.runLater(
-                  () -> {
-                    // tell user we are scanning for a card
-                    DialogUtil.simpleErrorDialog(
-                        dialogPane, "Finished Scanning", "We have found your card");
-                  });
             } else {
               Platform.runLater(
                   () -> {
