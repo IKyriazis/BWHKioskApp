@@ -52,10 +52,11 @@ public abstract class Database {
   public int getSize(String tableName) {
     int count = 0;
     try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From " + tableName);
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("Select COUNT(*) as count From " + tableName);
       ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
+      if (rset.next()) {
+        count = rset.getInt("count");
       }
       rset.close();
       pstmt.close();
@@ -121,13 +122,24 @@ public abstract class Database {
    * @param value - The value to search for
    * @return True, if the string exists
    */
-  public boolean checkIfExistsTSandString(String tableName, String col, Timestamp value, String col2, String value2) {
+  public boolean checkIfExistsTSandString(
+      String tableName, String col, Timestamp value, String col2, String value2) {
     boolean a = false;
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement(
-                              "SELECT * FROM " + tableName + " WHERE " + col + " = '" + value + "' AND " + col2 + " = '" + value2 + "'");
+          getConnection()
+              .prepareStatement(
+                  "SELECT * FROM "
+                      + tableName
+                      + " WHERE "
+                      + col
+                      + " = '"
+                      + value
+                      + "' AND "
+                      + col2
+                      + " = '"
+                      + value2
+                      + "'");
       ResultSet rset = pstmt.executeQuery();
       if (rset.next()) {
         a = true;
