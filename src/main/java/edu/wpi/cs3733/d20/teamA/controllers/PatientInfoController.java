@@ -30,7 +30,7 @@ public class PatientInfoController extends AbstractController {
   public void initialize() {
 
     // Setup icons
-    lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.USER_PLUS));
+    lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.USER));
 
     addPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
     editPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.EDIT));

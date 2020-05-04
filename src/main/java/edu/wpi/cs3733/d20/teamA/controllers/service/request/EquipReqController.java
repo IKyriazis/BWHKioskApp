@@ -24,7 +24,7 @@ public class EquipReqController extends AbstractRequestController {
 
   public void initialize() {
     // Setup icons
-    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.LAPTOP));
+    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.STETHOSCOPE));
     submitButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
     qtyField.setTextFormatter(InputFormatUtil.getIntFilter());
