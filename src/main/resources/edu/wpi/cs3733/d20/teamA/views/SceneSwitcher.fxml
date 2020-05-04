@@ -7,8 +7,8 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.BoxBlur?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.GaussianBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -29,7 +29,7 @@
                   <Image url="@../images/hospital.jpg" />
                </image>
                <effect>
-                  <BoxBlur height="25.0" iterations="3" width="25.0" />
+                  <GaussianBlur radius="7.0" />
                </effect>
             </ImageView>
          </children>

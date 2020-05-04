@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.service.request.InternalTransportRequestController">
+<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.service.request.InternalTransportRequestController">
   <columnConstraints>
       <ColumnConstraints maxWidth="-Infinity" />
   </columnConstraints>
@@ -22,7 +22,7 @@
       <RowConstraints maxHeight="-Infinity" />
   </rowConstraints>
    <children>
-      <StackPane GridPane.hgrow="SOMETIMES" GridPane.vgrow="SOMETIMES">
+      <StackPane GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
          <children>
             <GridPane hgap="25.0" prefWidth="701.0" vgap="25.0">
               <columnConstraints>

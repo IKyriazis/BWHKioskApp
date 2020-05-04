@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -18,6 +19,8 @@ public class ServiceHomeController extends AbstractNavPaneController {
         event -> {
           buildButtonPane();
         });
+
+    buttonPane.setAlignment(Pos.TOP_CENTER);
 
     // Build initial button pane
     buildButtonPane();
@@ -45,11 +48,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
           new FontIcon(FontAwesomeSolid.BROOM),
           "views/service/JanitorRequest.fxml",
           "Janitorial");
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.BULLHORN),
-          "views/AnnouncementAdmin.fxml",
-          "Announcements");
       addButton(
           buttonPane,
           new FontIcon(FontAwesomeSolid.MEDKIT),
