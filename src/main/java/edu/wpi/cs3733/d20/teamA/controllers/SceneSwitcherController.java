@@ -7,15 +7,13 @@ import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import de.taimos.totp.TOTP;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Stack;
+import java.util.*;
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -29,6 +27,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
+import net.aksingh.owmjapis.core.OWM;
+import net.aksingh.owmjapis.model.CurrentWeather;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -61,6 +61,7 @@ public class SceneSwitcherController extends AbstractController {
 
   @FXML private Label timeLabel;
   @FXML private Label dateLabel;
+  @FXML private Label tempLabel;
 
   private static SceneSwitcherController instance;
 
@@ -90,6 +91,10 @@ public class SceneSwitcherController extends AbstractController {
     } else if (eDB.getSize() == 0) {
       eDB.removeAll();
     }
+
+    // create account with rfid
+    eDB.addEmployeeGA(
+        "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
 
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);
@@ -156,9 +161,9 @@ public class SceneSwitcherController extends AbstractController {
 
     this.date = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
-
     this.dateLabel.setText(dateFormat.format(this.date));
     bindToTime();
+    bindToTime2();
   }
 
   private void bindToTime() {
@@ -175,6 +180,32 @@ public class SceneSwitcherController extends AbstractController {
                   }
                 }),
             new KeyFrame(Duration.seconds(1)));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
+  }
+
+  private void bindToTime2() {
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0),
+                new EventHandler<ActionEvent>() {
+                  @Override
+                  public void handle(ActionEvent actionEvent) {
+                    OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
+                    try {
+                      CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
+                      Double d = cwd.getMainData().getTemp();
+                      double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
+                      int t = (int) Math.rint(f);
+                      String tem = t + "";
+                      tempLabel.setText(tem + (char) 0x00B0 + " F");
+                    } catch (Exception e) {
+                      e.printStackTrace();
+                    }
+                  }
+                }),
+            new KeyFrame(Duration.seconds(3600)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
@@ -228,6 +259,34 @@ public class SceneSwitcherController extends AbstractController {
             loginTransitioning = false;
           });
       trans.play();
+
+      ThreadPool.runBackgroundTask(
+          () -> {
+            String scannedCode = scanRFID();
+            if (scannedCode != null) {
+              String localUsername = eDB.getUsername(scannedCode);
+              if (!localUsername.isEmpty()) {
+                username = localUsername;
+                Platform.runLater(this::login);
+              } else {
+                // popup that rfid is not in the database
+                Platform.runLater(
+                    () -> {
+                      clickedBlockerPane();
+                      DialogUtil.simpleErrorDialog(
+                          rootPane, "Invalid Card", "The card you used doesn't belong to anyone");
+                    });
+              }
+            } else {
+              // popup that rfid scan went wrong
+              Platform.runLater(
+                  () -> {
+                    clickedBlockerPane();
+                    DialogUtil.simpleErrorDialog(
+                        rootPane, "Failed Read", "Something went wrong while scanning the card");
+                  });
+            }
+          });
     }
   }
 

@@ -152,4 +152,20 @@ public class TestEmployeeDatabase {
     Assertions.assertFalse(eDB.logIn("play", "passworasdfdA2"));
     Assertions.assertFalse(eDB.logIn("plaasdfsdafy", "passwordA2"));
   }
+
+  @Test
+  public void testGetUsernameWithRFID() {
+    eDB.createTables();
+    eDB.removeAll();
+    eDB.addEmployeeGA(
+        "bacd", "ray", "jay", "passwordA2", EmployeeTitle.RECEPTIONIST, "710024E021"); // ?test?
+    eDB.addEmployeeGA(
+        "bacd", "ray", "play", "passwordA2", EmployeeTitle.RECEPTIONIST, "710024ED79"); // ?erase?
+    eDB.addEmployeeGA(
+        "bacd", "ray", "cray", "passwordA2", EmployeeTitle.RECEPTIONIST, "7100250198"); // master
+
+    Assertions.assertEquals(eDB.getUsername("710024E021"), "jay");
+    Assertions.assertEquals(eDB.getUsername("710024ED79"), "play");
+    Assertions.assertEquals(eDB.getUsername("7100250198"), "cray");
+  }
 }

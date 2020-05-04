@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.controls.JFXTextArea;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.announcement.Announcement;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -16,7 +16,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 public class AnnouncementsAdminController extends AbstractController {
   @FXML private Label lblTitle;
 
-  @FXML private JFXTextField textAnn;
+  @FXML private JFXTextArea textAnn;
 
   @FXML private JFXButton addButton;
   @FXML private JFXButton deleteButton;
@@ -32,8 +32,8 @@ public class AnnouncementsAdminController extends AbstractController {
   @FXML
   public void initialize() {
     lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.BULLHORN));
-    addButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
-    deleteButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
+    addButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
+    deleteButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
 
     // Set up table
     tblAnnouncement = new SimpleTableView<>(new Announcement("", ""), 80);
@@ -77,7 +77,7 @@ public class AnnouncementsAdminController extends AbstractController {
   public void update() {
     try {
       tblAnnouncement.clear();
-      tblAnnouncement.add(announcementDatabase.announcementObservableList());
+      tblAnnouncement.add(announcementDatabase.getObservableList());
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(dialogPane, "Error", "Failed to update Announcement Table");

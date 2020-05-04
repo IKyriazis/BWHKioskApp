@@ -80,7 +80,6 @@ public class Employee implements ITableable<Employee> {
     if (obj instanceof Employee) {
       return username.getValue().equals(((Employee) obj).getUsername());
     }
-
     return false;
   }
 }

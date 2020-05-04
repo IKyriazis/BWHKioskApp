@@ -27,7 +27,6 @@ public enum ServiceType {
         return type;
       }
     }
-
     return JANITOR;
   }
 }

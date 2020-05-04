@@ -78,7 +78,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
       addButton(
           buttonPane,
           new FontIcon(FontAwesomeSolid.GLOBE),
-          "views/InterpreterService.fxml",
+          "views/service/InterpreterRequest.fxml",
           "Interpreters");
       addButton(
           buttonPane,
@@ -96,7 +96,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
           "views/service/RequestViewer.fxml",
           "Service\nRequests");
     }
-
     equalizeButtonGrid(buttonPane);
   }
 }
