@@ -27,8 +27,6 @@ public class MapCanvas extends Canvas {
   private Graph graph;
 
   private final Image[] floorImages;
-  private final Image upImage;
-  private final Image downImage;
 
   private final int maxFloor;
 
@@ -82,10 +80,6 @@ public class MapCanvas extends Canvas {
     for (int i = 0; i < maxFloor; i++) {
       floorImages[i] = images.get(i);
     }
-
-    // Load up/down arrow images
-    upImage = new Image("/edu/wpi/cs3733/d20/teamA/images/up.png");
-    downImage = new Image("/edu/wpi/cs3733/d20/teamA/images/down.png");
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
@@ -268,10 +262,7 @@ public class MapCanvas extends Canvas {
 
           // Draw edges
           belowNodes.forEach(
-              node ->
-                  node.getEdges()
-                      .values()
-                      .forEach(edge -> drawEdge(edge, belowColor, false, true)));
+              node -> node.getEdges().values().forEach(edge -> drawEdge(edge, belowColor, true)));
 
           belowNodes.forEach(
               node -> {
@@ -291,8 +282,7 @@ public class MapCanvas extends Canvas {
 
         // Draw all edges
         floorNodes.forEach(
-            node ->
-                node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true, true)));
+            node -> node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true)));
 
         // Draw nodes
         floorNodes.forEach(
@@ -338,7 +328,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws an edge
-  private void drawEdge(Edge edge, Color color, boolean showArrows, boolean drawMultifloorEdge) {
+  private void drawEdge(Edge edge, Color color, boolean drawMultifloorEdge) {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
@@ -366,16 +356,6 @@ public class MapCanvas extends Canvas {
       graphicsContext.stroke();
       // graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
     }
-
-    /*if (showArrows) {
-      Point2D pos = (drawMultifloorEdge) ? end : start;
-      // Draw up / down arrow if floor changed
-      if (edge.getEnd().getFloor() < edge.getStart().getFloor()) {
-        graphicsContext.drawImage(downImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
-      } else if (edge.getEnd().getFloor() > edge.getStart().getFloor()) {
-        graphicsContext.drawImage(upImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
-      }
-    }*/
   }
 
   // Draws a node on the map
@@ -395,7 +375,7 @@ public class MapCanvas extends Canvas {
   private void drawPath(ContextPath path, int floor) {
 
     for (Edge edge : path.getPathEdges()) {
-      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.BLACK, true, false);
+      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.BLACK, false);
     }
 
     for (Node node : path.getPathNodes()) {
