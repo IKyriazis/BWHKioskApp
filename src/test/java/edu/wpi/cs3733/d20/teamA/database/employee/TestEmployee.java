@@ -24,4 +24,11 @@ public class TestEmployee {
     Assertions.assertEquals("admin", employee.getTitleProperty().get());
     Assertions.assertEquals("yppatel", employee.getUsernameProperty().get());
   }
+
+  @Test
+  public void testEquals() {
+    Employee employee = new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel");
+    Employee employee1 = new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel");
+    Assertions.assertTrue(employee.equals(employee1));
+  }
 }

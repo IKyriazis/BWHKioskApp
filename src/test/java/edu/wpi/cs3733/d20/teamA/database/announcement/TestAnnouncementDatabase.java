@@ -49,9 +49,10 @@ public class TestAnnouncementDatabase {
   @Test
   public void addAnnouncement() {
     announcementDatabase.removeAll();
-    announcementDatabase.addAnnouncement("First Announcement");
-    announcementDatabase.addAnnouncement("Second Announcement");
+    String a = announcementDatabase.addAnnouncement("First Announcement");
+    String b = announcementDatabase.addAnnouncement("Second Announcement");
     Assertions.assertEquals(2, announcementDatabase.getSize());
+    Assertions.assertEquals("First Announcement", announcementDatabase.getAnnouncement(a));
     announcementDatabase.removeAll();
   }
 
@@ -62,5 +63,14 @@ public class TestAnnouncementDatabase {
     Assertions.assertEquals(1, announcementDatabase.getSize());
     announcementDatabase.removeAnnouncement(id);
     Assertions.assertEquals(0, announcementDatabase.getSize());
+    announcementDatabase.removeAll();
+  }
+
+  @Test
+  public void testBranches() {
+    announcementDatabase.removeAll();
+    String id = announcementDatabase.addAnnouncement("Cake at the Main Hall");
+    String id2 = announcementDatabase.addAnnouncement(id, "Duplicate Cake Announcement");
+    Assertions.assertEquals("", id2);
   }
 }

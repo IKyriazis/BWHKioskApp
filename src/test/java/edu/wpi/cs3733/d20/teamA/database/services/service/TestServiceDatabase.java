@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database.services;
+package edu.wpi.cs3733.d20.teamA.database.services.service;
 
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
