@@ -67,9 +67,13 @@ dependencies {
 
             // stuff for google authenticator
             'de.taimos:totp:1.0',
-            'commons-codec:commons-codec:1.10')
+            'commons-codec:commons-codec:1.10',
 
-            compile group: 'net.aksingh', name: 'owm-japis', version: '2.5.2.1'
+            //stuff for OpenWeatherMaps API
+            'net.aksingh:owm-japis:2.5.2.1'
+
+    )
+
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',

@@ -159,22 +159,9 @@ public class SceneSwitcherController extends AbstractController {
 
     this.date = new Date();
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
-
     this.dateLabel.setText(dateFormat.format(this.date));
     bindToTime();
-
-    OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
-    try {
-      // getting current weather data for the "London" city
-      CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
-      Double d = cwd.getMainData().getTemp();
-      System.out.println(d.doubleValue() + " ");
-      double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
-      String tem = f + "";
-      tempLabel.setText(tem.substring(0, 5) + (char) 0x00B0 + " F");
-    } catch (APIException e) {
-      e.printStackTrace();
-    }
+    bindToTime2();
   }
 
   private void bindToTime() {
@@ -191,6 +178,32 @@ public class SceneSwitcherController extends AbstractController {
                   }
                 }),
             new KeyFrame(Duration.seconds(1)));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
+  }
+
+  private void bindToTime2() {
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.seconds(0),
+                new EventHandler<ActionEvent>() {
+                  @Override
+                  public void handle(ActionEvent actionEvent) {
+                    OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
+                    try {
+                      // getting current weather data for the "London" city
+                      CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
+                      Double d = cwd.getMainData().getTemp();
+                      double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
+                      String tem = f + "";
+                      tempLabel.setText(tem.substring(0, 5) + (char) 0x00B0 + " F");
+                    } catch (APIException e) {
+                      e.printStackTrace();
+                    }
+                  }
+                }),
+            new KeyFrame(Duration.seconds(3600)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
