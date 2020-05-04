@@ -18,8 +18,7 @@
    <children>
       <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
          <children>
-            <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" layoutX="15.0" layoutY="15.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0" />
-            <JFXButton fx:id="exportCSVButton" buttonType="RAISED" onAction="#exportClicked" text="Export CSV" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="53.0" />
+            <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" layoutX="15.0" layoutY="15.0" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="15.0" />
             <GridPane layoutX="369.0" layoutY="-25.0" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <columnConstraints>
                   <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
@@ -28,7 +27,7 @@
                   <RowConstraints minHeight="10.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXDrawer fx:id="infoDrawer" defaultDrawerSize="200.0" maxHeight="-Infinity" maxWidth="-Infinity">
+                  <JFXDrawer fx:id="infoDrawer" defaultDrawerSize="275.0" maxHeight="-Infinity" maxWidth="-Infinity" visible="false">
                      <children>
                         <AnchorPane fx:id="infoPane" maxHeight="-Infinity" maxWidth="-Infinity">
                            <children>
@@ -43,15 +42,16 @@
                   </JFXDrawer>
                </children>
             </GridPane>
-            <VBox layoutX="837.0" layoutY="15.0" spacing="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+            <VBox layoutX="837.0" layoutY="15.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                <children>
                   <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" />
                   <JFXTextField fx:id="floorField" alignment="CENTER" editable="false" prefColumnCount="1" text="1" />
                   <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" />
                </children>
             </VBox>
-            <JFXCheckBox onAction="#toggleDrawBelow" text="Draw Nodes Below" AnchorPane.leftAnchor="165.0" AnchorPane.topAnchor="15.0" />
-            <JFXButton fx:id="helpButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#helpClicked" text="Help" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="83.0" />
+            <JFXCheckBox onAction="#toggleDrawBelow" text="Draw Nodes Below" AnchorPane.leftAnchor="225.0" AnchorPane.topAnchor="15.0" />
+            <JFXButton fx:id="exportCSVButton" buttonType="RAISED" onAction="#exportClicked" text="Export CSV" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="65.0" />
+            <JFXButton fx:id="helpButton" buttonType="RAISED" layoutX="10.0" layoutY="10.0" onAction="#helpClicked" text="Help" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="105.0" />
          </children>
       </AnchorPane>
    </children>

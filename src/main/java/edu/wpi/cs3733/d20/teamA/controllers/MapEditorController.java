@@ -197,11 +197,16 @@ public class MapEditorController {
     updateTipLabel();
 
     // Set up drawer transparency hooks
-    infoDrawer.setOnDrawerOpened(event -> infoDrawer.setMouseTransparent(false));
+    infoDrawer.setOnDrawerOpened(
+        event -> {
+          infoDrawer.setMouseTransparent(false);
+          infoDrawer.setVisible(true);
+        });
     infoDrawer.setOnDrawerClosed(
         event -> {
           if (mode == Action.NONE) {
             infoDrawer.setMouseTransparent(true);
+            infoDrawer.setVisible(false);
           } else {
             // Bring the drawer back when people drag it closed when they shouldn't
             infoDrawer.open();
@@ -216,7 +221,7 @@ public class MapEditorController {
 
     // Try to get graph
     try {
-      graph = Graph.getInstance(Campus.FAULKNER);
+      graph = Graph.getInstance(Campus.MAIN);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -436,6 +441,9 @@ public class MapEditorController {
 
   @FXML
   public void helpClicked(ActionEvent actionEvent) {
+    if (infoDrawer.isClosed()) {
+      infoDrawer.setVisible(true);
+    }
     infoDrawer.toggle();
   }
 

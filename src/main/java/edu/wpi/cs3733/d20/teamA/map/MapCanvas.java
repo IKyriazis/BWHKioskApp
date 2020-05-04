@@ -283,7 +283,8 @@ public class MapCanvas extends Canvas {
 
         // Draw all edges
         floorNodes.forEach(
-            node -> node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true, true)));
+            node ->
+                node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true, true)));
 
         // Draw nodes
         floorNodes.forEach(
