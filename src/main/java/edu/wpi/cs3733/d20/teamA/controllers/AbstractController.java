@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.fazecast.jSerialComm.SerialPort;
+import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.announcement.AnnouncementDatabase;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
@@ -9,6 +10,10 @@ import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.patient.PatientDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
+import edu.wpi.cs3733.d20.teamA.graph.Graph;
+import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import java.sql.Connection;
 
 public abstract class AbstractController {
@@ -70,5 +75,13 @@ public abstract class AbstractController {
       e.printStackTrace();
       return null;
     }
+  }
+
+  protected void setupNodeBox(JFXComboBox<Node> box, javafx.scene.Node toFocus) {
+    box.setItems(Graph.getInstance(Campus.FAULKNER).getNodeObservableList());
+    box.getEditor()
+        .setOnKeyTyped(
+            new NodeAutoCompleteHandler(
+                box, toFocus, Graph.getInstance(Campus.FAULKNER).getNodeObservableList()));
   }
 }
