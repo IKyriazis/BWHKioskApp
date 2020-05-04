@@ -16,7 +16,7 @@ public class AnnouncementDatabase extends Database implements IDatabase<Announce
   public boolean createTables() {
     if (doesTableNotExist("ANNOUNCEMENTS")) {
       return helperPrepared(
-          "CREATE TABLE ANNOUNCEMENTS(announcementID VARCHAR(6) PRIMARY KEY, announcement VARCHAR(50))");
+          "CREATE TABLE ANNOUNCEMENTS(announcementID VARCHAR(6) PRIMARY KEY, announcement VARCHAR(250))");
     }
     return false;
   }
