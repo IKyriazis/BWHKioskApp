@@ -68,11 +68,19 @@ public class MapCanvas extends Canvas {
 
     this.dragEnabled = dragEnabled;
 
-    // Load floor images
-    floorImages = new Image[maxFloor];
+    // Collate image locations
+    ArrayList<String> imageLocations = new ArrayList<>();
     for (int i = 0; i < maxFloor; i++) {
       String imgName = (campus == Campus.FAULKNER ? "Faulkner" : "Main") + (i + 1);
-      floorImages[i] = new Image("/edu/wpi/cs3733/d20/teamA/images/" + imgName + ".png");
+      imageLocations.add("/edu/wpi/cs3733/d20/teamA/images/" + imgName + ".png");
+    }
+
+    // Load floor images in parallel
+    floorImages = new Image[maxFloor];
+    List<Image> images =
+        imageLocations.parallelStream().map(Image::new).collect(Collectors.toList());
+    for (int i = 0; i < maxFloor; i++) {
+      floorImages[i] = images.get(i);
     }
 
     // Load up/down arrow images
