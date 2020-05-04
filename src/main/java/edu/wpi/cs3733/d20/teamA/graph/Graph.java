@@ -11,7 +11,6 @@ import javafx.collections.ObservableList;
 
 /** Represents locations on the map in an 'undirected' Graph */
 public class Graph {
-
   DatabaseServiceProvider provider = new DatabaseServiceProvider();
   Connection conn = provider.provideConnection();
 
@@ -43,12 +42,10 @@ public class Graph {
       DB.createTables();
       CSVLoader.readNodes(this);
       CSVLoader.readEdges(this);
-      update();
     } else if (DB.getSizeNode(campus) == 0 || DB.getSizeEdge(campus) == 0) {
-      DB.removeAll();
+      DB.removeAll(campus);
       CSVLoader.readNodes(this);
       CSVLoader.readEdges(this);
-      update();
     } else {
       update();
     }
@@ -419,7 +416,7 @@ public class Graph {
     edgeCount = 0;
 
     // Clear the database
-    DB.removeAll();
+    DB.removeAll(campus);
   }
 
   /**

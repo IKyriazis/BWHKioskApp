@@ -92,8 +92,12 @@ public class GraphDatabase extends Database {
    *
    * @return True if this was successful
    */
-  public boolean removeAllNodes() {
-    return helperPrepared("DELETE From NodeFaulkner") && helperPrepared("DELETE From NodeMain");
+  public boolean removeAllNodes(Campus c) {
+    if (c == Campus.FAULKNER) {
+      return helperPrepared("DELETE From NodeFaulkner");
+    } else {
+      return helperPrepared("DELETE From NodeMain");
+    }
   }
 
   /**
@@ -101,8 +105,12 @@ public class GraphDatabase extends Database {
    *
    * @return True if this was successful
    */
-  public boolean removeAllEdges() {
-    return helperPrepared("DELETE From EdgeFaulkner") && helperPrepared("DELETE From EdgeMain");
+  public boolean removeAllEdges(Campus c) {
+    if (c == Campus.FAULKNER) {
+      return helperPrepared("DELETE From EdgeFaulkner");
+    } else {
+      return helperPrepared("DELETE From EdgeMain");
+    }
   }
 
   /**
@@ -110,8 +118,8 @@ public class GraphDatabase extends Database {
    *
    * @return True if this was successful
    */
-  public boolean removeAll() {
-    return removeAllEdges() && removeAllNodes();
+  public boolean removeAll(Campus c) {
+    return removeAllEdges(c) && removeAllNodes(c);
   }
 
   /**
