@@ -8,7 +8,6 @@ import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TreeTableRow;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -29,14 +28,6 @@ public class PatientInfoController extends AbstractController {
   public PatientInfoController() {}
 
   public void initialize() {
-    if (patientDatabase.getSize() == -1) {
-      patientDatabase.dropTables();
-      patientDatabase.createTables();
-      // patientDatabase.readPatientCSV();
-    } else if (patientDatabase.getSize() == 0) {
-      patientDatabase.removeAll();
-      // patientDatabase.readFlowersCSV();
-    }
 
     // Setup icons
     lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.USER_PLUS));
@@ -48,18 +39,6 @@ public class PatientInfoController extends AbstractController {
     // Setup Table
     patientTable = new SimpleTableView<>(new Patient("", "", "", "", ""), 80.0);
     patientTablePane.getChildren().add(patientTable);
-    // Double click a row in the order table to bring up the dialog for that order
-    patientTable.setRowFactory(
-        tv -> {
-          TreeTableRow<Patient> row = new TreeTableRow<>();
-          row.setOnMouseClicked(
-              event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                  editPatient();
-                }
-              });
-          return row;
-        });
 
     // Add tab switch update listener
     patientPane.addEventHandler(
@@ -79,8 +58,7 @@ public class PatientInfoController extends AbstractController {
       patientTable.add(patientDatabase.getObservableList());
     } catch (Exception e) {
       e.printStackTrace();
-      // DialogUtil.simpleErrorDialog(
-      //       dialogStackPane, "Error", "Failed to update flower and/or order tables");
+      DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Failed to update patient");
     }
   }
 
@@ -97,8 +75,6 @@ public class PatientInfoController extends AbstractController {
   public void editPatient() {
     Patient patient = patientTable.getSelected();
     if (patient != null) {
-      // Figure out whether any outstanding orders depend on this flower type, in which case we
-      // can't change the name / type
 
       PatientEditController controller = new PatientEditController(patient);
       DialogUtil.complexDialog(

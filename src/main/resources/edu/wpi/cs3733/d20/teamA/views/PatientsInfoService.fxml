@@ -57,7 +57,7 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <Label fx:id="lblTitle" alignment="CENTER" contentDisplay="CENTER" styleClass="title-label" stylesheets="@../stylesheet.css" text="Patient Information" wrapText="true" GridPane.halignment="CENTER">
+                  <Label fx:id="lblTitle" alignment="TOP_LEFT" styleClass="title-label" stylesheets="@../stylesheet.css" text="Patient Information" wrapText="true" GridPane.halignment="CENTER">
                      <font>
                         <Font size="25.0" />
                      </font>
