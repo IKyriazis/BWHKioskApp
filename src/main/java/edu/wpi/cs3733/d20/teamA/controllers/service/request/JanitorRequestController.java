@@ -48,7 +48,7 @@ public class JanitorRequestController extends AbstractRequestController {
     String l =
         serviceDatabase.addServiceReq(
             ServiceType.JANITOR,
-            selectedNode.getLongName(),
+            selectedNode.toString(),
             descriptionArea.getText(),
             selectedPriority);
 

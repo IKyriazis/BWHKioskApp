@@ -35,7 +35,7 @@ public class LaundryRequestController extends AbstractRequestController {
     Node node = getSelectedNode(nodeBox);
 
     if (node != null) {
-      String loc = node.getLongName();
+      String loc = node.toString();
 
       String l =
           serviceDatabase.addServiceReq(ServiceType.LAUNDRY, loc, descriptionArea.getText(), "");

@@ -24,8 +24,6 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXTextField />
-            <JFXTextField fx:id="nodeIDField" labelFloat="true" promptText="Node ID" />
             <JFXComboBox fx:id="floorBox" labelFloat="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Floor" GridPane.columnIndex="1" />
             <JFXComboBox fx:id="typeBox" labelFloat="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Node Type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <JFXTextField fx:id="longNameField" labelFloat="true" promptText="Long Name" GridPane.rowIndex="3" />

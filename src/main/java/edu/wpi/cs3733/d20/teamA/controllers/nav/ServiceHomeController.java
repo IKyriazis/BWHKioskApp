@@ -85,11 +85,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
           "Prescriptions");
       addButton(
           buttonPane,
-          new FontIcon(FontAwesomeSolid.USER),
-          "views/ViewEmployees.fxml",
-          "Manage\nEmployees");
-      addButton(
-          buttonPane,
           new FontIcon(FontAwesomeSolid.LIST),
           "views/service/RequestViewer.fxml",
           "Service\nRequests");

@@ -55,7 +55,7 @@ public class NodeAutoCompleteHandler implements EventHandler<KeyEvent> {
           startingList.stream()
               .filter(
                   node ->
-                      node.getLongName()
+                      node.toString()
                           .toLowerCase()
                           .contains(box.getEditor().getText().toLowerCase()))
               .collect(Collectors.toList());
