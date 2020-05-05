@@ -1,11 +1,9 @@
 package edu.wpi.cs3733.d20.teamA.database.reservation;
 
-import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
 import java.sql.*;
 import java.util.Calendar;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -250,7 +248,7 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
     try {
       PreparedStatement pstmt = getConnection().prepareStatement("SELECT * FROM Reservation");
       ResultSet rset = pstmt.executeQuery();
-      while(rset.next()) {
+      while (rset.next()) {
         String emp = rset.getString("requestedBy");
         Timestamp startT = rset.getTimestamp("startTime");
         Timestamp endT = rset.getTimestamp("endTime");
@@ -260,7 +258,7 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(endT.getTime());
         Calendar check = Calendar.getInstance();
-        if(check.compareTo(end) >= 0) {
+        if (end.compareTo(check) >= 0) {
           observableList.add(new Reservation(emp, start, end, loc));
         } else {
           deleteRes(start, loc);
