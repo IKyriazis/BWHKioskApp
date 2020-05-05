@@ -37,4 +37,11 @@ public class InterpreterRequestViewerController extends AbstractViewerController
     // Fire tab switch event forcing table to update
     headerLabel.fireEvent(new TabSwitchEvent());
   }
+
+  @Override
+  public void reset(ServiceRequest req) {
+    super.reset(req);
+    // Update standard fields
+    genericController.fillFields(req);
+  }
 }
