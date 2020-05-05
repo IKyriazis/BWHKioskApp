@@ -7,6 +7,7 @@ import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -57,12 +58,15 @@ public class SimpleMapController extends AbstractController {
   private static final String FAULKNER_EXIT_NODE = "ARETL00101";
   private static final String MAIN_EXIT_NODE = "ACONF0010G";
 
+  private static final MapPoint FAULKNER_COORDS = new MapPoint(42.301572, -71.128472);
+  private static final MapPoint MAIN_COORDS = new MapPoint(42.335679, -71.106042);
+
   public void initialize() {
     // Setup gluon map
     gluonMap = new MapView();
     // mapView.addLayer(new MapLayer());
     gluonMap.setCenter(new MapPoint(42.3016445, -71.1281649));
-    gluonMap.setZoom(18);
+    gluonMap.setZoom(16);
     gluonMap.setVisible(false);
     gluonMapPane.getChildren().add(gluonMap);
 
@@ -175,8 +179,9 @@ public class SimpleMapController extends AbstractController {
       if (start.getCampus() == end.getCampus()) {
         // Path within canvas
         path.findPath(start, end);
-        pathSegments.addAll(PathSegment.calcPathSegments(
-            texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
         currCanvas.setPath(path);
       } else if (start.getCampus() == Campus.FAULKNER && end.getCampus() == Campus.MAIN) {
         // Path to faulkner exit node
@@ -309,7 +314,26 @@ public class SimpleMapController extends AbstractController {
       currCanvas.setVisible(true);
     } else if (currSegment.getCampus() == Campus.INTER) {
       currCanvas.setVisible(false);
+
       gluonMap.setVisible(true);
+      gluonMap.setZoom(16);
+      if (pathSegments.get(currPathSegment - 1).getCampus() == Campus.MAIN) {
+        gluonMap.setCenter(MAIN_COORDS);
+        gluonMap.flyTo(1.0, FAULKNER_COORDS, 5.0);
+        ThreadPool.singleShotMainTask(
+            6000,
+            () -> {
+              gluonMap.setCenter(FAULKNER_COORDS);
+            });
+      } else {
+        gluonMap.setCenter(FAULKNER_COORDS);
+        gluonMap.flyTo(1.0, MAIN_COORDS, 5.0);
+        ThreadPool.singleShotMainTask(
+            6000,
+            () -> {
+              gluonMap.setCenter(MAIN_COORDS);
+            });
+      }
     }
 
     // Set floor
