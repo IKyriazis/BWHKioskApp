@@ -175,6 +175,8 @@ public class SimpleMapController extends AbstractController {
       if (start.getCampus() == end.getCampus()) {
         // Path within canvas
         path.findPath(start, end);
+        pathSegments.addAll(PathSegment.calcPathSegments(
+            texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
         currCanvas.setPath(path);
       } else if (start.getCampus() == Campus.FAULKNER && end.getCampus() == Campus.MAIN) {
         // Path to faulkner exit node
@@ -265,22 +267,18 @@ public class SimpleMapController extends AbstractController {
 
   @FXML
   public void floorUp() {
-    assert false;
-    /*floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
+    floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
     currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
     currCanvas.draw(floor);
-    */
   }
 
   @FXML
   public void floorDown() {
-    assert false;
-    /*floor = Math.max(1, floor - 1);
+    floor = Math.max(1, floor - 1);
     currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
     currCanvas.draw(floor);
-    */
   }
 
   @FXML
