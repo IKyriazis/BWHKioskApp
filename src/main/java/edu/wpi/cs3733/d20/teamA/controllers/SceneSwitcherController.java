@@ -55,6 +55,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private AnchorPane signInPane;
   @FXML private GridPane blockerPane;
   @FXML private GridPane contentPane;
+  @FXML private GridPane funPane;
 
   @FXML private VBox loginBox;
   @FXML private VBox buttonBox;
@@ -81,6 +82,9 @@ public class SceneSwitcherController extends AbstractController {
   public void initialize() {
     // Setup instance
     instance = this;
+
+    // Make it so top bar is actually on top of everything.
+    funPane.toFront();
 
     // Create the employee table if it doesn't exist
     if (eDB.getSize() == -1) {

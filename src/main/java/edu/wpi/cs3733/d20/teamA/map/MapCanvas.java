@@ -11,13 +11,18 @@ import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 
 public class MapCanvas extends Canvas {
   private Graph graph;
@@ -51,18 +56,22 @@ public class MapCanvas extends Canvas {
 
   private ArrayList<Node> pathNodes;
   private ArrayList<Edge> pathEdges;
-
-  Group group = new Group();
-  PathTransition transition = new PathTransition();
+  private ImageView pathArrow;
+  private PathTransition transition = new PathTransition();
+  private boolean animatingPath = false;
 
   public MapCanvas(boolean dragEnabled, Campus campus) {
     super();
 
     graph = Graph.getInstance(campus);
-
     maxFloor = campus == Campus.FAULKNER ? 5 : 6;
 
     this.dragEnabled = dragEnabled;
+
+    // Load path arrow
+    pathArrow = new ImageView(ImageCache.loadImage("images/blue_right.png"));
+    pathArrow.setFitWidth(32.0);
+    pathArrow.setFitHeight(32.0);
 
     // Collate image locations
     ArrayList<String> imageLocations = new ArrayList<>();
@@ -81,19 +90,14 @@ public class MapCanvas extends Canvas {
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
-
     widthProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              transition.stop();
-              group.getChildren().clear();
               resize(newValue.doubleValue(), getHeight());
             });
     heightProperty()
         .addListener(
             (observable, oldValue, newValue) -> {
-              transition.stop();
-              group.getChildren().clear();
               resize(getWidth(), newValue.doubleValue());
             });
 
@@ -101,8 +105,6 @@ public class MapCanvas extends Canvas {
     dragStartHandler =
         event -> {
           if (event.getButton() == dragMapButton) {
-            transition.stop();
-            group.getChildren().clear();
             dragLast = new Point2D(event.getX(), event.getY());
             setCursor(Cursor.MOVE);
           }
@@ -110,8 +112,6 @@ public class MapCanvas extends Canvas {
     dragHandler =
         event -> {
           if (event.getButton() == dragMapButton) {
-            transition.stop();
-            group.getChildren().clear();
             Point2D startGraphPos = canvasToGraph(dragLast);
             Point2D endGraphPos = canvasToGraph(new Point2D(event.getX(), event.getY()));
 
@@ -143,8 +143,6 @@ public class MapCanvas extends Canvas {
         event -> {
           double diff = event.getDeltaY() / 10.0;
           zoom.set(Math.min(100, Math.max(0, zoom.getValue() + diff)));
-          transition.stop();
-          group.getChildren().clear();
           draw(lastDrawnFloor);
         });
 
@@ -152,8 +150,6 @@ public class MapCanvas extends Canvas {
     zoom = new SimpleDoubleProperty(0.0);
     zoom.addListener(
         observable -> {
-          transition.stop();
-          group.getChildren().clear();
           draw(lastDrawnFloor);
         });
 
@@ -304,6 +300,7 @@ public class MapCanvas extends Canvas {
     // Draw path if it exists
     if (pathNodes != null) {
       drawPath(floor);
+      animatePath(floor);
     }
 
     lastDrawnFloor = floor;
@@ -385,22 +382,6 @@ public class MapCanvas extends Canvas {
     }
   }
 
-  public Group getGroup() {
-    return group;
-  }
-
-  public void setGroup(Group group) {
-    this.group = group;
-  }
-
-  public PathTransition getTransition() {
-    return transition;
-  }
-
-  public void setTransition(PathTransition transition) {
-    this.transition = transition;
-  }
-
   public double getDistance(double x, double newX, double y, double newY) {
     return Math.sqrt((Math.pow((newX - x), 2)) + (Math.pow((newY - y), 2)));
   }
@@ -455,9 +436,68 @@ public class MapCanvas extends Canvas {
     this.pathEdges.addAll(path.getPathEdges());
   }
 
+  public void animatePath(int floor) {
+    if (pathNodes == null || pathEdges == null || !animatingPath) {
+      return;
+    }
+
+    pathArrow.setVisible(true);
+
+    Path path = new Path();
+    pathNodes.stream()
+        .filter(node -> node.getFloor() == floor)
+        .forEach(
+            node -> {
+              Point2D dest = graphToCanvas(new Point2D(node.getX(), node.getY()));
+              if (path.getElements().isEmpty()) {
+                path.getElements().add(new MoveTo(dest.getX(), dest.getY()));
+              } else {
+                path.getElements().add(new LineTo(dest.getX(), dest.getY()));
+              }
+            });
+
+    // Ignore empty paths
+    if (path.getElements().size() <= 1) {
+      pathArrow.setVisible(false);
+      transition.stop();
+      return;
+    }
+
+    double length =
+        pathEdges.stream()
+            .filter(edge -> edge.getEnd().getFloor() == floor)
+            .mapToDouble(Edge::getWeight)
+            .sum();
+
+    Pane parent = (Pane) getParent();
+    if (!parent.getChildren().contains(pathArrow)) {
+      parent.getChildren().add(pathArrow);
+    }
+
+    transition.stop();
+    transition.setDuration(Duration.seconds(length / 250.0));
+    transition.setPath(path);
+    transition.setNode(pathArrow);
+    transition.setCycleCount(Timeline.INDEFINITE);
+    transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+
+    transition.play();
+  }
+
+  public void disablePathAnimation() {
+    transition.stop();
+    pathArrow.setVisible(false);
+    animatingPath = false;
+  }
+
+  public void enablePathAnimation() {
+    animatingPath = true;
+  }
+
   public void clearPath() {
     this.pathNodes = null;
     this.pathEdges = null;
+    disablePathAnimation();
   }
 
   @Override

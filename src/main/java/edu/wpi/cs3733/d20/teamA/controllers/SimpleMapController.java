@@ -306,14 +306,25 @@ public class SimpleMapController extends AbstractController {
     // Set canvas
     if (currSegment.getCampus() == Campus.FAULKNER) {
       gluonMap.setVisible(false);
+
+      mainCanvas.disablePathAnimation();
+
       currCanvas = faulknerCanvas;
       currCanvas.setVisible(true);
+      currCanvas.enablePathAnimation();
+      currCanvas.animatePath(currSegment.getFloor());
     } else if (currSegment.getCampus() == Campus.MAIN) {
       gluonMap.setVisible(false);
+
+      faulknerCanvas.disablePathAnimation();
+
       currCanvas = mainCanvas;
       currCanvas.setVisible(true);
+      currCanvas.enablePathAnimation();
+      currCanvas.animatePath(currSegment.getFloor());
     } else if (currSegment.getCampus() == Campus.INTER) {
       currCanvas.setVisible(false);
+      currCanvas.disablePathAnimation();
 
       gluonMap.setVisible(true);
       gluonMap.setZoom(16);
