@@ -302,12 +302,22 @@ public class SceneSwitcherController extends AbstractController {
 
     // make sure google authenticator stuff is now the login stuff
     // Reset login box
+    gauth.setVisible(false);
+
+    // Clear username / password once they're off screen
+    usernameBox.setText("");
+    passwordBox.setText("");
+
+    // Reset visibility of stuff in box
+    buttonBox.setDisable(false);
+    buttonBox.setOpacity(1.0);
+
     buttonBox.setVisible(true);
     usernameBox.setVisible(true);
     passwordBox.setVisible(true);
-    gauth.setVisible(false);
+
     loginButton.setVisible(true);
-    loginBox.setVisible(true);
+
     loginButton.setDisable(false);
     authenticateButton.setVisible(false);
 
