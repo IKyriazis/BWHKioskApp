@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ViewEmployeesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" styleClass="rounded-pane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.ViewEmployeesController">
    <children>
       <StackPane fx:id="empPane" prefHeight="450.0" prefWidth="750.0">
          <children>
@@ -25,9 +25,9 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="75.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <children>
-                        <JFXButton buttonType="RAISED" prefWidth="100.0" text="New" />
-                        <JFXButton buttonType="RAISED" prefWidth="100.0" text="Edit" />
-                        <JFXButton buttonType="RAISED" prefWidth="100.0" text="Delete" />
+                        <JFXButton buttonType="RAISED" onAction="#addBtn" prefWidth="100.0" text="Add" />
+                        <JFXButton buttonType="RAISED" onAction="#editBtn" prefWidth="100.0" text="Edit" />
+                        <JFXButton buttonType="RAISED" onAction="#deleteBtn" prefWidth="100.0" text="Delete" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">

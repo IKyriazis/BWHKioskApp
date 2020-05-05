@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
 import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,14 +25,17 @@ import javafx.scene.shape.MoveTo;
 import javafx.util.Duration;
 
 public class MapCanvas extends Canvas {
+  private Graph graph;
+
   private final Image[] floorImages;
-  private final Image upImage;
-  private final Image downImage;
+
+  private final int maxFloor;
 
   private int lastDrawnFloor = 1;
   private boolean drawAllNodes = false;
   private boolean drawBelow = false;
   private SimpleDoubleProperty zoom;
+  private final double zoomScalar = 2.0;
 
   private BoundingBox viewSpace;
   private Point2D center;
@@ -39,9 +43,9 @@ public class MapCanvas extends Canvas {
 
   private boolean dragEnabled;
   private MouseButton dragMapButton = MouseButton.PRIMARY;
-  private EventHandler<MouseEvent> dragStartHandler;
-  private EventHandler<MouseEvent> dragHandler;
-  private EventHandler<MouseEvent> dragEndHandler;
+  private final EventHandler<MouseEvent> dragStartHandler;
+  private final EventHandler<MouseEvent> dragHandler;
+  private final EventHandler<MouseEvent> dragEndHandler;
 
   private ArrayList<Node> highlights;
   private Color highlightColor = Color.DEEPSKYBLUE;
@@ -54,20 +58,29 @@ public class MapCanvas extends Canvas {
   Group group = new Group();
   PathTransition transition = new PathTransition();
 
-  public MapCanvas(boolean dragEnabled) {
+  public MapCanvas(boolean dragEnabled, Campus campus) {
     super();
+
+    graph = Graph.getInstance(campus);
+
+    maxFloor = campus == Campus.FAULKNER ? 5 : 6;
 
     this.dragEnabled = dragEnabled;
 
-    // Load floor images
-    floorImages = new Image[5];
-    for (int i = 0; i < 5; i++) {
-      floorImages[i] = new Image("/edu/wpi/cs3733/d20/teamA/images/Floor" + (i + 1) + ".jpg");
+    // Collate image locations
+    ArrayList<String> imageLocations = new ArrayList<>();
+    for (int i = 0; i < maxFloor; i++) {
+      String imgName = (campus == Campus.FAULKNER ? "Faulkner" : "Main") + (i + 1);
+      imageLocations.add("images/" + imgName + ".png");
     }
 
-    // Load up/down arrow images
-    upImage = new Image("/edu/wpi/cs3733/d20/teamA/images/up.png");
-    downImage = new Image("/edu/wpi/cs3733/d20/teamA/images/down.png");
+    // Load floor images in parallel
+    floorImages = new Image[maxFloor];
+    List<Image> images =
+        imageLocations.parallelStream().map(ImageCache::loadImage).collect(Collectors.toList());
+    for (int i = 0; i < maxFloor; i++) {
+      floorImages[i] = images.get(i);
+    }
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
@@ -183,7 +196,7 @@ public class MapCanvas extends Canvas {
 
     double aspectRatio = (imageWidth / getWidth()) / (imageHeight / getHeight());
 
-    double zoomFactor = (1.0 + (zoom.getValue() / 100));
+    double zoomFactor = (1.0 + ((zoom.getValue() / 100) * zoomScalar));
     double width = ((aspectRatio < 1.0) ? imageWidth : (imageWidth / aspectRatio)) / zoomFactor;
     double height = ((aspectRatio > 1.0) ? imageHeight : (imageHeight * aspectRatio)) / zoomFactor;
 
@@ -191,24 +204,24 @@ public class MapCanvas extends Canvas {
     double startY = center.getY() - (height / 2);
 
     // Correct center if view is too far away from image
-    if (startX < -(imageWidth / 4)) {
-      center = center.add((-(imageWidth / 4) - startX), 0);
-      startX = -(imageWidth / 4);
+    if (startX < 0) {
+      center = center.add(-startX, 0);
+      startX = 0;
     }
 
-    if (startY < (-imageHeight / 4)) {
-      center = center.add(0, (-(imageHeight / 4) - startY));
-      startY = -(imageHeight / 4);
+    if (startY < 0) {
+      center = center.add(0, (-startY));
+      startY = 0;
     }
 
-    if ((startX + width) > (5 * imageWidth / 4)) {
-      double xDiff = (startX + width) - (5 * imageWidth / 4);
+    if ((startX + width) > imageWidth) {
+      double xDiff = (startX + width) - imageWidth;
       center = center.subtract(xDiff, 0);
       startX -= xDiff;
     }
 
-    if ((startY + height) > (5 * imageHeight / 4)) {
-      double yDiff = (startY + height) - (5 * imageHeight / 4);
+    if ((startY + height) > imageHeight) {
+      double yDiff = (startY + height) - imageHeight;
       center = center.subtract(0, yDiff);
       startY -= yDiff;
     }
@@ -221,8 +234,8 @@ public class MapCanvas extends Canvas {
     getGraphicsContext2D().setFill(Color.web("F4F4F4"));
     getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
 
-    // Clamp floor to between 1 and 5
-    floor = Math.max(1, Math.min(floor, 5));
+    // Clamp floor to between 1 and [maxFloor]
+    floor = Math.max(1, Math.min(floor, maxFloor));
 
     // Update view space
     calcViewSpace(floor);
@@ -237,7 +250,7 @@ public class MapCanvas extends Canvas {
         if (drawBelow) {
           // Get all the nodes on the floor below
           List<Node> belowNodes =
-              Graph.getInstance().getNodes().values().stream()
+              graph.getNodes().values().stream()
                   .filter(node -> node.getFloor() == finalFloor - 1)
                   .collect(Collectors.toList());
           Color belowColor = Color.rgb(0, 0, 0, 0.25);
@@ -250,10 +263,7 @@ public class MapCanvas extends Canvas {
 
           // Draw edges
           belowNodes.forEach(
-              node ->
-                  node.getEdges()
-                      .values()
-                      .forEach(edge -> drawEdge(edge, belowColor, false, true)));
+              node -> node.getEdges().values().forEach(edge -> drawEdge(edge, belowColor, true)));
 
           belowNodes.forEach(
               node -> {
@@ -267,15 +277,13 @@ public class MapCanvas extends Canvas {
 
         // Get all the nodes on this floor
         List<Node> floorNodes =
-            Graph.getInstance().getNodes().values().stream()
+            graph.getNodes().values().stream()
                 .filter(node -> node.getFloor() == finalFloor)
                 .collect(Collectors.toList());
 
         // Draw all edges
         floorNodes.forEach(
-            node -> {
-              node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true, true));
-            });
+            node -> node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true)));
 
         // Draw nodes
         floorNodes.forEach(
@@ -321,7 +329,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws an edge
-  private void drawEdge(Edge edge, Color color, boolean showArrows, boolean drawMultifloorEdge) {
+  private void drawEdge(Edge edge, Color color, boolean drawMultifloorEdge) {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
@@ -349,16 +357,6 @@ public class MapCanvas extends Canvas {
       graphicsContext.stroke();
       // graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
     }
-
-    if (showArrows) {
-      Point2D pos = (drawMultifloorEdge) ? end : start;
-      // Draw up / down arrow if floor changed
-      if (edge.getEnd().getFloor() < edge.getStart().getFloor()) {
-        graphicsContext.drawImage(downImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
-      } else if (edge.getEnd().getFloor() > edge.getStart().getFloor()) {
-        graphicsContext.drawImage(upImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
-      }
-    }
   }
 
   // Draws a node on the map
@@ -378,7 +376,7 @@ public class MapCanvas extends Canvas {
   private void drawPath(ContextPath path, int floor) {
 
     for (Edge edge : path.getPathEdges()) {
-      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.BLACK, true, false);
+      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.BLACK, false);
     }
 
     for (Node node : path.getPathNodes()) {
@@ -388,8 +386,6 @@ public class MapCanvas extends Canvas {
       } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)
           && node.getFloor() == floor) {
         drawNode(node, Color.TOMATO);
-      } else if (node.getFloor() == floor) {
-        // drawNode(node, Color.BLACK);
       }
     }
 
@@ -397,13 +393,13 @@ public class MapCanvas extends Canvas {
   }
 
   public Group animatePath(ContextPath path, int floor) {
-
-    Image image = new Image("/edu/wpi/cs3733/d20/teamA/images/blue_right.png");
+    Image image = ImageCache.loadImage("images/blue_right.png");
     ImageView imageView = new ImageView();
     imageView.setPreserveRatio(true);
     imageView.setFitHeight(30);
     imageView.setImage(image);
-    imageView.setVisible(false);
+    imageView.setVisible(false); // this doesn't actually work
+    imageView.setX(-100); // Jank hack pls don't delete!!!!
 
     Circle circ = new Circle(10);
     circ.setFill(Color.AQUA);
@@ -499,7 +495,7 @@ public class MapCanvas extends Canvas {
   // Get the closest node to a position on the canvas (within a given radius in canvas space)
   public Optional<Node> getClosestNode(int floor, Point2D point, double maxDistance) {
     try {
-      Stream<Node> nodeStream = Graph.getInstance().getNodes().values().stream();
+      Stream<Node> nodeStream = graph.getNodes().values().stream();
 
       return nodeStream
           .filter(node -> node.getFloor() == floor)

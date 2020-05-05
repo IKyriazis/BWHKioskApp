@@ -50,17 +50,16 @@ public abstract class Database {
    * @return The size of the table
    */
   public int getSize(String tableName) {
-    int count = 0;
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("Select COUNT(*) as count From " + tableName);
+          getConnection().prepareStatement("SELECT COUNT(*) FROM " + tableName);
       ResultSet rset = pstmt.executeQuery();
       if (rset.next()) {
-        count = rset.getInt("count");
+        return rset.getInt(1);
       }
       rset.close();
       pstmt.close();
-      return count;
+      return 0;
     } catch (SQLException e) {
       e.printStackTrace();
       return -1;

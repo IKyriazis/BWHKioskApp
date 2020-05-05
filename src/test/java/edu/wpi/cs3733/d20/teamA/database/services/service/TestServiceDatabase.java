@@ -5,6 +5,7 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -58,9 +59,10 @@ public class TestServiceDatabase {
   @Test
   public void testAddReq() {
     sDB.removeAll();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
     Assertions.assertEquals(0, sDB.getSize());
-    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER);
     sDB.addServiceReq(
         ServiceType.JANITOR,
@@ -69,15 +71,16 @@ public class TestServiceDatabase {
         "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     Assertions.assertEquals(1, sDB.getSize());
     sDB.removeAll();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
   }
 
   @Test
   public void testDelReq() {
     sDB.removeAll();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
     Assertions.assertEquals(0, sDB.getSize());
-    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     eDB.addEmployee("bacd", "ray", "jay", "Password54", EmployeeTitle.NURSE);
     String req =
         sDB.addServiceReq(
@@ -89,14 +92,15 @@ public class TestServiceDatabase {
     sDB.deleteServReq(req);
     Assertions.assertEquals(0, sDB.getSize());
     sDB.removeAll();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
   }
 
   @Test
   public void testEditStatus() {
     sDB.removeAll();
-    DB.removeAll();
-    DB.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    DB.removeAll(Campus.FAULKNER);
+    DB.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.ADMIN);
     String req =
         sDB.addServiceReq(
@@ -107,6 +111,6 @@ public class TestServiceDatabase {
     sDB.editStatus(req, "Completed");
     Assertions.assertEquals("Completed", sDB.getStatus(req));
     sDB.removeAll();
-    DB.removeAll();
+    DB.removeAll(Campus.FAULKNER);
   }
 }
