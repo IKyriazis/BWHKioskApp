@@ -99,16 +99,30 @@ public class EmployeeEditController extends AbstractController implements IDialo
                   DialogUtil.simpleErrorDialog("Started Scanning", "We are looking for your card.");
                 });
             String rfid = scanRFID();
-            if (rfid != null) {
 
-              secretKey =
-                  eDB.addEmployeeGA(
-                      fName.getText(),
-                      lName.getText(),
-                      uName.getText(),
-                      cPass.getText(),
-                      EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
-                      rfid);
+            if (rfid != null) {
+              // if the rfid card is associated with a user it will return the username which is not
+              // null
+              // if there is a username associated with this card then we pop up a dialog
+              if (eDB.getUsername(rfid) != null) {
+                Platform.runLater(
+                    () -> {
+                      DialogUtil.simpleErrorDialog(
+                          "Duplicate Card", "There is another account associated with this card.");
+                    });
+                clearFields();
+              } else {
+                // else if the username is null it means no one has been assigned that card
+                // so go ahead and assign it
+                secretKey =
+                    eDB.addEmployeeGA(
+                        fName.getText(),
+                        lName.getText(),
+                        uName.getText(),
+                        cPass.getText(),
+                        EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
+                        rfid);
+              }
             } else {
               Platform.runLater(
                   () -> {
@@ -129,7 +143,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
               getGoogleAuthenticatorBarCode(secretKey, uName.getText(), companyName);
-          if (secretKey != null) {
+          if (!secretKey.isEmpty()) {
             // print that account has been created successfully
             Platform.runLater(
                 () -> {
@@ -143,11 +157,11 @@ public class EmployeeEditController extends AbstractController implements IDialo
           } else {
             // print that for some reason the account couldn't be added
             Platform.runLater(
-                () -> {
-                  DialogUtil.simpleErrorDialog(
-                      "Account creation failed",
-                      "For some reason we could not create your account.");
-                });
+                    () -> {
+                      DialogUtil.simpleErrorDialog(
+                              "Account creation failed",
+                              "For some reason we could not create your account.");
+                    });
           }
         });
   }
