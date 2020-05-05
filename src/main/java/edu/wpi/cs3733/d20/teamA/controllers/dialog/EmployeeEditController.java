@@ -5,8 +5,6 @@ import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -152,20 +150,6 @@ public class EmployeeEditController extends AbstractController implements IDialo
                 });
           }
         });
-  }
-
-  public String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
-    try {
-      return "otpauth://totp/"
-          + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
-          + "?secret="
-          + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
-          + "&issuer="
-          + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
-      return null;
-    }
   }
 
   public void clearFields() {

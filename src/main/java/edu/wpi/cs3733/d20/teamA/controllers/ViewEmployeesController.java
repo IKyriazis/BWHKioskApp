@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.EmployeeEditController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
@@ -98,5 +99,24 @@ public class ViewEmployeesController extends AbstractController {
   public void deleteBtn(ActionEvent actionEvent) {
     eDB.deleteEmployee(tblEmployees.getSelected().getUsername());
     update();
+  }
+
+  @FXML
+  public void qrCode() {
+    String uname = tblEmployees.getSelected().getUsername();
+    String secretKey = eDB.getSecretKey(uname);
+    String companyName = "Amethyst Asgardians";
+    if (secretKey != null) {
+      String barCodeUrl = getGoogleAuthenticatorBarCode(secretKey, uname, companyName);
+      DialogUtil.complexDialog(
+          "You must scan the QR code in Google Authenticator and use it for logging in",
+          "views/QRCodePopup.fxml",
+          true,
+          null,
+          new QRDialogController(barCodeUrl));
+    } else {
+      DialogUtil.simpleErrorDialog(
+          empPane, "Error", "There is no authenticator code associated with this user.");
+    }
   }
 }
