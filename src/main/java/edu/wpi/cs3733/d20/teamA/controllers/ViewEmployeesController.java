@@ -21,7 +21,7 @@ public class ViewEmployeesController extends AbstractController {
   @FXML private StackPane empPane;
   @FXML private Label img;
   @FXML private JFXButton addBtn;
-  @FXML private JFXButton editBtn;
+  // @FXML private JFXButton editBtn;
   @FXML private JFXButton deleteBtn;
 
   private SimpleTableView<Employee> tblEmployees;
@@ -31,7 +31,7 @@ public class ViewEmployeesController extends AbstractController {
 
     // Set icon
     addBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
-    editBtn.setGraphic(new FontIcon(FontAwesomeSolid.EDIT));
+    //    editBtn.setGraphic(new FontIcon(FontAwesomeSolid.EDIT));
     deleteBtn.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
 
     empPane.addEventHandler(
@@ -84,15 +84,15 @@ public class ViewEmployeesController extends AbstractController {
         new EmployeeEditController());
   }
 
-  @FXML
-  public void editBtn(ActionEvent actionEvent) {
-    DialogUtil.complexDialog(
-        "Edit Employee",
-        "views/EditEmployeePopup.fxml",
-        true,
-        event -> update(),
-        new EmployeeEditController());
-  }
+  //  @FXML
+  //  public void editBtn(ActionEvent actionEvent) {
+  //    DialogUtil.complexDialog(
+  //        "Edit Employee",
+  //        "views/EditEmployeePopup.fxml",
+  //        true,
+  //        event -> update(),
+  //        new EmployeeEditController());
+  //  }
 
   @FXML
   public void deleteBtn(ActionEvent actionEvent) {
