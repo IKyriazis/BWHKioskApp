@@ -15,14 +15,9 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.util.Duration;
 
 public class MapCanvas extends Canvas {
   private Graph graph;
@@ -307,7 +302,6 @@ public class MapCanvas extends Canvas {
     // Draw path if it exists
     if (path != null) {
       drawPath(path, floor);
-      animatePath(path, floor);
     }
 
     lastDrawnFloor = floor;
@@ -388,64 +382,6 @@ public class MapCanvas extends Canvas {
         drawNode(node, Color.TOMATO);
       }
     }
-
-    animatePath(path, floor);
-  }
-
-  public Group animatePath(ContextPath path, int floor) {
-    Image image = ImageCache.loadImage("images/blue_right.png");
-    ImageView imageView = new ImageView();
-    imageView.setPreserveRatio(true);
-    imageView.setFitHeight(30);
-    imageView.setImage(image);
-    imageView.setVisible(false); // this doesn't actually work
-    imageView.setX(-100); // Jank hack pls don't delete!!!!
-
-    Circle circ = new Circle(10);
-    circ.setFill(Color.AQUA);
-    double xcoord = path.getPathNodes().get(0).getX();
-    double ycoord = path.getPathNodes().get(0).getY();
-    double length = 0;
-    // group.getChildren().add(circ);
-
-    javafx.scene.shape.Path animatedPath = new javafx.scene.shape.Path();
-    boolean firstTime = true;
-    Point2D point;
-
-    for (Node node : path.getPathNodes()) {
-      point = graphToCanvas(new Point2D(xcoord, ycoord));
-      double canvasPointX = point.getX();
-      double canvasPointY = point.getY();
-      if (firstTime && node.getFloor() == floor) {
-        xcoord = node.getX();
-        ycoord = node.getY();
-        point = graphToCanvas(new Point2D(xcoord, ycoord));
-        canvasPointX = point.getX();
-        canvasPointY = point.getY();
-        animatedPath.getElements().add(new MoveTo(canvasPointX, canvasPointY));
-        firstTime = false;
-      }
-      // if the node is on the same floor then animate the path on the floor
-      if (node.getFloor() == floor) {
-        animatedPath.getElements().add(new LineTo(canvasPointX, canvasPointY));
-        length += getDistance(xcoord, node.getX(), ycoord, node.getY());
-        xcoord = node.getX();
-        ycoord = node.getY();
-        imageView.setVisible(true);
-      }
-    }
-
-    point = graphToCanvas(new Point2D(xcoord, ycoord));
-    animatedPath.getElements().add(new LineTo(point.getX(), point.getY()));
-
-    transition.setDuration(Duration.seconds(length / 250.0));
-    transition.setPath(animatedPath);
-    transition.setNode(imageView);
-    transition.setCycleCount(Timeline.INDEFINITE);
-    transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
-    transition.play();
-    group.getChildren().add(imageView);
-    return group;
   }
 
   public Group getGroup() {

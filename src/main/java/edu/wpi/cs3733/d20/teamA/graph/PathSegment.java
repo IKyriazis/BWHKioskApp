@@ -3,6 +3,8 @@ package edu.wpi.cs3733.d20.teamA.graph;
 import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class PathSegment {
   private Campus campus;
@@ -38,16 +40,15 @@ public class PathSegment {
     }
 
     PathSegment currSegment =
-        new PathSegment(getNodeCampus(pairs.get(0).getKey()), pairs.get(0).getKey().getFloor());
+        new PathSegment(pairs.get(0).getKey().getCampus(), pairs.get(0).getKey().getFloor());
     currSegment.addDirections(pairs.get(0).getValue());
     Node lastNode = pairs.get(0).getKey();
     for (int i = 1; i < pairs.size(); i++) {
       Node node = pairs.get(i).getKey();
 
-      if ((getNodeCampus(node) != getNodeCampus(lastNode))
-          || (node.getFloor() != lastNode.getFloor())) {
+      if ((node.getCampus() != lastNode.getCampus()) || (node.getFloor() != lastNode.getFloor())) {
         segments.add(currSegment);
-        currSegment = new PathSegment(getNodeCampus(node), node.getFloor());
+        currSegment = new PathSegment(node.getCampus(), node.getFloor());
       }
 
       currSegment.addDirections(pairs.get(i).getValue());
@@ -72,11 +73,18 @@ public class PathSegment {
     return merged;
   }
 
-  public static PathSegment calcInterSegment() {
-    return new PathSegment(Campus.INTER, 0);
-  }
+  public static PathSegment calcInterSegment(Campus dest) {
+    PathSegment seg = new PathSegment(Campus.INTER, 0);
+    if (dest == Campus.MAIN) {
+      Label label = new Label("Go fuck yourself");
+      label.setGraphic(new FontIcon(FontAwesomeSolid.HAND_MIDDLE_FINGER));
+      seg.addDirections(label);
+    } else if (dest == Campus.FAULKNER) {
+      Label label = new Label("Go fuck yourself");
+      label.setGraphic(new FontIcon(FontAwesomeSolid.HAND_MIDDLE_FINGER));
+      seg.addDirections(label);
+    }
 
-  private static Campus getNodeCampus(Node node) {
-    return node.getBuilding().equals("Faulkner") ? Campus.FAULKNER : Campus.MAIN;
+    return seg;
   }
 }

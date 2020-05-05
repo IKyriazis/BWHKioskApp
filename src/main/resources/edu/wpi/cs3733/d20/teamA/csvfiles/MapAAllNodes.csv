@@ -1,268 +1,268 @@
 nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned
-AHALL01001,2671,1593,1,Main,HALL,Hallway Intersection 10,N/A,Team A
-EELEV00Z04,2584,2000,4,Faulkner,ELEV,Elevator Z,Elv Z,E
-OCONF00305,2389,1201,5,Faulkner,CONF,Suite 51,S51,Team O
-EDEPT00304,2141,2002,4,Faulkner,DEPT,Department Offices,DO,E
-AREST00301,2567,1333,1,Main,REST,Restroom Handicap Level 1,N/A,Team A
-EHALL00404,1804,2071,4,Faulkner,HALL,Hallway W 4,HW4,E
-EHALL02704,2516,1332,4,Faulkner,HALL,Hallway O 1,HO1,E
-AHALL01801,2671,1821,1,Main,HALL,Hallway Intersection 18,N/A,Team A
-OREST00205,2480,1173,5,Faulkner,REST,North Restrooms A,North RR A,Team O
-OHALL01705,2621,1218,5,Faulkner,HALL,Hallway Intersection 15 Level 5,Hallway O1505,Team O
-ESTAI00504,2516,1887,4,Faulkner,STAI,Stairwell 5,Stair5,E
-AEXIT00201,2133,1274,1,Main,EXIT,Side Exit Near Emergency,N/A,Team A
-ELABS00304,3036,2012,4,Faulkner,LABS,SURGSPEC,SURGSPEC,E
+ESTAI00504,2516,1887,4,Faulkner,STAI,Stairwell 5,Stair5,Team E
+ELABS00304,3036,2012,4,Faulkner,LABS,SURGSPEC,SURGSPEC,Team E
+ESERV00104,2256,2142,4,Faulkner,SERV,Medical Library,ML,Team E
+EDEPT01504,2406,1477,4,Faulkner,DEPT,BD Cardiology,BD Cardio,Team E
+EHALL01604,3378,2071,4,Faulkner,HALL,Hallway E 9,HE9,Team E
+ECONF00104,1709,2158,4,Faulkner,CONF,Tynan Conferance Room,Tynan,Team E
+EHALL03104,2516,1137,4,Faulkner,HALL,Hallway O 5,HO5,Team E
+EHALL02804,2411,1332,4,Faulkner,HALL,Hallway O 2,HO2,Team E
+EELEV00Y04,2453,2011,4,Faulkner,ELEV,Elevator Y,Elv Y,Team E
+EDEPT00204,1710,2007,4,Faulkner,DEPT,Urology,Uro,Team E
+EHALL00504,1651,2071,4,Faulkner,HALL,Hallway W 5,HW5,Team E
+EHALL02004,2516,1832,4,Faulkner,HALL,Hallway N 3,HN3,Team E
+ESTAI00404,3560,2067,4,Faulkner,STAI,Stairwell 4,Stair4,Team E
+ELABS00204,2956,2012,4,Faulkner,LABS,QUALIMP,QUALIMP,Team E
+ESERV00204,2346,2122,4,Faulkner,SERV,Social Work,Social,Team E
+EHALL01704,3478,2071,4,Faulkner,HALL,Hallway E 10,HE10,Team E
+EDEPT01404,2616,1552,4,Faulkner,DEPT,Neurology,Neuro,Team E
+EHALL03204,2622,1162,4,Faulkner,HALL,Hallway O 6,HO6,Team E
+EHALL00604,1622,2071,4,Faulkner,HALL,Hallway W 6,HW6,Team E
+EDEPT00504,2516,2152,4,Faulkner,DEPT,Administration,Admin,Team E
+EHALL02904,2411,1294,4,Faulkner,HALL,Hallway O 3,HO3,Team E
+EDEPT02004,2356,1102,4,Faulkner,DEPT,HVMA Internal Medicine,HVMA Neuro,Team E
+EHALL02104,2516,1762,4,Faulkner,HALL,Hallway N 4,HN4,Team E
+ELABS00104,2736,2022,4,Faulkner,LABS,PATSAFE,PATSAFE,Team E
+ESERV00304,3132,2118,4,Faulkner,SERV,Compliance/Patient Relations 1,CPR1,Team E
+EHALL01804,2516,2071,4,Faulkner,HALL,Hallway N 1,HN1,Team E
+EHALL01004,2846,2071,4,Faulkner,HALL,Hallway E 3,HE3,Team E
+EHALL03304,2622,1191,4,Faulkner,HALL,Hallway O 7,HO7,Team E
+EDEPT01704,2716,1297,4,Faulkner,DEPT,Rheumatology Center,Rheumo,Team E
+EDEPT00404,2276,1982,4,Faulkner,DEPT,Department Offices Admin,DOA,Team E
+EHALL00704,1580,2071,4,Faulkner,HALL,Hallway W 7,HW7,Team E
+EHALL02204,2516,1700,4,Faulkner,HALL,Hallway N 5,HN5,Team E
+ESTAI00604,2551,1268,4,Faulkner,STAI,Stairwell 6,Stair6,Team E
+ESERV00404,3296,2118,4,Faulkner,SERV,Compliance/Patient Relations 2,CPR2,Team E
+EDEPT01604,2316,1302,4,Faulkner,DEPT,Cardiology,Cardio,Team E
+EHALL01904,2516,2010,4,Faulkner,HALL,Hallway N 2,HN2,Team E
+ECONF00204,2361,2122,4,Faulkner,CONF,Sadowsky Conference Room,Sadowsky,Team E
+EHALL01104,2957,2071,4,Faulkner,HALL,Hallway E 4,HE4,Team E
+EHALL03404,2622,1292,4,Faulkner,HALL,Hallway O 8,HO8,Team E
+EHALL00804,2706,2071,4,Faulkner,HALL,Hallway E 1,HE1,Team E
+EHALL02304,2516,1557,4,Faulkner,HALL,Hallway N 6,HN6,Team E
+ESERV00504,3186,2018,4,Faulkner,SERV,Finance 1,Fin1,Team E
+EDEPT00704,2846,2152,4,Faulkner,DEPT,Primary Care Physicians,PCP,Team E
+EDEPT01104,2579,1892,4,Faulkner,DEPT,Lung Research,Lung,Team E
+EHALL03504,2622,1332,4,Faulkner,HALL,Hallway O 9,HO9,Team E
+EHALL01204,3127,2071,4,Faulkner,HALL,Hallway E 5,HE5,Team E
+ESTAI00104,1454,2072,4,Faulkner,STAI,Stairwell 1,Stair1,Team E
+EDEPT01904,2636,1057,4,Faulkner,DEPT,Gastroentology Associates,Gastro,Team E
+EHALL00904,2733,2071,4,Faulkner,HALL,Hallway E 2,HE2,Team E
+EHALL02404,2516,1494,4,Faulkner,HALL,Hallway N 7,HN7,Team E
+EHALL00104,2350,2071,4,Faulkner,HALL,Hallway W 1,HW1,Team E
+ESERV00604,3186,2114,4,Faulkner,SERV,Finance 2,Fin2,Team E
+EDEPT00604,2826,1987,4,Faulkner,DEPT,Surgery Department,Surg,Team E
+EHALL01304,3185,2071,4,Faulkner,HALL,Hallway E 6,HE6,Team E
+EDEPT01004,3377,2127,4,Faulkner,DEPT,BWH Plastics,BWH,Team E
+ESERV00704,3236,2132,4,Faulkner,SERV,VP Clinical Service,VP,Team E
+EDEPT01804,2716,1202,4,Faulkner,DEPT,HVMA Neurology,HVMA Neuro,Team E
+ESERV01004,2591,1827,4,Faulkner,SERV,House keeping,HK,Team E
+EHALL00204,2253,2071,4,Faulkner,HALL,Hallway W 2,HW2,Team E
+EHALL02504,2516,1382,4,Faulkner,HALL,Hallway N 8,HN8,Team E
+ESTAI00304,3044,2067,4,Faulkner,STAI,Stairwell 3,Stair3,Team E
+ELABS00504,3554,2012,4,Faulkner,LABS,IS,IS,Team E
+EDEPT00904,3377,1982,4,Faulkner,DEPT,Foot and Ankle Center,FaAC,Team E
+EREST00204,2516,1195,4,Faulkner,REST,Bathroom 2,Bath2,Team E
+EDEPT01304,2616,1660,4,Faulkner,DEPT,Pulmonary Services,Pulmo,Team E
+EHALL01404,3233,2071,4,Faulkner,HALL,Hallway E 7,HE7,Team E
+ESERV00804,3281,1994,4,Faulkner,SERV,Lockers,Lock,Team E
+EELEV00X04,2480,1262,4,Faulkner,ELEV,Elevator X,Elv X,Team E
+ESERV01104,2599,1772,4,Faulkner,SERV,Nurse's Suite,Nurse,Team E
+EHALL00304,2126,2071,4,Faulkner,HALL,Hallway W 3,HW3,Team E
+EHALL02604,2516,1262,4,Faulkner,HALL,Hallway N 9,HN9,Team E
+ESTAI00204,1987,2072,4,Faulkner,STAI,Stairwell 2,Stair2,Team E
+ELABS00404,3466,2012,4,Faulkner,LABS,Spine FAC,SFAC,Team E
+EDEPT00804,3126,2029,4,Faulkner,DEPT,HR,HR,Team E
+EREST00104,2176,2067,4,Faulkner,REST,Bathroom 1,Bath1,Team E
+EDEPT01204,2411,1752,4,Faulkner,DEPT,MOHS Clinic,MOHS,Team E
+ESERV00904,3506,2116,4,Faulkner,SERV,Finance Office,Fin O,Team E
+EHALL01504,3287,2071,4,Faulkner,HALL,Hallway E 8,HE8,Team E
+EHALL03004,2411,1168,4,Faulkner,HALL,Hallway O 4,HO4,Team E
+ESERV01204,2616,1385,4,Faulkner,SERV,Suites,Suites,Team E
+AHALL01001,2671,1593,1,Faulkner,HALL,Hallway Intersection 10,N/A,Team A
+AREST00301,2567,1333,1,Faulkner,REST,Restroom Handicap Level 1,N/A,Team A
+AHALL01801,2671,1821,1,Faulkner,HALL,Hallway Intersection 18,N/A,Team A
+AEXIT00201,2133,1274,1,Faulkner,EXIT,Side Exit Near Emergency,N/A,Team A
+AHALL02101,3422,1976,1,Faulkner,HALL,Hallway Intersection 21,N/A,Team A
+AHALL00601,2379,1424,1,Faulkner,HALL,Hallway Intersection 6,N/A,Team A
+ADEPT00501,2201,1750,1,Faulkner,DEPT,Endoscopy,N/A,Team A
+AHALL01101,3255,1593,1,Faulkner,HALL,Hallway Intersection 11,N/A,Team A
+AHALL01901,2671,1976,1,Faulkner,HALL,Hallway Intersection 19,N/A,Team A
+AEXIT00101,2519,1007,1,Faulkner,EXIT,Lobby Entrance,N/A,Team A
+ASTAI00101,2547,1166,1,Faulkner,STAI,Staircase Intersection 1 Level 1,N/A,Team A
+AHALL02201,3511,1976,1,Faulkner,HALL,Hallway Intersection 22,N/A,Team A
+ADEPT00401,2247,1431,1,Faulkner,DEPT,AUD,N/A,Team A
+AHALL00701,2246,1378,1,Faulkner,HALL,Hallway Intersection 7,N/A,Team A
+AREST00503,2398,1508,3,Faulkner,REST,Restroom,N/A,Team A
+ADEPT01101,3020,1941,1,Faulkner,DEPT,Operation Rooms,N/A,Team A
+AHALL01201,2671,1688,1,Faulkner,HALL,Hallway Intersection 12,N/A,Team A
+AHALL00901,2671,1378,1,Faulkner,HALL,Hallway Intersection 9,N/A,Team A
+AHALL00801,2133,1378,1,Faulkner,HALL,Hallway Intersection 8,N/A,Team A
+AHALL02301,2201,1688,1,Faulkner,HALL,Hallway Intersection 23,N/A,Team A
+ADEPT00701,2534,1414,1,Faulkner,DEPT,Pre-Admittance Screening,N/A,Team A
+ADEPT01001,3252,1617,1,Faulkner,DEPT,Recovery,N/A,Team A
+AHALL01301,2520,1620,1,Faulkner,HALL,Hallway Intersection 13,N/A,Team A
+ALABS00101,2350,1447,1,Faulkner,LABS,Blood Draw Lab,N/A,Team A
+AHALL00101,2520,1118,1,Faulkner,HALL,Hallway Intersection 1,N/A,Team A
+ADEPT00601,2416,1414,1,Faulkner,DEPT,Cardiac Rehabilitation,N/A,Team A
+ADEPT01301,3426,1993,1,Faulkner,DEPT,Operation Room,N/A,Team A
+AHALL01401,2520,1688,1,Faulkner,HALL,Hallway Intersection 14,N/A,Team A
+ASTAI00401,3609,2084,1,Faulkner,STAI,Staircase Intersection 4 Level 1,N/A,Team A
+ALABS00201,2503,1619,1,Faulkner,LABS,Special Testing,N/A,Team A
+AELEV00Y01,2444,2018,1,Faulkner,ELEV,Elevator Intersection 2 Level 2,N/A,Team A
+ADEPT00101,2178,1685,1,Faulkner,DEPT,Emergency Department,N/A,Team A
+AHALL00201,2520,1165,1,Faulkner,HALL,Hallway Intersection 2,N/A,Team A
+ADEPT00901,2794,1382,1,Faulkner,DEPT,Radiology,N/A,Team A
+ADEPT01201,3507,1926,1,Faulkner,DEPT,Operation Rooms Entrance 2,N/A,Team A
+AHALL01501,2520,1782,1,Faulkner,HALL,Hallway Intersection 15,N/A,Team A
+ALABS00301,2534,1723,1,Faulkner,LABS,PLUM Lab,N/A,Team A
+AELEV00Z01,2602,2018,1,Faulkner,ELEV,Elevator Intersection 3,N/A,Team A
+AHALL00301,2520,1284,1,Faulkner,HALL,Hallway Intersection 3,N/A,Team A
+ADEPT00801,2568,1952,1,Faulkner,DEPT,QR MAT Management,N/A,Team A
+AREST00101,2384,1355,1,Faulkner,REST,Restroom Female Level 1,N/A,Team A
+EDEPT00104,1580,2090,4,Faulkner,DEPT,On-Call Room,OCR,Team A
+AHALL01601,2520,1935,1,Faulkner,HALL,Hallway Intersection 16,N/A,Team A
+AEXIT00401,3609,1994,1,Faulkner,EXIT,Stair Exit,N/A,Team A
+ASTAI00202,2463,1930,2,Faulkner,STAI,Staricase 2,Staircase 2,Team A
+ASTAI00201,2547,1273,1,Faulkner,STAI,Staircase Intersection 2 Level 1,N/A,Team A
+ALABS00401,2534,1783,1,Faulkner,LABS,VASC Lab,N/A,Team A
+AINFO00101,2482,1165,1,Faulkner,INFO,Atrium Kiosk,N/A,Team A
+ADEPT00301,2674,1364,1,Faulkner,DEPT,MRI/CT,N/A,Team A
+AHALL00401,2520,1378,1,Faulkner,HALL,Hallway Intersection 4,N/A,Team A
+ASERV00101,2644,1817,1,Faulkner,SERV,Linens,N/A,Team A
+AREST00201,2455,1356,1,Faulkner,REST,Restroom Male Level 1,N/A,Team A
+AHALL01701,2520,2003,1,Faulkner,HALL,Hallway Intersection 17,N/A,Team A
+AEXIT00301,2520,2051,1,Faulkner,EXIT,Bottom Exit,N/A,Team A
+ASTAI00301,2498,1937,1,Faulkner,STAI,Staircase Intersection 3 Level 1,N/A,Team A
+ALABS00501,3582,2091,1,Faulkner,LABS,Labs,N/A,Team A
+AELEV00X01,2478,1274,1,Faulkner,ELEV,Elevator Intersection 1 Level 1,N/A,Team A
+AHALL04303,2398,1554,3,Faulkner,HALL,Hallway Intersection by Huvos,N/A,Team A
+AHALL02001,3023,1976,1,Faulkner,HALL,Hallway Intersection 20,N/A,Team A
+ADEPT00201,2216,1349,1,Faulkner,DEPT,Admitting,N/A,Team A
+AHALL00501,2379,1378,1,Faulkner,HALL,Hallway Intersection 5,N/A,Team A
+ARETL00101,2305,1118,1,Faulkner,RETL,Starbucks,N/A,Team A
+ASERV00203,2519,2305,3,Faulkner,SERV,Shuttle Pickup 2,N/A,Team A
 CHALL00502,2607,1357,2,Faulkner,HALL,Hallway Intersection 5 Level 2,Hallway C0502,Team C
-ESERV00104,2256,2142,4,Faulkner,SERV,Medical Library,ML,E
-AHALL02101,3422,1976,1,Main,HALL,Hallway Intersection 21,N/A,Team A
-EDEPT01504,2406,1477,4,Faulkner,DEPT,BD Cardiology,BD Cardio,E
-EHALL01604,3378,2071,4,Faulkner,HALL,Hallway E 9,HE9,E
-ODEPT00405,2604,2075,5,Faulkner,DEPT,Oncology Clinic,ONC,Team O
-OHALL00505,2514,1925,5,Faulkner,HALL,Hallway Intersection 3 Level 5,Hallway O0305,Team O
-ECONF00104,1709,2158,4,Faulkner,CONF,Tynan Conferance Room,Tynan,E
-EHALL03104,2516,1137,4,Faulkner,HALL,Hallway O 5,HO5,E
-AHALL00601,2379,1424,1,Main,HALL,Hallway Intersection 6,N/A,Team A
 CREST00102,2698,1980,2,Faulkner,REST,Restroom 1 Level 2,REST 0102,Team C
-OHALL02005,2512,1174,5,Faulkner,HALL,Hallway Intersection 18 Level 5,Hallway O1805,Team O
 CELEV00202,2413,2065,2,Faulkner,ELEV,Elevator 2 Level 2,Elevator C0202,Team C
 CDEPT00402,2427,1145,2,Faulkner,DEPT,Otolaryngology,DEPT C0502,Team C
-ADEPT00501,2201,1750,1,Main,DEPT,Endoscopy,N/A,Team A
+CHALL00602,2607,1333,2,Faulkner,HALL,Hallway Intersection 6 Level 2,Hallway C0602,Team C
+CELEV00102,2513,1272,2,Faulkner,ELEV,Elevator 1 Level 2,Elevator C0102,Team C
+CDEPT00302,2698,1905,2,Faulkner,DEPT,Occupational Therapy,DEPT C0402,Team C
+CHALL00302,2698,2065,2,Faulkner,HALL,Hallway Intersection 3 Level 2,Hallway C0302,Team C
+CDEPT00202,2013,1665,2,Faulkner,DEPT,Morgue,DEPT C0302,Team C
+CRETL00102,2698,1405,2,Faulkner,RETL,Food Services,DEPT C0202,Team C
+CHALL00402,2698,1357,2,Faulkner,HALL,Hallway Intersection 4 Level 2,Hallway C0402,Team C
+CDEPT00902,2463,2065,2,Faulkner,DEPT,Psychiatric/Addiction Recovery,DEPT C1002,Team C
+CDEPT00102,2013,1975,2,Faulkner,DEPT,Biomedical Engineering,DEPT C0102,Team C
+CHALL00902,2613,1131,2,Faulkner,HALL,Hallway Intersection 9 Level 2,Hallway C0902,Team C
+CHALL00102,2013,1515,2,Faulkner,HALL,Hallway Intersection 1 Level 2,Hallway C0102,Team C
+CDEPT00802,2913,2065,2,Faulkner,DEPT,Psychiatric Inpatient Care,DEPT C0902,Team C
+CHALL00202,2013,2065,2,Faulkner,HALL,Hallway Intersection 2 Level 2,Hallway C0202,Team C
+CDEPT00702,2613,1305,2,Faulkner,DEPT,Plastic Surgery,DEPT C0802,Team C
+CSTAI00102,2513,1265,2,Faulkner,STAI,Staircase 1 Level 2,Stair C0102,Team C
+CHALL00702,2515,1333,2,Faulkner,HALL,Hallway Intersection 7 Level 2,Hallway C0702,Team C
+CDEPT00602,2698,1615,2,Faulkner,DEPT,Physical Therapy,DEPT C0702,Team C
+CHALL00802,2515,1131,2,Faulkner,HALL,Hallway Intersection 8 Level 2,Hallway C0802,Team C
+CDEPT00502,2013,1585,2,Faulkner,DEPT,Pharmacy,DEPT C0602,Team C
+CELEV00302,2698,1985,2,Faulkner,ELEV,Elevator 3 Level 2,Elevator C0302,Team C
+EELEV00Z04,2584,2000,4,Faulkner,ELEV,Elevator Z,Elv Z,Team E
+EDEPT00304,2141,2002,4,Faulkner,DEPT,Department Offices,DO,Team E
+EHALL00404,1804,2071,4,Faulkner,HALL,Hallway W 4,HW4,Team E
+EHALL02704,2516,1332,4,Faulkner,HALL,Hallway O 1,HO1,Team E
 MSERV00302,2399,2206,3,Faulkner,SERV,Chapel,Chapel,Team M
-EHALL02804,2411,1332,4,Faulkner,HALL,Hallway O 2,HO2,E
-AHALL01101,3255,1593,1,Main,HALL,Hallway Intersection 11,N/A,Team A
 MSERV00303,2644,2206,3,Faulkner,SERV,Volunteer Room,Volunteer,Team M
-EELEV00Y04,2453,2011,4,Faulkner,ELEV,Elevator Y,Elv Y,E
-EDEPT00204,1710,2007,4,Faulkner,DEPT,Urology,Uro,E
-OCONF00405,2639,1322,5,Faulkner,CONF,Suite 58,S58,Team O
 MSERV00301,2519,2246,3,Faulkner,SERV,Shuttle Pickup,Shuttle,Team M
 MSERV00304,2389,2116,3,Faulkner,SERV,Mechanical Space 01,MechSpace,Team M
 MSERV00305,2594,2116,3,Faulkner,SERV,Mechanical Space 02,MechSpace,Team M
-EHALL00504,1651,2071,4,Faulkner,HALL,Hallway W 5,HW5,E
-EHALL02004,2516,1832,4,Faulkner,HALL,Hallway N 3,HN3,E
-OREST00305,2544,1173,5,Faulkner,REST,North Restrooms B,North RR B,Team O
-AHALL01901,2671,1976,1,Main,HALL,Hallway Intersection 19,N/A,Team A
-ESTAI00404,3560,2067,4,Faulkner,STAI,Stairwell 4,Stair4,E
-ELABS00204,2956,2012,4,Faulkner,LABS,QUALIMP,QUALIMP,E
-AEXIT00101,2519,1007,1,Main,EXIT,Lobby Entrance,N/A,Team A
-OHALL01805,2621,1338,5,Faulkner,HALL,Hallway Intersection 16 Level 5,Hallway O1605,Team O
-ASTAI00101,2547,1166,1,Main,STAI,Staircase Intersection 1 Level 1,N/A,Team A
-CHALL00602,2607,1333,2,Faulkner,HALL,Hallway Intersection 6 Level 2,Hallway C0602,Team C
-OHALL01005,2513,1389,5,Faulkner,HALL,Hallway Intersection 8 Level 5,Hallway O0805,Team O
-ESERV00204,2346,2122,4,Faulkner,SERV,Social Work,Social,E
-AHALL02201,3511,1976,1,Main,HALL,Hallway Intersection 22,N/A,Team A
-EHALL01704,3478,2071,4,Faulkner,HALL,Hallway E 10,HE10,E
-EDEPT01404,2616,1552,4,Faulkner,DEPT,Neurology,Neuro,E
-ADEPT00401,2247,1431,1,Main,DEPT,AUD,N/A,Team A
-AHALL00701,2246,1378,1,Main,HALL,Hallway Intersection 7,N/A,Team A
-EHALL03204,2622,1162,4,Faulkner,HALL,Hallway O 6,HO6,E
-ODEPT00305,2362,2106,5,Faulkner,DEPT,Outpatient Infusion Center,OIC,Team O
-OHALL00605,2514,1832,5,Faulkner,HALL,Hallway Intersection 4 Level 5,Hallway O0405,Team O
-CELEV00102,2513,1272,2,Faulkner,ELEV,Elevator 1 Level 2,Elevator C0102,Team C
-CDEPT00302,2698,1905,2,Faulkner,DEPT,Occupational Therapy,DEPT C0402,Team C
-AREST00503,2398,1508,3,N/A,REST,Restroom,N/A,Team A
-EHALL00604,1622,2071,4,Faulkner,HALL,Hallway W 6,HW6,E
-EDEPT00504,2516,2152,4,Faulkner,DEPT,Administration,Admin,E
-EHALL02904,2411,1294,4,Faulkner,HALL,Hallway O 3,HO3,E
-ADEPT01101,3020,1941,1,Main,DEPT,Operation Rooms,N/A,Team A
-EDEPT02004,2356,1102,4,Faulkner,DEPT,HVMA Internal Medicine,HVMA Neuro,E
-OCONF00105,2495,1401,5,Faulkner,CONF,Suite 5940,S5940,Team O
-EHALL02104,2516,1762,4,Faulkner,HALL,Hallway N 4,HN4,E
-ELABS00104,2736,2022,4,Faulkner,LABS,PATSAFE,PATSAFE,E
-ODEPT01005,2493,1467,5,Faulkner,DEPT,Internal Medicine/ Headache,IM/H,Team O
-AHALL01201,2671,1688,1,Main,HALL,Hallway Intersection 12,N/A,Team A
-OHALL01905,2513,1267,5,Faulkner,HALL,Hallway Intersection 17 Level 5,Hallway O1705,Team O
-CHALL00302,2698,2065,2,Faulkner,HALL,Hallway Intersection 3 Level 2,Hallway C0302,Team C
-AHALL00901,2671,1378,1,Main,HALL,Hallway Intersection 9,N/A,Team A
-OHALL01105,2515,1340,5,Faulkner,HALL,Hallway Intersection 9 Level 5,Hallway O0905,Team O
 MREST00344,2489,1147,3,Faulkner,REST,Restroom00301,Restroom,Team M
 MREST00343,2557,1149,3,Faulkner,REST,Restroom00302,Restroom,Team M
-ESERV00304,3132,2118,4,Faulkner,SERV,Compliance/Patient Relations 1,CPR1,E
-OSTAI00505,2583,1253,5,Faulkner,STAI,North Staircase,North Stairs,Team O
-EHALL01804,2516,2071,4,Faulkner,HALL,Hallway N 1,HN1,E
 MSERV00315,2446,1369,3,Faulkner,SERV,Family Patient Resources,Resources,Team M
-OELEV00Z05,2615,2004,5,Faulkner,ELEV,Z Elevator,Z Elev,Team O
-AHALL00801,2133,1378,1,Main,HALL,Hallway Intersection 8,N/A,Team A
-EHALL01004,2846,2071,4,Faulkner,HALL,Hallway E 3,HE3,E
-ODEPT00605,2634,1745,5,Faulkner,DEPT,Ambulatory Care,AMB Care,Team O
-EHALL03304,2622,1191,4,Faulkner,HALL,Hallway O 7,HO7,E
-OHALL00705,2634,1832,5,Faulkner,HALL,Hallway Intersection 5 Level 5,Hallway O0505,Team O
-AHALL02301,2201,1688,1,Main,HALL,Hallway Intersection 23,N/A,Team A
 MRETL00330,2704,1756,3,Faulkner,RETL,Caffeteria Exterior entrance,Caffeteria,Team M
 MSTAI00323,2564,1246,3,Faulkner,STAI,Stairs,Stairs,Team M
-CDEPT00202,2013,1665,2,Faulkner,DEPT,Morgue,DEPT C0302,Team C
-ADEPT00701,2534,1414,1,Main,DEPT,Pre-Admittance Screening,N/A,Team A
-EDEPT01704,2716,1297,4,Faulkner,DEPT,Rheumatology Center,Rheumo,E
-EDEPT00404,2276,1982,4,Faulkner,DEPT,Department Offices Admin,DOA,E
-OCONF00205,2495,1383,5,Faulkner,CONF,Suite 5945,S5945,Team O
-EHALL00704,1580,2071,4,Faulkner,HALL,Hallway W 7,HW7,E
-ADEPT01001,3252,1617,1,Main,DEPT,Recovery,N/A,Team A
-EHALL02204,2516,1700,4,Faulkner,HALL,Hallway N 5,HN5,E
-ESTAI00604,2551,1268,4,Faulkner,STAI,Stairwell 6,Stair6,E
-CRETL00102,2698,1405,2,Faulkner,RETL,Food Services,DEPT C0202,Team C
-AHALL01301,2520,1620,1,Main,HALL,Hallway Intersection 13,N/A,Team A
-ALABS00101,2350,1447,1,Main,LABS,Blood Draw Lab,N/A,Team A
-CHALL00402,2698,1357,2,Faulkner,HALL,Hallway Intersection 4 Level 2,Hallway C0402,Team C
-OHALL01205,2409,1338,5,Faulkner,HALL,Hallway Intersection 10 Level 5,Hallway O1005,Team O
 MSTAI00310,2504,1931,3,Faulkner,STAI,Stairs00310,Stairs,Team M
-ESERV00404,3296,2118,4,Faulkner,SERV,Compliance/Patient Relations 2,CPR2,E
-OSTAI00605,3070,2125,5,Faulkner,STAI,Oncology Clinic Staircase 2,ONC Stairs 2,Team O
-EDEPT01604,2316,1302,4,Faulkner,DEPT,Cardiology,Cardio,E
-EHALL01904,2516,2010,4,Faulkner,HALL,Hallway N 2,HN2,E
 MSERV00337,2364,1511,3,Faulkner,SERV,Family Patient Resources 2,Resources,Team M
 MSERV00338,2339,1611,3,Faulkner,SERV,Huvos Auditorium Top,Auditorium,Team M
-CDEPT00902,2463,2065,2,Faulkner,DEPT,Psychiatric/Addiction Recovery,DEPT C1002,Team C
-ECONF00204,2361,2122,4,Faulkner,CONF,Sadowsky Conference Room,Sadowsky,E
-EHALL01104,2957,2071,4,Faulkner,HALL,Hallway E 4,HE4,E
-EHALL03404,2622,1292,4,Faulkner,HALL,Hallway O 8,HO8,E
-ODEPT00505,2539,1936,5,Faulkner,DEPT,X-Ray Waiting Room,X-Ray Waiting,Team O
-AHALL00101,2520,1118,1,Main,HALL,Hallway Intersection 1,N/A,Team A
-OHALL00805,2515,1708,5,Faulkner,HALL,Hallway Intersection 6 Level 5,Hallway O0605,Team O
-CDEPT00102,2013,1975,2,Faulkner,DEPT,Biomedical Engineering,DEPT C0102,Team C
-ADEPT00601,2416,1414,1,Main,DEPT,Cardiac Rehabilitation,N/A,Team A
-EHALL00804,2706,2071,4,Faulkner,HALL,Hallway E 1,HE1,E
-ADEPT01301,3426,1993,1,Main,DEPT,Operation Room,N/A,Team A
 MHALL00312,2494,1556,3,Faulkner,HALL,Hall00301,Hall,Team M
-EHALL02304,2516,1557,4,Faulkner,HALL,Hallway N 6,HN6,E
-AHALL01401,2520,1688,1,Main,HALL,Hallway Intersection 14,N/A,Team A
-ODEPT01205,2537,1120,5,Faulkner,DEPT,Orthopedic Association,Ortho,Team O
-ASTAI00401,3609,2084,1,Main,STAI,Staircase Intersection 4 Level 1,N/A,Team A
 MHALL00319,2631,1347,3,Faulkner,HALL,Hall00302,Hall,Team M
 MHALL00318,2524,1347,3,Faulkner,HALL,Hall00303,Hall,Team M
 MHALL00317,2407,1348,3,Faulkner,HALL,Hall00304,Hall,Team M
 MHALL00316,2472,1350,3,Faulkner,HALL,Hall00305,Hall,Team M
-OHALL01305,2408,1171,5,Faulkner,HALL,Hallway Intersection 11 Level 5,Hallway O1105,Team O
-CHALL00902,2613,1131,2,Faulkner,HALL,Hallway Intersection 9 Level 2,Hallway C0902,Team C
-ALABS00201,2503,1619,1,Main,LABS,Special Testing,N/A,Team A
 MDEPT00324,2629,1206,3,Faulkner,DEPT,Division of GYN,GYN,Team M
-ESERV00504,3186,2018,4,Faulkner,SERV,Finance 1,Fin1,E
-AELEV00Y01,2444,2018,1,Main,ELEV,Elevator Intersection 2 Level 2,N/A,Team A
 MDEPT00327,2519,1133,3,Faulkner,DEPT,Roslindale Pediatric Association,Pediatrics,Team M
-CHALL00102,2013,1515,2,Faulkner,HALL,Hallway Intersection 1 Level 2,Hallway C0102,Team C
 MDEPT00325,2629,1156,3,Faulkner,DEPT,OB/GYN Association,OB/GYN,Team M
-OSTAI00305,3614,2071,5,Faulkner,STAI,Oncology Clinic Staircase,ONC Stairs,Team O
-OLABS00105,2116,2041,5,Faulkner,LABS,Hemo Dialysis,Hemo Dial,Team O
 MDEPT00326,2579,1131,3,Faulkner,DEPT,Gynocology/Oncology,N/A,Team M
-EDEPT00704,2846,2152,4,Faulkner,DEPT,Primary Care Physicians,PCP,E
-ADEPT00101,2178,1685,1,Main,DEPT,Emergency Department,N/A,Team A
-ODEPT00805,2559,1358,5,Faulkner,DEPT,Endocrinology/ Diabetes/ Hem-Onc,Endocrin,Team O
 MDEPT00320,2634,1306,3,Faulkner,DEPT,med staff lounge,staff lounge,Team M
-EDEPT01104,2579,1892,4,Faulkner,DEPT,Lung Research,Lung,E
-EHALL03504,2622,1332,4,Faulkner,HALL,Hallway O 9,HO9,E
-CDEPT00802,2913,2065,2,Faulkner,DEPT,Psychiatric Inpatient Care,DEPT C0902,Team C
-OELEV00X05,2466,1267,5,Faulkner,ELEV,X Elevator,X Elev,Team O
 MHALL00321,2519,1261,3,Faulkner,HALL,hall00306,hall,Team M
-EHALL01204,3127,2071,4,Faulkner,HALL,Hallway E 5,HE5,E
-OHALL00905,2514,1466,5,Faulkner,HALL,Hallway Intersection 7 Level 5,Hallway O0705,Team O
-AHALL00201,2520,1165,1,Main,HALL,Hallway Intersection 2,N/A,Team A
 MHALL00329,2409,1211,3,Faulkner,HALL,Hall00307,Hall,Team M
 MHALL00328,2410,1177,3,Faulkner,HALL,Hall00308,Hall,Team M
-OHALL00105,2058,2073,5,Faulkner,HALL,Hallway Intersection 1 Level 5,Hallway O0105,Team O
-ESTAI00104,1454,2072,4,Faulkner,STAI,Stairwell 1,Stair1,E
-ADEPT00901,2794,1382,1,Main,DEPT,Radiology,N/A,Team A
-EDEPT01904,2636,1057,4,Faulkner,DEPT,Gastroentology Associates,Gastro,E
-EHALL00904,2733,2071,4,Faulkner,HALL,Hallway E 2,HE2,E
-EHALL02404,2516,1494,4,Faulkner,HALL,Hallway N 7,HN7,E
-ADEPT01201,3507,1926,1,Main,DEPT,Operation Rooms Entrance 2,N/A,Team A
-OHALL01405,2456,1143,5,Faulkner,HALL,Hallway Intersection 12 Level 5,Hallway O1205,Team O
-EHALL00104,2350,2071,4,Faulkner,HALL,Hallway W 1,HW1,E
-ODEPT01105,2441,1129,5,Faulkner,DEPT,ENT/Eye Physical/Dermatologist,Physical,Team O
-AHALL01501,2520,1782,1,Main,HALL,Hallway Intersection 15,N/A,Team A
-CHALL00202,2013,2065,2,Faulkner,HALL,Hallway Intersection 2 Level 2,Hallway C0202,Team C
-ALABS00301,2534,1723,1,Main,LABS,PLUM Lab,N/A,Team A
-ESERV00604,3186,2114,4,Faulkner,SERV,Finance 2,Fin2,E
-AELEV00Z01,2602,2018,1,Main,ELEV,Elevator Intersection 3,N/A,Team A
-OLABS00205,2487,1849,5,Faulkner,LABS,X-Ray Imaging Center,X-Ray,Team O
-EDEPT00604,2826,1987,4,Faulkner,DEPT,Surgery Department,Surg,E
-OSTAI00405,2474,1919,5,Faulkner,STAI,Central Staircase,Center Stairs,Team O
-EHALL01304,3185,2071,4,Faulkner,HALL,Hallway E 6,HE6,E
-ODEPT00705,2542,1464,5,Faulkner,DEPT,Ambulatory Clinic,AMBC,Team O
-EDEPT01004,3377,2127,4,Faulkner,DEPT,BWH Plastics,BWH,E
-ESERV00704,3236,2132,4,Faulkner,SERV,VP Clinical Service,VP,E
-OELEV00Y05,2414,2027,5,Faulkner,ELEV,Y Elevator,Y Elev,Team O
-CDEPT00702,2613,1305,2,Faulkner,DEPT,Plastic Surgery,DEPT C0802,Team C
-CSTAI00102,2513,1265,2,Faulkner,STAI,Staircase 1 Level 2,Stair C0102,Team C
-AHALL00301,2520,1284,1,Main,HALL,Hallway Intersection 3,N/A,Team A
 MHALL00309,2519,1966,3,Faulkner,HALL,Hall00309,Hall,Team M
 MRETL00311,2514,1836,3,Faulkner,RETL,Gift Shop,Gift Shop,Team M
 MHALL00306,2499,2116,3,Faulkner,HALL,Hall00310,Hall,Team M
 MRETL00314,2474,1441,3,Faulkner,RETL,Caffeteria Hall enterance,Caffeteria,Team M
-OHALL00205,2363,2071,5,Faulkner,HALL,Hallway Intersection 2 Level 5,Hallway O0205,Team O
 MRETL00313,2529,1511,3,Faulkner,RETL,Caffeteria Hall enterance 2,Caffeteria,Team M
-ADEPT00801,2568,1952,1,Main,DEPT,QR MAT Management,N/A,Team A
-EDEPT01804,2716,1202,4,Faulkner,DEPT,HVMA Neurology,HVMA Neuro,E
-ESERV01004,2591,1827,4,Faulkner,SERV,House keeping,HK,E
 MELEV00322,2484,1256,3,Faulkner,ELEV,Elevator,Elevator,Team M
-EHALL00204,2253,2071,4,Faulkner,HALL,Hallway W 2,HW2,E
-AREST00101,2384,1355,1,Main,REST,Restroom Female Level 1,N/A,Team A
-EHALL02504,2516,1382,4,Faulkner,HALL,Hallway N 8,HN8,E
-EDEPT00104,1580,2090,4,Main,DEPT,On-Call Room,OCR,Team A
-ESTAI00304,3044,2067,4,Faulkner,STAI,Stairwell 3,Stair3,E
-AHALL01601,2520,1935,1,Main,HALL,Hallway Intersection 16,N/A,Team A
-OHALL01505,2513,1137,5,Faulkner,HALL,Hallway Intersection 13 Level 5,Hallway O1305,Team O
-AEXIT00401,3609,1994,1,Main,EXIT,Stair Exit,N/A,Team A
-ELABS00504,3554,2012,4,Faulkner,LABS,IS,IS,E
-ASTAI00202,2463,1930,2,,STAI,Staricase 2,Staircase 2,Team A
-ASTAI00201,2547,1273,1,Main,STAI,Staircase Intersection 2 Level 1,N/A,Team A
-CHALL00702,2515,1333,2,Faulkner,HALL,Hallway Intersection 7 Level 2,Hallway C0702,Team C
-ALABS00401,2534,1783,1,Main,LABS,VASC Lab,N/A,Team A
-EDEPT00904,3377,1982,4,Faulkner,DEPT,Foot and Ankle Center,FaAC,E
-AINFO00101,2482,1165,1,Main,INFO,Atrium Kiosk,N/A,Team A
-OSTAI00105,1420,2090,5,Faulkner,STAI,Intensive Care Unit Staircase,ICU Stairs,Team O
-EREST00204,2516,1195,4,Faulkner,REST,Bathroom 2,Bath2,E
-EDEPT01304,2616,1660,4,Faulkner,DEPT,Pulmonary Services,Pulmo,E
-EHALL01404,3233,2071,4,Faulkner,HALL,Hallway E 7,HE7,E
-ADEPT00301,2674,1364,1,Main,DEPT,MRI/CT,N/A,Team A
-ESERV00804,3281,1994,4,Faulkner,SERV,Lockers,Lock,E
-OHALL00305,2542,2069,5,Faulkner,HALL,South Lobby A,S Lobby A,Team O
-CDEPT00602,2698,1615,2,Faulkner,DEPT,Physical Therapy,DEPT C0702,Team C
-AHALL00401,2520,1378,1,Main,HALL,Hallway Intersection 4,N/A,Team A
-ODEPT00205,1460,2091,5,Faulkner,DEPT,Intensive Care Unit/Critical Care Unit B,ICU B,Team O
-ASERV00101,2644,1817,1,Main,SERV,Linens,N/A,Team A
-EELEV00X04,2480,1262,4,Faulkner,ELEV,Elevator X,Elv X,E
-ESERV01104,2599,1772,4,Faulkner,SERV,Nurse's Suite,Nurse,E
-EHALL00304,2126,2071,4,Faulkner,HALL,Hallway W 3,HW3,E
-EHALL02604,2516,1262,4,Faulkner,HALL,Hallway N 9,HN9,E
-AREST00201,2455,1356,1,Main,REST,Restroom Male Level 1,N/A,Team A
 MHALL00335,2444,1556,3,Faulkner,HALL,Hall00311,Hall,Team M
-ESTAI00204,1987,2072,4,Faulkner,STAI,Stairwell 2,Stair2,E
-OHALL01605,2620,1161,5,Faulkner,HALL,Hallway Intersection 14 Level 5,Hallway O1405,Team O
 MHALL00334,3394,1576,3,Faulkner,HALL,Hall00312,Hall,Team M
 MHALL00333,3329,1571,3,Faulkner,HALL,Hall00313,Hall,Team M
-AHALL01701,2520,2003,1,Main,HALL,Hallway Intersection 17,N/A,Team A
 MHALL00332,3324,1506,3,Faulkner,HALL,hall00314,Hall,Team M
 MHALL00331,2924,1536,3,Faulkner,HALL,Hall00315,Hall,Team M
-ELABS00404,3466,2012,4,Faulkner,LABS,Spine FAC,SFAC,E
-AEXIT00301,2520,2051,1,Main,EXIT,Bottom Exit,N/A,Team A
-OREST00105,2479,2034,5,Faulkner,REST,South Restrooms,South RR,Team O
-ODEPT01305,2640,1217,5,Faulkner,DEPT,BWH Surgical Specialties,Surgical,Team O
-ASTAI00301,2498,1937,1,Main,STAI,Staircase Intersection 3 Level 1,N/A,Team A
-ALABS00501,3582,2091,1,Main,LABS,Labs,N/A,Team A
 MHALL00339,2259,1598,3,Faulkner,HALL,Hall00316,Hall,Team M
-CHALL00802,2515,1131,2,Faulkner,HALL,Hallway Intersection 8 Level 2,Hallway C0802,Team C
 MHALL00336,2354,1556,3,Faulkner,HALL,HALL00317,hall,Team M
 MELEV00307,2444,2026,3,Faulkner,ELEV,Elevator00303,Elevator,Team M
 MELEV00308,2589,2026,3,Faulkner,ELEV,Elevator00304,Elevator,Team M
-AELEV00X01,2478,1274,1,Main,ELEV,Elevator Intersection 1 Level 1,N/A,Team A
-EDEPT00804,3126,2029,4,Faulkner,DEPT,HR,HR,E
-AHALL04303,2398,1554,3,N/A,HALL,Hallway Intersection by Huvos,N/A,Team A
-OSTAI00205,1966,2135,5,Faulkner,STAI,South Staircase,South Stairs,Team O
-AHALL02001,3023,1976,1,Main,HALL,Hallway Intersection 20,N/A,Team A
-EREST00104,2176,2067,4,Faulkner,REST,Bathroom 1,Bath1,E
-EDEPT01204,2411,1752,4,Faulkner,DEPT,MOHS Clinic,MOHS,E
-ADEPT00201,2216,1349,1,Main,DEPT,Admitting,N/A,Team A
-ESERV00904,3506,2116,4,Faulkner,SERV,Finance Office,Fin O,E
-EHALL01504,3287,2071,4,Faulkner,HALL,Hallway E 8,HE8,E
-ODEPT00905,2494,1708,5,Faulkner,DEPT,BWH Primary Care Physicians,PCP,Team O
-AHALL00501,2379,1378,1,Main,HALL,Hallway Intersection 5,N/A,Team A
-OHALL00405,2514,1989,5,Faulkner,HALL,South Lobby B,S Lobby B,Team O
 MHALL00342,1789,1430,3,Faulkner,HALL,Hall00318,Hall,Team M
 MHALL00341,1864,1361,3,Faulkner,HALL,Hall00319,Hall,Team M
 MHALL00340,2049,1376,3,Faulkner,HALL,Hall00320,Hall,Team M
-EHALL03004,2411,1168,4,Faulkner,HALL,Hallway O 4,HO4,E
+OCONF00305,2389,1201,5,Faulkner,CONF,Suite 51,S51,Team O
+OREST00205,2480,1173,5,Faulkner,REST,North Restrooms A,North RR A,Team O
+OHALL01705,2621,1218,5,Faulkner,HALL,Hallway Intersection 15 Level 5,Hallway O1505,Team O
+ODEPT00405,2604,2075,5,Faulkner,DEPT,Oncology Clinic,ONC,Team O
+OHALL00505,2514,1925,5,Faulkner,HALL,Hallway Intersection 3 Level 5,Hallway O0305,Team O
+OHALL02005,2512,1174,5,Faulkner,HALL,Hallway Intersection 18 Level 5,Hallway O1805,Team O
+OCONF00405,2639,1322,5,Faulkner,CONF,Suite 58,S58,Team O
+OREST00305,2544,1173,5,Faulkner,REST,North Restrooms B,North RR B,Team O
+OHALL01805,2621,1338,5,Faulkner,HALL,Hallway Intersection 16 Level 5,Hallway O1605,Team O
+OHALL01005,2513,1389,5,Faulkner,HALL,Hallway Intersection 8 Level 5,Hallway O0805,Team O
+ODEPT00305,2362,2106,5,Faulkner,DEPT,Outpatient Infusion Center,OIC,Team O
+OHALL00605,2514,1832,5,Faulkner,HALL,Hallway Intersection 4 Level 5,Hallway O0405,Team O
+OCONF00105,2495,1401,5,Faulkner,CONF,Suite 5940,S5940,Team O
+ODEPT01005,2493,1467,5,Faulkner,DEPT,Internal Medicine/ Headache,IM/H,Team O
+OHALL01905,2513,1267,5,Faulkner,HALL,Hallway Intersection 17 Level 5,Hallway O1705,Team O
+OHALL01105,2515,1340,5,Faulkner,HALL,Hallway Intersection 9 Level 5,Hallway O0905,Team O
+OSTAI00505,2583,1253,5,Faulkner,STAI,North Staircase,North Stairs,Team O
+OELEV00Z05,2615,2004,5,Faulkner,ELEV,Z Elevator,Z Elev,Team O
+ODEPT00605,2634,1745,5,Faulkner,DEPT,Ambulatory Care,AMB Care,Team O
+OHALL00705,2634,1832,5,Faulkner,HALL,Hallway Intersection 5 Level 5,Hallway O0505,Team O
+OCONF00205,2495,1383,5,Faulkner,CONF,Suite 5945,S5945,Team O
+OHALL01205,2409,1338,5,Faulkner,HALL,Hallway Intersection 10 Level 5,Hallway O1005,Team O
+OSTAI00605,3070,2125,5,Faulkner,STAI,Oncology Clinic Staircase 2,ONC Stairs 2,Team O
+ODEPT00505,2539,1936,5,Faulkner,DEPT,X-Ray Waiting Room,X-Ray Waiting,Team O
+OHALL00805,2515,1708,5,Faulkner,HALL,Hallway Intersection 6 Level 5,Hallway O0605,Team O
+ODEPT01205,2537,1120,5,Faulkner,DEPT,Orthopedic Association,Ortho,Team O
+OHALL01305,2408,1171,5,Faulkner,HALL,Hallway Intersection 11 Level 5,Hallway O1105,Team O
+OSTAI00305,3614,2071,5,Faulkner,STAI,Oncology Clinic Staircase,ONC Stairs,Team O
+OLABS00105,2116,2041,5,Faulkner,LABS,Hemo Dialysis,Hemo Dial,Team O
+ODEPT00805,2559,1358,5,Faulkner,DEPT,Endocrinology/ Diabetes/ Hem-Onc,Endocrin,Team O
+OELEV00X05,2466,1267,5,Faulkner,ELEV,X Elevator,X Elev,Team O
+OHALL00905,2514,1466,5,Faulkner,HALL,Hallway Intersection 7 Level 5,Hallway O0705,Team O
+OHALL00105,2058,2073,5,Faulkner,HALL,Hallway Intersection 1 Level 5,Hallway O0105,Team O
+OHALL01405,2456,1143,5,Faulkner,HALL,Hallway Intersection 12 Level 5,Hallway O1205,Team O
+ODEPT01105,2441,1129,5,Faulkner,DEPT,ENT/Eye Physical/Dermatologist,Physical,Team O
+OLABS00205,2487,1849,5,Faulkner,LABS,X-Ray Imaging Center,X-Ray,Team O
+OSTAI00405,2474,1919,5,Faulkner,STAI,Central Staircase,Center Stairs,Team O
+ODEPT00705,2542,1464,5,Faulkner,DEPT,Ambulatory Clinic,AMBC,Team O
+OELEV00Y05,2414,2027,5,Faulkner,ELEV,Y Elevator,Y Elev,Team O
+OHALL00205,2363,2071,5,Faulkner,HALL,Hallway Intersection 2 Level 5,Hallway O0205,Team O
+OHALL01505,2513,1137,5,Faulkner,HALL,Hallway Intersection 13 Level 5,Hallway O1305,Team O
+OSTAI00105,1420,2090,5,Faulkner,STAI,Intensive Care Unit Staircase,ICU Stairs,Team O
+OHALL00305,2542,2069,5,Faulkner,HALL,South Lobby A,S Lobby A,Team O
+ODEPT00205,1460,2091,5,Faulkner,DEPT,Intensive Care Unit/Critical Care Unit B,ICU B,Team O
+OHALL01605,2620,1161,5,Faulkner,HALL,Hallway Intersection 14 Level 5,Hallway O1405,Team O
+OREST00105,2479,2034,5,Faulkner,REST,South Restrooms,South RR,Team O
+ODEPT01305,2640,1217,5,Faulkner,DEPT,BWH Surgical Specialties,Surgical,Team O
+OSTAI00205,1966,2135,5,Faulkner,STAI,South Staircase,South Stairs,Team O
+ODEPT00905,2494,1708,5,Faulkner,DEPT,BWH Primary Care Physicians,PCP,Team O
+OHALL00405,2514,1989,5,Faulkner,HALL,South Lobby B,S Lobby B,Team O
 ODEPT00105,2017,2042,5,Faulkner,DEPT,Intensive Care Unit/Critical Care Unit A,ICU A,Team O
-CDEPT00502,2013,1585,2,Faulkner,DEPT,Pharmacy,DEPT C0602,Team C
 OSERV00105,2363,2045,5,Faulkner,SERV,Residents,Res,Team O
-CELEV00302,2698,1985,2,Faulkner,ELEV,Elevator 3 Level 2,Elevator C0302,Team C
-ESERV01204,2616,1385,4,Faulkner,SERV,Suites,Suites,E
-ARETL00101,2305,1118,1,Main,RETL,Starbucks,N/A,Team A
-ASERV00203,2519,2305,3,N/A,SERV,Shuttle Pickup 2,N/A,Team A

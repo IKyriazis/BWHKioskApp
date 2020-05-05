@@ -8,11 +8,9 @@ import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.ArrayList;
-import javafx.animation.PathTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
@@ -55,6 +53,9 @@ public class SimpleMapController extends AbstractController {
 
   private ArrayList<PathSegment> pathSegments;
   private int currPathSegment = 0;
+
+  private static final String FAULKNER_EXIT_NODE = "ARETL00101";
+  private static final String MAIN_EXIT_NODE = "ACONF0010G";
 
   public void initialize() {
     // Setup gluon map
@@ -167,23 +168,59 @@ public class SimpleMapController extends AbstractController {
     Node end = getSelectedNode(destinationBox);
     if ((start != null) && (end != null)) {
       ContextPath path = MapSettings.getPath();
-      path.findPath(start, end);
-      currCanvas.setPath(path);
+
+      if (start.getCampus() == Campus.MAIN) {
+        path.setGraph(Graph.getInstance(Campus.MAIN));
+      } else {
+        path.setGraph(Graph.getInstance(Campus.FAULKNER));
+      }
+
+      pathSegments = new ArrayList<>();
+      currPathSegment = 0;
+
+      if (start.getCampus() == end.getCampus()) {
+        // Path within canvas
+        path.findPath(start, end);
+        currCanvas.setPath(path);
+      } else if (start.getCampus() == Campus.FAULKNER && end.getCampus() == Campus.MAIN) {
+        // Path to faulkner exit node
+        path.findPath(start, Graph.getInstance(Campus.FAULKNER).getNodeByID(FAULKNER_EXIT_NODE));
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        faulknerCanvas.setPath(path);
+
+        // Insert inter segment
+        pathSegments.add(PathSegment.calcInterSegment(Campus.MAIN));
+
+        // Path from main exit node to main dest
+        path.findPath(Graph.getInstance(Campus.MAIN).getNodeByID(MAIN_EXIT_NODE), end);
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        mainCanvas.setPath(path);
+      } else if (start.getCampus() == Campus.MAIN && end.getCampus() == Campus.FAULKNER) {
+        // Path to faulkner exit node
+        path.findPath(start, Graph.getInstance(Campus.MAIN).getNodeByID(MAIN_EXIT_NODE));
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        faulknerCanvas.setPath(path);
+
+        // Insert inter segment
+        pathSegments.add(PathSegment.calcInterSegment(Campus.FAULKNER));
+
+        // Path from main exit node to main dest
+        path.findPath(Graph.getInstance(Campus.FAULKNER).getNodeByID(FAULKNER_EXIT_NODE), end);
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        mainCanvas.setPath(path);
+      }
 
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
-        ArrayList<Pair<Node, Label>> directions =
-            texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections());
-
-        pathSegments = PathSegment.calcPathSegments(directions);
-        pathSegments.add(PathSegment.calcInterSegment());
-        currPathSegment = 0;
         updateDisplayedPath();
-
-        // Generate QR code
-        StringBuilder dirs = new StringBuilder();
-        directions.forEach(l -> dirs.append(l.getValue().getText()).append('\n'));
-        lastDirs = dirs.toString();
 
         if (textDirectionsDrawer.isClosed()) {
           textDirectionsDrawer.open();
@@ -238,13 +275,8 @@ public class SimpleMapController extends AbstractController {
     /*floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
     currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
-    if (!currCanvas.getGroup().getChildren().isEmpty()) {
-      currCanvas.getGroup().getChildren().clear();
-      currCanvas.setGroup(new Group());
-      currCanvas.setTransition(new PathTransition());
-    }
     currCanvas.draw(floor);
-    canvasPane.getChildren().add(currCanvas.getGroup());*/
+    */
   }
 
   @FXML
@@ -253,13 +285,8 @@ public class SimpleMapController extends AbstractController {
     /*floor = Math.max(1, floor - 1);
     currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
-    if (!currCanvas.getGroup().getChildren().isEmpty()) {
-      currCanvas.getGroup().getChildren().clear();
-      currCanvas.setGroup(new Group());
-      currCanvas.setTransition(new PathTransition());
-    }
     currCanvas.draw(floor);
-    canvasPane.getChildren().add(currCanvas.getGroup());*/
+    */
   }
 
   @FXML
@@ -292,13 +319,6 @@ public class SimpleMapController extends AbstractController {
       currCanvas.setVisible(false);
       gluonMap.setVisible(true);
     }
-
-    if (!currCanvas.getGroup().getChildren().isEmpty()) {
-      currCanvas.getGroup().getChildren().clear();
-      currCanvas.setGroup(new Group());
-      currCanvas.setTransition(new PathTransition());
-    }
-    canvasPane.getChildren().add(currCanvas.getGroup());
 
     // Set floor
     floor = currSegment.getFloor();
