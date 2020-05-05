@@ -5,16 +5,10 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import javafx.animation.PathTransition;
 import javafx.application.Platform;
-import javafx.beans.InvalidationListener;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -25,7 +19,7 @@ import javafx.scene.layout.*;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class SimpleMapController {
+public class SimpleMapController extends AbstractController {
   @FXML private BorderPane rootPane;
   @FXML private JFXDrawer directionsDrawer;
   @FXML private JFXDrawer textDirectionsDrawer;
@@ -59,7 +53,7 @@ public class SimpleMapController {
     textDirectionsDrawer.close();
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
-    canvas = new MapCanvas(true);
+    canvas = new MapCanvas(true, Campus.FAULKNER);
     canvasPane.getChildren().add(0, canvas);
     canvas.widthProperty().bind(canvasPane.widthProperty());
     canvas.heightProperty().bind(canvasPane.heightProperty());
@@ -113,41 +107,10 @@ public class SimpleMapController {
 
     try {
       // Load graph info
-      graph = Graph.getInstance();
+      graph = Graph.getInstance(Campus.FAULKNER);
 
-      allNodeList =
-          FXCollections.observableArrayList(
-              graph.getNodes().values().stream()
-                  .filter(node -> node.getType() != NodeType.HALL)
-                  .collect(Collectors.toList()));
-      allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
-
-      InvalidationListener focusListener =
-          observable -> {
-            allNodeList.clear();
-            allNodeList.addAll(
-                FXCollections.observableArrayList(
-                    graph.getNodes().values().stream()
-                        .filter(node -> node.getType() != NodeType.HALL)
-                        .collect(Collectors.toList())));
-            allNodeList.sort(Comparator.comparing(o -> o.getLongName().toLowerCase()));
-            startingLocationBox.setItems(allNodeList);
-            destinationBox.setItems(allNodeList);
-            startingLocationBox.setVisibleRowCount(12);
-            destinationBox.setVisibleRowCount(12);
-          };
-      startingLocationBox.setItems(allNodeList);
-      startingLocationBox.focusedProperty().addListener(focusListener);
-      startingLocationBox
-          .getEditor()
-          .setOnKeyTyped(
-              new NodeAutoCompleteHandler(startingLocationBox, destinationBox, allNodeList));
-
-      destinationBox.setItems(allNodeList);
-      destinationBox.focusedProperty().addListener(focusListener);
-      destinationBox
-          .getEditor()
-          .setOnKeyTyped(new NodeAutoCompleteHandler(destinationBox, goButton, allNodeList));
+      setupNodeBox(startingLocationBox, destinationBox);
+      setupNodeBox(destinationBox, goButton);
     } catch (Exception e) {
       e.printStackTrace();
 
@@ -173,21 +136,15 @@ public class SimpleMapController {
 
   @FXML
   public void pressedGo() {
-    Optional<Node> start =
-        startingLocationBox.getItems().stream()
-            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
-            .findFirst();
-    Optional<Node> end =
-        destinationBox.getItems().stream()
-            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
-            .findFirst();
-    if (start.isPresent() && end.isPresent()) {
+    Node start = getSelectedNode(startingLocationBox);
+    Node end = getSelectedNode(destinationBox);
+    if ((start != null) && (end != null)) {
       ContextPath path = MapSettings.getPath();
-      path.findPath(start.get(), end.get());
+      path.findPath(start, end);
       canvas.setPath(path);
 
-      if (start.get().getFloor() != floor) {
-        floor = Math.min(5, start.get().getFloor());
+      if (start.getFloor() != floor) {
+        floor = Math.min(5, start.getFloor());
         floorField.setText(String.valueOf(floor));
       }
 
@@ -232,18 +189,12 @@ public class SimpleMapController {
 
   @FXML
   public void pressedSwap() {
-    Optional<Node> start =
-        startingLocationBox.getItems().stream()
-            .filter(node -> node.toString().contains(startingLocationBox.getEditor().getText()))
-            .findFirst();
-    Optional<Node> end =
-        destinationBox.getItems().stream()
-            .filter(node -> node.toString().contains(destinationBox.getEditor().getText()))
-            .findFirst();
+    Node start = getSelectedNode(startingLocationBox);
+    Node end = getSelectedNode(destinationBox);
 
-    if (start.isPresent() && end.isPresent()) {
-      startingLocationBox.setValue(end.get());
-      destinationBox.setValue(start.get());
+    if ((start != null) && (end != null)) {
+      startingLocationBox.setValue(end);
+      destinationBox.setValue(start);
     }
   }
 

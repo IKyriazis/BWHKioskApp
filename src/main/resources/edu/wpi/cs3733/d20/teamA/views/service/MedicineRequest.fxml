@@ -63,17 +63,18 @@
                               <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
+                              <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                               <JFXComboBox fx:id="doctorBox" labelFloat="true" prefWidth="250.0" promptText="Doctor Name" GridPane.columnIndex="1" />
-                              <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.rowIndex="2" GridPane.rowSpan="2" />
                               <JFXTextField fx:id="patientName" labelFloat="true" prefWidth="250.0" promptText="Patient Name" />
                               <JFXComboBox fx:id="locationBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Location" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <JFXTextField fx:id="medicineField" labelFloat="true" promptText="Medicine" GridPane.rowIndex="1" />
-                              <JFXTimePicker fx:id="administerTime" maxWidth="1.7976931348623157E308" promptText="Administer Time" GridPane.rowIndex="2" />
+                              <JFXTimePicker fx:id="administerTime" maxWidth="1.7976931348623157E308" promptText="Administer Time" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                            </children>
                         </GridPane>
-                        <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" />
                      </children>
                   </VBox>
                </children>

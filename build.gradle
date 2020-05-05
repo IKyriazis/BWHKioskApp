@@ -55,6 +55,7 @@ dependencies {
             'com.google.zxing:core:3.4.0',
             'com.google.zxing:javase:3.4.0',
 
+
             // bcrypt
             'at.favre.lib:bcrypt:0.9.0',
 
@@ -69,8 +70,24 @@ dependencies {
             'commons-codec:commons-codec:1.10',
 
             // Team R Appointment Request API
-            'edu.wpi.cs3733.c20.teamR:AppointmentRequest:5.0.0'
+            'edu.wpi.cs3733.c20.teamR:AppointmentRequest:5.0.0',
+
+            //stuff for OpenWeatherMaps API
+            'org.jetbrains:annotations:13.0',
+            'com.squareup.retrofit2:converter-gson:2.3.0',
+            'com.google.code.gson:gson:2.8.2',
+            'org.jetbrains.kotlin:kotlin-stdlib:1.1.51',
+            'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.51',
+            'com.squareup.okhttp3:okhttp:3.8.0',
+            'com.squareup.okio:okio:1.13.0',
+            'com.squareup.retrofit2:retrofit:2.3.0',
+            'net.aksingh:owm-japis:2.5.2.1',
+
+
+            // for comms with arduino
+            'com.fazecast:jSerialComm:2.6.2'
     )
+
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
@@ -97,11 +114,16 @@ jar {
     manifest {
         attributes 'Main-Class': mainClassName
     }
+	
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     } {
-        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/services/org.kordamp.ikonli.IkonHandler'
     }
+	
+	from('src/main/resources/edu/wpi/cs3733/d20/teamA/fuckikonli') {
+		include 'META-INF/services/org.kordamp.ikonli.IkonHandler'
+	}
 }
 
 // Exclude trivial App / Main classes, and UI-related classes b/c Prof. Wong advised us to not waste time on lengthy and
@@ -112,14 +134,8 @@ def codeCoverageExcludes = [
         'edu.wpi.cs3733.d20.teamA.controllers.*',
         'edu.wpi.cs3733.d20.teamA.controls.*',
         'edu.wpi.cs3733.d20.teamA.map.MapCanvas',
-        'edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler',
-        'edu.wpi.cs3733.d20.teamA.util.DialogUtil',
-        'edu.wpi.cs3733.d20.teamA.util.FXMLCache',
-        'edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.1',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.2',
-        'edu.wpi.cs3733.d20.teamA.util.ThreadPool'
+        'edu.wpi.cs3733.d20.teamA.util.*',
+        'edu.wpi.cs3733.d20.teamA.database.flower.*'
 ]
 
 jacoco {
@@ -164,6 +180,7 @@ check.dependsOn jacocoTestCoverageVerification
 jacocoTestCoverageVerification.dependsOn jacocoTestReport
 compileJava.dependsOn 'spotlessApply'
 
+
 // uncomment to enable spotless checking
 spotless {
     java {
@@ -172,8 +189,3 @@ spotless {
         lineEndings(LineEnding.PLATFORM_NATIVE)
     }
 }
-
-shadowJar {
-    mergeServiceFiles()
-}
-jar.dependsOn(shadowJar)

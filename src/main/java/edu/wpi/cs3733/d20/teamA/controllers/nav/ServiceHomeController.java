@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -18,6 +19,8 @@ public class ServiceHomeController extends AbstractNavPaneController {
         event -> {
           buildButtonPane();
         });
+
+    buttonPane.setAlignment(Pos.TOP_CENTER);
 
     // Build initial button pane
     buildButtonPane();
@@ -47,11 +50,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
           "Janitorial");
       addButton(
           buttonPane,
-          new FontIcon(FontAwesomeSolid.BULLHORN),
-          "views/AnnouncementAdmin.fxml",
-          "Announcements");
-      addButton(
-          buttonPane,
           new FontIcon(FontAwesomeSolid.MEDKIT),
           "views/service/MedicineRequest.fxml",
           "Medicine\nDelivery");
@@ -78,7 +76,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
       addButton(
           buttonPane,
           new FontIcon(FontAwesomeSolid.GLOBE),
-          "views/InterpreterService.fxml",
+          "views/service/InterpreterRequest.fxml",
           "Interpreters");
       addButton(
           buttonPane,
@@ -87,16 +85,15 @@ public class ServiceHomeController extends AbstractNavPaneController {
           "Prescriptions");
       addButton(
           buttonPane,
-          new FontIcon(FontAwesomeSolid.USER),
-          "views/ViewEmployees.fxml",
-          "Manage\nEmployees");
-      addButton(
-          buttonPane,
           new FontIcon(FontAwesomeSolid.LIST),
           "views/service/RequestViewer.fxml",
           "Service\nRequests");
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.BAND_AID),
+          "APIService",
+          "Appointment\nRequests");
     }
-
     equalizeButtonGrid(buttonPane);
   }
 }

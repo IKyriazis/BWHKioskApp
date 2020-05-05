@@ -38,13 +38,18 @@ public class MapEditorController {
   @FXML private JFXButton exportCSVButton;
   @FXML private JFXButton helpButton;
   @FXML private JFXTextField floorField;
+  @FXML private JFXRadioButton mainRadioButton;
 
   @FXML private AnchorPane infoPane;
   @FXML private JFXDrawer infoDrawer;
   private JFXRippler infoRippler;
 
   private ArrayList<Node> selections;
-  private MapCanvas canvas;
+
+  private MapCanvas mainCanvas;
+  private MapCanvas faulknerCanvas;
+  private MapCanvas currCanvas;
+
   private Graph graph;
   private int floor = 1;
 
@@ -58,7 +63,7 @@ public class MapEditorController {
         if (event.getButton() == MouseButton.PRIMARY) {
           dragStart = new Point2D(event.getX(), event.getY());
         }
-        canvas.getDragStartHandler().handle(event);
+        currCanvas.getDragStartHandler().handle(event);
       };
 
   private final EventHandler<MouseEvent> dragHandler =
@@ -66,15 +71,15 @@ public class MapEditorController {
         if (event.getButton() == MouseButton.PRIMARY) {
           dragCurr = new Point2D(event.getX(), event.getY());
           if (draggingNodes) {
-            canvas.setHighlightOffset(dragCurr.subtract(dragStart));
+            currCanvas.setHighlightOffset(dragCurr.subtract(dragStart));
           } else {
-            canvas.setSelectionBox(dragStart, dragCurr);
+            currCanvas.setSelectionBox(dragStart, dragCurr);
           }
 
-          canvas.draw(floor);
+          currCanvas.draw(floor);
         }
 
-        canvas.getDragHandler().handle(event);
+        currCanvas.getDragHandler().handle(event);
       };
 
   private final EventHandler<MouseEvent> dragEndHandler =
@@ -86,7 +91,7 @@ public class MapEditorController {
 
           if (draggingNodes) {
             Point2D offset =
-                canvas.canvasToGraph(dragCurr).subtract(canvas.canvasToGraph(dragStart));
+                currCanvas.canvasToGraph(dragCurr).subtract(currCanvas.canvasToGraph(dragStart));
             selections.forEach(
                 node -> {
                   graph.moveNode(
@@ -96,7 +101,7 @@ public class MapEditorController {
                 });
 
             updateTipLabel();
-            canvas.setHighlightOffset(null);
+            currCanvas.setHighlightOffset(null);
             draggingNodes = false;
           } else {
             double startX = Math.min(dragStart.getX(), dragCurr.getX());
@@ -116,18 +121,19 @@ public class MapEditorController {
                 .filter(node -> node.getFloor() == floor)
                 .forEach(
                     node -> {
-                      Point2D nodePos = canvas.graphToCanvas(new Point2D(node.getX(), node.getY()));
+                      Point2D nodePos =
+                          currCanvas.graphToCanvas(new Point2D(node.getX(), node.getY()));
                       if (bounds.contains(nodePos) && !selections.contains(node)) {
                         selections.add(node);
                       }
                     });
-            canvas.setSelectionBox(null, null);
+            currCanvas.setSelectionBox(null, null);
           }
           updateTipLabel();
-          canvas.draw(floor);
+          currCanvas.draw(floor);
           dragStart = dragCurr = null;
         }
-        canvas.getDragEndHandler().handle(event);
+        currCanvas.getDragEndHandler().handle(event);
       };
 
   enum Action {
@@ -141,30 +147,17 @@ public class MapEditorController {
 
   @FXML
   public void initialize() {
-    // Setup map canvas
-    canvas = new MapCanvas(false);
-    canvas.setDrawAllNodes(true);
-    canvasPane.getChildren().add(0, canvas);
-    canvas.widthProperty().bind(canvasPane.widthProperty());
-    canvas.heightProperty().bind(canvasPane.heightProperty());
-
-    // Setup zoom slider hook
-    canvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
-
-    // Set canvas to pan with middle mouse button, drag nodes with left mouse click
-    canvas.setDragMapButton(MouseButton.MIDDLE);
-
-    // Setup canvas click handler
-    canvas.setOnMouseClicked(this::canvasClicked);
-
-    // Setup canvas drag handlers
-    canvas.setOnMousePressed(dragStartHandler);
-    canvas.setOnMouseDragged(dragHandler);
-    canvas.setOnMouseReleased(dragEndHandler);
-
-    // Set canvas highlights
+    // Setup highlights
     selections = new ArrayList<>();
-    canvas.setHighlights(selections);
+
+    // Setup map canvas'
+    mainCanvas = new MapCanvas(false, Campus.MAIN);
+    currCanvas = mainCanvas;
+    setupCanvas(mainCanvas);
+
+    faulknerCanvas = new MapCanvas(false, Campus.FAULKNER);
+    faulknerCanvas.setVisible(false);
+    setupCanvas(faulknerCanvas);
 
     // Setup zoom slider cursor
     zoomSlider.setCursor(Cursor.H_RESIZE);
@@ -197,11 +190,16 @@ public class MapEditorController {
     updateTipLabel();
 
     // Set up drawer transparency hooks
-    infoDrawer.setOnDrawerOpened(event -> infoDrawer.setMouseTransparent(false));
+    infoDrawer.setOnDrawerOpened(
+        event -> {
+          infoDrawer.setMouseTransparent(false);
+          infoDrawer.setVisible(true);
+        });
     infoDrawer.setOnDrawerClosed(
         event -> {
           if (mode == Action.NONE) {
             infoDrawer.setMouseTransparent(true);
+            infoDrawer.setVisible(false);
           } else {
             // Bring the drawer back when people drag it closed when they shouldn't
             infoDrawer.open();
@@ -216,12 +214,12 @@ public class MapEditorController {
 
     // Try to get graph
     try {
-      graph = Graph.getInstance();
+      graph = Graph.getInstance(Campus.MAIN);
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-    Platform.runLater(() -> canvas.draw(floor));
+    Platform.runLater(() -> currCanvas.draw(floor));
   }
 
   public void canvasClicked(MouseEvent event) {
@@ -229,8 +227,8 @@ public class MapEditorController {
       return;
     }
     Point2D mousePos = new Point2D(event.getX(), event.getY());
-    Point2D mouseGraphPos = canvas.canvasToGraph(mousePos);
-    Optional<Node> optionalNode = canvas.getClosestNode(floor, mousePos, 15);
+    Point2D mouseGraphPos = currCanvas.canvasToGraph(mousePos);
+    Optional<Node> optionalNode = currCanvas.getClosestNode(floor, mousePos, 15);
 
     if (event.getButton() == MouseButton.PRIMARY) {
       if (optionalNode.isPresent()) {
@@ -287,7 +285,7 @@ public class MapEditorController {
             e -> {
               popup.hide();
               graph.addEdge(selections.get(0), selections.get(1));
-              canvas.draw(floor);
+              currCanvas.draw(floor);
             });
 
         JFXButton deleteEdgeButton = new JFXButton("Delete Edge");
@@ -296,7 +294,7 @@ public class MapEditorController {
             e -> {
               popup.hide();
               graph.deleteEdge(selections.get(0), selections.get(1));
-              canvas.draw(floor);
+              currCanvas.draw(floor);
             });
         buttonBox.getChildren().addAll(addEdgeButton, deleteEdgeButton);
       }
@@ -329,7 +327,7 @@ public class MapEditorController {
                               + ", likely due to indeterminate service constraints. Please try again later.");
                     }
                   });
-              canvas.draw(floor);
+              currCanvas.draw(floor);
             });
 
         buttonBox.getChildren().addAll(deleteButton, moveButton);
@@ -354,7 +352,7 @@ public class MapEditorController {
     }
 
     updateTipLabel();
-    canvas.draw(floor);
+    currCanvas.draw(floor);
   }
 
   public void updateTipLabel() {
@@ -377,13 +375,15 @@ public class MapEditorController {
 
   private void openNodeModifyDialog(Node node, int x, int y, int floor) {
     String heading = (node == null) ? "Add Node" : "Edit Node";
-    NodeDialogController nodeDialogController = new NodeDialogController(node, x, y, floor);
+    NodeDialogController nodeDialogController =
+        new NodeDialogController(
+            currCanvas == mainCanvas ? Campus.MAIN : Campus.FAULKNER, node, x, y, floor);
     DialogUtil.complexDialog(
         dialogPane,
         heading,
         "views/NodeModifyPopup.fxml",
         false,
-        event -> canvas.draw(floor),
+        event -> currCanvas.draw(floor),
         nodeDialogController);
   }
 
@@ -395,7 +395,7 @@ public class MapEditorController {
     FileChooser.ExtensionFilter filter =
         new FileChooser.ExtensionFilter("CSV file (*.csv)", "*.csv");
     fileChooser.getExtensionFilters().add(filter);
-    File nodeFile = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+    File nodeFile = fileChooser.showSaveDialog(currCanvas.getScene().getWindow());
     if (nodeFile != null) {
       CSVLoader.exportNodes(graph, nodeFile);
     } else {
@@ -405,7 +405,7 @@ public class MapEditorController {
     }
 
     fileChooser.setTitle("Save Edge CSV");
-    File edgeFile = fileChooser.showSaveDialog(canvas.getScene().getWindow());
+    File edgeFile = fileChooser.showSaveDialog(currCanvas.getScene().getWindow());
     if (edgeFile != null) {
       CSVLoader.exportEdges(graph, edgeFile);
     } else {
@@ -416,27 +416,74 @@ public class MapEditorController {
 
   @FXML
   public void floorUp() {
-    floor = Math.min(5, floor + 1);
-    canvas.draw(floor);
+    floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
+    currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
   }
 
   @FXML
   public void floorDown() {
     floor = Math.max(1, floor - 1);
-    canvas.draw(floor);
+    currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
   }
 
   @FXML
   public void toggleDrawBelow(ActionEvent event) {
-    canvas.setDrawBelow(((JFXCheckBox) event.getSource()).isSelected());
-    canvas.draw(floor);
+    currCanvas.setDrawBelow(((JFXCheckBox) event.getSource()).isSelected());
+    currCanvas.draw(floor);
   }
 
   @FXML
   public void helpClicked(ActionEvent actionEvent) {
+    if (infoDrawer.isClosed()) {
+      infoDrawer.setVisible(true);
+    }
     infoDrawer.toggle();
+  }
+
+  public void setupCanvas(MapCanvas canvas) {
+    canvas.setDrawAllNodes(true);
+    canvas.widthProperty().bind(canvasPane.widthProperty());
+    canvas.heightProperty().bind(canvasPane.heightProperty());
+    canvasPane.getChildren().add(0, canvas);
+
+    // Setup zoom slider hook
+    canvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
+
+    // Set canvas to pan with middle mouse button, drag nodes with left mouse click
+    canvas.setDragMapButton(MouseButton.MIDDLE);
+
+    // Setup canvas click handler
+    canvas.setOnMouseClicked(this::canvasClicked);
+
+    // Setup canvas drag handlers
+    canvas.setOnMousePressed(dragStartHandler);
+    canvas.setOnMouseDragged(dragHandler);
+    canvas.setOnMouseReleased(dragEndHandler);
+
+    // Set canvas highlights
+    canvas.setHighlights(selections);
+  }
+
+  @FXML
+  public void toggleDisplayedMap() {
+    MapCanvas newCanvas = mainRadioButton.isSelected() ? mainCanvas : faulknerCanvas;
+    graph =
+        mainRadioButton.isSelected()
+            ? Graph.getInstance(Campus.MAIN)
+            : Graph.getInstance(Campus.FAULKNER);
+    if (newCanvas != currCanvas) {
+      currCanvas.setVisible(false);
+      newCanvas.setVisible(true);
+
+      floor = 1;
+      floorField.setText(String.valueOf(floor));
+      currCanvas = newCanvas;
+      currCanvas.draw(floor);
+
+      selections.clear();
+    }
   }
 
   private String getNodeInfo(Node node) {
