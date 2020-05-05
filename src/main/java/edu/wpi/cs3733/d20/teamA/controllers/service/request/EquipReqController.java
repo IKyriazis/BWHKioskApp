@@ -53,7 +53,7 @@ public class EquipReqController extends AbstractRequestController {
     String l =
         serviceDatabase.addServiceReq(
             ServiceType.EQUIPMENT,
-            selectedNode.getLongName(),
+            selectedNode.toString(),
             null,
             itemField.getText()
                 + "|"

@@ -48,7 +48,6 @@ public class TestInternalTransportDatabase {
 
   @Test
   public void testAddRequest() {
-
     gDB.removeAllNodes(Campus.FAULKNER);
     // need nodeID "biscuit" in node table so addrequest works
     gDB.addNode(
@@ -59,9 +58,6 @@ public class TestInternalTransportDatabase {
         serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "basket");
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
     Assertions.assertEquals(1, serviceDatabase.getSize());
-    String b =
-        serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "yolk", null, "balogna");
-    Assertions.assertNull(b);
     Assertions.assertEquals(1, serviceDatabase.getSize());
     String c =
         serviceDatabase.addServiceReq(ServiceType.INTERNAL_TRANSPORT, "balogna", null, "balogna");

@@ -398,7 +398,8 @@ public class MapCanvas extends Canvas {
     imageView.setPreserveRatio(true);
     imageView.setFitHeight(30);
     imageView.setImage(image);
-    imageView.setVisible(false);
+    imageView.setVisible(false); // this doesn't actually work
+    imageView.setX(-100); // Jank hack pls don't delete!!!!
 
     Circle circ = new Circle(10);
     circ.setFill(Color.AQUA);
