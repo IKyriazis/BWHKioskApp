@@ -35,13 +35,7 @@ public abstract class AbstractNavPaneController extends AbstractController {
             event -> {
               try {
                 AppointmentRequest.run(
-                    0,
-                    0,
-                    830,
-                    720,
-                    null,
-                    null,
-                    null);
+                    0, 0, 830, 720, "/edu/wpi/cs3733/d20/teamA/stylesheet.css", null, null);
               } catch (Exception e) {
                 e.printStackTrace();
               }
