@@ -67,8 +67,8 @@ public class EmployeeEditController extends AbstractController implements IDialo
     if (!cPass.getText().equals(pass.getText())) {
       // make popup that says passwords are not the same
       DialogUtil.simpleInfoDialog(
-              "Passwords Don't Match",
-              "Please make sure that the password you entered in the confirm password field matches your intended password.");
+          "Passwords Don't Match",
+          "Please make sure that the password you entered in the confirm password field matches your intended password.");
       return;
     }
     if (pass.getText().length() < 8) {
@@ -104,13 +104,12 @@ public class EmployeeEditController extends AbstractController implements IDialo
               // if the rfid card is associated with a user it will return the username which is not
               // null
               // if there is a username associated with this card then we pop up a dialog
-              if (eDB.getUsername(rfid) != null) {
+              if (!eDB.getUsername(rfid).isEmpty()) {
                 Platform.runLater(
                     () -> {
                       DialogUtil.simpleErrorDialog(
                           "Duplicate Card", "There is another account associated with this card.");
                     });
-                clearFields();
               } else {
                 // else if the username is null it means no one has been assigned that card
                 // so go ahead and assign it
@@ -154,14 +153,6 @@ public class EmployeeEditController extends AbstractController implements IDialo
                       null,
                       new QRDialogController(barCodeUrl));
                 });
-          } else {
-            // print that for some reason the account couldn't be added
-            Platform.runLater(
-                    () -> {
-                      DialogUtil.simpleErrorDialog(
-                              "Account creation failed",
-                              "For some reason we could not create your account.");
-                    });
           }
         });
   }
