@@ -82,9 +82,10 @@ dependencies {
 
 
             // for comms with arduino
-            'com.fazecast:jSerialComm:2.6.2'
-    )
+            'com.fazecast:jSerialComm:2.6.2',
 
+    )
+    compile files("src/main/resources/edu/wpi/cs3733/d20/teamA/APIFlower.jar")
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
