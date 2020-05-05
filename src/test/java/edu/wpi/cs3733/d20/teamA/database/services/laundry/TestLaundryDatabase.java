@@ -5,6 +5,7 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -31,13 +32,14 @@ public class TestLaundryDatabase {
     eDB.addEmployee("Rob", "Boberts", "rbob", "1234aBcD", EmployeeTitle.ADMIN);
     eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
     eDB.logIn("yppatel", "YashPatel1");
-    gDB.addNode("AWASH00101", 123, 456, 1, "main", "HALL", "washing hall", "WH", "TeamA");
+    gDB.addNode(
+        "AWASH00101", 123, 456, 1, "main", "HALL", "washing hall", "WH", "TeamA", Campus.FAULKNER);
   }
 
   @AfterEach
   public void teardown() {
     try {
-      gDB.removeAll();
+      gDB.removeAll(Campus.FAULKNER);
       conn.close();
       DriverManager.getConnection(closeUrl);
     } catch (SQLException ignored) {

@@ -7,6 +7,7 @@ import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicket;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -52,7 +53,7 @@ public class ITServicesController extends AbstractController {
     statusChangeStatus.getItems().addAll("Request Made", "In Progress", "Completed");
     ObservableList<Node> allNodeList =
         FXCollections.observableArrayList(
-            Graph.getInstance().getNodes().values().stream()
+            Graph.getInstance(Campus.FAULKNER).getNodes().values().stream()
                 .filter(node -> node.getFloor() == 1)
                 .collect(Collectors.toList()));
     allNodeList.sort(Comparator.comparing(Node::getLongName));

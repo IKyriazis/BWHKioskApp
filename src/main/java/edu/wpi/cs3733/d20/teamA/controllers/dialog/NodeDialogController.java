@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -45,7 +46,7 @@ public class NodeDialogController implements IDialogController {
     }
 
     try {
-      graph = Graph.getInstance();
+      graph = Graph.getInstance(Campus.FAULKNER);
     } catch (Exception e) {
       e.printStackTrace();
     }

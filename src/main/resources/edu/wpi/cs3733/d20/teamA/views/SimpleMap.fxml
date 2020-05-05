@@ -26,7 +26,7 @@
                <children>
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
 
-                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="250.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="75.0">
+                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="250.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="125.0">
                      <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
 
                         <padding>
@@ -49,7 +49,8 @@
                            </styleClass></JFXButton>
                      </VBox>
                   </JFXDrawer>
-                  <HBox layoutX="15.0" layoutY="15.0" pickOnBounds="false" spacing="25.0">
+                  <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="15.0" />
+                  <HBox layoutX="15.0" layoutY="15.0" pickOnBounds="false" spacing="25.0" AnchorPane.topAnchor="65.0">
                      <children>
                         <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" text="Get Directions">
                            <styleClass>
@@ -57,10 +58,9 @@
                               <String fx:value="regular-text" />
                            </styleClass>
                         </JFXButton>
-                        <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" />
                      </children>
                   </HBox>
-                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="250.0" layoutY="308.0" prefHeight="353.0" prefWidth="254.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="298.0">
+                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="250.0" layoutY="308.0" prefHeight="353.0" prefWidth="254.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="348.0">
                      <children>
                         <GridPane fx:id="directionsPane">
                            <columnConstraints>
@@ -85,7 +85,7 @@
                         </GridPane>
                      </children>
                   </JFXDrawer>
-                  <VBox layoutX="837.0" layoutY="15.0" prefHeight="95.0" prefWidth="28.0" spacing="10.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                  <VBox layoutX="837.0" layoutY="15.0" prefHeight="95.0" prefWidth="28.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                      <children>
                         <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" />
                         <JFXTextField fx:id="floorField" alignment="CENTER" prefColumnCount="1" prefHeight="25.0" prefWidth="41.0" text="1" />
