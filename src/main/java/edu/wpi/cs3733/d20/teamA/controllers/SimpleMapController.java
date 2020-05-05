@@ -121,16 +121,10 @@ public class SimpleMapController extends AbstractController {
         event -> {
           event.consume();
 
-          if (currCanvas.getPath() != null) {
-            // Try to update path if possible
-            currCanvas.getPath().update();
-            if (currCanvas.getPath().getPathNodes().isEmpty()) {
-              pressedGo();
-            }
+          currCanvas.clearPath();
 
-            // Redraw map
-            currCanvas.draw(floor);
-          }
+          // Redraw map
+          currCanvas.draw(floor);
         });
 
     try {

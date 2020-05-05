@@ -49,7 +49,9 @@ public class MapCanvas extends Canvas {
   private Point2D selectionStart;
   private Point2D selectionEnd;
 
-  private ContextPath path;
+  private ArrayList<Node> pathNodes;
+  private ArrayList<Edge> pathEdges;
+
   Group group = new Group();
   PathTransition transition = new PathTransition();
 
@@ -300,8 +302,8 @@ public class MapCanvas extends Canvas {
     }
 
     // Draw path if it exists
-    if (path != null) {
-      drawPath(path, floor);
+    if (pathNodes != null) {
+      drawPath(floor);
     }
 
     lastDrawnFloor = floor;
@@ -367,18 +369,17 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws the path found
-  private void drawPath(ContextPath path, int floor) {
+  private void drawPath(int floor) {
 
-    for (Edge edge : path.getPathEdges()) {
+    for (Edge edge : pathEdges) {
       if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.BLACK, false);
     }
 
-    for (Node node : path.getPathNodes()) {
+    for (Node node : pathNodes) {
 
-      if (path.getPathNodes().indexOf(node) == 0 && node.getFloor() == floor) {
+      if (pathNodes.indexOf(node) == 0 && node.getFloor() == floor) {
         drawNode(node, Color.SPRINGGREEN);
-      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)
-          && node.getFloor() == floor) {
+      } else if (pathNodes.size() - 1 == pathNodes.lastIndexOf(node) && node.getFloor() == floor) {
         drawNode(node, Color.TOMATO);
       }
     }
@@ -416,10 +417,6 @@ public class MapCanvas extends Canvas {
     getGraphicsContext2D().fillRect(startX, startY, width, height);
   }
 
-  public ContextPath getPath() {
-    return this.path;
-  }
-
   // Get distance between two points
   private double getDistance(Point2D p0, Point2D p1) {
     double xDiff = p1.getX() - p0.getX();
@@ -451,11 +448,16 @@ public class MapCanvas extends Canvas {
   }
 
   public void setPath(ContextPath path) {
-    this.path = path;
+    this.pathNodes = new ArrayList<>();
+    this.pathEdges = new ArrayList<>();
+
+    this.pathNodes.addAll(path.getPathNodes());
+    this.pathEdges.addAll(path.getPathEdges());
   }
 
-  public void clearPath(Path path) {
-    this.path = null;
+  public void clearPath() {
+    this.pathNodes = null;
+    this.pathEdges = null;
   }
 
   @Override
