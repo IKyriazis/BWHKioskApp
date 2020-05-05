@@ -45,14 +45,20 @@ public abstract class AbstractController {
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
 
-    if (comPort != null) {
-      comPort = SerialPort.getCommPorts()[0];
+    if (comPort == null) {
+      SerialPort[] comPorts = SerialPort.getCommPorts();
+      if (comPorts.length > 0) {
+        comPort = SerialPort.getCommPorts()[0];
+      }
     }
   }
 
   public String scanRFID() {
     try {
       comPort.openPort();
+      // throws out stuff that was there before we were ready to read
+      byte[] trash = new byte[comPort.bytesAvailable()];
+      comPort.readBytes(trash, trash.length);
       while (true) {
         while (comPort.bytesAvailable() != 14) Thread.sleep(20);
 
@@ -60,7 +66,9 @@ public abstract class AbstractController {
         int numRead = comPort.readBytes(readBuffer, readBuffer.length);
         String scannedString = new String(readBuffer, "UTF-8");
         String[] scannedArray = scannedString.split(" ");
-        System.out.println(scannedString);
+        if (scannedArray[0].length() != 10) {
+          continue;
+        }
         if (scannedArray[1].contains("p")) {
           comPort.closePort();
           return scannedArray[0];
