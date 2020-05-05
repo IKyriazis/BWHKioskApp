@@ -72,6 +72,10 @@ public class PathSegment {
     return merged;
   }
 
+  public static PathSegment calcInterSegment() {
+    return new PathSegment(Campus.INTER, 0);
+  }
+
   private static Campus getNodeCampus(Node node) {
     return node.getBuilding().equals("Faulkner") ? Campus.FAULKNER : Campus.MAIN;
   }

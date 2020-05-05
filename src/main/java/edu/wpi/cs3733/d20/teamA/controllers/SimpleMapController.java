@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
@@ -30,6 +32,7 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXListView<Label> directionsList;
   @FXML private GridPane directionsPane;
   @FXML private StackPane dialogPane;
+  @FXML private Pane gluonMapPane;
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton swapBtn;
@@ -44,6 +47,7 @@ public class SimpleMapController extends AbstractController {
   private MapCanvas faulknerCanvas;
   private MapCanvas mainCanvas;
   private MapCanvas currCanvas;
+  private MapView gluonMap;
 
   private Graph graph;
   private String lastDirs;
@@ -53,6 +57,14 @@ public class SimpleMapController extends AbstractController {
   private int currPathSegment = 0;
 
   public void initialize() {
+    // Setup gluon map
+    gluonMap = new MapView();
+    // mapView.addLayer(new MapLayer());
+    gluonMap.setCenter(new MapPoint(42.3016445, -71.1281649));
+    gluonMap.setZoom(18);
+    gluonMap.setVisible(false);
+    gluonMapPane.getChildren().add(gluonMap);
+
     directionsDrawer.close();
     textDirectionsDrawer.close();
 
@@ -164,6 +176,7 @@ public class SimpleMapController extends AbstractController {
             texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections());
 
         pathSegments = PathSegment.calcPathSegments(directions);
+        pathSegments.add(PathSegment.calcInterSegment());
         currPathSegment = 0;
         updateDisplayedPath();
 
@@ -267,7 +280,19 @@ public class SimpleMapController extends AbstractController {
   public void updateDisplayedPath() {
     PathSegment currSegment = pathSegments.get(currPathSegment);
     // Set canvas
-    // switchCanvas(currSegment.getCampus());
+    if (currSegment.getCampus() == Campus.FAULKNER) {
+      gluonMap.setVisible(false);
+      currCanvas = faulknerCanvas;
+      currCanvas.setVisible(true);
+    } else if (currSegment.getCampus() == Campus.MAIN) {
+      gluonMap.setVisible(false);
+      currCanvas = mainCanvas;
+      currCanvas.setVisible(true);
+    } else if (currSegment.getCampus() == Campus.INTER) {
+      currCanvas.setVisible(false);
+      gluonMap.setVisible(true);
+    }
+
     if (!currCanvas.getGroup().getChildren().isEmpty()) {
       currCanvas.getGroup().getChildren().clear();
       currCanvas.setGroup(new Group());
