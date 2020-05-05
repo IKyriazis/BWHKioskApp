@@ -45,13 +45,22 @@ public class FlowerServiceController extends AbstractController {
 
   @FXML
   public void placeOrder() {
-    flowerapi.App.run(
-        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
+    if (comboLocation.getSelectionModel().getSelectedItem() != null) {
+      // Open new window centered on screen with baseline width and height
+      flowerapi.App.run(
+          0,
+          0,
+          0,
+          0,
+          App.class.getResource("stylesheet.css").toExternalForm(),
+          comboLocation.getSelectionModel().getSelectedItem().getLongName(),
+          null);
+    }
   }
 
   @FXML
   public void openAdmin() {
-    /*flowerapi.App.runAdmin(
-    0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);*/
+    flowerapi.App.runAdmin(
+        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
   }
 }
