@@ -375,7 +375,9 @@ public class MapEditorController {
 
   private void openNodeModifyDialog(Node node, int x, int y, int floor) {
     String heading = (node == null) ? "Add Node" : "Edit Node";
-    NodeDialogController nodeDialogController = new NodeDialogController(node, x, y, floor);
+    NodeDialogController nodeDialogController =
+        new NodeDialogController(
+            currCanvas == mainCanvas ? Campus.MAIN : Campus.FAULKNER, node, x, y, floor);
     DialogUtil.complexDialog(
         dialogPane,
         heading,
