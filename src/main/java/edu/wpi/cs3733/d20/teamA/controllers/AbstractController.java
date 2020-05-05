@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.announcement.AnnouncementDatabase;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
-import edu.wpi.cs3733.d20.teamA.database.flower.FlowerDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.patient.PatientDatabase;
@@ -14,6 +13,8 @@ import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public abstract class AbstractController {
 
   protected ServiceDatabase serviceDatabase;
   protected InventoryDatabase inventoryDatabase;
-  protected FlowerDatabase flDatabase;
+  // protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
 
@@ -40,7 +41,7 @@ public abstract class AbstractController {
 
     graphDatabase = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
-    flDatabase = new FlowerDatabase(conn);
+    // flDatabase = new FlowerDatabase(conn);
     // iDB = new InterpreterDatabase(conn);
     inventoryDatabase = new InventoryDatabase(conn);
 
@@ -49,14 +50,20 @@ public abstract class AbstractController {
     serviceDatabase = new ServiceDatabase(conn);
     reservationDatabase = new ReservationDatabase(conn);
 
-    if (comPort != null) {
-      comPort = SerialPort.getCommPorts()[0];
+    if (comPort == null) {
+      SerialPort[] comPorts = SerialPort.getCommPorts();
+      if (comPorts.length > 0) {
+        comPort = SerialPort.getCommPorts()[0];
+      }
     }
   }
 
   public String scanRFID() {
     try {
       comPort.openPort();
+      // throws out stuff that was there before we were ready to read
+      byte[] trash = new byte[comPort.bytesAvailable()];
+      comPort.readBytes(trash, trash.length);
       while (true) {
         while (comPort.bytesAvailable() != 14) Thread.sleep(20);
 
@@ -64,7 +71,9 @@ public abstract class AbstractController {
         int numRead = comPort.readBytes(readBuffer, readBuffer.length);
         String scannedString = new String(readBuffer, "UTF-8");
         String[] scannedArray = scannedString.split(" ");
-        System.out.println(scannedString);
+        if (scannedArray[0].length() != 10) {
+          continue;
+        }
         if (scannedArray[1].contains("p")) {
           comPort.closePort();
           return scannedArray[0];
@@ -75,6 +84,20 @@ public abstract class AbstractController {
       }
     } catch (Exception e) {
       comPort.closePort();
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
+    try {
+      return "otpauth://totp/"
+          + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
+          + "?secret="
+          + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
+          + "&issuer="
+          + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
+    } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
       return null;
     }

@@ -64,10 +64,9 @@ public class PatientInfoController extends AbstractController {
 
   public void addPatient() {
     DialogUtil.complexDialog(
-        dialogStackPane,
         "Add Patient",
         "views/AddPatientPopup.fxml",
-        false,
+        true,
         event -> update(),
         new PatientEditController());
   }
@@ -78,17 +77,10 @@ public class PatientInfoController extends AbstractController {
 
       PatientEditController controller = new PatientEditController(patient);
       DialogUtil.complexDialog(
-          dialogStackPane,
-          "Edit Patient",
-          "views/AddPatientPopup.fxml",
-          false,
-          event -> update(),
-          controller);
+          "Edit Patient", "views/AddPatientPopup.fxml", true, event -> update(), controller);
     } else {
       DialogUtil.simpleInfoDialog(
-          dialogStackPane,
-          "No Patient Selected",
-          "Please select a patient by clicking a row in the table");
+          "No Patient Selected", "Please select a patient by clicking a row in the table");
     }
   }
 
@@ -102,15 +94,13 @@ public class PatientInfoController extends AbstractController {
       } catch (Exception e) {
         e.printStackTrace();
         DialogUtil.simpleErrorDialog(
-            dialogStackPane, "Error Deleting Patient", "Could not delete patient: " + patient);
+            "Error Deleting Patient", "Could not delete patient: " + patient);
       }
 
       update();
     } else {
       DialogUtil.simpleInfoDialog(
-          dialogStackPane,
-          "No Patient Selected",
-          "Please select a patient by clicking a row in the table");
+          "No Patient Selected", "Please select a patient by clicking a row in the table");
     }
   }
 }

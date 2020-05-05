@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -20,7 +19,6 @@
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <padding>
@@ -52,18 +50,13 @@
             <Font size="21.0" />
          </font>
       </JFXPasswordField>
-      <JFXComboBox fx:id="title" maxHeight="50.0" maxWidth="200.0" prefHeight="50.0" prefWidth="200.0" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <JFXCheckBox fx:id="addRFID" checkedColor="#4059a9" maxHeight="1.7976931348623157E308" maxWidth="150.0" prefWidth="150.0" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Add RFID Card" unCheckedColor="#4d4d4d" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
-         <font>
-            <Font size="21.0" />
-         </font>
-      </JFXCheckBox>
-      <JFXButton fx:id="submit" onAction="#submitEmployee" styleClass="green-button" stylesheets="@../stylesheet.css" text="Done" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+      <JFXComboBox fx:id="title" labelFloat="true" maxHeight="50.0" maxWidth="200.0" prefHeight="50.0" prefWidth="200.0" promptText="Type of Employee" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <JFXButton fx:id="submit" onAction="#submitEmployee" prefWidth="100.0" styleClass="green-button" stylesheets="@../stylesheet.css" text="Submit" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font size="21.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="clear" onAction="#clearFields" styleClass="red-button" stylesheets="@../stylesheet.css" text="Clear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+      <JFXButton fx:id="clear" onAction="#clearFields" prefWidth="100.0" styleClass="red-button" stylesheets="@../stylesheet.css" text="Clear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font size="21.0" />
          </font>
