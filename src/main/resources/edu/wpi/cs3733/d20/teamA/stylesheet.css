@@ -163,13 +163,21 @@
     -fx-background-color: #F5F5F5;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 6, 0.0, 3, 3);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.40), 10, 0.0, 0, 0);
 }
 
 .title-label {
     -fx-border-width: 0 0 .1em 0;
     -fx-padding: 0 0 .1em 0;
     -fx-border-color: -primary-color;
+}
+
+.button-rounded-right {
+    -fx-background-radius: 0 1em 1em 0;
+}
+
+.button-rounded-left {
+    -fx-background-radius: 1em 0 0 1em;
 }
 
 .small-text {
