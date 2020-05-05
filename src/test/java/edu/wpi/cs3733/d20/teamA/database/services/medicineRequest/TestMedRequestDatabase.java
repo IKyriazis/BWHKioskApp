@@ -88,7 +88,7 @@ public class TestMedRequestDatabase {
     String a =
         serviceDatabase.addServiceReq(
             ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
-    boolean b = serviceDatabase.setStatus(a, "Done");
+    boolean b = serviceDatabase.setStatus(a, "Completed");
     Assertions.assertTrue(b);
 
     serviceDatabase.removeAll();

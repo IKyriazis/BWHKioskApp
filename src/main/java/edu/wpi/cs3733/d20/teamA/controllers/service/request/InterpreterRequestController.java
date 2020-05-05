@@ -38,7 +38,7 @@ public class InterpreterRequestController extends AbstractRequestController {
       String l =
           serviceDatabase.addServiceReq(
               ServiceType.INTERPRETER_REQ,
-              location.getLongName(),
+              location.toString(),
               interpreter.getUsername(),
               null,
               null);

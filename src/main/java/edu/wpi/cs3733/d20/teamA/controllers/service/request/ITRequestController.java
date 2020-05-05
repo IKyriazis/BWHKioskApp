@@ -48,7 +48,7 @@ public class ITRequestController extends AbstractRequestController {
     String l =
         serviceDatabase.addServiceReq(
             ServiceType.IT_TICKET,
-            selectedNode.getLongName(),
+            selectedNode.toString(),
             descriptionArea.getText(),
             selectedCategory);
     if (l == null) {
