@@ -1,10 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.EmployeeEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -70,4 +72,18 @@ public class ViewEmployeesController extends AbstractController {
       DialogUtil.simpleErrorDialog(empPane, "Error", "Failed to update employee table");
     }
   }
+
+  public void addBtn(ActionEvent actionEvent) {
+    DialogUtil.complexDialog(
+        empPane,
+        "Add Employee",
+        "views/AddEmployeePopup.fxml",
+        false,
+        event -> update(),
+        new EmployeeEditController());
+  }
+
+  public void editBtn(ActionEvent actionEvent) {}
+
+  public void deleteBtn(ActionEvent actionEvent) {}
 }
