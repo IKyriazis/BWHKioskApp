@@ -123,7 +123,7 @@ AREST00101,2384,1355,1,Faulkner,REST,Restroom Female Level 1,N/A,Team A
 EDEPT00104,1580,2090,4,Faulkner,DEPT,On-Call Room,OCR,Team A
 AHALL01601,2520,1935,1,Faulkner,HALL,Hallway Intersection 16,N/A,Team A
 AEXIT00401,3609,1994,1,Faulkner,EXIT,Stair Exit,N/A,Team A
-ASTAI00202,2463,1930,2,Faulkner,STAI,Staricase 2,Staircase 2,Team A
+ASTAI00202,2463,1930,2,Faulkner,STAI,Staircase 2,Staircase 2,Team A
 ASTAI00201,2547,1273,1,Faulkner,STAI,Staircase Intersection 2 Level 1,N/A,Team A
 ALABS00401,2534,1783,1,Faulkner,LABS,VASC Lab,N/A,Team A
 AINFO00101,2482,1165,1,Faulkner,INFO,Atrium Kiosk,N/A,Team A
