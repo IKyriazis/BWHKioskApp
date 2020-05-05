@@ -52,13 +52,15 @@ public abstract class AbstractController {
   public String scanRFID() {
     try {
       comPort.openPort();
+      // throws out stuff that was there before we were ready to read
+      byte[] trash = new byte[comPort.bytesAvailable()];
+      comPort.readBytes(trash, trash.length);
       while (true) {
-        while (comPort.bytesAvailable() == 0) Thread.sleep(20);
+        while (comPort.bytesAvailable() != 14) Thread.sleep(20);
 
         byte[] readBuffer = new byte[comPort.bytesAvailable()];
         int numRead = comPort.readBytes(readBuffer, readBuffer.length);
         String scannedString = new String(readBuffer, "UTF-8");
-        System.out.println(scannedString);
         String[] scannedArray = scannedString.split(" ");
         if (scannedArray[0].length() != 10) {
           continue;
