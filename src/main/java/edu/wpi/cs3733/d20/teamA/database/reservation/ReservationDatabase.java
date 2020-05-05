@@ -243,6 +243,11 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
     }
   }
 
+  /**
+   * Turns all of the data in the reservation table to an observable list
+   *
+   * @return An observable list of reservation objects
+   */
   public ObservableList<Reservation> getObservableList() {
     ObservableList<Reservation> observableList = FXCollections.observableArrayList();
     try {
@@ -273,6 +278,12 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
     }
   }
 
+  /**
+   * Finds the data in the database that has the given room
+   *
+   * @param room - The room to search for
+   * @return An observable list of reservation objects
+   */
   public ObservableList<Reservation> getObservableListByRoom(String room) {
     ObservableList<Reservation> observableList = FXCollections.observableArrayList();
     try {
@@ -305,6 +316,11 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
     }
   }
 
+  /**
+   * Finds the data in the database from the person currently logged in
+   *
+   * @return An observable list of reservation objects
+   */
   public ObservableList<Reservation> getObservableListByUser() {
     ObservableList<Reservation> observableList = FXCollections.observableArrayList();
     try {
