@@ -76,6 +76,15 @@ public class DialogUtil {
   }
 
   public static void complexDialog(
+      String heading,
+      String path,
+      boolean includeCloseButton,
+      EventHandler<? super JFXDialogEvent> closeHandler,
+      IDialogController controller) {
+    complexDialog(defaultStackPane, heading, path, includeCloseButton, closeHandler, controller);
+  }
+
+  public static void complexDialog(
       StackPane dialogPane,
       String heading,
       String path,
