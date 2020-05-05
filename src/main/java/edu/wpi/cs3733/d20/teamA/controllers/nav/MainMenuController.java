@@ -16,8 +16,9 @@ public class MainMenuController {
   @FXML private JFXButton serviceButton;
 
   public void initialize() {
+
     mapButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP));
-    transitButton.setGraphic(new FontIcon(FontAwesomeSolid.TRAIN));
+    transitButton.setGraphic(new FontIcon(FontAwesomeSolid.BULLHORN));
     serviceButton.setGraphic(new FontIcon(FontAwesomeSolid.HAND_HOLDING_HEART));
 
     // Set up listeners to resize buttons to be equiradial circles
