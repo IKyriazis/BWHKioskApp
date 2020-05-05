@@ -44,6 +44,8 @@ public class Graph {
                   allValidDestinationList.removeAll(c.getRemoved());
                 }
               }
+
+              allValidDestinationList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
             });
   }
 
