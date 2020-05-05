@@ -259,7 +259,12 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
         start.setTimeInMillis(startT.getTime());
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(endT.getTime());
-        observableList.add(new Reservation(emp, start, end, loc));
+        Calendar check = Calendar.getInstance();
+        if(check.compareTo(end) >= 0) {
+          observableList.add(new Reservation(emp, start, end, loc));
+        } else {
+          deleteRes(start, loc);
+        }
       }
       rset.close();
       pstmt.close();
