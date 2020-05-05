@@ -5,6 +5,7 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -44,10 +45,11 @@ public class TestJanitorDatabase {
   @Test
   public void testAddRequest() throws SQLException {
 
-    graphDatabase.removeAllNodes();
+    graphDatabase.removeAllNodes(Campus.FAULKNER);
     employeeDatabase.removeAll();
     // need nodeID "biscuit" in node table so addrequest works
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN);
     serviceDatabase.removeAll();
     String a =
@@ -56,13 +58,14 @@ public class TestJanitorDatabase {
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
 
     serviceDatabase.removeAll();
-    graphDatabase.removeAllNodes();
+    graphDatabase.removeAllNodes(Campus.FAULKNER);
   }
 
   @Test
   public void testUpdateRequest() {
-    graphDatabase.removeAllNodes();
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    graphDatabase.removeAllNodes(Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     employeeDatabase.addEmployee("Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN);
     employeeDatabase.addEmployee("Nisha", "Goel", "ngoel", "SweetGirl2", EmployeeTitle.ADMIN);
     serviceDatabase.removeAll();
@@ -78,6 +81,6 @@ public class TestJanitorDatabase {
     Assertions.assertEquals(0, serviceDatabase.getSize());
 
     serviceDatabase.removeAll();
-    graphDatabase.removeAllNodes();
+    graphDatabase.removeAllNodes(Campus.FAULKNER);
   }
 }

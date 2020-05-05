@@ -59,16 +59,15 @@
                         <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXComboBox fx:id="employeeBox" labelFloat="true" prefWidth="250.0" promptText="Employee Name" />
                         <JFXComboBox fx:id="nodeBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Request Location" GridPane.columnIndex="1" />
-                        <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.rowIndex="1" />
-                        <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.rowSpan="2" />
+                        <GridPane prefHeight="92.0" prefWidth="258.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <columnConstraints>
                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
                            </columnConstraints>
                            <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="63.666656494140625" minHeight="10.0" prefHeight="57.0" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="41.66668701171875" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
                               <JFXComboBox fx:id="categoryBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Request Category" />

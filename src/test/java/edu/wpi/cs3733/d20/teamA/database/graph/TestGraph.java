@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.database.graph;
 
 import com.opencsv.exceptions.CsvException;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -19,7 +20,7 @@ public class TestGraph {
   private Connection conn;
   GraphDatabase graphDatabase;
 
-  Graph graph = Graph.getInstance();
+  Graph graph = Graph.getInstance(Campus.FAULKNER);
 
   @BeforeEach
   public void init() throws SQLException {
@@ -46,8 +47,8 @@ public class TestGraph {
 
   @Test
   public void testSingleton() throws SQLException, IOException, CsvException {
-    Assertions.assertNotNull(Graph.getInstance());
-    Assertions.assertNotNull(Graph.getInstance().getDB());
+    Assertions.assertNotNull(Graph.getInstance(Campus.FAULKNER));
+    Assertions.assertNotNull(Graph.getInstance(Campus.FAULKNER).getDB());
   }
 
   @Test
@@ -149,18 +150,18 @@ public class TestGraph {
   public void testUpdate() throws SQLException {
     graph.clearGraph();
     graph.getDB().createTables();
-    graph.getDB().removeAll();
+    graph.getDB().removeAll(Campus.FAULKNER);
     graph.addNode(node1);
     graph.addNode(node2);
     graph.addNode(node4);
     graph.addEdge(node1, node2, 5);
     graph.addEdge(node1, node4, 5);
-    graph.getDB().addNode("testNode3", 1, 1, 1, "", "HALL", "long", "", "TeamA");
-    graph.getDB().addEdge("testNode2_testNode3", "testNode2", "testNode3");
-    graph.getDB().addEdge("testNode3_testNode2", "testNode3", "testNode2");
-    graph.getDB().deleteEdge("testNode1_testNode4");
-    graph.getDB().deleteEdge("testNode4_testNode1");
-    graph.getDB().deleteNode("testNode4");
+    graph.getDB().addNode("testNode3", 1, 1, 1, "", "HALL", "long", "", "TeamA", Campus.FAULKNER);
+    graph.getDB().addEdge("testNode2_testNode3", "testNode2", "testNode3", Campus.FAULKNER);
+    graph.getDB().addEdge("testNode3_testNode2", "testNode3", "testNode2", Campus.FAULKNER);
+    graph.getDB().deleteEdge("testNode1_testNode4", Campus.FAULKNER);
+    graph.getDB().deleteEdge("testNode4_testNode1", Campus.FAULKNER);
+    graph.getDB().deleteNode("testNode4", Campus.FAULKNER);
     graph.update();
     Assertions.assertTrue(graph.hasNode("testNode1"));
     Assertions.assertTrue(graph.hasNode("testNode3"));
@@ -169,6 +170,6 @@ public class TestGraph {
     Assertions.assertTrue(graph.getNodeByID("testNode2").hasEdgeTo(graph.getNodeByID("testNode3")));
     Assertions.assertFalse(
         graph.getNodeByID("testNode1").hasEdgeTo(graph.getNodeByID("testNode4")));
-    graph.getDB().removeAll();
+    graph.getDB().removeAll(Campus.FAULKNER);
   }
 }
