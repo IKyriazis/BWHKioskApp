@@ -84,6 +84,16 @@ public class ViewEmployeesController extends AbstractController {
   }
 
   @FXML
+  public void editBtn(ActionEvent actionEvent) {
+    DialogUtil.complexDialog(
+            "Edit Employee",
+            "views/EditEmployeePopup.fxml",
+            false,
+            event -> update(),
+            new EmployeeEditController());
+  }
+
+  @FXML
   public void deleteBtn(ActionEvent actionEvent) {
     eDB.deleteEmployee(tblEmployees.getSelected().getUsername());
     update();
