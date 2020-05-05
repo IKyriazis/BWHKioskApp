@@ -131,7 +131,8 @@ def codeCoverageExcludes = [
         'edu.wpi.cs3733.d20.teamA.controllers.*',
         'edu.wpi.cs3733.d20.teamA.controls.*',
         'edu.wpi.cs3733.d20.teamA.map.MapCanvas',
-        'edu.wpi.cs3733.d20.teamA.util.*'
+        'edu.wpi.cs3733.d20.teamA.util.*',
+        'edu.wpi.cs3733.d20.teamA.database.flower.*'
 ]
 
 jacoco {

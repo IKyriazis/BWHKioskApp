@@ -67,7 +67,7 @@ public class PatientInfoController extends AbstractController {
         dialogStackPane,
         "Add Patient",
         "views/AddPatientPopup.fxml",
-        false,
+        true,
         event -> update(),
         new PatientEditController());
   }
@@ -81,7 +81,7 @@ public class PatientInfoController extends AbstractController {
           dialogStackPane,
           "Edit Patient",
           "views/AddPatientPopup.fxml",
-          false,
+          true,
           event -> update(),
           controller);
     } else {

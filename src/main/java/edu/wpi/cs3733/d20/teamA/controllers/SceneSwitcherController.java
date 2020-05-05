@@ -309,6 +309,27 @@ public class SceneSwitcherController extends AbstractController {
 
     loginTransitioning = true;
 
+    // make sure google authenticator stuff is now the login stuff
+    // Reset login box
+    gauth.setVisible(false);
+
+    // Clear username / password once they're off screen
+    usernameBox.setText("");
+    passwordBox.setText("");
+
+    // Reset visibility of stuff in box
+    buttonBox.setDisable(false);
+    buttonBox.setOpacity(1.0);
+
+    buttonBox.setVisible(true);
+    usernameBox.setVisible(true);
+    passwordBox.setVisible(true);
+
+    loginButton.setVisible(true);
+
+    loginButton.setDisable(false);
+    authenticateButton.setVisible(false);
+
     ZoomOutDown trans = new ZoomOutDown(loginBox);
     trans.setSpeed(2);
     trans.setOnFinished(

@@ -32,6 +32,9 @@ public class PrescriptionViewerController extends AbstractViewerController {
 
     // Strip out additional info
     fillAdditionalFields();
+
+    // Set up the default statuses (or stati, as the cool kids call it)
+    genericController.fillStandardStatusList();
   }
 
   private void fillAdditionalFields() {
