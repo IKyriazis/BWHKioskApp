@@ -16,31 +16,6 @@ public class MainMenuController {
   @FXML private JFXButton serviceButton;
 
   public void initialize() {
-    //    VBox mapBox = new VBox();
-    //    mapBox.setAlignment(Pos.CENTER);
-    //    VBox transitBox = new VBox();
-    //    transitBox.setAlignment(Pos.CENTER);
-    //    VBox serviceBox = new VBox();
-    //    serviceBox.setAlignment(Pos.CENTER);
-    //
-    //    Label mapLabel = new Label();
-    //    Label transitLabel = new Label();
-    //    Label serviceLabel = new Label();
-    //
-    //    mapLabel.setText("\nMap");
-    //    mapLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24pt");
-    //
-    //    transitLabel.setText("\nAnnouncements");
-    //    transitLabel.setStyle("-fx-text-fill: white; -fx-font-size: 20pt");
-    //
-    //    serviceLabel.setText("\nServices");
-    //    serviceLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24pt");
-    //
-    //    mapBox.getChildren().addAll(new FontIcon(FontAwesomeSolid.MAP), mapLabel);
-    //    transitBox.getChildren().addAll(new FontIcon(FontAwesomeSolid.BULLHORN), transitLabel);
-    //    serviceBox
-    //        .getChildren()
-    //        .addAll(new FontIcon(FontAwesomeSolid.HAND_HOLDING_HEART), serviceLabel);
 
     mapButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP));
     transitButton.setGraphic(new FontIcon(FontAwesomeSolid.BULLHORN));
