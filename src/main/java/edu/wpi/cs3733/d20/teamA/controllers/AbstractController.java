@@ -5,7 +5,6 @@ import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
 import edu.wpi.cs3733.d20.teamA.database.announcement.AnnouncementDatabase;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
-import edu.wpi.cs3733.d20.teamA.database.flower.FlowerDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.patient.PatientDatabase;
@@ -25,7 +24,7 @@ public abstract class AbstractController {
 
   protected ServiceDatabase serviceDatabase;
   protected InventoryDatabase inventoryDatabase;
-  protected FlowerDatabase flDatabase;
+  // protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
 
@@ -38,7 +37,7 @@ public abstract class AbstractController {
 
     graphDatabase = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
-    flDatabase = new FlowerDatabase(conn);
+    // flDatabase = new FlowerDatabase(conn);
     // iDB = new InterpreterDatabase(conn);
     inventoryDatabase = new InventoryDatabase(conn);
 
