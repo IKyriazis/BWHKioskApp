@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.layout.StackPane;
 
 public class EmployeeEditController extends AbstractController implements IDialogController {
 
@@ -20,7 +19,6 @@ public class EmployeeEditController extends AbstractController implements IDialo
   @FXML private JFXTextField uName;
   @FXML private JFXPasswordField pass;
   @FXML private JFXPasswordField cPass;
-  @FXML private StackPane dialogPane;
   @FXML private JFXCheckBox addRFID;
   @FXML private JFXComboBox title;
 
@@ -44,6 +42,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
     title.getSelectionModel().selectFirst();
   }
 
+  @FXML
   public void submitEmployee() {
     if (fName.getText().isEmpty()
         || lName.getText().isEmpty()
@@ -53,30 +52,24 @@ public class EmployeeEditController extends AbstractController implements IDialo
         || cPass.getText().isEmpty()) {
       // make popup that says one or more fields are empty
       DialogUtil.simpleInfoDialog(
-          dialogPane,
-          "Empty fields",
-          "You left some fields empty. Please make sure they are all filled.");
+          "Empty fields", "You left some fields empty. Please make sure they are all filled.");
       return;
     }
     if (eDB.uNameExists(uName.getText())) {
       // make popup that says username already exists
       DialogUtil.simpleInfoDialog(
-          dialogPane,
           "Invalid Username",
           "The username you have chosen is already taken. Please choose another.");
       return;
     }
     if (pass.getText().length() < 8) {
       DialogUtil.simpleInfoDialog(
-          dialogPane,
-          "Invalid Password",
-          "Please make sure your password is at least 8 characters long.");
+          "Invalid Password", "Please make sure your password is at least 8 characters long.");
       return;
     }
     if (!cPass.getText().equals(pass.getText())) {
       // make popup that says passwords are not the same
       DialogUtil.simpleInfoDialog(
-          dialogPane,
           "Passwords Don't Match",
           "Please make sure that the password you entered in the confirm password field matches your intended password.");
       return;
@@ -86,7 +79,6 @@ public class EmployeeEditController extends AbstractController implements IDialo
       // letter, and it's
       // less than 72 characters
       DialogUtil.simpleInfoDialog(
-          dialogPane,
           "Invalid Password",
           "Please create a password that includes a number, lowercase letter, and uppercase letter. Shorter than 72 characters.");
       return;
@@ -102,8 +94,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
             Platform.runLater(
                 () -> {
                   // tell user we are scanning for a card
-                  DialogUtil.simpleErrorDialog(
-                      dialogPane, "Started Scanning", "We are looking for your card.");
+                  DialogUtil.simpleErrorDialog("Started Scanning", "We are looking for your card.");
                 });
             String rfid = scanRFID();
             if (rfid != null) {
@@ -120,9 +111,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
               Platform.runLater(
                   () -> {
                     DialogUtil.simpleErrorDialog(
-                        dialogPane,
-                        "Read Fail",
-                        "There was an error reading the card please try again");
+                        "Read Fail", "There was an error reading the card please try again");
                   });
               clearFields();
             }
@@ -143,7 +132,6 @@ public class EmployeeEditController extends AbstractController implements IDialo
             Platform.runLater(
                 () -> {
                   DialogUtil.complexDialog(
-                      dialogPane,
                       "You must scan the QR code in Google Authenticator and use it for logging in",
                       "views/QRCodePopup.fxml",
                       true,
@@ -155,7 +143,6 @@ public class EmployeeEditController extends AbstractController implements IDialo
             Platform.runLater(
                 () -> {
                   DialogUtil.simpleErrorDialog(
-                      dialogPane,
                       "Account creation failed",
                       "For some reason we could not create your account.");
                 });

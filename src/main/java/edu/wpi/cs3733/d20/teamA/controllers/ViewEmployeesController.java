@@ -73,9 +73,9 @@ public class ViewEmployeesController extends AbstractController {
     }
   }
 
+  @FXML
   public void addBtn(ActionEvent actionEvent) {
     DialogUtil.complexDialog(
-        empPane,
         "Add Employee",
         "views/AddEmployeePopup.fxml",
         false,
