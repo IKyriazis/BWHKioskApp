@@ -70,7 +70,7 @@
                               <RowConstraints maxHeight="47.666656494140625" minHeight="10.0" prefHeight="43.666656494140625" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXComboBox fx:id="priorityBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Request Priority" />
+                              <JFXComboBox fx:id="priorityBox" labelFloat="true" prefWidth="250.0" promptText="Request Priority" />
                               <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" GridPane.rowIndex="1" />
                            </children>
                         </GridPane>
