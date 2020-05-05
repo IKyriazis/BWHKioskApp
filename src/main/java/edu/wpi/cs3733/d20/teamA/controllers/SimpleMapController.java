@@ -16,6 +16,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.util.Pair;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -35,7 +36,8 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXButton goButton;
   @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
-  @FXML private JFXButton qrCodeButton;
+  @FXML private JFXButton dirBackButton;
+  @FXML private JFXButton dirNextButton;
 
   @FXML private JFXButton floorUpButton;
   @FXML private JFXButton floorDownButton;
@@ -82,7 +84,9 @@ public class SimpleMapController extends AbstractController {
     goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
     swapBtn.setGraphic(new FontIcon((FontAwesomeSolid.EXCHANGE_ALT)));
     directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
-    qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
+    // qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
+    dirBackButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_LEFT));
+    dirNextButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_RIGHT));
 
     floorUpButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_UP));
     floorDownButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_DOWN));
@@ -157,18 +161,18 @@ public class SimpleMapController extends AbstractController {
 
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
-        ArrayList<Label> directions =
+        ArrayList<Pair<Node, Label>> directions =
             texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections());
         directions.forEach(
             l -> {
-              directionsList.getItems().add(l);
+              directionsList.getItems().add(l.getValue());
             });
 
         canvasPane.getChildren().add(canvas.getGroup());
 
         // Generate QR code
         StringBuilder dirs = new StringBuilder();
-        directions.forEach(l -> dirs.append(l.getText()).append('\n'));
+        directions.forEach(l -> dirs.append(l.getValue().getText()).append('\n'));
         lastDirs = dirs.toString();
 
         if (textDirectionsDrawer.isClosed()) {
@@ -249,34 +253,61 @@ public class SimpleMapController extends AbstractController {
     canvasPane.getChildren().add(canvas.getGroup());
   }
 
-  public ArrayList<Label> texDirectionsWithLabels(ArrayList<String> textualPath) {
-    ArrayList<Label> textPath = new ArrayList<>();
+  public ArrayList<Pair<Node, Label>> texDirectionsWithLabels(
+      ArrayList<Pair<Node, String>> textualPath) {
+    ArrayList<Pair<Node, Label>> textPath = new ArrayList<>();
     for (int j = 0; j < textualPath.size() - 1; j++) {
-      if (textualPath.get(j).contains("Turn right")) {
+      if (textualPath.get(j).getValue().contains("Turn right")) {
         textPath.add(
-            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT)));
-      } else if (textualPath.get(j).contains("Turn left")) {
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT))));
+      } else if (textualPath.get(j).getValue().contains("Turn left")) {
         textPath.add(
-            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT)));
-      } else if (textualPath.get(j).contains("slight left")) {
-        textPath.add(new Label(textualPath.get(j)));
-      } else if (textualPath.get(j).contains("slight right")) {
-        textPath.add(new Label(textualPath.get(j)));
-      } else if (textualPath.get(j).contains("up")) {
-        textPath.add(new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
-      } else if (textualPath.get(j).contains("down")) {
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT))));
+      } else if (textualPath.get(j).getValue().contains("slight left")) {
         textPath.add(
-            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN)));
+            new Pair<>(textualPath.get(j).getKey(), new Label(textualPath.get(j).getValue())));
+      } else if (textualPath.get(j).getValue().contains("slight right")) {
+        textPath.add(
+            new Pair<>(textualPath.get(j).getKey(), new Label(textualPath.get(j).getValue())));
+      } else if (textualPath.get(j).getValue().contains("up")) {
+        textPath.add(
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP))));
+      } else if (textualPath.get(j).getValue().contains("down")) {
+        textPath.add(
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN))));
 
       } else {
         textPath.add(
-            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP)));
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP))));
       }
     }
 
     textPath.add(
-        new Label(
-            textualPath.get(textualPath.size() - 1), new FontIcon(FontAwesomeSolid.DOT_CIRCLE)));
+        new Pair<>(
+            textualPath.get(textualPath.size() - 1).getKey(),
+            new Label(
+                textualPath.get(textualPath.size() - 1).getValue(),
+                new FontIcon(FontAwesomeSolid.DOT_CIRCLE))));
 
     return textPath;
   }
