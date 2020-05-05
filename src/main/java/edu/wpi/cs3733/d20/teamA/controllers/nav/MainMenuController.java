@@ -36,15 +36,7 @@ public class MainMenuController {
 
     transitButton.setOnAction(
         event -> {
-          // SceneSwitcherController.pushScene("views/nav/ServiceHome.fxml");
-          //          try {
-          //            Media media = new
-          // Media(App.class.getResource("sounds/no.mp3").toURI().toString());
-          //            AudioClip audioClip = new AudioClip(media.getSource());
-          //            audioClip.play();
-          //          } catch (Exception e) {
-          //            e.printStackTrace();
-          //          }
+          SceneSwitcherController.pushScene("views/AnnouncementWall.fxml", TransitionType.ZOOM);
         });
 
     serviceButton.setOnAction(
