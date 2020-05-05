@@ -64,16 +64,16 @@ public class EmployeeEditController extends AbstractController implements IDialo
           "The username you have chosen is already taken. Please choose another.");
       return;
     }
-    if (pass.getText().length() < 8) {
-      DialogUtil.simpleInfoDialog(
-          "Invalid Password", "Please make sure your password is at least 8 characters long.");
-      return;
-    }
     if (!cPass.getText().equals(pass.getText())) {
       // make popup that says passwords are not the same
       DialogUtil.simpleInfoDialog(
-          "Passwords Don't Match",
-          "Please make sure that the password you entered in the confirm password field matches your intended password.");
+              "Passwords Don't Match",
+              "Please make sure that the password you entered in the confirm password field matches your intended password.");
+      return;
+    }
+    if (pass.getText().length() < 8) {
+      DialogUtil.simpleInfoDialog(
+          "Invalid Password", "Please make sure your password is at least 8 characters long.");
       return;
     }
     if (!eDB.checkSecurePass(pass.getText())) {
