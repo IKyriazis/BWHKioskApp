@@ -1,6 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.PatientEditController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.EmployeeEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
@@ -77,10 +77,10 @@ public class ViewEmployeesController extends AbstractController {
     DialogUtil.complexDialog(
         empPane,
         "Add Employee",
-        "views/settings/CreateAcct.fxml",
+        "views/AddEmployeePopup.fxml",
         false,
         event -> update(),
-        new PatientEditController());
+        new EmployeeEditController());
   }
 
   public void editBtn(ActionEvent actionEvent) {}
