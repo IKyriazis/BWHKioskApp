@@ -27,7 +27,6 @@
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="75.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <children>
                         <JFXButton fx:id="addBtn" buttonType="RAISED" onAction="#addBtn" prefWidth="120.0" text="Add" />
-                        <JFXButton fx:id="editBtn" onAction="#editBtn" prefWidth="120.0" text="Edit" />
                         <JFXButton fx:id="deleteBtn" buttonType="RAISED" onAction="#deleteBtn" prefWidth="120.0" text="Delete" />
                         <JFXButton fx:id="showQRBtn" onMouseClicked="#qrCode" prefWidth="120.0" text="Show QR" />
                      </children>

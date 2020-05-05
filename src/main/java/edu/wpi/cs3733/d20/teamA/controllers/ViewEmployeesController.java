@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.EditEmployeeController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.EmployeeEditController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
@@ -23,7 +22,7 @@ public class ViewEmployeesController extends AbstractController {
   @FXML private StackPane empPane;
   @FXML private Label img;
   @FXML private JFXButton addBtn;
-  @FXML private JFXButton editBtn;
+  //  @FXML private JFXButton editBtn;
   @FXML private JFXButton deleteBtn;
   @FXML private JFXButton showQRBtn;
 
@@ -34,7 +33,7 @@ public class ViewEmployeesController extends AbstractController {
 
     // Set icon
     addBtn.setGraphic(new FontIcon(FontAwesomeSolid.USER_PLUS));
-    editBtn.setGraphic(new FontIcon(FontAwesomeSolid.USER_COG));
+    // editBtn.setGraphic(new FontIcon(FontAwesomeSolid.USER_COG));
     deleteBtn.setGraphic(new FontIcon(FontAwesomeSolid.USER_SLASH));
     showQRBtn.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
 
@@ -88,15 +87,16 @@ public class ViewEmployeesController extends AbstractController {
         new EmployeeEditController());
   }
 
-    @FXML
-    public void editBtn(ActionEvent actionEvent) {
-      DialogUtil.complexDialog(
-          "Edit Employee",
-          "views/EditEmployeePopup.fxml",
-          true,
-          event -> update(),
-          new EditEmployeeController());
-    }
+  //  @FXML
+  //  public void editBtn(ActionEvent actionEvent) {
+  //    Employee employee = tblEmployees.getSelected();
+  //    DialogUtil.complexDialog(
+  //        "Edit Employee",
+  //        "views/EditEmployeePopup.fxml",
+  //        true,
+  //        event -> update(),
+  //        new EditEmployeeController(employee));
+  //  }
 
   @FXML
   public void deleteBtn(ActionEvent actionEvent) {

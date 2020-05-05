@@ -233,6 +233,60 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     }
   }
 
+  public synchronized String getFirstName(String username) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, username);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String id = rset.getString("nameFirst");
+      rset.close();
+      pstmt.close();
+      return id;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  public synchronized String getLastName(String username) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, username);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String id = rset.getString("nameLast");
+      rset.close();
+      pstmt.close();
+      return id;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
+  public synchronized String getTitle(String username) {
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
+      pstmt.setString(1, username);
+      ResultSet rset = pstmt.executeQuery();
+      rset.next();
+      String id = rset.getString("title");
+      rset.close();
+      pstmt.close();
+      return id;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return "";
+    }
+  }
+
   // returns true if the username isn't in the database
   public synchronized boolean uNameExists(String uName) {
     try {
