@@ -121,6 +121,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
                         cPass.getText(),
                         EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
                         rfid);
+                clearFields();
               }
             } else {
               Platform.runLater(
@@ -138,6 +139,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
                     uName.getText(),
                     cPass.getText(),
                     EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
+            clearFields();
           }
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
