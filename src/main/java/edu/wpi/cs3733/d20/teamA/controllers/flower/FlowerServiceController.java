@@ -5,7 +5,6 @@ import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
-import flowerapi.App.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -52,7 +51,7 @@ public class FlowerServiceController extends AbstractController {
 
   @FXML
   public void openAdmin() {
-    flowerapi.App.runAdmin(
-        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
+    /*flowerapi.App.runAdmin(
+    0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);*/
   }
 }
