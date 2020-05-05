@@ -83,7 +83,9 @@ public class ViewEmployeesController extends AbstractController {
         new EmployeeEditController());
   }
 
-  public void editBtn(ActionEvent actionEvent) {}
-
-  public void deleteBtn(ActionEvent actionEvent) {}
+  @FXML
+  public void deleteBtn(ActionEvent actionEvent) {
+    eDB.deleteEmployee(tblEmployees.getSelected().getUsername());
+    update();
+  }
 }

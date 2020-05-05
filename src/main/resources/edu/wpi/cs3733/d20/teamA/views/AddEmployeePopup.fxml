@@ -52,7 +52,7 @@
             <Font size="21.0" />
          </font>
       </JFXPasswordField>
-      <JFXComboBox fx:id="title" labelFloat="true" maxHeight="50.0" maxWidth="200.0" prefHeight="50.0" prefWidth="200.0" promptText="Type of Employee" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+      <JFXComboBox fx:id="title" maxHeight="50.0" maxWidth="200.0" prefHeight="50.0" prefWidth="200.0" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <JFXCheckBox fx:id="addRFID" checkedColor="#4059a9" maxHeight="1.7976931348623157E308" maxWidth="150.0" prefWidth="150.0" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Add RFID Card" unCheckedColor="#4d4d4d" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font size="21.0" />
