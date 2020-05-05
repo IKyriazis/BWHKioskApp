@@ -58,12 +58,12 @@
             <Font size="21.0" />
          </font>
       </JFXCheckBox>
-      <JFXButton fx:id="submit" onAction="#submitEmployee" prefWidth="100.0" styleClass="green-button" stylesheets="@../stylesheet.css" text="Submit" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+      <JFXButton fx:id="submit" onAction="#submitEmployee" styleClass="green-button" stylesheets="@../stylesheet.css" text="Done" GridPane.halignment="CENTER" GridPane.rowIndex="4">
          <font>
             <Font size="21.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="clear" onAction="#clearFields" prefWidth="100.0" styleClass="red-button" stylesheets="@../stylesheet.css" text="Clear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+      <JFXButton fx:id="clear" onAction="#clearFields" styleClass="red-button" stylesheets="@../stylesheet.css" text="Clear" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
          <font>
             <Font size="21.0" />
          </font>

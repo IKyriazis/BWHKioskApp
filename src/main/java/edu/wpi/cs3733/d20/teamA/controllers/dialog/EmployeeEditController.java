@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class EmployeeEditController extends AbstractController implements IDialogController {
 
@@ -40,6 +42,8 @@ public class EmployeeEditController extends AbstractController implements IDialo
     titles.add("Retail");
     title.setItems(FXCollections.observableList(titles));
     title.getSelectionModel().selectFirst();
+    submit.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
+    clear.setGraphic(new FontIcon(FontAwesomeSolid.TIMES_CIRCLE));
   }
 
   @FXML

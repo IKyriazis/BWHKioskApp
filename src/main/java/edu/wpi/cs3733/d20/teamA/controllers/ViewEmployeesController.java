@@ -30,9 +30,9 @@ public class ViewEmployeesController extends AbstractController {
     img.setGraphic(new FontIcon(FontAwesomeSolid.USER));
 
     // Set icon
-    addBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
-    //    editBtn.setGraphic(new FontIcon(FontAwesomeSolid.EDIT));
-    deleteBtn.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
+    addBtn.setGraphic(new FontIcon(FontAwesomeSolid.USER_PLUS));
+    //    editBtn.setGraphic(new FontIcon(FontAwesomeSolid.USER_COG));
+    deleteBtn.setGraphic(new FontIcon(FontAwesomeSolid.USER_SLASH));
 
     empPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
