@@ -36,6 +36,7 @@ public class MainMenuController {
 
     transitButton.setOnAction(
         event -> {
+          SceneSwitcherController.pushScene("views/mapping/GluonMap.fxml", TransitionType.FADE);
           // SceneSwitcherController.pushScene("views/nav/ServiceHome.fxml");
           //          try {
           //            Media media = new

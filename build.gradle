@@ -82,7 +82,13 @@ dependencies {
 
 
             // for comms with arduino
-            'com.fazecast:jSerialComm:2.6.2'
+            'com.fazecast:jSerialComm:2.6.2',
+
+            // Gluon Maps
+            'com.gluonhq:maps:2.0.0-ea+1',
+            'com.gluonhq.attach:util:4.0.7',
+            'com.gluonhq.attach:storage:4.0.7',
+            'com.gluonhq.attach:position:4.0.7'
     )
 
 
