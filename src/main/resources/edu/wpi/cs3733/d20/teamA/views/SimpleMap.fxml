@@ -77,8 +77,8 @@
                                     <Insets bottom="10.0" top="10.0" />
                                  </GridPane.margin>
                                  <children>
-                                    <JFXButton fx:id="dirBackButton" styleClass="button-rounded-left" text="Back" />
-                                    <JFXButton fx:id="dirNextButton" styleClass="button-rounded-right" text="Next" />
+                                    <JFXButton fx:id="dirBackButton" onAction="#pressedDirBack" styleClass="button-rounded-left" text="Back" />
+                                    <JFXButton fx:id="dirNextButton" onAction="#pressedDirNext" styleClass="button-rounded-right" text="Next" />
                                  </children>
                               </HBox>
                            </children>

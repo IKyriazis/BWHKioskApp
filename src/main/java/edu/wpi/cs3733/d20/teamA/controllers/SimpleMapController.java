@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -9,7 +8,6 @@ import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.ArrayList;
 import javafx.animation.PathTransition;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -43,28 +41,41 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXButton floorDownButton;
   @FXML private JFXTextField floorField;
 
-  private MapCanvas canvas;
+  private MapCanvas faulknerCanvas;
+  private MapCanvas mainCanvas;
+  private MapCanvas currCanvas;
+
   private Graph graph;
   private String lastDirs;
   private int floor = 1;
 
-  private ObservableList<Node> allNodeList;
+  private ArrayList<PathSegment> pathSegments;
+  private int currPathSegment = 0;
 
   public void initialize() {
     directionsDrawer.close();
     textDirectionsDrawer.close();
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
-    canvas = new MapCanvas(true, Campus.FAULKNER);
-    canvasPane.getChildren().add(0, canvas);
-    canvas.widthProperty().bind(canvasPane.widthProperty());
-    canvas.heightProperty().bind(canvasPane.heightProperty());
+    currCanvas = faulknerCanvas = new MapCanvas(true, Campus.FAULKNER);
+    mainCanvas = new MapCanvas(true, Campus.MAIN);
+    mainCanvas.setVisible(false);
+
+    canvasPane.getChildren().add(0, faulknerCanvas);
+    canvasPane.getChildren().add(0, mainCanvas);
+
+    faulknerCanvas.widthProperty().bind(canvasPane.widthProperty());
+    faulknerCanvas.heightProperty().bind(canvasPane.heightProperty());
+
+    mainCanvas.widthProperty().bind(canvasPane.widthProperty());
+    mainCanvas.heightProperty().bind(canvasPane.heightProperty());
 
     // Draw background asap
-    Platform.runLater(() -> canvas.draw(1));
+    Platform.runLater(() -> faulknerCanvas.draw(1));
 
     // Setup zoom slider hook
-    canvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
+    faulknerCanvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
+    mainCanvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
 
     // Setup zoom slider cursor
     zoomSlider.setCursor(Cursor.H_RESIZE);
@@ -97,15 +108,15 @@ public class SimpleMapController extends AbstractController {
         event -> {
           event.consume();
 
-          if (canvas.getPath() != null) {
+          if (currCanvas.getPath() != null) {
             // Try to update path if possible
-            canvas.getPath().update();
-            if (canvas.getPath().getPathNodes().isEmpty()) {
+            currCanvas.getPath().update();
+            if (currCanvas.getPath().getPathNodes().isEmpty()) {
               pressedGo();
             }
 
             // Redraw map
-            canvas.draw(floor);
+            currCanvas.draw(floor);
           }
         });
 
@@ -127,7 +138,7 @@ public class SimpleMapController extends AbstractController {
     if (!MapSettings.isSetup()) {
       MapSettings.setup();
     }
-    Platform.runLater(() -> canvas.draw(floor));
+    Platform.runLater(() -> currCanvas.draw(floor));
   }
 
   @FXML
@@ -145,30 +156,16 @@ public class SimpleMapController extends AbstractController {
     if ((start != null) && (end != null)) {
       ContextPath path = MapSettings.getPath();
       path.findPath(start, end);
-      canvas.setPath(path);
-
-      if (start.getFloor() != floor) {
-        floor = Math.min(5, start.getFloor());
-        floorField.setText(String.valueOf(floor));
-      }
-
-      if (!canvas.getGroup().getChildren().isEmpty()) {
-        canvas.getGroup().getChildren().clear();
-        canvas.setGroup(new Group());
-        canvas.setTransition(new PathTransition());
-      }
-      canvas.draw(floor);
+      currCanvas.setPath(path);
 
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
         ArrayList<Pair<Node, Label>> directions =
             texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections());
-        directions.forEach(
-            l -> {
-              directionsList.getItems().add(l.getValue());
-            });
 
-        canvasPane.getChildren().add(canvas.getGroup());
+        pathSegments = PathSegment.calcPathSegments(directions);
+        currPathSegment = 0;
+        updateDisplayedPath();
 
         // Generate QR code
         StringBuilder dirs = new StringBuilder();
@@ -202,16 +199,13 @@ public class SimpleMapController extends AbstractController {
     }
   }
 
-  public MapCanvas getCanvas() {
-    return canvas;
-  }
-
   public Graph getGraph() {
     return graph;
   }
 
   public void pressedQRButton() {
-    if (!lastDirs.isEmpty()) {
+    assert false;
+    /*if (!lastDirs.isEmpty()) {
       DialogUtil.complexDialog(
           dialogPane,
           "Direction QR Code",
@@ -222,35 +216,74 @@ public class SimpleMapController extends AbstractController {
     } else {
       DialogUtil.simpleInfoDialog(
           dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
-    }
+    }*/
   }
 
   @FXML
   public void floorUp() {
-    floor = Math.min(5, floor + 1);
-    canvas.draw(floor);
+    assert false;
+    /*floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
+    currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
-    if (!canvas.getGroup().getChildren().isEmpty()) {
-      canvas.getGroup().getChildren().clear();
-      canvas.setGroup(new Group());
-      canvas.setTransition(new PathTransition());
+    if (!currCanvas.getGroup().getChildren().isEmpty()) {
+      currCanvas.getGroup().getChildren().clear();
+      currCanvas.setGroup(new Group());
+      currCanvas.setTransition(new PathTransition());
     }
-    canvas.draw(floor);
-    canvasPane.getChildren().add(canvas.getGroup());
+    currCanvas.draw(floor);
+    canvasPane.getChildren().add(currCanvas.getGroup());*/
   }
 
   @FXML
   public void floorDown() {
-    floor = Math.max(1, floor - 1);
-    canvas.draw(floor);
+    assert false;
+    /*floor = Math.max(1, floor - 1);
+    currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
-    if (!canvas.getGroup().getChildren().isEmpty()) {
-      canvas.getGroup().getChildren().clear();
-      canvas.setGroup(new Group());
-      canvas.setTransition(new PathTransition());
+    if (!currCanvas.getGroup().getChildren().isEmpty()) {
+      currCanvas.getGroup().getChildren().clear();
+      currCanvas.setGroup(new Group());
+      currCanvas.setTransition(new PathTransition());
     }
-    canvas.draw(floor);
-    canvasPane.getChildren().add(canvas.getGroup());
+    currCanvas.draw(floor);
+    canvasPane.getChildren().add(currCanvas.getGroup());*/
+  }
+
+  @FXML
+  public void pressedDirBack() {
+    if (currPathSegment > 0) {
+      currPathSegment--;
+    }
+
+    updateDisplayedPath();
+  }
+
+  @FXML
+  public void pressedDirNext() {
+    currPathSegment = Math.min(currPathSegment + 1, pathSegments.size() - 1);
+    updateDisplayedPath();
+  }
+
+  public void updateDisplayedPath() {
+    PathSegment currSegment = pathSegments.get(currPathSegment);
+    // Set canvas
+    // switchCanvas(currSegment.getCampus());
+    if (!currCanvas.getGroup().getChildren().isEmpty()) {
+      currCanvas.getGroup().getChildren().clear();
+      currCanvas.setGroup(new Group());
+      currCanvas.setTransition(new PathTransition());
+    }
+    canvasPane.getChildren().add(currCanvas.getGroup());
+
+    // Set floor
+    floor = currSegment.getFloor();
+    floorField.setText(String.valueOf(floor));
+
+    // Setup labels
+    directionsList.getItems().clear();
+    directionsList.getItems().addAll(currSegment.getDirections());
+
+    currCanvas.draw(floor);
   }
 
   public ArrayList<Pair<Node, Label>> texDirectionsWithLabels(
