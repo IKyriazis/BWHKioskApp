@@ -150,26 +150,7 @@ public class NodeDialogController implements IDialogController {
     String team = ((String) teamBox.getValue());
     int newX = Integer.parseInt(xField.getText());
     int newY = Integer.parseInt(yField.getText());
-    String nodeID = "";
-
-      // Get the Team Assigned
-      String teamChar = String.valueOf(team.charAt(team.length() - 1));
-      // Gets the String of the nodeType
-      String nodeTypeS = nodeType.toString();
-      // Gets the count of the number of nodes of a certain type
-      ObservableList<Node> graphList = graph.getNodeObservableList();
-      int count =
-          (int)
-              graphList.stream()
-                  .filter(
-                      node ->
-                          node.getType().toString().equals(nodeTypeS) && node.getFloor() == floor)
-                  .count();
-      String countString = String.format("%03d", count);
-      // Gets the floor number
-      String floorString = String.format("%02d", floor);
-      // Team Assigned, Node Type, number of that type: 3 integers, Floor padded with 0's
-      nodeID = teamChar + nodeTypeS + countString + floorString;
+    String nodeID = createNodeID(team, nodeType, floor);
 
     Node newNode =
         new Node(nodeID, newX, newY, floor, building, nodeType, longName, shortName, team);
@@ -200,6 +181,28 @@ public class NodeDialogController implements IDialogController {
     }
 
     dialog.close();
+  }
+
+  private String createNodeID(String teamName, NodeType nodeType, int floor) {
+    String nodeID = "";
+    // Get the Team Assigned
+    String teamChar = String.valueOf(teamName.charAt(teamName.length() - 1));
+    // Gets the String of the nodeType
+    String nodeTypeS = nodeType.toString();
+    // Gets the count of the number of nodes of a certain type
+    ObservableList<Node> graphList = graph.getNodeObservableList();
+    int count =
+        (int)
+            graphList.stream()
+                .filter(
+                    node -> node.getType().toString().equals(nodeTypeS) && node.getFloor() == floor)
+                .count();
+    String countString = String.format("%03d", count);
+    // Gets the floor number
+    String floorString = String.format("%02d", floor);
+    // Team Assigned, Node Type, number of that type: 3 integers, Floor padded with 0's
+    nodeID = teamChar + nodeTypeS + countString + floorString;
+    return nodeID;
   }
 
   @Override
