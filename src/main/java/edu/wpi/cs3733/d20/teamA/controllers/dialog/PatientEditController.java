@@ -9,7 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class PatientEditController extends AbstractController implements IDialogController {
@@ -87,7 +87,7 @@ public class PatientEditController extends AbstractController implements IDialog
     doneButton.setOnAction(this::isDone);
 
     // Set button icon
-    doneButton.setGraphic(new FontIcon(FontAwesomeRegular.CHECK_CIRCLE));
+    doneButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
     txtFirstName.setLabelFloat(true);
     txtLastName.setLabelFloat(true);
