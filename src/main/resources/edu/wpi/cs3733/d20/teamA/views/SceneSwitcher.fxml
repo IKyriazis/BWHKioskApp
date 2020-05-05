@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -36,7 +37,7 @@
       </AnchorPane>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../stylesheet.css">
          <top>
-            <GridPane minHeight="75.0" style="-fx-background-color: -primary-color-dark;" BorderPane.alignment="CENTER">
+            <GridPane minHeight="75.0" prefHeight="75.0" prefWidth="1332.0" style="-fx-background-color: -primary-color-dark;" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -48,9 +49,9 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <GridPane GridPane.columnIndex="4">
+                  <GridPane prefHeight="75.0" prefWidth="330.0" GridPane.columnIndex="4">
                     <columnConstraints>
-                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -58,6 +59,9 @@
                      <children>
                         <Label fx:id="tempLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" />
                      </children>
+                     <padding>
+                        <Insets right="35.0" />
+                     </padding>
                   </GridPane>
                   <JFXButton fx:id="aboutBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#openAbout" style="-fx-background-color: transparent;" styleClass="chonky-text" GridPane.columnIndex="3" />
                   <ImageView fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.vgrow="NEVER">
@@ -98,7 +102,22 @@
                   </GridPane>
                   <AnchorPane pickOnBounds="false" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <JFXButton fx:id="backButton" layoutX="85.0" layoutY="54.0" onAction="#pressedBack" styleClass="heading-text" visible="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0" />
+                        <HBox layoutX="8.0" layoutY="8.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                           <children>
+                              <JFXButton fx:id="backButton" onAction="#pressedBack">
+                                 <styleClass>
+                                    <String fx:value="heading-text" />
+                                    <String fx:value="button-rounded-left" />
+                                 </styleClass>
+                              </JFXButton>
+                              <JFXButton fx:id="homeButton" onAction="#pressedHome">
+                                 <styleClass>
+                                    <String fx:value="heading-text" />
+                                    <String fx:value="button-rounded-right" />
+                                 </styleClass>
+                              </JFXButton>
+                           </children>
+                        </HBox>
                         <AnchorPane fx:id="signInPane" layoutX="1186.0" layoutY="8.0" pickOnBounds="false" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                            <children>
                               <JFXButton fx:id="signInButton" onAction="#pressedSignIn" styleClass="heading-text" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />

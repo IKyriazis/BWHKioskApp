@@ -22,8 +22,8 @@ public class SettingsController extends AbstractNavPaneController {
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.USER_PLUS),
-        "views/Settings/CreateAcct.fxml",
-        "Create\nAccount");
+        "views/ViewEmployees.fxml",
+        "Manage\nEmployees");
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.BULLHORN),

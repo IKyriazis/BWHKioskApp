@@ -64,7 +64,7 @@ public class MedicineRequestController extends AbstractRequestController {
 
     String l =
         serviceDatabase.addServiceReq(
-            ServiceType.MEDICINE, location.getLongName(), descriptionArea.getText(), additional);
+            ServiceType.MEDICINE, location.toString(), descriptionArea.getText(), additional);
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {

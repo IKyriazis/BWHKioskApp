@@ -6,6 +6,7 @@ import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.equipreq.EquipRequest;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -48,9 +49,10 @@ public class TestEquipReqDatabase {
   @Test
   public void testAddReq() {
     serviceDatabase.removeAll();
-    graphDatabase.removeAll();
+    graphDatabase.removeAll(Campus.FAULKNER);
     Assertions.assertEquals(0, serviceDatabase.getSize());
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     employeeDatabase.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER);
     serviceDatabase.addServiceReq(ServiceType.EQUIPMENT, "balogna", null, "item|2|High");
     Assertions.assertEquals(1, serviceDatabase.getSize());
@@ -60,9 +62,10 @@ public class TestEquipReqDatabase {
   @Test
   public void testDelReq() {
     serviceDatabase.removeAll();
-    graphDatabase.removeAll();
+    graphDatabase.removeAll(Campus.FAULKNER);
     Assertions.assertEquals(0, serviceDatabase.getSize());
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     employeeDatabase.addEmployee("bacd", "ray", "jay", "Password54", EmployeeTitle.INTERPRETER);
     String a = serviceDatabase.addServiceReq(ServiceType.EQUIPMENT, "balogna", null, "item|2|High");
     Assertions.assertEquals(1, serviceDatabase.getSize());
