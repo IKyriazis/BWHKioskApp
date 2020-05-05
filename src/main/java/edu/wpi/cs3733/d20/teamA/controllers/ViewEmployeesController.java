@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.EmployeeEditController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
@@ -19,20 +20,20 @@ public class ViewEmployeesController extends AbstractController {
   @FXML private GridPane empList;
   @FXML private StackPane empPane;
   @FXML private Label img;
+  @FXML private JFXButton addBtn;
+  @FXML private JFXButton editBtn;
+  @FXML private JFXButton deleteBtn;
+
   private SimpleTableView<Employee> tblEmployees;
 
   public void initialize() {
     img.setGraphic(new FontIcon(FontAwesomeSolid.USER));
 
-    /*
-        // Set icon
-        addBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_SQUARE));
-        editBtn.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_SQUARE));
-        deleteBtn.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_SQUARE));
-        infoBtn.setGraphic(new FontIcon(FontAwesomeSolid.QUESTION));
+    // Set icon
+    addBtn.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
+    editBtn.setGraphic(new FontIcon(FontAwesomeSolid.EDIT));
+    deleteBtn.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
 
-
-    */
     empPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
         event -> {
@@ -78,7 +79,7 @@ public class ViewEmployeesController extends AbstractController {
     DialogUtil.complexDialog(
         "Add Employee",
         "views/AddEmployeePopup.fxml",
-        false,
+        true,
         event -> update(),
         new EmployeeEditController());
   }
@@ -86,11 +87,11 @@ public class ViewEmployeesController extends AbstractController {
   @FXML
   public void editBtn(ActionEvent actionEvent) {
     DialogUtil.complexDialog(
-            "Edit Employee",
-            "views/EditEmployeePopup.fxml",
-            false,
-            event -> update(),
-            new EmployeeEditController());
+        "Edit Employee",
+        "views/EditEmployeePopup.fxml",
+        true,
+        event -> update(),
+        new EmployeeEditController());
   }
 
   @FXML
