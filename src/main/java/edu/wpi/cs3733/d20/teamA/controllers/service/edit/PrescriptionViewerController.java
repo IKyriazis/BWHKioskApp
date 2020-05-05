@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.service.edit;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -60,6 +61,9 @@ public class PrescriptionViewerController extends AbstractViewerController {
 
     // Fill additional
     serviceDatabase.setAdditional(req.getReqID(), newAdditional);
+
+    // Fire tab switch event forcing table to update
+    headerLabel.fireEvent(new TabSwitchEvent());
   }
 
   @Override

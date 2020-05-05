@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.time.LocalTime;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -60,6 +61,9 @@ public class MedicineViewerController extends AbstractViewerController {
 
     // Fill additional
     serviceDatabase.setAdditional(req.getReqID(), newAdditional);
+
+    // Fire tab switch event forcing table to update
+    headerLabel.fireEvent(new TabSwitchEvent());
   }
 
   @Override
