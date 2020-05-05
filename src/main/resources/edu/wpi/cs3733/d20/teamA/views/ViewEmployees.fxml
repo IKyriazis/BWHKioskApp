@@ -27,6 +27,7 @@
                      <children>
                         <JFXButton fx:id="addBtn" buttonType="RAISED" onAction="#addBtn" prefWidth="100.0" text="Add" />
                         <JFXButton fx:id="deleteBtn" buttonType="RAISED" onAction="#deleteBtn" prefWidth="100.0" text="Delete" />
+                        <JFXButton onMouseClicked="#qrCode" text="Show QR" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">

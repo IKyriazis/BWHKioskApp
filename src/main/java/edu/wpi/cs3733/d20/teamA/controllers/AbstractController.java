@@ -12,6 +12,8 @@ import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.util.Optional;
 
@@ -79,6 +81,20 @@ public abstract class AbstractController {
       }
     } catch (Exception e) {
       comPort.closePort();
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
+    try {
+      return "otpauth://totp/"
+          + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
+          + "?secret="
+          + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
+          + "&issuer="
+          + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
+    } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
       return null;
     }
