@@ -316,7 +316,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "UPDATE Employees SET title = '"
+                  "UPDATE Employees SET nameFirst = '"
                       + newFirst
                       + "' WHERE username = '"
                       + username
@@ -335,7 +335,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement(
-                  "UPDATE Employees SET title = '"
+                  "UPDATE Employees SET nameLast = '"
                       + newLast
                       + "' WHERE username = '"
                       + username
@@ -347,6 +347,28 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       e.printStackTrace();
       return false;
     }
+  }
+
+  public synchronized boolean editUsername(String EmployeeID, String username) {
+    if (uNameExists(username)) {
+      try {
+        PreparedStatement pstmt =
+            getConnection()
+                .prepareStatement(
+                    "UPDATE Employees SET username = '"
+                        + username
+                        + "' WHERE employeeID = '"
+                        + EmployeeID
+                        + "'");
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+      }
+    }
+    return false;
   }
 
   public synchronized boolean logIn(String username, String enteredPass) {
