@@ -5,9 +5,13 @@ import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.reservation.Reservation;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
+import java.util.Locale;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -57,6 +61,8 @@ public class ReservationController extends AbstractController {
             "Reflection Room 3");
 
     datePicker.setValue(LocalDate.now());
+
+    myReservationsCheck.setSelected(false);
   }
 
   private Calendar makeCalendar(LocalDate date, LocalTime time) {
@@ -64,7 +70,8 @@ public class ReservationController extends AbstractController {
     calendar.set(Calendar.YEAR, date.getYear());
     calendar.set(Calendar.MONTH, date.getMonthValue() - 1);
     calendar.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());
-    calendar.set(Calendar.HOUR, time.getHour());
+    int i = time.getHour();
+    calendar.set(Calendar.HOUR_OF_DAY, time.getHour());
     calendar.set(Calendar.MINUTE, time.getMinute());
     calendar.set(Calendar.SECOND, 0);
     calendar.set(Calendar.MILLISECOND, 0);
@@ -101,19 +108,61 @@ public class ReservationController extends AbstractController {
       DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Please select a future time");
       return;
     }
-    if (reservationDatabase.addRes(calendar1, calendar2, room)) {
-      update();
-      DialogUtil.simpleInfoDialog(dialogStackPane, "Thank You", "Request Made");
+    if (checkTimes(room, calendar1, calendar2)) {
+      if (reservationDatabase.addRes(calendar1, calendar2, room)) {
+        update();
+        DialogUtil.simpleInfoDialog(dialogStackPane, "Thank You", "Request Made");
+        datePicker.setValue(LocalDate.now());
+        startPicker.setValue(null);
+        endPicker.setValue(null);
+        roomBox.setValue(null);
+        return;
+      } else {
+        DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot submit request");
+        return;
+      }
     } else {
-      DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot submit request");
+      DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Overlapping Times");
+      return;
+    }
+  }
+
+  private boolean checkTimes(String room, Calendar start, Calendar end) {
+    ObservableList<Reservation> theList = reservationDatabase.getObservableListByRoom(room);
+    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+    Calendar calendar1 = Calendar.getInstance();
+    Calendar calendar2 = Calendar.getInstance();
+    try {
+      for (int i = 0; i < theList.size(); i++) {
+        calendar1.setTime(sdf.parse(theList.get(i).getStartTime()));
+        calendar2.setTime(sdf.parse(theList.get(i).getEndTime()));
+        long c1 = calendar1.getTimeInMillis();
+        long c2 = calendar2.getTimeInMillis();
+        long sMil = start.getTimeInMillis();
+        long eMil = end.getTimeInMillis();
+        if (c1 >= sMil - 43200000 && c1 <= sMil) {
+          if (c2 >= sMil) {
+            return false;
+          }
+        } else if (c1 <= eMil && c1 >= sMil) {
+          return false;
+        }
+      }
+      return true;
+    } catch (ParseException e) {
+      e.printStackTrace();
+      return false;
     }
   }
 
   public void update() {
     try {
       tblView.clear();
-
-      tblView.add(reservationDatabase.getObservableList());
+      if (myReservationsCheck.selectedProperty().get()) {
+        tblView.add(reservationDatabase.getObservableListByUser());
+      } else {
+        tblView.add(reservationDatabase.getObservableList());
+      }
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(

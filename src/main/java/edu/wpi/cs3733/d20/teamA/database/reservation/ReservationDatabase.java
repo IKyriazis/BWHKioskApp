@@ -272,4 +272,68 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
       return null;
     }
   }
+
+  public ObservableList<Reservation> getObservableListByRoom(String room) {
+    ObservableList<Reservation> observableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Reservation WHERE areaReserved = ?");
+      pstmt.setString(1, room);
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String emp = rset.getString("requestedBy");
+        Timestamp startT = rset.getTimestamp("startTime");
+        Timestamp endT = rset.getTimestamp("endTime");
+        String loc = rset.getString("areaReserved");
+        Calendar start = Calendar.getInstance();
+        start.setTimeInMillis(startT.getTime());
+        Calendar end = Calendar.getInstance();
+        end.setTimeInMillis(endT.getTime());
+        Calendar check = Calendar.getInstance();
+        if (end.compareTo(check) >= 0) {
+          observableList.add(new Reservation(emp, start, end, loc));
+        } else {
+          deleteRes(start, loc);
+        }
+      }
+      rset.close();
+      pstmt.close();
+      return observableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public ObservableList<Reservation> getObservableListByUser() {
+    ObservableList<Reservation> observableList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT * FROM Reservation WHERE requestedBy = ?");
+      pstmt.setString(1, getLoggedIn().getUsername());
+      ResultSet rset = pstmt.executeQuery();
+      while (rset.next()) {
+        String emp = rset.getString("requestedBy");
+        Timestamp startT = rset.getTimestamp("startTime");
+        Timestamp endT = rset.getTimestamp("endTime");
+        String loc = rset.getString("areaReserved");
+        Calendar start = Calendar.getInstance();
+        start.setTimeInMillis(startT.getTime());
+        Calendar end = Calendar.getInstance();
+        end.setTimeInMillis(endT.getTime());
+        Calendar check = Calendar.getInstance();
+        if (end.compareTo(check) >= 0) {
+          observableList.add(new Reservation(emp, start, end, loc));
+        } else {
+          deleteRes(start, loc);
+        }
+      }
+      rset.close();
+      pstmt.close();
+      return observableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
 }
