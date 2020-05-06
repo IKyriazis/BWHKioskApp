@@ -58,7 +58,7 @@
                               <Font size="24.0" />
                            </font>
                         </JFXButton>
-                        <JFXComboBox fx:id="comboLocation" prefWidth="200.0" />
+                        <JFXComboBox fx:id="comboLocation" prefWidth="200.0" promptText="Destination" />
                         <JFXButton fx:id="trackButton" buttonType="RAISED" minWidth="200.0" onAction="#trackOrder" text="Track Order" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="24.0" />
