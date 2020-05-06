@@ -43,46 +43,68 @@ public class ServiceHomeController extends AbstractNavPaneController {
 
     // Services available to employees
     if (eDB.getLoggedIn() != null) {
+
+      String employeeTitle = eDB.getLoggedIn().getTitle();
+      System.out.println(employeeTitle);
+      if (employeeTitle.equals("admin")
+          || employeeTitle.equals("doctor")
+          || employeeTitle.equals("nurse")) {
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.MEDKIT),
+            "views/service/MedicineRequest.fxml",
+            "Medicine\nDelivery");
+
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.USER),
+            "views/PatientsInfoService.fxml",
+            "Patient\nInfo");
+
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.PILLS),
+            "views/service/PrescriptionRequest.fxml",
+            "Prescriptions");
+      }
+
       addButton(
           buttonPane,
           new FontIcon(FontAwesomeSolid.BROOM),
           "views/service/JanitorRequest.fxml",
           "Janitorial");
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.MEDKIT),
-          "views/service/MedicineRequest.fxml",
-          "Medicine\nDelivery");
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.STETHOSCOPE),
-          "views/service/EquipRequest.fxml",
-          "Equipment\nRequest");
-      addButton(
-          buttonPane,
-          new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
-          "views/service/LaundryRequest.fxml",
-          "Laundry");
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.LAPTOP),
-          "views/service/ITRequest.fxml",
-          "Tech\nSupport");
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.USER),
-          "views/PatientsInfoService.fxml",
-          "Patient\nInfo");
+
+      if (!employeeTitle.equals("retail")) {
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.STETHOSCOPE),
+            "views/service/EquipRequest.fxml",
+            "Equipment\nRequest");
+
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.LAPTOP),
+            "views/service/ITRequest.fxml",
+            "Tech\nSupport");
+      }
+
+      if (employeeTitle.equals("admin")
+          || employeeTitle.equals("doctor")
+          || employeeTitle.equals("nurse")
+          || employeeTitle.equals("janitor")) {
+        addButton(
+            buttonPane,
+            new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
+            "views/service/LaundryRequest.fxml",
+            "Laundry");
+      }
+
       addButton(
           buttonPane,
           new FontIcon(FontAwesomeSolid.GLOBE),
           "views/service/InterpreterRequest.fxml",
           "Interpreters");
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.PILLS),
-          "views/service/PrescriptionRequest.fxml",
-          "Prescriptions");
+
       addButton(
           buttonPane,
           new FontIcon(FontAwesomeSolid.LIST),
