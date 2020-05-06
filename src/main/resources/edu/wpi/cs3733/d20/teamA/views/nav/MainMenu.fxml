@@ -19,7 +19,7 @@
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <JFXButton fx:id="transitButton" contentDisplay="CENTER" styleClass="main-menu-button" GridPane.columnIndex="1">
+      <JFXButton fx:id="transitButton" contentDisplay="CENTER" styleClass="main-menu-button" GridPane.columnIndex="2">
          <font>
             <Font size="96.0" />
          </font>
@@ -29,14 +29,14 @@
             <Font size="96.0" />
          </font>
       </JFXButton>
-      <JFXButton fx:id="serviceButton" contentDisplay="CENTER" styleClass="main-menu-button" GridPane.columnIndex="2">
+      <JFXButton fx:id="serviceButton" contentDisplay="CENTER" styleClass="main-menu-button" GridPane.columnIndex="1">
          <font>
             <Font size="96.0" />
          </font>
       </JFXButton>
       <Label styleClass="main-menu-label" text="Map" GridPane.rowIndex="1" />
-      <Label styleClass="main-menu-label" text="Announcements" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label styleClass="main-menu-label" text="Services" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Label styleClass="main-menu-label" text="Announcements" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Label styleClass="main-menu-label" text="Services" GridPane.columnIndex="1" GridPane.rowIndex="1" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
