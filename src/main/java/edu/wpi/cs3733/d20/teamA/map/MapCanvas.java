@@ -276,15 +276,18 @@ public class MapCanvas extends Canvas {
 
         // Draw all edges
         floorNodes.forEach(
-            node -> node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true)));
+            node ->
+                node.getEdges()
+                    .values()
+                    .forEach(edge -> drawEdge(edge, Color.rgb(92, 107, 192), true)));
 
-        // Draw nodes
+        // Draw nodes 5C 6B C0, 42 A5 F5
         floorNodes.forEach(
             node -> {
               if (highlights.contains(node)) {
                 drawNode(node, highlightColor);
               } else {
-                drawNode(node, Color.BLACK);
+                drawNode(node, Color.rgb(66, 165, 245));
               }
             });
       } catch (Exception e) {
@@ -369,7 +372,7 @@ public class MapCanvas extends Canvas {
   private void drawPath(int floor) {
 
     for (Edge edge : pathEdges) {
-      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.BLACK, false);
+      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.rgb(92, 107, 192), false);
     }
 
     for (Node node : pathNodes) {
