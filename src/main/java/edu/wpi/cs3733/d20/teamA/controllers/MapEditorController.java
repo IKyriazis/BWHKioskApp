@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.BoundingBox;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -266,6 +267,7 @@ public class MapEditorController {
 
               Label infoLabel = new Label(getNodeInfo(selections.get(0)));
               infoLabel.setStyle("-fx-font-size: 18pt");
+              infoLabel.setPadding(new Insets(5, 5, 5, 5));
               buttonBox.getChildren().add(infoLabel);
             });
 
