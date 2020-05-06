@@ -34,7 +34,6 @@ public class SimpleMapController extends AbstractController {
   @FXML private Pane gluonMapPane;
 
   @FXML private JFXButton goButton;
-  @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton dirBackButton;
   @FXML private JFXButton dirNextButton;
@@ -105,18 +104,29 @@ public class SimpleMapController extends AbstractController {
 
     // Setup directions drawer
     directionsDrawer.setSidePane(directionsBox);
-    directionsDrawer.setOnDrawerClosed(event -> directionsDrawer.setMouseTransparent(true));
+    directionsDrawer.setOnDrawerClosed(
+        event -> {
+          directionsDrawer.setMouseTransparent(true);
+          directionsDrawer.setVisible(false);
+          if (textDirectionsDrawer.isOpened()) {
+            textDirectionsDrawer.close();
+          }
+        });
     directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
 
     // Setup text directions drawer
     textDirectionsDrawer.setSidePane(directionsPane);
-    textDirectionsDrawer.setOnDrawerClosed(event -> textDirectionsDrawer.setMouseTransparent(true));
+    textDirectionsDrawer.setOnDrawerClosed(
+        event -> {
+          textDirectionsDrawer.setMouseTransparent(true);
+          textDirectionsDrawer.setVisible(false);
+          clearPath();
+        });
     textDirectionsDrawer.setOnDrawerOpened(
         event -> textDirectionsDrawer.setMouseTransparent(false));
 
     // Set button icons
     goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
-    swapBtn.setGraphic(new FontIcon((FontAwesomeSolid.EXCHANGE_ALT)));
     directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
     // qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
     dirBackButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_LEFT));
@@ -160,9 +170,14 @@ public class SimpleMapController extends AbstractController {
 
   @FXML
   public void toggleSearch() {
+    if (directionsDrawer.isClosed()) {
+      directionsDrawer.setVisible(true);
+    }
+
     directionsDrawer.toggle();
     if (textDirectionsDrawer.isOpened()) {
-      textDirectionsDrawer.toggle();
+      textDirectionsDrawer.close();
+      clearPath();
     }
   }
 
@@ -205,6 +220,7 @@ public class SimpleMapController extends AbstractController {
         pathSegments.add(PathSegment.calcInterSegment(Campus.MAIN));
 
         // Path from main exit node to main dest
+        path.setGraph(Graph.getInstance(Campus.MAIN));
         path.findPath(Graph.getInstance(Campus.MAIN).getNodeByID(MAIN_EXIT_NODE), end);
         pathSegments.addAll(
             PathSegment.calcPathSegments(
@@ -222,6 +238,7 @@ public class SimpleMapController extends AbstractController {
         pathSegments.add(PathSegment.calcInterSegment(Campus.FAULKNER));
 
         // Path from main exit node to main dest
+        path.setGraph(Graph.getInstance(Campus.FAULKNER));
         path.findPath(Graph.getInstance(Campus.FAULKNER).getNodeByID(FAULKNER_EXIT_NODE), end);
         pathSegments.addAll(
             PathSegment.calcPathSegments(
@@ -235,6 +252,7 @@ public class SimpleMapController extends AbstractController {
 
         if (textDirectionsDrawer.isClosed()) {
           textDirectionsDrawer.open();
+          textDirectionsDrawer.setVisible(true);
         }
       } else {
         DialogUtil.simpleInfoDialog(
@@ -246,17 +264,6 @@ public class SimpleMapController extends AbstractController {
           textDirectionsDrawer.close();
         }
       }
-    }
-  }
-
-  @FXML
-  public void pressedSwap() {
-    Node start = getSelectedNode(startingLocationBox);
-    Node end = getSelectedNode(destinationBox);
-
-    if ((start != null) && (end != null)) {
-      startingLocationBox.setValue(end);
-      destinationBox.setValue(start);
     }
   }
 
@@ -285,9 +292,7 @@ public class SimpleMapController extends AbstractController {
     return graph;
   }
 
-  public void pressedQRButton() {
-
-  }
+  public void pressedQRButton() {}
 
   @FXML
   public void floorUp() {
@@ -320,6 +325,26 @@ public class SimpleMapController extends AbstractController {
     updateDisplayedPath();
   }
 
+  public void clearPath() {
+    if (currCanvas == mainCanvas) {
+      faulknerCanvas.setVisible(false);
+    } else {
+      mainCanvas.setVisible(false);
+    }
+    mainCanvas.disablePathAnimation();
+    mainCanvas.clearPath();
+
+    faulknerCanvas.disablePathAnimation();
+    faulknerCanvas.clearPath();
+
+    if (gluonMap.isVisible()) {
+      gluonMap.setVisible(false);
+      currCanvas.setVisible(true);
+    }
+
+    currCanvas.draw(floor);
+  }
+
   public void updateDisplayedPath() {
     PathSegment currSegment = pathSegments.get(currPathSegment);
     // Set canvas
@@ -333,6 +358,8 @@ public class SimpleMapController extends AbstractController {
       currCanvas.setVisible(true);
       currCanvas.enablePathAnimation();
       currCanvas.animatePath(currSegment.getFloor());
+
+      faulknerRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.MAIN) {
       gluonMap.setVisible(false);
 
@@ -343,6 +370,8 @@ public class SimpleMapController extends AbstractController {
       currCanvas.setVisible(true);
       currCanvas.enablePathAnimation();
       currCanvas.animatePath(currSegment.getFloor());
+
+      mainRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.INTER) {
       currCanvas.setVisible(false);
       currCanvas.disablePathAnimation();
