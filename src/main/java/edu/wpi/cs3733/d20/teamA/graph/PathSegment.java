@@ -34,6 +34,10 @@ public class PathSegment {
     return campus;
   }
 
+  public void removeLast() {
+    directions.remove(directions.size() - 1);
+  }
+
   public static ArrayList<PathSegment> calcPathSegments(ArrayList<Pair<Node, Label>> pairs) {
     ArrayList<PathSegment> segments = new ArrayList<>();
     if (pairs.isEmpty()) {

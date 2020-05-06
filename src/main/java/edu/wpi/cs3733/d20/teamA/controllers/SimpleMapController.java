@@ -216,6 +216,9 @@ public class SimpleMapController extends AbstractController {
                 texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
         faulknerCanvas.setPath(path);
 
+        // Remove dest on this graph
+        pathSegments.get(pathSegments.size() - 1).removeLast();
+
         // Insert inter segment
         pathSegments.add(PathSegment.calcInterSegment(Campus.MAIN));
 
@@ -233,6 +236,9 @@ public class SimpleMapController extends AbstractController {
             PathSegment.calcPathSegments(
                 texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
         faulknerCanvas.setPath(path);
+
+        // Remove dest on this graph
+        pathSegments.get(pathSegments.size() - 1).removeLast();
 
         // Insert inter segment
         pathSegments.add(PathSegment.calcInterSegment(Campus.FAULKNER));
