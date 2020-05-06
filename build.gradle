@@ -7,7 +7,6 @@ plugins {
     id 'com.diffplug.gradle.spotless' version '3.27.1'
     id 'org.openjfx.javafxplugin' version '0.0.8'
     id "io.freefair.lombok" version "5.0.0-rc6"
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
 }
 
 mainClassName = 'edu.wpi.cs3733.d20.teamA.Main'
