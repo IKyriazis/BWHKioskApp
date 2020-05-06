@@ -34,7 +34,6 @@ public class SimpleMapController extends AbstractController {
   @FXML private Pane gluonMapPane;
 
   @FXML private JFXButton goButton;
-  @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton dirBackButton;
   @FXML private JFXButton dirNextButton;
@@ -77,16 +76,7 @@ public class SimpleMapController extends AbstractController {
     gluonMapPane.getChildren().add(gluonMap);
 
     directionsDrawer.close();
-    directionsDrawer.setOnDrawerClosed(
-        event -> {
-          directionsDrawer.setVisible(false);
-        });
-
     textDirectionsDrawer.close();
-    textDirectionsDrawer.setOnDrawerClosed(
-        event -> {
-          textDirectionsDrawer.setVisible(false);
-        });
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
     currCanvas = faulknerCanvas = new MapCanvas(true, Campus.FAULKNER);
@@ -114,18 +104,29 @@ public class SimpleMapController extends AbstractController {
 
     // Setup directions drawer
     directionsDrawer.setSidePane(directionsBox);
-    directionsDrawer.setOnDrawerClosed(event -> directionsDrawer.setMouseTransparent(true));
+    directionsDrawer.setOnDrawerClosed(
+        event -> {
+          directionsDrawer.setMouseTransparent(true);
+          directionsDrawer.setVisible(false);
+          if (textDirectionsDrawer.isOpened()) {
+            textDirectionsDrawer.close();
+          }
+        });
     directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
 
     // Setup text directions drawer
     textDirectionsDrawer.setSidePane(directionsPane);
-    textDirectionsDrawer.setOnDrawerClosed(event -> textDirectionsDrawer.setMouseTransparent(true));
+    textDirectionsDrawer.setOnDrawerClosed(
+        event -> {
+          textDirectionsDrawer.setMouseTransparent(true);
+          textDirectionsDrawer.setVisible(false);
+          clearPath();
+        });
     textDirectionsDrawer.setOnDrawerOpened(
         event -> textDirectionsDrawer.setMouseTransparent(false));
 
     // Set button icons
     goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
-    swapBtn.setGraphic(new FontIcon((FontAwesomeSolid.EXCHANGE_ALT)));
     directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
     // qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
     dirBackButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_LEFT));
@@ -251,6 +252,7 @@ public class SimpleMapController extends AbstractController {
 
         if (textDirectionsDrawer.isClosed()) {
           textDirectionsDrawer.open();
+          textDirectionsDrawer.setVisible(true);
         }
       } else {
         DialogUtil.simpleInfoDialog(
@@ -262,17 +264,6 @@ public class SimpleMapController extends AbstractController {
           textDirectionsDrawer.close();
         }
       }
-    }
-  }
-
-  @FXML
-  public void pressedSwap() {
-    Node start = getSelectedNode(startingLocationBox);
-    Node end = getSelectedNode(destinationBox);
-
-    if ((start != null) && (end != null)) {
-      startingLocationBox.setValue(end);
-      destinationBox.setValue(start);
     }
   }
 
