@@ -92,7 +92,7 @@ dependencies {
             'com.gluonhq.attach:position:4.0.7',
 
             //Flower API
-            group: 'edu.wpi.cs3733.d20.teamA', name: 'TeamAFlowerRequest', version:'1.0.1'
+            group: 'edu.wpi.cs3733.d20.teamA', name: 'TeamAFlowerRequest', version:'1.0.2'
     )
     //compile files("src/main/resources/edu/wpi/cs3733/d20/teamA/APIFlower.jar")
 
