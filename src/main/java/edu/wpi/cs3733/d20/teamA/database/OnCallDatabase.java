@@ -47,7 +47,7 @@ public class OnCallDatabase extends Database implements IDatabase {
     // Create the graph tables
 
     return helperPrepared(
-        "CREATE TABLE OnCall (username Varchar(25) PRIMARY KEY, status Varchar(9), CONSTRAINT FK_OCID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT CK_ST CHECK (status in('Available', 'Busy', 'Out')))");
+        "CREATE TABLE OnCall (username Varchar(25) PRIMARY KEY, status Varchar(9), CONSTRAINT FK_OCID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT CK_ST CHECK (status in('Available', 'Busy')))");
   }
 
   @Override
@@ -109,23 +109,43 @@ public class OnCallDatabase extends Database implements IDatabase {
     }
   }
 
-  public synchronized boolean updateStatus(String username, String newStatus) {
-    try {
-      PreparedStatement pstmt =
-          getConnection()
-              .prepareStatement(
-                  "UPDATE OnCall SET status = '"
-                      + newStatus
-                      + "' WHERE username = '"
-                      + username
-                      + "'");
-      pstmt.executeUpdate();
-      pstmt.close();
-      return true;
-    } catch (SQLException e) {
-      e.printStackTrace();
-      return false;
+  public synchronized boolean updateStatus(String username) {
+
+    String oldStatus = getStatus(username);
+
+    if(oldStatus == "Available"){
+      try {
+        PreparedStatement pstmt =
+                getConnection()
+                        .prepareStatement(
+                                "UPDATE OnCall SET status = 'Busy' WHERE username = '"
+                                        + username
+                                        + "'");
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+      }
+    } else if(oldStatus == "Busy"){
+      try {
+        PreparedStatement pstmt =
+                getConnection()
+                        .prepareStatement(
+                                "UPDATE OnCall SET status = 'Available' WHERE username = '"
+                                        + username
+                                        + "'");
+        pstmt.executeUpdate();
+        pstmt.close();
+        return true;
+      } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+      }
     }
+
+    return false;
   }
 
   public synchronized boolean signOntoShift(String username) {

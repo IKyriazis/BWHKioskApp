@@ -95,6 +95,11 @@ public class ServiceHomeController extends AbstractNavPaneController {
           new FontIcon(FontAwesomeSolid.LIST),
           "views/service/RequestViewer.fxml",
           "Service\nRequests");
+      addButton(
+              buttonPane,
+              new FontIcon(FontAwesomeSolid.PAGER),
+              "views/OnCallList.fxml",
+              "Employees\nOn Call");
     }
     equalizeButtonGrid(buttonPane);
   }
