@@ -75,7 +75,7 @@ public class MedicineRequestController extends AbstractRequestController {
     patientName.clear();
     doctorBox.getSelectionModel().clearSelection();
     medicineField.clear();
-    locationBox.getSelectionModel().clearSelection();
+    locationBox.setValue(null);
     administerTime.getEditor().clear();
     descriptionArea.clear();
   }

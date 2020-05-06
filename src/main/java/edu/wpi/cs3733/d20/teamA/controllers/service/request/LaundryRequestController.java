@@ -50,8 +50,7 @@ public class LaundryRequestController extends AbstractRequestController {
       DialogUtil.simpleInfoDialog(
           "No Room Selected", "Please select a room in the dropdown and try again");
     }
-    clearNodeBox(nodeBox, submitButton);
-    setupNodeBox(nodeBox, submitButton);
+    nodeBox.setValue(null);
     descriptionArea.clear();
   }
 }
