@@ -1,22 +1,17 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
-import de.jensd.fx.glyphs.materialicons.MaterialIcon;
-import de.jensd.fx.glyphs.materialicons.MaterialIconView;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.PatientEditController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.DialogMaker;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
-import edu.wpi.cs3733.d20.teamA.database.Patient;
+import edu.wpi.cs3733.d20.teamA.database.patient.Patient;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
-import java.awt.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TreeTableRow;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class PatientInfoController extends AbstractController {
   @FXML private Label lblTitle;
@@ -26,44 +21,24 @@ public class PatientInfoController extends AbstractController {
 
   @FXML private SimpleTableView<Patient> patientTable;
 
-  @FXML private AnchorPane patientPane;
+  @FXML private GridPane patientPane;
   @FXML private StackPane dialogStackPane;
   @FXML private GridPane patientTablePane;
 
   public PatientInfoController() {}
 
   public void initialize() {
-    if (patientDatabase.getSizePatients() == -1) {
-      patientDatabase.dropTables();
-      patientDatabase.createTables();
-      // patientDatabase.readPatientCSV();
-    } else if (patientDatabase.getSizePatients() == 0) {
-      patientDatabase.removeAllPatients();
-      // patientDatabase.readFlowersCSV();
-    }
 
     // Setup icons
-    lblTitle.setGraphic(new MaterialIconView(MaterialIcon.PERSON_ADD));
+    lblTitle.setGraphic(new FontIcon(FontAwesomeSolid.USER));
 
-    addPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PLUS_SQUARE));
-    editPatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.PENCIL_SQUARE));
-    deletePatientButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.MINUS_SQUARE));
+    addPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.PLUS_CIRCLE));
+    editPatientButton.setGraphic(new FontIcon(FontAwesomeSolid.EDIT));
+    deletePatientButton.setGraphic(new FontIcon(FontAwesomeSolid.MINUS_CIRCLE));
 
     // Setup Table
-    patientTable = new SimpleTableView<>(new Patient(0, "", "", "", ""), 80.0);
+    patientTable = new SimpleTableView<>(new Patient("", "", "", "", ""), 80.0);
     patientTablePane.getChildren().add(patientTable);
-    // Double click a row in the order table to bring up the dialog for that order
-    patientTable.setRowFactory(
-        tv -> {
-          TreeTableRow<Patient> row = new TreeTableRow<>();
-          row.setOnMouseClicked(
-              event -> {
-                if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                  editPatient();
-                }
-              });
-          return row;
-        });
 
     // Add tab switch update listener
     patientPane.addEventHandler(
@@ -80,65 +55,60 @@ public class PatientInfoController extends AbstractController {
     try {
       patientTable.clear();
 
-      patientTable.add(patientDatabase.patientOl());
+      patientTable.add(patientDatabase.getObservableList());
     } catch (Exception e) {
       e.printStackTrace();
-      // DialogUtil.simpleErrorDialog(
-      //       dialogStackPane, "Error", "Failed to update flower and/or order tables");
+      DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Failed to update patient");
     }
   }
 
   public void addPatient() {
-    DialogUtil.complexDialog(
-        dialogStackPane,
-        "Add Patient",
-        "views/AddPatientPopup.fxml",
-        false,
-        event -> update(),
-        new PatientEditController());
+    DialogMaker maker = new DialogMaker();
+    maker.makePatientDialog(this);
+    /*DialogUtil.complexDialog(
+       "Add Patient",
+       "views/AddPatientPopup.fxml",
+       true,
+       event -> update(),
+       new PatientEditController());
+
+    */
   }
 
   public void editPatient() {
     Patient patient = patientTable.getSelected();
     if (patient != null) {
-      // Figure out whether any outstanding orders depend on this flower type, in which case we
-      // can't change the name / type
-
+      DialogMaker maker = new DialogMaker();
+      maker.makePatientDialog(this, patient);
+      /*
       PatientEditController controller = new PatientEditController(patient);
       DialogUtil.complexDialog(
-          dialogStackPane,
-          "Edit Patient",
-          "views/AddPatientPopup.fxml",
-          false,
-          event -> update(),
-          controller);
+          "Edit Patient", "views/AddPatientPopup.fxml", true, event -> update(), controller);
+
+       */
     } else {
       DialogUtil.simpleInfoDialog(
-          dialogStackPane,
-          "No Patient Selected",
-          "Please select a patient by clicking a row in the table");
+          "No Patient Selected", "Please select a patient by clicking a row in the table");
     }
   }
 
   public void deletePatient() {
     Patient patient = patientTable.getSelected();
     if (patient != null) {
-      int id = patient.getPatientID();
+      String id = patient.getPatientID();
 
       try {
         super.patientDatabase.deletePatient(id);
       } catch (Exception e) {
         e.printStackTrace();
         DialogUtil.simpleErrorDialog(
-            dialogStackPane, "Error Deleting Patient", "Could not delete patient: " + patient);
+            "Error Deleting Patient", "Could not delete patient: " + patient);
       }
 
       update();
     } else {
       DialogUtil.simpleInfoDialog(
-          dialogStackPane,
-          "No Patient Selected",
-          "Please select a patient by clicking a row in the table");
+          "No Patient Selected", "Please select a patient by clicking a row in the table");
     }
   }
 }

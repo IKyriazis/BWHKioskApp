@@ -2,9 +2,11 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
-import edu.wpi.cs3733.d20.teamA.database.MedRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.InputFormatUtil;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,8 +16,7 @@ public class EditMedRequestController extends AbstractController implements IDia
   private final boolean modify;
   private MedRequest request;
   private JFXDialog dialog;
-  @FXML private JFXTextField fName;
-  @FXML private JFXTextField lName;
+  @FXML private JFXTextField name;
   @FXML private JFXTextField doctor;
   @FXML private JFXTextField medicine;
   @FXML private JFXTextField roomNum;
@@ -40,8 +41,7 @@ public class EditMedRequestController extends AbstractController implements IDia
   public void initialize() {
     roomNum.setTextFormatter(InputFormatUtil.getIntFilter());
     if (modify) {
-      fName.setText(request.getFirstName());
-      lName.setText(request.getLastName());
+      name.setText(request.getName());
       doctor.setText(request.getDoctor());
       medicine.setText(request.getMedicine());
       fBy.setText(request.getFulfilledBy());
@@ -49,8 +49,7 @@ public class EditMedRequestController extends AbstractController implements IDia
       pTime.setEditable(true);
 
       // Prevent editing of fields that cannot be changed
-      fName.setEditable(false);
-      lName.setEditable(false);
+      name.setEditable(false);
 
       try {
         request.getTime();
@@ -67,8 +66,7 @@ public class EditMedRequestController extends AbstractController implements IDia
   // Scene switch & database addNode
   @FXML
   public void pressDone(ActionEvent e) {
-    if (fName.getText().isEmpty()
-        || lName.getText().isEmpty()
+    if (name.getText().isEmpty()
         || doctor.getText().isEmpty()
         || medicine.getText().isEmpty()
         || roomNum.getText().isEmpty()) {
@@ -76,8 +74,7 @@ public class EditMedRequestController extends AbstractController implements IDia
     }
 
     try {
-      String fNameText = fName.getText();
-      String lNameText = lName.getText();
+      String fNameText = name.getText();
       String doctorText = doctor.getText();
       String medicineText = medicine.getText();
       String fulfilledBy = fBy.getText();
@@ -91,11 +88,21 @@ public class EditMedRequestController extends AbstractController implements IDia
           pTime.getValue();
           hour = pTime.getValue().getHour();
           minute = pTime.getValue().getMinute();
-          super.medicineRequestDatabase.addRequest(
-              fNameText, lNameText, doctorText, medicineText, rnum, hour, minute);
+          Timestamp time = new Timestamp(0);
+          time.setHours(hour);
+          time.setMinutes(minute);
+          String add = fNameText + "|" + doctorText + "|" + medicineText;
+
+          serviceDatabase.addServiceReq(
+              ServiceType.MEDICINE,
+              time,
+              null,
+              "" + roomNum.getText(),
+              add); // fNameText| doctorText| medicineText
         } catch (NullPointerException ex) {
-          super.medicineRequestDatabase.addRequest(
-              fNameText, lNameText, doctorText, medicineText, rnum);
+          /*super.medicineRequestDatabase.addRequest(
+          fNameText, lNameText, doctorText, medicineText, rnum);*/
+          // Not sure what to do here, sorry
         }
       } else {
         try {
@@ -105,14 +112,14 @@ public class EditMedRequestController extends AbstractController implements IDia
         } catch (NullPointerException ex) {
         }
 
-        super.medicineRequestDatabase.updateMedicine(request.getOrderNum(), medicineText);
+        // Also not sure about this
+        /*super.medicineRequestDatabase.updateMedicine(request.getOrderNum(), medicineText);
         super.medicineRequestDatabase.updateDoctor(request.getOrderNum(), doctorText);
         if (hour >= 0 && minute >= 0) {
           super.medicineRequestDatabase.updateHo(request.getOrderNum(), hour);
           super.medicineRequestDatabase.updateMins(request.getOrderNum(), minute);
-        }
-
-        super.medicineRequestDatabase.updateFulfilledBy(request.getOrderNum(), fulfilledBy);
+        }*/
+        serviceDatabase.setAssignedEmployee(request.getOrderNum(), fulfilledBy);
       }
 
       dialog.close();

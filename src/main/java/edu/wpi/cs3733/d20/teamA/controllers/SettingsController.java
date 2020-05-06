@@ -3,10 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamA.App;
-import edu.wpi.cs3733.d20.teamA.graph.BreadthFirst;
-import edu.wpi.cs3733.d20.teamA.graph.DepthFirst;
-import edu.wpi.cs3733.d20.teamA.graph.Graph;
-import edu.wpi.cs3733.d20.teamA.graph.Path;
+import edu.wpi.cs3733.d20.teamA.graph.*;
 import java.io.*;
 import javafx.css.CssParser;
 import javafx.css.Rule;
@@ -26,6 +23,7 @@ public class SettingsController {
   @FXML private JFXRadioButton aStarButton;
   @FXML private JFXRadioButton bfsButton;
   @FXML private JFXRadioButton dfsButton;
+  @FXML private JFXRadioButton djikstraButton;
 
   private ToggleGroup toggleGroup;
 
@@ -44,25 +42,33 @@ public class SettingsController {
     aStarButton.setToggleGroup(toggleGroup);
     bfsButton.setToggleGroup(toggleGroup);
     dfsButton.setToggleGroup(toggleGroup);
+    djikstraButton.setToggleGroup(toggleGroup);
 
     aStarButton.setOnAction(
         event -> {
           if (aStarButton.isSelected()) {
-            MapSettings.setPath(new Path(Graph.getInstance()));
+            MapSettings.setPath(new Path(Graph.getInstance(Campus.FAULKNER)));
           }
         });
 
     bfsButton.setOnAction(
         event -> {
           if (bfsButton.isSelected()) {
-            MapSettings.setPath(new BreadthFirst(Graph.getInstance()));
+            MapSettings.setPath(new BreadthFirst(Graph.getInstance(Campus.FAULKNER)));
           }
         });
 
     dfsButton.setOnAction(
         event -> {
           if (dfsButton.isSelected()) {
-            MapSettings.setPath(new DepthFirst(Graph.getInstance()));
+            MapSettings.setPath(new DepthFirst(Graph.getInstance(Campus.FAULKNER)));
+          }
+        });
+
+    djikstraButton.setOnAction(
+        event -> {
+          if (djikstraButton.isSelected()) {
+            MapSettings.setPath(new Djikstras(Graph.getInstance(Campus.FAULKNER)));
           }
         });
   }

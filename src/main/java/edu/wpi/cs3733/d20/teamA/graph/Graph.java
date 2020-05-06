@@ -1,15 +1,17 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
-import edu.wpi.cs3733.d20.teamA.database.GraphDatabase;
+import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.util.CSVLoader;
 import java.sql.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 
 /** Represents locations on the map in an 'undirected' Graph */
 public class Graph {
-
   DatabaseServiceProvider provider = new DatabaseServiceProvider();
   Connection conn = provider.provideConnection();
 
@@ -18,26 +20,60 @@ public class Graph {
   private HashMap<String, Node> nodes;
 
   /** Singleton graph instance */
-  private static Graph instance;
+  private static HashMap<Campus, Graph> campusGraphs = new HashMap<>();
+
+  /** Combined observable list of all campuses */
+  private static ObservableList<Node> allCampusObservableList = FXCollections.observableArrayList();
+
+  /** Combined observable list of non-navigation only nodes */
+  private static ObservableList<Node> allValidDestinationList = FXCollections.observableArrayList();
+
+  static {
+    allCampusObservableList.addListener(
+        (ListChangeListener<Node>)
+            c -> {
+              while (c.next()) {
+                if (c.wasAdded()) {
+                  allValidDestinationList.addAll(
+                      c.getAddedSubList().stream()
+                          .filter(node -> node.getType() != NodeType.HALL)
+                          .collect(Collectors.toList()));
+                }
+
+                if (c.wasRemoved()) {
+                  allValidDestinationList.removeAll(c.getRemoved());
+                }
+              }
+
+              allValidDestinationList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+            });
+  }
 
   /** Count of bidirectional edges */
   private int edgeCount = 0;
 
-  /** Create a new empty graph, private b/c this is a singleton */
-  private Graph() {
-    nodes = new HashMap<>();
+  /** Observable list of nodes, used for UI stuff */
+  private ObservableList<Node> nodeObservableList;
 
-    if (DB.getSizeNode() == -1 || DB.getSizeEdge() == -1) {
+  /** Campus that this graph is for */
+  private Campus campus;
+
+  /** Create a new empty graph, private b/c this is a singleton */
+  private Graph(Campus campus) {
+    nodes = new HashMap<>();
+    this.campus = campus;
+    // Create observable list of nodes and keep it sorted
+    nodeObservableList = FXCollections.observableArrayList();
+
+    if (DB.getSizeNode(campus) == -1 || DB.getSizeEdge(campus) == -1) {
       DB.dropTables();
       DB.createTables();
       CSVLoader.readNodes(this);
       CSVLoader.readEdges(this);
-      update();
-    } else if (DB.getSizeNode() == 0 || DB.getSizeEdge() == 0) {
-      DB.removeAll();
+    } else if (DB.getSizeNode(campus) == 0 || DB.getSizeEdge(campus) == 0) {
+      DB.removeAll(campus);
       CSVLoader.readNodes(this);
       CSVLoader.readEdges(this);
-      update();
     } else {
       update();
     }
@@ -48,8 +84,12 @@ public class Graph {
    *
    * @return instance
    */
-  public static Graph getInstance() {
-    return (instance == null) ? (instance = new Graph()) : instance;
+  public static Graph getInstance(Campus campus) {
+    if (!campusGraphs.containsKey(campus)) {
+      campusGraphs.put(campus, new Graph(campus));
+    }
+
+    return campusGraphs.get(campus);
   }
 
   /**
@@ -92,6 +132,10 @@ public class Graph {
     }
 
     nodes.put(node.getNodeID(), node);
+    nodeObservableList.add(node);
+    allCampusObservableList.add(node);
+    nodeObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+    allCampusObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
 
     DB.addNode(
         node.getNodeID(),
@@ -102,7 +146,8 @@ public class Graph {
         node.getStringType(),
         node.getLongName(),
         node.getShortName(),
-        node.getTeamAssigned());
+        node.getTeamAssigned(),
+        campus);
 
     return true;
   }
@@ -129,7 +174,8 @@ public class Graph {
             node.getStringType(),
             node.getLongName(),
             node.getShortName(),
-            node.getTeamAssigned());
+            node.getTeamAssigned(),
+            campus);
     update();
 
     return success;
@@ -175,8 +221,10 @@ public class Graph {
     // Update edge count
     edgeCount++;
 
-    DB.addEdge(start.getNodeID() + "_" + end.getNodeID(), start.getNodeID(), end.getNodeID());
-    DB.addEdge(end.getNodeID() + "_" + start.getNodeID(), end.getNodeID(), start.getNodeID());
+    DB.addEdge(
+        start.getNodeID() + "_" + end.getNodeID(), start.getNodeID(), end.getNodeID(), campus);
+    DB.addEdge(
+        end.getNodeID() + "_" + start.getNodeID(), end.getNodeID(), start.getNodeID(), campus);
     return true;
   }
 
@@ -196,15 +244,21 @@ public class Graph {
 
     // Delete node
     nodes.remove(node.getNodeID());
+    nodeObservableList.remove(node);
+    allCampusObservableList.remove(node);
 
-    DB.removeEdgeByNode(node.getNodeID());
+    DB.removeEdgeByNode(node.getNodeID(), campus);
 
-    boolean success = DB.deleteNode(node.getNodeID());
+    boolean success = DB.deleteNode(node.getNodeID(), campus);
     if (success) {
       return true;
     } else {
       // Add node back to graph map
       nodes.put(node.getNodeID(), node);
+      nodeObservableList.add(node);
+      allCampusObservableList.add(node);
+      nodeObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+      allCampusObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
 
       // Add edges back to table if we failed to remove the node
       toDelete.forEach(
@@ -246,8 +300,8 @@ public class Graph {
     Edge reverse = forward.getReverseEdge();
     if (reverse == null) return false;
 
-    DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID());
-    DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID());
+    DB.deleteEdge(start.getNodeID() + "_" + end.getNodeID(), campus);
+    DB.deleteEdge(end.getNodeID() + "_" + start.getNodeID(), campus);
 
     // Update edge count
     edgeCount--;
@@ -301,7 +355,7 @@ public class Graph {
   private int calcWeight(Node start, Node end) {
     int side1 = Math.abs(start.getX() - end.getX());
     int side2 = Math.abs(start.getY() - end.getY());
-    double weight = Math.sqrt(Math.pow(side1, 2) + Math.pow(side2, 2));
+    double weight = Math.sqrt(side1 * side1 + side2 * side2);
     return (int) Math.round(weight);
   }
 
@@ -312,8 +366,17 @@ public class Graph {
    */
   public boolean update() {
     HashMap<String, Node> newNodes = new HashMap<>();
+    String tblNameNode = "";
+    String tblNameEdge = "";
+    if (campus == Campus.FAULKNER) {
+      tblNameNode = "NodeFaulkner";
+      tblNameEdge = "EdgeFaulkner";
+    } else if (campus == Campus.MAIN) {
+      tblNameNode = "NodeMain";
+      tblNameEdge = "EdgeMain";
+    }
     try {
-      PreparedStatement pstmtNode = conn.prepareStatement("SELECT * FROM Node");
+      PreparedStatement pstmtNode = conn.prepareStatement("SELECT * FROM " + tblNameNode);
       ResultSet rsetNode = pstmtNode.executeQuery();
       while (rsetNode.next()) {
         String nodeID = rsetNode.getString("nodeID");
@@ -338,7 +401,7 @@ public class Graph {
       return false;
     }
     try {
-      PreparedStatement pstmtEdge = conn.prepareStatement("SELECT * FROM Edge");
+      PreparedStatement pstmtEdge = conn.prepareStatement("SELECT * FROM " + tblNameEdge);
       ResultSet rsetEdge = pstmtEdge.executeQuery();
       while (rsetEdge.next()) {
         String startNode = rsetEdge.getString("startNode");
@@ -355,7 +418,19 @@ public class Graph {
       e.printStackTrace();
       return false;
     }
+
     nodes = newNodes;
+
+    // Update observable list
+    allCampusObservableList.removeAll(nodeObservableList);
+    nodeObservableList.clear();
+
+    nodeObservableList.addAll(nodes.values());
+    allCampusObservableList.addAll(nodeObservableList);
+
+    nodeObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+    allCampusObservableList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+
     return true;
   }
 
@@ -367,14 +442,47 @@ public class Graph {
     // Delete nodes
     nodes.clear();
 
+    // Clear observable list of nodes
+    allCampusObservableList.removeAll(nodeObservableList);
+    nodeObservableList.clear();
+
     // Reset edge count
     edgeCount = 0;
 
     // Clear the database
-    DB.removeAll();
+    DB.removeAll(campus);
+  }
+
+  /**
+   * Get the nodes in this graph
+   *
+   * @return An observable list for use in various JavaFX controls
+   */
+  public ObservableList<Node> getNodeObservableList() {
+    return nodeObservableList;
+  }
+
+  public static ObservableList<Node> getAllCampusObservableList() {
+    // Init both campuses in case they don't already exist
+    Graph faulkner = getInstance(Campus.FAULKNER);
+    Graph main = getInstance(Campus.MAIN);
+
+    return allCampusObservableList;
+  }
+
+  public static ObservableList<Node> getAllValidDestinationList() {
+    // Init both campuses in case they don't already exist
+    Graph faulkner = getInstance(Campus.FAULKNER);
+    Graph main = getInstance(Campus.MAIN);
+
+    return allValidDestinationList;
   }
 
   public GraphDatabase getDB() {
     return DB;
+  }
+
+  public Campus getCampus() {
+    return campus;
   }
 }

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTextArea?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -12,9 +11,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.AnnouncementsAdminController">
+
+<GridPane maxHeight="500.0" maxWidth="700.0" prefHeight="500.0" prefWidth="700.0" styleClass="rounded-pane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.AnnouncementsAdminController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+  </rowConstraints>
    <children>
-      <StackPane fx:id="dialogPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <StackPane fx:id="dialogPane">
          <children>
             <GridPane hgap="25.0" vgap="25.0">
                <columnConstraints>
@@ -35,17 +41,19 @@
                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXTextField fx:id="textAnn" labelFloat="true" promptText="Announcement Text" GridPane.valignment="TOP" />
+                        <JFXTextArea fx:id="textAnn" labelFloat="true" minHeight="150.0" prefHeight="150.0" prefWidth="400.0" promptText="Announcement Text" />
                         <VBox alignment="CENTER" spacing="25.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                            <children>
-                              <JFXButton fx:id="addButton" buttonType="RAISED" onAction="#addAnn" prefWidth="200.0" text="Add Announcement">
+                              <JFXButton fx:id="addButton" buttonType="RAISED" onAction="#addAnn" prefWidth="200.0" stylesheets="@../stylesheet.css" text="Add Announcement">
                                  <font>
                                     <Font size="14.0" />
-                                 </font></JFXButton>
+                                 </font>
+                              </JFXButton>
                               <JFXButton fx:id="deleteButton" buttonType="RAISED" onAction="#deleteAnn" prefWidth="200.0" text="Delete Announcement">
                                  <font>
                                     <Font size="14.0" />
-                                 </font></JFXButton>
+                                 </font>
+                              </JFXButton>
                            </children>
                            <GridPane.margin>
                               <Insets right="35.0" />
@@ -58,7 +66,7 @@
                         <Font size="25.0" />
                      </font>
                   </Label>
-                  <GridPane fx:id="tableGridPane" GridPane.rowIndex="1">
+                  <GridPane fx:id="tableGridPane" minHeight="200.0" minWidth="500.0" GridPane.rowIndex="1">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -74,4 +82,4 @@
          </children>
       </StackPane>
    </children>
-</AnchorPane>
+</GridPane>

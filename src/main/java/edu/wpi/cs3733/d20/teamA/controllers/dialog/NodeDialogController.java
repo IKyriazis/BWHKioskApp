@@ -1,8 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import com.jfoenix.controls.*;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.graph.NodeType;
@@ -13,6 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextFormatter;
 import javafx.util.converter.IntegerStringConverter;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class NodeDialogController implements IDialogController {
   @FXML private JFXTextField nodeIDField;
@@ -30,8 +31,9 @@ public class NodeDialogController implements IDialogController {
   private Node oldNode;
   private Graph graph;
   private JFXDialog dialog;
+  private Campus campus;
 
-  public NodeDialogController(Node node, int x, int y, int floor) {
+  public NodeDialogController(Campus campus, Node node, int x, int y, int floor) {
     this.oldNode = node;
     // Use existing node coordinates if set
     if (oldNode != null) {
@@ -44,8 +46,10 @@ public class NodeDialogController implements IDialogController {
       this.floor = floor;
     }
 
+    this.campus = campus;
+
     try {
-      graph = Graph.getInstance();
+      graph = Graph.getInstance(campus);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -53,15 +57,6 @@ public class NodeDialogController implements IDialogController {
 
   @FXML
   public void initialize() {
-    // Setup string limit lengths
-    nodeIDField
-        .textProperty()
-        .addListener(
-            (observable, oldValue, newValue) -> {
-              if (newValue.length() > 15) {
-                nodeIDField.setText(newValue.substring(0, 15));
-              }
-            });
     shortNameField
         .textProperty()
         .addListener(
@@ -79,7 +74,13 @@ public class NodeDialogController implements IDialogController {
               }
             });
     // Setup floor combobox
-    ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    ObservableList<Integer> floors = FXCollections.observableArrayList();
+    if (campus == Campus.MAIN) {
+      floors = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6);
+    } else if (campus == Campus.FAULKNER) {
+      floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    }
+
     floorBox.setItems(floors);
     floorBox.setValue(floor);
     floorBox.setEditable(false);
@@ -87,7 +88,9 @@ public class NodeDialogController implements IDialogController {
     ObservableList<NodeType> types = FXCollections.observableArrayList(NodeType.values());
     typeBox.setItems(types);
 
-    ObservableList<String> buildings = FXCollections.observableArrayList("Main");
+    ObservableList<String> buildings =
+        FXCollections.observableArrayList(
+            "Faulkner", "Main", "BTM", "15 Francis", "45 Francis", "Tower", "Shapiro");
     buildingBox.setItems(buildings);
 
     ObservableList<String> teams =
@@ -104,11 +107,10 @@ public class NodeDialogController implements IDialogController {
     doneButton.setOnAction(this::pressedDone);
 
     // Set button icon
-    doneButton.setGraphic(new FontAwesomeIconView(FontAwesomeIcon.CHECK_CIRCLE));
+    doneButton.setGraphic(new FontIcon(FontAwesomeRegular.CHECK_CIRCLE));
 
     // Populate fields if modifying
     if (oldNode != null) {
-      nodeIDField.setText(oldNode.getNodeID());
       floorBox.setValue(oldNode.getFloor());
       typeBox.setValue(oldNode.getType());
       longNameField.setText(oldNode.getLongName());
@@ -137,8 +139,7 @@ public class NodeDialogController implements IDialogController {
 
   @FXML
   public void pressedDone(ActionEvent actionEvent) {
-    if (nodeIDField.getText().isEmpty()
-        || floorBox.getSelectionModel().isEmpty()
+    if (floorBox.getSelectionModel().isEmpty()
         || typeBox.getSelectionModel().isEmpty()
         || longNameField.getText().isEmpty()
         || shortNameField.getText().isEmpty()
@@ -149,17 +150,18 @@ public class NodeDialogController implements IDialogController {
       return;
     }
 
-    String nodeID = nodeIDField.getText();
     int floor = floorBox.getValue();
-    NodeType type = typeBox.getValue();
+    NodeType nodeType = typeBox.getValue();
     String longName = longNameField.getText();
     String shortName = shortNameField.getText();
     String building = ((String) buildingBox.getValue());
     String team = ((String) teamBox.getValue());
     int newX = Integer.parseInt(xField.getText());
     int newY = Integer.parseInt(yField.getText());
+    String nodeID = createNodeID(team, nodeType, floor);
 
-    Node newNode = new Node(nodeID, newX, newY, floor, building, type, longName, shortName, team);
+    Node newNode =
+        new Node(nodeID, newX, newY, floor, building, nodeType, longName, shortName, team);
 
     ArrayList<Node> edgesTo = new ArrayList<>();
     if (oldNode != null) {
@@ -187,6 +189,28 @@ public class NodeDialogController implements IDialogController {
     }
 
     dialog.close();
+  }
+
+  private String createNodeID(String teamName, NodeType nodeType, int floor) {
+    String nodeID = "";
+    // Get the Team Assigned
+    String teamChar = String.valueOf(teamName.charAt(teamName.length() - 1));
+    // Gets the String of the nodeType
+    String nodeTypeS = nodeType.toString();
+    // Gets the count of the number of nodes of a certain type
+    ObservableList<Node> graphList = graph.getNodeObservableList();
+    int count =
+        (int)
+            graphList.stream()
+                .filter(
+                    node -> node.getType().toString().equals(nodeTypeS) && node.getFloor() == floor)
+                .count();
+    String countString = String.format("%03d", count);
+    // Gets the floor number
+    String floorString = String.format("%02d", floor);
+    // Team Assigned, Node Type, number of that type: 3 integers, Floor padded with 0's
+    nodeID = teamChar + nodeTypeS + countString + floorString;
+    return nodeID;
   }
 
   @Override

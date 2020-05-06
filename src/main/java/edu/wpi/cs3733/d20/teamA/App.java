@@ -50,11 +50,10 @@ public class App extends Application {
     primaryStage.setTitle("Hospital App");
     primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("images/icon.png")));
 
-    primaryStage.setMinWidth(1100);
-    primaryStage.setWidth(1100);
-    primaryStage.setMinHeight(780);
-    primaryStage.setHeight(780);
-    // primaryStage.setFullScreen(true);
+    primaryStage.setMinWidth(1440);
+    primaryStage.setWidth(1440);
+    primaryStage.setMinHeight(960);
+    primaryStage.setHeight(960);
 
     // Display the stage
     primaryStage.show();

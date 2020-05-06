@@ -1,0 +1,622 @@
+nodeID,xcoord,ycoord,floor,building,nodeType,longName,shortName,teamAssigned
+GHALL008L2,1577,2195,L2,Shapiro,HALL,Hallway MapNode 8 Floor L2,Hall,A
+WELEV00KL2,2215,974,L2,45 Francis,ELEV,Elevator K 5,Elevator KL2,A
+AHALL004L2,1698,2687,L2,BTM,HALL,Hall 38,Hall,A
+AELEV00SL2,1630,2742,L2,BTM,ELEV,Elevator S 5,Elevator S L2,A
+CSERV001L2,2015,1280,L2,45 Francis,SERV,Interpreter Services,Service C001L2,A
+GHALL007L2,1578,2089,L2,Shapiro,HALL,Hallway MapNode 7 Floor L2,Hall,A
+WELEV00LL2,1785,924,L2,Tower,ELEV,Elevator L 5,Elevator LL2,A
+GREST004L2,1680,2090,L2,Shapiro,REST,Restroom 34,Restroom Shapiro L2,A
+CHALL009L2,1730,849,L2,Tower,HALL,Hallway 9 Floor L2,Hallway C009L2,A
+WELEV00ML2,1820,1280,L2,Tower,ELEV,Elevator M 5,Elevator ML2,A
+GHALL009L2,1578,2031,L2,Shapiro,HALL,Hallway MapNode 9 Floor L2,Hall,A
+AINFO001L2,1681,2747,L2,BTM,INFO,BTM Security Desk 2,Security,A
+CHALL010L2,2130,849,L2,Tower,HALL,Hallway 10 Floor L2,Hallway C010L2,A
+GLABS015L2,1512,1811,L2,Shapiro,LABS,CVRR,CVRR,A
+WHALL002L2,1745,1539,L2,Shapiro,HALL,Hallway Connector 2 Floor L2,Hallway W02L2,A
+GLABS003L2,1729,2089,L2,Shapiro,LABS,Cardiovascular Imaging Center,Cardiovascular Imaging Center,A
+AHALL001L2,1627,2782,L2,BTM,HALL,Hallway to Elevator,Hall,A
+GLABS014L2,1512,1844,L2,Shapiro,LABS,Cardiac Stress Test Lab,Cardiac Stress Test Lab,A
+WHALL001L2,1745,1524,L2,Tower,HALL,Hallway Connector 1 Floor L2,Hallway W01L2,A
+AHALL002L2,1698,2776,L2,BTM,HALL,Hallway Intersection,Hall,A
+ALABS001L2,1667,2682,L2,BTM,LABS,MRI CT Scan Imaging,MRI CT Imaging,A
+GHALL017L2,1512,1539,L2,Shapiro,HALL,Hallway MapNode 17 Floor L2,Hall,A
+AHALL003L2,1701,2734,L2,BTM,HALL,Hall 37,Hall,A
+GHALL005L2,1642,2089,L2,Shapiro,HALL,Hallway MapNode 5 Floor L2,Hall,A
+GHALL016L2,1512,1701,L2,Shapiro,HALL,Hallway MapNode 16 Floor L2,Hall,A
+CLABS002L2,2215,1280,L2,45 Francis,LABS,Radiation Oncology Lab,Lab C002L2,A
+CHALL003L2,2215,904,L2,45 Francis,HALL,Hallway 3 Floor L2,Hallway C003L2,A
+GHALL011L2,1550,1966,L2,Shapiro,HALL,Hallway MapNode 11 Floor L2,Hall,A
+CHALL004L2,2130,904,L2,45 Francis,HALL,Hallway 4 Floor L2,Hallway C004L2,A
+GHALL010L2,1550,2031,L2,Shapiro,HALL,Hallway MapNode 10 Floor L2,Hall,A
+CREST001L2,2300,884,L2,45 Francis,REST,Restroom 32,Restroom C001L2,A
+CHALL001L2,2360,854,L2,45 Francis,HALL,Hallway K Elevator Floor L2,Hallway C001L2,A
+GHALL013L2,1512,1909,L2,Shapiro,HALL,Hallway MapNode 13 Floor L2,Hall,A
+CLABS001L2,2300,854,L2,45 Francis,LABS,Radiation Oncology TX Suite,Lab C001L2,A
+GHALL001L2,1730,1584,L2,Shapiro,HALL,Hallway MapNode 1 Floor L2,Hall,A
+CHALL002L2,2270,904,L2,45 Francis,HALL,Hallway 2 Floor L2,Hallway C002L2,A
+GHALL012L2,1512,1966,L2,Shapiro,HALL,Hallway MapNode 12 Floor L2,Hall,A
+CHALL007L2,1730,1009,L2,Tower,HALL,Hallway 7 Floor L2,Hallway C007L2,A
+GELEV00QL2,1625,2089,L2,Shapiro,ELEV,Elevator Q 5,Elevator Q L2,A
+CHALL008L2,1730,924,L2,Tower,HALL,Hallway 8 Floor L2,Hallway C008L2,A
+CREST002L2,1930,1280,L2,45 Francis,REST,Restroom 33,Restroom C002L2,A
+CHALL005L2,1745,1280,L2,Tower,HALL,Hallway 5 Floor L2,Hallway C005L2,A
+CHALL006L2,1745,1009,L2,Tower,HALL,Hallway 6 Floor L2,Hallway C006L2,A
+AEXIT001L2,1696,2788,L2,BTM,EXIT,Parking Garage,Parking Garage L2,A
+WELEV00JL2,2360,804,L2,45 Francis,ELEV,Elevator J 5,Elevator JL2,A
+CDEPT002L1,1980,844,L1,Tower,DEPT,Day Surgery Family Waiting,Department C002L1,A
+WELEV00KL1,2220,974,L1,45 Francis,ELEV,Elevator K 4,Elevator KL1,A
+CSERV001L1,2490,1043,L1,45 Francis,SERV,Volunteers Floor,Service C001L1,A
+WELEV00LL1,1785,924,L1,Tower,ELEV,Elevator L 4,Elevator LL1,A
+CHALL009L1,2220,904,L1,45 Francis,HALL,Hallway 9 Floor L1,Hallway C009L1,A
+WELEV00ML1,1820,1284,L1,Tower,ELEV,Elevator M 4,Elevator ML1,A
+CHALL010L1,2265,904,L1,45 Francis,HALL,Hallway 10 Floor L1,Hallway C010L1,A
+GHALL004L1,1666,2167,L1,Shapiro,HALL,Hallway MapNode 4 Floor L1,Hall,A
+CHALL011L1,2360,849,L1,45 Francis,HALL,Hallway 11 Floor L1,Hallway C011L1,A
+GHALL003L1,1688,2167,L1,Shapiro,HALL,Hallway MapNode 3 Floor L1,Hall,A
+CDEPT004L1,2310,1043,L1,45 Francis,DEPT,Medical Records Film Library,Department C004L1,A
+GHALL006L1,1665,2116,L1,Shapiro,HALL,Hallway MapNode 6 Floor L1,Hall,A
+CRETL001L1,2185,904,L1,45 Francis,RETL,Vending Machine 2,Retail C001L1,A
+CDEPT003L1,1845,844,L1,Tower,DEPT,Day Surgery Family Waiting Exit,Department C003L1,A
+GHALL005L1,1688,2131,L1,Shapiro,HALL,Hallway MapNode 5 Floor L1,Hall,A
+CLABS002L1,1750,1090,L1,Tower,LABS,Pre-Op PACU,Lab C002L1,A
+CHALL014L1,1845,924,L1,Tower,HALL,Hallway 14 Floor L1,Hallway C014L1,A
+CHALL003L1,2445,1284,L1,45 Francis,HALL,Hallway 3 Floor L1,Hallway C003L1,A
+CCONF001L1,2255,849,L1,45 Francis,CONF,Anesthesia Conference Room,Conf C001L1,A
+CLABS003L1,2290,1284,L1,45 Francis,LABS,Nuclear Medicine,Lab C003L1,A
+CHALL015L1,2300,849,L1,45 Francis,HALL,Hallway 15 Floor L1,Hallway C015L1,A
+CCONF002L1,2665,1043,L1,45 Francis,CONF,Medical Records Conference Room,Conf C002L1,A
+CHALL004L1,2770,1070,L1,45 Francis,HALL,Hallway 4 Floor L1,Hallway C004L1,A
+CHALL012L1,2130,904,L1,45 Francis,HALL,Hallway 12 Floor L1,Hallway C012L1,A
+CREST001L1,1732,1019,L1,Tower,REST,Restroom 28,Restroom C001L1,A
+GHALL002L1,1702,2167,L1,Shapiro,HALL,Hallway MapNode 2 Floor L1,Hall,A
+CCONF003L1,2445,1245,L1,45 Francis,CONF,Abrams Conference Room,Conf C003L1,A
+CHALL001L1,1732,924,L1,Tower,HALL,Hallway 1 Floor L1,Hallway C001L1,A
+GSTAI008L1,1720,2131,L1,Shapiro,STAI,Stairs MapNode 8 Floor L1,L1 Stairs,A
+CLABS001L1,1965,1284,L1,Tower,LABS,Outpatient Fluoroscopy,Lab C001L1,A
+CHALL013L1,2130,844,L1,45 Francis,HALL,Hallway 13 Floor L1,Hallway C013L1,A
+CHALL002L1,2445,1043,L1,45 Francis,HALL,Hallway 2 Floor L1,Hallway C002L1,A
+CHALL007L1,2130,1045,L1,Tower,HALL,Hallway 7 Floor L1,Hallway C007L1,A
+CREST003L1,2300,879,L1,45 Francis,REST,Restroom 30,Restroom C003L1,A
+GELEV00QL1,1637,2116,L1,Shapiro,ELEV,Elevator Q 4,Elevator Q L1,A
+CHALL008L1,2215,1045,L1,45 Francis,HALL,Hallway 8 Floor L1,Hallway C008L1,A
+WELEV00HL1,2715,1070,L1,45 Francis,ELEV,Elevator H 4,Elevator HL1,A
+GEXIT001L1,1702,2260,L1,Shapiro,EXIT,Fenwood Road Exit,Fenwood Road EntranceExit L1,A
+CREST002L1,2065,1284,L1,Tower,REST,Restroom 29,Restroom C002L1,A
+CLABS004L1,2320,1284,L1,45 Francis,LABS,Ultrasound Lab,Lab C004L1,A
+CHALL005L1,1750,1284,L1,Tower,HALL,Hallway 5 Floor L1,Hallway C005L1,A
+CLABS005L1,2770,1284,L1,45 Francis,LABS,CSIR MRI Lab,Lab C005L1,A
+WELEV00JL1,2360,799,L1,45 Francis,ELEV,Elevator J 4,Elevator JL1,A
+CREST004L1,2770,1160,L1,45 Francis,REST,Restroom 31,Restroom C004L1,A
+CHALL006L1,2130,1284,L1,Tower,HALL,Hallway 6 Floor L1,Hallway C006L1,A
+AHALL0070G,1712,2647,G,BTM,HALL,Hall 28,Hall,A
+AHALL0080G,1602,2706,G,BTM,HALL,Hall 29,Hall,A
+ASTAI0010G,1622,2556,G,BTM,STAI,Schlagler Stairs,Schlager Stairs,A
+AHALL0090G,1524,2726,G,BTM,HALL,Hall 30,Hall,A
+AELEV00S0G,1523,2763,G,BTM,ELEV,Elevator S 4,Elevator S G,A
+AEXIT0010G,1678,2460,G,BTM,EXIT,Fenwood Road,Fenwood Road,A
+AHALL0140G,1599,2727,G,BTM,HALL,Hall 35,Hall,A
+AHALL0040G,1528,2531,G,BTM,HALL,Hall 25,Hall,A
+AHALL0150G,1598,2532,G,BTM,HALL,Hall 36,Hall,A
+AHALL0050G,1713,2558,G,BTM,HALL,Hall 26,Hall,A
+AINFO0010G,1484,2710,G,BTM,INFO,BTM Security Desk 1,Security,A
+AHALL0060G,1595,2583,G,BTM,HALL,Hall 27,Hall,A
+AINFO0020G,1699,2707,G,BTM,INFO,Information Desk 2,Information,A
+AHALL0100G,1600,2853,G,BTM,HALL,Hall 31,Hall,A
+AHALL0110G,1550,2853,G,BTM,HALL,Hall 32,Hall,A
+AHALL0010G,1677,2530,G,BTM,HALL,Hall 23,Hall,A
+AHALL0120G,1548,2538,G,BTM,HALL,Hall 33,Hall,A
+AHALL0020G,1623,2531,G,BTM,HALL,Hall 24,Hall,A
+AHALL0130G,1582,2533,G,BTM,HALL,Hall 34,Hall,A
+ADEPT0020G,1552,2843,G,BTM,DEPT,Infusion Waiting Area ,Infusion Waiting Area,A
+ACONF0010G,1671,2648,G,BTM,CONF,Schlagler Innovation Lobby,Schlagler Lobby,A
+ADEPT0010G,1530,2495,G,BTM,DEPT,Neuro Testing Waiting Area ,Neuro Wating Area,A
+EHALL02701,3085,1000,1,45 Francis,HALL,Hallway Node 25 Floor 1,HallE25,A
+EHALL00401,2275,910,1,45 Francis,HALL,Hallway Node 2 Floor 1,HallE02,A
+GSERV02301,1600,1895,1,Shapiro,SERV,ATM,ATM Floor 1,A
+FHALL00701,1758,930,1,Tower,HALL,Tower Elevator Entrance,Hallway F00701,A
+EHALL01601,2910,910,1,45 Francis,HALL,Hallway Node 14 Floor 1,HallE14,A
+FSTAI00101,2026,892,1,Tower,STAI,Lobby Shattuck Street Stairs,Stairway F00101,A
+AHALL00601,1678,2865,1,BTM,HALL,Hall 6,Hall,A
+WELEV00M01,1810,1280,1,Tower,ELEV,Elevator M 1,Elevator M1,A
+FEXIT00301,2099,1357,1,Tower,EXIT,Emergency Department Entrance,Emergency Entrance,A
+FHALL01801,1758,956,1,Tower,HALL,Tower Hallway 10,Hallway F01801,A
+EHALL00501,2290,910,1,45 Francis,HALL,Hallway Node 3 Floor 1,HallE03,A
+EHALL02801,2925,1050,1,45 Francis,HALL,Hallway Node 26 Floor 1,HallE26,A
+ELABS00201,2790,1290,1,45 Francis,LABS,Ambulatory X-Ray,X-Ray 1,A
+ASTAI00101,1642,2596,1,BTM,STAI,Cafe Stairs,Cafe Staris,A
+FHALL00801,1758,850,1,Tower,HALL,Tower Hallway 1,Hallway F00801,A
+EHALL01701,2910,907,1,45 Francis,HALL,Hallway Node 15 Floor 1,HallE15,A
+FEXIT00201,1748,1321,1,Tower,EXIT,75 Francis Valet Drop-off,75 Francis Exit,A
+AHALL00701,1017,2865,1,BTM,HALL,Hall 7,Hall,A
+FSTAI00201,1673,802,1,Tower,STAI,Tower Stairway 1,Tower Stairs 1,A
+GHALL00901,1707,2164,1,Shapiro,HALL,Hallway MapNode 9 Floor 1,Hall,A
+FHALL01901,1758,1120,1,Tower,HALL,Tower Hallway 11,Hallway F01901,A
+EHALL00601,2385,910,1,45 Francis,HALL,Hallway Node 4 Floor 1,HallE04,A
+EHALL02901,2770,1070,1,45 Francis,HALL,Hallway Node 27 Floor 1,HallE27,A
+ELABS00101,3050,730,1,45 Francis,LABS,Asthma Research Lab,Asthma 1,A
+FRETL00201,1609,1246,1,Tower,RETL,Au Bon Pain,ABP,A
+FHALL00501,1950,910,1,Tower,HALL,Shattuck Street Lobby 3,Hallway F00501,A
+AHALL00901,1581,2566,1,BTM,HALL,Hall 9,Hall,A
+FHALL02801,1748,1280,1,Tower,HALL,Lobby Entrance Hallway,HallwayF02801,A
+GHALL03101,1227,1859,1,Shapiro,HALL,Hallway MapNode 31 Floor 1,Hall,A
+AELEV00S01,1534,2777,1,BTM,ELEV,Elevator S 1,Elevator S 1,A
+EHALL01801,2925,910,1,45 Francis,HALL,Hallway Node 16 Floor 1,HallE16,A
+AHALL00801,1532,2739,1,BTM,HALL,Hall 8,Hall,A
+FSTAI00301,1947,1239,1,Tower,STAI,Lobby Escalator,Lobby Escalator,A
+FHALL01601,1758,1060,1,Tower,HALL,Tower Hallway 8,Hallway F01601,A
+FDEPT00101,1617,825,1,Tower,DEPT,Center for International Medicine,CIM,A
+EHALL00701,2385,860,1,45 Francis,HALL,Hallway Node 5 Floor 1,HallE05,A
+FRETL00101,1973,844,1,Tower,RETL,Lobby Vending Machine,VM Lobby,A
+FINFO00101,1700,1226,1,Tower,INFO,75 Lobby Information Desk,Lobby Info Desk,A
+FHALL00601,1869,930,1,Tower,HALL,Tower Lobby Entrance 1,Tower Entrance,A
+GHALL03001,1256,1858,1,Shapiro,HALL,Hallway MapNode 30 Floor 1,Hall,A
+FHALL02901,1700,1280,1,Tower,HALL,75 Lobby,75 Lobby,A
+EHALL01901,2960,900,1,45 Francis,HALL,Hallway Node 17 Floor 1,HallE17,A
+FDEPT00201,1610,1120,1,Tower,DEPT,Bretholtz Center for Patients and Families,Bretholtz WR,A
+GSTAI01301,1750,2014,1,Shapiro,STAI,Staircase MapNode 13 Floor 1,Southbound Stairs Floor 1,A
+FHALL01701,1721,956,1,Tower,HALL,Tower Hallway 9,Hallway F01701,A
+EHALL00801,2460,910,1,45 Francis,HALL,Hallway Node 6 Floor 1,HallE06,A
+FHALL02601,2026,1239,1,Tower,HALL,Lobby Hallway 4,Hallway F02601,A
+FHALL00301,2017,910,1,Tower,HALL,Shattuck Street Lobby 1,Hallway F00301,A
+FSERV00101,1950,871,1,Tower,SERV,Shattuck Street Lobby ATM,Lobby ATM,A
+AHALL00201,1608,2596,1,BTM,HALL,Hall 2,Hall,A
+FHALL01401,1627,1029,1,Tower,HALL,Tower Hallway 6,Hallway F01401,A
+FDEPT00301,1721,931,1,Tower,DEPT,Multifaith Chapel,Chapel,A
+GHALL02901,1262,1850,1,Shapiro,HALL,Hallway MapNode 29 Floor 1,Hall,A
+GHALL00601,1707,2015,1,Shapiro,HALL,Hallway MapNode 6 Floor 1,Hall,A
+ESTAI00101,2190,910,1,45 Francis,STAI,Staircase K1 Floor 1,Stair K1,A
+EHALL00901,2585,910,1,45 Francis,HALL,Hallway Node 7 Floor 1,HallE07,A
+FHALL02701,2066,1239,1,Tower,HALL,Lobby Hallway 7,Hallway F02701,A
+FHALL00401,1973,910,1,Tower,HALL,Shattuck Street Lobby 2,Hallway F00401,A
+GHALL01701,1605,2093,1,Shapiro,HALL,Hallway MapNode 17 Floor 1,Hall,A
+AHALL00301,1608,2737,1,BTM,HALL,Hall 3,Hall,A
+FREST00101,2091,976,1,Tower,REST,Restroom 5,Bathroom Lobby,A
+FDEPT00401,1794,1146,1,Tower,DEPT,Sharf Admitting Center,Sharf Center,A
+FHALL01501,1627,1060,1,Tower,HALL,Tower Hallway 7,Hallway F01501,A
+GHALL02801,1270,1830,1,Shapiro,HALL,Hallway MapNode 28 Floor 1,Hall,A
+AREST00101,1556,2604,1,BTM,REST,Restroom 1,Restroom,A
+EDEPT00101,2335,860,1,45 Francis,DEPT,Waiting Room 1,Wait 1,A
+WHALL00201,2175,910,1,45 Francis,HALL,Hallway Connector 2 Floor 1,Hallway W0201,A
+ESTAI00301,2790,1155,1,45 Francis,STAI,Staircase H1 Floor 1,Stair H1,A
+FHALL02401,1965,1280,1,Tower,HALL,Lobby Hallway 2,Hallway F02401,A
+FHALL00101,2055,910,1,Tower,HALL,Lower Pike Hallway Exit Lobby,Hallway F00101,A
+AHALL00401,1420,2737,1,BTM,HALL,Hall 4,Hall,A
+EEXIT00101,2275,785,1,45 Francis,EXIT,Ambulance Parking Exit,AmbExit 1,A
+FDEPT00501,2128,1300,1,Tower,DEPT,Emergency Department,Emergency,A
+FHALL01201,1548,930,1,Tower,HALL,Tower Staff Entrance,Hallway F01201,A
+GHALL00801,1707,2152,1,Shapiro,HALL,Hallway MapNode 8 Floor 1,Hall,A
+ESTAI00201,2275,830,1,45 Francis,STAI,Staircase J1 Floor 1,Stair J1,A
+WHALL00101,2160,910,1,45 Francis,HALL,Hallway Connector 1 Floor 1,Hallway W0101,A
+FHALL00201,2026,910,1,Tower,HALL,Lobby Shattuck Street,Hallway F00201,A
+FHALL02501,1965,1239,1,Tower,HALL,Lobby Hallway 3,Hallway F02501,A
+AHALL00501,1420,2865,1,BTM,HALL,Hall 5,Hall,A
+FLABS00101,1845,1250,1,Tower,LABS,Obstetrics Admitting,Obs Admitting,A
+EEXIT00201,2950,705,1,45 Francis,EXIT,Exit 2,Exit 2,A
+EHALL03001,2790,1070,1,45 Francis,HALL,Hallway Node 28 Floor 1,HallE28,A
+FHALL01301,1627,825,1,Tower,HALL,Tower Hallway 5,Hallway F01301,A
+FDEPT00601,1780,1029,1,Tower,DEPT,International Patient Center,IPC,A
+GHALL00701,1708,2092,1,Shapiro,HALL,Hallway MapNode 7 Floor 1,Hall,A
+AHALL01001,1605,2568,1,BTM,HALL,Hall 10,Hall,A
+EDEPT00301,3200,880,1,45 Francis,DEPT,Ocupational Health Department,Ocupational 1,A
+FHALL02201,1769,1280,1,Tower,HALL,Hallway Lobby Entrance,Entrance Hallway,A
+GHALL01401,1749,2151,1,Shapiro,HALL,Hallway MapNode 14 Floor 1,Hall,A
+GELEV00Q01,1648,2161,1,Shapiro,ELEV,Elevator Q 1,Elevator Q Floor 1,A
+FSERV00501,1645,1280,1,Tower,SERV,75 Lobby Valet Cashier,Valet Cashier,A
+EHALL03101,2790,1460,1,45 Francis,HALL,Hallway Node 29 Floor 1,HallE29,A
+FHALL03301,2066,1282,1,Tower,HALL,Emergency Hallway,Hallway F03301,A
+FHALL01001,1627,802,1,Tower,HALL,Tower Hallway 3,Hallway F01001,A
+WELEV00E01,3265,830,1,45 Francis,ELEV,Elevator E 1,Elevator E1,A
+GHALL00201,1722,1832,1,Shapiro,HALL,Hallway MapNode 2 Floor 1,Hall,A
+EDEPT00201,3100,890,1,45 Francis,DEPT,Wound and Ambulatory Department,WCCAT 1,A
+ESTAI00401,2605,1340,1,45 Francis,STAI,Staircase H2 Floor 1,Stair H2,A
+EHALL02001,2950,745,1,45 Francis,HALL,Hallway Node 18 Floor 1,HallE18,A
+FHALL02301,1845,1280,1,Tower,HALL,Lobby Hallway 1,Hallway F02301,A
+FSERV00401,1721,970,1,Tower,DEPT,Spiritual Care Office,SCO,A
+EHALL03201,2670,1380,1,45 Francis,HALL,Hallway Node 30 Floor 1,HallE30,A
+WELEV00F01,3050,980,1,45 Francis,ELEV,Elevator F 1,Elevator F1,A
+FHALL01101,1627,930,1,Tower,HALL,Tower Hallway 4,Hallway F01101,A
+GHALL02401,1602,1928,1,Shapiro,HALL,Hallway MapNode 24 Floor 1,Hall,A
+EHALL02101,3230,880,1,45 Francis,HALL,Hallway Node 19 Floor 1,HallE19,A
+GDEPT01901,1566,2139,1,Shapiro,DEPT,Zinner Breakout Room,Zinner Breakout Room,A
+FHALL02001,1700,1120,1,Tower,HALL,Tower Hallway 12,Hallway F02001,A
+GHALL01601,1689,2225,1,Shapiro,HALL,Hallway MapNode 16 Floor 1,Hall,A
+FSERV00301,1700,1158,1,Tower,SERV,Kessler Library,Kessler Library,A
+EHALL03301,2605,1380,1,45 Francis,HALL,Hallway Node 31 Floor 1,HallE31,A
+EHALL01001,2585,890,1,45 Francis,HALL,Hallway Node 8 Floor 1,HallE08,A
+WELEV00G01,2935,900,1,45 Francis,ELEV,Elevator G 1,Elevator G1,A
+FHALL03101,2026,976,1,Tower,HALL,Lobby Hallway 6,Hallway F02801,A
+EDEPT00401,2790,1380,1,45 Francis,DEPT,Rehabilitation Services,Rehab 1,A
+EHALL02201,3270,875,1,45 Francis,HALL,Hallway Node 20 Floor 1,HallE20,A
+FHALL02101,1769,1146,1,Tower,HALL,Tower Hallway Entrance,Tower Entrance 2,A
+GHALL01501,1749,2224,1,Shapiro,HALL,Hallway MapNode 15 Floor 1,Hall,A
+GEXIT00101,1751,1825,1,Shapiro,EXIT,Francis Street Exit,Francis Street Exit Floor 1,A
+GELEV00N01,1647,1930,1,Shapiro,ELEV,Elevator N 1,Hall,A
+GREST01201,1671,2015,1,Shapiro,REST,Restroom 6,Restroom Shapiro Floor 1,A
+FSERV00201,1605,1029,1,Tower,SERV,Tower Medical Cashier,Tower Cashier,A
+EHALL03401,2835,1460,1,45 Francis,HALL,Hallway Node 32 Floor 1,HallE32,A
+AHALL00101,1638,2553,1,BTM,HALL,Hall 1,Hall,A
+EHALL01101,2610,910,1,45 Francis,HALL,Hallway Node 9 Floor 1,HallE09,A
+WELEV00H01,2735,1070,1,45 Francis,ELEV,Elevator H 1,Elevator H1,A
+FHALL03201,1758,1029,1,Tower,HALL,Tower Hallway 13,Hallway F03201,A
+GHALL00301,1705,1831,1,Shapiro,HALL,Hallway MapNode 3 Floor 1,Hall,A
+GCONF02001,1493,2117,1,Shapiro,CONF,Shapiro Board Room,Shapiro Board Room,A
+GHALL03301,1255,1872,1,Shapiro,HALL,Hallway MapNode 33 Floor 1,Hall,A
+EHALL02301,3325,870,1,45 Francis,HALL,Hallway Node 21 Floor 1,HallE21,A
+GHALL01001,1673,2165,1,Shapiro,HALL,Hallway MapNode 10 Floor 1,Hall,A
+ADEPT00101,1401,2628,1,BTM,DEPT,Neuroscience Waiting Room,Neuro Waiting Room,A
+EHALL01201,2610,954,1,45 Francis,HALL,Hallway Node 10 Floor 1,HallE10,A
+EHALL03501,2760,1460,1,45 Francis,HALL,Hallway Node 33 Floor 1,HallE33,A
+EINFO00101,2460,850,1,45 Francis,INFO,Connors Center Security Desk,Security 1,A
+GHALL02101,1600,1830,1,Shapiro,HALL,Hallway MapNode 21 Floor 1,Hall,A
+EHALL02401,2770,1010,1,45 Francis,HALL,Hallway Node 22 Floor 1,HallE22,A
+GRETL03501,1284,1884,1,Shapiro,REST,Restroom 7,Secret Room Floor 1,A
+EREST00301,2790,1190,1,45 Francis,REST,Restroom 4,Restroom H1,A
+EHALL01301,2660,954,1,45 Francis,HALL,Hallway Node 11 Floor 1,HallE11,A
+FHALL03001,1645,1246,1,Tower,HALL,Lobby Hallway 5,Hallway F02701,A
+EHALL03601,2760,1405,1,45 Francis,HALL,Hallway Node 34 Floor 1,HallE34,A
+WELEV00J01,2385,810,1,45 Francis,ELEV,Elevator J 1,Elevator J1,A
+EHALL02501,2925,980,1,45 Francis,HALL,Hallway Node 23 Floor 1,HallE23,A
+ADEPT01504,3269,773,1,Main,DEPT,Reflection Room 1,Reflection Room 1,Team A
+FHALL00901,1627,850,1,Tower,HALL,Tower Hallway 2,Hallway F00901,A
+EREST00201,2985,980,1,45 Francis,REST,Restroom 3,Restroom F1,A
+ADEPT00301,986,2852,1,BTM,DEPT,CART Waiting,CART Waiting,A
+FEXIT00101,2017,799,1,Tower,EXIT,Shattuck Street Lobby Exit,Shattuck St. Exit,A
+EHALL01401,2660,979,1,45 Francis,HALL,Hallway Node 12 Floor 1,HallE12,A
+WELEV00K01,2240,985,1,45 Francis,ELEV,Elevator K 1,Elevator K1,A
+GHALL03401,1284,1872,1,Shapiro,HALL,Hallway MapNode 34 Floor 1,Hall,A
+EHALL00301,2240,910,1,45 Francis,HALL,Hallway Node 1 Floor 1,Hall 01,A
+EHALL02601,3085,980,1,45 Francis,HALL,Hallway Node 24 Floor 1,HallE24,A
+GSTAI00501,1707,1992,1,Shapiro,STAI,Stairway MapNode 5 Floor 1,Northbound Stairs Floor 2,A
+ADEPT00201,1720,2847,1,BTM,DEPT,MS Waiting,MS Waiting,A
+EREST00101,2950,730,1,45 Francis,REST,Restroom 2,Restroom G1,A
+EHALL01501,2675,910,1,45 Francis,HALL,Hallway Node 13 Floor 1,HallE13,A
+WELEV00L01,1810,930,1,Tower,ELEV,Elevator L 1,Elevator L1,A
+GHALL02201,1601,1866,1,Shapiro,HALL,Hallway MapNode 22 Floor 1,Hall,A
+ARETL00101,1619,2522,1,BTM,RETL,Cafe,Cafe,A
+DHALL01202,4570,555,2,15 Francis,HALL,Hallway 12 Floor 2,Hallway D1202,A
+DHALL03502,3945,790,2,15 Francis,HALL,Hallway 35 Floor 2,Hallway D3502,A
+BSTAI00302,2554,783,2,45 Francis,STAI,Staircase Intersection 3 Level 2,Stair B0302,A
+DHALL05802,3510,790,2,15 Francis,HALL,Hallway 58 Floor 2,Hallway D5802,A
+XHALL15902,3378,1573,2,45 Francis,HALL,45 sidewalk 3,45 sidewalk,A
+BDEPT00102,2260,786,2,45 Francis,DEPT,Comprehensive Breast Heath,DEPT B0102,A
+DHALL00102,4770,1140,2,15 Francis,HALL,Hallway 1 Floor 2,Hallway D0102,A
+DHALL02402,4280,435,2,15 Francis,HALL,Hallway 24 Floor 2,Hallway D2402,A
+AHALL00602,1683,2543,2,BTM,HALL,Hall 17,Hall,A
+GDEPT02402,1578,1932,2,Shapiro,DEPT,Watkins A,Watkins A,A
+DHALL04702,3745,780,2,15 Francis,HALL,Hallway 47 Floor 2,Hallway D4702,A
+DHALL05702,3480,790,2,15 Francis,HALL,Hallway 57 Floor 2,Hallway D5702,A
+DHALL03402,3925,740,2,15 Francis,HALL,Hallway 34 Floor 2,Hallway D3402,A
+DHALL01102,4605,655,2,15 Francis,HALL,Hallway 11 Floor 2,Hallway D1102,A
+BINFO00202,3136,963,2,45 Francis,INFO,Valet Service,INFO B0202,A
+GREST00602,1284,1821,2,Shapiro,REST,Restroom 17,Restroom 1 Shapiro Floor 2,A
+ASTAI00102,1650,2602,2,BTM,STAI,Stairs,Stairs Floor 2,A
+GSTAI02602,1686,1931,2,Shapiro,STAI,Stairs Node 26 Floor 2,Floor 2 Stairs Upper,A
+BDEPT00202,2166,1039,2,45 Francis,DEPT,Oral Medicine and Dentistry,DEPT B0202,A
+DHALL04602,3825,760,2,15 Francis,HALL,Hallway 46 Floor 2,Hallway D4602,A
+XELEV 1502,3739,2252,2,FLEX,ELEV,Elevator T 1,FLEX Elevator,A
+DHALL02302,4270,440,2,15 Francis,HALL,Hallway 23 Floor 2,Hallway D2302,A
+HHALL01002,2055,1280,2,Tower,HALL,Hallway Connector 10,Hallway H01002,A
+BHALL00902,2330,590,2,45 Francis,HALL,Hallway Intersection 9 Level 2,Hallway B0902,A
+BHALL00802,2605,783,2,45 Francis,HALL,Hallway Intersection 8 Level 2,Hallway B0802,A
+DHALL03702,3965,860,2,15 Francis,HALL,Hallway 37 Floor 2,Hallway D3702,A
+DHALL01402,4570,455,2,15 Francis,HALL,Hallway 14 Floor 2,Hallway D1402,A
+BSTAI00502,2945,840,2,45 Francis,STAI,Staircase Intersection 5 Level 2,Stair B0502,A
+XHALL15702,3281,1134,2,45 Francis,HALL,45 sidewalk 1,45 sidewalk,A
+DSTAI00802,3535,645,2,15 Francis,STAI,Staircase8 Floor2,Staircase8,A
+BDEPT00302,2385,753,2,45 Francis,DEPT,Lee Bell Breast Center,DEPT B0302,A
+BHALL01902,2678,1032,2,45 Francis,HALL,Hallway Intersection 19 Level 2,Hallway B1902,A
+BREST00402,2554,1389,2,45 Francis,REST,Restroom 11,REST B0402,A
+AELEV00S02,1532,2777,2,BTM,ELEV,Elevator S 2,Elevator S 2,A
+WHALL01002,1690,2455,2,BTM,HALL,Hallway Connector 10 Floor 2,Hallway W1002,A
+DHALL02602,4270,650,2,15 Francis,HALL,Hallway 26 Floor 2,Hallway D2602,A
+DHALL00302,4725,995,2,15 Francis,HALL,Hallway 3 Floor 2,Hallway D0302,A
+DHALL04902,3645,775,2,15 Francis,HALL,Hallway 49 Floor 2,Hallway D4902,A
+BHALL00702,2672,902,2,45 Francis,HALL,Hallway Intersection 7 Level 2,Hallway B0702,A
+DHALL01302,4545,460,2,15 Francis,HALL,Hallway 13 Floor 2,Hallway D1302,A
+GDEPT03502,1580,2166,2,Shapiro,DEPT,Watkins B,Watkins B,A
+HHALL00102,1875,925,2,Tower,HALL,Hallway Connector 1,Hallway H00102,A
+DHALL03602,3955,830,2,15 Francis,HALL,Hallway 36 Floor 2,Hallway D3602,A
+DHALL05902,3420,850,2,15 Francis,HALL,Hallway 59 Floor 2,Hallway D5902,A
+BSTAI00602,3217,886,2,45 Francis,STAI,Staircase Intersection 6 Level 2,Stair B0602,A
+XHALL15802,3372,1219,2,45 Francis,HALL,45 sidewalk 2,45 sidewalk,A
+BDEPT00402,2439,902,2,45 Francis,DEPT,Jen Center for Primary Care,DEPT B0402,A
+BHALL01802,2610,953,2,45 Francis,HALL,Hallway Intersection 18 Level 2,Hallway B1802,A
+DLABS00102,3830,775,2,15 Francis,LABS,MRI Associates Lab,MRI Associates,A
+GHALL03002,1580,2090,2,Shapiro,HALL,Hall Node 30 Floor 2,Hall,A
+BREST00502,2782,1152,2,45 Francis,REST,Restroom 12,REST B0502,A
+DHALL00202,4750,1080,2,15 Francis,HALL,Hallway 2 Floor 2,Hallway D0202,A
+DHALL02502,4290,470,2,15 Francis,HALL,Hallway 25 Floor 2,Hallway D2502,A
+DHALL04802,3655,805,2,15 Francis,HALL,Hallway 48 Floor 2,Hallway D4802,A
+GINFO01902,1630,1821,2,Shapiro,INFO,Shapiro Information Center,Information Center Shapiro Floor 2,A
+WHALL00402,2105,900,2,45 Francis,HALL,Hallway Connector 4 Floor 2,Hallway W0402,A
+DHALL01602,4480,580,2,15 Francis,HALL,Hallway 16 Floor 2,Hallway D1602,A
+HDEPT00102,2055,1330,2,Tower,DEPT,Endoscopy,Endoscopy,A
+DREST00102,4125,625,2,15 Francis,REST,Restroom 13,Restroom B,A
+DHALL03902,3980,910,2,15 Francis,HALL,Hallway 39 Floor 2,Hallway D3902,A
+GHALL01802,1630,1801,2,Shapiro,HALL,Hall Node 18 Floor 2,Hall,A
+BHALL03202,2554,1472,2,45 Francis,HALL,Hallway Intersection 32 Level 2,Hallway B3202,A
+HRETL00302,1825,1080,2,Tower,RETL,Gift Shop Tower,Gift Shop,A
+BSTAI01002,2238,932,2,45 Francis,STAI,Staircase Intersection 10 Level 2,Stair B1002,A
+DHALL02802,4220,660,2,15 Francis,HALL,Hallway 28 Floor 2,Hallway D2802,A
+DHALL00502,4705,925,2,15 Francis,HALL,Hallway 5 Floor 2,Hallway D0502,A
+AHALL00202,1590,2604,2,BTM,HALL,Hall 13,Hall,A
+GHALL02902,1728,2042,2,Shapiro,HALL,Hall Node 29 Floor 2,Hall,A
+BHALL02102,2841,1032,2,45 Francis,HALL,Hallway Intersection 21 Level 2,Hallway B2102,A
+BHALL04402,3063,963,2,45 Francis,HALL,Hallway Intersection 44 Level 2,Hallway B4402,A
+WHALL00302,2085,900,2,45 Francis,HALL,Hallway Connector 3 Floor 2,Hallway W0302,A
+DHALL03802,3970,880,2,15 Francis,HALL,Hallway 38 Floor 2,Hallway D3802,A
+DREST00202,3895,695,2,15 Francis,REST,Restroom 14,Restroom C,A
+DHALL01502,4555,390,2,15 Francis,HALL,Hallway 15 Floor 2,Hallway D1502,A
+BHALL03102,2554,1280,2,45 Francis,HALL,Hallway Intersection 31 Level 2,Hallway B3102,A
+GHALL01702,1578,1820,2,Shapiro,HALL,Hall Node 17 (Exit?) Floor 2,Hall,A
+HRETL00202,1615,1025,2,Tower,RETL,Vending Machine,Vending Machine,A
+DHALL02702,4285,715,2,15 Francis,HALL,Hallway 27 Floor 2,Hallway D2702,A
+DHALL00402,4785,975,2,15 Francis,HALL,Hallway 4 Floor 2,Hallway D0402,A
+AHALL00302,1590,2745,2,BTM,HALL,Hall 14,Hall,A
+BHALL02002,2761,1032,2,45 Francis,HALL,Hallway Intersection 20 Level 2,Hallway B2002,A
+BHALL04302,2782,1067,2,45 Francis,HALL,Hallway Intersection 43 level 2,Hallway B04302,A
+GHALL00502,1283,1781,2,Shapiro,HALL,Hall Node 5 Floor 2,Hall,A
+WHALL00202,3360,860,2,15 Francis,HALL,Hallway Connector 2 Floor 2,Hallway W0202,A
+DREST00302,3635,830,2,15 Francis,REST,Restroom 15,Restroom C-D,A
+BSTAI00102,2177,902,2,45 Francis,STAI,Staircase Intersection 1 Level 2,Stair B0102,A
+DHALL01802,4385,585,2,15 Francis,HALL,Hallway 18 Floor 2,Hallway D1802,A
+BHALL03002,2782,1165,2,45 Francis,HALL,Hallway Intersection 30 Level 2,Hallway B3002,A
+HRETL00102,1935,860,2,Tower,RETL,Garden Cafe,Garden Cafe,A
+AHALL00402,1528,2745,2,BTM,HALL,Hall 15,Hall,A
+DHALL00702,4675,820,2,15 Francis,HALL,Hallway 7 Floor 2,Hallway D0702,A
+BHALL04202,2761,1067,2,45 Francis,HALL,Hallway Intersection 42 Level 2,Hallway B04202,A
+DHALL06002,4330,580,2,15 Francis,HALL,Hallway 60 Floor 2,Hallway D6002,A
+HSTAI00202,1695,1165,2,Tower,STAI,Stairwell 2 Tower,Stairwell 0202,A
+WHALL00102,3345,865,2,45 Francis,HALL,Hallway Connector 1 Floor 2,Hallway W0102,A
+DHALL01702,4390,605,2,15 Francis,HALL,Hallway 17 Floor 2,Hallway D1702,A
+DREST00402,3525,850,2,15 Francis,REST,Restroom 16,Restroom D,A
+BSTAI00202,2279,827,2,45 Francis,STAI,Staircase Intersection 2 Level 2,Stair B0202,A
+XEXIT  102,3063,1095,2,45 Francis,EXIT,45 Francis Entrance,45 Entrance,A
+DHALL00602,4690,870,2,15 Francis,HALL,Hallway 6 Floor 2,Hallway D0602,A
+AHALL00502,1398,2745,2,BTM,HALL,Hall 16,Hall,A
+DHALL02902,4185,665,2,15 Francis,HALL,Hallway 29 Floor 2,Hallway D2902,A
+BHALL04102,2678,1067,2,45 Francis,HALL,Hallway Intersection 41 Level 2,Hallway B04102,A
+HSTAI00302,1790,1230,2,Tower,STAI,Escalator 1,Escalator 1,A
+DHALL05002,3630,810,2,15 Francis,HALL,Hallway 50 Floor 2,Hallway D5002,A
+HBATH00102,1605,1008,2,Tower,REST,Restroom 19,Bathroom 0102,A
+BDEPT00902,3257,879,2,45 Francis,DEPT,Weiner Center for Preoperative Evaluation,DEPT B0902,A
+GHALL03702,1692,2211,2,Shapiro,HALL,Hall Node 37 Floor 2,Hall,A
+BHALL00202,2279,902,2,45 Francis,HALL,Hallway Intersection 2 Level 2,Hallway B0202,A
+WHALL00802,1720,1745,2,Shapiro,HALL,Hallway Connector 8 Floor 2,Hallway W0802,A
+HHALL00602,1775,1080,2,Tower,HALL,Hallway Connector 6,Hallway H00602,A
+BLABS00102,2246,1350,2,45 Francis,LABS,Vascular Diagnostic Lab,Labs B0102,A
+DSTAI00202,4320,550,2,15 Francis,STAI,Staircase2 Floor2,Staircase2,A
+XEXIT  202,3867,1923,2,FLEX,EXIT,Flexible Workspaces Entrance,Flex Entrance,A
+BHALL01302,3135,890,2,45 Francis,HALL,Hallway Intersection 13 Level 2,Hallway B1302,A
+GHALL01402,1450,1820,2,Shapiro,HALL,Hall Node 14 Floor 2,Hall,A
+BHALL03602,2279,762,2,45 Francis,HALL,Hallway Intersection 36 Level 2,Hallway B3602,A
+DINFO00202,3490,825,2,15 Francis,INFO,Security Desk Thorn,Security Desk,A
+GELEV00Q02,1628,2102,2,Shapiro,ELEV,Elevator Q 2,Elevator Q Floor 2,A
+PHALL00102,4300,630,2,45 Francis,HALL,Kiosk,HALL,A
+DHALL00902,4635,680,2,15 Francis,HALL,Hallway 9 Floor 2,Hallway D0902,A
+DRETL00102,4270,480,2,15 Francis,RETL,Pats Place,Pats Place,A
+WELEV00E02,3235,880,2,45 Francis,ELEV,Elevator E 2,Elevator E2,A
+GHALL00202,1168,1820,2,Shapiro,HALL,Hall Node 2 Floor 2,Hall,A
+BHALL02502,3163,945,2,45 Francis,HALL,Hallway Intersection 25 Level 2,Hallway B2502,A
+XHALL16102,3830,1991,2,FLEX,HALL,FLEX Entry Hall 1,FLEX Entry Hall,A
+HHALL00702,1740,1165,2,Tower,HALL,Hallway Connector 7,Hallway H00702,A
+GHALL03602,1580,2208,2,Shapiro,HALL,Hall Node 36 Floor 2,Hall,A
+BHALL00102,2238,902,2,45 Francis,HALL,Hallway Intersection 1 Level 2,Hallway B0102,A
+DHALL01902,4340,625,2,15 Francis,HALL,Hallway 19 Floor 2,Hallway D1902,A
+WHALL00702,1740,1500,2,Tower,HALL,Hallway Connector 7 Floor 2,Hallway W0702,A
+BHALL01202,2945,902,2,45 Francis,HALL,Hallway Intersection 12 Level 2,Hallway B1202,A
+BHALL03502,2246,1028,2,45 Francis,HALL,Hallway Intersection 35 Level 2,Hallway B3502,A
+GHALL01302,1450,1781,2,Shapiro,HALL,Hall Node 13 Floor 2,Hall,A
+DINFO00102,4210,630,2,15 Francis,INFO,15 Francis Security Desk,Information Desk,A
+DSTAI00302,4250,440,2,15 Francis,STAI,Staircase3 Floor2,Staircase3,A
+DDEPT00102,4330,700,2,15 Francis,DEPT,Chest Diseases,Chest Diseases,A
+DHALL00802,4660,770,2,15 Francis,HALL,Hallway 8 Floor 2,Hallway D0802,A
+WELEV00F02,3075,960,2,45 Francis,ELEV,Elevator F 2,Elevator F2,A
+XHALL16002,3871,1573,2,45 Francis,HALL,45 sidewalk 4,45 sidewalk,A
+GHALL00102,1170,1780,2,Shapiro,HALL,Hall Node 1 Floor 2,Hall,A
+HSTAI00102,2060,880,2,Tower,STAI,Stairwell 1,Stairwell 0102,A
+XHALL16402,3338,1166,2,45 Francis,HALL,45 sidewalk 5,45 sidewalk,A
+HHALL00802,1740,1230,2,Tower,HALL,Hallway Connector 8,Hallway H00802,A
+DHALL05202,3555,730,2,15 Francis,HALL,Hallway 52 Floor 2,Hallway D5202,A
+WHALL00602,2105,1280,2,45 Francis,HALL,Hallway Connector 6 Floor 2,Hallway W0602,A
+BHALL01102,2912,903,2,45 Francis,HALL,Hallway Intersection 11 Level 2,Hallway B1102,A
+GHALL01602,1502,1820,2,Shapiro,HALL,Hall Node 16 Floor 2,Hall,A
+BHALL03402,2166,1028,2,45 Francis,HALL,Hallway Intersection 34 Level 2,Hallway B3402,A
+DHALL04102,3875,560,2,15 Francis,HALL,Hallway 41 Floor 2,Hallway D4102,A
+GDEPT00702,1341,1778,2,Shapiro,DEPT,Waiting room 2,Waiting Area Shapiro Floor 2,A
+WELEV00G02,2945,870,2,45 Francis,ELEV,Elevator G 2,Elevator G2,A
+GHALL02702,1726,1930,2,Shapiro,HALL,Hall Node 27 Floor 2,Hall,A
+GHALL00402,1230,1820,2,Shapiro,HALL,Hall Node 4 Floor 2,Hall,A
+BHALL02302,2912,963,2,45 Francis,HALL,Hallway Intersection 23 Level 2,Hallway B2302,A
+DELEV00D02,3475,760,2,15 Francis,ELEV,Elevator D,Elevator D2,A
+XHALL16302,3772,2316,2,FLEX,HALL,FLEX Entry Hall 2,FLEX Entry Hall,A
+WHALL00502,2085,1280,2,45 Francis,HALL,Hallway Connector 5 Floor 2,Hallway W0502,A
+HHALL00902,1740,1280,2,Tower,HALL,Hallway Connector 9,Hallway H00902,A
+DEXIT00102,4295,750,2,15 Francis,EXIT,15 Lobby Entrance,15 Lobby Entrance,A
+DHALL05102,3575,825,2,15 Francis,HALL,Hallway 51 Floor 2,Hallway D5102,A
+GHALL03802,1726,2210,2,Shapiro,HALL,Hall Node 38 Floor 2,Hall,A
+DSTAI00102,4650,675,2,15 Francis,STAI,Staircase1 Floor2,Staircase1,A
+BHALL01002,2713,902,2,45 Francis,HALL,Hallway Intersection 10 Level 2,Hallway B1002,A
+BHALL03302,2782,1280,2,45 Francis,HALL,Hallway Intersection 33 Level 2,Hallway B3302,A
+GHALL01502,1502,1781,2,Shapiro,HALL,Hall Node 15 Floor 2,Hall,A
+GELEV00N02,1630,1931,2,Shapiro,ELEV,Elevator N 2,Elevator N Floor 1,A
+BCONF00102,2150,1025,2,45 Francis,CONF,Duncan Reid Conference Room,Conf B0102,A
+DHALL04002,3910,685,2,15 Francis,HALL,Hallway 40 Floor 2,Hallway D4002,A
+AHALL00102,1591,2560,2,BTM,HALL,Hall 12,Hall,A
+WELEV00H02,2725,1065,2,45 Francis,ELEV,Elevator H 2,Elevator H2,A
+BHALL02202,2900,985,2,45 Francis,HALL,Hallway Intersection 22 Level 2,Hallway B2202,A
+GHALL00302,1231,1781,2,Shapiro,HALL,Hall Node 3 Floor 2,Hall,A
+XHALL16202,3830,2316,2,FLEX,HALL,FLEX Hall,FLEX Hall,A
+DHALL03102,4130,650,2,15 Francis,HALL,Hallway 31 Floor 2,Hallway D3102,A
+DHALL05402,3490,845,2,15 Francis,HALL,Hallway 54 Floor 2,Hallway D5402,A
+BDEPT00502,2623,1018,2,45 Francis,DEPT,Ear Nose & Throat,DEPT B0502,A
+GHALL03302,1692,2124,2,Shapiro,HALL,Hall Node 33 Floor 2,Hall,A
+BHALL00602,2605,902,2,45 Francis,HALL,Hallway Intersection 6 Level 2,Hallway B0602,A
+HHALL00202,1955,900,2,Tower,HALL,Hallway Connector 2,Hallway H00202,A
+BSTAI00702,2811,1165,2,45 Francis,STAI,Staircase Intersection 7 Level 2,Stair B0702,A
+BHALL01702,2945,710,2,45 Francis,HALL,Hallway Intersection 17 Level 2,Hallway B1702,A
+BREST00202,2605,841,2,45 Francis,REST,Restroom 9,REST B0202,A
+DSTAI00602,3950,865,2,15 Francis,STAI,Staircase6 Floor2,Staircase6,A
+GHALL01002,1340,1820,2,Shapiro,HALL,Hall Node 10 Floor 2,Hall,A
+DHALL02002,4310,585,2,15 Francis,HALL,Hallway 20 Floor 2,Hallway D2002,A
+DHALL04302,3865,750,2,15 Francis,HALL,Hallway 43 Floor 2,Hallway D4302,A
+ADEPT00102,1395,2674,2,BTM,DEPT,Orthopedics and Rhemutalogy,Orthopedics and Rhemutalogy,A
+DDEPT00402,3425,870,2,15 Francis,DEPT,Waiting Room,Waiting Room,A
+GHALL02102,1683,1821,2,Shapiro,HALL,Hall Node 21 Floor 2,Hall,A
+BHALL02902,2782,1091,2,45 Francis,HALL,Hallway Intersection 29 Level 2,Hallway B2902,A
+DELEV00B02,4155,650,2,15 Francis,ELEV,Elevator B,Elevator B2,A
+GHALL03202,1684,2091,2,Shapiro,HALL,Hall Node 32 Floor 2,Hall,A
+DHALL03002,4140,680,2,15 Francis,HALL,Hallway 30 Floor 2,Hallway D3002,A
+BDEPT00602,2782,1303,2,45 Francis,HALL,Hallway Intersection 31,Hallway B3102,A
+BHALL00502,2385,902,2,45 Francis,HALL,Hallway Intersection 5 Level 2,Hallway B0502,A
+DHALL05302,3525,840,2,15 Francis,HALL,Hallway 53 Floor 2,Hallway D5302,A
+HHALL00302,2035,900,2,Tower,HALL,Hallway Connector 3,Hallway H00302,A
+BSTAI00802,2554,1316,2,45 Francis,STAI,Staircase Intersection 8 Level 2,Stair B0802,A
+DSTAI00702,3855,565,2,15 Francis,STAI,Staircase7 Floor2,Staircase7,A
+BHALL01602,2721,750,2,45 Francis,HALL,Hallway Intersection 16 Level 2,Hallway B1602,A
+BREST00302,2225,1280,2,45 Francis,REST,Restroom 10,REST B0302,A
+DHALL04202,3870,540,2,15 Francis,HALL,Hallway 42 Floor 2,Hallway D4202,A
+ACONF00102,1580,2538,2,BTM,HALL,Hall 11,Hall,A
+WELEV00J02,2385,800,2,45 Francis,ELEV,Elevator J 2,Elevator J2,A
+BHALL02802,3063,1043,2,45 Francis,HALL,Hallway Intersection 28 Level 2,Hallway B2802,A
+DELEV00C02,3955,885,2,15 Francis,ELEV,Elevator C,Elevator C2,A
+GHALL02002,1684,1801,2,Shapiro,HALL,Hall Node 20 Floor 2,Hall,A
+BDEPT00702,2945,775,2,45 Francis,DEPT,Plastic Surgery,DEPT B0702,A
+DHALL05602,3440,800,2,15 Francis,HALL,Hallway 56 Floor 2,Hallway D5602,A
+BHALL00402,2246,1280,2,45 Francis,HALL,Hallway Intersection 4 Level 2,Hallway B0402,A
+DHALL01002,4625,650,2,15 Francis,HALL,Hallway 10 Floor 2,Hallway D1002,A
+DHALL03302,4000,645,2,15 Francis,HALL,Hallway 33 Floor 2,Hallway D3302,A
+HHALL00402,1875,1025,2,Tower,HALL,Hallway Connector 4,Hallway H00402,A
+BINFO00102,2962,963,2,45 Francis,INFO,Information Desk 1,INFO B0102,A
+BSERV00102,2853,1067,2,45 Francis,SERV,Patient Financial Services,SERV B0102,A
+BSTAI00902,2190,1280,2,45 Francis,STAI,Staircase Intersection 9 Level 2,Stair B0902,A
+BHALL01502,2672,820,2,45 Francis,HALL,Hallway Intersection 15 Level 2,Hallway B1502,A
+GHALL01202,1395,1820,2,Shapiro,HALL,Hall Node 12 Floor 2,Hall,A
+BHALL03802,2279,786,2,45 Francis,HALL,Hallway Intersection 38 Level 2,Hallway B3802,A
+DSTAI00402,4175,620,2,15 Francis,STAI,Staircase4 Floor2,Staircase4,A
+DHALL04502,3775,745,2,15 Francis,HALL,Hallway 45 Floor 2,Hallway D4502,A
+DHALL02202,4280,475,2,15 Francis,HALL,Hallway 22 Floor 2,Hallway D2202,A
+DDEPT00202,4240,730,2,15 Francis,DEPT,Thoracic Surgery Clinic,Thoracic Surgery Clinic,A
+WELEV00K02,2240,965,2,45 Francis,ELEV,Elevator K 2,Elevator K2,A
+DCONF00102,4595,550,2,15 Francis,CONF,Carrie M. Hall Conference Center,Conference Center,A
+GHALL02302,1726,1835,2,Shapiro,HALL,Hall Node 23 Floor 2,Hall,A
+BHALL02702,3296,1043,2,45 Francis,HALL,Hallway Intersection 27 Level 2,Hallway B2702,A
+BDEPT00802,3155,890,2,45 Francis,DEPT,Outpatient Pharmacy,DEPT B0802,A
+DHALL05502,3450,850,2,15 Francis,HALL,Hallway 55 Floor 2,Hallway D5502,A
+GHALL03402,1724,2123,2,Shapiro,HALL,Hall Node 34 Floor 2,Hall,A
+BHALL00302,2238,1028,2,45 Francis,HALL,Hallway Intersection 3 Level 2,Hallway B0302,A
+DHALL03202,4020,715,2,15 Francis,HALL,Hallway 32 Floor 2,Hallway D3202,A
+BLABS00202,2945,995,2,45 Francis,LABS,Outpatient Specimen Collection,Labs B0202,A
+WELEV00M02,1825,1280,2,Tower,ELEV,Elevator M 2,Elevator M2,A
+WHALL00902,1690,2240,2,Shapiro,HALL,Hallway Connector 9 Floor 2,Hallway W0902,A
+HHALL00502,1825,1025,2,Tower,HALL,Hallway Connector 5,Hallway H00502,A
+BHALL01402,3296,880,2,45 Francis,HALL,Hallway Intersection 14 Level 2,Hallway B1402,A
+BHALL03702,2322,641,2,45 Francis,HALL,Hallway Intersection 37 Level 2,Hallway B3702,A
+GSTAI02802,1685,2041,2,Shapiro,STAI,Stairs Node 28 Floor 2,Floor 2 Stairs Lower,A
+DSTAI00502,4065,630,2,15 Francis,STAI,Staircase5 Floor2,Staircase5,A
+GHALL01102,1396,1781,2,Shapiro,HALL,Hall Node 11 Floor 2,Hall,A
+BREST00102,2177,1010,2,45 Francis,REST,Restroom 8,REST B0102,A
+DHALL04402,3860,725,2,15 Francis,HALL,Hallway 44 Floor 2,Hallway D4402,A
+GREST03102,1628,2092,2,Shapiro,REST,Restroom 18,Handicap Accessible Restrooms Shapiro Floor 2,A
+DHALL02102,4295,530,2,15 Francis,HALL,Hallway 21 Floor 2,Hallway D2102,A
+DDEPT00302,3900,640,2,15 Francis,DEPT,Brigham Health,Brigham Health,A
+DELEV00A02,4550,375,2,15 Francis,ELEV,Elevator A,Elevator A2,A
+WELEV00L02,1805,925,2,Tower,ELEV,Elevator L 2,Elevator L2,A
+BHALL02602,3296,945,2,45 Francis,HALL,Hallway Intersection 26 Level 2,Hallway B2602,A
+GHALL02202,1720,1801,2,Shapiro,HALL,Hall Node 22 Floor 2,Hall,A
+IHALL00103,2255,1290,3,45 Francis,HALL,Hallway Node 1,H1,A
+AHALL00603,1580,2858,3,BTM,HALL,HallNode,HallNode,A
+IHALL01303,2323,1034,3,45 Francis,HALL,Hallway Node 13,H13,A
+IDEPT00803,2492,887,3,45 Francis,DEPT,Fetal Med & Genetics,D8,A
+GDEPT01403,1580,1904,3,Shapiro,DEPT,Watkins Clinic C,Watkins Clinic C,A
+HHALL01003,1785,820,3,Tower,HALL,Hallway Connector 10 2,Hallway H01003,A
+IHALL01203,2220,1034,3,45 Francis,HALL,Hallway Node 12,H12,A
+IDEPT00903,2631,851,3,45 Francis,DEPT,Gynecology,D9,A
+IHALL02203,2362,764,3,45 Francis,HALL,Hallway Node 22,H22,A
+AELEV00S03,1539,2773,3,BTM,ELEV,Elevator S 3,Elevator S 3,A
+HHALL01103,1690,820,3,Tower,HALL,Hallway Connector 11,Hallway H01103,A
+IHALL01103,2922,1075,3,45 Francis,HALL,Hallway Node 11,H11,A
+HHALL00103,1325,655,3,Tower,HALL,Hallway Connector 1 2,Hallway H00103,A
+HHALL01203,1600,820,3,Tower,HALL,Hallway Connector 12,Hallway H01203,A
+IHALL01003,2772,1075,3,45 Francis,HALL,Hallway Node 10,H10,A
+HDEPT00103,1725,900,3,Tower,DEPT,Dialysis Waiting Room,Dialysis WR,A
+ALABS00203,1671,2695,3,BTM,LABS,Clinical Trials,Clinical Trials,A
+IHALL00503,2730,1290,3,45 Francis,HALL,Hallway Node 5,H5,A
+GSERV01603,1580,1858,3,Shapiro,SERV,The Porch,The Porch,A
+AHALL00203,1600,2732,3,BTM,HALL,Hall 19,Hall,A
+IREST00103,2255,1255,3,45 Francis,REST,Restroom 23,R1,A
+IHALL01703,2323,851,3,45 Francis,HALL,Hallway Node 17,H17,A
+GHALL00603,1685,2142,3,Shapiro,HALL,Hallway Node 6 Floor 3,Hall,A
+IDEPT00403,2738,1227,3,45 Francis,DEPT,General Surgical Specialties Suite B,D4,A
+IHALL00403,2570,1290,3,45 Francis,HALL,Hallway Node 4,H4,A
+AHALL00303,1650,2732,3,BTM,HALL,Hall 20,Hall,A
+IHALL01603,2252,851,3,45 Francis,HALL,Hallway Node 16,H16,A
+IREST00203,2570,1257,3,45 Francis,REST,Restroom 24,R2,A
+IDEPT00503,2868,1075,3,45 Francis,DEPT,Urology,D5,A
+WHALL00203,2080,1290,3,45 Francis,HALL,Hallway Connector 2 Floor 3,Hallway W0203,A
+AREST00103,1552,2854,3,BTM,REST,Restroom BTM Conference Center,Restroom,A
+IHALL00303,2448,1290,3,45 Francis,HALL,Hallway Node 3,H3,A
+AHALL00403,1650,2766,3,BTM,HALL,Hall 21,Hall,A
+GHALL00803,1685,2106,3,Shapiro,HALL,Hallway Node 8 Floor 3,Hall,A
+IHALL01503,2220,944,3,45 Francis,HALL,Hallway Node 15,H15,A
+IDEPT00603,2333,764,3,45 Francis,DEPT,Maternal Fetal Practice,D6,A
+WHALL00103,2060,1290,3,45 Francis,HALL,Hallway Connector 1 Floor 3,Hallway W0103,A
+HDEPT00203,1690,830,3,Tower,DEPT,MICU 3BC Waiting Room,MICU 3BC WR,A
+IHALL00203,2323,1290,3,45 Francis,HALL,Hallway Node 2,H2,A
+AHALL00503,1650,2855,3,BTM,HALL,Hall 22,Hall,A
+GHALL00703,1685,2230,3,Shapiro,HALL,Hallway Node 7 Floor 3,Hall,A
+IHALL01403,2323,993,3,45 Francis,HALL,Hallway Node 14,H14,A
+IDEPT00703,2400,764,3,45 Francis,DEPT,Obstetrics,D7,A
+HHALL00603,1735,925,3,Tower,HALL,Hallway Connector 6 2,Hallway H00603,A
+HBATH00103,1785,830,3,Tower,REST,Restroom 21,Bathroom 0103,A
+IHALL00903,2649,1075,3,45 Francis,HALL,Hallway Node 9,H9,A
+GELEV00Q03,1628,2142,3,Shapiro,ELEV,Elevator Q 3,Elevator Q Floor 3,A
+GHALL00203,1580,2230,3,Shapiro,HALL,Hallway Node 2 Floor 3,Hall,A
+IREST00503,2277,995,3,45 Francis,REST,Restroom 27,R5,A
+HHALL00703,1735,900,3,Tower,HALL,Hallway Connector 7 2,Hallway H00703,A
+IHALL00803,2772,1147,3,45 Francis,HALL,Hallway Node 8,H8,A
+GHALL01303,1580,2006,3,Shapiro,HALL,Hallway Node 13 Floor 3,Hall,A
+IDEPT00103,2323,1328,3,45 Francis,DEPT,Center for Infertility and Reproductive Surgery,D1,A
+GHALL00103,1562,2230,3,Shapiro,HALL,Hallway Node 1 Floor 3,Hall,A
+HSTAI00103,1680,1275,3,Tower,STAI,Stairwell 1 2,Stairwell,A
+HHALL00803,1735,865,3,Tower,HALL,Hallway Connector 8 2,Hallway H00803,A
+IHALL00703,2772,1227,3,45 Francis,HALL,Hallway Node 7,H7,A
+IDEPT00203,2448,1328,3,45 Francis,DEPT,Gynecology Oncology MIGS,D2,A
+IHALL01903,2492,851,3,45 Francis,HALL,Hallway Node 19,H19,A
+IREST00303,2745,1147,3,45 Francis,REST,Restroom 25,R3,A
+HHALL00903,1735,820,3,Tower,HALL,Hallway Connector 9 2,Hallway H00903,A
+HBATH00203,1750,985,3,Tower,REST,Restroom 22,Bathroom 0203,A
+IHALL00603,2772,1290,3,45 Francis,HALL,Hallway Node 6,H6,A
+ALABS00103,1611,2678,3,BTM,LABS,Innovation Hub,Innovation Hub,A
+GSTAI00903,1685,2052,3,Shapiro,STAI,Staircase Node 9 Floor 3,Floor 3 Stairs,A
+GELEV00N03,1628,1904,3,Shapiro,ELEV,Elevator N 3,Elevator N Floor 3,A
+GREST01203,1628,2052,3,Shapiro,REST,Restroom 20,Restroom Shapiro Floor 3,A
+AHALL00103,1534,2732,3,BTM,HALL,Hall 18,Hall,A
+WELEV00H03,2715,1075,3,45 Francis,ELEV,Elevator H 3,Elevator H3,A
+GHALL00303,1580,2180,3,Shapiro,HALL,Hallway Node 3 Floor 3,Hall,A
+IHALL01803,2362,851,3,45 Francis,HALL,Hallway Node 18,H18,A
+IDEPT00303,2730,1315,3,45 Francis,DEPT,General Surgical Specialties Suite A,D3,A
+IREST00403,2300,1018,3,45 Francis,REST,Restroom 26,R4,A
+HHALL00203,1235,985,3,Tower,HALL,Hallway Connector 2 2,Hallway H00203,A
+IHALL02003,2597,851,3,45 Francis,HALL,Hallway Node 20,H20,A
+ADEPT01306,1826,714,3,Main,DEPT,Reflection Room 3,Reflection Room 3,Team A
+GHALL01003,1580,2070,3,Shapiro,HALL,Hallway Node 10 Floor 3,Hall,A
+HHALL01303,1600,1030,3,Tower,HALL,Hallway Connector 13,Hallway H01303,A
+HLABS00103,1235,865,3,Tower,LABS,Reproductive Endocrine Labs,Reproductive Endocrine Labs,A
+AHALL05306,1490,1953,3,15 Francis,HALL,Hall to Reflection 2,Hall to Reflection 2,Team A
+HHALL00303,1325,985,3,Tower,HALL,Hallway Connector 3 2,Hallway H00303,A
+XELEV  803,3742,2260,3,FLEX,ELEV,Elevator T 2,Flex Elevator,A
+HHALL01403,1735,1030,3,Tower,HALL,Hallway Connector 14,Hallway H01403,A
+ACONF00103,1648,2968,3,BTM,CONF,BTM Conference Center,BTM Conference,A
+WELEV00J03,2365,800,3,45 Francis,ELEV,Elevator J 3,Elevator J3,A
+WELEV00L03,1790,925,3,Tower,ELEV,Elevator L 3,Elevator L3,A
+HHALL00403,1325,1290,3,Tower,HALL,Hallway Connector 4 2,Hallway H00403,A
+HSERV00103,1750,865,3,Tower,SERV,Nursing Room,Nursing Room,A
+HHALL01503,1735,985,3,Tower,HALL,Hallway Connector 15,Hallway H01503,A
+WELEV00K03,2220,985,3,45 Francis,ELEV,Elevator K 3,Elevator K3,A
+WELEV00M03,1815,1290,3,Tower,ELEV,Elevator M 3,Elevator M3,A
+HHALL00503,1680,1290,3,Tower,HALL,Hallway Connector 5 2,Hallway H00502,A
+ADEPT01406,1470,2032,3,15 Francis,DEPT,Reflection Room 2,Reflection Room 2,Team A
+GHALL01103,1628,2070,3,Shapiro,HALL,Hallway Node 11 Floor 3,Hall,A
+GDEPT00403,1580,2142,3,Shapiro,DEPT,Brigham Circle Medical Associates,Brigham Circle Medical Associates,A

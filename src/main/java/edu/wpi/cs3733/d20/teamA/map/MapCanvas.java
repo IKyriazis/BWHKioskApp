@@ -1,9 +1,11 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
 import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javafx.animation.*;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.BoundingBox;
@@ -12,19 +14,28 @@ import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 
 public class MapCanvas extends Canvas {
+  private Graph graph;
+
   private final Image[] floorImages;
-  private final Image upImage;
-  private final Image downImage;
+
+  private final int maxFloor;
 
   private int lastDrawnFloor = 1;
   private boolean drawAllNodes = false;
   private boolean drawBelow = false;
   private SimpleDoubleProperty zoom;
+  private final double zoomScalar = 2.0;
 
   private BoundingBox viewSpace;
   private Point2D center;
@@ -32,43 +43,63 @@ public class MapCanvas extends Canvas {
 
   private boolean dragEnabled;
   private MouseButton dragMapButton = MouseButton.PRIMARY;
-  private EventHandler<MouseEvent> dragStartHandler;
-  private EventHandler<MouseEvent> dragHandler;
-  private EventHandler<MouseEvent> dragEndHandler;
-
+  private final EventHandler<MouseEvent> dragStartHandler;
+  private final EventHandler<MouseEvent> dragHandler;
+  private final EventHandler<MouseEvent> dragEndHandler;
+  // FF 70 43
   private ArrayList<Node> highlights;
-  private Color highlightColor = Color.DEEPSKYBLUE;
+  private Color highlightColor = Color.rgb(255, 112, 67);
   private Point2D highlightOffset;
 
   private Point2D selectionStart;
   private Point2D selectionEnd;
 
-  private ContextPath path;
+  private ArrayList<Node> pathNodes;
+  private ArrayList<Edge> pathEdges;
+  private ImageView pathArrow;
+  private PathTransition transition = new PathTransition();
+  private boolean animatingPath = false;
 
-  public MapCanvas(boolean dragEnabled) {
+  public MapCanvas(boolean dragEnabled, Campus campus) {
     super();
+
+    graph = Graph.getInstance(campus);
+    maxFloor = campus == Campus.FAULKNER ? 5 : 6;
 
     this.dragEnabled = dragEnabled;
 
-    // Load floor images
-    floorImages = new Image[5];
-    for (int i = 0; i < 5; i++) {
-      floorImages[i] = new Image("/edu/wpi/cs3733/d20/teamA/images/Floor" + (i + 1) + ".jpg");
+    // Load path arrow
+    pathArrow = new ImageView(ImageCache.loadImage("images/blue_right.png"));
+    pathArrow.setFitWidth(32.0);
+    pathArrow.setFitHeight(32.0);
+
+    // Collate image locations
+    ArrayList<String> imageLocations = new ArrayList<>();
+    for (int i = 0; i < maxFloor; i++) {
+      String imgName = (campus == Campus.FAULKNER ? "Faulkner" : "Main") + (i + 1);
+      imageLocations.add("images/" + imgName + ".png");
     }
 
-    // Load up/down arrow images
-    upImage = new Image("/edu/wpi/cs3733/d20/teamA/images/up.png");
-    downImage = new Image("/edu/wpi/cs3733/d20/teamA/images/down.png");
+    // Load floor images in parallel
+    floorImages = new Image[maxFloor];
+    List<Image> images =
+        imageLocations.parallelStream().map(ImageCache::loadImage).collect(Collectors.toList());
+    for (int i = 0; i < maxFloor; i++) {
+      floorImages[i] = images.get(i);
+    }
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
-
     widthProperty()
         .addListener(
-            (observable, oldValue, newValue) -> resize(newValue.doubleValue(), getHeight()));
+            (observable, oldValue, newValue) -> {
+              resize(newValue.doubleValue(), getHeight());
+            });
     heightProperty()
         .addListener(
-            (observable, oldValue, newValue) -> resize(getWidth(), newValue.doubleValue()));
+            (observable, oldValue, newValue) -> {
+              resize(getWidth(), newValue.doubleValue());
+            });
 
     // Create drag event handlers
     dragStartHandler =
@@ -112,11 +143,15 @@ public class MapCanvas extends Canvas {
         event -> {
           double diff = event.getDeltaY() / 10.0;
           zoom.set(Math.min(100, Math.max(0, zoom.getValue() + diff)));
+          draw(lastDrawnFloor);
         });
 
     // Setup zoom property
     zoom = new SimpleDoubleProperty(0.0);
-    zoom.addListener(observable -> draw(lastDrawnFloor));
+    zoom.addListener(
+        observable -> {
+          draw(lastDrawnFloor);
+        });
 
     // Create list of nodes to highlight
     highlights = new ArrayList<>();
@@ -154,7 +189,7 @@ public class MapCanvas extends Canvas {
 
     double aspectRatio = (imageWidth / getWidth()) / (imageHeight / getHeight());
 
-    double zoomFactor = (1.0 + (zoom.getValue() / 100));
+    double zoomFactor = (1.0 + ((zoom.getValue() / 100) * zoomScalar));
     double width = ((aspectRatio < 1.0) ? imageWidth : (imageWidth / aspectRatio)) / zoomFactor;
     double height = ((aspectRatio > 1.0) ? imageHeight : (imageHeight * aspectRatio)) / zoomFactor;
 
@@ -162,24 +197,24 @@ public class MapCanvas extends Canvas {
     double startY = center.getY() - (height / 2);
 
     // Correct center if view is too far away from image
-    if (startX < -(imageWidth / 4)) {
-      center = center.add((-(imageWidth / 4) - startX), 0);
-      startX = -(imageWidth / 4);
+    if (startX < 0) {
+      center = center.add(-startX, 0);
+      startX = 0;
     }
 
-    if (startY < (-imageHeight / 4)) {
-      center = center.add(0, (-(imageHeight / 4) - startY));
-      startY = -(imageHeight / 4);
+    if (startY < 0) {
+      center = center.add(0, (-startY));
+      startY = 0;
     }
 
-    if ((startX + width) > (5 * imageWidth / 4)) {
-      double xDiff = (startX + width) - (5 * imageWidth / 4);
+    if ((startX + width) > imageWidth) {
+      double xDiff = (startX + width) - imageWidth;
       center = center.subtract(xDiff, 0);
       startX -= xDiff;
     }
 
-    if ((startY + height) > (5 * imageHeight / 4)) {
-      double yDiff = (startY + height) - (5 * imageHeight / 4);
+    if ((startY + height) > imageHeight) {
+      double yDiff = (startY + height) - imageHeight;
       center = center.subtract(0, yDiff);
       startY -= yDiff;
     }
@@ -192,8 +227,8 @@ public class MapCanvas extends Canvas {
     getGraphicsContext2D().setFill(Color.web("F4F4F4"));
     getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
 
-    // Clamp floor to between 1 and 5
-    floor = Math.max(1, Math.min(floor, 5));
+    // Clamp floor to between 1 and [maxFloor]
+    floor = Math.max(1, Math.min(floor, maxFloor));
 
     // Update view space
     calcViewSpace(floor);
@@ -208,7 +243,7 @@ public class MapCanvas extends Canvas {
         if (drawBelow) {
           // Get all the nodes on the floor below
           List<Node> belowNodes =
-              Graph.getInstance().getNodes().values().stream()
+              graph.getNodes().values().stream()
                   .filter(node -> node.getFloor() == finalFloor - 1)
                   .collect(Collectors.toList());
           Color belowColor = Color.rgb(0, 0, 0, 0.25);
@@ -221,10 +256,7 @@ public class MapCanvas extends Canvas {
 
           // Draw edges
           belowNodes.forEach(
-              node ->
-                  node.getEdges()
-                      .values()
-                      .forEach(edge -> drawEdge(edge, belowColor, false, true)));
+              node -> node.getEdges().values().forEach(edge -> drawEdge(edge, belowColor, true)));
 
           belowNodes.forEach(
               node -> {
@@ -238,23 +270,24 @@ public class MapCanvas extends Canvas {
 
         // Get all the nodes on this floor
         List<Node> floorNodes =
-            Graph.getInstance().getNodes().values().stream()
+            graph.getNodes().values().stream()
                 .filter(node -> node.getFloor() == finalFloor)
                 .collect(Collectors.toList());
 
         // Draw all edges
         floorNodes.forEach(
-            node -> {
-              node.getEdges().values().forEach(edge -> drawEdge(edge, Color.BLACK, true, true));
-            });
+            node ->
+                node.getEdges()
+                    .values()
+                    .forEach(edge -> drawEdge(edge, Color.rgb(92, 107, 192), true)));
 
-        // Draw nodes
+        // Draw nodes 5C 6B C0, 42 A5 F5
         floorNodes.forEach(
             node -> {
               if (highlights.contains(node)) {
                 drawNode(node, highlightColor);
               } else {
-                drawNode(node, Color.BLACK);
+                drawNode(node, Color.rgb(66, 165, 245));
               }
             });
       } catch (Exception e) {
@@ -268,8 +301,9 @@ public class MapCanvas extends Canvas {
     }
 
     // Draw path if it exists
-    if (path != null) {
-      drawPath(path, floor);
+    if (pathNodes != null) {
+      drawPath(floor);
+      animatePath(floor);
     }
 
     lastDrawnFloor = floor;
@@ -291,7 +325,7 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws an edge
-  private void drawEdge(Edge edge, Color color, boolean showArrows, boolean drawMultifloorEdge) {
+  private void drawEdge(Edge edge, Color color, boolean drawMultifloorEdge) {
     GraphicsContext graphicsContext = getGraphicsContext2D();
 
     Point2D start = graphToCanvas(new Point2D(edge.getStart().getX(), edge.getStart().getY()));
@@ -310,17 +344,14 @@ public class MapCanvas extends Canvas {
 
     // Draw the line in between the points
     if ((edge.getStart().getFloor() == edge.getEnd().getFloor()) || drawMultifloorEdge) {
-      graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
-    }
 
-    if (showArrows) {
-      Point2D pos = (drawMultifloorEdge) ? end : start;
-      // Draw up / down arrow if floor changed
-      if (edge.getEnd().getFloor() < edge.getStart().getFloor()) {
-        graphicsContext.drawImage(downImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
-      } else if (edge.getEnd().getFloor() > edge.getStart().getFloor()) {
-        graphicsContext.drawImage(upImage, pos.getX() - 16, pos.getY() - 16, 32, 32);
-      }
+      graphicsContext.beginPath();
+      graphicsContext.moveTo(start.getX(), start.getY());
+      graphicsContext.lineTo(end.getX(), end.getY());
+      graphicsContext.fill();
+      graphicsContext.closePath();
+      graphicsContext.stroke();
+      // graphicsContext.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
     }
   }
 
@@ -338,23 +369,24 @@ public class MapCanvas extends Canvas {
   }
 
   // Draws the path found
-  private void drawPath(ContextPath path, int floor) {
+  private void drawPath(int floor) {
 
-    for (Edge edge : path.getPathEdges()) {
-      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.BLACK, true, false);
+    for (Edge edge : pathEdges) {
+      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.rgb(92, 107, 192), false);
     }
 
-    for (Node node : path.getPathNodes()) {
+    for (Node node : pathNodes) {
 
-      if (path.getPathNodes().indexOf(node) == 0 && node.getFloor() == floor) {
+      if (pathNodes.indexOf(node) == 0 && node.getFloor() == floor) {
         drawNode(node, Color.SPRINGGREEN);
-      } else if (path.getPathNodes().size() - 1 == path.getPathNodes().lastIndexOf(node)
-          && node.getFloor() == floor) {
+      } else if (pathNodes.size() - 1 == pathNodes.lastIndexOf(node) && node.getFloor() == floor) {
         drawNode(node, Color.TOMATO);
-      } else if (node.getFloor() == floor) {
-        // drawNode(node, Color.BLACK);
       }
     }
+  }
+
+  public double getDistance(double x, double newX, double y, double newY) {
+    return Math.sqrt((Math.pow((newX - x), 2)) + (Math.pow((newY - y), 2)));
   }
 
   // Draws a rubber-band selection box
@@ -369,10 +401,6 @@ public class MapCanvas extends Canvas {
     getGraphicsContext2D().fillRect(startX, startY, width, height);
   }
 
-  public ContextPath getPath() {
-    return this.path;
-  }
-
   // Get distance between two points
   private double getDistance(Point2D p0, Point2D p1) {
     double xDiff = p1.getX() - p0.getX();
@@ -384,7 +412,7 @@ public class MapCanvas extends Canvas {
   // Get the closest node to a position on the canvas (within a given radius in canvas space)
   public Optional<Node> getClosestNode(int floor, Point2D point, double maxDistance) {
     try {
-      Stream<Node> nodeStream = Graph.getInstance().getNodes().values().stream();
+      Stream<Node> nodeStream = graph.getNodes().values().stream();
 
       return nodeStream
           .filter(node -> node.getFloor() == floor)
@@ -404,11 +432,75 @@ public class MapCanvas extends Canvas {
   }
 
   public void setPath(ContextPath path) {
-    this.path = path;
+    this.pathNodes = new ArrayList<>();
+    this.pathEdges = new ArrayList<>();
+
+    this.pathNodes.addAll(path.getPathNodes());
+    this.pathEdges.addAll(path.getPathEdges());
   }
 
-  public void clearPath(Path path) {
-    this.path = null;
+  public void animatePath(int floor) {
+    if (pathNodes == null || pathEdges == null || !animatingPath) {
+      return;
+    }
+
+    pathArrow.setVisible(true);
+
+    Path path = new Path();
+    pathNodes.stream()
+        .filter(node -> node.getFloor() == floor)
+        .forEach(
+            node -> {
+              Point2D dest = graphToCanvas(new Point2D(node.getX(), node.getY()));
+              if (path.getElements().isEmpty()) {
+                path.getElements().add(new MoveTo(dest.getX(), dest.getY()));
+              } else {
+                path.getElements().add(new LineTo(dest.getX(), dest.getY()));
+              }
+            });
+
+    // Ignore empty paths
+    if (path.getElements().size() <= 1) {
+      pathArrow.setVisible(false);
+      transition.stop();
+      return;
+    }
+
+    double length =
+        pathEdges.stream()
+            .filter(edge -> edge.getEnd().getFloor() == floor)
+            .mapToDouble(Edge::getWeight)
+            .sum();
+
+    Pane parent = (Pane) getParent();
+    if (!parent.getChildren().contains(pathArrow)) {
+      parent.getChildren().add(pathArrow);
+    }
+
+    transition.stop();
+    transition.setDuration(Duration.seconds(length / 250.0));
+    transition.setPath(path);
+    transition.setNode(pathArrow);
+    transition.setCycleCount(Timeline.INDEFINITE);
+    transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+
+    transition.play();
+  }
+
+  public void disablePathAnimation() {
+    transition.stop();
+    pathArrow.setVisible(false);
+    animatingPath = false;
+  }
+
+  public void enablePathAnimation() {
+    animatingPath = true;
+  }
+
+  public void clearPath() {
+    this.pathNodes = null;
+    this.pathEdges = null;
+    disablePathAnimation();
   }
 
   @Override

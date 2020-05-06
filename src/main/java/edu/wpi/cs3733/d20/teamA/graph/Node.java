@@ -113,7 +113,7 @@ public class Node implements Comparable<Node> {
    * @param node Destination node
    * @return Edge Exists / Doesn't
    */
-  protected boolean hasEdgeTo(Node node) {
+  public boolean hasEdgeTo(Node node) {
     return edges.containsKey(node);
   }
 
@@ -220,6 +220,10 @@ public class Node implements Comparable<Node> {
     this.cost = cost;
   }
 
+  public Campus getCampus() {
+    return building.equals("Faulkner") ? Campus.FAULKNER : Campus.MAIN;
+  }
+
   /**
    * Check equality between this node and another based off of node ID
    *
@@ -253,6 +257,6 @@ public class Node implements Comparable<Node> {
    */
   @Override
   public String toString() {
-    return longName;
+    return building + " - " + floor + " - " + longName;
   }
 }

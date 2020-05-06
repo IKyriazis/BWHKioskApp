@@ -162,3 +162,7 @@ gradle-app.setting
 
 # Database Files
 BWDatabase/
+myDB/
+
+# Theme CSS
+theme.css

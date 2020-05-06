@@ -26,7 +26,8 @@ run {
                '--add-opens=javafx.base/com.sun.javafx.binding=ALL-UNNAMED',
                '--add-opens=javafx.base/com.sun.javafx.event=ALL-UNNAMED',
                '--add-opens=javafx.graphics/com.sun.javafx.scene=ALL-UNNAMED',
-               '--add-opens=javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED'
+               '--add-opens=javafx.graphics/com.sun.javafx.stage=ALL-UNNAMED',
+                ''
     ]
 }
 
@@ -43,18 +44,58 @@ dependencies {
 
             'com.opencsv:opencsv:5.1',
 
-            'de.jensd:fontawesomefx-commons:11.0',
-            'de.jensd:fontawesomefx-fontawesome:4.7.0-11',
-            'de.jensd:fontawesomefx-materialicons:2.2.0-11',
+            'org.kordamp.ikonli:ikonli-core:11.4.0',
+            'org.kordamp.ikonli:ikonli-javafx:11.4.0',
+            'org.kordamp.ikonli:ikonli-fontawesome5-pack:11.4.0',
+            'org.kordamp.ikonli:ikonli-material-pack:11.4.0',
+            'org.kordamp.ikonli:ikonli-icomoon-pack:11.4.0',
 
             'com.google.inject:guice:4.2.2',
 
             'com.google.zxing:core:3.4.0',
             'com.google.zxing:javase:3.4.0',
 
+
             // bcrypt
-            'at.favre.lib:bcrypt:0.9.0'
+            'at.favre.lib:bcrypt:0.9.0',
+
+            // batik
+            'org.apache.xmlgraphics:batik-rasterizer:1.12',
+
+            // AnimateFX
+            'io.github.typhon0:AnimateFX:1.2.1',
+
+            // stuff for google authenticator
+            'de.taimos:totp:1.0',
+            'commons-codec:commons-codec:1.10',
+
+            // Team R Appointment Request API
+            'edu.wpi.cs3733.c20.teamR:AppointmentRequest:5.0.0',
+
+            //stuff for OpenWeatherMaps API
+            'org.jetbrains:annotations:13.0',
+            'com.squareup.retrofit2:converter-gson:2.3.0',
+            'com.google.code.gson:gson:2.8.2',
+            'org.jetbrains.kotlin:kotlin-stdlib:1.1.51',
+            'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.1.51',
+            'com.squareup.okhttp3:okhttp:3.8.0',
+            'com.squareup.okio:okio:1.13.0',
+            'com.squareup.retrofit2:retrofit:2.3.0',
+            'net.aksingh:owm-japis:2.5.2.1',
+
+            // for comms with arduino
+            'com.fazecast:jSerialComm:2.6.2',
+
+            // Gluon Maps
+            'com.gluonhq:maps:2.0.0-ea+1',
+            'com.gluonhq.attach:util:4.0.7',
+            'com.gluonhq.attach:storage:4.0.7',
+            'com.gluonhq.attach:position:4.0.7',
+
+            //Flower API
+            group: 'edu.wpi.cs3733.d20.teamA', name: 'TeamAFlowerRequest', version:'1.0.2'
     )
+    //compile files("src/main/resources/edu/wpi/cs3733/d20/teamA/APIFlower.jar")
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
@@ -69,7 +110,7 @@ dependencies {
 
 javafx {
     version = "11.0.2"
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.graphics']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.graphics', 'javafx.media']
 }
 
 
@@ -81,11 +122,16 @@ jar {
     manifest {
         attributes 'Main-Class': mainClassName
     }
+	
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     } {
-        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
+        exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/services/org.kordamp.ikonli.IkonHandler'
     }
+	
+	from('src/main/resources/edu/wpi/cs3733/d20/teamA/fuckikonli') {
+		include 'META-INF/services/org.kordamp.ikonli.IkonHandler'
+	}
 }
 
 // Exclude trivial App / Main classes, and UI-related classes b/c Prof. Wong advised us to not waste time on lengthy and
@@ -96,13 +142,8 @@ def codeCoverageExcludes = [
         'edu.wpi.cs3733.d20.teamA.controllers.*',
         'edu.wpi.cs3733.d20.teamA.controls.*',
         'edu.wpi.cs3733.d20.teamA.map.MapCanvas',
-        'edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler',
-        'edu.wpi.cs3733.d20.teamA.util.DialogUtil',
-        'edu.wpi.cs3733.d20.teamA.util.FXMLCache',
-        'edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.1',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.2'
+        'edu.wpi.cs3733.d20.teamA.util.*',
+        'edu.wpi.cs3733.d20.teamA.database.flower.*'
 ]
 
 jacoco {
@@ -146,6 +187,7 @@ jacocoTestCoverageVerification {
 check.dependsOn jacocoTestCoverageVerification
 jacocoTestCoverageVerification.dependsOn jacocoTestReport
 compileJava.dependsOn 'spotlessApply'
+
 
 // uncomment to enable spotless checking
 spotless {

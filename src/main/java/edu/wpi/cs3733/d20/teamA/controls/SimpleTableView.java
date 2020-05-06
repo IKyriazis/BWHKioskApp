@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controls;
 
 import com.jfoenix.controls.JFXTreeTableColumn;
 import com.jfoenix.controls.JFXTreeTableView;
-import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.control.TreeItem;
@@ -37,7 +36,9 @@ public class SimpleTableView<T extends ITableable<T>> extends JFXTreeTableView {
         rootItem.getChildren().get(0).getValue().getColumns();
     columns.forEach(
         col -> {
-          col.setMinWidth(minColumnWidth);
+          if (getMinWidth() != -1) {
+            col.setMinWidth(minColumnWidth);
+          }
           col.setReorderable(false);
         });
 
@@ -79,6 +80,4 @@ public class SimpleTableView<T extends ITableable<T>> extends JFXTreeTableView {
 
     return null;
   }
-
-  public void setGraphic(FontAwesomeIconView fontAwesomeIconView) {}
 }
