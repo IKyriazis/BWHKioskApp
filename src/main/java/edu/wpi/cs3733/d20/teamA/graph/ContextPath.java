@@ -16,6 +16,12 @@ public class ContextPath {
     this.pathFindingAlgo = pathFindingAlgo;
   }
 
+  public void setGraph(Graph graph) {
+    if (pathFindingAlgo != null && pathFindingAlgo instanceof PathAlgo) {
+      ((PathAlgo) pathFindingAlgo).setGraph(graph);
+    }
+  }
+
   public void findPath(Node start, Node end) {
     pathFindingAlgo.pathFind(start, end);
   }

@@ -220,6 +220,10 @@ public class Node implements Comparable<Node> {
     this.cost = cost;
   }
 
+  public Campus getCampus() {
+    return building.equals("Faulkner") ? Campus.FAULKNER : Campus.MAIN;
+  }
+
   /**
    * Check equality between this node and another based off of node ID
    *

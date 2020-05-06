@@ -1,21 +1,21 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import com.gluonhq.maps.MapPoint;
+import com.gluonhq.maps.MapView;
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.DialogMaker;
+import edu.wpi.cs3733.d20.teamA.controls.PathLayer;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.util.ArrayList;
-import javafx.animation.PathTransition;
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
-import javafx.scene.Group;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.util.Pair;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -31,38 +31,74 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXListView<Label> directionsList;
   @FXML private GridPane directionsPane;
   @FXML private StackPane dialogPane;
+  @FXML private Pane gluonMapPane;
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
-  @FXML private JFXButton qrCodeButton;
+  @FXML private JFXButton dirBackButton;
+  @FXML private JFXButton dirNextButton;
 
   @FXML private JFXButton floorUpButton;
   @FXML private JFXButton floorDownButton;
   @FXML private JFXTextField floorField;
 
-  private MapCanvas canvas;
+  @FXML private JFXRadioButton mainRadioButton;
+  @FXML private JFXRadioButton faulknerRadioButton;
+
+  private MapCanvas faulknerCanvas;
+  private MapCanvas mainCanvas;
+  private MapCanvas currCanvas;
+  private MapView gluonMap;
+
   private Graph graph;
   private String lastDirs;
   private int floor = 1;
 
-  private ObservableList<Node> allNodeList;
+  private ArrayList<PathSegment> pathSegments;
+  private int currPathSegment = 0;
+
+  private static final String FAULKNER_EXIT_NODE = "ARETL00101";
+  private static final String MAIN_EXIT_NODE = "ACONF0010G";
+
+  private static final MapPoint FAULKNER_COORDS = new MapPoint(42.301572, -71.128472);
+  private static final MapPoint MAIN_COORDS = new MapPoint(42.335679, -71.106042);
 
   public void initialize() {
+    // Setup gluon map
+    PathLayer pathLayer = new PathLayer();
+    pathLayer.importPointsFromCSV();
+
+    gluonMap = new MapView();
+    gluonMap.addLayer(pathLayer);
+    gluonMap.setCenter(new MapPoint(42.3016445, -71.1281649));
+    gluonMap.setZoom(16);
+    gluonMap.setVisible(false);
+    gluonMapPane.getChildren().add(gluonMap);
+
     directionsDrawer.close();
     textDirectionsDrawer.close();
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
-    canvas = new MapCanvas(true, Campus.FAULKNER);
-    canvasPane.getChildren().add(0, canvas);
-    canvas.widthProperty().bind(canvasPane.widthProperty());
-    canvas.heightProperty().bind(canvasPane.heightProperty());
+    currCanvas = faulknerCanvas = new MapCanvas(true, Campus.FAULKNER);
+    mainCanvas = new MapCanvas(true, Campus.MAIN);
+    mainCanvas.setVisible(false);
+
+    canvasPane.getChildren().add(0, faulknerCanvas);
+    canvasPane.getChildren().add(0, mainCanvas);
+
+    faulknerCanvas.widthProperty().bind(canvasPane.widthProperty());
+    faulknerCanvas.heightProperty().bind(canvasPane.heightProperty());
+
+    mainCanvas.widthProperty().bind(canvasPane.widthProperty());
+    mainCanvas.heightProperty().bind(canvasPane.heightProperty());
 
     // Draw background asap
-    Platform.runLater(() -> canvas.draw(1));
+    Platform.runLater(() -> faulknerCanvas.draw(1));
 
     // Setup zoom slider hook
-    canvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
+    faulknerCanvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
+    mainCanvas.getZoomProperty().bindBidirectional(zoomSlider.valueProperty());
 
     // Setup zoom slider cursor
     zoomSlider.setCursor(Cursor.H_RESIZE);
@@ -82,7 +118,9 @@ public class SimpleMapController extends AbstractController {
     goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
     swapBtn.setGraphic(new FontIcon((FontAwesomeSolid.EXCHANGE_ALT)));
     directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
-    qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
+    // qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
+    dirBackButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_LEFT));
+    dirNextButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_RIGHT));
 
     floorUpButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_UP));
     floorDownButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_DOWN));
@@ -93,16 +131,10 @@ public class SimpleMapController extends AbstractController {
         event -> {
           event.consume();
 
-          if (canvas.getPath() != null) {
-            // Try to update path if possible
-            canvas.getPath().update();
-            if (canvas.getPath().getPathNodes().isEmpty()) {
-              pressedGo();
-            }
+          currCanvas.clearPath();
 
-            // Redraw map
-            canvas.draw(floor);
-          }
+          // Redraw map
+          currCanvas.draw(floor);
         });
 
     try {
@@ -123,7 +155,7 @@ public class SimpleMapController extends AbstractController {
     if (!MapSettings.isSetup()) {
       MapSettings.setup();
     }
-    Platform.runLater(() -> canvas.draw(floor));
+    Platform.runLater(() -> currCanvas.draw(floor));
   }
 
   @FXML
@@ -140,36 +172,66 @@ public class SimpleMapController extends AbstractController {
     Node end = getSelectedNode(destinationBox);
     if ((start != null) && (end != null)) {
       ContextPath path = MapSettings.getPath();
-      path.findPath(start, end);
-      canvas.setPath(path);
 
-      if (start.getFloor() != floor) {
-        floor = Math.min(5, start.getFloor());
-        floorField.setText(String.valueOf(floor));
+      if (start.getCampus() == Campus.MAIN) {
+        path.setGraph(Graph.getInstance(Campus.MAIN));
+      } else {
+        path.setGraph(Graph.getInstance(Campus.FAULKNER));
       }
 
-      if (!canvas.getGroup().getChildren().isEmpty()) {
-        canvas.getGroup().getChildren().clear();
-        canvas.setGroup(new Group());
-        canvas.setTransition(new PathTransition());
+      pathSegments = new ArrayList<>();
+      currPathSegment = 0;
+
+      if (start.getCampus() == end.getCampus()) {
+        currCanvas.setVisible(false);
+
+        currCanvas = (start.getCampus() == Campus.MAIN) ? mainCanvas : faulknerCanvas;
+        currCanvas.setVisible(true);
+        // Path within canvas
+        path.findPath(start, end);
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        currCanvas.setPath(path);
+      } else if (start.getCampus() == Campus.FAULKNER && end.getCampus() == Campus.MAIN) {
+        // Path to faulkner exit node
+        path.findPath(start, Graph.getInstance(Campus.FAULKNER).getNodeByID(FAULKNER_EXIT_NODE));
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        faulknerCanvas.setPath(path);
+
+        // Insert inter segment
+        pathSegments.add(PathSegment.calcInterSegment(Campus.MAIN));
+
+        // Path from main exit node to main dest
+        path.findPath(Graph.getInstance(Campus.MAIN).getNodeByID(MAIN_EXIT_NODE), end);
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        mainCanvas.setPath(path);
+      } else if (start.getCampus() == Campus.MAIN && end.getCampus() == Campus.FAULKNER) {
+        // Path to faulkner exit node
+        path.findPath(start, Graph.getInstance(Campus.MAIN).getNodeByID(MAIN_EXIT_NODE));
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        faulknerCanvas.setPath(path);
+
+        // Insert inter segment
+        pathSegments.add(PathSegment.calcInterSegment(Campus.FAULKNER));
+
+        // Path from main exit node to main dest
+        path.findPath(Graph.getInstance(Campus.FAULKNER).getNodeByID(FAULKNER_EXIT_NODE), end);
+        pathSegments.addAll(
+            PathSegment.calcPathSegments(
+                texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
+        mainCanvas.setPath(path);
       }
-      canvas.draw(floor);
 
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
-        ArrayList<Label> directions =
-            texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections());
-        directions.forEach(
-            l -> {
-              directionsList.getItems().add(l);
-            });
-
-        canvasPane.getChildren().add(canvas.getGroup());
-
-        // Generate QR code
-        StringBuilder dirs = new StringBuilder();
-        directions.forEach(l -> dirs.append(l.getText()).append('\n'));
-        lastDirs = dirs.toString();
+        updateDisplayedPath();
 
         if (textDirectionsDrawer.isClosed()) {
           textDirectionsDrawer.open();
@@ -198,8 +260,25 @@ public class SimpleMapController extends AbstractController {
     }
   }
 
-  public MapCanvas getCanvas() {
-    return canvas;
+  @FXML
+  public void toggleDisplayedMap() {
+    currCanvas.setVisible(false);
+    currCanvas.disablePathAnimation();
+
+    gluonMap.setVisible(false);
+    if (mainRadioButton.isSelected()) {
+      currCanvas = mainCanvas;
+    } else {
+      currCanvas = faulknerCanvas;
+      if (floor == 6) {
+        floor = 5;
+        floorField.setText("5");
+      }
+    }
+
+    currCanvas.setVisible(true);
+    currCanvas.enablePathAnimation();
+    currCanvas.animatePath(floor);
   }
 
   public Graph getGraph() {
@@ -207,71 +286,144 @@ public class SimpleMapController extends AbstractController {
   }
 
   public void pressedQRButton() {
-    if (!lastDirs.isEmpty()) {
-      DialogMaker maker = new DialogMaker();
-      maker.makeQRDialog(lastDirs, dialogPane);
-    } else {
-      DialogUtil.simpleInfoDialog(
-          dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
-    }
+
   }
 
   @FXML
   public void floorUp() {
-    floor = Math.min(5, floor + 1);
-    canvas.draw(floor);
+    floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
+    currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
-    if (!canvas.getGroup().getChildren().isEmpty()) {
-      canvas.getGroup().getChildren().clear();
-      canvas.setGroup(new Group());
-      canvas.setTransition(new PathTransition());
-    }
-    canvas.draw(floor);
-    canvasPane.getChildren().add(canvas.getGroup());
+    currCanvas.draw(floor);
   }
 
   @FXML
   public void floorDown() {
     floor = Math.max(1, floor - 1);
-    canvas.draw(floor);
+    currCanvas.draw(floor);
     floorField.setText(String.valueOf(floor));
-    if (!canvas.getGroup().getChildren().isEmpty()) {
-      canvas.getGroup().getChildren().clear();
-      canvas.setGroup(new Group());
-      canvas.setTransition(new PathTransition());
-    }
-    canvas.draw(floor);
-    canvasPane.getChildren().add(canvas.getGroup());
+    currCanvas.draw(floor);
   }
 
-  public ArrayList<Label> texDirectionsWithLabels(ArrayList<String> textualPath) {
-    ArrayList<Label> textPath = new ArrayList<>();
+  @FXML
+  public void pressedDirBack() {
+    if (currPathSegment > 0) {
+      currPathSegment--;
+    }
+
+    updateDisplayedPath();
+  }
+
+  @FXML
+  public void pressedDirNext() {
+    currPathSegment = Math.min(currPathSegment + 1, pathSegments.size() - 1);
+    updateDisplayedPath();
+  }
+
+  public void updateDisplayedPath() {
+    PathSegment currSegment = pathSegments.get(currPathSegment);
+    // Set canvas
+    if (currSegment.getCampus() == Campus.FAULKNER) {
+      gluonMap.setVisible(false);
+
+      currCanvas.disablePathAnimation();
+      currCanvas.setVisible(false);
+
+      currCanvas = faulknerCanvas;
+      currCanvas.setVisible(true);
+      currCanvas.enablePathAnimation();
+      currCanvas.animatePath(currSegment.getFloor());
+    } else if (currSegment.getCampus() == Campus.MAIN) {
+      gluonMap.setVisible(false);
+
+      currCanvas.disablePathAnimation();
+      currCanvas.setVisible(false);
+
+      currCanvas = mainCanvas;
+      currCanvas.setVisible(true);
+      currCanvas.enablePathAnimation();
+      currCanvas.animatePath(currSegment.getFloor());
+    } else if (currSegment.getCampus() == Campus.INTER) {
+      currCanvas.setVisible(false);
+      currCanvas.disablePathAnimation();
+
+      gluonMap.setVisible(true);
+      gluonMap.setZoom(16);
+      if (pathSegments.get(currPathSegment - 1).getCampus() == Campus.MAIN) {
+        gluonMap.setCenter(MAIN_COORDS);
+        PathLayer.setToFaulkner(true);
+      } else {
+        gluonMap.setCenter(FAULKNER_COORDS);
+        PathLayer.setToFaulkner(false);
+      }
+    }
+
+    // Set floor
+    floor = currSegment.getFloor();
+    floorField.setText(String.valueOf(floor));
+
+    // Setup labels
+    directionsList.getItems().clear();
+    directionsList.getItems().addAll(currSegment.getDirections());
+
+    currCanvas.draw(floor);
+  }
+
+  public ArrayList<Pair<Node, Label>> texDirectionsWithLabels(
+      ArrayList<Pair<Node, String>> textualPath) {
+    ArrayList<Pair<Node, Label>> textPath = new ArrayList<>();
     for (int j = 0; j < textualPath.size() - 1; j++) {
-      if (textualPath.get(j).contains("Turn right")) {
+      if (textualPath.get(j).getValue().contains("Turn right")) {
         textPath.add(
-            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT)));
-      } else if (textualPath.get(j).contains("Turn left")) {
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT))));
+      } else if (textualPath.get(j).getValue().contains("Turn left")) {
         textPath.add(
-            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT)));
-      } else if (textualPath.get(j).contains("slight left")) {
-        textPath.add(new Label(textualPath.get(j)));
-      } else if (textualPath.get(j).contains("slight right")) {
-        textPath.add(new Label(textualPath.get(j)));
-      } else if (textualPath.get(j).contains("up")) {
-        textPath.add(new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP)));
-      } else if (textualPath.get(j).contains("down")) {
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT))));
+      } else if (textualPath.get(j).getValue().contains("slight left")) {
         textPath.add(
-            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN)));
+            new Pair<>(textualPath.get(j).getKey(), new Label(textualPath.get(j).getValue())));
+      } else if (textualPath.get(j).getValue().contains("slight right")) {
+        textPath.add(
+            new Pair<>(textualPath.get(j).getKey(), new Label(textualPath.get(j).getValue())));
+      } else if (textualPath.get(j).getValue().contains("up")) {
+        textPath.add(
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP))));
+      } else if (textualPath.get(j).getValue().contains("down")) {
+        textPath.add(
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_DOWN))));
 
       } else {
         textPath.add(
-            new Label(textualPath.get(j), new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP)));
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(),
+                    new FontIcon(FontAwesomeSolid.ARROW_ALT_CIRCLE_UP))));
       }
     }
 
     textPath.add(
-        new Label(
-            textualPath.get(textualPath.size() - 1), new FontIcon(FontAwesomeSolid.DOT_CIRCLE)));
+        new Pair<>(
+            textualPath.get(textualPath.size() - 1).getKey(),
+            new Label(
+                textualPath.get(textualPath.size() - 1).getValue(),
+                new FontIcon(FontAwesomeSolid.DOT_CIRCLE))));
 
     return textPath;
   }
