@@ -42,9 +42,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
         "Internal\nTransport");
 
     addButton(
-        buttonPane, new FontIcon(FontAwesomeSolid.BAND_AID), "APIService", "Appointment\nRequest");
-
-    addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.GLOBE),
         "views/service/InterpreterRequest.fxml",
@@ -116,6 +113,12 @@ public class ServiceHomeController extends AbstractNavPaneController {
             "views/service/LaundryRequest.fxml",
             "Laundry");
       }
+
+      addButton(
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.BAND_AID),
+          "APIService",
+          "Appointment\nRequest");
 
       addButton(
           buttonPane,
