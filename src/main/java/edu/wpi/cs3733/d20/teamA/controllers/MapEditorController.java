@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.DialogMaker;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.NodeDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
@@ -378,13 +379,26 @@ public class MapEditorController {
     NodeDialogController nodeDialogController =
         new NodeDialogController(
             currCanvas == mainCanvas ? Campus.MAIN : Campus.FAULKNER, node, x, y, floor);
-    DialogUtil.complexDialog(
+
+    DialogMaker maker = new DialogMaker();
+    maker.makeNodeDialog(
+        currCanvas == mainCanvas ? Campus.MAIN : Campus.FAULKNER,
+        node,
+        x,
+        y,
+        floor,
+        currCanvas,
+        dialogPane);
+
+    /* DialogUtil.complexDialog(
         dialogPane,
         heading,
         "views/NodeModifyPopup.fxml",
         false,
         event -> currCanvas.draw(floor),
         nodeDialogController);
+
+    */
   }
 
   @FXML

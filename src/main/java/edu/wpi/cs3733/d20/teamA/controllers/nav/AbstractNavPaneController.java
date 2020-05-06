@@ -27,6 +27,7 @@ public abstract class AbstractNavPaneController extends AbstractController {
     JFXButton button = new JFXButton();
     button.getStyleClass().add("chonky-text");
     button.setGraphic(icon);
+
     button.setOnAction(
         event -> {
           SceneSwitcherController.pushScene(fxmlPath, TransitionType.ZOOM);
