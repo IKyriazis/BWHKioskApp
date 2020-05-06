@@ -46,11 +46,12 @@ public class LaundryRequestController extends AbstractRequestController {
         SceneSwitcherController.popScene();
       }
 
-      nodeBox.getSelectionModel().clearSelection();
-      descriptionArea.clear();
     } else {
       DialogUtil.simpleInfoDialog(
           "No Room Selected", "Please select a room in the dropdown and try again");
     }
+    clearNodeBox(nodeBox, submitButton);
+    setupNodeBox(nodeBox, submitButton);
+    descriptionArea.clear();
   }
 }

@@ -115,4 +115,8 @@ public abstract class AbstractController {
 
     return selected.orElse(null);
   }
+
+  protected void clearNodeBox(JFXComboBox<Node> box, javafx.scene.Node toFocus) {
+    box.getItems().removeAll(Graph.getAllValidDestinationList());
+  }
 }
