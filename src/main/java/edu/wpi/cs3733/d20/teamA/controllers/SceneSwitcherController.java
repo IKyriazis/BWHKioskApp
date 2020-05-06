@@ -83,18 +83,21 @@ public class SceneSwitcherController extends AbstractController {
     instance = this;
 
     // Create the employee table if it doesn't exist
-    if (eDB.getSize() == -1) {
+    if (eDB.getSize() == -1 || eDB.getSize() == 0) {
       eDB.dropTables();
       eDB.createTables();
-      eDB.readEmployeeCSV();
-    } else if (eDB.getSize() == 0) {
-      eDB.removeAll();
-      eDB.readEmployeeCSV();
+      eDB.addEmployee("111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN);
+      eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.ADMIN);
+      eDB.addEmployee("Brennan", "Aubuchaun", "baub", "baUb578", EmployeeTitle.INTERPRETER);
+      eDB.addEmployee("Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano", EmployeeTitle.NURSE);
+      eDB.addEmployee("Eva", "Labbe", "ELLabbe", "CluBP3nGuin3", EmployeeTitle.JANITOR);
+      eDB.addEmployee("Dean", "Winchester", "WinDean", "catNipRox", EmployeeTitle.DOCTOR);
+      eDB.addEmployee("Stella", "Simmons", "Ssimmons", "gaLaxY6", EmployeeTitle.RECEPTIONIST);
+      eDB.addEmployee("Yolanda", "Daniels", "YDaniels", "SpoodRman3", EmployeeTitle.RETAIL);
+      // create account with rfid
+      eDB.addEmployeeGA(
+          "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
     }
-
-    // create account with rfid
-    eDB.addEmployeeGA(
-        "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
 
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);

@@ -505,25 +505,9 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   }
 
   public boolean changeFlag() {
-
     loggedIn = "";
     return true;
   }
-
-  /*public boolean isOnline(String username) {
-    boolean isOnline = false;
-    try {
-      Statement priceStmt = getConnection().createStatement();
-      ResultSet rst =
-          priceStmt.executeQuery("SELECT * FROM LoggedIn WHERE username = '" + username + "'");
-      ;
-      rst.next();
-      if (rst.getBoolean("flag")) return true;
-    } catch (SQLException ex) {
-      ex.printStackTrace();
-    }
-    return false;
-  }*/
 
   public boolean removeAll() {
     return helperPrepared("DELETE From Employees");
