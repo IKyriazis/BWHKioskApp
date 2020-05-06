@@ -12,7 +12,6 @@ public class Main {
     // Gluon Maps setup
     System.setProperty("javafx.platform", "Desktop");
     System.setProperty("http.agent", "Gluon Mobile/1.0.3  /" + System.getProperty("http.agent"));
-    System.setProperty("prism.allowhidpi", "false");
 
     StorageService storageService =
         new StorageService() {
