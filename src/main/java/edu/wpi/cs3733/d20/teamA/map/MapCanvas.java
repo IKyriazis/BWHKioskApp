@@ -46,9 +46,9 @@ public class MapCanvas extends Canvas {
   private final EventHandler<MouseEvent> dragStartHandler;
   private final EventHandler<MouseEvent> dragHandler;
   private final EventHandler<MouseEvent> dragEndHandler;
-
+  // FF 70 43
   private ArrayList<Node> highlights;
-  private Color highlightColor = Color.DEEPSKYBLUE;
+  private Color highlightColor = Color.rgb(255, 112, 67);
   private Point2D highlightOffset;
 
   private Point2D selectionStart;
