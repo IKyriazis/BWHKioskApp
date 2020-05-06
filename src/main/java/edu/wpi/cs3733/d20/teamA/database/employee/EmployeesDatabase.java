@@ -450,6 +450,10 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     }
   }
 
+  public synchronized void rfidLogin(String username) {
+    loggedIn = username;
+  }
+
   public synchronized String getName(int id) {
     String pass = null;
     try {
