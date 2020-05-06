@@ -77,7 +77,16 @@ public class SimpleMapController extends AbstractController {
     gluonMapPane.getChildren().add(gluonMap);
 
     directionsDrawer.close();
+    directionsDrawer.setOnDrawerClosed(
+        event -> {
+          directionsDrawer.setVisible(false);
+        });
+
     textDirectionsDrawer.close();
+    textDirectionsDrawer.setOnDrawerClosed(
+        event -> {
+          textDirectionsDrawer.setVisible(false);
+        });
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
     currCanvas = faulknerCanvas = new MapCanvas(true, Campus.FAULKNER);
@@ -160,9 +169,14 @@ public class SimpleMapController extends AbstractController {
 
   @FXML
   public void toggleSearch() {
+    if (directionsDrawer.isClosed()) {
+      directionsDrawer.setVisible(true);
+    }
+
     directionsDrawer.toggle();
     if (textDirectionsDrawer.isOpened()) {
-      textDirectionsDrawer.toggle();
+      textDirectionsDrawer.close();
+      clearPath();
     }
   }
 
@@ -205,6 +219,7 @@ public class SimpleMapController extends AbstractController {
         pathSegments.add(PathSegment.calcInterSegment(Campus.MAIN));
 
         // Path from main exit node to main dest
+        path.setGraph(Graph.getInstance(Campus.MAIN));
         path.findPath(Graph.getInstance(Campus.MAIN).getNodeByID(MAIN_EXIT_NODE), end);
         pathSegments.addAll(
             PathSegment.calcPathSegments(
@@ -222,6 +237,7 @@ public class SimpleMapController extends AbstractController {
         pathSegments.add(PathSegment.calcInterSegment(Campus.FAULKNER));
 
         // Path from main exit node to main dest
+        path.setGraph(Graph.getInstance(Campus.FAULKNER));
         path.findPath(Graph.getInstance(Campus.FAULKNER).getNodeByID(FAULKNER_EXIT_NODE), end);
         pathSegments.addAll(
             PathSegment.calcPathSegments(
@@ -285,9 +301,7 @@ public class SimpleMapController extends AbstractController {
     return graph;
   }
 
-  public void pressedQRButton() {
-
-  }
+  public void pressedQRButton() {}
 
   @FXML
   public void floorUp() {
@@ -320,6 +334,26 @@ public class SimpleMapController extends AbstractController {
     updateDisplayedPath();
   }
 
+  public void clearPath() {
+    if (currCanvas == mainCanvas) {
+      faulknerCanvas.setVisible(false);
+    } else {
+      mainCanvas.setVisible(false);
+    }
+    mainCanvas.disablePathAnimation();
+    mainCanvas.clearPath();
+
+    faulknerCanvas.disablePathAnimation();
+    faulknerCanvas.clearPath();
+
+    if (gluonMap.isVisible()) {
+      gluonMap.setVisible(false);
+      currCanvas.setVisible(true);
+    }
+
+    currCanvas.draw(floor);
+  }
+
   public void updateDisplayedPath() {
     PathSegment currSegment = pathSegments.get(currPathSegment);
     // Set canvas
@@ -333,6 +367,8 @@ public class SimpleMapController extends AbstractController {
       currCanvas.setVisible(true);
       currCanvas.enablePathAnimation();
       currCanvas.animatePath(currSegment.getFloor());
+
+      faulknerRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.MAIN) {
       gluonMap.setVisible(false);
 
@@ -343,6 +379,8 @@ public class SimpleMapController extends AbstractController {
       currCanvas.setVisible(true);
       currCanvas.enablePathAnimation();
       currCanvas.animatePath(currSegment.getFloor());
+
+      mainRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.INTER) {
       currCanvas.setVisible(false);
       currCanvas.disablePathAnimation();
