@@ -58,7 +58,7 @@ public class ITRequestController extends AbstractRequestController {
       SceneSwitcherController.popScene();
     }
 
-    nodeBox.getSelectionModel().clearSelection();
+    nodeBox.setValue(null);
     descriptionArea.clear();
     categoryBox.getSelectionModel().clearSelection();
   }
