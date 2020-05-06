@@ -5,8 +5,6 @@ import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -66,16 +64,16 @@ public class EmployeeEditController extends AbstractController implements IDialo
           "The username you have chosen is already taken. Please choose another.");
       return;
     }
-    if (pass.getText().length() < 8) {
-      DialogUtil.simpleInfoDialog(
-          "Invalid Password", "Please make sure your password is at least 8 characters long.");
-      return;
-    }
     if (!cPass.getText().equals(pass.getText())) {
       // make popup that says passwords are not the same
       DialogUtil.simpleInfoDialog(
           "Passwords Don't Match",
           "Please make sure that the password you entered in the confirm password field matches your intended password.");
+      return;
+    }
+    if (pass.getText().length() < 8) {
+      DialogUtil.simpleInfoDialog(
+          "Invalid Password", "Please make sure your password is at least 8 characters long.");
       return;
     }
     if (!eDB.checkSecurePass(pass.getText())) {
@@ -101,16 +99,30 @@ public class EmployeeEditController extends AbstractController implements IDialo
                   DialogUtil.simpleErrorDialog("Started Scanning", "We are looking for your card.");
                 });
             String rfid = scanRFID();
-            if (rfid != null) {
 
-              secretKey =
-                  eDB.addEmployeeGA(
-                      fName.getText(),
-                      lName.getText(),
-                      uName.getText(),
-                      cPass.getText(),
-                      EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
-                      rfid);
+            if (rfid != null) {
+              // if the rfid card is associated with a user it will return the username which is not
+              // null
+              // if there is a username associated with this card then we pop up a dialog
+              if (!eDB.getUsername(rfid).isEmpty()) {
+                Platform.runLater(
+                    () -> {
+                      DialogUtil.simpleErrorDialog(
+                          "Duplicate Card", "There is another account associated with this card.");
+                    });
+              } else {
+                // else if the username is null it means no one has been assigned that card
+                // so go ahead and assign it
+                secretKey =
+                    eDB.addEmployeeGA(
+                        fName.getText(),
+                        lName.getText(),
+                        uName.getText(),
+                        cPass.getText(),
+                        EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
+                        rfid);
+                clearFields();
+              }
             } else {
               Platform.runLater(
                   () -> {
@@ -127,11 +139,12 @@ public class EmployeeEditController extends AbstractController implements IDialo
                     uName.getText(),
                     cPass.getText(),
                     EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
+            clearFields();
           }
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
               getGoogleAuthenticatorBarCode(secretKey, uName.getText(), companyName);
-          if (secretKey != null) {
+          if (!secretKey.isEmpty()) {
             // print that account has been created successfully
             Platform.runLater(
                 () -> {
@@ -142,30 +155,8 @@ public class EmployeeEditController extends AbstractController implements IDialo
                       null,
                       new QRDialogController(barCodeUrl));
                 });
-          } else {
-            // print that for some reason the account couldn't be added
-            Platform.runLater(
-                () -> {
-                  DialogUtil.simpleErrorDialog(
-                      "Account creation failed",
-                      "For some reason we could not create your account.");
-                });
           }
         });
-  }
-
-  public String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
-    try {
-      return "otpauth://totp/"
-          + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
-          + "?secret="
-          + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
-          + "&issuer="
-          + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
-    } catch (UnsupportedEncodingException e) {
-      e.printStackTrace();
-      return null;
-    }
   }
 
   public void clearFields() {

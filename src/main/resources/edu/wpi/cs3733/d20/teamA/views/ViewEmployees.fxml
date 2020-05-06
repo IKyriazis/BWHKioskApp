@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -25,14 +26,19 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="75.0" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                      <children>
-                        <JFXButton fx:id="addBtn" buttonType="RAISED" onAction="#addBtn" prefWidth="100.0" text="Add" />
-                        <JFXButton fx:id="deleteBtn" buttonType="RAISED" onAction="#deleteBtn" prefWidth="100.0" text="Delete" />
+                        <JFXButton fx:id="addBtn" buttonType="RAISED" onAction="#addBtn" prefWidth="120.0" text="Add" />
+                        <JFXButton fx:id="deleteBtn" buttonType="RAISED" onAction="#deleteBtn" prefWidth="120.0" text="Delete" />
+                        <JFXButton fx:id="showQRBtn" onMouseClicked="#qrCode" prefWidth="120.0" text="Show QR" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="57.0" prefWidth="600.0" spacing="10.0">
                      <children>
                         <Label fx:id="img" />
-                        <Label stylesheets="@../stylesheet.css" text="Employees" />
+                        <Label stylesheets="@../stylesheet.css" text="Manage Employees">
+                           <styleClass>
+                              <String fx:value="title-label" />
+                              <String fx:value="large-text" />
+                           </styleClass></Label>
                      </children>
                   </HBox>
                   <GridPane fx:id="empList" GridPane.rowIndex="1">

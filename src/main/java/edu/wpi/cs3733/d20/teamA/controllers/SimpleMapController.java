@@ -286,19 +286,7 @@ public class SimpleMapController extends AbstractController {
   }
 
   public void pressedQRButton() {
-    assert false;
-    /*if (!lastDirs.isEmpty()) {
-      DialogUtil.complexDialog(
-          dialogPane,
-          "Direction QR Code",
-          "views/QRCodePopup.fxml",
-          true,
-          null,
-          new QRDialogController(lastDirs));
-    } else {
-      DialogUtil.simpleInfoDialog(
-          dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
-    }*/
+
   }
 
   @FXML

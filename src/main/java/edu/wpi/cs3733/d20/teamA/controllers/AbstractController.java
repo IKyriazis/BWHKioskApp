@@ -8,10 +8,13 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.patient.PatientDatabase;
+import edu.wpi.cs3733.d20.teamA.database.reservation.ReservationDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.util.Optional;
 
@@ -30,6 +33,7 @@ public abstract class AbstractController {
 
   protected PatientDatabase patientDatabase; // Not usable as service request table line
   protected AnnouncementDatabase announcementDatabase;
+  protected ReservationDatabase reservationDatabase;
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
@@ -44,6 +48,7 @@ public abstract class AbstractController {
     patientDatabase = new PatientDatabase(conn);
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
+    reservationDatabase = new ReservationDatabase(conn);
 
     if (comPort == null) {
       SerialPort[] comPorts = SerialPort.getCommPorts();
@@ -79,6 +84,20 @@ public abstract class AbstractController {
       }
     } catch (Exception e) {
       comPort.closePort();
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
+    try {
+      return "otpauth://totp/"
+          + URLEncoder.encode(issuer + ":" + account, "UTF-8").replace("+", "%20")
+          + "?secret="
+          + URLEncoder.encode(secretKey, "UTF-8").replace("+", "%20")
+          + "&issuer="
+          + URLEncoder.encode(issuer, "UTF-8").replace("+", "%20");
+    } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
       return null;
     }

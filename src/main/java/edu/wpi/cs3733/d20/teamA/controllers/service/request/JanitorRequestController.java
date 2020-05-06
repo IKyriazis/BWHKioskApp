@@ -59,7 +59,7 @@ public class JanitorRequestController extends AbstractRequestController {
       SceneSwitcherController.popScene();
     }
 
-    nodeBox.getSelectionModel().clearSelection();
+    nodeBox.setValue(null);
     descriptionArea.clear();
     priorityBox.getSelectionModel().clearSelection();
   }
