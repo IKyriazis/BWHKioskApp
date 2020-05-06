@@ -25,7 +25,7 @@
                         <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="WPI Computer Science Department" />
                         <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="CS3733-D20 Software Engineering" />
                         <Label alignment="CENTER" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Prof. Wilson Wong" textAlignment="CENTER" />
-                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Marissa Bennett - TA" />
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Coach Marissa Bennett" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER">
