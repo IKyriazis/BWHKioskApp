@@ -82,4 +82,34 @@ public class TestReservationDatabase {
     Assertions.assertTrue(rDB.deleteRes(calendar, "Bed2"));
     Assertions.assertEquals(1, rDB.getSize());
   }
+
+  @Test
+  public void testGetters() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.YEAR, 2020);
+    calendar.set(Calendar.MONTH, 2);
+    calendar.set(Calendar.DAY_OF_MONTH, 15);
+    calendar.set(Calendar.HOUR, 12);
+    calendar.set(Calendar.MINUTE, 42);
+    calendar.set(Calendar.SECOND, 30);
+    calendar.set(Calendar.MILLISECOND, 0);
+    rDB.addRes(calendar, Calendar.getInstance(), "Bed2");
+    Assertions.assertEquals("yppatel", rDB.getRequestedBy(calendar, "Bed2"));
+    Assertions.assertNotNull(rDB.getEndTime(calendar, "Bed2"));
+  }
+
+  @Test
+  public void testSetters() {
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.YEAR, 2020);
+    calendar.set(Calendar.MONTH, 2);
+    calendar.set(Calendar.DAY_OF_MONTH, 15);
+    calendar.set(Calendar.HOUR, 12);
+    calendar.set(Calendar.MINUTE, 42);
+    calendar.set(Calendar.SECOND, 30);
+    calendar.set(Calendar.MILLISECOND, 0);
+    rDB.addRes(calendar, Calendar.getInstance(), "Bed2");
+    Assertions.assertTrue(rDB.setRequestedBy(calendar, "Bed2", "brob"));
+    Assertions.assertTrue(rDB.setEndTime(calendar, "Bed2", Calendar.getInstance()));
+  }
 }
