@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SettingsController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" styleClass="rounded-pane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SettingsController">
    <children>
       <GridPane alignment="CENTER" layoutX="31.0" layoutY="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <columnConstraints>
@@ -25,7 +25,7 @@
          <children>
             <VBox alignment="TOP_CENTER" spacing="50.0" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                <children>
-                  <Label stylesheets="@../../stylesheet.css" text="Theme Settings">
+                  <Label stylesheets="@../stylesheet.css" text="Theme Settings">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -45,20 +45,20 @@
                         <RowConstraints vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXColorPicker fx:id="primaryPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../../stylesheet.css" GridPane.columnIndex="1" />
-                        <JFXColorPicker fx:id="primaryDarkPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../../stylesheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <JFXColorPicker fx:id="primaryLightPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../../stylesheet.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label styleClass="medium-text" stylesheets="@../../stylesheet.css" text="Primary Color:">
+                        <JFXColorPicker fx:id="primaryPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" />
+                        <JFXColorPicker fx:id="primaryDarkPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <JFXColorPicker fx:id="primaryLightPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Primary Color:">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="medium-text" stylesheets="@../../stylesheet.css" text="Primary Color (Dark):" GridPane.rowIndex="1">
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Primary Color (Dark):" GridPane.rowIndex="1">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="medium-text" stylesheets="@../../stylesheet.css" text="Primary Color (Light):" GridPane.rowIndex="2">
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Primary Color (Light):" GridPane.rowIndex="2">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -69,7 +69,7 @@
             </VBox>
             <VBox alignment="TOP_CENTER" spacing="50.0" GridPane.columnIndex="1">
                <children>
-                  <Label stylesheets="@../../stylesheet.css" text="Pathfinding Algorithm">
+                  <Label stylesheets="@../stylesheet.css" text="Pathfinding Algorithm">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -80,10 +80,10 @@
                   </Label>
                   <VBox alignment="TOP_CENTER" spacing="35.0">
                      <children>
-                        <JFXRadioButton fx:id="aStarButton" selected="true" styleClass="medium-text" stylesheets="@../../stylesheet.css" text="A*" />
-                        <JFXRadioButton fx:id="dfsButton" styleClass="medium-text" stylesheets="@../../stylesheet.css" text="Depth First Search" />
-                        <JFXRadioButton fx:id="bfsButton" styleClass="medium-text" stylesheets="@../../stylesheet.css" text="Breadth First Search" />
-                        <JFXRadioButton fx:id="djikstraButton" styleClass="medium-text" stylesheets="@../../stylesheet.css" text="Djikstra" />
+                        <JFXRadioButton fx:id="aStarButton" selected="true" styleClass="medium-text" stylesheets="@../stylesheet.css" text="A*" />
+                        <JFXRadioButton fx:id="dfsButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Depth First Search" />
+                        <JFXRadioButton fx:id="bfsButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Breadth First Search" />
+                        <JFXRadioButton fx:id="djikstraButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Djikstra" />
                      </children>
                   </VBox>
                </children>
