@@ -236,7 +236,7 @@ public class SimpleMapController extends AbstractController {
         pathSegments.addAll(
             PathSegment.calcPathSegments(
                 texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
-        faulknerCanvas.setPath(path);
+        mainCanvas.setPath(path);
 
         // Remove dest on this graph
         pathSegments.get(pathSegments.size() - 1).removeLast();
@@ -250,7 +250,7 @@ public class SimpleMapController extends AbstractController {
         pathSegments.addAll(
             PathSegment.calcPathSegments(
                 texDirectionsWithLabels(path.getPathFindingAlgo().textualDirections())));
-        mainCanvas.setPath(path);
+        faulknerCanvas.setPath(path);
       }
 
       directionsList.getItems().clear();
