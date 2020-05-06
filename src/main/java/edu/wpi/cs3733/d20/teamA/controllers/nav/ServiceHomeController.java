@@ -41,11 +41,25 @@ public class ServiceHomeController extends AbstractNavPaneController {
         "views/service/InternalTransportRequest.fxml",
         "Internal\nTransport");
 
+    addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.BAND_AID),
+            "APIService",
+            "Appointment\nRequest");
+
+    addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.GLOBE),
+            "views/service/InterpreterRequest.fxml",
+            "Interpreters");
+
     // Services available to employees
     if (eDB.getLoggedIn() != null) {
 
       String employeeTitle = eDB.getLoggedIn().getTitle();
       System.out.println(employeeTitle);
+
+      // services available to admins, doctors, and nurses
       if (employeeTitle.equals("admin")
           || employeeTitle.equals("doctor")
           || employeeTitle.equals("nurse")) {
@@ -66,14 +80,15 @@ public class ServiceHomeController extends AbstractNavPaneController {
             new FontIcon(FontAwesomeSolid.PILLS),
             "views/service/PrescriptionRequest.fxml",
             "Prescriptions");
+
+        addButton(
+                buttonPane,
+                new FontIcon(FontAwesomeSolid.CALENDAR_DAY),
+                "views/reservation/Reservation.fxml",
+                "Room\nScheduler");
       }
 
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.BROOM),
-          "views/service/JanitorRequest.fxml",
-          "Janitorial");
-
+      // services excluded to retail employees
       if (!employeeTitle.equals("retail")) {
         addButton(
             buttonPane,
@@ -88,6 +103,13 @@ public class ServiceHomeController extends AbstractNavPaneController {
             "Tech\nSupport");
       }
 
+
+      addButton(
+              buttonPane,
+              new FontIcon(FontAwesomeSolid.BROOM),
+              "views/service/JanitorRequest.fxml",
+              "Janitorial");
+
       if (employeeTitle.equals("admin")
           || employeeTitle.equals("doctor")
           || employeeTitle.equals("nurse")
@@ -100,26 +122,10 @@ public class ServiceHomeController extends AbstractNavPaneController {
       }
 
       addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.GLOBE),
-          "views/service/InterpreterRequest.fxml",
-          "Interpreters");
-
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.LIST),
-          "views/service/RequestViewer.fxml",
-          "Service\nRequests");
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.CALENDAR_DAY),
-          "views/reservation/Reservation.fxml",
-          "Room\nScheduler");
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.BAND_AID),
-          "APIService",
-          "Appointment\nRequest");
+              buttonPane,
+              new FontIcon(FontAwesomeSolid.LIST),
+              "views/service/RequestViewer.fxml",
+              "Service\nRequests");
     }
     equalizeButtonGrid(buttonPane);
   }
