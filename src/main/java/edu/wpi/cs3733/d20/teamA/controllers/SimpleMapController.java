@@ -57,8 +57,8 @@ public class SimpleMapController extends AbstractController {
   private ArrayList<PathSegment> pathSegments;
   private int currPathSegment = 0;
 
-  private static final String FAULKNER_EXIT_NODE = "ARETL00101";
-  private static final String MAIN_EXIT_NODE = "ACONF0010G";
+  private static final String FAULKNER_EXIT_NODE = "MHALL00342";
+  private static final String MAIN_EXIT_NODE = "AEXIT0010G";
 
   private static final MapPoint FAULKNER_COORDS = new MapPoint(42.301572, -71.128472);
   private static final MapPoint MAIN_COORDS = new MapPoint(42.335679, -71.106042);
