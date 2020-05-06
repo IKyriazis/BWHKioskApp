@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.DialogMaker;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
@@ -208,13 +208,8 @@ public class SimpleMapController extends AbstractController {
 
   public void pressedQRButton() {
     if (!lastDirs.isEmpty()) {
-      DialogUtil.complexDialog(
-          dialogPane,
-          "Direction QR Code",
-          "views/QRCodePopup.fxml",
-          true,
-          null,
-          new QRDialogController(lastDirs));
+      DialogMaker maker = new DialogMaker();
+      maker.makeQRDialog(lastDirs, dialogPane);
     } else {
       DialogUtil.simpleInfoDialog(
           dialogPane, "No Directions", "Cannot generate a QR code from empty directions");
