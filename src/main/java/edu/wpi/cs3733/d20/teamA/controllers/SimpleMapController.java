@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.util.Pair;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.icomoon.Icomoon;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class SimpleMapController extends AbstractController {
@@ -424,10 +425,15 @@ public class SimpleMapController extends AbstractController {
                     new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT))));
       } else if (textualPath.get(j).getValue().contains("slight left")) {
         textPath.add(
-            new Pair<>(textualPath.get(j).getKey(), new Label(textualPath.get(j).getValue())));
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(textualPath.get(j).getValue(), new FontIcon(Icomoon.ICM_ARROW_UP_LEFT))));
       } else if (textualPath.get(j).getValue().contains("slight right")) {
         textPath.add(
-            new Pair<>(textualPath.get(j).getKey(), new Label(textualPath.get(j).getValue())));
+            new Pair<>(
+                textualPath.get(j).getKey(),
+                new Label(
+                    textualPath.get(j).getValue(), new FontIcon(Icomoon.ICM_ARROW_UP_RIGHT))));
       } else if (textualPath.get(j).getValue().contains("up")) {
         textPath.add(
             new Pair<>(
