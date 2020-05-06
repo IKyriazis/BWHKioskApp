@@ -52,7 +52,7 @@ public class InterpreterRequestController extends AbstractRequestController {
       DialogUtil.simpleInfoDialog(
           "No Room Selected", "Please select a room in the dropdown and try again");
     }
-    locationBox.getSelectionModel().clearSelection();
+    locationBox.setValue(null);
     interpreterBox.getSelectionModel().clearSelection();
   }
 }

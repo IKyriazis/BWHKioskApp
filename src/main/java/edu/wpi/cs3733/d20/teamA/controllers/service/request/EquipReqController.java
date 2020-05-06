@@ -67,7 +67,7 @@ public class EquipReqController extends AbstractRequestController {
       SceneSwitcherController.popScene();
     }
 
-    nodeBox.getSelectionModel().clearSelection();
+    nodeBox.setValue(null);
     itemField.clear();
     qtyField.clear();
     priCombo.getSelectionModel().clearSelection();
