@@ -89,13 +89,13 @@ public class ServiceHomeController extends AbstractNavPaneController {
           "views/service/RequestViewer.fxml",
           "Service\nRequests");
       addButton(
-              buttonPane,
-              new FontIcon(FontAwesomeSolid.PAGER),
-              "views/OnCallList.fxml",
-              "Employees\nOn Call");
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.PAGER),
+          "views/OnCallList.fxml",
+          "Employees\nOn Call");
 
-        addButton(
-                buttonPane,
+      addButton(
+          buttonPane,
           new FontIcon(FontAwesomeSolid.CALENDAR_DAY),
           "views/reservation/Reservation.fxml",
           "Room\nScheduler");

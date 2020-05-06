@@ -113,14 +113,12 @@ public class OnCallDatabase extends Database implements IDatabase {
 
     String oldStatus = getStatus(username);
 
-    if(oldStatus == "Available"){
+    if (oldStatus == "Available") {
       try {
         PreparedStatement pstmt =
-                getConnection()
-                        .prepareStatement(
-                                "UPDATE OnCall SET status = 'Busy' WHERE username = '"
-                                        + username
-                                        + "'");
+            getConnection()
+                .prepareStatement(
+                    "UPDATE OnCall SET status = 'Busy' WHERE username = '" + username + "'");
         pstmt.executeUpdate();
         pstmt.close();
         return true;
@@ -128,14 +126,12 @@ public class OnCallDatabase extends Database implements IDatabase {
         e.printStackTrace();
         return false;
       }
-    } else if(oldStatus == "Busy"){
+    } else if (oldStatus == "Busy") {
       try {
         PreparedStatement pstmt =
-                getConnection()
-                        .prepareStatement(
-                                "UPDATE OnCall SET status = 'Available' WHERE username = '"
-                                        + username
-                                        + "'");
+            getConnection()
+                .prepareStatement(
+                    "UPDATE OnCall SET status = 'Available' WHERE username = '" + username + "'");
         pstmt.executeUpdate();
         pstmt.close();
         return true;

@@ -23,7 +23,6 @@ public abstract class AbstractController {
 
   private SerialPort comPort = null;
 
-
   private DatabaseServiceProvider provider;
   private Connection conn;
 

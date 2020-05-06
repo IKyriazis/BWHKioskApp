@@ -63,7 +63,7 @@ public class TestServiceDatabase {
     Assertions.assertEquals(0, sDB.getSize());
     DB.addNode(
         "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-      eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER, 9947758821l);
+    eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER, 9947758821l);
 
     sDB.addServiceReq(
         ServiceType.JANITOR,
@@ -82,7 +82,7 @@ public class TestServiceDatabase {
     Assertions.assertEquals(0, sDB.getSize());
     DB.addNode(
         "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-      eDB.addEmployee("bacd", "ray", "jay", "Password54", EmployeeTitle.NURSE, 8847392010l);
+    eDB.addEmployee("bacd", "ray", "jay", "Password54", EmployeeTitle.NURSE, 8847392010l);
     String req =
         sDB.addServiceReq(
             ServiceType.JANITOR,
@@ -102,7 +102,7 @@ public class TestServiceDatabase {
     DB.removeAll(Campus.FAULKNER);
     DB.addNode(
         "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-      eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.ADMIN, 9900990094l);
+    eDB.addEmployee("bacd", "ray", "jay", "Password56", EmployeeTitle.ADMIN, 9900990094l);
     String req =
         sDB.addServiceReq(
             ServiceType.JANITOR,

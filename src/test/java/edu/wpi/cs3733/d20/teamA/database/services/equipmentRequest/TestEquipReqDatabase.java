@@ -11,8 +11,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-
-import edu.wpi.cs3733.d20.teamA.graph.NodeType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +52,8 @@ public class TestEquipReqDatabase {
     serviceDatabase.removeAll();
     graphDatabase.removeAll(Campus.FAULKNER);
     Assertions.assertEquals(0, serviceDatabase.getSize());
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     employeeDatabase.addEmployee(
         "bacd", "ray", "jay", "Password56", EmployeeTitle.INTERPRETER, 8736453726l);
 
@@ -70,9 +69,9 @@ public class TestEquipReqDatabase {
     Assertions.assertEquals(0, serviceDatabase.getSize());
     graphDatabase.addNode(
         "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
-      employeeDatabase.addEmployee(
-              "bacd", "ray", "jay", "Password54", EmployeeTitle.INTERPRETER, 6635273645l);
-      String a = serviceDatabase.addServiceReq(ServiceType.EQUIPMENT, "balogna", null, "item|2|High");
+    employeeDatabase.addEmployee(
+        "bacd", "ray", "jay", "Password54", EmployeeTitle.INTERPRETER, 6635273645l);
+    String a = serviceDatabase.addServiceReq(ServiceType.EQUIPMENT, "balogna", null, "item|2|High");
     Assertions.assertEquals(1, serviceDatabase.getSize());
     serviceDatabase.deleteServReq(a);
     Assertions.assertEquals(0, serviceDatabase.getSize());
