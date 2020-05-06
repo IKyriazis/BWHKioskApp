@@ -89,7 +89,7 @@ public class NodeDialogController implements IDialogController {
     typeBox.setItems(types);
 
     ObservableList<String> buildings =
-        FXCollections.observableArrayList(
+        FXCollections.observableArrayList("Faulkner",
             "Main", "BTM", "15 Francis", "45 Francis", "Tower", "Shapiro");
     buildingBox.setItems(buildings);
 

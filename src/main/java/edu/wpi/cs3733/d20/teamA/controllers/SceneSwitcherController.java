@@ -89,7 +89,7 @@ public class SceneSwitcherController extends AbstractController {
     if (eDB.getSize() == -1 || eDB.getSize() == 0) {
       eDB.createTables();
       eDB.addEmployee("111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN);
-      eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.JANITOR);
+      eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.NURSE);
       eDB.addEmployee("Brennan", "Aubuchaun", "baub", "baUb578", EmployeeTitle.INTERPRETER);
       eDB.addEmployee("Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano2", EmployeeTitle.NURSE);
       eDB.addEmployee("Eva", "Labbe", "ELLabbe", "CluBP3nGuin3", EmployeeTitle.JANITOR);
