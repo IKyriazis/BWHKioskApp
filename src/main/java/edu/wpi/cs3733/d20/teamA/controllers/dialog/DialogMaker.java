@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
 import edu.wpi.cs3733.d20.teamA.controllers.PatientInfoController;
 import edu.wpi.cs3733.d20.teamA.controllers.ViewEmployeesController;
+import edu.wpi.cs3733.d20.teamA.database.patient.Patient;
 import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
@@ -24,6 +25,16 @@ public class DialogMaker {
   }
 
   public void makePatientDialog(PatientInfoController controller) {
+    DialogUtil.complexDialog(
+        "Add Patient",
+        "views/AddPatientPopup.fxml",
+        true,
+        event -> controller.update(),
+        this.patient);
+  }
+
+  public void makePatientDialog(PatientInfoController controller, Patient p) {
+    this.patient = new PatientEditController(p);
     DialogUtil.complexDialog(
         "Add Patient",
         "views/AddPatientPopup.fxml",
