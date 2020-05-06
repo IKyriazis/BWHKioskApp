@@ -3,11 +3,11 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.gluonhq.maps.MapPoint;
 import com.gluonhq.maps.MapView;
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733.d20.teamA.controls.PathLayer;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
-import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -63,8 +63,11 @@ public class SimpleMapController extends AbstractController {
 
   public void initialize() {
     // Setup gluon map
+    PathLayer pathLayer = new PathLayer();
+    pathLayer.importPointsFromCSV();
+
     gluonMap = new MapView();
-    // mapView.addLayer(new MapLayer());
+    gluonMap.addLayer(pathLayer);
     gluonMap.setCenter(new MapPoint(42.3016445, -71.1281649));
     gluonMap.setZoom(16);
     gluonMap.setVisible(false);
@@ -307,7 +310,8 @@ public class SimpleMapController extends AbstractController {
     if (currSegment.getCampus() == Campus.FAULKNER) {
       gluonMap.setVisible(false);
 
-      mainCanvas.disablePathAnimation();
+      currCanvas.disablePathAnimation();
+      currCanvas.setVisible(false);
 
       currCanvas = faulknerCanvas;
       currCanvas.setVisible(true);
@@ -316,7 +320,8 @@ public class SimpleMapController extends AbstractController {
     } else if (currSegment.getCampus() == Campus.MAIN) {
       gluonMap.setVisible(false);
 
-      faulknerCanvas.disablePathAnimation();
+      currCanvas.disablePathAnimation();
+      currCanvas.setVisible(false);
 
       currCanvas = mainCanvas;
       currCanvas.setVisible(true);
@@ -330,20 +335,8 @@ public class SimpleMapController extends AbstractController {
       gluonMap.setZoom(16);
       if (pathSegments.get(currPathSegment - 1).getCampus() == Campus.MAIN) {
         gluonMap.setCenter(MAIN_COORDS);
-        gluonMap.flyTo(1.0, FAULKNER_COORDS, 5.0);
-        ThreadPool.singleShotMainTask(
-            6000,
-            () -> {
-              gluonMap.setCenter(FAULKNER_COORDS);
-            });
       } else {
         gluonMap.setCenter(FAULKNER_COORDS);
-        gluonMap.flyTo(1.0, MAIN_COORDS, 5.0);
-        ThreadPool.singleShotMainTask(
-            6000,
-            () -> {
-              gluonMap.setCenter(MAIN_COORDS);
-            });
       }
     }
 
