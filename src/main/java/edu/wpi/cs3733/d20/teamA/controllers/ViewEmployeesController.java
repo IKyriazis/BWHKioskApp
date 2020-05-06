@@ -1,7 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.d20.teamA.controllers.dialog.EmployeeEditController;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.DialogMaker;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.QRDialogController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
@@ -79,12 +79,8 @@ public class ViewEmployeesController extends AbstractController {
 
   @FXML
   public void addBtn(ActionEvent actionEvent) {
-    DialogUtil.complexDialog(
-        "Add Employee",
-        "views/AddEmployeePopup.fxml",
-        true,
-        event -> update(),
-        new EmployeeEditController());
+    DialogMaker maker = new DialogMaker();
+    maker.makeEmployeeDialog(this);
   }
 
   //  @FXML

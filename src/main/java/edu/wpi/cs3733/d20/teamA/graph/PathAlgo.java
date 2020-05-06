@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.graph;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.util.Pair;
 
 public abstract class PathAlgo implements IStrategyPath {
 
@@ -14,7 +15,7 @@ public abstract class PathAlgo implements IStrategyPath {
   /** Represents the graph the path is being calculated for */
   protected Graph graph;
 
-  protected ArrayList<String> writtenDirections;
+  protected ArrayList<Pair<Node, String>> writtenDirections;
 
   public abstract void findPath(Node start, Node end);
 
@@ -78,8 +79,8 @@ public abstract class PathAlgo implements IStrategyPath {
    *
    * @return textPath The array of Labels that write the path out
    */
-  public ArrayList<String> textualDirections() {
-    ArrayList<String> textPath = new ArrayList<>();
+  public ArrayList<Pair<Node, String>> textualDirections() {
+    ArrayList<Pair<Node, String>> textPath = new ArrayList<>();
     ArrayList<Direction> directions = new ArrayList<>();
     double lastAngle = -100.0;
     // For every node in the path
@@ -179,21 +180,27 @@ public abstract class PathAlgo implements IStrategyPath {
     // Formulate the string of directions
     for (int j = 0; j < directions.size(); j++) {
       if (directions.get(j) == Direction.RIGHT) {
-        textPath.add("Turn right at " + pathNodes.get(j).getLongName());
+        textPath.add(
+            new Pair<>(pathNodes.get(j), "Turn right at " + pathNodes.get(j).getLongName()));
       } else if (directions.get(j) == Direction.LEFT) {
-        textPath.add("Turn left at " + pathNodes.get(j).getLongName());
+        textPath.add(
+            new Pair<>(pathNodes.get(j), "Turn left at " + pathNodes.get(j).getLongName()));
       } else if (directions.get(j) == Direction.SLIGHTLEFT) {
-        textPath.add("Make a slight left at " + pathNodes.get(j).getLongName());
+        textPath.add(
+            new Pair<>(
+                pathNodes.get(j), "Make a slight left at " + pathNodes.get(j).getLongName()));
       } else if (directions.get(j) == Direction.SLIGHTRIGHT) {
-        textPath.add("Make a slight right at " + pathNodes.get(j).getLongName());
+        textPath.add(
+            new Pair<>(
+                pathNodes.get(j), "Make a slight right at " + pathNodes.get(j).getLongName()));
       } else if (directions.get(j) == Direction.UP) {
         int sameLength = getSameLength(directions, j, Direction.UP);
 
         if (sameLength >= 1) {
           j += sameLength - 1;
-          textPath.add("Go up " + sameLength + " floors");
+          textPath.add(new Pair<>(pathNodes.get(j), "Go up " + sameLength + " floors"));
         } else {
-          textPath.add("Go up until destination");
+          textPath.add(new Pair<>(pathNodes.get(j), "Go up until destination"));
           break;
         }
       } else if (directions.get(j) == Direction.DOWN) {
@@ -201,9 +208,9 @@ public abstract class PathAlgo implements IStrategyPath {
 
         if (sameLength >= 1) {
           j += sameLength - 1;
-          textPath.add("Go down " + sameLength + " floors");
+          textPath.add(new Pair<>(pathNodes.get(j), "Go down " + sameLength + " floors"));
         } else {
-          textPath.add("Go up until destination");
+          textPath.add(new Pair<>(pathNodes.get(j), "Go up until destination"));
           break;
         }
 
@@ -213,15 +220,20 @@ public abstract class PathAlgo implements IStrategyPath {
 
         if (sameLength >= 1) {
           j += sameLength - 1;
-          textPath.add("Go straight until " + pathNodes.get(j + 1).getLongName());
+          textPath.add(
+              new Pair<>(
+                  pathNodes.get(j), "Go straight until " + pathNodes.get(j + 1).getLongName()));
         } else {
-          textPath.add("Continue straight until destination");
+          textPath.add(new Pair<>(pathNodes.get(j), "Continue straight until destination"));
           break;
         }
       }
     }
 
-    textPath.add("You have reached " + pathNodes.get(pathNodes.size() - 1).getLongName());
+    textPath.add(
+        new Pair<>(
+            pathNodes.get(pathNodes.size() - 1),
+            "You have reached " + pathNodes.get(pathNodes.size() - 1).getLongName()));
 
     return textPath;
   }

@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -55,6 +56,8 @@ public class FlowerServiceController extends AbstractController {
           App.class.getResource("stylesheet.css").toExternalForm(),
           comboLocation.getSelectionModel().getSelectedItem().getLongName(),
           null);
+    } else {
+      DialogUtil.simpleErrorDialog("Can't place order", "Please select delivery location");
     }
   }
 
@@ -63,9 +66,10 @@ public class FlowerServiceController extends AbstractController {
     flowerapi.App.runAdmin(
         0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
   }
+
   @FXML
   public void trackOrder() {
-    /*flowerapi.App.runTracker(
-            0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);*/
+    flowerapi.App.runTracker(
+        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
   }
 }
