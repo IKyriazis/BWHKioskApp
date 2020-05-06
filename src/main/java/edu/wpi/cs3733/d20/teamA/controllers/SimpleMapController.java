@@ -43,8 +43,8 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXButton floorDownButton;
   @FXML private JFXTextField floorField;
 
-  @FXML private JFXRadioButton mainRadioButton;
   @FXML private JFXRadioButton faulknerRadioButton;
+  @FXML private JFXRadioButton mainRadioButton;
 
   private MapCanvas faulknerCanvas;
   private MapCanvas mainCanvas;
@@ -68,6 +68,8 @@ public class SimpleMapController extends AbstractController {
     // Setup gluon map
     PathLayer pathLayer = new PathLayer();
     pathLayer.importPointsFromCSV();
+    mainRadioButton.setSelected(false);
+    faulknerRadioButton.setSelected(true);
 
     gluonMap = new MapView();
     gluonMap.addLayer(pathLayer);
