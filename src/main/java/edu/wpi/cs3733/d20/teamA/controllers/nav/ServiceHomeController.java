@@ -94,7 +94,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
           "views/reservation/Reservation.fxml",
           "Room\nScheduler");
       addButton(
-        buttonPane,
+          buttonPane,
           new FontIcon(FontAwesomeSolid.BAND_AID),
           "APIService",
           "Appointment\nRequests");
