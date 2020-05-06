@@ -43,6 +43,9 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXButton floorDownButton;
   @FXML private JFXTextField floorField;
 
+  @FXML private JFXRadioButton mainRadioButton;
+  @FXML private JFXRadioButton faulknerRadioButton;
+
   private MapCanvas faulknerCanvas;
   private MapCanvas mainCanvas;
   private MapCanvas currCanvas;
@@ -255,6 +258,27 @@ public class SimpleMapController extends AbstractController {
       startingLocationBox.setValue(end);
       destinationBox.setValue(start);
     }
+  }
+
+  @FXML
+  public void toggleDisplayedMap() {
+    currCanvas.setVisible(false);
+    currCanvas.disablePathAnimation();
+
+    gluonMap.setVisible(false);
+    if (mainRadioButton.isSelected()) {
+      currCanvas = mainCanvas;
+    } else {
+      currCanvas = faulknerCanvas;
+      if (floor == 6) {
+        floor = 5;
+        floorField.setText("5");
+      }
+    }
+
+    currCanvas.setVisible(true);
+    currCanvas.enablePathAnimation();
+    currCanvas.animatePath(floor);
   }
 
   public Graph getGraph() {

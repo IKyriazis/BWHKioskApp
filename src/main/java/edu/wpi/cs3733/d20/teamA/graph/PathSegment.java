@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.graph;
 
 import java.util.ArrayList;
+import java.util.List;
 import javafx.scene.control.Label;
 import javafx.util.Pair;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -76,13 +77,66 @@ public class PathSegment {
   public static PathSegment calcInterSegment(Campus dest) {
     PathSegment seg = new PathSegment(Campus.INTER, 0);
     if (dest == Campus.MAIN) {
-      Label label = new Label("Go fuck yourself");
-      label.setGraphic(new FontIcon(FontAwesomeSolid.HAND_MIDDLE_FINGER));
-      seg.addDirections(label);
+      Label l0 = new Label("Turn right onto Whitcomb Ave");
+      l0.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT));
+
+      Label l1 = new Label("Continue straight until Centre St");
+      l1.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l2 = new Label("Turn left onto Centre St");
+      l2.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT));
+
+      Label l3 = new Label("Continue straight until Arborway");
+      l3.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l4 = new Label("Follow Arborway onto Pond St");
+      l4.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l5 = new Label("Follow Pond St onto Jamaicaway");
+      l5.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l6 = new Label("Follow Jamaicaway onto Riverway");
+      l6.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l7 = new Label("Turn right onto Vining St");
+      l7.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT));
+
+      Label l8 = new Label("Continue to Francis St");
+      l8.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l9 = new Label("Your destination is ahead");
+      l9.setGraphic(new FontIcon(FontAwesomeSolid.DOT_CIRCLE));
+
+      seg.directions.addAll(List.of(l0, l1, l2, l3, l4, l5, l6, l7, l8, l9));
     } else if (dest == Campus.FAULKNER) {
-      Label label = new Label("Go fuck yourself");
-      label.setGraphic(new FontIcon(FontAwesomeSolid.HAND_MIDDLE_FINGER));
-      seg.addDirections(label);
+      Label l0 = new Label("Turn right onto Francis St");
+      l0.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT));
+
+      Label l1 = new Label("Turn left onto Brookline Ave");
+      l1.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT));
+
+      Label l2 = new Label("Turn left onto Riverway");
+      l2.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_LEFT));
+
+      Label l3 = new Label("Follow Riverway onto Jamaicaway");
+      l3.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l4 = new Label("Follow Jamaicaway onto Pond St");
+      l4.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l5 = new Label("Follow Pond St onto Arborway");
+      l5.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l6 = new Label("Follow Arborway onto Pond St");
+      l6.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_UP));
+
+      Label l7 = new Label("Turn right onto Whitcomb Ave");
+      l7.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_CIRCLE_RIGHT));
+
+      Label l8 = new Label("Your destination is on the left");
+      l8.setGraphic(new FontIcon(FontAwesomeSolid.DOT_CIRCLE));
+
+      seg.directions.addAll(List.of(l0, l1, l2, l3, l4, l5, l6, l7, l8));
     }
 
     return seg;
