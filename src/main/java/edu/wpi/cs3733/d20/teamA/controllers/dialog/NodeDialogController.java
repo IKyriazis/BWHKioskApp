@@ -74,7 +74,13 @@ public class NodeDialogController implements IDialogController {
               }
             });
     // Setup floor combobox
-    ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    ObservableList<Integer> floors = FXCollections.observableArrayList();
+    if (campus == Campus.MAIN) {
+      floors = FXCollections.observableArrayList(1, 2, 3, 4, 5, 6);
+    } else if (campus == Campus.FAULKNER) {
+      floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    }
+
     floorBox.setItems(floors);
     floorBox.setValue(floor);
     floorBox.setEditable(false);
