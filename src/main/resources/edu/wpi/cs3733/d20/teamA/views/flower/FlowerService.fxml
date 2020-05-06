@@ -11,11 +11,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.flower.FlowerServiceController">
+<AnchorPane fx:id="rootPane" maxHeight="500.0" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.flower.FlowerServiceController">
    <children>
       <StackPane fx:id="dialogPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane vgap="25.0">
+            <GridPane minWidth="500.0" prefWidth="650.0" style="-fx-background-color: #FFFFFF;" vgap="25.0">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                </columnConstraints>
@@ -42,19 +42,25 @@
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                         <RowConstraints minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="adminButton" buttonType="RAISED" onAction="#openAdmin" text="Admin" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXButton fx:id="adminButton" buttonType="RAISED" minWidth="200.0" onAction="#openAdmin" text="Admin" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="orderButton" buttonType="RAISED" onAction="#placeOrder" text="Place Order" GridPane.columnIndex="1">
+                        <JFXButton fx:id="orderButton" buttonType="RAISED" minWidth="200.0" onAction="#placeOrder" text="Place Order" GridPane.columnIndex="1">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </JFXButton>
                         <JFXComboBox fx:id="comboLocation" prefWidth="150.0" />
+                        <JFXButton fx:id="trackButton" buttonType="RAISED" minWidth="200.0" onAction="#trackOrder" text="Track Order" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </JFXButton>
                      </children>
                   </GridPane>
                </children>

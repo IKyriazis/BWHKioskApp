@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers.flower;
 
 import com.jfoenix.controls.*;
+import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -38,15 +39,34 @@ public class FlowerServiceController extends AbstractController {
           event.consume();
           adminButton.setVisible(eDB.getLoggedIn() != null);
         });
+
+    setupNodeBox(comboLocation, null);
   }
 
   @FXML
   public void placeOrder() {
-    // Run
+    if (comboLocation.getSelectionModel().getSelectedItem() != null) {
+      // Open new window centered on screen with baseline width and height
+      flowerapi.App.run(
+          0,
+          0,
+          0,
+          0,
+          App.class.getResource("stylesheet.css").toExternalForm(),
+          comboLocation.getSelectionModel().getSelectedItem().getLongName(),
+          null);
+    }
   }
 
   @FXML
   public void openAdmin() {
-    // Run admin
+    flowerapi.App.runAdmin(
+        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
+  }
+
+  @FXML
+  public void trackOrder() {
+    /*flowerapi.App.runTracker(
+    0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);*/
   }
 }
