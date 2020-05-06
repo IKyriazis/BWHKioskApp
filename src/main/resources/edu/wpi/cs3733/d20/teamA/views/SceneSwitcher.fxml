@@ -12,7 +12,6 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -35,9 +34,16 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../stylesheet.css">
-         <top>
-            <GridPane minHeight="75.0" prefHeight="75.0" prefWidth="1332.0" style="-fx-background-color: -primary-color-dark;" BorderPane.alignment="CENTER">
+      <GridPane>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <GridPane fx:id="funPane" minHeight="75.0" prefHeight="75.0" prefWidth="1332.0" style="-fx-background-color: -primary-color-dark;">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -83,9 +89,7 @@
                   <DropShadow height="24.0" radius="11.5" width="24.0" />
                </effect>
             </GridPane>
-         </top>
-         <center>
-            <StackPane pickOnBounds="false" BorderPane.alignment="CENTER">
+            <StackPane pickOnBounds="false" GridPane.rowIndex="1">
                <children>
                   <GridPane fx:id="contentPane">
                     <columnConstraints>
@@ -123,8 +127,8 @@
                   </AnchorPane>
                </children>
             </StackPane>
-         </center>
-      </BorderPane>
+         </children>
+      </GridPane>
       <GridPane fx:id="blockerPane" mouseTransparent="true" onMouseClicked="#clickedBlockerPane">
          <columnConstraints>
             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />

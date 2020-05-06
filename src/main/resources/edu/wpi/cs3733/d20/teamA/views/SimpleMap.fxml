@@ -4,11 +4,13 @@
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -24,9 +26,17 @@
          <StackPane fx:id="dialogPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <AnchorPane fx:id="canvasPane" prefHeight="667.0" prefWidth="951.0">
                <children>
+                  <GridPane fx:id="gluonMapPane" pickOnBounds="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
 
-                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="250.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="250.0" prefWidth="250.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="125.0">
+                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="300.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="300.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="125.0">
                      <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
 
                         <padding>
@@ -49,7 +59,7 @@
                            </styleClass></JFXButton>
                      </VBox>
                   </JFXDrawer>
-                  <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="75.0" AnchorPane.topAnchor="15.0" />
+                  <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="15.0" />
                   <HBox layoutX="15.0" layoutY="15.0" pickOnBounds="false" spacing="25.0" AnchorPane.topAnchor="65.0">
                      <children>
                         <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" text="Get Directions">
@@ -60,7 +70,7 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="250.0" layoutY="308.0" prefHeight="353.0" prefWidth="254.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="348.0">
+                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="300.0" layoutY="308.0" prefHeight="353.0" prefWidth="300.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="348.0">
                      <children>
                         <GridPane fx:id="directionsPane">
                            <columnConstraints>
@@ -72,26 +82,47 @@
                            </rowConstraints>
                            <children>
                               <JFXListView fx:id="directionsList" />
-                              <JFXButton fx:id="qrCodeButton" buttonType="RAISED" onAction="#pressedQRButton" text="Generate QR Code" GridPane.rowIndex="1">
+                              <HBox alignment="CENTER" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" top="10.0" />
                                  </GridPane.margin>
-                                 <styleClass>
-                                    <String fx:value="bluegray-button" />
-                                    <String fx:value="small-text" />
-                                 </styleClass>
-                              </JFXButton>
+                                 <children>
+                                    <JFXButton fx:id="dirBackButton" onAction="#pressedDirBack" styleClass="button-rounded-left" text="Back" />
+                                    <JFXButton fx:id="dirNextButton" onAction="#pressedDirNext" styleClass="button-rounded-right" text="Next" />
+                                 </children>
+                              </HBox>
                            </children>
                         </GridPane>
                      </children>
                   </JFXDrawer>
-                  <VBox layoutX="837.0" layoutY="15.0" prefHeight="95.0" prefWidth="28.0" spacing="10.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                  <HBox layoutX="948.0" layoutY="568.0" spacing="25.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                      <children>
-                        <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" />
-                        <JFXTextField fx:id="floorField" alignment="CENTER" prefColumnCount="1" prefHeight="25.0" prefWidth="41.0" text="1" />
-                        <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" />
+                        <GridPane>
+                           <columnConstraints>
+                              <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <JFXRadioButton fx:id="faulknerRadioButton" onAction="#toggleDisplayedMap" text="Faulkner Hospital" GridPane.rowIndex="1">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="campusToggle" />
+                                 </toggleGroup>
+                              </JFXRadioButton>
+                              <JFXRadioButton fx:id="mainRadioButton" onAction="#toggleDisplayedMap" selected="true" text="Main Campus" toggleGroup="$campusToggle" />
+                           </children>
+                        </GridPane>
+                        <VBox prefHeight="95.0" prefWidth="28.0" spacing="10.0">
+                           <children>
+                              <JFXButton fx:id="floorUpButton" buttonType="RAISED" onAction="#floorUp" />
+                              <JFXTextField fx:id="floorField" alignment="CENTER" prefColumnCount="1" prefHeight="25.0" prefWidth="41.0" text="1" />
+                              <JFXButton fx:id="floorDownButton" buttonType="RAISED" onAction="#floorDown" />
+                           </children>
+                        </VBox>
                      </children>
-                  </VBox>
+                  </HBox>
                </children></AnchorPane>
          </StackPane>
       </AnchorPane>

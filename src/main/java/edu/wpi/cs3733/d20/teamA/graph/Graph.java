@@ -355,7 +355,7 @@ public class Graph {
   private int calcWeight(Node start, Node end) {
     int side1 = Math.abs(start.getX() - end.getX());
     int side2 = Math.abs(start.getY() - end.getY());
-    double weight = Math.sqrt(Math.pow(side1, 2) + Math.pow(side2, 2));
+    double weight = Math.sqrt(side1 * side1 + side2 * side2);
     return (int) Math.round(weight);
   }
 
