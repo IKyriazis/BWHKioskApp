@@ -87,11 +87,11 @@ public class SceneSwitcherController extends AbstractController {
       eDB.dropTables();
       eDB.createTables();
       eDB.addEmployee("111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN);
-      eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.ADMIN);
+      eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.JANITOR);
       eDB.addEmployee("Brennan", "Aubuchaun", "baub", "baUb578", EmployeeTitle.INTERPRETER);
-      eDB.addEmployee("Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano", EmployeeTitle.NURSE);
+      eDB.addEmployee("Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano2", EmployeeTitle.NURSE);
       eDB.addEmployee("Eva", "Labbe", "ELLabbe", "CluBP3nGuin3", EmployeeTitle.JANITOR);
-      eDB.addEmployee("Dean", "Winchester", "WinDean", "catNipRox", EmployeeTitle.DOCTOR);
+      eDB.addEmployee("Dean", "Winchester", "WinDean", "catNipRox2", EmployeeTitle.DOCTOR);
       eDB.addEmployee("Stella", "Simmons", "Ssimmons", "gaLaxY6", EmployeeTitle.RECEPTIONIST);
       eDB.addEmployee("Yolanda", "Daniels", "YDaniels", "SpoodRman3", EmployeeTitle.RETAIL);
       // create account with rfid
