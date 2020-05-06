@@ -25,6 +25,7 @@ public class InternalTransportRequestController extends AbstractRequestControlle
     // Setup icons
     headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.WHEELCHAIR));
     submitBtn.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
+    trackBtn.setGraphic(new FontIcon(FontAwesomeSolid.WHEELCHAIR));
 
     // Set up pickup box
     setupNodeBox(pickupLocationBox, submitBtn);
@@ -49,9 +50,9 @@ public class InternalTransportRequestController extends AbstractRequestControlle
     String l =
         serviceDatabase.addServiceReq(
             ServiceType.INTERNAL_TRANSPORT,
-            selectedPickupLocation.getLongName(),
+            selectedPickupLocation.toString(),
             null,
-            selectedDestinationLocation.getLongName());
+            selectedDestinationLocation.toString());
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {
@@ -72,20 +73,22 @@ public class InternalTransportRequestController extends AbstractRequestControlle
       return;
     }
     try {
-      String s = serviceDatabase.getStatus(trackingCodeField.getText());
-      String name = serviceDatabase.getDidReqName(trackingCodeField.getText());
+      String s = serviceDatabase.getStatus(trackingCode);
+      String name = serviceDatabase.getDidReqName(trackingCode);
       if (s == null) {
         progressBar.setProgress(0);
         statusLabel.setText("Status");
         return;
       }
-      if (s.equals("Reported")) {
+      if (s.equals("Request Made")) {
         progressBar.setProgress(.1);
         statusLabel.setText("No one has been assigned to your request");
-      } else if (s.equals("Dispatched")) {
+      } else if (s.equals("In Progress")) {
         progressBar.setProgress(.5);
-        statusLabel.setText("Your request has been assigned! " + name + " is on the way!");
-      } else if (s.equals("Done")) {
+        if (name != null)
+          statusLabel.setText("Your request has been assigned! " + name + " is on the way!");
+        else statusLabel.setText("Your request has been assigned!");
+      } else if (s.equals("Completed")) {
         progressBar.setProgress(1);
         statusLabel.setText(name + " brought you to your destination.");
       } else {

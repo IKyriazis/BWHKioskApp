@@ -33,7 +33,7 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
 
     if (doesTableNotExist("SERVICEREQ")) {
       return helperPrepared(
-          "CREATE TABLE SERVICEREQ (servType Varchar(10), reqID Varchar(6) PRIMARY KEY, didReqName Varchar(25), madeReqName Varchar(25), timeOfReq Timestamp, status Varchar(20), location Varchar(200), description Varchar(100), additional Varchar(2000), CONSTRAINT CK_TYPE CHECK (servType in ('janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq')), CONSTRAINT FK_Location FOREIGN KEY (location) REFERENCES Node(longName), CONSTRAINT CK_STAT CHECK (status in ('Request Made', 'In Progress', 'Completed', 'Prescribed')))");
+          "CREATE TABLE SERVICEREQ (servType Varchar(10), reqID Varchar(6) PRIMARY KEY, didReqName Varchar(25), madeReqName Varchar(25), timeOfReq Timestamp, status Varchar(20), location Varchar(200), description Varchar(100), additional Varchar(2000), CONSTRAINT CK_TYPE CHECK (servType in ('janitor', 'medicine', 'equipreq', 'laundry', 'ittix', 'intrntrans', 'interpret', 'rxreq')), CONSTRAINT CK_STAT CHECK (status in ('Request Made', 'In Progress', 'Completed', 'Prescribed')))");
     }
     return false;
   }
@@ -47,7 +47,8 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn().getUsername();
+    String madeReqName = null;
+    if (getLoggedIn() != null) madeReqName = getLoggedIn().getUsername();
     String didReqName = null;
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     String status = "Request Made";
@@ -88,7 +89,10 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn().getUsername();
+
+    String madeReqName = null;
+    if (getLoggedIn() != null) madeReqName = getLoggedIn().getUsername();
+
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
     String status = "Request Made";
 
@@ -124,7 +128,8 @@ public class ServiceDatabase extends Database implements IDatabase<ITableable> {
       reqID = getRandomString();
       c = checkIfExistsString("ServiceReq", "reqID", reqID);
     }
-    String madeReqName = getLoggedIn().getUsername();
+    String madeReqName = null;
+    if (getLoggedIn() != null) madeReqName = getLoggedIn().getUsername();
     String didReqName = null;
     String status = "Request Made";
 

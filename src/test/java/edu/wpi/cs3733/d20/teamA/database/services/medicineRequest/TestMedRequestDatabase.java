@@ -6,6 +6,7 @@ import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.database.service.medicine.MedRequest;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -31,7 +32,8 @@ public class TestMedRequestDatabase {
     try {
       conn = DriverManager.getConnection(jdbcUrl);
       graphDatabase = new GraphDatabase(conn);
-      graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
+      graphDatabase.addNode(
+          "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
       employeesDatabase = new EmployeesDatabase(conn);
       employeesDatabase.addEmployee(
           "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 8837726619l);
@@ -87,7 +89,7 @@ public class TestMedRequestDatabase {
     String a =
         serviceDatabase.addServiceReq(
             ServiceType.MEDICINE, "washing hall", "212", "Schmoe|Dr. Phil|Xanax");
-    boolean b = serviceDatabase.setStatus(a, "Done");
+    boolean b = serviceDatabase.setStatus(a, "Completed");
     Assertions.assertTrue(b);
 
     serviceDatabase.removeAll();

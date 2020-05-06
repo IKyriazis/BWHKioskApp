@@ -5,6 +5,7 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -44,12 +45,13 @@ public class TestJanitorDatabase {
   @Test
   public void testAddRequest() throws SQLException {
 
-    graphDatabase.removeAllNodes();
+    graphDatabase.removeAllNodes(Campus.FAULKNER);
     employeeDatabase.removeAll();
     // need nodeID "biscuit" in node table so addrequest works
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee(
-        "Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, 7736499283l);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+      employeeDatabase.addEmployee(
+              "Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, 7736499283l);
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(
@@ -57,17 +59,20 @@ public class TestJanitorDatabase {
     Assertions.assertTrue(serviceDatabase.checkIfExistsString("SERVICEREQ", "reqID", a));
 
     serviceDatabase.removeAll();
-    graphDatabase.removeAllNodes();
+    graphDatabase.removeAllNodes(Campus.FAULKNER);
   }
 
   @Test
   public void testUpdateRequest() {
-    graphDatabase.removeAllNodes();
-    graphDatabase.addNode("biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A");
-    employeeDatabase.addEmployee(
-        "Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, 8847736283l);
-    employeeDatabase.addEmployee(
-        "Nisha", "Goel", "ngoel", "SweetGirl2", EmployeeTitle.ADMIN, 6635266683l);
+
+    graphDatabase.removeAllNodes(Campus.FAULKNER);
+    graphDatabase.addNode(
+        "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
+      employeeDatabase.addEmployee(
+              "Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, 8847736283l);
+      employeeDatabase.addEmployee(
+              "Nisha", "Goel", "ngoel", "SweetGirl2", EmployeeTitle.ADMIN, 6635266683l);
+
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(
@@ -81,6 +86,6 @@ public class TestJanitorDatabase {
     Assertions.assertEquals(0, serviceDatabase.getSize());
 
     serviceDatabase.removeAll();
-    graphDatabase.removeAllNodes();
+    graphDatabase.removeAllNodes(Campus.FAULKNER);
   }
 }

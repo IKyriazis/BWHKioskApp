@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class TestPath {
-  Graph graph = Graph.getInstance();
+  Graph graph = Graph.getInstance(Campus.FAULKNER);
 
   // Create nodes
   Node node1 = new Node("Node1", 0, 0, 1, "", NodeType.HALL, "1", "", "");

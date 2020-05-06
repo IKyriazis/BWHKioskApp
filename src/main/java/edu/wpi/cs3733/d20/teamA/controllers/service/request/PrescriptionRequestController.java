@@ -24,7 +24,7 @@ public class PrescriptionRequestController extends AbstractRequestController {
 
   public void initialize() {
     // Setup icons
-    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.MEDKIT));
+    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.PILLS));
     submitButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
     // Limit text length in description area to 100 chars

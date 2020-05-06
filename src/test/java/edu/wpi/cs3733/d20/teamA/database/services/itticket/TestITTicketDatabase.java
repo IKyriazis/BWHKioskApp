@@ -5,6 +5,7 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
+import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -32,7 +33,16 @@ public class TestITTicketDatabase {
       graphDatabase = new GraphDatabase(conn);
       serviceDatabase = new ServiceDatabase(conn);
       graphDatabase.addNode(
-          "MDEPT00325", 1, 1, 1, "Main", "DEPT", "LongName", "ShortName", "Team A");
+          "MDEPT00325",
+          1,
+          1,
+          1,
+          "Main",
+          "DEPT",
+          "LongName",
+          "ShortName",
+          "Team A",
+          Campus.FAULKNER);
       employeesDatabase = new EmployeesDatabase(conn);
       employeesDatabase.addEmployee(
           "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 8837263943l);

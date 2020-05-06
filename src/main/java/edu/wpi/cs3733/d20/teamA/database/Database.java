@@ -52,10 +52,11 @@ public abstract class Database {
   public int getSize(String tableName) {
     int count = 0;
     try {
-      PreparedStatement pstmt = getConnection().prepareStatement("Select * From " + tableName);
+      PreparedStatement pstmt =
+          getConnection().prepareStatement("SELECT COUNT(*) FROM " + tableName);
       ResultSet rset = pstmt.executeQuery();
-      while (rset.next()) {
-        count++;
+      if (rset.next()) {
+        return rset.getInt(1);
       }
       rset.close();
       pstmt.close();

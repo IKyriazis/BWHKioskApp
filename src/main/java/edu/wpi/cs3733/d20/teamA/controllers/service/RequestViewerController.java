@@ -129,7 +129,13 @@ public class RequestViewerController extends AbstractController {
               .reset(req);
           break;
         case INTERPRETER_REQ:
-          newNode = FXMLCache.loadFXML("views/service/edit/InterpreterRequestViewer.fxml");
+          newNode =
+              FXMLCache.loadServiceFXML(
+                  "views/service/edit/InterpreterRequestViewer.fxml",
+                  new InterpreterRequestViewerController(req));
+          ((AbstractViewerController)
+                  FXMLCache.getController("views/service/edit/InterpreterRequestViewer.fxml"))
+              .reset(req);
           break;
         case IT_TICKET:
           newNode =

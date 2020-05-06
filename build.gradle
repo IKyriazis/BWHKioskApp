@@ -82,9 +82,12 @@ dependencies {
 
 
             // for comms with arduino
-            'com.fazecast:jSerialComm:2.6.2'
-    )
+            'com.fazecast:jSerialComm:2.6.2',
 
+            //Flower API
+            group: 'edu.wpi.cs3733.d20.teamA', name: 'TeamAFlowerRequest', version:'1.0.0'
+    )
+    //compile files("src/main/resources/edu/wpi/cs3733/d20/teamA/APIFlower.jar")
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
@@ -131,14 +134,8 @@ def codeCoverageExcludes = [
         'edu.wpi.cs3733.d20.teamA.controllers.*',
         'edu.wpi.cs3733.d20.teamA.controls.*',
         'edu.wpi.cs3733.d20.teamA.map.MapCanvas',
-        'edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler',
-        'edu.wpi.cs3733.d20.teamA.util.DialogUtil',
-        'edu.wpi.cs3733.d20.teamA.util.FXMLCache',
-        'edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.1',
-        'edu.wpi.cs3733.d20.teamA.util.InputFormatUtil.2',
-        'edu.wpi.cs3733.d20.teamA.util.ThreadPool'
+        'edu.wpi.cs3733.d20.teamA.util.*',
+        'edu.wpi.cs3733.d20.teamA.database.flower.*'
 ]
 
 jacoco {

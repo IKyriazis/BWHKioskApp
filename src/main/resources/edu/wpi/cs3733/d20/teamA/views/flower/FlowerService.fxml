@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,20 +11,19 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.flower.FlowerServiceController">
+<AnchorPane fx:id="rootPane" maxHeight="500.0" minWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.flower.FlowerServiceController">
    <children>
       <StackPane fx:id="dialogPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane vgap="25.0">
+            <GridPane minWidth="500.0" prefWidth="650.0" style="-fx-background-color: #FFFFFF;" vgap="25.0">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                </columnConstraints>
                <rowConstraints>
                   <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="-Infinity" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" />
                </rowConstraints>
                <children>
                   <Label fx:id="headerLabel" text="Flower Inventory">
@@ -33,8 +31,7 @@
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <JFXTreeTableView fx:id="flowerTable" maxHeight="1.7976931348623157E308" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-                  <GridPane GridPane.rowIndex="4">
+                  <GridPane style="-fx-background-color: #FFFFFF;" GridPane.rowIndex="2">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
@@ -43,31 +40,29 @@
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                      </columnConstraints>
                      <rowConstraints>
-                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="75.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXButton fx:id="trackButton" buttonType="RAISED" onAction="#trackOrder" text="Track Order" GridPane.columnIndex="1">
+                        <JFXButton fx:id="adminButton" buttonType="RAISED" minWidth="200.0" onAction="#openAdmin" text="Admin" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton fx:id="orderButton" buttonType="RAISED" onAction="#placeOrder" text="Place Order">
+                        <JFXButton fx:id="orderButton" buttonType="RAISED" minWidth="200.0" onAction="#placeOrder" text="Place Order" GridPane.columnIndex="1">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXComboBox fx:id="comboLocation" prefWidth="150.0" />
+                        <JFXButton fx:id="trackButton" buttonType="RAISED" minWidth="200.0" onAction="#trackOrder" text="Track Order" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="24.0" />
                            </font>
                         </JFXButton>
                      </children>
                   </GridPane>
-                  <JFXTextField fx:id="txtTotal" editable="false" maxWidth="-Infinity" prefWidth="250.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-                     <GridPane.margin>
-                        <Insets />
-                     </GridPane.margin>
-                  </JFXTextField>
-                  <Label text="Total cost:" GridPane.rowIndex="2" GridPane.valignment="CENTER">
-                     <GridPane.margin>
-                        <Insets right="50.0" />
-                     </GridPane.margin>
-                  </Label>
                </children>
                <padding>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

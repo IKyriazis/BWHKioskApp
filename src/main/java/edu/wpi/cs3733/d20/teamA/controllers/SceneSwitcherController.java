@@ -39,6 +39,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private StackPane rootPane;
 
   @FXML private JFXButton backButton;
+  @FXML private JFXButton homeButton;
   @FXML private JFXButton signInButton;
   @FXML private JFXButton loginButton;
   @FXML private JFXButton authenticateButton;
@@ -71,9 +72,6 @@ public class SceneSwitcherController extends AbstractController {
   private boolean transitioning = false;
   private boolean loginTransitioning = false;
   private boolean loggedIn = false;
-
-  private FontIcon homeIcon;
-  private FontIcon backIcon;
 
   private Label usernameLabel;
   private String username;
@@ -115,8 +113,8 @@ public class SceneSwitcherController extends AbstractController {
             });
 
     // Setup home button
-    homeIcon = new FontIcon(FontAwesomeSolid.HOME);
-    backIcon = new FontIcon(FontAwesomeSolid.LONG_ARROW_ALT_LEFT);
+    homeButton.setGraphic(new FontIcon(FontAwesomeSolid.HOME));
+    backButton.setGraphic(new FontIcon(FontAwesomeSolid.LONG_ARROW_ALT_LEFT));
 
     // Setup sign in button icon
     signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_IN_ALT));
@@ -218,6 +216,17 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   @FXML
+  public void pressedHome() {
+    if (!transitioning) {
+      while (sceneStack.size() > 1) {
+        sceneStack.pop();
+      }
+
+      transition(TransitionType.FADE, false);
+    }
+  }
+
+  @FXML
   public void pressedSignIn() {
     if (loginTransitioning) {
       return;
@@ -297,6 +306,27 @@ public class SceneSwitcherController extends AbstractController {
     }
 
     loginTransitioning = true;
+
+    // make sure google authenticator stuff is now the login stuff
+    // Reset login box
+    gauth.setVisible(false);
+
+    // Clear username / password once they're off screen
+    usernameBox.setText("");
+    passwordBox.setText("");
+
+    // Reset visibility of stuff in box
+    buttonBox.setDisable(false);
+    buttonBox.setOpacity(1.0);
+
+    buttonBox.setVisible(true);
+    usernameBox.setVisible(true);
+    passwordBox.setVisible(true);
+
+    loginButton.setVisible(true);
+
+    loginButton.setDisable(false);
+    authenticateButton.setVisible(false);
 
     ZoomOutDown trans = new ZoomOutDown(loginBox);
     trans.setSpeed(2);
@@ -501,14 +531,12 @@ public class SceneSwitcherController extends AbstractController {
       transIn.play();
     }
 
-    if (sceneStack.size() > 2) {
-      backButton.setGraphic(backIcon);
+    if (sceneStack.size() > 1) {
       backButton.setVisible(true);
-    } else if (sceneStack.size() == 2) {
-      backButton.setGraphic(homeIcon);
-      backButton.setVisible(true);
+      homeButton.setVisible(true);
     } else {
       backButton.setVisible(false);
+      homeButton.setVisible(false);
     }
 
     rootPane.requestFocus();
