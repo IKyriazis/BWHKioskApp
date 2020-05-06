@@ -69,6 +69,7 @@ dependencies {
             'commons-codec:commons-codec:1.10',
 
             // Team R Appointment Request API
+            'edu.wpi.cs3733.c20.teamR:AppointmentRequest:5.0.0',
 
             //stuff for OpenWeatherMaps API
             'org.jetbrains:annotations:13.0',
