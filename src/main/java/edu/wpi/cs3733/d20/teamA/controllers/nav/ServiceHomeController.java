@@ -42,16 +42,13 @@ public class ServiceHomeController extends AbstractNavPaneController {
         "Internal\nTransport");
 
     addButton(
-            buttonPane,
-            new FontIcon(FontAwesomeSolid.BAND_AID),
-            "APIService",
-            "Appointment\nRequest");
+        buttonPane, new FontIcon(FontAwesomeSolid.BAND_AID), "APIService", "Appointment\nRequest");
 
     addButton(
-            buttonPane,
-            new FontIcon(FontAwesomeSolid.GLOBE),
-            "views/service/InterpreterRequest.fxml",
-            "Interpreters");
+        buttonPane,
+        new FontIcon(FontAwesomeSolid.GLOBE),
+        "views/service/InterpreterRequest.fxml",
+        "Interpreters");
 
     // Services available to employees
     if (eDB.getLoggedIn() != null) {
@@ -82,10 +79,10 @@ public class ServiceHomeController extends AbstractNavPaneController {
             "Prescriptions");
 
         addButton(
-                buttonPane,
-                new FontIcon(FontAwesomeSolid.CALENDAR_DAY),
-                "views/reservation/Reservation.fxml",
-                "Room\nScheduler");
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.CALENDAR_DAY),
+            "views/reservation/Reservation.fxml",
+            "Room\nScheduler");
       }
 
       // services excluded to retail employees
@@ -103,12 +100,11 @@ public class ServiceHomeController extends AbstractNavPaneController {
             "Tech\nSupport");
       }
 
-
       addButton(
-              buttonPane,
-              new FontIcon(FontAwesomeSolid.BROOM),
-              "views/service/JanitorRequest.fxml",
-              "Janitorial");
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.BROOM),
+          "views/service/JanitorRequest.fxml",
+          "Janitorial");
 
       if (employeeTitle.equals("admin")
           || employeeTitle.equals("doctor")
@@ -122,10 +118,10 @@ public class ServiceHomeController extends AbstractNavPaneController {
       }
 
       addButton(
-              buttonPane,
-              new FontIcon(FontAwesomeSolid.LIST),
-              "views/service/RequestViewer.fxml",
-              "Service\nRequests");
+          buttonPane,
+          new FontIcon(FontAwesomeSolid.LIST),
+          "views/service/RequestViewer.fxml",
+          "Service\nRequests");
     }
     equalizeButtonGrid(buttonPane);
   }

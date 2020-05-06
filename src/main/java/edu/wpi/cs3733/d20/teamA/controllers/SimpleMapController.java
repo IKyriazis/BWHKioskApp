@@ -285,9 +285,7 @@ public class SimpleMapController extends AbstractController {
     return graph;
   }
 
-  public void pressedQRButton() {
-
-  }
+  public void pressedQRButton() {}
 
   @FXML
   public void floorUp() {
