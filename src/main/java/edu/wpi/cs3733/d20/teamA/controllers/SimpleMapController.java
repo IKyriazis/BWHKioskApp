@@ -180,6 +180,10 @@ public class SimpleMapController extends AbstractController {
       currPathSegment = 0;
 
       if (start.getCampus() == end.getCampus()) {
+        currCanvas.setVisible(false);
+
+        currCanvas = (start.getCampus() == Campus.MAIN) ? mainCanvas : faulknerCanvas;
+        currCanvas.setVisible(true);
         // Path within canvas
         path.findPath(start, end);
         pathSegments.addAll(
