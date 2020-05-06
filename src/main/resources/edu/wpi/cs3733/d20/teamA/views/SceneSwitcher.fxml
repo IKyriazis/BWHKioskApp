@@ -40,36 +40,19 @@
             <GridPane minHeight="75.0" prefHeight="75.0" prefWidth="1332.0" style="-fx-background-color: -primary-color-dark;" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <GridPane prefHeight="75.0" prefWidth="330.0" GridPane.columnIndex="4">
-                    <columnConstraints>
-                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                     <children>
-                        <Label fx:id="tempLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" />
-                     </children>
+                  <Label fx:id="tempLabel" alignment="CENTER_RIGHT" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
                      <padding>
-                        <Insets right="35.0" />
+                        <Insets right="15.0" />
                      </padding>
-                  </GridPane>
-                  <JFXButton fx:id="aboutBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#openAbout" style="-fx-background-color: transparent;" styleClass="chonky-text" GridPane.columnIndex="3" />
-                  <ImageView fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.vgrow="NEVER">
-                     <image>
-                        <Image url="@../images/icon.png" />
-                     </image>
-                  </ImageView>
-                  <GridPane GridPane.columnIndex="2">
+                  </Label>
+                  <GridPane prefWidth="200.0" GridPane.columnIndex="1">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
@@ -78,11 +61,23 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <Label fx:id="timeLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" />
-                        <Label fx:id="dateLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" GridPane.rowIndex="1" />
+                        <Label fx:id="timeLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" GridPane.halignment="CENTER" />
+                        <Label fx:id="dateLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <JFXButton fx:id="announcementBtn" alignment="CENTER_RIGHT" contentDisplay="CENTER" onAction="#announcementBtn" style="-fx-background-color: transparent;" styleClass="chonky-text" textAlignment="CENTER" GridPane.columnIndex="1" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.halignment="LEFT">
+                     <children>
+                        <ImageView fitHeight="75.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/icon.png" />
+                           </image>
+                        </ImageView>
+                        <JFXButton fx:id="aboutBtn" alignment="CENTER" contentDisplay="CENTER" onAction="#openAbout" style="-fx-background-color: transparent;" styleClass="chonky-text" />
+                     </children>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                  </HBox>
                </children>
                <effect>
                   <DropShadow height="24.0" radius="11.5" width="24.0" />

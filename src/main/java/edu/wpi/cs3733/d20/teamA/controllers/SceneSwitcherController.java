@@ -44,7 +44,6 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private JFXButton loginButton;
   @FXML private JFXButton authenticateButton;
   @FXML private JFXButton settingsButton;
-  @FXML private JFXButton announcementBtn;
   @FXML private JFXButton aboutBtn;
 
   @FXML private JFXTextField usernameBox;
@@ -126,8 +125,6 @@ public class SceneSwitcherController extends AbstractController {
 
     // Setup settings button icon
     settingsButton.setGraphic(new FontIcon(FontAwesomeSolid.COG));
-
-    announcementBtn.setGraphic(new FontIcon(FontAwesomeSolid.BULLHORN));
 
     aboutBtn.setGraphic(new FontIcon(FontAwesomeSolid.INFO_CIRCLE));
 
@@ -585,10 +582,6 @@ public class SceneSwitcherController extends AbstractController {
     byte[] bytes = base32.decode(secretKey);
     String hexKey = Hex.encodeHexString(bytes);
     return TOTP.getOTP(hexKey);
-  }
-
-  public void announcementBtn(ActionEvent actionEvent) {
-    pushScene("views/AnnouncementWall.fxml", TransitionType.ZOOM);
   }
 
   public void openAbout(ActionEvent actionEvent) {
