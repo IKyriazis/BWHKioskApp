@@ -12,12 +12,12 @@ public class SettingsController extends AbstractNavPaneController {
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.MAP_SIGNS),
-        "views/Settings/MapEditor.fxml",
+        "views/MapEditor.fxml",
         "Map\nEditor");
     addButton(
         buttonPane,
         new FontIcon(FontAwesomeSolid.PALETTE),
-        "views/Settings/ThemeSettings.fxml",
+        "views/ThemeSettings.fxml",
         "Theme\nSettings");
     addButton(
         buttonPane,
