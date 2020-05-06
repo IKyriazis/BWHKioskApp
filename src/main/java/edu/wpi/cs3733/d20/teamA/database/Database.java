@@ -50,7 +50,6 @@ public abstract class Database {
    * @return The size of the table
    */
   public int getSize(String tableName) {
-    int count = 0;
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT COUNT(*) FROM " + tableName);
@@ -60,7 +59,7 @@ public abstract class Database {
       }
       rset.close();
       pstmt.close();
-      return count;
+      return 0;
     } catch (SQLException e) {
       e.printStackTrace();
       return -1;
@@ -101,6 +100,45 @@ public abstract class Database {
           getConnection()
               .prepareStatement(
                   "SELECT * FROM " + tableName + " WHERE " + col + " = '" + value + "'");
+      ResultSet rset = pstmt.executeQuery();
+      if (rset.next()) {
+        a = true;
+      }
+      rset.close();
+      pstmt.close();
+      return a;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  /**
+   * Find out if a specific string from the given table exists
+   *
+   * @param tableName - The name of the table
+   * @param col - The column to search in
+   * @param value - The value to search for
+   * @return True, if the string exists
+   */
+  public boolean checkIfExistsTSandString(
+      String tableName, String col, Timestamp value, String col2, String value2) {
+    boolean a = false;
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "SELECT * FROM "
+                      + tableName
+                      + " WHERE "
+                      + col
+                      + " = '"
+                      + value
+                      + "' AND "
+                      + col2
+                      + " = '"
+                      + value2
+                      + "'");
       ResultSet rset = pstmt.executeQuery();
       if (rset.next()) {
         a = true;

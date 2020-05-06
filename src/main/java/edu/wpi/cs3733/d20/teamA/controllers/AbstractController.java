@@ -9,6 +9,7 @@ import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.patient.PatientDatabase;
+import edu.wpi.cs3733.d20.teamA.database.reservation.ReservationDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
@@ -35,6 +36,7 @@ public abstract class AbstractController {
 
   protected PatientDatabase patientDatabase; // Not usable as service request table line
   protected AnnouncementDatabase announcementDatabase;
+  protected ReservationDatabase reservationDatabase;
 
   public AbstractController() {
     provider = new DatabaseServiceProvider();
@@ -50,6 +52,7 @@ public abstract class AbstractController {
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
     ocDB = new OnCallDatabase(conn);
+    reservationDatabase = new ReservationDatabase(conn);
 
     if (comPort == null) {
       SerialPort[] comPorts = SerialPort.getCommPorts();
