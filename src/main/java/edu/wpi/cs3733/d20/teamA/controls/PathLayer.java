@@ -3,23 +3,41 @@ package edu.wpi.cs3733.d20.teamA.controls;
 import com.gluonhq.maps.MapLayer;
 import com.gluonhq.maps.MapPoint;
 import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.*;
+import javafx.util.Duration;
 import javafx.util.Pair;
 
 public class PathLayer extends MapLayer {
   private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();
 
-  public PathLayer() {}
+  private ImageView pathArrow;
+  private PathTransition transition;
+
+  private static boolean toFaulkner = false;
+
+  public PathLayer() {
+    pathArrow = new ImageView(ImageCache.loadImage("images/blue_right.png"));
+    pathArrow.setFitWidth(32);
+    pathArrow.setFitHeight(32);
+
+    transition = new PathTransition();
+  }
 
   public void importPointsFromCSV() {
     InputStream stream =
@@ -60,6 +78,39 @@ public class PathLayer extends MapLayer {
     this.markDirty();
   }
 
+  public void animatePath() {
+    pathArrow.setVisible(true);
+    Path path = new Path();
+
+    List<Node> nodes = points.stream().map(Pair::getValue).collect(Collectors.toList());
+
+    if (isToFaulkner()) {
+      Collections.reverse(nodes);
+    }
+
+    nodes.forEach(
+        node -> {
+          if (path.getElements().isEmpty()) {
+            path.getElements().add(new MoveTo(node.getTranslateX(), node.getTranslateY()));
+          } else {
+            path.getElements().add(new LineTo(node.getTranslateX(), node.getTranslateY()));
+          }
+        });
+
+    if (!getChildren().contains(pathArrow)) {
+      getChildren().add(pathArrow);
+    }
+
+    transition.stop();
+    transition.setDuration(Duration.seconds(5.0));
+    transition.setPath(path);
+    transition.setNode(pathArrow);
+    transition.setCycleCount(Timeline.INDEFINITE);
+    transition.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+
+    transition.play();
+  }
+
   @Override
   protected void layoutLayer() {
     for (Pair<MapPoint, Node> candidate : points) {
@@ -70,5 +121,15 @@ public class PathLayer extends MapLayer {
       icon.setTranslateX(mapPoint.getX());
       icon.setTranslateY(mapPoint.getY());
     }
+
+    animatePath();
+  }
+
+  public static boolean isToFaulkner() {
+    return toFaulkner;
+  }
+
+  public static void setToFaulkner(boolean b) {
+    toFaulkner = b;
   }
 }

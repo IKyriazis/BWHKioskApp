@@ -335,8 +335,10 @@ public class SimpleMapController extends AbstractController {
       gluonMap.setZoom(16);
       if (pathSegments.get(currPathSegment - 1).getCampus() == Campus.MAIN) {
         gluonMap.setCenter(MAIN_COORDS);
+        PathLayer.setToFaulkner(true);
       } else {
         gluonMap.setCenter(FAULKNER_COORDS);
+        PathLayer.setToFaulkner(false);
       }
     }
 
