@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDecorator;
-import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
@@ -22,7 +21,7 @@ public class App extends Application {
   }
 
   @Override
-  public void start(Stage primaryStage) throws IOException {
+  public void start(Stage primaryStage){
     // Load FXML file
     FXMLLoader loader = new FXMLLoader();
 
