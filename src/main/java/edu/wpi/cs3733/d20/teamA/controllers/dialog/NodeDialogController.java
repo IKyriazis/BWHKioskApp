@@ -205,6 +205,7 @@ public class NodeDialogController implements IDialogController {
                 .filter(
                     node -> node.getType().toString().equals(nodeTypeS) && node.getFloor() == floor)
                 .count();
+    count++;
     String countString = String.format("%03d", count);
     // Gets the floor number
     String floorString = String.format("%02d", floor);
