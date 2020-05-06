@@ -87,7 +87,6 @@ public class SceneSwitcherController extends AbstractController {
 
     // Create the employee table if it doesn't exist
     if (eDB.getSize() == -1 || eDB.getSize() == 0) {
-      eDB.dropTables();
       eDB.createTables();
       eDB.addEmployee("111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN);
       eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.JANITOR);
