@@ -48,7 +48,7 @@ public class FlowerServiceController extends AbstractController {
   public void placeOrder() {
     if (comboLocation.getSelectionModel().getSelectedItem() != null) {
       // Open new window centered on screen with baseline width and height
-      flowerapi.App.run(
+      flowerapi.FlowerAPI.run(
           0,
           0,
           0,
@@ -63,13 +63,13 @@ public class FlowerServiceController extends AbstractController {
 
   @FXML
   public void openAdmin() {
-    flowerapi.App.runAdmin(
+    flowerapi.FlowerAPI.runAdmin(
         0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
   }
 
   @FXML
   public void trackOrder() {
-    flowerapi.App.runTracker(
+    flowerapi.FlowerAPI.runTracker(
         0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
   }
 }
