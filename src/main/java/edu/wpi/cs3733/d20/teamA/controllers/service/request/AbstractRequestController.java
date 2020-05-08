@@ -19,6 +19,12 @@ public abstract class AbstractRequestController extends AbstractController {
             });
   }
 
+  /**
+   * Filling employee dropdown menus.
+   *
+   * @param employeeBox The dropdown to be filled
+   * @param requestedEmployees Enter an empty string for all employees or filter by job type.
+   */
   protected void setupEmployeeBox(JFXComboBox<Employee> employeeBox, String requestedEmployees) {
     ObservableList<Employee> allEmployeeList = eDB.getObservableList();
 
