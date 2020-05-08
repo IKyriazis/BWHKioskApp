@@ -30,7 +30,7 @@ public class MedicineRequestController extends AbstractRequestController {
     setupDescriptionArea(descriptionArea);
 
     // Set up employee box
-    setupEmployeeBox(doctorBox);
+    setupEmployeeBox(doctorBox, "doctor");
 
     // Set up node box
     setupNodeBox(locationBox, submitButton);

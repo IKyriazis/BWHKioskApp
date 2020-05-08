@@ -27,7 +27,7 @@ public class InterpreterRequestController extends AbstractRequestController {
     setupNodeBox(locationBox, submitBtn);
 
     // Set up interpreter box
-    setupEmployeeBox(interpreterBox);
+    setupEmployeeBox(interpreterBox, "interpreter");
   }
 
   public void pressedSubmit() {
