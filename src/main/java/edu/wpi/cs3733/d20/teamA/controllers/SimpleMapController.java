@@ -1,13 +1,14 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
-import com.gluonhq.maps.MapPoint;
-import com.gluonhq.maps.MapView;
+import com.google.common.io.Resources;
 import com.jfoenix.controls.*;
-import edu.wpi.cs3733.d20.teamA.controls.PathLayer;
+import com.sun.javafx.webkit.WebConsoleListener;
+import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.web.WebView;
 import javafx.util.Pair;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.icomoon.Icomoon;
@@ -33,6 +35,7 @@ public class SimpleMapController extends AbstractController {
   @FXML private GridPane directionsPane;
   @FXML private StackPane dialogPane;
   @FXML private Pane gluonMapPane;
+  @FXML private HBox buttonBox;
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton directionsButton;
@@ -49,7 +52,7 @@ public class SimpleMapController extends AbstractController {
   private MapCanvas faulknerCanvas;
   private MapCanvas mainCanvas;
   private MapCanvas currCanvas;
-  private MapView gluonMap;
+  private WebView gMapView;
 
   private Graph graph;
   private String lastDirs;
@@ -61,22 +64,27 @@ public class SimpleMapController extends AbstractController {
   private static final String FAULKNER_EXIT_NODE = "MHALL00342";
   private static final String MAIN_EXIT_NODE = "AEXIT0010G";
 
-  private static final MapPoint FAULKNER_COORDS = new MapPoint(42.301572, -71.128472);
-  private static final MapPoint MAIN_COORDS = new MapPoint(42.335679, -71.106042);
-
   public void initialize() {
-    // Setup gluon map
-    PathLayer pathLayer = new PathLayer();
-    pathLayer.importPointsFromCSV();
-    mainRadioButton.setSelected(false);
-    faulknerRadioButton.setSelected(true);
-
-    gluonMap = new MapView();
-    gluonMap.addLayer(pathLayer);
-    gluonMap.setCenter(new MapPoint(42.3016445, -71.1281649));
-    gluonMap.setZoom(16);
-    gluonMap.setVisible(false);
-    gluonMapPane.getChildren().add(gluonMap);
+    try {
+      gMapView = new WebView();
+      gMapView
+          .getEngine()
+          .loadContent(
+              Resources.toString(
+                  App.class.getResource("html/tomain.html"), StandardCharsets.UTF_8));
+      gMapView.setVisible(false);
+      WebConsoleListener.setDefaultListener(
+          (webView, message, lineNumber, sourceId) -> {
+            System.out.println(sourceId + ":" + lineNumber + ": " + message);
+          });
+      gluonMapPane.getChildren().add(gMapView);
+    } catch (Exception e) {
+      DialogUtil.simpleErrorDialog(
+          dialogPane,
+          "Map Load Error",
+          "Failed to load bing map. Directions between hospitals will be unavailable.");
+      e.printStackTrace();
+    }
 
     directionsDrawer.close();
     textDirectionsDrawer.close();
@@ -123,7 +131,6 @@ public class SimpleMapController extends AbstractController {
         event -> {
           textDirectionsDrawer.setMouseTransparent(true);
           textDirectionsDrawer.setVisible(false);
-          clearPath();
         });
     textDirectionsDrawer.setOnDrawerOpened(
         event -> textDirectionsDrawer.setMouseTransparent(false));
@@ -281,7 +288,6 @@ public class SimpleMapController extends AbstractController {
     currCanvas.setVisible(false);
     currCanvas.disablePathAnimation();
 
-    gluonMap.setVisible(false);
     if (mainRadioButton.isSelected()) {
       currCanvas = mainCanvas;
     } else {
@@ -346,8 +352,8 @@ public class SimpleMapController extends AbstractController {
     faulknerCanvas.disablePathAnimation();
     faulknerCanvas.clearPath();
 
-    if (gluonMap.isVisible()) {
-      gluonMap.setVisible(false);
+    if (gMapView.isVisible()) {
+      gMapView.setVisible(false);
       currCanvas.setVisible(true);
     }
 
@@ -358,7 +364,8 @@ public class SimpleMapController extends AbstractController {
     PathSegment currSegment = pathSegments.get(currPathSegment);
     // Set canvas
     if (currSegment.getCampus() == Campus.FAULKNER) {
-      gluonMap.setVisible(false);
+      gMapView.setVisible(false);
+      zoomSlider.setVisible(true);
 
       currCanvas.disablePathAnimation();
       currCanvas.setVisible(false);
@@ -370,7 +377,8 @@ public class SimpleMapController extends AbstractController {
 
       faulknerRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.MAIN) {
-      gluonMap.setVisible(false);
+      gMapView.setVisible(false);
+      zoomSlider.setVisible(true);
 
       currCanvas.disablePathAnimation();
       currCanvas.setVisible(false);
@@ -382,18 +390,14 @@ public class SimpleMapController extends AbstractController {
 
       mainRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.INTER) {
+      // Resize directions thingy
+
       currCanvas.setVisible(false);
       currCanvas.disablePathAnimation();
 
-      gluonMap.setVisible(true);
-      gluonMap.setZoom(16);
-      if (pathSegments.get(currPathSegment - 1).getCampus() == Campus.MAIN) {
-        gluonMap.setCenter(MAIN_COORDS);
-        PathLayer.setToFaulkner(true);
-      } else {
-        gluonMap.setCenter(FAULKNER_COORDS);
-        PathLayer.setToFaulkner(false);
-      }
+      gMapView.setVisible(true);
+      gMapView.getEngine().executeScript("map.setView({zoom: 14});");
+      zoomSlider.setVisible(false);
     }
 
     // Set floor

@@ -71,11 +71,11 @@
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" valignment="TOP" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
                               <JFXListView fx:id="directionsList" />
-                              <HBox alignment="CENTER" GridPane.rowIndex="1">
+                              <HBox fx:id="buttonBox" alignment="CENTER" GridPane.rowIndex="1">
                                  <GridPane.margin>
                                     <Insets bottom="10.0" top="10.0" />
                                  </GridPane.margin>

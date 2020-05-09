@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script type='text/javascript'>
+        var map;
+        var directionsManager;
+
+        function GetMap()
+        {
+            map = new Microsoft.Maps.Map('#myMap', {
+                navigationBarOrientation: Microsoft.Maps.NavigationBarOrientation.horizontal,
+                showMapTypeSelector: false
+            });
+
+            // Disable panning
+            map.setOptions({disablePanning: true});
+
+            //Load the directions module.
+            Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+                //Create an instance of the directions manager.
+                directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
+
+                var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Faulkner Hospital, Boston, Massachusetts, United States" });
+                directionsManager.addWaypoint(seattleWaypoint);
+
+                var workWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Hospital, 75 Francis St, Boston, Massachusetts"});
+                directionsManager.addWaypoint(workWaypoint);
+
+                //Specify where to display the route instructions.
+                directionsManager.setRenderOptions({ itineraryContainer: '#directionsItinerary' });
+
+                //Calculate directions.
+                directionsManager.calculateDirections();
+
+                // Set zoom
+                map.setView({zoom: 14});
+            });
+        }
+    </script>
+    <style>
+        html, body{
+            padding:0;
+            margin:0;
+            height:100%;
+        }
+
+        .directionsContainer{
+            background-color: white;
+            position:absolute;
+            margin-top:310px;
+            width:300px;
+            height:calc(100% - 310px);
+            overflow-y:auto;
+            float:left;
+            z-index: 10;
+        }
+
+        .MicrosoftMap .NavBar_Container {
+            top: 15px !important;
+            left: 125px !important;
+        }
+
+        #myMap{
+            position:absolute;
+            width:100%;
+            height:100%;
+            float:left;
+        }
+    </style>
+    <script type='text/javascript' src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=NaIStMqluF0Cqcc9LdL8~0mZyGRrx0R0S_5JnEuaS0Q~AjrCU-O7nWNSP9SlaAL6xIHnEuRgzMtWo-YDmK_kSJZWpCBnGh-Ks6jL8yyKJ_Wk' async defer></script>
+</head>
+<body>
+<div class="directionsContainer">
+    <div id="directionsItinerary"></div>
+</div>
+<div id="myMap"></div>
+</body>
+</html>

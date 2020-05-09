@@ -116,12 +116,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
 
       addButton(
           buttonPane,
-          new FontIcon(FontAwesomeSolid.BAND_AID),
-          "APIService",
-          "Appointment\nRequest");
-
-      addButton(
-          buttonPane,
           new FontIcon(FontAwesomeSolid.LIST),
           "views/service/RequestViewer.fxml",
           "Service\nRequests");
