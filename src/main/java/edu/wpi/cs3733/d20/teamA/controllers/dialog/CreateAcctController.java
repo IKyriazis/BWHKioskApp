@@ -19,7 +19,7 @@ public class CreateAcctController extends AbstractController implements IDialogC
   @FXML private JFXPasswordField cPass;
   @FXML private JFXPasswordField oldPass;
   @FXML private JFXComboBox title;
-  @FXML private JFXTextField IPager;
+  @FXML private JFXTextField EditPager;
 
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
@@ -51,7 +51,7 @@ public class CreateAcctController extends AbstractController implements IDialogC
     lName.setText(eDB.getLastName(employee.getUsername()));
     uName.setText(employee.getUsername());
     title.getSelectionModel().select(eDB.getTitle(employee.getUsername()));
-    IPager.setText(eDB.getPager(employee.getUsername()));
+    EditPager.setText(eDB.getPager(employee.getUsername()));
   }
 
   @FXML
@@ -60,7 +60,7 @@ public class CreateAcctController extends AbstractController implements IDialogC
         || lName.getText().isEmpty()
         || uName.getText().isEmpty()
         || title.getValue().toString().equals("Choose one:")
-        || IPager.getText().isEmpty()) {
+        || EditPager.getText().isEmpty()) {
       // make popup that says one or more fields are empty
       DialogUtil.simpleInfoDialog(
           "Empty fields", "You left some fields empty. Please make sure they are all filled.");
@@ -109,7 +109,7 @@ public class CreateAcctController extends AbstractController implements IDialogC
     pass.clear();
     oldPass.clear();
     cPass.clear();
-    IPager.clear();
+    EditPager.clear();
   }
 
   @Override

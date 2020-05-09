@@ -69,7 +69,7 @@
             <Font size="21.0" />
          </font>
       </JFXButton>
-      <JFXTextField fx:id="IPager" maxWidth="200.0" prefWidth="200.0" promptText="First Name" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Pager # (optional)" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+      <JFXTextField fx:id="IPager" labelFloat="true" maxWidth="200.0" prefWidth="200.0" promptText="Pager #" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.halignment="CENTER" GridPane.rowIndex="3">
          <font>
             <Font size="21.0" />
          </font>

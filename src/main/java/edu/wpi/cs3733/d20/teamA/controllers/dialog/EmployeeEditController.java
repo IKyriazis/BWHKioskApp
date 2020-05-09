@@ -21,7 +21,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
   @FXML private JFXPasswordField cPass;
   @FXML private JFXCheckBox addRFID;
   @FXML private JFXComboBox title;
-  @FXML private JFXTextField EditPager;
+  @FXML private JFXTextField IPager;
 
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
@@ -114,15 +114,25 @@ public class EmployeeEditController extends AbstractController implements IDialo
               } else {
                 // else if the username is null it means no one has been assigned that card
                 // so go ahead and assign it
-                secretKey =
-                    eDB.addEmployeeGA(
-                        fName.getText(),
-                        lName.getText(),
-                        uName.getText(),
-                        cPass.getText(),
-                        EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
-                        rfid,
-                        EditPager.getText());
+                if (IPager.getText().isEmpty()) {
+                  secretKey =
+                      eDB.addEmployeeGA(
+                          fName.getText(),
+                          lName.getText(),
+                          uName.getText(),
+                          cPass.getText(),
+                          EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
+                  clearFields();
+                } else {
+                  secretKey =
+                      eDB.addEmployeeGA(
+                          fName.getText(),
+                          lName.getText(),
+                          uName.getText(),
+                          cPass.getText(),
+                          EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
+                          IPager.getText());
+                }
                 clearFields();
               }
             } else {
@@ -134,15 +144,25 @@ public class EmployeeEditController extends AbstractController implements IDialo
               clearFields();
             }
           } else {
-            secretKey =
-                eDB.addEmployeeGA(
-                    fName.getText(),
-                    lName.getText(),
-                    uName.getText(),
-                    cPass.getText(),
-                    EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
-                    EditPager.getText());
-            clearFields();
+            if (IPager.getText().isEmpty()) {
+              secretKey =
+                  eDB.addEmployeeGA(
+                      fName.getText(),
+                      lName.getText(),
+                      uName.getText(),
+                      cPass.getText(),
+                      EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
+              clearFields();
+            } else {
+              secretKey =
+                  eDB.addEmployeeGA(
+                      fName.getText(),
+                      lName.getText(),
+                      uName.getText(),
+                      cPass.getText(),
+                      EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
+                      IPager.getText());
+            }
           }
           String companyName = "Amethyst Asgardians";
           String barCodeUrl =
@@ -169,7 +189,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
     title.setValue("Choose one:");
     pass.clear();
     cPass.clear();
-    EditPager.clear();
+    IPager.clear();
   }
 
   @Override
