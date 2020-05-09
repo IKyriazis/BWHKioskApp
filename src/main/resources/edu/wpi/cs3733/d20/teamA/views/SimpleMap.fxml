@@ -36,7 +36,7 @@
                   </GridPane>
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
 
-                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="300.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="300.0" prefWidth="300.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="125.0">
+                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="300.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="300.0" prefWidth="300.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="140.0">
                      <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
 
                         <padding>
@@ -58,8 +58,8 @@
                            </styleClass></JFXButton>
                      </VBox>
                   </JFXDrawer>
-                  <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="15.0" />
-                  <HBox layoutX="15.0" layoutY="15.0" pickOnBounds="false" spacing="25.0" AnchorPane.topAnchor="65.0">
+                  <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" prefHeight="71.0" prefWidth="199.0" showTickLabels="true" showTickMarks="true" styleClass="large-text" value="-1.0" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="15.0" />
+                  <HBox layoutX="15.0" layoutY="15.0" pickOnBounds="false" spacing="25.0" AnchorPane.topAnchor="80.0">
                      <children>
                         <JFXButton fx:id="directionsButton" buttonType="RAISED" mnemonicParsing="false" onAction="#toggleSearch" text="Get Directions">
                            <styleClass>
@@ -69,7 +69,7 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="300.0" layoutY="308.0" prefHeight="450.0" prefWidth="300.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="310.0">
+                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="300.0" layoutY="308.0" prefHeight="450.0" prefWidth="300.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="340.0">
                      <children>
                         <GridPane fx:id="directionsPane">
                            <columnConstraints>
