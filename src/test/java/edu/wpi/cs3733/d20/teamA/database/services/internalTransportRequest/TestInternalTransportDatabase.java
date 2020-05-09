@@ -30,7 +30,8 @@ public class TestInternalTransportDatabase {
       gDB = new GraphDatabase(conn);
       employeesDatabase = new EmployeesDatabase(conn);
       serviceDatabase = new ServiceDatabase(conn);
-      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+      employeesDatabase.addEmployee(
+          "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, "7773326394l");
       employeesDatabase.logIn("yppatel", "YashPatel1");
     } catch (SQLException e) {
       e.printStackTrace();
