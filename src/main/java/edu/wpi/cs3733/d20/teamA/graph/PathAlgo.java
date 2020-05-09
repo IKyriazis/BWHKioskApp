@@ -74,6 +74,16 @@ public abstract class PathAlgo implements IStrategyPath {
   }
 
   /**
+   * Converts the distance from pixels to feet
+   *
+   * @param distance
+   * @return the distance in feet
+   */
+  private double pixelsToFeet(double distance) {
+    return distance * 0.238884;
+  }
+
+  /**
    * Creates textual directions of the path based on the perspective of the person following the
    * path by using the angles associated between the nodes
    *
@@ -82,6 +92,7 @@ public abstract class PathAlgo implements IStrategyPath {
   public ArrayList<Pair<Node, String>> textualDirections() {
     ArrayList<Pair<Node, String>> textPath = new ArrayList<>();
     ArrayList<Direction> directions = new ArrayList<>();
+    ArrayList<Double> distances = new ArrayList<>();
     double lastAngle = -100.0;
     // For every node in the path
     for (int i = 0; i < pathNodes.size() - 1; i++) {
@@ -104,6 +115,8 @@ public abstract class PathAlgo implements IStrategyPath {
       int nextY = pathNodes.get(i + 1).getY();
       double diffX = Math.abs(nextX - currX);
       double diffY = Math.abs(nextY - currY);
+      double straightDistance =
+          Math.sqrt((Math.pow(diffX, 2)) + (Math.pow(diffY, 2))); // distance in pixels
 
       double angle = Math.atan(diffY / diffX);
 
@@ -173,7 +186,7 @@ public abstract class PathAlgo implements IStrategyPath {
       } else {
         directions.add(Direction.NEXT);
       } */
-
+      distances.add(pixelsToFeet(straightDistance));
       lastAngle = angle;
     }
 
@@ -217,12 +230,23 @@ public abstract class PathAlgo implements IStrategyPath {
       } else {
         // else if it's straight keep track of how many nodes it is straight for
         int sameLength = getSameLength(directions, j, Direction.NEXT);
+        double startX = pathNodes.get(j).getX();
+        double startY = pathNodes.get(j).getY();
 
         if (sameLength >= 1) {
           j += sameLength - 1;
+          double endX = pathNodes.get(j + 1).getX();
+          double endY = pathNodes.get(j + 1).getY();
+          double feet =
+              pixelsToFeet(
+                  (Math.sqrt((Math.pow(startX - endX, 2)) + (Math.pow(startY - endY, 2)))));
           textPath.add(
               new Pair<>(
-                  pathNodes.get(j), "Go straight until " + pathNodes.get(j + 1).getLongName()));
+                  pathNodes.get(j),
+                  "Go straight for "
+                      + (int) feet
+                      + " feet until "
+                      + pathNodes.get(j + 1).getLongName()));
         } else {
           textPath.add(new Pair<>(pathNodes.get(j), "Continue straight until destination"));
           break;
