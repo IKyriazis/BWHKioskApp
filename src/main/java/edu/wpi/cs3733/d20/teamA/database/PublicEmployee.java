@@ -5,7 +5,6 @@ import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class PublicEmployee implements ITableable<PublicEmployee> {

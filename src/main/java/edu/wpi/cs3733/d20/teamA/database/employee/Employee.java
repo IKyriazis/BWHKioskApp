@@ -4,9 +4,6 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.wpi.cs3733.d20.teamA.database.PublicEmployee;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 // Add more methods to this class as needed
@@ -18,7 +15,13 @@ public class Employee implements ITableable<Employee> {
   private SimpleStringProperty username;
   private SimpleStringProperty pagerNum;
 
-  public Employee(String id, String fName, String lName, EmployeeTitle title, String username, String pagerNum) {
+  public Employee(
+      String id,
+      String fName,
+      String lName,
+      EmployeeTitle title,
+      String username,
+      String pagerNum) {
     this.id = new SimpleStringProperty(id);
     this.fName = new SimpleStringProperty(fName);
     this.lName = new SimpleStringProperty(lName);

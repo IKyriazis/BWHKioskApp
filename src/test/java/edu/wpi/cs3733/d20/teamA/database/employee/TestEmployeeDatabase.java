@@ -51,19 +51,19 @@ public class TestEmployeeDatabase {
   public void testAddEmployee() {
     eDB.removeAll();
     String a =
-        eDB.addEmployee("abc", "brad", "bad", "passwordH2", EmployeeTitle.JANITOR, "8884449302l");
+        eDB.addEmployee("abc", "brad", "bad", "passwordH2", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertEquals(a, eDB.getEmployeeID("bad"));
     String d =
-        eDB.addEmployee("abcd", "chad", "lad", "passwordH2", EmployeeTitle.JANITOR, "8473546382l");
+        eDB.addEmployee("abcd", "chad", "lad", "passwordH2", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertEquals(d, eDB.getEmployeeID("lad"));
     String b =
-        eDB.addEmployee("ab", "kassy", "lassy", "passwordH2", EmployeeTitle.JANITOR, "8846372321l");
+        eDB.addEmployee("ab", "kassy", "lassy", "passwordH2", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertEquals(b, eDB.getEmployeeID("lassy"));
     String e =
-        eDB.addEmployee("bacd", "ray", "jay", "passwordH2", EmployeeTitle.JANITOR, "8846372541l");
+        eDB.addEmployee("bacd", "ray", "jay", "passwordH2", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertEquals(e, eDB.getEmployeeID("jay"));
     String f =
-        eDB.addEmployee("bacd", "ray", "jay", "a".repeat(90), EmployeeTitle.JANITOR, "7746323432l");
+        eDB.addEmployee("bacd", "ray", "jay", "a".repeat(90), EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertEquals(f, "");
     Assertions.assertEquals(4, eDB.getSize());
     eDB.removeAll();
@@ -72,17 +72,17 @@ public class TestEmployeeDatabase {
   @Test
   public void testDeleteEmployee() {
     eDB.removeAll();
-    eDB.addEmployee("abc", "brad", "bad", "passwordA2", EmployeeTitle.JANITOR, "5553335553l");
+    eDB.addEmployee("abc", "brad", "bad", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean b = eDB.deleteEmployee("bad");
     Assertions.assertTrue(b);
     Assertions.assertEquals(0, eDB.getSize());
-    eDB.addEmployee("bad", "brad", "abc", "passwordA2", EmployeeTitle.JANITOR, "2255225523l");
-    eDB.addEmployee("bad", "brad", "dyi", "passwordA2", EmployeeTitle.JANITOR, "7700770098l");
+    eDB.addEmployee("bad", "brad", "abc", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
+    eDB.addEmployee("bad", "brad", "dyi", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertEquals(2, eDB.getSize());
     boolean e = eDB.deleteEmployee("bad");
     Assertions.assertTrue(e);
     Assertions.assertEquals(2, eDB.getSize());
-    eDB.addEmployee("bad", "brad", "abc", "password", EmployeeTitle.JANITOR, "8890003210l");
+    eDB.addEmployee("bad", "brad", "abc", "password", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertEquals(2, eDB.getSize());
     boolean d = eDB.removeAll();
     Assertions.assertTrue(d);
@@ -92,7 +92,7 @@ public class TestEmployeeDatabase {
   @Test
   public void testEditTitle() {
     eDB.removeAll();
-    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "9900880077l");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean a = eDB.editTitle("bacd", "Doctor");
     Assertions.assertTrue(a);
   }
@@ -100,7 +100,7 @@ public class TestEmployeeDatabase {
   @Test
   public void testEditFName() {
     eDB.removeAll();
-    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "8800550044l");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean a = eDB.editNameFirst("bacd", "cray");
     Assertions.assertTrue(a);
   }
@@ -108,7 +108,7 @@ public class TestEmployeeDatabase {
   @Test
   public void testEditLName() {
     eDB.removeAll();
-    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "4400330022l");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean a = eDB.editNameLast("bacd", "kay");
     Assertions.assertTrue(a);
   }
@@ -116,7 +116,7 @@ public class TestEmployeeDatabase {
   @Test
   public void testChangePass() {
     eDB.removeAll();
-    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "3300220055l");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean a = eDB.changePassword("jay", "passwordA2", "Is3");
     Assertions.assertTrue(a);
     boolean b = eDB.changePassword("jay", "Is33", "happy");
@@ -129,11 +129,11 @@ public class TestEmployeeDatabase {
   public void testUNameExists() {
     eDB.createTables();
     eDB.removeAll();
-    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "5500770099l");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertTrue(eDB.uNameExists("jay"));
-    eDB.addEmployee("bacd", "ray", "play", "passwordA2", EmployeeTitle.JANITOR, "1100110022l");
+    eDB.addEmployee("bacd", "ray", "play", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertTrue(eDB.uNameExists("play"));
-    eDB.addEmployee("bacd", "ray", "cray", "passwordA2", EmployeeTitle.JANITOR, "2200220040l");
+    eDB.addEmployee("bacd", "ray", "cray", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     Assertions.assertTrue(eDB.uNameExists("cray"));
     Assertions.assertFalse(eDB.uNameExists("asdfj"));
     Assertions.assertFalse(eDB.uNameExists("askldjf"));
@@ -143,9 +143,9 @@ public class TestEmployeeDatabase {
   public void testLogin() {
     eDB.createTables();
     eDB.removeAll();
-    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.RECEPTIONIST, "3300220033l");
-    eDB.addEmployee("bacd", "ray", "play", "passwordA2", EmployeeTitle.RECEPTIONIST, "3300440087l");
-    eDB.addEmployee("bacd", "ray", "cray", "passwordA2", EmployeeTitle.RECEPTIONIST, "4773849902l");
+    eDB.addEmployee("bacd", "ray", "jay", "passwordA2", EmployeeTitle.RECEPTIONIST, "7700770098");
+    eDB.addEmployee("bacd", "ray", "play", "passwordA2", EmployeeTitle.RECEPTIONIST, "7700770098");
+    eDB.addEmployee("bacd", "ray", "cray", "passwordA2", EmployeeTitle.RECEPTIONIST, "7700770098");
     Assertions.assertTrue(eDB.logIn("jay", "passwordA2"));
     Assertions.assertTrue(eDB.logIn("play", "passwordA2"));
     Assertions.assertTrue(eDB.logIn("play", "passwordA2"));

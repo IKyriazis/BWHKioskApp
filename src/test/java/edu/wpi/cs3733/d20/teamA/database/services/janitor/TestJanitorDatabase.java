@@ -51,7 +51,7 @@ public class TestJanitorDatabase {
     graphDatabase.addNode(
         "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     employeeDatabase.addEmployee(
-        "Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, 7736499283l);
+        "Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, "7736499283l");
     serviceDatabase.removeAll();
     String a =
         serviceDatabase.addServiceReq(
@@ -69,9 +69,9 @@ public class TestJanitorDatabase {
     graphDatabase.addNode(
         "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
     employeeDatabase.addEmployee(
-        "Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, 8847736283l);
+        "Yash", "Patel", "yppatel", "Superman1", EmployeeTitle.ADMIN, "8847736283l");
     employeeDatabase.addEmployee(
-        "Nisha", "Goel", "ngoel", "SweetGirl2", EmployeeTitle.ADMIN, 6635266683l);
+        "Nisha", "Goel", "ngoel", "SweetGirl2", EmployeeTitle.ADMIN, "6635266683l");
 
     serviceDatabase.removeAll();
     String a =

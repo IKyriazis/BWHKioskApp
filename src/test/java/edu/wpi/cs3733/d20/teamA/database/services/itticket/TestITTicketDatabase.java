@@ -45,7 +45,7 @@ public class TestITTicketDatabase {
           Campus.FAULKNER);
       employeesDatabase = new EmployeesDatabase(conn);
       employeesDatabase.addEmployee(
-          "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 8837263943l);
+          "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, "8837263943l");
       employeesDatabase.logIn("yppatel", "YashPatel1");
     } catch (SQLException e) {
       e.printStackTrace();

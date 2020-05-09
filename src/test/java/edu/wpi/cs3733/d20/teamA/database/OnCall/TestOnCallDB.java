@@ -57,7 +57,7 @@ public class TestOnCallDB {
     eDB.removeAll();
     ocDB.removeAll();
     String a =
-        eDB.addEmployee("abc", "brad", "bad", "passwordH2", EmployeeTitle.JANITOR, 8884449302l);
+        eDB.addEmployee("abc", "brad", "bad", "passwordH2", EmployeeTitle.JANITOR, "7700770098");
     ocDB.signOntoShift("bad");
     Assertions.assertEquals(ocDB.getStatus("bad"), "Available");
     Assertions.assertEquals(ocDB.getSize(), 1);
@@ -69,9 +69,9 @@ public class TestOnCallDB {
   public void testDeleteOnCall() {
     eDB.removeAll();
     ocDB.removeAll();
-    eDB.addEmployee("abc", "brad", "bad", "passwordA2", EmployeeTitle.JANITOR, 5553335553l);
+    eDB.addEmployee("abc", "brad", "bad", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean b = ocDB.signOntoShift("bad");
-    eDB.addEmployee("bad", "brad", "abc", "passwordA2", EmployeeTitle.JANITOR, 2255225523l);
+    eDB.addEmployee("bad", "brad", "abc", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean c = ocDB.signOntoShift("abc");
     boolean d = ocDB.signOffShift("bad");
     Assertions.assertEquals(ocDB.getSize(), 1);
@@ -81,11 +81,11 @@ public class TestOnCallDB {
   public void testChangeStat() {
     eDB.removeAll();
     ocDB.removeAll();
-    eDB.addEmployee("abc", "brad", "bad", "passwordA2", EmployeeTitle.JANITOR, 5553335553l);
+    eDB.addEmployee("abc", "brad", "bad", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean b = ocDB.signOntoShift("bad");
-    eDB.addEmployee("bad", "brad", "abc", "passwordA2", EmployeeTitle.JANITOR, 2255225523l);
+    eDB.addEmployee("bad", "brad", "abc", "passwordA2", EmployeeTitle.JANITOR, "7700770098");
     boolean c = ocDB.signOntoShift("abc");
-    boolean d = ocDB.updateStatus("abc", "Out");
-    Assertions.assertEquals(ocDB.getStatus("abc"), "Out");
+    boolean d = ocDB.updateStatus("abc");
+    Assertions.assertEquals(ocDB.getStatus("abc"), "Busy");
   }
 }
