@@ -93,7 +93,7 @@ public class OnCallDatabase extends Database implements IDatabase {
         String nameL = getNamefromUser(username);
         String status = rset.getString("status");
         EmployeeTitle title = getTitle(username);
-        long pageNum = getPager(username);
+        String pageNum = getPager(username);
 
         PublicEmployee node = new PublicEmployee(status, nameF, nameL, title, pageNum, username);
 

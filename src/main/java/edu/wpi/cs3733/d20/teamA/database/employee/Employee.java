@@ -4,6 +4,9 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.wpi.cs3733.d20.teamA.database.PublicEmployee;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 // Add more methods to this class as needed
@@ -13,13 +16,23 @@ public class Employee implements ITableable<Employee> {
   private SimpleStringProperty lName;
   private SimpleStringProperty title;
   private SimpleStringProperty username;
+  private SimpleObjectProperty<Long> pagerNum;
 
-  public Employee(String id, String fName, String lName, EmployeeTitle title, String username) {
+  public Employee(String id, String fName, String lName, EmployeeTitle title, String username, long pagerNum) {
     this.id = new SimpleStringProperty(id);
     this.fName = new SimpleStringProperty(fName);
     this.lName = new SimpleStringProperty(lName);
     this.title = new SimpleStringProperty(title.toString());
     this.username = new SimpleStringProperty(username);
+    this.pagerNum = new SimpleObjectProperty<Long>(pagerNum);
+  }
+
+  public Long getPagerNum() {
+    return pagerNum.get();
+  }
+
+  public SimpleObjectProperty<Long> pagerNumProperty() {
+    return pagerNum;
   }
 
   public String getUsername() {
@@ -72,7 +85,10 @@ public class Employee implements ITableable<Employee> {
     JFXTreeTableColumn<Employee, String> column5 = new JFXTreeTableColumn<>("Username");
     column5.setCellValueFactory(param -> param.getValue().getValue().getUsernameProperty());
 
-    return new ArrayList<>(List.of(column1, column2, column3, column4, column5));
+    JFXTreeTableColumn<Employee, Long> column6 = new JFXTreeTableColumn<>("Pager #");
+    column6.setCellValueFactory(param -> param.getValue().getValue().pagerNumProperty());
+
+    return new ArrayList<>(List.of(column1, column2, column3, column4, column5, column6));
   }
 
   @Override

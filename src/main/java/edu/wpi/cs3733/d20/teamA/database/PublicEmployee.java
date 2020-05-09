@@ -14,7 +14,7 @@ public class PublicEmployee implements ITableable<PublicEmployee> {
   private SimpleStringProperty fName;
   private SimpleStringProperty lName;
   private SimpleStringProperty title;
-  private SimpleObjectProperty<Long> pagerNum;
+  private SimpleStringProperty pagerNum;
   private SimpleStringProperty username;
 
   public PublicEmployee(
@@ -22,13 +22,13 @@ public class PublicEmployee implements ITableable<PublicEmployee> {
       String fName,
       String lName,
       EmployeeTitle title,
-      Long pagerNum,
+      String pagerNum,
       String username) {
     this.status = new SimpleStringProperty(status);
     this.fName = new SimpleStringProperty(fName);
     this.lName = new SimpleStringProperty(lName);
     this.title = new SimpleStringProperty(title.toString());
-    this.pagerNum = new SimpleObjectProperty<Long>(pagerNum);
+    this.pagerNum = new SimpleStringProperty(pagerNum);
     this.username = new SimpleStringProperty(username);
   }
 
@@ -64,11 +64,11 @@ public class PublicEmployee implements ITableable<PublicEmployee> {
     return title;
   }
 
-  public Long getPagerNum() {
+  public String getPagerNum() {
     return pagerNum.get();
   }
 
-  public SimpleObjectProperty<Long> pagerNumProperty() {
+  public SimpleStringProperty pagerNumProperty() {
     return pagerNum;
   }
 
@@ -91,7 +91,7 @@ public class PublicEmployee implements ITableable<PublicEmployee> {
     JFXTreeTableColumn<PublicEmployee, String> column3 = new JFXTreeTableColumn<>("Last Name");
     column3.setCellValueFactory(param -> param.getValue().getValue().lNameProperty());
 
-    JFXTreeTableColumn<PublicEmployee, Long> column4 = new JFXTreeTableColumn<>("Pager #");
+    JFXTreeTableColumn<PublicEmployee, String> column4 = new JFXTreeTableColumn<>("Pager #");
     column4.setCellValueFactory(param -> param.getValue().getValue().pagerNumProperty());
 
     JFXTreeTableColumn<PublicEmployee, String> column5 = new JFXTreeTableColumn<>("Title");

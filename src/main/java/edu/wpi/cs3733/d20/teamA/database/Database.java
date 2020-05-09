@@ -233,23 +233,23 @@ public abstract class Database {
     }
   }
 
-  public synchronized long getPager(String username) {
+  public synchronized String getPager(String username) {
 
     try {
       PreparedStatement pstmt =
           getConnection()
               .prepareStatement("Select * From Employees Where username = '" + username + "'");
       ResultSet rset = pstmt.executeQuery();
-      long page = 0;
+      String page = "";
       if (rset.next()) {
-        page = rset.getLong("pagerNum");
+        page = rset.getString("pagerNum");
       }
       rset.close();
       pstmt.close();
       return page;
     } catch (SQLException e) {
       e.printStackTrace();
-      return 0;
+      return null;
     }
   }
 
@@ -288,7 +288,8 @@ public abstract class Database {
         String fName = rset.getString("nameFirst");
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
-        return new Employee(ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn);
+        String pagerNum = rset.getString("pagerNum");
+        return new Employee(ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn, pagerNum);
       }
       return null;
     } catch (SQLException e) {

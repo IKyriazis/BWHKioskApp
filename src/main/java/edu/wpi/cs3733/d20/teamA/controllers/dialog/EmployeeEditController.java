@@ -120,7 +120,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
                         uName.getText(),
                         cPass.getText(),
                         EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
-                        rfid);
+                        rfid, );
                 clearFields();
               }
             } else {

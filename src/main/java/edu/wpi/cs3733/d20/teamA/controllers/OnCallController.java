@@ -36,7 +36,7 @@ public class OnCallController extends AbstractController {
         });
 
     tblEmployees =
-        new SimpleTableView<>(new PublicEmployee("", "", "", EmployeeTitle.DOCTOR, 0l, ""), 150.0);
+        new SimpleTableView<>(new PublicEmployee("", "", "", EmployeeTitle.DOCTOR, "", ""), 150.0);
     empList.getChildren().add(tblEmployees);
 
     update();
