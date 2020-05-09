@@ -16,7 +16,7 @@ public class Employee implements ITableable<Employee> {
   private SimpleStringProperty lName;
   private SimpleStringProperty title;
   private SimpleStringProperty username;
-  private SimpleObjectProperty<Long> pagerNum;
+  private SimpleStringProperty pagerNum;
 
   public Employee(String id, String fName, String lName, EmployeeTitle title, String username, long pagerNum) {
     this.id = new SimpleStringProperty(id);
@@ -24,7 +24,7 @@ public class Employee implements ITableable<Employee> {
     this.lName = new SimpleStringProperty(lName);
     this.title = new SimpleStringProperty(title.toString());
     this.username = new SimpleStringProperty(username);
-    this.pagerNum = new SimpleObjectProperty<Long>(pagerNum);
+    this.pagerNum = new SimpleStringProperty(pagerNum);
   }
 
   public Long getPagerNum() {
