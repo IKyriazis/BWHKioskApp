@@ -21,6 +21,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
   @FXML private JFXPasswordField cPass;
   @FXML private JFXCheckBox addRFID;
   @FXML private JFXComboBox title;
+  @FXML private JFXTextField IPager;
 
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
@@ -120,7 +121,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
                         uName.getText(),
                         cPass.getText(),
                         EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
-                        rfid, );
+                        rfid);
                 clearFields();
               }
             } else {
