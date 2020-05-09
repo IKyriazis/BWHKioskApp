@@ -64,7 +64,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String username,
       String password,
       EmployeeTitle title,
-      long pagerNum) {
+      String pagerNum) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
@@ -81,7 +81,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       pstmt.setString(4, username);
       pstmt.setString(5, storedPassword);
       pstmt.setString(6, title.toString());
-      pstmt.setLong(7, pagerNum);
+      pstmt.setString(7, pagerNum);
       pstmt.executeUpdate();
       pstmt.close();
       return employeeID;
@@ -123,6 +123,44 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       pstmt.setString(5, storedPassword);
       pstmt.setString(6, title.toString());
       pstmt.setString(7, secretKey);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
+   */
+  public synchronized String addEmployeeGA(
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      String rfid) {
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+    String secretKey = generateSecretKey();
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey, rfid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, getRandomString());
+      pstmt.setString(2, nameFirst);
+      pstmt.setString(3, nameLast);
+      pstmt.setString(4, username);
+      pstmt.setString(5, storedPassword);
+      pstmt.setString(6, title.toString());
+      pstmt.setString(7, secretKey);
+      pstmt.setString(8, rfid);
       pstmt.executeUpdate();
       pstmt.close();
       return secretKey;
@@ -308,7 +346,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String username,
       String password,
       EmployeeTitle title,
-      long pagerNum) {
+      String pagerNum) {
     return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
   }
 
@@ -318,7 +356,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String username,
       String password,
       EmployeeTitle title,
-      long pagerNum) {
+      String pagerNum) {
     if (checkSecurePass(password)) {
       return addEmployee(
           getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
