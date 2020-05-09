@@ -232,7 +232,7 @@ public class TestPath {
     ArrayList<Node> pathNodes = path.getPathNodes();
     ArrayList<Edge> pathEdges = path.getPathEdges();
     Graph testGraph = path.getGraph();
-    ArrayList<String> textpath = path.textualDirections();
+    // ArrayList<String> textpath = path.textualDirections();
 
     Assertions.assertNotNull(pathNodes);
 
