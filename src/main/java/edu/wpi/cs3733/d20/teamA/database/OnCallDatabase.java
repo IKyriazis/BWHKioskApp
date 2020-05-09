@@ -113,7 +113,7 @@ public class OnCallDatabase extends Database implements IDatabase {
 
     String oldStatus = getStatus(username);
 
-    if (oldStatus == "Available") {
+    if (oldStatus.equals("Available")) {
       try {
         PreparedStatement pstmt =
             getConnection()
@@ -126,7 +126,7 @@ public class OnCallDatabase extends Database implements IDatabase {
         e.printStackTrace();
         return false;
       }
-    } else if (oldStatus == "Busy") {
+    } else if (oldStatus.equals("Busy")) {
       try {
         PreparedStatement pstmt =
             getConnection()

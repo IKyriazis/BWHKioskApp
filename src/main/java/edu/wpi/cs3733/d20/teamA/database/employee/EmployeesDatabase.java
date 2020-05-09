@@ -45,7 +45,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
           "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
               + " nameFirst Varchar(25), nameLast Varchar(25),"
               + " username Varchar(25) UNIQUE NOT NULL,"
-              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), pagerNum Varchar(10) NOT NULL, "
+              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), pagerNum Varchar(10), "
               + " rfid Varchar(10),"
               + "CONSTRAINT Check_Title CHECK (title in ('admin', 'doctor', 'nurse', 'janitor', 'interpreter', 'receptionist', 'retail')))");
     }

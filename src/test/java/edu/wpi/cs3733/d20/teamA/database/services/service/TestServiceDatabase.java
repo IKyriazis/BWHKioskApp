@@ -31,7 +31,7 @@ public class TestServiceDatabase {
     DB = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
     sDB = new ServiceDatabase(conn);
-    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, "2637994872l");
+    eDB.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, "7700770098");
     eDB.logIn("yppatel", "YashPatel1");
   }
 
