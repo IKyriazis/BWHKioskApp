@@ -130,7 +130,7 @@ public class CSVLoader {
                 + ","
                 + ycoordinate
                 + ","
-                + node.getFloor()
+                + graph.getFloorString(node.getFloor())
                 + ","
                 + node.getBuilding()
                 + ","

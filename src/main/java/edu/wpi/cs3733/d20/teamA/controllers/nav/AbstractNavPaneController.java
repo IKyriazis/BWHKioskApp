@@ -30,17 +30,15 @@ public abstract class AbstractNavPaneController extends AbstractController {
     button.setGraphic(icon);
 
     if (fxmlPath.equals("APIService")) {
-      if (label.equals("Appointment\nRequests")) {
-        button.setOnAction(
-            event -> {
-              try {
-                AppointmentRequest.run(
-                    0, 0, 830, 720, "/edu/wpi/cs3733/d20/teamA/stylesheet.css", null, null);
-              } catch (Exception e) {
-                e.printStackTrace();
-              }
-            });
-      }
+      button.setOnAction(
+          event -> {
+            try {
+              AppointmentRequest.run(
+                  0, 0, 825, 750, "/edu/wpi/cs3733/d20/teamA/stylesheet.css", null, null);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          });
     } else {
       button.setOnAction(
           event -> {

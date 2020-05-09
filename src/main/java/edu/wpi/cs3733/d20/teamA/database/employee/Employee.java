@@ -50,6 +50,10 @@ public class Employee implements ITableable<Employee> {
     return id.get();
   }
 
+  public String getTitle() {
+    return title.get();
+  }
+
   public SimpleStringProperty getIDProperty() {
     return this.id;
   };

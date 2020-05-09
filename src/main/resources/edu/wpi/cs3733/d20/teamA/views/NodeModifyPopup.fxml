@@ -29,8 +29,8 @@
             <JFXTextField fx:id="longNameField" labelFloat="true" promptText="Long Name" GridPane.rowIndex="3" />
             <JFXTextField fx:id="shortNameField" labelFloat="true" promptText="Short Name" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <JFXComboBox fx:id="buildingBox" labelFloat="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Building" GridPane.rowIndex="2" />
-            <JFXComboBox fx:id="teamBox" labelFloat="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Team" GridPane.rowIndex="4" />
-            <JFXButton fx:id="doneButton" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Done" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <JFXComboBox fx:id="teamBox" labelFloat="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Team" />
+            <JFXButton fx:id="doneButton" buttonType="RAISED" maxHeight="1.7976931348623157E308" maxWidth="135.2" prefWidth="135.2" text="Done" GridPane.columnSpan="2" GridPane.rowIndex="4" />
             <JFXTextField labelFloat="true" promptText="X" GridPane.rowIndex="1" fx:id="xField" />
             <JFXTextField fx:id="yField" labelFloat="true" promptText="Y" GridPane.columnIndex="1" GridPane.rowIndex="1" />
          </children>

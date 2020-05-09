@@ -4,6 +4,7 @@ import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -47,7 +48,7 @@ public class FlowerServiceController extends AbstractController {
   public void placeOrder() {
     if (comboLocation.getSelectionModel().getSelectedItem() != null) {
       // Open new window centered on screen with baseline width and height
-      flowerapi.App.run(
+      flowerapi.FlowerAPI.run(
           0,
           0,
           0,
@@ -55,18 +56,20 @@ public class FlowerServiceController extends AbstractController {
           App.class.getResource("stylesheet.css").toExternalForm(),
           comboLocation.getSelectionModel().getSelectedItem().getLongName(),
           null);
+    } else {
+      DialogUtil.simpleErrorDialog("Can't place order", "Please select delivery location");
     }
   }
 
   @FXML
   public void openAdmin() {
-    flowerapi.App.runAdmin(
+    flowerapi.FlowerAPI.runAdmin(
         0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
   }
 
   @FXML
   public void trackOrder() {
-    /*flowerapi.App.runTracker(
-    0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);*/
+    flowerapi.FlowerAPI.runTracker(
+        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
   }
 }

@@ -98,7 +98,18 @@ public class ViewEmployeesController extends AbstractController {
 
   @FXML
   public void deleteBtn(ActionEvent actionEvent) {
-    eDB.deleteEmployee(tblEmployees.getSelected().getUsername());
+    String selectedUser = tblEmployees.getSelected().getUsername();
+    if (selectedUser.equals("admin") || selectedUser.equals("staff")) {
+      DialogUtil.simpleErrorDialog(
+          empPane, "Deletion Error", "You aren't allowed to delete the default account.");
+
+    } else if (selectedUser.equals(eDB.getLoggedIn().getUsername())) {
+      DialogUtil.simpleErrorDialog(
+          empPane, "Deletion Error", "You aren't allowed to delete yourself if you are logged in.");
+    } else {
+      eDB.deleteEmployee(tblEmployees.getSelected().getUsername());
+    }
+
     update();
   }
 

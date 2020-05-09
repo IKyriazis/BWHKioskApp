@@ -17,7 +17,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 public class NodeDialogController implements IDialogController {
   @FXML private JFXTextField nodeIDField;
-  @FXML private JFXComboBox<Integer> floorBox;
+  @FXML private JFXComboBox<String> floorBox;
   @FXML private JFXComboBox<NodeType> typeBox;
   @FXML private JFXTextField longNameField;
   @FXML private JFXTextField shortNameField;
@@ -74,15 +74,23 @@ public class NodeDialogController implements IDialogController {
               }
             });
     // Setup floor combobox
-    ObservableList<Integer> floors = FXCollections.observableArrayList(1, 2, 3, 4, 5);
+    ObservableList<String> floors = FXCollections.observableArrayList();
+    if (campus == Campus.MAIN) {
+      floors = FXCollections.observableArrayList("L2", "L1", "G", "1", "2", "3");
+    } else if (campus == Campus.FAULKNER) {
+      floors = FXCollections.observableArrayList("1", "2", "3", "4", "5");
+    }
+
     floorBox.setItems(floors);
-    floorBox.setValue(floor);
+    floorBox.setValue(graph.getFloorString(floor));
     floorBox.setEditable(false);
 
     ObservableList<NodeType> types = FXCollections.observableArrayList(NodeType.values());
     typeBox.setItems(types);
 
-    ObservableList<String> buildings = FXCollections.observableArrayList("Main");
+    ObservableList<String> buildings =
+        FXCollections.observableArrayList(
+            "Faulkner", "Main", "BTM", "15 Francis", "45 Francis", "Tower", "Shapiro");
     buildingBox.setItems(buildings);
 
     ObservableList<String> teams =
@@ -103,7 +111,7 @@ public class NodeDialogController implements IDialogController {
 
     // Populate fields if modifying
     if (oldNode != null) {
-      floorBox.setValue(oldNode.getFloor());
+      floorBox.setValue(graph.getFloorString(oldNode.getFloor()));
       typeBox.setValue(oldNode.getType());
       longNameField.setText(oldNode.getLongName());
       shortNameField.setText(oldNode.getShortName());
@@ -142,7 +150,8 @@ public class NodeDialogController implements IDialogController {
       return;
     }
 
-    int floor = floorBox.getValue();
+    int floor = graph.getFloorInt(floorBox.getValue());
+    
     NodeType nodeType = typeBox.getValue();
     String longName = longNameField.getText();
     String shortName = shortNameField.getText();
@@ -197,6 +206,7 @@ public class NodeDialogController implements IDialogController {
                 .filter(
                     node -> node.getType().toString().equals(nodeTypeS) && node.getFloor() == floor)
                 .count();
+    count++;
     String countString = String.format("%03d", count);
     // Gets the floor number
     String floorString = String.format("%02d", floor);

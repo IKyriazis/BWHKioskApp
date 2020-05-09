@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.BoundingBox;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
@@ -266,6 +267,7 @@ public class MapEditorController {
 
               Label infoLabel = new Label(getNodeInfo(selections.get(0)));
               infoLabel.setStyle("-fx-font-size: 18pt");
+              infoLabel.setPadding(new Insets(5, 5, 5, 5));
               buttonBox.getChildren().add(infoLabel);
             });
 
@@ -404,8 +406,11 @@ public class MapEditorController {
   @FXML
   public void exportClicked(ActionEvent actionEvent) {
     FileChooser fileChooser = new FileChooser();
-    fileChooser.setTitle("Save Node CSV");
-
+    if (graph.getCampus().equals(Campus.FAULKNER)) {
+      fileChooser.setTitle("Save Faulkner Node CSV");
+    } else {
+      fileChooser.setTitle("Save Main Campus Node CSV");
+    }
     FileChooser.ExtensionFilter filter =
         new FileChooser.ExtensionFilter("CSV file (*.csv)", "*.csv");
     fileChooser.getExtensionFilters().add(filter);
@@ -418,7 +423,11 @@ public class MapEditorController {
       return;
     }
 
-    fileChooser.setTitle("Save Edge CSV");
+    if (graph.getCampus().equals(Campus.FAULKNER)) {
+      fileChooser.setTitle("Save Faulkner Edge CSV");
+    } else {
+      fileChooser.setTitle("Save Main Campus Edge CSV");
+    }
     File edgeFile = fileChooser.showSaveDialog(currCanvas.getScene().getWindow());
     if (edgeFile != null) {
       CSVLoader.exportEdges(graph, edgeFile);

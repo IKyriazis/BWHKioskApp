@@ -19,8 +19,26 @@ public abstract class AbstractRequestController extends AbstractController {
             });
   }
 
-  protected void setupEmployeeBox(JFXComboBox<Employee> employeeBox) {
+  /**
+   * Filling employee dropdown menus.
+   *
+   * @param employeeBox The dropdown to be filled
+   * @param requestedEmployees Enter an empty string for all employees or filter by job type.
+   */
+  protected void setupEmployeeBox(JFXComboBox<Employee> employeeBox, String requestedEmployees) {
     ObservableList<Employee> allEmployeeList = eDB.getObservableList();
+
+    if (!requestedEmployees.equals("")) {
+      System.out.println(allEmployeeList.size());
+      for (int i = allEmployeeList.size() - 1; i > -1; i--) {
+        System.out.println(allEmployeeList.get(i).getTitle());
+        System.out.println(allEmployeeList.get(i).getUsername());
+        if (!allEmployeeList.get(i).getTitle().equals(requestedEmployees)) {
+          allEmployeeList.remove(eDB.findFromUsername(allEmployeeList.get(i).getUsername()));
+        }
+      }
+    }
+
     allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
     employeeBox.setItems(allEmployeeList);
@@ -30,6 +48,17 @@ public abstract class AbstractRequestController extends AbstractController {
 
           allEmployeeList.addAll(eDB.getObservableList());
           allEmployeeList.sort(Comparator.comparing(Employee::toString));
+
+          if (!requestedEmployees.equals("")) {
+            System.out.println(allEmployeeList.size());
+            for (int i = allEmployeeList.size() - 1; i > -1; i--) {
+              System.out.println(allEmployeeList.get(i).getTitle());
+              System.out.println(allEmployeeList.get(i).getUsername());
+              if (!allEmployeeList.get(i).getTitle().equals(requestedEmployees)) {
+                allEmployeeList.remove(eDB.findFromUsername(allEmployeeList.get(i).getUsername()));
+              }
+            }
+          }
 
           employeeBox.setItems(allEmployeeList);
         });

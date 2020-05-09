@@ -18,6 +18,7 @@ public class Path extends PathAlgo implements IStrategyPath {
    * Uses the A Star algorithm to locate the optimal path between the given start and end node
    *
    * @param start the starting location to path find
+   * @param start the starting location to path find
    * @param end the ending location/ destination
    */
   @Override

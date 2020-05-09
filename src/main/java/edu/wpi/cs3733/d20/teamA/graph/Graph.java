@@ -352,10 +352,56 @@ public class Graph {
         .collect(Collectors.toList());
   }
 
+  public int getFloorInt(String floor) {
+    if (campus.equals(Campus.FAULKNER)) {
+      return Integer.parseInt(floor);
+    } else {
+      switch (floor) {
+        case "L2":
+          return 1;
+        case "L1":
+          return 2;
+        case "G":
+          return 3;
+        case "1":
+          return 4;
+        case "2":
+          return 5;
+        case "3":
+          return 6;
+        default:
+          return 0;
+      }
+    }
+  }
+
+  public String getFloorString(int floor) {
+    if (campus.equals(Campus.FAULKNER)) {
+      return Integer.toString(floor);
+    } else {
+      switch (floor) {
+        case 1:
+          return "L2";
+        case 2:
+          return "L1";
+        case 3:
+          return "G";
+        case 4:
+          return "1";
+        case 5:
+          return "2";
+        case 6:
+          return "3";
+        default:
+          return "";
+      }
+    }
+  }
+
   private int calcWeight(Node start, Node end) {
     int side1 = Math.abs(start.getX() - end.getX());
     int side2 = Math.abs(start.getY() - end.getY());
-    double weight = Math.sqrt(Math.pow(side1, 2) + Math.pow(side2, 2));
+    double weight = Math.sqrt(side1 * side1 + side2 * side2);
     return (int) Math.round(weight);
   }
 

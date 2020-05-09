@@ -60,8 +60,8 @@ public class InternalTransportRequestController extends AbstractRequestControlle
       SceneSwitcherController.popScene();
     }
 
-    pickupLocationBox.getSelectionModel().clearSelection();
-    destinationLocationBox.getSelectionModel().clearSelection();
+    pickupLocationBox.setValue(null);
+    destinationLocationBox.setValue(null);
   }
 
   public void pressedTrackBtn(ActionEvent actionEvent) {

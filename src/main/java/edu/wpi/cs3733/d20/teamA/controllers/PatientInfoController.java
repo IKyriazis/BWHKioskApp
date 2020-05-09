@@ -79,7 +79,7 @@ public class PatientInfoController extends AbstractController {
     Patient patient = patientTable.getSelected();
     if (patient != null) {
       DialogMaker maker = new DialogMaker();
-      maker.makePatientDialog(this);
+      maker.makePatientDialog(this, patient);
       /*
       PatientEditController controller = new PatientEditController(patient);
       DialogUtil.complexDialog(
