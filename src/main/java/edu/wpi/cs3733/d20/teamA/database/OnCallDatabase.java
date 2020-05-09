@@ -51,12 +51,12 @@ public class OnCallDatabase extends Database implements IDatabase {
   }
 
   @Override
-  public int getSize() {
+  public synchronized int getSize() {
     return getSize("OnCall");
   }
 
   @Override
-  public boolean removeAll() {
+  public synchronized boolean removeAll() {
     return helperPrepared("DELETE From OnCall");
   }
 
@@ -81,7 +81,7 @@ public class OnCallDatabase extends Database implements IDatabase {
   }
 
   @Override
-  public ObservableList<PublicEmployee> getObservableList() {
+  public synchronized ObservableList<PublicEmployee> getObservableList() {
     ObservableList<PublicEmployee> eList = FXCollections.observableArrayList();
     try {
       Connection conn = DriverManager.getConnection("jdbc:derby:BWDatabase");
