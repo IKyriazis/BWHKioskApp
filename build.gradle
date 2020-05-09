@@ -93,9 +93,12 @@ dependencies {
             'com.gluonhq.attach:position:4.0.7',
 
             //Flower API
-            group: 'edu.wpi.cs3733.d20.teamA', name: 'TeamAFlowerRequest', version:'1.1.0'
+            'edu.wpi.cs3733.d20.teamA:TeamAFlowerRequest:1.1.2',
+            //Food API
+            [group: 'edu.wpi.cs3733.d20.teamP', name: 'FoodRequest', version:'1.1.0'],
+            //Gift API
+            [group: 'edu.wpi.cs3733.d20.teamL', name: 'GiftDeliveryServiceRequest', version:'1.0.0']
     )
-    //compile files("src/main/resources/edu/wpi/cs3733/d20/teamA/APIFlower.jar")
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',

@@ -6,6 +6,7 @@ import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import flowerapi.ServiceException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
@@ -48,14 +49,18 @@ public class FlowerServiceController extends AbstractController {
   public void placeOrder() {
     if (comboLocation.getSelectionModel().getSelectedItem() != null) {
       // Open new window centered on screen with baseline width and height
-      flowerapi.FlowerAPI.run(
-          0,
-          0,
-          0,
-          0,
-          App.class.getResource("stylesheet.css").toExternalForm(),
-          comboLocation.getSelectionModel().getSelectedItem().getLongName(),
-          null);
+      try {
+        flowerapi.FlowerAPI.run(
+            0,
+            0,
+            0,
+            0,
+            App.class.getResource("stylesheet.css").toExternalForm(),
+            comboLocation.getSelectionModel().getSelectedItem().getLongName(),
+            null);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
     } else {
       DialogUtil.simpleErrorDialog("Can't place order", "Please select delivery location");
     }
@@ -63,13 +68,21 @@ public class FlowerServiceController extends AbstractController {
 
   @FXML
   public void openAdmin() {
-    flowerapi.FlowerAPI.runAdmin(
-        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
+    try {
+      flowerapi.FlowerAPI.runAdmin(
+          0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm());
+    } catch (ServiceException e) {
+      e.printStackTrace();
+    }
   }
 
   @FXML
   public void trackOrder() {
-    flowerapi.FlowerAPI.runTracker(
-        0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm(), "", null);
+    try {
+      flowerapi.FlowerAPI.runTracker(
+          0, 0, 0, 0, App.class.getResource("stylesheet.css").toExternalForm());
+    } catch (ServiceException e) {
+      e.printStackTrace();
+    }
   }
 }

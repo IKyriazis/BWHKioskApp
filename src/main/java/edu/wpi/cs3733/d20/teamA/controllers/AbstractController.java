@@ -41,14 +41,16 @@ public abstract class AbstractController {
 
     graphDatabase = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
-    // flDatabase = new FlowerDatabase(conn);
-    // iDB = new InterpreterDatabase(conn);
+
     inventoryDatabase = new InventoryDatabase(conn);
 
     patientDatabase = new PatientDatabase(conn);
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
     reservationDatabase = new ReservationDatabase(conn);
+
+    // Uncomment this line to delete the database of food stuff
+    // APIController.clearDatabase();
 
     if (comPort == null) {
       SerialPort[] comPorts = SerialPort.getCommPorts();

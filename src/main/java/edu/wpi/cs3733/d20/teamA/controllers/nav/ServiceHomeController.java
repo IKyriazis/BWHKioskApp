@@ -46,6 +46,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
         new FontIcon(FontAwesomeSolid.GLOBE),
         "views/service/InterpreterRequest.fxml",
         "Interpreters");
+    addButton(buttonPane, new FontIcon(FontAwesomeSolid.HAMBURGER), "views/food/Food.fxml", "Food");
 
     // Services available to employees
     if (eDB.getLoggedIn() != null) {
