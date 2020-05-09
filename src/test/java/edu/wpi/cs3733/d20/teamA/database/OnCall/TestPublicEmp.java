@@ -10,14 +10,14 @@ public class TestPublicEmp {
   @Test
   public void createPublicEmployee() {
     PublicEmployee emp =
-        new PublicEmployee("Available", "Yash", "Patel", EmployeeTitle.ADMIN, 9948832456l, "abc");
+        new PublicEmployee("Available", "Yash", "Patel", EmployeeTitle.ADMIN, "9948832456l", "abc");
     Assertions.assertNotNull(emp);
   }
 
   @Test
   public void testGetters() {
     PublicEmployee emp =
-        new PublicEmployee("Available", "Yash", "Patel", EmployeeTitle.ADMIN, 9948832456l, "abc");
+        new PublicEmployee("Available", "Yash", "Patel", EmployeeTitle.ADMIN, "9948832456l", "abc");
     Assertions.assertEquals("Available", emp.getStatus());
     Assertions.assertEquals("abc", emp.getUsername());
 

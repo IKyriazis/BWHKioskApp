@@ -586,9 +586,10 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
         String username = rset.getString("username");
-        long pagerNum = rset.getLong("pagerNum");
+        String pagerNum = rset.getString("pagerNum");
         Employee e =
-            new Employee(id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username, pagerNum);
+            new Employee(
+                id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username, pagerNum);
         eList.add(e);
       }
       rset.close();
@@ -710,9 +711,10 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String lName = rset.getString("nameLast");
       String title = rset.getString("title");
       String username = rset.getString("username");
-      long pagerNum = rset.getLong("pagerNum");
+      String pagerNum = rset.getString("pagerNum");
       Employee e =
-          new Employee(id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username, pagerNum);
+          new Employee(
+              id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username, pagerNum);
       rset.close();
       pstmt.close();
       return e;
@@ -735,9 +737,10 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         String lName = rset.getString("nameLast");
         String type = rset.getString("title");
         String username = rset.getString("username");
-        long pagerNum = rset.getLong("pagerNum");
+        String pagerNum = rset.getString("pagerNum");
         Employee e =
-            new Employee(id, fName, lName, EmployeeTitle.valueOf(type.toUpperCase()), username, pagerNum);
+            new Employee(
+                id, fName, lName, EmployeeTitle.valueOf(type.toUpperCase()), username, pagerNum);
         eList.add(e);
       }
       rset.close();

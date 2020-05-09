@@ -289,7 +289,8 @@ public abstract class Database {
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
         String pagerNum = rset.getString("pagerNum");
-        return new Employee(ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn, pagerNum);
+        return new Employee(
+            ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn, pagerNum);
       }
       return null;
     } catch (SQLException e) {

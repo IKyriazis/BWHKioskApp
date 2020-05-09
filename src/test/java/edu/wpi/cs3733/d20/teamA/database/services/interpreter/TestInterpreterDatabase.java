@@ -36,7 +36,7 @@ public class TestInterpreterDatabase {
     inventoryDatabase = new InventoryDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
     employeesDatabase.addEmployee(
-        "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, 7738495743l);
+        "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, "7738495743l");
     employeesDatabase.logIn("yppatel", "YashPatel1");
   }
 
