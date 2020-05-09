@@ -11,9 +11,7 @@ public class OnCallDatabase extends Database implements IDatabase {
 
     super(connection);
 
-    if (doesTableNotExist("OnCall")) {
-      createTables();
-    }
+    createTables();
   }
 
   /**
@@ -24,17 +22,11 @@ public class OnCallDatabase extends Database implements IDatabase {
   public synchronized boolean dropTables() {
 
     // Drop the tables
-    if (!(helperPrepared("ALTER TABLE OnCall DROP CONSTRAINT FK_OCID"))) {
-
-      return false;
+    if (!(doesTableNotExist("ONCALL"))) {
+      return helperPrepared("ALTER TABLE ONCALL DROP CONSTRAINT FK_OCID")
+          && helperPrepared("DROP TABLE ONCALL");
     }
-
-    // Drop the tables
-    if (!(helperPrepared("DROP TABLE OnCall"))) {
-      return false;
-    }
-
-    return true;
+    return false;
   }
 
   /**
@@ -46,8 +38,11 @@ public class OnCallDatabase extends Database implements IDatabase {
 
     // Create the graph tables
 
-    return helperPrepared(
-        "CREATE TABLE OnCall (username Varchar(25) PRIMARY KEY, status Varchar(9), CONSTRAINT FK_OCID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT CK_ST CHECK (status in('Available', 'Busy')))");
+    if (doesTableNotExist("ONCALL")) {
+      return helperPrepared(
+          "CREATE TABLE OnCall (username Varchar(25) PRIMARY KEY, status Varchar(9), CONSTRAINT FK_OCID FOREIGN KEY (username) REFERENCES Employees(username), CONSTRAINT CK_ST CHECK (status in('Available', 'Busy')))");
+    }
+    return false;
   }
 
   @Override

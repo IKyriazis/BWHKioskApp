@@ -21,7 +21,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
   @FXML private JFXPasswordField cPass;
   @FXML private JFXCheckBox addRFID;
   @FXML private JFXComboBox title;
-  @FXML private JFXTextField IPager;
+  @FXML private JFXTextField EditPager;
 
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
@@ -121,7 +121,8 @@ public class EmployeeEditController extends AbstractController implements IDialo
                         uName.getText(),
                         cPass.getText(),
                         EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
-                        rfid);
+                        rfid,
+                        EditPager.getText());
                 clearFields();
               }
             } else {
@@ -139,7 +140,8 @@ public class EmployeeEditController extends AbstractController implements IDialo
                     lName.getText(),
                     uName.getText(),
                     cPass.getText(),
-                    EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
+                    EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
+                    EditPager.getText());
             clearFields();
           }
           String companyName = "Amethyst Asgardians";
@@ -167,6 +169,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
     title.setValue("Choose one:");
     pass.clear();
     cPass.clear();
+    EditPager.clear();
   }
 
   @Override

@@ -62,10 +62,15 @@
             <Font size="21.0" />
          </font>
       </JFXButton>
-      <JFXPasswordField fx:id="oldPass" maxWidth="200.0" prefWidth="200.0" promptText="Previous Password" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+      <JFXPasswordField fx:id="oldPass" maxWidth="200.0" prefWidth="200.0" promptText="Previous Password" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
          <font>
             <Font size="21.0" />
          </font>
       </JFXPasswordField>
+      <JFXTextField fx:id="EditPager" maxWidth="200.0" prefWidth="200.0" promptText="First Name" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Pager #" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+         <font>
+            <Font size="21.0" />
+         </font>
+      </JFXTextField>
    </children>
 </GridPane>
