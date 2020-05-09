@@ -45,8 +45,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
           "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
               + " nameFirst Varchar(25), nameLast Varchar(25),"
               + " username Varchar(25) UNIQUE NOT NULL,"
-              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), pagerNum BigInt NOT NULL, "
-              + "CONSTRAINT CK_PG CHECK (pagerNum BETWEEN 1000000000 and 9999999999), "
+              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), pagerNum Varchar(10) NOT NULL, "
               + " rfid Varchar(10),"
               + "CONSTRAINT Check_Title CHECK (title in ('admin', 'doctor', 'nurse', 'janitor', 'interpreter', 'receptionist', 'retail')))");
     }
@@ -65,7 +64,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String username,
       String password,
       EmployeeTitle title,
-      long pagerNum) {
+      String pagerNum) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
@@ -82,7 +81,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       pstmt.setString(4, username);
       pstmt.setString(5, storedPassword);
       pstmt.setString(6, title.toString());
-      pstmt.setLong(7, pagerNum);
+      pstmt.setString(7, pagerNum);
       pstmt.executeUpdate();
       pstmt.close();
       return employeeID;
@@ -144,8 +143,46 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String username,
       String password,
       EmployeeTitle title,
+      String rfid) {
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+    String secretKey = generateSecretKey();
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey, rfid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, getRandomString());
+      pstmt.setString(2, nameFirst);
+      pstmt.setString(3, nameLast);
+      pstmt.setString(4, username);
+      pstmt.setString(5, storedPassword);
+      pstmt.setString(6, title.toString());
+      pstmt.setString(7, secretKey);
+      pstmt.setString(8, rfid);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
+   */
+  public synchronized String addEmployeeGA(
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
       String rfid,
-      long pagerNum) {
+      String pagerNum) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
     String secretKey = generateSecretKey();
@@ -163,7 +200,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       pstmt.setString(6, title.toString());
       pstmt.setString(7, secretKey);
       pstmt.setString(8, rfid);
-      pstmt.setObject(9, pagerNum);
+      pstmt.setString(9, pagerNum);
       pstmt.executeUpdate();
       pstmt.close();
       return secretKey;
@@ -309,7 +346,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String username,
       String password,
       EmployeeTitle title,
-      long pagerNum) {
+      String pagerNum) {
     return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
   }
 
@@ -319,7 +356,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String username,
       String password,
       EmployeeTitle title,
-      long pagerNum) {
+      String pagerNum) {
     if (checkSecurePass(password)) {
       return addEmployee(
           getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
