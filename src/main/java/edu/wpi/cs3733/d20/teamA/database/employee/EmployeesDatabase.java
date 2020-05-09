@@ -648,37 +648,6 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     return helperPrepared("DELETE From Employees");
   }
 
-  /*
-  public synchronized void readEmployeeCSV() {
-    try {
-      InputStream stream =
-          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Employees.csv");
-      CSVReader reader = new CSVReader(new InputStreamReader(stream));
-      List<String[]> data = reader.readAll();
-      for (int i = 1; i < data.size(); i++) {
-        String nameFirst, nameLast, username, password, title;
-        String employeeID;
-        employeeID = data.get(i)[0];
-        nameFirst = data.get(i)[1];
-        nameLast = data.get(i)[2];
-        username = data.get(i)[3];
-        password = data.get(i)[4];
-        title = data.get(i)[5];
-        addEmployee(
-            employeeID,
-            nameFirst,
-            nameLast,
-            username,
-            password,
-            EmployeeTitle.valueOf(title.toUpperCase()));
-      }
-    } catch (IOException | CsvException e) {
-      e.printStackTrace();
-    }
-  }
-
-   */
-
   public boolean addLog(String username) {
     Timestamp timeOf = new Timestamp(System.currentTimeMillis());
 
