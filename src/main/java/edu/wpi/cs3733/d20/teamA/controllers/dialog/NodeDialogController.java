@@ -151,7 +151,7 @@ public class NodeDialogController implements IDialogController {
     }
 
     int floor = graph.getFloorInt(floorBox.getValue());
-  
+    
     NodeType nodeType = typeBox.getValue();
     String longName = longNameField.getText();
     String shortName = shortNameField.getText();
