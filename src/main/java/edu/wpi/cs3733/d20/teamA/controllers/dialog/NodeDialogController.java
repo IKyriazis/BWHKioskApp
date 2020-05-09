@@ -150,7 +150,6 @@ public class NodeDialogController implements IDialogController {
       return;
     }
 
-    graph.getFloorInt(floorBox.getValue());
     int floor = graph.getFloorInt(floorBox.getValue());
     ;
     NodeType nodeType = typeBox.getValue();
