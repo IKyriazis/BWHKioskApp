@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.database.graph;
 
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import java.util.ArrayList;
+import javafx.util.Pair;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -232,7 +233,7 @@ public class TestPath {
     ArrayList<Node> pathNodes = path.getPathNodes();
     ArrayList<Edge> pathEdges = path.getPathEdges();
     Graph testGraph = path.getGraph();
-    // ArrayList<String> textpath = path.textualDirections();
+    ArrayList<Pair<Node, String>> textpath = path.textualDirections();
 
     Assertions.assertNotNull(pathNodes);
 
