@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class EditEmployeeController extends AbstractController implements IDialogController {
+public class CreateAcctController extends AbstractController implements IDialogController {
 
   @FXML private JFXTextField fName;
   @FXML private JFXTextField lName;
@@ -26,7 +26,7 @@ public class EditEmployeeController extends AbstractController implements IDialo
   Employee employee;
   private JFXDialog dialog;
 
-  public EditEmployeeController(Employee employee) {
+  public CreateAcctController(Employee employee) {
     super();
     this.employee = employee;
   }

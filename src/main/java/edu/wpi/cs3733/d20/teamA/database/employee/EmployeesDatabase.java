@@ -45,8 +45,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
           "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
               + " nameFirst Varchar(25), nameLast Varchar(25),"
               + " username Varchar(25) UNIQUE NOT NULL,"
-              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), pagerNum BigInt NOT NULL, "
-              + "CONSTRAINT CK_PG CHECK (pagerNum BETWEEN 1000000000 and 9999999999), "
+              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), pagerNum Varchar(10) NOT NULL, "
               + " rfid Varchar(10),"
               + "CONSTRAINT Check_Title CHECK (title in ('admin', 'doctor', 'nurse', 'janitor', 'interpreter', 'receptionist', 'retail')))");
     }
@@ -145,7 +144,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String password,
       EmployeeTitle title,
       String rfid,
-      long pagerNum) {
+      String pagerNum) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
     String secretKey = generateSecretKey();
@@ -163,7 +162,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       pstmt.setString(6, title.toString());
       pstmt.setString(7, secretKey);
       pstmt.setString(8, rfid);
-      pstmt.setObject(9, pagerNum);
+      pstmt.setString(9, pagerNum);
       pstmt.executeUpdate();
       pstmt.close();
       return secretKey;
