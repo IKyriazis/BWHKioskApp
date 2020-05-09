@@ -87,6 +87,19 @@ public class EmployeeEditController extends AbstractController implements IDialo
       return;
     }
 
+    if (!IPager.getText().isEmpty()) {
+      if (IPager.getText().length() != 10) {
+        DialogUtil.simpleInfoDialog(
+            "Invalid Length", "Please enter a pager number consisting of 10 digits.");
+        return;
+      }
+      if (!IPager.getText().matches("[0-9]+")) {
+        DialogUtil.simpleInfoDialog(
+            "Invalid Pager Number", "Please enter a pager number consisting of only digits.");
+        return;
+      }
+    }
+
     ThreadPool.runBackgroundTask(
         () -> {
           String secretKey = "";
@@ -125,7 +138,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
                   clearFields();
                 } else {
                   secretKey =
-                      eDB.addEmployeeGA(
+                      eDB.addEmployeeGAP(
                           fName.getText(),
                           lName.getText(),
                           uName.getText(),
@@ -154,8 +167,9 @@ public class EmployeeEditController extends AbstractController implements IDialo
                       EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
               clearFields();
             } else {
+
               secretKey =
-                  eDB.addEmployeeGA(
+                  eDB.addEmployeeGAP(
                       fName.getText(),
                       lName.getText(),
                       uName.getText(),

@@ -157,7 +157,7 @@ public class TestEmployeeDatabase {
   public void testGetUsernameWithRFID() {
     eDB.createTables();
     eDB.removeAll();
-    eDB.addEmployeeGA(
+    eDB.addEmployeeGAP(
         "bacd",
         "ray",
         "jay",
