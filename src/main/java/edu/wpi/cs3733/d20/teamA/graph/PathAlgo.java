@@ -193,19 +193,36 @@ public abstract class PathAlgo implements IStrategyPath {
     // Formulate the string of directions
     for (int j = 0; j < directions.size(); j++) {
       if (directions.get(j) == Direction.RIGHT) {
-        textPath.add(
-            new Pair<>(pathNodes.get(j), "Turn right at " + pathNodes.get(j).getLongName()));
+        if (pathNodes.get(j).getType() != NodeType.HALL) {
+          textPath.add(
+              new Pair<>(pathNodes.get(j), "Turn right at " + pathNodes.get(j).getLongName()));
+        } else {
+          textPath.add(new Pair<>(pathNodes.get(j), "Turn right"));
+        }
+
       } else if (directions.get(j) == Direction.LEFT) {
-        textPath.add(
-            new Pair<>(pathNodes.get(j), "Turn left at " + pathNodes.get(j).getLongName()));
+        if (pathNodes.get(j).getType() != NodeType.HALL) {
+          textPath.add(
+              new Pair<>(pathNodes.get(j), "Turn left at " + pathNodes.get(j).getLongName()));
+        } else {
+          textPath.add(new Pair<>(pathNodes.get(j), "Turn left "));
+        }
       } else if (directions.get(j) == Direction.SLIGHTLEFT) {
-        textPath.add(
-            new Pair<>(
-                pathNodes.get(j), "Make a slight left at " + pathNodes.get(j).getLongName()));
+        if (pathNodes.get(j).getType() != NodeType.HALL) {
+          textPath.add(
+              new Pair<>(
+                  pathNodes.get(j), "Make a slight left at " + pathNodes.get(j).getLongName()));
+        } else {
+          textPath.add(new Pair<>(pathNodes.get(j), "Make a slight left"));
+        }
       } else if (directions.get(j) == Direction.SLIGHTRIGHT) {
-        textPath.add(
-            new Pair<>(
-                pathNodes.get(j), "Make a slight right at " + pathNodes.get(j).getLongName()));
+        if (pathNodes.get(j).getType() != NodeType.HALL) {
+          textPath.add(
+              new Pair<>(
+                  pathNodes.get(j), "Make a slight right at " + pathNodes.get(j).getLongName()));
+        } else {
+          textPath.add(new Pair<>(pathNodes.get(j), "Make a slight right"));
+        }
       } else if (directions.get(j) == Direction.UP) {
         int sameLength = getSameLength(directions, j, Direction.UP);
 
@@ -240,13 +257,17 @@ public abstract class PathAlgo implements IStrategyPath {
           double feet =
               pixelsToFeet(
                   (Math.sqrt((Math.pow(startX - endX, 2)) + (Math.pow(startY - endY, 2)))));
-          textPath.add(
-              new Pair<>(
-                  pathNodes.get(j),
-                  "Go straight for "
-                      + (int) feet
-                      + " feet until "
-                      + pathNodes.get(j + 1).getLongName()));
+          if (pathNodes.get(j + 1).getType() != NodeType.HALL) {
+            textPath.add(
+                new Pair<>(
+                    pathNodes.get(j),
+                    "Go straight for "
+                        + (int) feet
+                        + " feet until "
+                        + pathNodes.get(j + 1).getLongName()));
+          } else {
+            textPath.add(new Pair<>(pathNodes.get(j), "Go straight for " + (int) feet + " feet"));
+          }
         } else {
           textPath.add(new Pair<>(pathNodes.get(j), "Continue straight until destination"));
           break;
