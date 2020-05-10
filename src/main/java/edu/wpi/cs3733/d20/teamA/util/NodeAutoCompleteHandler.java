@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.util;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.skins.JFXComboBoxListViewSkin;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -67,7 +68,8 @@ public class NodeAutoCompleteHandler implements EventHandler<KeyEvent> {
           startingList.stream()
               .filter(
                   node ->
-                      fuzzyMatch.stream()
+                      fuzzyMatch
+                          .stream()
                           .anyMatch(
                               match ->
                                   node.toString()
