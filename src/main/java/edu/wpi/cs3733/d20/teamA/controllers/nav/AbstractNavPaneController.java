@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
@@ -28,10 +29,22 @@ public abstract class AbstractNavPaneController extends AbstractController {
     button.getStyleClass().add("chonky-text");
     button.setGraphic(icon);
 
-    button.setOnAction(
-        event -> {
-          SceneSwitcherController.pushScene(fxmlPath, TransitionType.ZOOM);
-        });
+    if (fxmlPath.equals("APIService")) {
+      button.setOnAction(
+          event -> {
+            try {
+              AppointmentRequest.run(
+                  0, 0, 825, 750, "/edu/wpi/cs3733/d20/teamA/stylesheet.css", null, null);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          });
+    } else {
+      button.setOnAction(
+          event -> {
+            SceneSwitcherController.pushScene(fxmlPath, TransitionType.ZOOM);
+          });
+    }
 
     Label buttonLabel = new Label(label);
     buttonLabel.getStyleClass().add("medium-text");

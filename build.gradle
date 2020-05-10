@@ -86,6 +86,12 @@ dependencies {
             // for comms with arduino
             'com.fazecast:jSerialComm:2.6.2',
 
+            // Gluon Maps
+            'com.gluonhq:maps:2.0.0-ea+1',
+            'com.gluonhq.attach:util:4.0.7',
+            'com.gluonhq.attach:storage:4.0.7',
+            'com.gluonhq.attach:position:4.0.7',
+
             //Flower API
             group: 'edu.wpi.cs3733.d20.teamA', name: 'TeamAFlowerRequest', version:'1.1.0'
     )
@@ -104,7 +110,7 @@ dependencies {
 
 javafx {
     version = "11.0.2"
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.graphics', 'javafx.media', 'javafx.web']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.graphics', 'javafx.media']
 }
 
 
