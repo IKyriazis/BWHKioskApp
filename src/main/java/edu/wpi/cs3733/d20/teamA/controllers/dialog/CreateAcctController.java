@@ -158,8 +158,8 @@ public class CreateAcctController extends AbstractController implements IDialogC
                       true,
                       null,
                       new QRDialogController(barCodeUrl));
+                  clearFields();
                 });
-            clearFields();
           }
         });
   }
@@ -172,6 +172,7 @@ public class CreateAcctController extends AbstractController implements IDialogC
     pass.clear();
     cPass.clear();
     IPager.clear();
+    addRFID.setSelected(false);
   }
 
   @Override
