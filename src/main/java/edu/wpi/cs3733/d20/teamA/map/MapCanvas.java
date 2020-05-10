@@ -13,8 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -28,6 +27,7 @@ public class MapCanvas extends Canvas {
   private Graph graph;
 
   private final Image[] floorImages;
+  private WritableImage[] coloredFloorImages;
 
   private final int maxFloor;
 
@@ -62,7 +62,6 @@ public class MapCanvas extends Canvas {
 
   public MapCanvas(boolean dragEnabled, Campus campus) {
     super();
-
     graph = Graph.getInstance(campus);
     maxFloor = campus == Campus.FAULKNER ? 5 : 6;
 
@@ -87,6 +86,8 @@ public class MapCanvas extends Canvas {
     for (int i = 0; i < maxFloor; i++) {
       floorImages[i] = images.get(i);
     }
+
+    setColoredFloorImages();
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
@@ -310,18 +311,39 @@ public class MapCanvas extends Canvas {
   }
 
   private void drawFloorBackground(int floor) {
-    Image img = floorImages[floor - 1];
+    WritableImage image = coloredFloorImages[floor - 1];
 
     Point2D imgStart = graphToCanvas(new Point2D(0, 0));
-    Point2D imgEnd = graphToCanvas(new Point2D(img.getWidth(), img.getHeight()));
+    Point2D imgEnd = graphToCanvas(new Point2D(image.getWidth(), image.getHeight()));
 
     getGraphicsContext2D()
         .drawImage(
-            img,
+            image,
             imgStart.getX(),
             imgStart.getY(),
             imgEnd.getX() - imgStart.getX(),
             imgEnd.getY() - imgStart.getY());
+  }
+
+  private void setColoredFloorImages() {
+    coloredFloorImages = new WritableImage[maxFloor];
+    for (int i = 0; i < this.floorImages.length; i++) {
+      Image image = floorImages[i];
+      PixelReader pixelReader = image.getPixelReader();
+      WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
+      PixelWriter pixelWriter = wImage.getPixelWriter();
+      // Determine the color of each pixel in a specified row
+      for (int readY = 0; readY < image.getHeight(); readY++) {
+        for (int readX = 0; readX < image.getWidth(); readX++) {
+          Color color = pixelReader.getColor(readX, readY);
+          if (color.equals(Color.RED)) {
+            color = Color.BLUE;
+          }
+          pixelWriter.setColor(readX, readY, color);
+        }
+      }
+      coloredFloorImages[i] = wImage;
+    }
   }
 
   // Draws an edge
