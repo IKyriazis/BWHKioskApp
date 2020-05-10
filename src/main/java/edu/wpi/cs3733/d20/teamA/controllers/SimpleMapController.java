@@ -38,6 +38,7 @@ public class SimpleMapController extends AbstractController {
   @FXML private HBox buttonBox;
 
   @FXML private JFXButton goButton;
+  @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton dirBackButton;
   @FXML private JFXButton dirNextButton;
@@ -112,6 +113,7 @@ public class SimpleMapController extends AbstractController {
 
     // Set button icons
     goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
+    swapBtn.setGraphic(new FontIcon(FontAwesomeSolid.RETWEET));
     directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
     // qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
     dirBackButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_LEFT));
@@ -183,6 +185,25 @@ public class SimpleMapController extends AbstractController {
       directionsBox.setVisible(true);
       fadeIn.play();
     }
+  }
+
+  @FXML
+  public void pressedSwap() {
+    clearPath();
+    if (directionsPane.isVisible()) {
+      FadeOutLeft textOut = new FadeOutLeft(directionsPane);
+      textOut.setSpeed(2.0);
+      textOut.setOnFinished(
+          event -> {
+            directionsPane.setVisible(false);
+          });
+      textOut.play();
+    }
+    Node start = getSelectedNode(startingLocationBox);
+    Node end = getSelectedNode(destinationBox);
+
+    startingLocationBox.getSelectionModel().select(end);
+    destinationBox.getSelectionModel().select(start);
   }
 
   @FXML
@@ -412,7 +433,11 @@ public class SimpleMapController extends AbstractController {
       currCanvas.disablePathAnimation();
 
       gMapView.setVisible(true);
-      gMapView.getEngine().executeScript("map.setView({zoom: 14});");
+      if (pathSegments.get(currPathSegment - 1).getCampus() == Campus.MAIN) {
+        gMapView.getEngine().executeScript("pathToFaulkner(); map.setView({zoom: 14});");
+      } else {
+        gMapView.getEngine().executeScript("pathToMain(); map.setView({zoom: 14});");
+      }
       zoomSlider.setVisible(false);
     }
 

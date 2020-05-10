@@ -7,8 +7,7 @@
         var map;
         var directionsManager;
 
-        function GetMap()
-        {
+        function GetMap() {
             map = new Microsoft.Maps.Map('#myMap', {
                 navigationBarOrientation: Microsoft.Maps.NavigationBarOrientation.horizontal,
                 showMapTypeSelector: false,
@@ -22,22 +21,43 @@
             Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
                 //Create an instance of the directions manager.
                 directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
-
-                var seattleWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Faulkner Hospital, Boston, Massachusetts, United States" });
-                directionsManager.addWaypoint(seattleWaypoint);
-
-                var workWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Hospital, 75 Francis St, Boston, Massachusetts"});
-                directionsManager.addWaypoint(workWaypoint);
-
-                //Specify where to display the route instructions.
-                directionsManager.setRenderOptions({ itineraryContainer: '#directionsItinerary' });
-
-                //Calculate directions.
-                directionsManager.calculateDirections();
-
-                // Set zoom
-                map.setView({zoom: 14});
             });
+        }
+
+        function pathToMain() {
+            var faulknerWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Faulkner Hospital, Boston, Massachusetts, United States" });
+            var mainWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Hospital, 75 Francis St, Boston, Massachusetts"});
+
+            directionsManager.clearAll();
+            directionsManager.addWaypoint(faulknerWaypoint);
+            directionsManager.addWaypoint(mainWaypoint);
+
+            //Specify where to display the route instructions.
+            directionsManager.setRenderOptions({ itineraryContainer: '#directionsItinerary' });
+
+            //Calculate directions.
+            directionsManager.calculateDirections();
+
+            // Set zoom
+            map.setView({zoom: 14});
+        }
+
+        function pathToFaulkner() {
+            var faulknerWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Faulkner Hospital, Boston, Massachusetts, United States" });
+            var mainWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Hospital, 75 Francis St, Boston, Massachusetts"});
+
+            directionsManager.clearAll();
+            directionsManager.addWaypoint(mainWaypoint);
+            directionsManager.addWaypoint(faulknerWaypoint);
+
+            //Specify where to display the route instructions.
+            directionsManager.setRenderOptions({ itineraryContainer: '#directionsItinerary' });
+
+            //Calculate directions.
+            directionsManager.calculateDirections();
+
+            // Set zoom
+            map.setView({zoom: 14});
         }
     </script>
     <style>
@@ -50,9 +70,9 @@
         .directionsContainer{
             background-color: white;
             position:absolute;
-            margin-top:362px;
+            margin-top:422px;
             width:300px;
-            height:calc(100% - 362px);
+            height:calc(100% - 422px);
             overflow-y:auto;
             float:left;
             z-index: 10;

@@ -1,25 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXListView?>
-<?import com.jfoenix.controls.JFXRadioButton?>
-<?import com.jfoenix.controls.JFXSlider?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootPane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SimpleMapController">
+<BorderPane fx:id="rootPane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SimpleMapController">
    <center>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0">
          <StackPane fx:id="dialogPane" prefHeight="150.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -40,6 +27,12 @@
                         <Insets bottom="25.0" left="10.0" right="10.0" top="25.0" />
                      </padding>
                      <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Starting Location" styleClass="small-text" />
+                     <JFXButton fx:id="swapBtn" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedSwap">
+                        <styleClass>
+                           <String fx:value="green-button" />
+                           <String fx:value="regular-text" />
+                        </styleClass>
+                     </JFXButton>
                      <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Destination" styleClass="small-text" />
 
                            <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" text="Go">
@@ -60,7 +53,7 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <GridPane fx:id="directionsPane" layoutY="310.0" maxHeight="452.0" maxWidth="300.0" minHeight="452.0" minWidth="300.0" pickOnBounds="false" prefHeight="452.0" prefWidth="300.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="310.0">
+                  <GridPane fx:id="directionsPane" layoutY="310.0" maxHeight="452.0" maxWidth="300.0" minHeight="452.0" minWidth="300.0" pickOnBounds="false" prefHeight="452.0" prefWidth="300.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="370.0">
                      <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                      </columnConstraints>

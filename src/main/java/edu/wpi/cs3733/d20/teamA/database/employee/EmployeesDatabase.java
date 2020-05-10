@@ -1,16 +1,10 @@
 package edu.wpi.cs3733.d20.teamA.database.employee;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.security.SecureRandom;
 import java.sql.*;
-import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.commons.codec.binary.Base32;
@@ -46,13 +40,13 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
    */
   public synchronized boolean createTables() {
 
-    // Create the graph tables
     if (doesTableNotExist("EMPLOYEES")) {
       return helperPrepared(
           "CREATE TABLE Employees (employeeID VARCHAR(6) PRIMARY KEY,"
               + " nameFirst Varchar(25), nameLast Varchar(25),"
               + " username Varchar(25) UNIQUE NOT NULL,"
-              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), rfid Varchar(10),"
+              + " password Varchar(60) NOT NULL, title Varchar(50), secretKey Varchar(32), pagerNum Varchar(10), "
+              + " rfid Varchar(10),"
               + "CONSTRAINT Check_Title CHECK (title in ('admin', 'doctor', 'nurse', 'janitor', 'interpreter', 'receptionist', 'retail')))");
     }
     return false;
@@ -69,7 +63,8 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String nameLast,
       String username,
       String password,
-      EmployeeTitle title) {
+      EmployeeTitle title,
+      String pagerNum) {
     String storedPassword =
         BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
 
@@ -78,14 +73,15 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
           getConnection()
               .prepareStatement(
                   "INSERT INTO Employees (employeeID, nameFirst, nameLast,"
-                      + " username, password, title)"
-                      + " VALUES (?, ?, ?, ?, ?, ?)");
+                      + " username, password, title, pagerNum)"
+                      + " VALUES (?, ?, ?, ?, ?, ?, ?)");
       pstmt.setString(1, employeeID);
       pstmt.setString(2, nameFirst);
       pstmt.setString(3, nameLast);
       pstmt.setString(4, username);
       pstmt.setString(5, storedPassword);
       pstmt.setString(6, title.toString());
+      pstmt.setString(7, pagerNum);
       pstmt.executeUpdate();
       pstmt.close();
       return employeeID;
@@ -165,6 +161,84 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       pstmt.setString(6, title.toString());
       pstmt.setString(7, secretKey);
       pstmt.setString(8, rfid);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
+   */
+  public synchronized String addEmployeeGAP(
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      String rfid,
+      String pagerNum) {
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+    String secretKey = generateSecretKey();
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey, rfid, pagerNum) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, getRandomString());
+      pstmt.setString(2, nameFirst);
+      pstmt.setString(3, nameLast);
+      pstmt.setString(4, username);
+      pstmt.setString(5, storedPassword);
+      pstmt.setString(6, title.toString());
+      pstmt.setString(7, secretKey);
+      pstmt.setString(8, rfid);
+      pstmt.setString(9, pagerNum);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return secretKey;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  /**
+   * @param nameFirst nameFirst
+   * @param nameLast last name
+   * @return returns true if the employee is added
+   */
+  public synchronized String addEmployeeGAP(
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      String pagerNum) {
+    String storedPassword =
+        BCrypt.withDefaults().hashToString(numIterations, password.toCharArray());
+    String secretKey = generateSecretKey();
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO Employees (employeeID, nameFirst, nameLast, username, password, title, secretKey, pagerNum) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+      pstmt.setString(1, getRandomString());
+      pstmt.setString(2, nameFirst);
+      pstmt.setString(3, nameLast);
+      pstmt.setString(4, username);
+      pstmt.setString(5, storedPassword);
+      pstmt.setString(6, title.toString());
+      pstmt.setString(7, secretKey);
+      pstmt.setString(8, pagerNum);
       pstmt.executeUpdate();
       pstmt.close();
       return secretKey;
@@ -269,7 +343,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     }
   }
 
-  public synchronized String getTitle(String username) {
+  public synchronized EmployeeTitle getTitle(String username) {
     try {
       PreparedStatement pstmt =
           getConnection().prepareStatement("SELECT * FROM Employees WHERE username = ?");
@@ -279,11 +353,11 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String id = rset.getString("title");
       rset.close();
       pstmt.close();
-      return id;
+      return EmployeeTitle.valueOf(id);
 
     } catch (SQLException e) {
       e.printStackTrace();
-      return "";
+      return null;
     }
   }
 
@@ -305,14 +379,25 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   }
 
   public synchronized String addEmployeeNoChecks(
-      String nameFirst, String nameLast, String username, String password, EmployeeTitle title) {
-    return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      String pagerNum) {
+    return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
   }
 
   public synchronized String addEmployee(
-      String nameFirst, String nameLast, String username, String password, EmployeeTitle title) {
+      String nameFirst,
+      String nameLast,
+      String username,
+      String password,
+      EmployeeTitle title,
+      String pagerNum) {
     if (checkSecurePass(password)) {
-      return addEmployee(getRandomString(), nameFirst, nameLast, username, password, title);
+      return addEmployee(
+          getRandomString(), nameFirst, nameLast, username, password, title, pagerNum);
     } else {
       return "";
     }
@@ -543,8 +628,10 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
         String username = rset.getString("username");
+        String pagerNum = rset.getString("pagerNum");
         Employee e =
-            new Employee(id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username);
+            new Employee(
+                id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username, pagerNum);
         eList.add(e);
       }
       rset.close();
@@ -556,31 +643,28 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     }
   }
 
-  public synchronized void readEmployeeCSV() {
+  /** @return true if all all employee are removed */
+  public synchronized boolean removeAllEmployees() {
+    return helperPrepared("DELETE From Employees");
+  }
+
+  public boolean addLog(String username) {
+    Timestamp timeOf = new Timestamp(System.currentTimeMillis());
+
     try {
-      InputStream stream =
-          getClass().getResourceAsStream("/edu/wpi/cs3733/d20/teamA/csvfiles/Employees.csv");
-      CSVReader reader = new CSVReader(new InputStreamReader(stream));
-      List<String[]> data = reader.readAll();
-      for (int i = 1; i < data.size(); i++) {
-        String nameFirst, nameLast, username, password, title;
-        String employeeID;
-        employeeID = data.get(i)[0];
-        nameFirst = data.get(i)[1];
-        nameLast = data.get(i)[2];
-        username = data.get(i)[3];
-        password = data.get(i)[4];
-        title = data.get(i)[5];
-        addEmployee(
-            employeeID,
-            nameFirst,
-            nameLast,
-            username,
-            password,
-            EmployeeTitle.valueOf(title.toUpperCase()));
-      }
-    } catch (IOException | CsvException e) {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "INSERT INTO LoggedIn (username, timeLogged, flag) VALUES (?, ?, ?)");
+      pstmt.setString(1, username);
+      pstmt.setTimestamp(2, timeOf);
+      pstmt.setBoolean(3, true);
+      pstmt.executeUpdate();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
       e.printStackTrace();
+      return false;
     }
   }
 
@@ -622,8 +706,10 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String lName = rset.getString("nameLast");
       String title = rset.getString("title");
       String username = rset.getString("username");
+      String pagerNum = rset.getString("pagerNum");
       Employee e =
-          new Employee(id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username);
+          new Employee(
+              id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username, pagerNum);
       rset.close();
       pstmt.close();
       return e;
@@ -646,8 +732,10 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         String lName = rset.getString("nameLast");
         String type = rset.getString("title");
         String username = rset.getString("username");
+        String pagerNum = rset.getString("pagerNum");
         Employee e =
-            new Employee(id, fName, lName, EmployeeTitle.valueOf(type.toUpperCase()), username);
+            new Employee(
+                id, fName, lName, EmployeeTitle.valueOf(type.toUpperCase()), username, pagerNum);
         eList.add(e);
       }
       rset.close();
