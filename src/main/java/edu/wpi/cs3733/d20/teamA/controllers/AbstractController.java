@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
+import edu.wpi.cs3733.d20.teamA.database.OnCallDatabase;
 import edu.wpi.cs3733.d20.teamA.database.announcement.AnnouncementDatabase;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
@@ -30,6 +31,7 @@ public abstract class AbstractController {
   // protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
+  protected OnCallDatabase ocDB;
 
   protected PatientDatabase patientDatabase; // Not usable as service request table line
   protected AnnouncementDatabase announcementDatabase;
@@ -48,6 +50,7 @@ public abstract class AbstractController {
     patientDatabase = new PatientDatabase(conn);
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
+    ocDB = new OnCallDatabase(conn);
     reservationDatabase = new ReservationDatabase(conn);
 
     if (comPort == null) {
