@@ -120,6 +120,15 @@ public class CreateAcctController extends AbstractController implements IDialogC
           if (addPic.isSelected()) {
             Webcam webcam = Webcam.getDefault();
             webcam.open();
+            Platform.runLater(
+              () -> {
+                DialogUtil.complexDialog(
+                        "You must scan the QR code in Google Authenticator and use it for logging in",
+                        "views/WebCamPopup.fxml",
+                        true,
+                        null,
+                        new WebCamPopupController());
+              });
             try {
               ImageIO.write(webcam.getImage(), "PNG", new File("temp.png"));
               webcam.close();
