@@ -4,7 +4,6 @@ import animatefx.animation.FadeInLeft;
 import animatefx.animation.FadeOutLeft;
 import com.google.common.io.Resources;
 import com.jfoenix.controls.*;
-import com.sun.javafx.webkit.WebConsoleListener;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
@@ -74,10 +73,6 @@ public class SimpleMapController extends AbstractController {
               Resources.toString(
                   App.class.getResource("html/tomain.html"), StandardCharsets.UTF_8));
       gMapView.setVisible(false);
-      WebConsoleListener.setDefaultListener(
-          (webView, message, lineNumber, sourceId) -> {
-            System.out.println(sourceId + ":" + lineNumber + ": " + message);
-          });
       gluonMapPane.getChildren().add(gMapView);
     } catch (Exception e) {
       DialogUtil.simpleErrorDialog(
