@@ -192,6 +192,8 @@ public class SimpleMapController extends AbstractController {
     textDirectionsDrawer.close();
     Node start = getSelectedNode(startingLocationBox);
     Node end = getSelectedNode(destinationBox);
+    startingLocationBox.setItems(Graph.getAllValidDestinationList());
+    destinationBox.setItems(Graph.getAllValidDestinationList());
 
     startingLocationBox.getSelectionModel().select(end);
     destinationBox.getSelectionModel().select(start);
