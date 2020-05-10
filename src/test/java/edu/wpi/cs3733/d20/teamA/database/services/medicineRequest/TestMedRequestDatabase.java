@@ -35,7 +35,8 @@ public class TestMedRequestDatabase {
       graphDatabase.addNode(
           "biscuit", 2, 5, 2, "White House", "CONF", "balogna", "b", "Team A", Campus.FAULKNER);
       employeesDatabase = new EmployeesDatabase(conn);
-      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+      employeesDatabase.addEmployee(
+          "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, "8837726619l");
       employeesDatabase.logIn("yppatel", "YashPatel1");
       serviceDatabase = new ServiceDatabase(conn);
     } catch (SQLException e) {

@@ -7,13 +7,15 @@ public class TestEmployee {
 
   @Test
   public void createEmployee() {
-    Employee employee = new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel");
+    Employee employee =
+        new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel", "9900990094l");
     Assertions.assertNotNull(employee);
   }
 
   @Test
   public void testGetters() {
-    Employee employee = new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel");
+    Employee employee =
+        new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel", "9900990094l");
     Assertions.assertEquals("EEEEEEE", employee.getId());
     Assertions.assertEquals("Yash Patel", employee.toString());
     Assertions.assertEquals("yppatel", employee.getUsername());
@@ -27,8 +29,10 @@ public class TestEmployee {
 
   @Test
   public void testEquals() {
-    Employee employee = new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel");
-    Employee employee1 = new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel");
+    Employee employee =
+        new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel", "3300220033l");
+    Employee employee1 =
+        new Employee("EEEEEEE", "Yash", "Patel", EmployeeTitle.ADMIN, "yppatel", "3300220033l");
     Assertions.assertTrue(employee.equals(employee1));
   }
 }

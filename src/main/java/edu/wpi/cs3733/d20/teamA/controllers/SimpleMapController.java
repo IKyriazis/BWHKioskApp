@@ -35,6 +35,7 @@ public class SimpleMapController extends AbstractController {
   @FXML private Pane gluonMapPane;
 
   @FXML private JFXButton goButton;
+  @FXML private JFXButton swapBtn;
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton dirBackButton;
   @FXML private JFXButton dirNextButton;
@@ -130,6 +131,7 @@ public class SimpleMapController extends AbstractController {
 
     // Set button icons
     goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
+    swapBtn.setGraphic(new FontIcon(FontAwesomeSolid.RETWEET));
     directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
     // qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
     dirBackButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_LEFT));
@@ -182,6 +184,17 @@ public class SimpleMapController extends AbstractController {
       textDirectionsDrawer.close();
       clearPath();
     }
+  }
+
+  @FXML
+  public void pressedSwap() {
+    clearPath();
+    textDirectionsDrawer.close();
+    Node start = getSelectedNode(startingLocationBox);
+    Node end = getSelectedNode(destinationBox);
+
+    startingLocationBox.getSelectionModel().select(end);
+    destinationBox.getSelectionModel().select(start);
   }
 
   @FXML
