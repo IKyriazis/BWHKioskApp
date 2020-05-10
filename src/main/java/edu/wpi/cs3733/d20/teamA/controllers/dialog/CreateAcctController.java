@@ -129,7 +129,9 @@ public class CreateAcctController extends AbstractController implements IDialogC
                     () -> {
                       DialogUtil.simpleErrorDialog(
                           "Duplicate Card", "There is another account associated with this card.");
+                      clearFields();
                     });
+                return;
               } else {
                 eDB.addRFID(uName.getText(), rfid);
               }
@@ -138,7 +140,9 @@ public class CreateAcctController extends AbstractController implements IDialogC
                   () -> {
                     DialogUtil.simpleErrorDialog(
                         "Read Fail", "There was an error reading the card please try again");
+                    clearFields();
                   });
+              return;
             }
           }
 
@@ -155,6 +159,7 @@ public class CreateAcctController extends AbstractController implements IDialogC
                       null,
                       new QRDialogController(barCodeUrl));
                 });
+            clearFields();
           }
         });
   }
