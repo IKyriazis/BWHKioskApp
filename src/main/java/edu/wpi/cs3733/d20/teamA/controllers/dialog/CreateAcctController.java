@@ -20,6 +20,7 @@ public class CreateAcctController extends AbstractController implements IDialogC
   @FXML private JFXPasswordField pass;
   @FXML private JFXPasswordField cPass;
   @FXML private JFXCheckBox addRFID;
+  @FXML private JFXCheckBox addPic;
   @FXML private JFXComboBox title;
   @FXML private JFXTextField IPager;
 
@@ -111,6 +112,9 @@ public class CreateAcctController extends AbstractController implements IDialogC
                   EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
           if (!IPager.getText().isEmpty()) {
             eDB.addPagerNum(uName.getText(), IPager.getText());
+          }
+          if (addPic.isSelected()) {
+
           }
           if (addRFID.isSelected()) {
             // popup message saying that we are scanning for rfid card
