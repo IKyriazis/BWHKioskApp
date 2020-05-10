@@ -376,6 +376,12 @@ public class MapEditorController {
     editorTipLabel.setText(info);
   }
 
+  public void changeMapColors(){
+    mainCanvas.setColoredFloorImages(Color.rgb(255, 0, 255),Color.rgb(0, 255, 255));
+    faulknerCanvas.setColoredFloorImages(Color.rgb(255, 0, 255),Color.rgb(0, 255, 255));
+    currCanvas.setColoredFloorImages(Color.rgb(255, 0, 255),Color.rgb(0, 255, 255));
+  }
+
   private void openNodeModifyDialog(Node node, int x, int y, int floor) {
     String heading = (node == null) ? "Add Node" : "Edit Node";
     NodeDialogController nodeDialogController =

@@ -348,7 +348,7 @@ public class MapCanvas extends Canvas {
           pixelWriter.setColor(readX, readY, color);
         }
       }
-      coloredFloorImages[i] = wImage;
+      this.coloredFloorImages[i] = wImage;
     }
   }
 
