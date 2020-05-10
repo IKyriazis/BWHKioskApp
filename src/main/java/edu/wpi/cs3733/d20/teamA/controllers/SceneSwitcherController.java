@@ -294,6 +294,8 @@ public class SceneSwitcherController extends AbstractController {
       return;
     }
 
+    stopRFID();
+
     loginTransitioning = true;
 
     // make sure google authenticator stuff is now the login stuff
