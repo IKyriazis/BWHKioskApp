@@ -53,13 +53,13 @@
                                     <columnConstraints>
                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="0.0" prefWidth="10.0" />
                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" prefWidth="175.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="175.0" />
                                     </columnConstraints>
                                     <rowConstraints>
                                         <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     </rowConstraints>
                                     <children>
@@ -74,17 +74,17 @@
                                     <String fx:value="medium-text" />
                                  </styleClass>
                                         </Label>
-                              <JFXTimePicker fx:id="endPicker" defaultColor="#1565c0" layoutX="20.0" layoutY="196.0" promptText="End Time" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                              <JFXComboBox fx:id="roomBox" prefWidth="212.8" promptText="Room/Bed" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                              <JFXButton fx:id="reservationButton" onAction="#addReservation" text="Make Reservation" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
-                              <Label text="*maximum of 12 hours" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="TOP" />
+                              <JFXTimePicker fx:id="endPicker" defaultColor="#1565c0" layoutX="20.0" layoutY="196.0" promptText="End Time" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <JFXComboBox fx:id="roomBox" prefWidth="212.8" promptText="Room/Bed" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                              <JFXButton fx:id="reservationButton" onAction="#addReservation" text="Make Reservation" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                              <Label text="*maximum of 12 hours" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" GridPane.valignment="TOP" />
                                     </children>
                                 </GridPane>
                             </children>
                         </GridPane>
                         <GridPane hgap="25.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="rounded-pane" vgap="25.0">
                             <columnConstraints>
-                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1000.0" minWidth="400.0" prefWidth="1000.0" />
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1000.0" minWidth="400.0" prefWidth="900.0" />
                             </columnConstraints>
                             <rowConstraints>
                                 <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />

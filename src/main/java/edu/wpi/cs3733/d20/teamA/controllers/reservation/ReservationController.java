@@ -1,6 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.controllers.reservation;
 
 import com.calendarfx.model.CalendarSource;
+import com.calendarfx.model.Entry;
+import com.calendarfx.model.Interval;
 import com.calendarfx.view.CalendarView;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
@@ -10,6 +12,7 @@ import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Locale;
@@ -36,6 +39,11 @@ public class ReservationController extends AbstractController {
 
   private SimpleTableView<Reservation> tblView;
 
+  private CalendarSource calendarSource;
+  com.calendarfx.model.Calendar beds;
+  com.calendarfx.model.Calendar reflect;
+  com.calendarfx.model.Calendar conf;
+
   public void initialize() {
     headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_ALT));
     reservationButton.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_PLUS));
@@ -46,8 +54,6 @@ public class ReservationController extends AbstractController {
         new SimpleTableView<>(
             new Reservation("", Calendar.getInstance(), Calendar.getInstance(), ""), 80.0);
     // requestTablePane.getChildren().add(tblView);
-
-    update();
 
     ObservableList<String> roomList = FXCollections.observableArrayList();
 
@@ -73,15 +79,27 @@ public class ReservationController extends AbstractController {
 
     CalendarView calendarView = new CalendarView();
 
-    CalendarSource calendarSource = new CalendarSource("My Calendars");
+    calendarSource = new CalendarSource("Room Calendars");
 
-    for (String s : roomList) {
-      calendarSource.getCalendars().add(new com.calendarfx.model.Calendar(s));
-    }
+    beds = new com.calendarfx.model.Calendar("On-Call Beds");
+    beds.setStyle(com.calendarfx.model.Calendar.Style.STYLE1);
+    beds.setReadOnly(true);
 
-    calendarView.getCalendarSources().addAll(calendarSource);
+    reflect = new com.calendarfx.model.Calendar("Reflection Rooms");
+    reflect.setStyle(com.calendarfx.model.Calendar.Style.STYLE2);
+    reflect.setReadOnly(true);
+
+    conf = new com.calendarfx.model.Calendar("Conference Rooms");
+    conf.setStyle(com.calendarfx.model.Calendar.Style.STYLE3);
+    conf.setReadOnly(true);
+
+    calendarSource.getCalendars().addAll(beds, reflect, conf);
+
+    calendarView.getCalendarSources().setAll(calendarSource);
 
     requestTablePane.getChildren().add(calendarView);
+
+    update();
   }
   // Creates a calendar datatype from a date and a time
   private Calendar makeCalendar(LocalDate date, LocalTime time) {
@@ -186,16 +204,77 @@ public class ReservationController extends AbstractController {
 
   public void update() {
     try {
-      tblView.clear();
+      beds.clear();
+      reflect.clear();
+      conf.clear();
       if (myReservationsCheck.selectedProperty().get()) {
-        tblView.add(reservationDatabase.getObservableListByUser());
+        addAllRes(reservationDatabase.getObservableListByUser());
       } else {
-        tblView.add(reservationDatabase.getObservableList());
+        addAllRes(reservationDatabase.getObservableList());
       }
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(
           dialogStackPane, "Error", "Failed to update room scheduler table");
+    }
+  }
+
+  private LocalDateTime makeLocalDateTime(Calendar cal) {
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH);
+    int day = cal.get(Calendar.DAY_OF_MONTH);
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+    int minute = cal.get(Calendar.MINUTE);
+    int second = cal.get(Calendar.SECOND);
+    return LocalDateTime.of(year, month, day, hour, minute, second);
+  }
+
+  private LocalDate makeLocalDate(Calendar cal) {
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH);
+    int day = cal.get(Calendar.DAY_OF_MONTH);
+    return LocalDate.of(year, month, day);
+  }
+
+  private LocalTime makeLocalTime(Calendar cal) {
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+    int minute = cal.get(Calendar.MINUTE);
+    int second = cal.get(Calendar.SECOND);
+    return LocalTime.of(hour, minute, second);
+  }
+
+  private void addAllRes(ObservableList<Reservation> reservations) {
+    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+    Calendar calendar1 = Calendar.getInstance();
+    Calendar calendar2 = Calendar.getInstance();
+    String loc;
+    try {
+      for (Reservation r : reservations) {
+        loc = r.getAreaReserved();
+        calendar1.setTime(sdf.parse(r.getStartTime()));
+        calendar2.setTime(sdf.parse(r.getEndTime()));
+        Entry<String> entry =
+            new Entry<>(
+                loc
+                    + " at "
+                    + calendar1.get(Calendar.HOUR_OF_DAY)
+                    + ":"
+                    + calendar1.get(Calendar.MINUTE));
+        entry.setLocation(loc);
+        Interval interval =
+            new Interval(makeLocalDateTime(calendar1), makeLocalDateTime(calendar2));
+        entry.setInterval(interval);
+        if (loc.contains("On-Call Bed")) {
+          entry.setCalendar(beds);
+        } else if (loc.contains("Reflection Room")) {
+          entry.setCalendar(reflect);
+        } else {
+          entry.setCalendar(conf);
+        }
+      }
+    } catch (ParseException e) {
+      e.printStackTrace();
+      return;
     }
   }
 }

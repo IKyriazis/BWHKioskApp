@@ -262,12 +262,8 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
         start.setTimeInMillis(startT.getTime());
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(endT.getTime());
-        Calendar check = Calendar.getInstance();
-        if (end.compareTo(check) >= 0) {
-          observableList.add(new Reservation(emp, start, end, loc));
-        } else {
-          deleteRes(start, loc);
-        }
+
+        observableList.add(new Reservation(emp, start, end, loc));
       }
       rset.close();
       pstmt.close();
@@ -300,12 +296,8 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
         start.setTimeInMillis(startT.getTime());
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(endT.getTime());
-        Calendar check = Calendar.getInstance();
-        if (end.compareTo(check) >= 0) {
-          observableList.add(new Reservation(emp, start, end, loc));
-        } else {
-          deleteRes(start, loc);
-        }
+
+        observableList.add(new Reservation(emp, start, end, loc));
       }
       rset.close();
       pstmt.close();
@@ -337,12 +329,8 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
         start.setTimeInMillis(startT.getTime());
         Calendar end = Calendar.getInstance();
         end.setTimeInMillis(endT.getTime());
-        Calendar check = Calendar.getInstance();
-        if (end.compareTo(check) >= 0) {
-          observableList.add(new Reservation(emp, start, end, loc));
-        } else {
-          deleteRes(start, loc);
-        }
+
+        observableList.add(new Reservation(emp, start, end, loc));
       }
       rset.close();
       pstmt.close();
