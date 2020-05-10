@@ -3,7 +3,9 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 import com.fazecast.jSerialComm.SerialPort;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.database.DatabaseServiceProvider;
+import edu.wpi.cs3733.d20.teamA.database.OnCallDatabase;
 import edu.wpi.cs3733.d20.teamA.database.announcement.AnnouncementDatabase;
+import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeesDatabase;
 import edu.wpi.cs3733.d20.teamA.database.graph.GraphDatabase;
 import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
@@ -20,6 +22,7 @@ import java.util.Optional;
 
 public abstract class AbstractController {
   private SerialPort comPort = null;
+  public static String companyName = "Amethyst Asgardians";
 
   private DatabaseServiceProvider provider;
   private Connection conn;
@@ -29,6 +32,7 @@ public abstract class AbstractController {
   // protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
+  protected OnCallDatabase ocDB;
 
   protected PatientDatabase patientDatabase; // Not usable as service request table line
   protected AnnouncementDatabase announcementDatabase;
@@ -46,6 +50,7 @@ public abstract class AbstractController {
     patientDatabase = new PatientDatabase(conn);
     announcementDatabase = new AnnouncementDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
+    ocDB = new OnCallDatabase(conn);
     reservationDatabase = new ReservationDatabase(conn);
 
     // Uncomment this line to delete the database of food stuff
@@ -56,6 +61,30 @@ public abstract class AbstractController {
       if (comPorts.length > 0) {
         comPort = SerialPort.getCommPorts()[0];
       }
+    }
+
+    // Create the employee table if it doesn't exist
+    if (eDB.getSize() == -1 || eDB.getSize() == 0) {
+      eDB.createTables();
+      eDB.addEmployee(
+          "111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN, "1122112211");
+      eDB.addEmployee(
+          "222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.NURSE, "2233223322");
+      eDB.addEmployee(
+          "Brennan", "Aubuchaun", "baub", "baUb578", EmployeeTitle.INTERPRETER, "1234567890");
+      eDB.addEmployee(
+          "Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano2", EmployeeTitle.NURSE, "3344334433");
+      eDB.addEmployee(
+          "Eva", "Labbe", "ELLabbe", "CluBP3nGuin3", EmployeeTitle.JANITOR, "4455445544");
+      eDB.addEmployee(
+          "Dean", "Winchester", "WinDean", "catNipRox2", EmployeeTitle.DOCTOR, "5566556655");
+      eDB.addEmployee(
+          "Stella", "Simmons", "Ssimmons", "gaLaxY6", EmployeeTitle.RECEPTIONIST, "6677667766");
+      eDB.addEmployee(
+          "Yolanda", "Daniels", "YDaniels", "SpoodRman3", EmployeeTitle.RETAIL, "7788778877");
+      // create account with rfid
+      eDB.addEmployeeGA(
+          "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
     }
   }
 
@@ -87,6 +116,12 @@ public abstract class AbstractController {
       comPort.closePort();
       e.printStackTrace();
       return null;
+    }
+  }
+
+  public void stopRFID() {
+    if (comPort != null) {
+      comPort.closePort();
     }
   }
 

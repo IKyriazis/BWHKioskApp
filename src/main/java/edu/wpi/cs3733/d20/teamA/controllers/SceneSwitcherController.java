@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import de.taimos.totp.TOTP;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
-import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -84,22 +83,6 @@ public class SceneSwitcherController extends AbstractController {
 
     // Make it so top bar is actually on top of everything.
     funPane.toFront();
-
-    // Create the employee table if it doesn't exist
-    if (eDB.getSize() == -1 || eDB.getSize() == 0) {
-      eDB.createTables();
-      eDB.addEmployee("111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN);
-      eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.NURSE);
-      eDB.addEmployee("Brennan", "Aubuchaun", "baub", "baUb578", EmployeeTitle.INTERPRETER);
-      eDB.addEmployee("Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano2", EmployeeTitle.NURSE);
-      eDB.addEmployee("Eva", "Labbe", "ELLabbe", "CluBP3nGuin3", EmployeeTitle.JANITOR);
-      eDB.addEmployee("Dean", "Winchester", "WinDean", "catNipRox2", EmployeeTitle.DOCTOR);
-      eDB.addEmployee("Stella", "Simmons", "Ssimmons", "gaLaxY6", EmployeeTitle.RECEPTIONIST);
-      eDB.addEmployee("Yolanda", "Daniels", "YDaniels", "SpoodRman3", EmployeeTitle.RETAIL);
-      // create account with rfid
-      eDB.addEmployeeGA(
-          "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
-    }
 
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);
@@ -310,6 +293,8 @@ public class SceneSwitcherController extends AbstractController {
     if (loginTransitioning) {
       return;
     }
+
+    stopRFID();
 
     loginTransitioning = true;
 
@@ -592,6 +577,6 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   public void openAbout(ActionEvent actionEvent) {
-    pushScene("views/AboutPage.fxml", TransitionType.ZOOM);
+    pushScene("views/About.fxml", TransitionType.ZOOM);
   }
 }

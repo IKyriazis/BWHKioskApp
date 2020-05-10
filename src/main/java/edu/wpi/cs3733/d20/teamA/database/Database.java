@@ -195,6 +195,64 @@ public abstract class Database {
     return null;
   }
 
+  public String getNamefromUserF(String username) {
+    String first;
+    try {
+      Statement priceStmt = getConnection().createStatement();
+      ResultSet rst =
+          priceStmt.executeQuery("SELECT * FROM Employees WHERE username = '" + username + "'");
+      ;
+      rst.next();
+      first = rst.getString("nameFirst");
+      return first;
+    } catch (SQLException ex) {
+      ex.printStackTrace();
+    }
+    return null;
+  }
+
+  public synchronized EmployeeTitle getTitle(String username) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("Select * From Employees Where username = '" + username + "'");
+      ResultSet rset = pstmt.executeQuery();
+      EmployeeTitle title = null;
+      String titleString = null;
+      if (rset.next()) {
+        titleString = rset.getString("title");
+        title = EmployeeTitle.valueOf(titleString.toUpperCase());
+      }
+      rset.close();
+      pstmt.close();
+      return title;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public synchronized String getPager(String username) {
+
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement("Select * From Employees Where username = '" + username + "'");
+      ResultSet rset = pstmt.executeQuery();
+      String page = "";
+      if (rset.next()) {
+        page = rset.getString("pagerNum");
+      }
+      rset.close();
+      pstmt.close();
+      return page;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
   public long getRandomNumber() {
     double lo = 2176782335L;
     long result = (long) (new Random().nextLong() * (lo / (double) Long.MAX_VALUE));
@@ -230,7 +288,9 @@ public abstract class Database {
         String fName = rset.getString("nameFirst");
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
-        return new Employee(ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn);
+        String pagerNum = rset.getString("pagerNum");
+        return new Employee(
+            ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn, pagerNum);
       }
       return null;
     } catch (SQLException e) {

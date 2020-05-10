@@ -9,6 +9,9 @@ import java.util.Optional;
 public class Main {
 
   public static void main(String[] args) {
+    // Uncomment if screen is messed up
+    System.setProperty("prism.allowhidpi", "false");
+
     // Gluon Maps setup
     System.setProperty("javafx.platform", "Desktop");
     System.setProperty("http.agent", "Gluon Mobile/1.0.3  /" + System.getProperty("http.agent"));

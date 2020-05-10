@@ -31,7 +31,7 @@ public class PrescriptionRequestController extends AbstractRequestController {
     setupDescriptionArea(txtNotes);
 
     // Set up employee box
-    setupEmployeeBox(boxDoctorName);
+    setupEmployeeBox(boxDoctorName, "doctor");
   }
 
   @FXML
