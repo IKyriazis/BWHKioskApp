@@ -92,6 +92,12 @@ public abstract class AbstractController {
     }
   }
 
+  public void stopRFID() {
+    if (comPort != null) {
+      comPort.closePort();
+    }
+  }
+
   public String getGoogleAuthenticatorBarCode(String secretKey, String account, String issuer) {
     try {
       return "otpauth://totp/"
