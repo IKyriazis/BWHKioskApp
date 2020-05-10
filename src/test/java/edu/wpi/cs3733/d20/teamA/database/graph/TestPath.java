@@ -199,6 +199,9 @@ public class TestPath {
     path.setPath(new Djikstras(graph));
     Assertions.assertTrue(path.getPathFindingAlgo() instanceof Djikstras);
     graph.clearGraph();
+
+    ContextPath path2 = new ContextPath();
+    path2.setGraph(graph);
   }
 
   @Test
