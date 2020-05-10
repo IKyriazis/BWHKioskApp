@@ -1,4 +1,4 @@
-package edu.wpi.cs3733.d20.teamA.database.OnCall;
+package edu.wpi.cs3733.d20.teamA.database.oncall;
 
 import edu.wpi.cs3733.d20.teamA.database.PublicEmployee;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
