@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXDrawer?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXSlider?>
@@ -35,23 +34,21 @@
                     </rowConstraints>
                   </GridPane>
                   <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
+                  <VBox fx:id="directionsBox" alignment="CENTER" layoutX="15.0" layoutY="125.0" maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="300.0" prefWidth="300.0" spacing="25.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="125.0">
 
-                  <JFXDrawer fx:id="directionsDrawer" defaultDrawerSize="300.0" layoutY="93.0" maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="300.0" prefWidth="300.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="125.0">
-                     <VBox fx:id="directionsBox" alignment="CENTER" maxHeight="-Infinity" maxWidth="250.0" minHeight="-Infinity" minWidth="-Infinity" spacing="25.0">
+                           <padding>
+                        <Insets bottom="25.0" left="10.0" right="10.0" top="25.0" />
+                     </padding>
+                     <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Starting Location" styleClass="small-text" />
+                     <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Destination" styleClass="small-text" />
 
-                        <padding>
-                           <Insets bottom="25.0" left="10.0" right="10.0" top="25.0" />
-                        </padding>
-                        <JFXComboBox fx:id="startingLocationBox" editable="true" labelFloat="true" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Starting Location" styleClass="small-text" />
-                        <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Destination" styleClass="small-text" />
-
-                        <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" text="Go">
-                           <styleClass>
-                              <String fx:value="green-button" />
-                              <String fx:value="regular-text" />
-                           </styleClass></JFXButton>
-                     </VBox>
-                  </JFXDrawer>
+                           <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" text="Go">
+                        <styleClass>
+                           <String fx:value="green-button" />
+                           <String fx:value="regular-text" />
+                        </styleClass>
+                     </JFXButton>
+                  </VBox>
                   <JFXSlider fx:id="zoomSlider" indicatorPosition="RIGHT" showTickLabels="true" showTickMarks="true" value="-1.0" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="15.0" />
                   <HBox layoutX="15.0" layoutY="15.0" pickOnBounds="false" spacing="25.0" AnchorPane.topAnchor="65.0">
                      <children>
@@ -63,31 +60,27 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <JFXDrawer fx:id="textDirectionsDrawer" defaultDrawerSize="300.0" layoutY="308.0" prefHeight="450.0" prefWidth="300.0" visible="false" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="310.0">
+                  <GridPane fx:id="directionsPane" layoutY="310.0" maxHeight="452.0" maxWidth="300.0" minHeight="452.0" minWidth="300.0" prefHeight="452.0" prefWidth="300.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="310.0">
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="52.0" minHeight="52.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="-Infinity" valignment="TOP" vgrow="SOMETIMES" />
+                     </rowConstraints>
                      <children>
-                        <GridPane fx:id="directionsPane">
-                           <columnConstraints>
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
-                           </columnConstraints>
-                           <rowConstraints>
-                              <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" valignment="TOP" vgrow="SOMETIMES" />
-                           </rowConstraints>
+                        <HBox fx:id="buttonBox" alignment="CENTER">
+                           <GridPane.margin>
+                              <Insets bottom="10.0" top="10.0" />
+                           </GridPane.margin>
                            <children>
-                              <JFXListView fx:id="directionsList" />
-                              <HBox fx:id="buttonBox" alignment="CENTER" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets bottom="10.0" top="10.0" />
-                                 </GridPane.margin>
-                                 <children>
-                                    <JFXButton fx:id="dirBackButton" onAction="#pressedDirBack" styleClass="button-rounded-left" text="Back" />
-                                    <JFXButton fx:id="dirNextButton" onAction="#pressedDirNext" styleClass="button-rounded-right" text="Next" />
-                                 </children>
-                              </HBox>
+                              <JFXButton fx:id="dirBackButton" onAction="#pressedDirBack" styleClass="button-rounded-left" text="Back" />
+                              <JFXButton fx:id="dirNextButton" onAction="#pressedDirNext" styleClass="button-rounded-right" text="Next" />
                            </children>
-                        </GridPane>
+                        </HBox>
+                        <JFXListView fx:id="directionsList" GridPane.rowIndex="1" />
                      </children>
-                  </JFXDrawer>
+                  </GridPane>
                   <HBox layoutX="948.0" layoutY="568.0" spacing="25.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
                      <children>
                         <GridPane>

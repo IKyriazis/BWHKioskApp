@@ -11,7 +11,8 @@
         {
             map = new Microsoft.Maps.Map('#myMap', {
                 navigationBarOrientation: Microsoft.Maps.NavigationBarOrientation.horizontal,
-                showMapTypeSelector: false
+                showMapTypeSelector: false,
+                disableStreetside: true
             });
 
             // Disable panning
@@ -49,17 +50,29 @@
         .directionsContainer{
             background-color: white;
             position:absolute;
-            margin-top:310px;
+            margin-top:362px;
             width:300px;
-            height:calc(100% - 310px);
+            height:calc(100% - 362px);
             overflow-y:auto;
             float:left;
             z-index: 10;
         }
 
+        .bm_bottomRightOverlay {
+            right: 65px !important;
+        }
+
         .MicrosoftMap .NavBar_Container {
-            top: 15px !important;
+            top: 12px !important;
             left: 125px !important;
+        }
+
+        .MicrosoftMap .NavBar_Container.Light .NavBar_locateMe {
+            opacity: 0;
+        }
+
+        .bm_bottomLeftOverlay {
+            opacity: 0;
         }
 
         #myMap{

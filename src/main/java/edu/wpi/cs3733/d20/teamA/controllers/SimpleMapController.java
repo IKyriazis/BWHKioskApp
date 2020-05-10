@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
+import animatefx.animation.FadeInLeft;
+import animatefx.animation.FadeOutLeft;
 import com.google.common.io.Resources;
 import com.jfoenix.controls.*;
 import com.sun.javafx.webkit.WebConsoleListener;
@@ -24,8 +26,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 public class SimpleMapController extends AbstractController {
   @FXML private BorderPane rootPane;
-  @FXML private JFXDrawer directionsDrawer;
-  @FXML private JFXDrawer textDirectionsDrawer;
   @FXML private VBox directionsBox;
   @FXML private JFXComboBox<Node> startingLocationBox;
   @FXML private JFXComboBox<Node> destinationBox;
@@ -86,9 +86,6 @@ public class SimpleMapController extends AbstractController {
       e.printStackTrace();
     }
 
-    directionsDrawer.close();
-    textDirectionsDrawer.close();
-
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
     currCanvas = faulknerCanvas = new MapCanvas(true, Campus.FAULKNER);
     mainCanvas = new MapCanvas(true, Campus.MAIN);
@@ -113,28 +110,6 @@ public class SimpleMapController extends AbstractController {
     // Setup zoom slider cursor
     zoomSlider.setCursor(Cursor.H_RESIZE);
 
-    // Setup directions drawer
-    directionsDrawer.setSidePane(directionsBox);
-    directionsDrawer.setOnDrawerClosed(
-        event -> {
-          directionsDrawer.setMouseTransparent(true);
-          directionsDrawer.setVisible(false);
-          if (textDirectionsDrawer.isOpened()) {
-            textDirectionsDrawer.close();
-          }
-        });
-    directionsDrawer.setOnDrawerOpened(event -> directionsDrawer.setMouseTransparent(false));
-
-    // Setup text directions drawer
-    textDirectionsDrawer.setSidePane(directionsPane);
-    textDirectionsDrawer.setOnDrawerClosed(
-        event -> {
-          textDirectionsDrawer.setMouseTransparent(true);
-          textDirectionsDrawer.setVisible(false);
-        });
-    textDirectionsDrawer.setOnDrawerOpened(
-        event -> textDirectionsDrawer.setMouseTransparent(false));
-
     // Set button icons
     goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
     directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
@@ -144,6 +119,10 @@ public class SimpleMapController extends AbstractController {
 
     floorUpButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_UP));
     floorDownButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_DOWN));
+
+    // Hide directions display
+    directionsBox.setVisible(false);
+    directionsPane.setVisible(false);
 
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(
@@ -180,14 +159,29 @@ public class SimpleMapController extends AbstractController {
 
   @FXML
   public void toggleSearch() {
-    if (directionsDrawer.isClosed()) {
-      directionsDrawer.setVisible(true);
-    }
+    if (directionsBox.isVisible()) {
+      FadeOutLeft fadeOut = new FadeOutLeft(directionsBox);
+      fadeOut.setSpeed(2.0);
+      fadeOut.setOnFinished(
+          event -> {
+            directionsBox.setVisible(false);
+          });
+      fadeOut.play();
 
-    directionsDrawer.toggle();
-    if (textDirectionsDrawer.isOpened()) {
-      textDirectionsDrawer.close();
-      clearPath();
+      if (directionsPane.isVisible()) {
+        FadeOutLeft textOut = new FadeOutLeft(directionsPane);
+        textOut.setSpeed(2.0);
+        textOut.setOnFinished(
+            event -> {
+              directionsPane.setVisible(false);
+            });
+        textOut.play();
+      }
+    } else {
+      FadeInLeft fadeIn = new FadeInLeft(directionsBox);
+      fadeIn.setSpeed(2.0);
+      directionsBox.setVisible(true);
+      fadeIn.play();
     }
   }
 
@@ -266,9 +260,11 @@ public class SimpleMapController extends AbstractController {
       if (path.getPathNodes().size() != 0) {
         updateDisplayedPath();
 
-        if (textDirectionsDrawer.isClosed()) {
-          textDirectionsDrawer.open();
-          textDirectionsDrawer.setVisible(true);
+        if (!directionsPane.isVisible()) {
+          directionsPane.setVisible(true);
+          FadeInLeft fadeIn = new FadeInLeft(directionsPane);
+          fadeIn.setSpeed(2.0);
+          fadeIn.play();
         }
       } else {
         DialogUtil.simpleInfoDialog(
@@ -276,8 +272,14 @@ public class SimpleMapController extends AbstractController {
             "No Path Found",
             "No path between the selected locations could be found. Try choosing different locations.");
 
-        if (textDirectionsDrawer.isOpened()) {
-          textDirectionsDrawer.close();
+        if (directionsPane.isVisible()) {
+          FadeOutLeft fadeOut = new FadeOutLeft(directionsPane);
+          fadeOut.setSpeed(2.0);
+          fadeOut.setOnFinished(
+              event -> {
+                directionsPane.setVisible(false);
+              });
+          fadeOut.play();
         }
       }
     }
@@ -306,8 +308,6 @@ public class SimpleMapController extends AbstractController {
   public Graph getGraph() {
     return graph;
   }
-
-  public void pressedQRButton() {}
 
   @FXML
   public void floorUp() {
@@ -364,6 +364,10 @@ public class SimpleMapController extends AbstractController {
     PathSegment currSegment = pathSegments.get(currPathSegment);
     // Set canvas
     if (currSegment.getCampus() == Campus.FAULKNER) {
+      // Resize directions thingy
+      directionsPane.setMinHeight(452);
+      directionsPane.setPrefHeight(452);
+
       gMapView.setVisible(false);
       zoomSlider.setVisible(true);
 
@@ -377,6 +381,10 @@ public class SimpleMapController extends AbstractController {
 
       faulknerRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.MAIN) {
+      // Resize directions thingy
+      directionsPane.setMinHeight(452);
+      directionsPane.setPrefHeight(452);
+
       gMapView.setVisible(false);
       zoomSlider.setVisible(true);
 
@@ -391,6 +399,8 @@ public class SimpleMapController extends AbstractController {
       mainRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.INTER) {
       // Resize directions thingy
+      directionsPane.setMinHeight(52);
+      directionsPane.setPrefHeight(52);
 
       currCanvas.setVisible(false);
       currCanvas.disablePathAnimation();
