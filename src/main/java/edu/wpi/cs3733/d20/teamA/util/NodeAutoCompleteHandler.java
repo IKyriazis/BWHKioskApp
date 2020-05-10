@@ -57,21 +57,34 @@ public class NodeAutoCompleteHandler implements EventHandler<KeyEvent> {
       List<Node> nodesList = startingList.stream().collect(Collectors.toList());
       List<BoundExtractedResult<Node>> fuzzyMatch =
           FuzzySearch.extractTop(box.getEditor().getText(), nodesList, x -> x.toString(), 12, 50);
-      List<Node> matches = new ArrayList<>();
+      List<Node> matchess = new ArrayList<>();
       for (BoundExtractedResult<Node> node : fuzzyMatch) {
         Node aMatch = node.getReferent();
-        matches.add(aMatch);
+        matchess.add(aMatch);
       }
-      /*List<Node> matches =
-      startingList.stream()
-          .filter(
-              node ->
-                  node.toString()
-                      .toLowerCase()
-                      .contains(box.getEditor().getText().toLowerCase()))
-          .collect(Collectors.toList());*/
-      box.setItems(FXCollections.observableArrayList(matches));
-      box.setVisibleRowCount(Math.min(12, matches.size()));
+
+      List<Node> listOfNodes =
+          startingList.stream()
+              .filter(
+                  node ->
+                      fuzzyMatch.stream()
+                          .anyMatch(
+                              match ->
+                                  node.toString()
+                                      .toLowerCase()
+                                      .contains(match.getReferent().toString().toLowerCase())))
+              .collect(Collectors.toList());
+
+      List<Node> matches =
+          startingList.stream()
+              .filter(
+                  node ->
+                      node.toString()
+                          .toLowerCase()
+                          .contains(box.getEditor().getText().toLowerCase()))
+              .collect(Collectors.toList());
+      box.setItems(FXCollections.observableArrayList(matches)); // used to be matches
+      box.setVisibleRowCount(Math.min(12, matches.size())); // used to be matches.size()
       if (box.getVisibleRowCount() > 0) {
         box.show();
       }
