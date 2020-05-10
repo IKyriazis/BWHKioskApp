@@ -195,8 +195,8 @@ public class SimpleMapController extends AbstractController {
     startingLocationBox.setItems(Graph.getAllValidDestinationList());
     destinationBox.setItems(Graph.getAllValidDestinationList());
 
-    startingLocationBox.getSelectionModel().select(end);
-    destinationBox.getSelectionModel().select(start);
+    startingLocationBox.getEditor().setText(end.toString());
+    destinationBox.getEditor().setText(start.toString());
   }
 
   @FXML
