@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamL.GiftServiceRequest;
 import javafx.fxml.FXML;
@@ -11,13 +12,15 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeRegular;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
 public class GiftRequestController extends AbstractController {
   @FXML private Label headerLabel;
 
   @FXML private JFXComboBox<Node> comboLocation;
 
-  @FXML private JFXButton adminButton;
   @FXML private JFXButton orderButton;
   @FXML private StackPane dialogPane;
 
@@ -26,65 +29,43 @@ public class GiftRequestController extends AbstractController {
   public GiftRequestController() {}
 
   public void initialize() {
-    try {
-      GiftServiceRequest g = new GiftServiceRequest();
-      // Main.main(null);
-      Rectangle2D primScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
-      int width = 1000;
 
-      System.out.println(
-          g.run(
-              (int) ((primScreenBounds.getWidth() - width) / 2),
-              (int) (primScreenBounds.getHeight() / 3),
-              width,
-              750,
-              App.class.getResource("stylesheet.css").toExternalForm(),
-              "Node",
-              null));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    /*// Set up icons
-    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.HAMBURGER));
-    adminButton.setGraphic(new FontIcon(FontAwesomeSolid.USER));
+    // Set up icons
+    headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.GIFT));
     orderButton.setGraphic(new FontIcon(FontAwesomeRegular.ARROW_ALT_CIRCLE_RIGHT));
 
-    // Listen for tab switch events to update flower list
-    rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-                event.consume();
-                adminButton.setVisible(eDB.getLoggedIn() != null);
-            });
-
-    setupNodeBox(comboLocation, null);*/
+    setupNodeBox(comboLocation, null);
   }
 
   @FXML
   public void placeOrder() {
-    /* if (comboLocation.getSelectionModel().getSelectedItem() != null) {
+    if (comboLocation.getSelectionModel().getSelectedItem() != null) {
+      try {
+        GiftServiceRequest g = new GiftServiceRequest();
+        // Main.main(null);
+        Rectangle2D primScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+        int width = 1000;
 
-        APIController.setAdmin(false); // restricts admin access
-        APIController.setAutoClose(true); // auto-closes window after making a request
-        // APIController.addListener(request -> uController.back());  // leaves request screen after
-        // making a request, unsure how to integrate with our stuff
-
-        // open window
-        try {
-            APIController.run(
-                    -1,
-                    -1,
-                    1280,
-                    720,
-                    null, /*Add stylesheet
-                    comboLocation.getSelectionModel().getSelectedItem().getNodeID(),
-                    null);
-        } catch (ServiceException serviceException) {
-            serviceException.printStackTrace();
+        String s =
+            g.run(
+                (int) ((primScreenBounds.getWidth() - width) / 2),
+                (int) (primScreenBounds.getHeight() / 3),
+                width,
+                750,
+                App.class.getResource("stylesheet.css").toExternalForm(),
+                "Node",
+                "EndNode");
+        if (s != null) {
+          serviceDatabase.addServiceReq(
+              ServiceType.GIFT,
+              comboLocation.getSelectionModel().getSelectedItem().getNodeID(),
+              s,
+              null);
         }
-    } else {
-        DialogUtil.simpleErrorDialog("Can't place order", "Please select delivery location");
-    }*/
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   @FXML

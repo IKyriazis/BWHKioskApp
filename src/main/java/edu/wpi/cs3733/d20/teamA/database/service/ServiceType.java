@@ -8,7 +8,8 @@ public enum ServiceType {
   EQUIPMENT("equipreq"),
   IT_TICKET("ittix"),
   INTERNAL_TRANSPORT("intrntrans"),
-  PRESCRIPTION("rxreq");
+  PRESCRIPTION("rxreq"),
+  GIFT("gift");
 
   private String name;
 
