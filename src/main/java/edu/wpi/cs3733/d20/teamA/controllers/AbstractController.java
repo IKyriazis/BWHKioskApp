@@ -21,7 +21,6 @@ import java.sql.Connection;
 import java.util.Optional;
 
 public abstract class AbstractController {
-
   private SerialPort comPort = null;
   public static String companyName = "Amethyst Asgardians";
 
@@ -45,8 +44,7 @@ public abstract class AbstractController {
 
     graphDatabase = new GraphDatabase(conn);
     eDB = new EmployeesDatabase(conn);
-    // flDatabase = new FlowerDatabase(conn);
-    // iDB = new InterpreterDatabase(conn);
+
     inventoryDatabase = new InventoryDatabase(conn);
 
     patientDatabase = new PatientDatabase(conn);
@@ -54,6 +52,9 @@ public abstract class AbstractController {
     serviceDatabase = new ServiceDatabase(conn);
     ocDB = new OnCallDatabase(conn);
     reservationDatabase = new ReservationDatabase(conn);
+
+    // Uncomment this line to delete the database of food stuff
+    // APIController.clearDatabase();
 
     if (comPort == null) {
       SerialPort[] comPorts = SerialPort.getCommPorts();
