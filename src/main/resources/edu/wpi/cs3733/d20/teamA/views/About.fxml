@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" styleClass="rounded-pane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.nav.AboutPageController">
+   <children>
+      <GridPane alignment="CENTER" prefHeight="750.0" prefWidth="900.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox alignment="TOP_CENTER" spacing="15.0" stylesheets="@../stylesheet.css" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" stylesheets="@../stylesheet.css" text="About" textAlignment="CENTER">
+                     <styleClass>
+                        <String fx:value="title-label" />
+                        <String fx:value="large-text" />
+                     </styleClass>
+                  </Label>
+                  <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="WPI Computer Science Department - CS3733-D20 Software Engineering" />
+                  <GridPane vgap="10.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+                      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <VBox alignment="TOP_CENTER">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/wwong2.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Professor" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Wilson Wong" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="1">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/mbennett_photo_c.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Coach" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Marissa Bennett" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="2">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/YashsUglyFace.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Lead Software Engineer" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Yash Patel" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="3">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/38783096_1972581906366657_4542582563025190912_o.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Asst. Lead Software Engineer" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Dyllan Cole" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/IMG_3983.PNG" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Scrum Master" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Eva Labbe" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/yandawg_boolin.png" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Documentation Analyst" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Ioannis Kyriazis" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.rowIndex="2">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/Face.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Product Owner" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Cory Helmuth" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/IMG_7542.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Project Manager" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Gabriel Dudlicek" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.rowIndex="1">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/Picture%20Tyler.PNG" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Asst. Lead Software Engineer" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Tyler Looney" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/BrennanAubuchon.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Software Engineer" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Brennan Aubuchon" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/ugly.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Software Engineer" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Maddison Caten" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/Will.png" />
+                                 </image>
+                              </ImageView>
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Software Engineer" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="William Engdahl" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </GridPane>
+                  <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Special thanks to Andrew Shinn for his time and input" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </GridPane.margin>
+            </VBox>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>
