@@ -23,6 +23,7 @@ import java.util.Optional;
 public abstract class AbstractController {
 
   private SerialPort comPort = null;
+  public static String companyName = "Amethyst Asgardians";
 
   private DatabaseServiceProvider provider;
   private Connection conn;
@@ -114,6 +115,12 @@ public abstract class AbstractController {
       comPort.closePort();
       e.printStackTrace();
       return null;
+    }
+  }
+
+  public void stopRFID() {
+    if (comPort != null) {
+      comPort.closePort();
     }
   }
 

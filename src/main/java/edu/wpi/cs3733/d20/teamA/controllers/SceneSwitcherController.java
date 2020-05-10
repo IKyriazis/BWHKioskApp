@@ -294,6 +294,8 @@ public class SceneSwitcherController extends AbstractController {
       return;
     }
 
+    stopRFID();
+
     loginTransitioning = true;
 
     // make sure google authenticator stuff is now the login stuff
@@ -575,6 +577,6 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   public void openAbout(ActionEvent actionEvent) {
-    pushScene("views/AboutPage.fxml", TransitionType.ZOOM);
+    pushScene("views/About.fxml", TransitionType.ZOOM);
   }
 }

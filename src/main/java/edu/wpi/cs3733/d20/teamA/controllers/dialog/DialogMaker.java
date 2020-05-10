@@ -19,7 +19,7 @@ public class DialogMaker {
 
   public DialogMaker() {
     editMed = new EditMedRequestController();
-    employeeEdit = new EmployeeEditController();
+    employeeEdit = new CreateAcctController();
     notif = new NotificationController();
     patient = new PatientEditController();
   }
