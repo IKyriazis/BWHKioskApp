@@ -1,5 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers.reservation;
 
+import com.calendarfx.model.CalendarSource;
+import com.calendarfx.view.CalendarView;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
@@ -11,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Locale;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -42,27 +45,43 @@ public class ReservationController extends AbstractController {
     tblView =
         new SimpleTableView<>(
             new Reservation("", Calendar.getInstance(), Calendar.getInstance(), ""), 80.0);
-    requestTablePane.getChildren().add(tblView);
+    // requestTablePane.getChildren().add(tblView);
 
     update();
 
-    roomBox
-        .getItems()
-        .addAll(
-            "On-Call Bed 1",
-            "On-Call Bed 2",
-            "On-Call Bed 3",
-            "On-Call Bed 4",
-            "On-Call Bed 5",
-            "On-Call Bed 6",
-            "On-Call Bed 7",
-            "Reflection Room 1",
-            "Reflection Room 2",
-            "Reflection Room 3");
+    ObservableList<String> roomList = FXCollections.observableArrayList();
+
+    roomList.addAll(
+        "On-Call Bed 1",
+        "On-Call Bed 2",
+        "On-Call Bed 3",
+        "On-Call Bed 4",
+        "On-Call Bed 5",
+        "On-Call Bed 6",
+        "On-Call Bed 7",
+        "Reflection Room 1",
+        "Reflection Room 2",
+        "Reflection Room 3");
+
+    roomList.addAll(graphDatabase.getNodeByType("CONF"));
+
+    roomBox.getItems().addAll(roomList);
 
     datePicker.setValue(LocalDate.now());
 
     myReservationsCheck.setSelected(false);
+
+    CalendarView calendarView = new CalendarView();
+
+    CalendarSource calendarSource = new CalendarSource("My Calendars");
+
+    for (String s : roomList) {
+      calendarSource.getCalendars().add(new com.calendarfx.model.Calendar(s));
+    }
+
+    calendarView.getCalendarSources().addAll(calendarSource);
+
+    requestTablePane.getChildren().add(calendarView);
   }
   // Creates a calendar datatype from a date and a time
   private Calendar makeCalendar(LocalDate date, LocalTime time) {
