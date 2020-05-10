@@ -31,16 +31,12 @@ public class FoodAdminController extends AbstractController implements IDialogCo
     if (comboRole.getSelectionModel().getSelectedItem() != null && !txtName.getText().equals("")) {
       int i = comboRole.getSelectionModel().getSelectedIndex() + 1;
       // Write to file
-      // File f = new File("./src/resources/edu/wpi/cs3733/d20/teamA/csvfiles/FoodEmployees.csv");
-      /*try {
-        BufferedWriter writer = new BufferedWriter(App.class.getResourceAsStream("").);
-        writer.write("\n" + txtName.getText() + "," + i);
-        writer.close();
-      } catch (Exception e) {
-        e.printStackTrace();
-      }*/
+      // Do if feel like
+
       // Add to API
       APIController.addEmployee("FUCK", txtName.getText(), i);
+
+      txtName.setText("");
     }
   }
 
