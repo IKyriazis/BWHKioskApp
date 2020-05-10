@@ -67,13 +67,5 @@ public class GiftRequestController extends AbstractController {
       }
     }
   }
-
-  @FXML
-  public void openAdmin() {
-    /*
-    APIController.setAdmin(true);
-
-    DialogUtil.complexDialog(
-            dialogPane, "Admin", "views/food/FoodAdmin.fxml", false, null, new FoodAdminController());*/
-  }
+  
 }
