@@ -4,13 +4,19 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import org.apache.commons.codec.binary.Base32;
+
+import javax.imageio.ImageIO;
 
 public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   private final int numIterations = 14; // 2 ^ 16 = 16384 iterations
@@ -110,6 +116,31 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     } catch (IOException e) {
       e.printStackTrace();
       return false;
+    }
+  }
+
+  public Image getImage(String username) {
+    try {
+      PreparedStatement pstmt =
+              getConnection()
+                      .prepareStatement("Select pic From Employees Where username =" + username);
+
+      ResultSet rs = pstmt.executeQuery();
+
+      if (rs.next()) {
+        Blob b = rs.getBlob("pic");
+        byte barr[] = b.getBytes(1, (int) b.length()); // 1 means first image
+
+        File f = new File("temporary");
+        FileOutputStream fout = new FileOutputStream(f);
+        fout.write(barr);
+        Image image = SwingFXUtils.toFXImage(ImageIO.read(f), null);
+        return image;
+      }
+      pstmt.close();
+      return null;
+    } catch (Exception e) {
+      return null;
     }
   }
 
