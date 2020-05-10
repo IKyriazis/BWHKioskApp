@@ -12,6 +12,7 @@ import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
@@ -61,9 +62,15 @@ public class SimpleMapController extends AbstractController {
 
   private ArrayList<PathSegment> pathSegments;
   private int currPathSegment = 0;
+  private boolean displayingPathOverview;
 
   private static final String FAULKNER_EXIT_NODE = "MHALL00342";
   private static final String MAIN_EXIT_NODE = "AEXIT0010G";
+
+  private ChangeListener<Label> listChangeListener =
+      (observable, oldVal, newVal) -> {
+        selectedDirection();
+      };
 
   public void initialize() {
     try {
@@ -121,6 +128,12 @@ public class SimpleMapController extends AbstractController {
     // Hide directions display
     directionsBox.setVisible(false);
     directionsPane.setVisible(false);
+
+    // Setup direction selection callback
+    directionsList.setOnMouseReleased(
+        event -> {
+          selectedDirection();
+        });
 
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(
@@ -259,8 +272,8 @@ public class SimpleMapController extends AbstractController {
         faulknerCanvas.setPath(path);
       }
 
-      directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
+        clearPath();
         updateDisplayedPath();
         showDirectionsBox();
         hideSearchBox();
@@ -331,7 +344,10 @@ public class SimpleMapController extends AbstractController {
   }
 
   @FXML
-  public void pressedDirectionList() {}
+  public void pressedDirectionList() {
+    displayingPathOverview = true;
+    updateDisplayedPath();
+  }
 
   public void clearPath() {
     if (currCanvas == mainCanvas) {
@@ -345,6 +361,8 @@ public class SimpleMapController extends AbstractController {
     faulknerCanvas.disablePathAnimation();
     faulknerCanvas.clearPath();
 
+    displayingPathOverview = true;
+
     if (gMapView.isVisible()) {
       gMapView.setVisible(false);
       currCanvas.setVisible(true);
@@ -353,7 +371,7 @@ public class SimpleMapController extends AbstractController {
     currCanvas.draw(floor);
   }
 
-  public void updateDisplayedPath() {
+  private void updateDisplayedPath() {
     PathSegment currSegment = pathSegments.get(currPathSegment);
     // Canvas updates if switching to a canvas-based segment
     if (currSegment.getCampus() != Campus.INTER) {
@@ -409,11 +427,35 @@ public class SimpleMapController extends AbstractController {
     floor = currSegment.getFloor();
     floorField.setText(String.valueOf(floor));
 
-    // Setup labels
-    directionsList.getItems().clear();
-    directionsList.getItems().addAll(currSegment.getDirections());
+    // Show directions in list
+    if (displayingPathOverview) {
+      showPathOverview();
+    } else {
+      showCurrSegment();
+    }
 
     currCanvas.draw(floor);
+  }
+
+  private void selectedDirection() {
+    Label selected = directionsList.getSelectionModel().getSelectedItem();
+    if (selected == null) {
+      return;
+    }
+
+    if (displayingPathOverview) {
+      pathSegments.stream()
+          .filter(pathSegment -> pathSegment.toString().equals(selected.getText()))
+          .findFirst()
+          .ifPresent(
+              pathSegment -> {
+                currPathSegment = pathSegments.indexOf(pathSegment);
+                displayingPathOverview = false;
+                updateDisplayedPath();
+              });
+    } else {
+
+    }
   }
 
   public ArrayList<Pair<Node, Label>> texDirectionsWithLabels(
@@ -516,5 +558,24 @@ public class SimpleMapController extends AbstractController {
       fadeIn.setSpeed(2.0);
       fadeIn.play();
     }
+  }
+
+  private void showPathOverview() {
+    directionsList.getItems().clear();
+
+    ArrayList<Label> segmentLabels = new ArrayList<>();
+    pathSegments.forEach(
+        pathSegment -> {
+          segmentLabels.add(new Label(pathSegment.toString()));
+        });
+
+    directionsList.getItems().addAll(segmentLabels);
+    directionsList.getSelectionModel().select(segmentLabels.get(currPathSegment));
+  }
+
+  private void showCurrSegment() {
+    // Setup labels
+    directionsList.getItems().clear();
+    directionsList.getItems().addAll(pathSegments.get(currPathSegment).getDirections());
   }
 }
