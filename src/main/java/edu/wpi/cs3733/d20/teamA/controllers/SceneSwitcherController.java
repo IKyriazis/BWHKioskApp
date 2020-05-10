@@ -592,6 +592,6 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   public void openAbout(ActionEvent actionEvent) {
-    pushScene("views/AboutPage.fxml", TransitionType.ZOOM);
+    pushScene("views/About.fxml", TransitionType.ZOOM);
   }
 }
