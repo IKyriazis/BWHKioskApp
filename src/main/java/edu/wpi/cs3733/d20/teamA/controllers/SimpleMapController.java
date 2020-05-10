@@ -141,7 +141,7 @@ public class SimpleMapController extends AbstractController {
         event -> {
           event.consume();
 
-          currCanvas.clearPath();
+          clearPath();
 
           // Redraw map
           currCanvas.draw(floor);
@@ -173,6 +173,7 @@ public class SimpleMapController extends AbstractController {
     if (directionsBox.isVisible()) {
       hideSearchBox();
     } else {
+      clearPath();
       showSearchBox();
       if (directionsPane.isVisible()) {
         hideDirectionsBox();
@@ -560,6 +561,10 @@ public class SimpleMapController extends AbstractController {
   }
 
   private void showPathOverview() {
+    directionsPane.setMinHeight(550);
+    directionsPane.setPrefHeight(550);
+    directionsList.setMouseTransparent(false);
+    directionsList.setPrefHeight(498);
     directionsList.getItems().clear();
 
     ArrayList<Label> segmentLabels = new ArrayList<>();
@@ -567,6 +572,13 @@ public class SimpleMapController extends AbstractController {
         pathSegment -> {
           segmentLabels.add(new Label(pathSegment.toString()));
         });
+
+    segmentLabels.get(0).setGraphic(new FontIcon(FontAwesomeSolid.DOT_CIRCLE));
+    segmentLabels.get(segmentLabels.size() - 1).setGraphic(new FontIcon(FontAwesomeSolid.TIMES));
+
+    for (int i = 1; i < segmentLabels.size() - 1; i++) {
+      segmentLabels.get(i).setGraphic(new FontIcon(FontAwesomeSolid.GRIP_LINES_VERTICAL));
+    }
 
     directionsList.getItems().addAll(segmentLabels);
     directionsList.getSelectionModel().select(segmentLabels.get(currPathSegment));
