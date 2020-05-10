@@ -131,7 +131,8 @@ public class CreateAcctController extends AbstractController implements IDialogC
                           "Duplicate Card", "There is another account associated with this card.");
                       clearFields();
                     });
-                // delete the employee we just made as we want to start from scratch if the rfid messes up
+                // delete the employee we just made as we want to start from scratch if the rfid
+                // messes up
                 eDB.deleteEmployee(uName.getText());
                 return;
               } else {
@@ -144,7 +145,8 @@ public class CreateAcctController extends AbstractController implements IDialogC
                         "Read Fail", "There was an error reading the card please try again");
                     clearFields();
                   });
-              // delete the employee we just made as we want to start from scratch if the rfid messes up
+              // delete the employee we just made as we want to start from scratch if the rfid
+              // messes up
               eDB.deleteEmployee(uName.getText());
               return;
             }
