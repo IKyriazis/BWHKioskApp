@@ -7,6 +7,9 @@
         var map;
         var directionsManager;
 
+        var faulknerWaypoint;
+        var mainWaypoint;
+
         function GetMap() {
             map = new Microsoft.Maps.Map('#myMap', {
                 navigationBarOrientation: Microsoft.Maps.NavigationBarOrientation.horizontal,
@@ -19,14 +22,19 @@
 
             //Load the directions module.
             Microsoft.Maps.loadModule('Microsoft.Maps.Directions', function () {
+                // Load waypoints
+                faulknerWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Faulkner Hospital, Boston, Massachusetts, United States" });
+                mainWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Hospital, 75 Francis St, Boston, Massachusetts"});
+
                 //Create an instance of the directions manager.
                 directionsManager = new Microsoft.Maps.Directions.DirectionsManager(map);
             });
         }
 
         function pathToMain() {
-            var faulknerWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Faulkner Hospital, Boston, Massachusetts, United States" });
-            var mainWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Hospital, 75 Francis St, Boston, Massachusetts"});
+            if (directionsManager.getAllWaypoints().length !== 0 && (directionsManager.getAllWaypoints()[0].getAddress() === faulknerWaypoint.getAddress())) {
+                return;
+            }
 
             directionsManager.clearAll();
             directionsManager.addWaypoint(faulknerWaypoint);
@@ -43,8 +51,9 @@
         }
 
         function pathToFaulkner() {
-            var faulknerWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Faulkner Hospital, Boston, Massachusetts, United States" });
-            var mainWaypoint = new Microsoft.Maps.Directions.Waypoint({ address: "Brigham and Women's Hospital, 75 Francis St, Boston, Massachusetts"});
+            if (directionsManager.getAllWaypoints().length !== 0 && (directionsManager.getAllWaypoints()[0].getAddress() === mainWaypoint.getAddress())) {
+                return;
+            }
 
             directionsManager.clearAll();
             directionsManager.addWaypoint(mainWaypoint);
@@ -70,9 +79,9 @@
         .directionsContainer{
             background-color: white;
             position:absolute;
-            margin-top:422px;
+            margin-top:177px;
             width:300px;
-            height:calc(100% - 422px);
+            height:calc(100% - 177px);
             overflow-y:auto;
             float:left;
             z-index: 10;

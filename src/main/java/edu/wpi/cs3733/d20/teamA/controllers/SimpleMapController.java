@@ -41,6 +41,7 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXButton directionsButton;
   @FXML private JFXButton dirBackButton;
   @FXML private JFXButton dirNextButton;
+  @FXML private JFXButton directionListButton;
 
   @FXML private JFXButton floorUpButton;
   @FXML private JFXButton floorDownButton;
@@ -110,9 +111,9 @@ public class SimpleMapController extends AbstractController {
     goButton.setGraphic(new FontIcon(FontAwesomeSolid.LOCATION_ARROW));
     swapBtn.setGraphic(new FontIcon(FontAwesomeSolid.RETWEET));
     directionsButton.setGraphic(new FontIcon(FontAwesomeSolid.MAP_SIGNS));
-    // qrCodeButton.setGraphic(new FontIcon(FontAwesomeSolid.QRCODE));
-    dirBackButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_LEFT));
-    dirNextButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_RIGHT));
+    directionListButton.setGraphic(new FontIcon(FontAwesomeSolid.LIST));
+    dirBackButton.setGraphic(new FontIcon(FontAwesomeSolid.LONG_ARROW_ALT_LEFT));
+    dirNextButton.setGraphic(new FontIcon(FontAwesomeSolid.LONG_ARROW_ALT_RIGHT));
 
     floorUpButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_UP));
     floorDownButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_DOWN));
@@ -157,28 +158,12 @@ public class SimpleMapController extends AbstractController {
   @FXML
   public void toggleSearch() {
     if (directionsBox.isVisible()) {
-      FadeOutLeft fadeOut = new FadeOutLeft(directionsBox);
-      fadeOut.setSpeed(2.0);
-      fadeOut.setOnFinished(
-          event -> {
-            directionsBox.setVisible(false);
-          });
-      fadeOut.play();
-
-      if (directionsPane.isVisible()) {
-        FadeOutLeft textOut = new FadeOutLeft(directionsPane);
-        textOut.setSpeed(2.0);
-        textOut.setOnFinished(
-            event -> {
-              directionsPane.setVisible(false);
-            });
-        textOut.play();
-      }
+      hideSearchBox();
     } else {
-      FadeInLeft fadeIn = new FadeInLeft(directionsBox);
-      fadeIn.setSpeed(2.0);
-      directionsBox.setVisible(true);
-      fadeIn.play();
+      showSearchBox();
+      if (directionsPane.isVisible()) {
+        hideDirectionsBox();
+      }
     }
   }
 
@@ -277,28 +262,15 @@ public class SimpleMapController extends AbstractController {
       directionsList.getItems().clear();
       if (path.getPathNodes().size() != 0) {
         updateDisplayedPath();
-
-        if (!directionsPane.isVisible()) {
-          directionsPane.setVisible(true);
-          FadeInLeft fadeIn = new FadeInLeft(directionsPane);
-          fadeIn.setSpeed(2.0);
-          fadeIn.play();
-        }
+        showDirectionsBox();
+        hideSearchBox();
       } else {
         DialogUtil.simpleInfoDialog(
             dialogPane,
             "No Path Found",
             "No path between the selected locations could be found. Try choosing different locations.");
-
-        if (directionsPane.isVisible()) {
-          FadeOutLeft fadeOut = new FadeOutLeft(directionsPane);
-          fadeOut.setSpeed(2.0);
-          fadeOut.setOnFinished(
-              event -> {
-                directionsPane.setVisible(false);
-              });
-          fadeOut.play();
-        }
+        hideDirectionsBox();
+        showSearchBox();
       }
     }
   }
@@ -358,6 +330,9 @@ public class SimpleMapController extends AbstractController {
     updateDisplayedPath();
   }
 
+  @FXML
+  public void pressedDirectionList() {}
+
   public void clearPath() {
     if (currCanvas == mainCanvas) {
       faulknerCanvas.setVisible(false);
@@ -380,44 +355,36 @@ public class SimpleMapController extends AbstractController {
 
   public void updateDisplayedPath() {
     PathSegment currSegment = pathSegments.get(currPathSegment);
+    // Canvas updates if switching to a canvas-based segment
+    if (currSegment.getCampus() != Campus.INTER) {
+      // Resize directions thingy
+      directionsPane.setMinHeight(550);
+      directionsPane.setPrefHeight(550);
+      directionsList.setMouseTransparent(false);
+      directionsList.setPrefHeight(498);
+
+      MapCanvas newCanvas = (currSegment.getCampus() == Campus.MAIN) ? mainCanvas : faulknerCanvas;
+      if (newCanvas != currCanvas) {
+        currCanvas.disablePathAnimation();
+
+        currCanvas.setVisible(false);
+        newCanvas.setVisible(true);
+
+        currCanvas = newCanvas;
+      }
+
+      // Hide bing map, bring slider back
+      gMapView.setVisible(false);
+      zoomSlider.setVisible(true);
+
+      // Animate path
+      currCanvas.enablePathAnimation();
+      currCanvas.animatePath(currSegment.getFloor());
+    }
     // Set canvas
     if (currSegment.getCampus() == Campus.FAULKNER) {
-      // Resize directions thingy
-      directionsPane.setMinHeight(452);
-      directionsPane.setPrefHeight(452);
-      directionsList.setMouseTransparent(false);
-      directionsList.setPrefHeight(400);
-
-      gMapView.setVisible(false);
-      zoomSlider.setVisible(true);
-
-      currCanvas.disablePathAnimation();
-      currCanvas.setVisible(false);
-
-      currCanvas = faulknerCanvas;
-      currCanvas.setVisible(true);
-      currCanvas.enablePathAnimation();
-      currCanvas.animatePath(currSegment.getFloor());
-
       faulknerRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.MAIN) {
-      // Resize directions thingy
-      directionsPane.setMinHeight(452);
-      directionsPane.setPrefHeight(452);
-      directionsList.setMouseTransparent(false);
-      directionsList.setPrefHeight(400);
-
-      gMapView.setVisible(false);
-      zoomSlider.setVisible(true);
-
-      currCanvas.disablePathAnimation();
-      currCanvas.setVisible(false);
-
-      currCanvas = mainCanvas;
-      currCanvas.setVisible(true);
-      currCanvas.enablePathAnimation();
-      currCanvas.animatePath(currSegment.getFloor());
-
       mainRadioButton.setSelected(true);
     } else if (currSegment.getCampus() == Campus.INTER) {
       // Resize directions thingy
@@ -511,5 +478,43 @@ public class SimpleMapController extends AbstractController {
                 new FontIcon(FontAwesomeSolid.DOT_CIRCLE))));
 
     return textPath;
+  }
+
+  private void hideSearchBox() {
+    FadeOutLeft fadeOut = new FadeOutLeft(directionsBox);
+    fadeOut.setSpeed(2.0);
+    fadeOut.setOnFinished(
+        event -> {
+          directionsBox.setVisible(false);
+        });
+    fadeOut.play();
+  }
+
+  private void showSearchBox() {
+    FadeInLeft fadeIn = new FadeInLeft(directionsBox);
+    fadeIn.setSpeed(2.0);
+    directionsBox.setVisible(true);
+    fadeIn.play();
+  }
+
+  private void hideDirectionsBox() {
+    if (directionsPane.isVisible()) {
+      FadeOutLeft fadeOut = new FadeOutLeft(directionsPane);
+      fadeOut.setSpeed(2.0);
+      fadeOut.setOnFinished(
+          event -> {
+            directionsPane.setVisible(false);
+          });
+      fadeOut.play();
+    }
+  }
+
+  private void showDirectionsBox() {
+    if (!directionsPane.isVisible()) {
+      directionsPane.setVisible(true);
+      FadeInLeft fadeIn = new FadeInLeft(directionsPane);
+      fadeIn.setSpeed(2.0);
+      fadeIn.play();
+    }
   }
 }
