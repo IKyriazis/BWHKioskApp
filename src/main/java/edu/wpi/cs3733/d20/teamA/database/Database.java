@@ -2,8 +2,15 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.Random;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javax.imageio.ImageIO;
 
 public abstract class Database {
   /*
@@ -289,8 +296,32 @@ public abstract class Database {
         String lName = rset.getString("nameLast");
         String title = rset.getString("title");
         String pagerNum = rset.getString("pagerNum");
+        Blob b = rset.getBlob("pic");
+        Image image = null;
+        if (b != null) {
+          byte barr[] = b.getBytes(1, (int) b.length()); // 1 means first image
+
+          File f = new File("temporary");
+          try {
+            FileOutputStream fout = new FileOutputStream(f);
+            fout.write(barr);
+            image = SwingFXUtils.toFXImage(ImageIO.read(f), null);
+          } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+          } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+          }
+        }
         return new Employee(
-            ID, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), loggedIn, pagerNum);
+            ID,
+            fName,
+            lName,
+            EmployeeTitle.valueOf(title.toUpperCase()),
+            loggedIn,
+            pagerNum,
+            image);
       }
       return null;
     } catch (SQLException e) {

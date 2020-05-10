@@ -3,10 +3,7 @@ package edu.wpi.cs3733.d20.teamA.database.employee;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.SecureRandom;
 import java.sql.*;
 import javafx.collections.FXCollections;
@@ -716,9 +713,33 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         String title = rset.getString("title");
         String username = rset.getString("username");
         String pagerNum = rset.getString("pagerNum");
+        Blob b = rset.getBlob("pic");
+        Image image = null;
+        if (b != null) {
+          byte barr[] = b.getBytes(1, (int) b.length()); // 1 means first image
+
+          File f = new File("temporary");
+          try {
+            FileOutputStream fout = new FileOutputStream(f);
+            fout.write(barr);
+            image = SwingFXUtils.toFXImage(ImageIO.read(f), null);
+          } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+          } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+          }
+        }
         Employee e =
             new Employee(
-                id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username, pagerNum);
+                id,
+                fName,
+                lName,
+                EmployeeTitle.valueOf(title.toUpperCase()),
+                username,
+                pagerNum,
+                image);
         eList.add(e);
       }
       rset.close();
@@ -794,9 +815,31 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
       String title = rset.getString("title");
       String username = rset.getString("username");
       String pagerNum = rset.getString("pagerNum");
+      Blob b = rset.getBlob("pic");
+      byte barr[] = b.getBytes(1, (int) b.length()); // 1 means first image
+
+      File f = new File("temporary");
+      Image image = null;
+      try {
+        FileOutputStream fout = new FileOutputStream(f);
+        fout.write(barr);
+        image = SwingFXUtils.toFXImage(ImageIO.read(f), null);
+      } catch (FileNotFoundException e) {
+        e.printStackTrace();
+        return null;
+      } catch (IOException e) {
+        e.printStackTrace();
+        return null;
+      }
       Employee e =
           new Employee(
-              id, fName, lName, EmployeeTitle.valueOf(title.toUpperCase()), username, pagerNum);
+              id,
+              fName,
+              lName,
+              EmployeeTitle.valueOf(title.toUpperCase()),
+              username,
+              pagerNum,
+              image);
       rset.close();
       pstmt.close();
       return e;
@@ -820,9 +863,33 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
         String type = rset.getString("title");
         String username = rset.getString("username");
         String pagerNum = rset.getString("pagerNum");
+        Blob b = rset.getBlob("pic");
+        Image image = null;
+        if (b != null) {
+          byte barr[] = b.getBytes(1, (int) b.length()); // 1 means first image
+
+          File f = new File("temporary");
+          try {
+            FileOutputStream fout = new FileOutputStream(f);
+            fout.write(barr);
+            image = SwingFXUtils.toFXImage(ImageIO.read(f), null);
+          } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+          } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+          }
+        }
         Employee e =
             new Employee(
-                id, fName, lName, EmployeeTitle.valueOf(type.toUpperCase()), username, pagerNum);
+                id,
+                fName,
+                lName,
+                EmployeeTitle.valueOf(type.toUpperCase()),
+                username,
+                pagerNum,
+                image);
         eList.add(e);
       }
       rset.close();

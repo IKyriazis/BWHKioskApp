@@ -4,7 +4,12 @@ import com.jfoenix.controls.JFXTreeTableColumn;
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.InvalidationListener;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 // Add more methods to this class as needed
 public class Employee implements ITableable<Employee> {
@@ -14,6 +19,7 @@ public class Employee implements ITableable<Employee> {
   private SimpleStringProperty title;
   private SimpleStringProperty username;
   private SimpleStringProperty pagerNum;
+  private Image img;
 
   public Employee(
       String id,
@@ -21,13 +27,15 @@ public class Employee implements ITableable<Employee> {
       String lName,
       EmployeeTitle title,
       String username,
-      String pagerNum) {
+      String pagerNum,
+      Image pic) {
     this.id = new SimpleStringProperty(id);
     this.fName = new SimpleStringProperty(fName);
     this.lName = new SimpleStringProperty(lName);
     this.title = new SimpleStringProperty(title.toString());
     this.username = new SimpleStringProperty(username);
     this.pagerNum = new SimpleStringProperty(pagerNum);
+    this.img = pic;
   }
 
   public String getPagerNum() {
@@ -74,6 +82,31 @@ public class Employee implements ITableable<Employee> {
     return this.username;
   };
 
+  public ObservableValue<ImageView> observableImage(int size) {
+    return new ObservableValue<ImageView>() {
+      @Override
+      public void addListener(ChangeListener<? super ImageView> listener) {}
+
+      @Override
+      public void removeListener(ChangeListener<? super ImageView> listener) {}
+
+      @Override
+      public ImageView getValue() {
+        ImageView view = new ImageView(img);
+        view.setPreserveRatio(true);
+        view.setFitWidth(size);
+        view.setFitHeight(size);
+        return view;
+      }
+
+      @Override
+      public void addListener(InvalidationListener listener) {}
+
+      @Override
+      public void removeListener(InvalidationListener listener) {}
+    };
+  }
+
   @Override
   public ArrayList<JFXTreeTableColumn<Employee, ?>> getColumns() {
 
@@ -95,7 +128,10 @@ public class Employee implements ITableable<Employee> {
     JFXTreeTableColumn<Employee, String> column6 = new JFXTreeTableColumn<>("Pager #");
     column6.setCellValueFactory(param -> param.getValue().getValue().pagerNumProperty());
 
-    return new ArrayList<>(List.of(column1, column2, column3, column4, column5, column6));
+    JFXTreeTableColumn<Employee, ImageView> column7 = new JFXTreeTableColumn<>("Profile Picture");
+    column7.setCellValueFactory(param -> param.getValue().getValue().observableImage(60));
+
+    return new ArrayList<>(List.of(column1, column2, column3, column4, column5, column6, column7));
   }
 
   @Override
