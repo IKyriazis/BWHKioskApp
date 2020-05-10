@@ -3,6 +3,9 @@ package edu.wpi.cs3733.d20.teamA.database.employee;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
+
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.*;
 import javafx.collections.FXCollections;
@@ -88,6 +91,25 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
     } catch (SQLException e) {
       e.printStackTrace();
       return "";
+    }
+  }
+
+  public boolean addImage(String img, String username) {
+    try {
+      PreparedStatement pstmt =
+              getConnection().prepareStatement("UPDATE Employees SET pic = ? Where username = " + username);
+
+      FileInputStream fin = new FileInputStream(img);
+      pstmt.setBinaryStream(1, fin, fin.available());
+      pstmt.execute();
+      pstmt.close();
+      return true;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
     }
   }
 
