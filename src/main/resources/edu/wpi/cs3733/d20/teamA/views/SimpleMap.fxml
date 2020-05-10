@@ -60,7 +60,7 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <GridPane fx:id="directionsPane" layoutY="310.0" maxHeight="452.0" maxWidth="300.0" minHeight="452.0" minWidth="300.0" prefHeight="452.0" prefWidth="300.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="310.0">
+                  <GridPane fx:id="directionsPane" layoutY="310.0" maxHeight="452.0" maxWidth="300.0" minHeight="452.0" minWidth="300.0" pickOnBounds="false" prefHeight="452.0" prefWidth="300.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="310.0">
                      <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                      </columnConstraints>

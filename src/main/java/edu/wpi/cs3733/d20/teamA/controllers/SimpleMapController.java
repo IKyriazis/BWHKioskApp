@@ -367,6 +367,8 @@ public class SimpleMapController extends AbstractController {
       // Resize directions thingy
       directionsPane.setMinHeight(452);
       directionsPane.setPrefHeight(452);
+      directionsList.setMouseTransparent(false);
+      directionsList.setPrefHeight(400);
 
       gMapView.setVisible(false);
       zoomSlider.setVisible(true);
@@ -384,6 +386,8 @@ public class SimpleMapController extends AbstractController {
       // Resize directions thingy
       directionsPane.setMinHeight(452);
       directionsPane.setPrefHeight(452);
+      directionsList.setMouseTransparent(false);
+      directionsList.setPrefHeight(400);
 
       gMapView.setVisible(false);
       zoomSlider.setVisible(true);
@@ -401,6 +405,8 @@ public class SimpleMapController extends AbstractController {
       // Resize directions thingy
       directionsPane.setMinHeight(52);
       directionsPane.setPrefHeight(52);
+      directionsList.setPrefHeight(0);
+      directionsList.setMouseTransparent(true);
 
       currCanvas.setVisible(false);
       currCanvas.disablePathAnimation();
