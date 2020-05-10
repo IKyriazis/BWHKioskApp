@@ -1,14 +1,18 @@
 package edu.wpi.cs3733.d20.teamA.controllers.dialog;
 
+import com.github.sarxos.webcam.Webcam;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.ThreadPool;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javax.imageio.ImageIO;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
@@ -114,7 +118,16 @@ public class CreateAcctController extends AbstractController implements IDialogC
             eDB.addPagerNum(uName.getText(), IPager.getText());
           }
           if (addPic.isSelected()) {
-
+            Webcam webcam = Webcam.getDefault();
+            webcam.open();
+            try {
+              ImageIO.write(webcam.getImage(), "PNG", new File("temp.png"));
+              eDB.addImage("temp.png", uName.getText());
+            } catch (IOException e) {
+              e.printStackTrace();
+              clearFields();
+              eDB.deleteEmployee(uName.getText());
+            }
           }
           if (addRFID.isSelected()) {
             // popup message saying that we are scanning for rfid card

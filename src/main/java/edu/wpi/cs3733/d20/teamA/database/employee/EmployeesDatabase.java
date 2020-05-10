@@ -3,7 +3,6 @@ package edu.wpi.cs3733.d20.teamA.database.employee;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.database.IDatabase;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -14,9 +13,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
-import org.apache.commons.codec.binary.Base32;
-
 import javax.imageio.ImageIO;
+import org.apache.commons.codec.binary.Base32;
 
 public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   private final int numIterations = 14; // 2 ^ 16 = 16384 iterations
@@ -103,10 +101,11 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public boolean addImage(String img, String username) {
     try {
       PreparedStatement pstmt =
-              getConnection().prepareStatement("UPDATE Employees SET pic = ? Where username = " + username);
+          getConnection().prepareStatement("UPDATE Employees SET pic = ? Where username = ?");
 
       FileInputStream fin = new FileInputStream(img);
       pstmt.setBinaryStream(1, fin, fin.available());
+      pstmt.setString(2, username);
       pstmt.execute();
       pstmt.close();
       return true;
@@ -122,8 +121,7 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public Image getImage(String username) {
     try {
       PreparedStatement pstmt =
-              getConnection()
-                      .prepareStatement("Select pic From Employees Where username =" + username);
+          getConnection().prepareStatement("Select pic From Employees Where username =" + username);
 
       ResultSet rs = pstmt.executeQuery();
 
