@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -31,7 +32,7 @@
                   </Label>
                   <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="WPI Computer Science Department - CS3733-D20 Software Engineering">
                      <padding>
-                        <Insets bottom="10.0" />
+                        <Insets bottom="20.0" top="10.0" />
                      </padding></Label>
                   <GridPane vgap="10.0">
                     <columnConstraints>
@@ -48,143 +49,183 @@
                      <children>
                         <VBox alignment="TOP_CENTER">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/wwong2.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Professor" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Wilson Wong" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Wilson Wong">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="1">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/mbennett_photo_c.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Coach" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Marissa Bennett" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Marissa Bennett">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="2">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/YashsUglyFace.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Lead Software Engineer" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Yash Patel" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Yash Patel">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="3">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/38783096_1972581906366657_4542582563025190912_o.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Asst. Lead Software Engineer" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Dyllan Cole" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Dyllan Cole">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="2" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/IMG_3983.PNG" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Scrum Master" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Eva Labbe" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Eva Labbe">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/yandawg_boolin.png" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Documentation Analyst" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Ioannis Kyriazis" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Ioannis Kyriazis">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/Face.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Product Owner" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Cory Helmuth" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Cory Helmuth">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/IMG_7542.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Project Manager" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Gabriel Dudlicek" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Gabriel Dudlicek">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.rowIndex="1">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/Picture%20Tyler.PNG" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Asst. Lead Software Engineer" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Tyler Looney" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Tyler Looney">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="1" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/BrennanAubuchon.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Software Engineer" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Brennan Aubuchon" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Brennan Aubuchon">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="2" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/ugly.jpg" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Software Engineer" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Maddison Caten" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Maddison Caten">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                         <VBox alignment="TOP_CENTER" GridPane.columnIndex="3" GridPane.rowIndex="2">
                            <children>
-                              <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="125.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/Will.png" />
                                  </image>
                               </ImageView>
                               <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Software Engineer" />
-                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="William Engdahl" />
+                              <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="William Engdahl">
+                                 <padding>
+                                    <Insets top="-5.0" />
+                                 </padding></Label>
                            </children>
                         </VBox>
                      </children>
                   </GridPane>
                   <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Special thanks to Andrew Shinn for his time and input">
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets top="20.0" />
                      </VBox.margin></Label>
-                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="The Brigham &amp; Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes." />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="The Brigham &amp; Women’s Hospital maps and data used in this application are copyrighted and provided for the sole use of educational purposes.">
+                     <padding>
+                        <Insets bottom="20.0" />
+                     </padding></Label>
+                  <JFXButton onAction="#openCredits" text="Credits" textAlignment="CENTER" />
                </children>
                <GridPane.margin>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
