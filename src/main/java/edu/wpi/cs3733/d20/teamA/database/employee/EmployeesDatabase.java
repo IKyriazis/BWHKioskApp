@@ -121,8 +121,8 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public Image getImage(String username) {
     try {
       PreparedStatement pstmt =
-          getConnection().prepareStatement("Select pic From Employees Where username =" + username);
-
+          getConnection().prepareStatement("Select pic From Employees Where username = ?");
+      pstmt.setString(1, username);
       ResultSet rs = pstmt.executeQuery();
 
       if (rs.next()) {
