@@ -273,7 +273,6 @@ public class SimpleMapController extends AbstractController {
       }
 
       if (path.getPathNodes().size() != 0) {
-        clearPath();
         updateDisplayedPath();
         showDirectionsBox();
         hideSearchBox();
