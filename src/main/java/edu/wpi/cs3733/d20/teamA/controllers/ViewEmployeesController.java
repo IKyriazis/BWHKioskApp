@@ -44,7 +44,9 @@ public class ViewEmployeesController extends AbstractController {
           update();
         });
 
-    tblEmployees = new SimpleTableView<>(new Employee("", "", "", EmployeeTitle.DOCTOR, ""), 150.0);
+    tblEmployees =
+        new SimpleTableView<>(
+            new Employee("", "", "", EmployeeTitle.DOCTOR, "", "3300220033l"), 150.0);
     empList.getChildren().add(tblEmployees);
 
     // Set up table to open edit controller when double clicking row

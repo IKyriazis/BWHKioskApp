@@ -27,6 +27,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
   }
 
   private void buildButtonPane() {
+    buttonPane.setAlignment(Pos.CENTER);
     buttonPane.getChildren().clear();
 
     // Services available to the public
@@ -51,23 +52,34 @@ public class ServiceHomeController extends AbstractNavPaneController {
     if (eDB.getLoggedIn() != null) {
 
       String employeeTitle = eDB.getLoggedIn().getTitle();
-      System.out.println(employeeTitle);
+
+      if (employeeTitle.equals("admin")
+          || employeeTitle.equals("doctor")
+          || employeeTitle.equals("nurse")
+          || employeeTitle.equals("janitor")) {
+        addButton(
+            buttonPane,
+            new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
+            "views/service/LaundryRequest.fxml",
+            "Laundry");
+      }
 
       // services available to admins, doctors, and nurses
       if (employeeTitle.equals("admin")
           || employeeTitle.equals("doctor")
           || employeeTitle.equals("nurse")) {
-        addButton(
-            buttonPane,
-            new FontIcon(FontAwesomeSolid.MEDKIT),
-            "views/service/MedicineRequest.fxml",
-            "Medicine\nDelivery");
 
         addButton(
             buttonPane,
             new FontIcon(FontAwesomeSolid.USER),
             "views/PatientsInfoService.fxml",
             "Patient\nInfo");
+
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.MEDKIT),
+            "views/service/MedicineRequest.fxml",
+            "Medicine\nDelivery");
 
         addButton(
             buttonPane,
@@ -95,6 +107,12 @@ public class ServiceHomeController extends AbstractNavPaneController {
             new FontIcon(FontAwesomeSolid.LAPTOP),
             "views/service/ITRequest.fxml",
             "Tech\nSupport");
+
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.PAGER),
+            "views/OnCallList.fxml",
+            "Employees\nOn Call");
       }
 
       addButton(
@@ -102,23 +120,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
           new FontIcon(FontAwesomeSolid.BROOM),
           "views/service/JanitorRequest.fxml",
           "Janitorial");
-
-      if (employeeTitle.equals("admin")
-          || employeeTitle.equals("doctor")
-          || employeeTitle.equals("nurse")
-          || employeeTitle.equals("janitor")) {
-        addButton(
-            buttonPane,
-            new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
-            "views/service/LaundryRequest.fxml",
-            "Laundry");
-      }
-
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.BAND_AID),
-          "APIService",
-          "Appointment\nRequest");
 
       addButton(
           buttonPane,
