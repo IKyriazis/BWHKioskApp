@@ -122,10 +122,12 @@ public class CreateAcctController extends AbstractController implements IDialogC
             webcam.open();
             try {
               ImageIO.write(webcam.getImage(), "PNG", new File("temp.png"));
+              webcam.close();
               eDB.addImage("temp.png", uName.getText());
             } catch (IOException e) {
               e.printStackTrace();
               clearFields();
+              webcam.close();
               eDB.deleteEmployee(uName.getText());
             }
           }
