@@ -136,13 +136,9 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public synchronized boolean addRFID(String username, String rfid) {
     try {
       PreparedStatement pstmt =
-        getConnection()
-        .prepareStatement(
-        "UPDATE Employees SET rfid = '"
-                + rfid
-                + "' WHERE username = '"
-                + username
-                + "'");
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Employees SET rfid = '" + rfid + "' WHERE username = '" + username + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;
@@ -156,13 +152,13 @@ public class EmployeesDatabase extends Database implements IDatabase<Employee> {
   public synchronized boolean addPagerNum(String username, String pagerNum) {
     try {
       PreparedStatement pstmt =
-        getConnection()
-        .prepareStatement(
-        "UPDATE Employees SET pagerNum = '"
-                + pagerNum
-                + "' WHERE username = '"
-                + username
-                + "'");
+          getConnection()
+              .prepareStatement(
+                  "UPDATE Employees SET pagerNum = '"
+                      + pagerNum
+                      + "' WHERE username = '"
+                      + username
+                      + "'");
       pstmt.executeUpdate();
       pstmt.close();
       return true;

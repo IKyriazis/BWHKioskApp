@@ -22,6 +22,7 @@ import java.util.Optional;
 public abstract class AbstractController {
 
   private SerialPort comPort = null;
+  public static String companyName = "Amethyst Asgardians";
 
   private DatabaseServiceProvider provider;
   private Connection conn;
