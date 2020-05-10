@@ -87,7 +87,7 @@ public class MapCanvas extends Canvas {
       floorImages[i] = images.get(i);
     }
 
-    setColoredFloorImages();
+    setColoredFloorImages(Color.rgb(249, 194, 44), Color.rgb(255, 224, 140));
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
@@ -325,7 +325,7 @@ public class MapCanvas extends Canvas {
             imgEnd.getY() - imgStart.getY());
   }
 
-  private void setColoredFloorImages() {
+  private void setColoredFloorImages(Color dark, Color light) {
     coloredFloorImages = new WritableImage[maxFloor];
     for (int i = 0; i < this.floorImages.length; i++) {
       Image image = floorImages[i];
@@ -336,8 +336,10 @@ public class MapCanvas extends Canvas {
       for (int readY = 0; readY < image.getHeight(); readY++) {
         for (int readX = 0; readX < image.getWidth(); readX++) {
           Color color = pixelReader.getColor(readX, readY);
-          if (color.equals(Color.RED)) {
-            color = Color.BLUE;
+          if (color.equals(Color.BLUE)) {
+            color = dark;
+          } else if (color.equals(Color.RED)) {
+            color = light;
           }
           pixelWriter.setColor(readX, readY, color);
         }
