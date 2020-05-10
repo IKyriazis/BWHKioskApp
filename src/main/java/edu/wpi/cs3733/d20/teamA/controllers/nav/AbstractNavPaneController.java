@@ -58,6 +58,34 @@ public abstract class AbstractNavPaneController extends AbstractController {
     gridPane.getChildren().add(buttonBox);
   }
 
+  protected void addButton(
+      GridPane gridPane, FontIcon icon, String label, java.util.function.BooleanSupplier f) {
+    int row = Math.max(0, (gridPane.getChildren().size()) / 5);
+    int col = (gridPane.getChildren().size() % 5);
+
+    VBox buttonBox = new VBox();
+    buttonBox.setPadding(new Insets(25, 25, 25, 25));
+    buttonBox.setAlignment(Pos.TOP_CENTER);
+    buttonBox.setSpacing(10);
+
+    JFXButton button = new JFXButton();
+    button.getStyleClass().add("chonky-text");
+    button.setGraphic(icon);
+
+    button.setOnAction(event -> f.getAsBoolean());
+
+    Label buttonLabel = new Label(label);
+    buttonLabel.getStyleClass().add("medium-text");
+    buttonLabel.setTextAlignment(TextAlignment.CENTER);
+    buttonLabel.setWrapText(true);
+
+    buttonBox.getChildren().addAll(button, buttonLabel);
+    GridPane.setRowIndex(buttonBox, row);
+    GridPane.setColumnIndex(buttonBox, col);
+
+    gridPane.getChildren().add(buttonBox);
+  }
+
   protected void equalizeButtonGrid(GridPane gridPane) {
     int occupiedCols = Math.min(gridPane.getChildren().size(), gridPane.getRowCount());
     double percentWidth = 100.0 / occupiedCols;

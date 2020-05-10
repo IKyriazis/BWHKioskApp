@@ -5,17 +5,21 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamP.APIController;
 import edu.wpi.cs3733.d20.teamP.ServiceException;
 import javafx.fxml.FXML;
+import javafx.scene.layout.GridPane;
 import javax.swing.*;
 
 public class FoodAdminController extends AbstractController implements IDialogController {
   private JFXDialog dialog;
 
-  @FXML private JFXTextField txtNum;
   @FXML private JFXTextField txtName;
   @FXML private JFXComboBox comboRole;
+  @FXML private GridPane employeePane;
+
+  private SimpleTableView employeeTable;
 
   public FoodAdminController() {}
 
@@ -24,8 +28,20 @@ public class FoodAdminController extends AbstractController implements IDialogCo
   }
 
   public void addEmployee() {
-    int i = comboRole.getSelectionModel().getSelectedIndex() + 1;
-    APIController.addEmployee(txtNum.getText(), txtName.getText(), i);
+    if (comboRole.getSelectionModel().getSelectedItem() != null && !txtName.getText().equals("")) {
+      int i = comboRole.getSelectionModel().getSelectedIndex() + 1;
+      // Write to file
+      // File f = new File("./src/resources/edu/wpi/cs3733/d20/teamA/csvfiles/FoodEmployees.csv");
+      /*try {
+        BufferedWriter writer = new BufferedWriter(App.class.getResourceAsStream("").);
+        writer.write("\n" + txtName.getText() + "," + i);
+        writer.close();
+      } catch (Exception e) {
+        e.printStackTrace();
+      }*/
+      // Add to API
+      APIController.addEmployee("FUCK", txtName.getText(), i);
+    }
   }
 
   public void runAdmin() {

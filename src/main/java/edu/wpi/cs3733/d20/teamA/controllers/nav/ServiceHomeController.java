@@ -3,6 +3,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.nav;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -46,7 +47,11 @@ public class ServiceHomeController extends AbstractNavPaneController {
         new FontIcon(FontAwesomeSolid.GLOBE),
         "views/service/InterpreterRequest.fxml",
         "Interpreters");
+
     addButton(buttonPane, new FontIcon(FontAwesomeSolid.HAMBURGER), "views/food/Food.fxml", "Food");
+
+    addButton(
+        buttonPane, new FontIcon(FontAwesomeSolid.GIFT), "views/service/GiftRequest.fxml", "Gifts");
 
     // Services available to employees
     if (eDB.getLoggedIn() != null) {
@@ -81,6 +86,22 @@ public class ServiceHomeController extends AbstractNavPaneController {
             new FontIcon(FontAwesomeSolid.CALENDAR_DAY),
             "views/reservation/Reservation.fxml",
             "Room\nScheduler");
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.ID_BADGE),
+            "Security Report",
+            () -> {
+              Rectangle2D primScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+              edu.wpi.cs3733.d20.teamB.api.IncidentReportApplication.run(
+                  (int) ((primScreenBounds.getWidth() - 750) / 2),
+                  (int) ((primScreenBounds.getHeight() - 500) / 3),
+                  0,
+                  0,
+                  null,
+                  "",
+                  "");
+              return true;
+            });
       }
 
       // services excluded to retail employees

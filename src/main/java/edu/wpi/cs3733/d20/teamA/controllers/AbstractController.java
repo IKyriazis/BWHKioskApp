@@ -19,7 +19,6 @@ import java.sql.Connection;
 import java.util.Optional;
 
 public abstract class AbstractController {
-
   private SerialPort comPort = null;
 
   private DatabaseServiceProvider provider;

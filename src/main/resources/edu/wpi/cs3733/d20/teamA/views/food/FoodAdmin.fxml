@@ -3,18 +3,46 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="66.0" layoutY="28.0" text="Add employee" />
-      <JFXButton layoutX="59.0" layoutY="166.0" onAction="#addEmployee" text="Add employee" />
-      <JFXButton layoutX="416.0" layoutY="179.0" onAction="#runAdmin" text="Admin" />
-      <JFXTextField fx:id="txtName" layoutX="38.0" layoutY="66.0" promptText="Employee Name" />
-      <JFXButton layoutX="66.0" layoutY="263.0" onAction="#purge" text="Purge" />
-      <JFXTextField fx:id="txtNum" layoutX="248.0" layoutY="33.0" promptText="Number" />
-      <JFXComboBox fx:id="comboRole" layoutX="31.0" layoutY="119.0" prefWidth="150.0" />
-      <JFXButton layoutX="419.0" layoutY="263.0" onAction="#close" text="Close" />
+      <HBox layoutX="242.0" layoutY="94.0" prefHeight="100.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="450.0" spacing="25.0">
+               <children>
+                  <GridPane fx:id="employeePane" prefHeight="150.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                  </GridPane>
+                  <Label text="Add employee" />
+                  <JFXTextField fx:id="txtName" maxWidth="-Infinity" prefWidth="200.0" promptText="Employee Name" />
+                  <JFXComboBox fx:id="comboRole" prefWidth="200.0" />
+                  <JFXButton onAction="#addEmployee" prefWidth="150.0" text="Add employee" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="400.0" prefWidth="150.0" spacing="25.0">
+               <children>
+                  <JFXButton onAction="#runAdmin" prefWidth="100.0" text="Admin" />
+                  <JFXButton onAction="#close" prefWidth="100.0" text="Close" />
+                  <JFXButton onAction="#purge" prefWidth="100.0" text="Purge" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
    </children>
 </AnchorPane>
