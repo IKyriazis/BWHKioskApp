@@ -49,6 +49,8 @@ public class MapCanvas extends Canvas {
   // FF 70 43
   private ArrayList<Node> highlights;
   private Color highlightColor = Color.rgb(255, 112, 67);
+  private Color darkColor = Color.rgb(249, 194, 44);
+  private Color lightColor = Color.rgb(255, 224, 140);
   private Point2D highlightOffset;
 
   private Point2D selectionStart;
@@ -87,7 +89,7 @@ public class MapCanvas extends Canvas {
       floorImages[i] = images.get(i);
     }
 
-    setColoredFloorImages(Color.rgb(249, 194, 44), Color.rgb(255, 224, 140));
+    setColoredFloorImages(darkColor, lightColor);
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
@@ -325,8 +327,10 @@ public class MapCanvas extends Canvas {
             imgEnd.getY() - imgStart.getY());
   }
 
-  private void setColoredFloorImages(Color dark, Color light) {
+  public void setColoredFloorImages(Color dark, Color light) {
     coloredFloorImages = new WritableImage[maxFloor];
+    this.lightColor = light;
+    this.darkColor = dark;
     for (int i = 0; i < this.floorImages.length; i++) {
       Image image = floorImages[i];
       PixelReader pixelReader = image.getPixelReader();
@@ -337,9 +341,9 @@ public class MapCanvas extends Canvas {
         for (int readX = 0; readX < image.getWidth(); readX++) {
           Color color = pixelReader.getColor(readX, readY);
           if (color.equals(Color.BLUE)) {
-            color = dark;
+            color = darkColor;
           } else if (color.equals(Color.RED)) {
-            color = light;
+            color = lightColor;
           }
           pixelWriter.setColor(readX, readY, color);
         }
