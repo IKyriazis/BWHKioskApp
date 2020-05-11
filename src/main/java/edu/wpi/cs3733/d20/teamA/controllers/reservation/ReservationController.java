@@ -97,6 +97,8 @@ public class ReservationController extends AbstractController {
 
     calendarView.getCalendarSources().setAll(calendarSource);
 
+    calendarView.setShowAddCalendarButton(false);
+
     requestTablePane.getChildren().add(calendarView);
 
     update();
@@ -221,7 +223,7 @@ public class ReservationController extends AbstractController {
 
   private LocalDateTime makeLocalDateTime(Calendar cal) {
     int year = cal.get(Calendar.YEAR);
-    int month = cal.get(Calendar.MONTH);
+    int month = cal.get(Calendar.MONTH) + 1;
     int day = cal.get(Calendar.DAY_OF_MONTH);
     int hour = cal.get(Calendar.HOUR_OF_DAY);
     int minute = cal.get(Calendar.MINUTE);
@@ -231,7 +233,7 @@ public class ReservationController extends AbstractController {
 
   private LocalDate makeLocalDate(Calendar cal) {
     int year = cal.get(Calendar.YEAR);
-    int month = cal.get(Calendar.MONTH);
+    int month = cal.get(Calendar.MONTH) + 1;
     int day = cal.get(Calendar.DAY_OF_MONTH);
     return LocalDate.of(year, month, day);
   }
@@ -253,13 +255,9 @@ public class ReservationController extends AbstractController {
         loc = r.getAreaReserved();
         calendar1.setTime(sdf.parse(r.getStartTime()));
         calendar2.setTime(sdf.parse(r.getEndTime()));
-        Entry<String> entry =
-            new Entry<>(
-                loc
-                    + " at "
-                    + calendar1.get(Calendar.HOUR_OF_DAY)
-                    + ":"
-                    + calendar1.get(Calendar.MINUTE));
+        String hour = String.format("%02d", calendar1.get(Calendar.HOUR));
+        String minute = String.format("%02d", calendar1.get(Calendar.MINUTE));
+        Entry<String> entry = new Entry<>(loc + " at " + hour + ":" + minute);
         entry.setLocation(loc);
         Interval interval =
             new Interval(makeLocalDateTime(calendar1), makeLocalDateTime(calendar2));
