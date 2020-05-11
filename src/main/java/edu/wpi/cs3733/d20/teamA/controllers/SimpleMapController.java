@@ -4,6 +4,8 @@ import animatefx.animation.FadeInLeft;
 import animatefx.animation.FadeOutLeft;
 import com.google.common.io.Resources;
 import com.jfoenix.controls.*;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
@@ -46,6 +48,8 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXButton floorDownButton;
   @FXML private JFXTextField floorField;
 
+  @FXML private JFXTextField phoneNumberField;
+
   @FXML private JFXRadioButton faulknerRadioButton;
   @FXML private JFXRadioButton mainRadioButton;
 
@@ -63,6 +67,8 @@ public class SimpleMapController extends AbstractController {
 
   private static final String FAULKNER_EXIT_NODE = "MHALL00342";
   private static final String MAIN_EXIT_NODE = "AEXIT0010G";
+  private static final String ACCOUNT_SID = "AC809fda5395cc3a459bc3555e6477ba72";
+  private static final String AUTH_TOKEN = "215f4ff302e84eccd3e7838c51d86506";
 
   public void initialize() {
     try {
@@ -116,6 +122,9 @@ public class SimpleMapController extends AbstractController {
 
     floorUpButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_UP));
     floorDownButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_DOWN));
+
+    // Set phonenumber field to float
+    phoneNumberField.setLabelFloat(true);
 
     // Hide directions display
     directionsBox.setVisible(false);
@@ -207,6 +216,8 @@ public class SimpleMapController extends AbstractController {
   public void pressedGo() {
     Node start = getSelectedNode(startingLocationBox);
     Node end = getSelectedNode(destinationBox);
+    String phoneNumber = phoneNumberField.getText();
+
     if ((start != null) && (end != null)) {
       ContextPath path = MapSettings.getPath();
 
@@ -299,6 +310,37 @@ public class SimpleMapController extends AbstractController {
               });
           fadeOut.play();
         }
+      }
+
+      if (phoneNumber != null && phoneNumber.length() >= 10) {
+        String directions = "";
+        for (Pair<Node, String> pair : path.getPathFindingAlgo().textualDirections()) {
+          directions += (pair.getValue() + "\n");
+        }
+        if (phoneNumber.contains(" ")
+            || phoneNumber.contains("(")
+            || phoneNumber.contains(")")
+            || phoneNumber.contains("-")) {
+          phoneNumber.replace(" ", "");
+          phoneNumber.replace("(", "");
+          phoneNumber.replace(")", "");
+          phoneNumber.replace("-", "");
+        }
+        if (!phoneNumber.substring(0, 2).equals("+1")) {
+          if (phoneNumber.length() == 10) {
+            phoneNumber = "+1" + phoneNumber;
+          }
+        }
+
+        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        Message message =
+            Message.creator(
+                    new com.twilio.type.PhoneNumber(phoneNumber),
+                    new com.twilio.type.PhoneNumber("+12029310539"),
+                    directions)
+                .create();
+
+        System.out.println(message.getSid());
       }
     }
   }

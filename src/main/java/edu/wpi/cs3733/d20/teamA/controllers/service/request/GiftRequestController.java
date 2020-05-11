@@ -67,5 +67,4 @@ public class GiftRequestController extends AbstractController {
       }
     }
   }
-  
 }
