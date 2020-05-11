@@ -148,9 +148,13 @@ public class SceneSwitcherController extends AbstractController {
     // Sometimes buttons start selected for some reason
     rootPane.requestFocus();
 
+    //Setup date and time
+    //Create new date
     this.date = new Date();
+    //Get the current date and format it
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
     this.dateLabel.setText(dateFormat.format(this.date));
+
     bindToTime();
     bindToTime2();
   }
