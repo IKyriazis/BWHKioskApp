@@ -53,11 +53,16 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="tempLabel" alignment="CENTER_RIGHT" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-                     <padding>
-                        <Insets right="15.0" />
-                     </padding>
-                  </Label>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="249.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                     <children>
+                        <Label fx:id="tempLabel" alignment="CENTER_RIGHT" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text">
+                           <padding>
+                              <Insets right="15.0" />
+                           </padding>
+                        </Label>
+                        <ImageView fx:id="wView" fitHeight="75.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </HBox>
                   <GridPane prefWidth="200.0" GridPane.columnIndex="1">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

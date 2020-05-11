@@ -23,11 +23,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import net.aksingh.owmjapis.core.OWM;
 import net.aksingh.owmjapis.model.CurrentWeather;
+import net.aksingh.owmjapis.model.param.Weather;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -62,6 +64,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private Label timeLabel;
   @FXML private Label dateLabel;
   @FXML private Label tempLabel;
+  @FXML private ImageView wView;
 
   private static SceneSwitcherController instance;
 
@@ -181,6 +184,12 @@ public class SceneSwitcherController extends AbstractController {
                     OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
                     try {
                       CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
+                      List<Weather> w = cwd.getWeatherList();
+                      int condCode = w.get(0).getConditionId();
+                      String iconCode = w.get(0).getIconCode();
+                      String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+                      Image img = new Image(iconUrl);
+                      wView.setImage(img);
                       Double d = cwd.getMainData().getTemp();
                       double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
                       int t = (int) Math.rint(f);
