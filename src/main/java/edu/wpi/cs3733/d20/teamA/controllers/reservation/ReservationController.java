@@ -18,6 +18,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -36,6 +37,7 @@ public class ReservationController extends AbstractController {
   @FXML private JFXTimePicker startPicker;
   @FXML private JFXTimePicker endPicker;
   @FXML private JFXComboBox<String> roomBox;
+  @FXML private JFXButton removeReservation;
 
   private SimpleTableView<Reservation> tblView;
 
@@ -43,12 +45,14 @@ public class ReservationController extends AbstractController {
   com.calendarfx.model.Calendar beds;
   com.calendarfx.model.Calendar reflect;
   com.calendarfx.model.Calendar conf;
+  private CalendarView calendarView;
 
   public void initialize() {
     headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_ALT));
     reservationButton.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_PLUS));
     myReservationsCheck.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_CHECK));
     promptLabel.setGraphic(new FontIcon(FontAwesomeSolid.BARS));
+    removeReservation.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_TIMES));
 
     tblView =
         new SimpleTableView<>(
@@ -69,6 +73,7 @@ public class ReservationController extends AbstractController {
         "Reflection Room 2",
         "Reflection Room 3");
 
+    // Adds the conference rooms to the list of reservable rooms
     roomList.addAll(graphDatabase.getNodeByType("CONF"));
 
     roomBox.getItems().addAll(roomList);
@@ -77,10 +82,11 @@ public class ReservationController extends AbstractController {
 
     myReservationsCheck.setSelected(false);
 
-    CalendarView calendarView = new CalendarView();
+    calendarView = new CalendarView();
 
     calendarSource = new CalendarSource("Room Calendars");
 
+    // Makes a calendar for each type of room
     beds = new com.calendarfx.model.Calendar("On-Call Beds");
     beds.setStyle(com.calendarfx.model.Calendar.Style.STYLE1);
     beds.setReadOnly(true);
@@ -97,6 +103,7 @@ public class ReservationController extends AbstractController {
 
     calendarView.getCalendarSources().setAll(calendarSource);
 
+    // Removes the ability for the user to add calendars cause that wouldn't really work yo
     calendarView.setShowAddCalendarButton(false);
 
     requestTablePane.getChildren().add(calendarView);
@@ -204,6 +211,30 @@ public class ReservationController extends AbstractController {
     }
   }
 
+  @FXML
+  private void deleteReservation() {
+    ObservableSet<Entry<?>> theSet = calendarView.getSelections();
+    for (Entry<?> entry : theSet) {
+      LocalDate startDate = entry.getStartDate();
+      LocalTime startTime = entry.getStartTime();
+      Calendar startCal = makeCalendar(startDate, startTime);
+      String loc = entry.getLocation();
+      Reservation reservation = reservationDatabase.getRes(startCal, loc);
+      String emp = reservation.getRequestedBy();
+      if (!reservationDatabase.getLoggedIn().getUsername().equals(emp)) {
+        DialogUtil.simpleErrorDialog(
+            dialogStackPane, "Error", "This reservation does not belong to you.");
+      } else {
+        if (reservationDatabase.deleteRes(startCal, loc)) {
+          update();
+          DialogUtil.simpleInfoDialog(dialogStackPane, "Thank You", "Request Deleted");
+        } else {
+          DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot delete request");
+        }
+      }
+    }
+  }
+
   public void update() {
     try {
       beds.clear();
@@ -220,7 +251,7 @@ public class ReservationController extends AbstractController {
           dialogStackPane, "Error", "Failed to update room scheduler table");
     }
   }
-
+  // Creates a LocalDateTime from a calendar
   private LocalDateTime makeLocalDateTime(Calendar cal) {
     int year = cal.get(Calendar.YEAR);
     int month = cal.get(Calendar.MONTH) + 1;
@@ -244,7 +275,7 @@ public class ReservationController extends AbstractController {
     int second = cal.get(Calendar.SECOND);
     return LocalTime.of(hour, minute, second);
   }
-
+  // Adds all of the reservations to the calendar
   private void addAllRes(ObservableList<Reservation> reservations) {
     SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
     Calendar calendar1 = Calendar.getInstance();
@@ -257,12 +288,12 @@ public class ReservationController extends AbstractController {
         calendar2.setTime(sdf.parse(r.getEndTime()));
         String hour = String.format("%02d", calendar1.get(Calendar.HOUR));
         String minute = String.format("%02d", calendar1.get(Calendar.MINUTE));
-        Entry<String> entry = new Entry<>(loc + " at " + hour + ":" + minute);
-        entry.setLocation(loc);
+        Entry<String> entry = new Entry<>(loc + " at " + hour + ":" + minute); // Names the entry
+        entry.setLocation(loc); // Sets the location
         Interval interval =
             new Interval(makeLocalDateTime(calendar1), makeLocalDateTime(calendar2));
-        entry.setInterval(interval);
-        if (loc.contains("On-Call Bed")) {
+        entry.setInterval(interval); // Sets the time interval
+        if (loc.contains("On-Call Bed")) { // Sets the calendar for it to be added to
           entry.setCalendar(beds);
         } else if (loc.contains("Reflection Room")) {
           entry.setCalendar(reflect);

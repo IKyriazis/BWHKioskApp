@@ -34,7 +34,7 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
   public boolean createTables() {
     if (doesTableNotExist("RESERVATION")) {
       return helperPrepared(
-          "CREATE TABLE Reservation (requestedBy Varchar(25), startTime TIMESTAMP, endTime TIMESTAMP, areaReserved Varchar(50), CONSTRAINT FK_ResEmp FOREIGN KEY (requestedBy) REFERENCES Employees(username), CONSTRAINT PK_Res PRIMARY KEY (startTime, areaReserved))");
+          "CREATE TABLE Reservation (requestedBy Varchar(25), startTime TIMESTAMP, endTime TIMESTAMP, areaReserved Varchar(200), CONSTRAINT FK_ResEmp FOREIGN KEY (requestedBy) REFERENCES Employees(username), CONSTRAINT PK_Res PRIMARY KEY (startTime, areaReserved))");
     }
     return false;
   }
@@ -335,6 +335,35 @@ public class ReservationDatabase extends Database implements IDatabase<Reservati
       rset.close();
       pstmt.close();
       return observableList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public Reservation getRes(Calendar start, String loc) {
+    Timestamp startT = new Timestamp(start.getTime().getTime());
+    try {
+      PreparedStatement pstmt =
+          getConnection()
+              .prepareStatement(
+                  "SELECT * FROM Reservation WHERE startTime = ? AND areaReserved = ?");
+      pstmt.setTimestamp(1, startT);
+      pstmt.setString(2, loc);
+      ResultSet rset = pstmt.executeQuery();
+      if (rset.next()) {
+        String emp = rset.getString("requestedBy");
+        Timestamp endT = rset.getTimestamp("endTime");
+        Calendar end = Calendar.getInstance();
+        end.setTimeInMillis(endT.getTime());
+        rset.close();
+        pstmt.close();
+
+        return new Reservation(emp, start, end, loc);
+      }
+      rset.close();
+      pstmt.close();
+      return null;
     } catch (SQLException e) {
       e.printStackTrace();
       return null;
