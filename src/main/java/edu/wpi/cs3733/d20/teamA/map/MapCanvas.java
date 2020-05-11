@@ -372,7 +372,13 @@ public class MapCanvas extends Canvas {
   private void drawPath(int floor) {
 
     for (Edge edge : pathEdges) {
-      if (edge.getStart().getFloor() == floor) drawEdge(edge, Color.rgb(92, 107, 192), false);
+      if ((edge.getStart().getFloor() == floor)
+          && (edge.getStart().getFloor() == edge.getEnd().getFloor())) {
+        drawEdge(edge, Color.rgb(92, 107, 192), false);
+      } else if ((edge.getStart().getFloor() == floor)
+          && (edge.getStart().getFloor() != edge.getEnd().getFloor())) {
+
+      }
     }
 
     for (Node node : pathNodes) {
@@ -381,6 +387,8 @@ public class MapCanvas extends Canvas {
         drawNode(node, Color.SPRINGGREEN);
       } else if (pathNodes.size() - 1 == pathNodes.lastIndexOf(node) && node.getFloor() == floor) {
         drawNode(node, Color.TOMATO);
+      } else if ((node.getType() == NodeType.STAI) || (node.getType() == NodeType.ELEV)) {
+
       }
     }
   }

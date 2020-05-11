@@ -29,10 +29,7 @@ public abstract class AbstractRequestController extends AbstractController {
     ObservableList<Employee> allEmployeeList = eDB.getObservableList();
 
     if (!requestedEmployees.equals("")) {
-      System.out.println(allEmployeeList.size());
       for (int i = allEmployeeList.size() - 1; i > -1; i--) {
-        System.out.println(allEmployeeList.get(i).getTitle());
-        System.out.println(allEmployeeList.get(i).getUsername());
         if (!allEmployeeList.get(i).getTitle().equals(requestedEmployees)) {
           allEmployeeList.remove(eDB.findFromUsername(allEmployeeList.get(i).getUsername()));
         }
@@ -50,10 +47,7 @@ public abstract class AbstractRequestController extends AbstractController {
           allEmployeeList.sort(Comparator.comparing(Employee::toString));
 
           if (!requestedEmployees.equals("")) {
-            System.out.println(allEmployeeList.size());
             for (int i = allEmployeeList.size() - 1; i > -1; i--) {
-              System.out.println(allEmployeeList.get(i).getTitle());
-              System.out.println(allEmployeeList.get(i).getUsername());
               if (!allEmployeeList.get(i).getTitle().equals(requestedEmployees)) {
                 allEmployeeList.remove(eDB.findFromUsername(allEmployeeList.get(i).getUsername()));
               }

@@ -1,7 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import com.jfoenix.controls.JFXButton;
-import edu.wpi.cs3733.c20.teamR.AppointmentRequest;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
@@ -29,22 +28,38 @@ public abstract class AbstractNavPaneController extends AbstractController {
     button.getStyleClass().add("chonky-text");
     button.setGraphic(icon);
 
-    if (fxmlPath.equals("APIService")) {
-      button.setOnAction(
-          event -> {
-            try {
-              AppointmentRequest.run(
-                  0, 0, 825, 750, "/edu/wpi/cs3733/d20/teamA/stylesheet.css", null, null);
-            } catch (Exception e) {
-              e.printStackTrace();
-            }
-          });
-    } else {
-      button.setOnAction(
-          event -> {
-            SceneSwitcherController.pushScene(fxmlPath, TransitionType.ZOOM);
-          });
-    }
+    button.setOnAction(
+        event -> {
+          SceneSwitcherController.pushScene(fxmlPath, TransitionType.ZOOM);
+        });
+
+    Label buttonLabel = new Label(label);
+    buttonLabel.getStyleClass().add("medium-text");
+    buttonLabel.setTextAlignment(TextAlignment.CENTER);
+    buttonLabel.setWrapText(true);
+
+    buttonBox.getChildren().addAll(button, buttonLabel);
+    GridPane.setRowIndex(buttonBox, row);
+    GridPane.setColumnIndex(buttonBox, col);
+
+    gridPane.getChildren().add(buttonBox);
+  }
+
+  protected void addButton(
+      GridPane gridPane, FontIcon icon, String label, java.util.function.BooleanSupplier f) {
+    int row = Math.max(0, (gridPane.getChildren().size()) / 5);
+    int col = (gridPane.getChildren().size() % 5);
+
+    VBox buttonBox = new VBox();
+    buttonBox.setPadding(new Insets(25, 25, 25, 25));
+    buttonBox.setAlignment(Pos.TOP_CENTER);
+    buttonBox.setSpacing(10);
+
+    JFXButton button = new JFXButton();
+    button.getStyleClass().add("chonky-text");
+    button.setGraphic(icon);
+
+    button.setOnAction(event -> f.getAsBoolean());
 
     Label buttonLabel = new Label(label);
     buttonLabel.getStyleClass().add("medium-text");
