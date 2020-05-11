@@ -200,7 +200,7 @@ public class SceneSwitcherController extends AbstractController {
                     }
                   }
                 }),
-            new KeyFrame(Duration.seconds(3600)));
+            new KeyFrame(Duration.seconds(900)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
