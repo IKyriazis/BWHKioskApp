@@ -12,6 +12,7 @@ public class GiftViewerController extends AbstractViewerController {
   @FXML private GenericViewerController genericController;
   @FXML private Label headerLabel;
   @FXML private JFXButton saveButton;
+  @FXML private JFXButton deleteButton;
 
   public GiftViewerController(ServiceRequest req) {
     super(req);
@@ -35,6 +36,11 @@ public class GiftViewerController extends AbstractViewerController {
     genericController.updateRequestFromFields(req);
 
     // Fire tab switch event forcing table to update
+    headerLabel.fireEvent(new TabSwitchEvent());
+  }
+
+  public void pressedDelete() {
+    serviceDatabase.deleteServReq(req.getReqID());
     headerLabel.fireEvent(new TabSwitchEvent());
   }
 
