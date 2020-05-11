@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
+import edu.wpi.cs3733.d20.teamA.controllers.MapSettings;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.util.*;
@@ -49,8 +50,8 @@ public class MapCanvas extends Canvas {
   // FF 70 43
   private ArrayList<Node> highlights;
   private Color highlightColor = Color.rgb(255, 112, 67);
-  private Color darkColor = Color.rgb(249, 194, 44);
-  private Color lightColor = Color.rgb(255, 224, 140);
+  private Color darkColor;
+  private Color lightColor;
   private Point2D highlightOffset;
 
   private Point2D selectionStart;
@@ -80,6 +81,9 @@ public class MapCanvas extends Canvas {
       String imgName = (campus == Campus.FAULKNER ? "Faulkner" : "Main") + (i + 1);
       imageLocations.add("images/" + imgName + ".png");
     }
+
+    darkColor = MapSettings.getDarkColor();
+    lightColor = MapSettings.getLightColor();
 
     // Load floor images in parallel
     floorImages = new Image[maxFloor];
@@ -226,6 +230,13 @@ public class MapCanvas extends Canvas {
   }
 
   public void draw(int floor) {
+    if (!MapSettings.getDarkColor().equals(darkColor)
+        || !MapSettings.getLightColor().equals(lightColor)) {
+      darkColor = MapSettings.getDarkColor();
+      lightColor = MapSettings.getLightColor();
+      setColoredFloorImages(darkColor, lightColor);
+    }
+
     // Clear background
     getGraphicsContext2D().setFill(Color.web("F4F4F4"));
     getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
@@ -327,7 +338,7 @@ public class MapCanvas extends Canvas {
             imgEnd.getY() - imgStart.getY());
   }
 
-  public void setColoredFloorImages(Color dark, Color light) {
+  private void setColoredFloorImages(Color dark, Color light) {
     coloredFloorImages = new WritableImage[maxFloor];
     this.lightColor = light;
     this.darkColor = dark;
