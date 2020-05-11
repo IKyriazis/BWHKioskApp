@@ -198,33 +198,35 @@ public class SceneSwitcherController extends AbstractController {
                     try {
                       // Get the current weather by coordinates of Boston weather station
                       CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
-                      // Make a list of current weather: format Weather[conditionId, mainInfo, moreInfo, iconCode]
+                      // Make a list of current weather: format Weather[conditionId, mainInfo,
+                      // moreInfo, iconCode]
                       List<Weather> w = cwd.getWeatherList();
-                      //Get the current weather's condition code
+                      // Get the current weather's condition code
                       int condCode = w.get(0).getConditionId();
-                      //Get the icon code to display the icon in the corner
+                      // Get the icon code to display the icon in the corner
                       String iconCode = w.get(0).getIconCode();
-                      //Get the url of the image from openweathermaps with the icon code
+                      // Get the url of the image from openweathermaps with the icon code
                       String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
 
-                      //Create new image with the url and set the imageview's image to that image
+                      // Create new image with the url and set the imageview's image to that image
                       Image img = new Image(iconUrl);
                       wView.setImage(img);
 
-                      //Get the current temperature
+                      // Get the current temperature
                       Double d = cwd.getMainData().getTemp();
-                      //Convert the temperature from kelvin to fahrenheit
+                      // Convert the temperature from kelvin to fahrenheit
                       double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
                       int t = (int) Math.rint(f);
                       String tem = t + "";
-                      //Set the text of the label to the temperature and add degree symbol to make it pretty
+                      // Set the text of the label to the temperature and add degree symbol to make
+                      // it pretty
                       tempLabel.setText(tem + (char) 0x00B0 + " F");
                     } catch (Exception e) {
                       e.printStackTrace();
                     }
                   }
                 }),
-            //Have the temperature and icon update every 15 mins
+            // Have the temperature and icon update every 15 mins
             new KeyFrame(Duration.seconds(900)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
