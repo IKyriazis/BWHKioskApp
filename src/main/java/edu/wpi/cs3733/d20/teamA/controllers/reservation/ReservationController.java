@@ -9,6 +9,7 @@ import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.reservation.Reservation;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -38,14 +39,15 @@ public class ReservationController extends AbstractController {
   @FXML private JFXTimePicker endPicker;
   @FXML private JFXComboBox<String> roomBox;
   @FXML private JFXButton removeReservation;
+  @FXML private GridPane rootPane;
+
+  private CalendarView calendarView;
+  private CalendarSource calendarSource;
+  private com.calendarfx.model.Calendar bedsCalendar;
+  private com.calendarfx.model.Calendar reflectCalendar;
+  private com.calendarfx.model.Calendar confCalendar;
 
   private SimpleTableView<Reservation> tblView;
-
-  private CalendarSource calendarSource;
-  com.calendarfx.model.Calendar beds;
-  com.calendarfx.model.Calendar reflect;
-  com.calendarfx.model.Calendar conf;
-  private CalendarView calendarView;
 
   public void initialize() {
     headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_ALT));
@@ -83,23 +85,22 @@ public class ReservationController extends AbstractController {
     myReservationsCheck.setSelected(false);
 
     calendarView = new CalendarView();
-
     calendarSource = new CalendarSource("Room Calendars");
 
     // Makes a calendar for each type of room
-    beds = new com.calendarfx.model.Calendar("On-Call Beds");
-    beds.setStyle(com.calendarfx.model.Calendar.Style.STYLE1);
-    beds.setReadOnly(true);
+    bedsCalendar = new com.calendarfx.model.Calendar("On-Call Beds");
+    bedsCalendar.setStyle(com.calendarfx.model.Calendar.Style.STYLE1);
+    bedsCalendar.setReadOnly(true);
 
-    reflect = new com.calendarfx.model.Calendar("Reflection Rooms");
-    reflect.setStyle(com.calendarfx.model.Calendar.Style.STYLE2);
-    reflect.setReadOnly(true);
+    reflectCalendar = new com.calendarfx.model.Calendar("Reflection Rooms");
+    reflectCalendar.setStyle(com.calendarfx.model.Calendar.Style.STYLE2);
+    reflectCalendar.setReadOnly(true);
 
-    conf = new com.calendarfx.model.Calendar("Conference Rooms");
-    conf.setStyle(com.calendarfx.model.Calendar.Style.STYLE3);
-    conf.setReadOnly(true);
+    confCalendar = new com.calendarfx.model.Calendar("Conference Rooms");
+    confCalendar.setStyle(com.calendarfx.model.Calendar.Style.STYLE3);
+    confCalendar.setReadOnly(true);
 
-    calendarSource.getCalendars().addAll(beds, reflect, conf);
+    calendarSource.getCalendars().addAll(bedsCalendar, reflectCalendar, confCalendar);
 
     calendarView.getCalendarSources().setAll(calendarSource);
 
@@ -108,7 +109,13 @@ public class ReservationController extends AbstractController {
 
     requestTablePane.getChildren().add(calendarView);
 
-    update();
+    rootPane.addEventHandler(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+
+          update();
+        });
   }
   // Creates a calendar datatype from a date and a time
   private Calendar makeCalendar(LocalDate date, LocalTime time) {
@@ -238,9 +245,9 @@ public class ReservationController extends AbstractController {
 
   public void update() {
     try {
-      beds.clear();
-      reflect.clear();
-      conf.clear();
+      bedsCalendar.clear();
+      reflectCalendar.clear();
+      confCalendar.clear();
       if (myReservationsCheck.selectedProperty().get()) {
         addAllRes(reservationDatabase.getObservableListByUser());
       } else {
@@ -292,7 +299,7 @@ public class ReservationController extends AbstractController {
         calendar1.setTime(sdf.parse(r.getStartTime()));
         calendar2.setTime(sdf.parse(r.getEndTime()));
         String hour = String.format("%02d", calendar1.get(Calendar.HOUR));
-        if(calendar1.get(Calendar.HOUR) == 0) {
+        if (calendar1.get(Calendar.HOUR) == 0) {
           hour = "12";
         }
         String minute = String.format("%02d", calendar1.get(Calendar.MINUTE));
@@ -315,11 +322,11 @@ public class ReservationController extends AbstractController {
             new Interval(makeLocalDateTime(calendar1), makeLocalDateTime(calendar2));
         entry.setInterval(interval); // Sets the time interval
         if (loc.contains("On-Call Bed")) { // Sets the calendar for it to be added to
-          entry.setCalendar(beds);
+          entry.setCalendar(bedsCalendar);
         } else if (loc.contains("Reflection Room")) {
-          entry.setCalendar(reflect);
+          entry.setCalendar(reflectCalendar);
         } else {
-          entry.setCalendar(conf);
+          entry.setCalendar(confCalendar);
         }
       }
     } catch (ParseException e) {
