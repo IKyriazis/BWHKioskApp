@@ -59,9 +59,9 @@
                         <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-                        <JFXComboBox fx:id="nodeBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Request Location" GridPane.columnIndex="1" />
-                        <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.rowSpan="2" />
-                        <GridPane prefHeight="92.0" prefWidth="258.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <JFXComboBox fx:id="nodeBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Request Location" />
+                        <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.columnIndex="1" GridPane.rowSpan="2" />
+                        <GridPane prefHeight="92.0" prefWidth="258.0" GridPane.rowIndex="1">
                            <columnConstraints>
                               <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" />
                            </columnConstraints>
