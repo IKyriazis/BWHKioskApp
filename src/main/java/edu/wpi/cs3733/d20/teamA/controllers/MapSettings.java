@@ -30,16 +30,16 @@ public class MapSettings {
     return lightColor;
   }
 
-  public void setLightColor(Color lightColor) {
-    this.lightColor = lightColor;
+  public static void setLightColor(Color lightColors) {
+    lightColor = lightColors;
   }
 
   public static Color getDarkColor() {
     return darkColor;
   }
 
-  public void setDarkColor(Color darkColor) {
-    this.darkColor = darkColor;
+  public static void setDarkColor(Color darkColors) {
+    darkColor = darkColors;
   }
 
   public static boolean isSetup() {
