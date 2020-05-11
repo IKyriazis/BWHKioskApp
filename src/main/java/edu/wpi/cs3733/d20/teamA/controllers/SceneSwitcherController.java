@@ -205,10 +205,16 @@ public class SceneSwitcherController extends AbstractController {
                       int condCode = w.get(0).getConditionId();
                       //Get the icon code to display the icon in the corner
                       String iconCode = w.get(0).getIconCode();
+                      //Get the url of the image from openweathermaps with the icon code
                       String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+
+                      //Create new image with the url and set the imageview's image to that image
                       Image img = new Image(iconUrl);
                       wView.setImage(img);
+
+                      //Get the current temperature
                       Double d = cwd.getMainData().getTemp();
+
                       double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
                       int t = (int) Math.rint(f);
                       String tem = t + "";
