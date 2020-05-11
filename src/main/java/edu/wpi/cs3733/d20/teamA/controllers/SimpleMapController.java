@@ -395,6 +395,9 @@ public class SimpleMapController extends AbstractController {
       gMapView.setVisible(false);
       zoomSlider.setVisible(true);
 
+      // Center path
+      currCanvas.centerPathOnFloor(currSegment.getFloor());
+
       // Animate path
       currCanvas.enablePathAnimation();
       currCanvas.animatePath(currSegment.getFloor());
