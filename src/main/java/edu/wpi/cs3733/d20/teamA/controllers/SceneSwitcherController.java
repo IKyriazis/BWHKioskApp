@@ -23,11 +23,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 import net.aksingh.owmjapis.core.OWM;
 import net.aksingh.owmjapis.model.CurrentWeather;
+import net.aksingh.owmjapis.model.param.Weather;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -62,6 +64,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private Label timeLabel;
   @FXML private Label dateLabel;
   @FXML private Label tempLabel;
+  @FXML private JFXButton button;
 
   private static SceneSwitcherController instance;
 
@@ -147,14 +150,20 @@ public class SceneSwitcherController extends AbstractController {
     // Sometimes buttons start selected for some reason
     rootPane.requestFocus();
 
+    // Setup date and time
+    // Create new date
     this.date = new Date();
+    // Get the current date and format it
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
     this.dateLabel.setText(dateFormat.format(this.date));
+
+    // Call bind to time functions to update weather and time
     bindToTime();
     bindToTime2();
   }
 
   private void bindToTime() {
+    // Create a new timeline object
     Timeline timeline =
         new Timeline(
             new KeyFrame(
@@ -162,17 +171,22 @@ public class SceneSwitcherController extends AbstractController {
                 new EventHandler<ActionEvent>() {
                   @Override
                   public void handle(ActionEvent actionEvent) {
+                    // Get the current date and time
                     Calendar time = Calendar.getInstance();
+                    // Create a format for the time so it is pretty
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm aa");
+                    // Set the time to the label
                     timeLabel.setText(simpleDateFormat.format(time.getTime()));
                   }
                 }),
+            // Make it update every second so the time is accurate
             new KeyFrame(Duration.seconds(1)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
 
   private void bindToTime2() {
+    // Create a new timeline
     Timeline timeline =
         new Timeline(
             new KeyFrame(
@@ -180,20 +194,43 @@ public class SceneSwitcherController extends AbstractController {
                 new EventHandler<ActionEvent>() {
                   @Override
                   public void handle(ActionEvent actionEvent) {
+                    // Create a new openweathermaps object
+                    // Note this uses Maddie's API Key pls don't steal my identity
                     OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
                     try {
+                      // Get the current weather by coordinates of Boston weather station
                       CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
+                      // Make a list of current weather: format Weather[conditionId, mainInfo,
+                      // moreInfo, iconCode]
+                      List<Weather> w = cwd.getWeatherList();
+                      // Get the current weather's condition code
+                      int condCode = w.get(0).getConditionId();
+                      // Get the icon code to display the icon in the corner
+                      String iconCode = w.get(0).getIconCode();
+                      // Get the url of the image from openweathermaps with the icon code
+                      String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+                      button.setOpacity(1.0);
+                      // Create new image with the url and set the imageview's image to that image
+                      Image img = new Image(iconUrl);
+                      ImageView wView = new ImageView(img);
+                      button.setGraphic(wView);
+
+                      // Get the current temperature
                       Double d = cwd.getMainData().getTemp();
+                      // Convert the temperature from kelvin to fahrenheit
                       double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
                       int t = (int) Math.rint(f);
                       String tem = t + "";
+                      // Set the text of the label to the temperature and add degree symbol to make
+                      // it pretty
                       tempLabel.setText(tem + (char) 0x00B0 + " F");
                     } catch (Exception e) {
                       e.printStackTrace();
                     }
                   }
                 }),
-            new KeyFrame(Duration.seconds(3600)));
+            // Have the temperature and icon update every 15 mins
+            new KeyFrame(Duration.seconds(900)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
