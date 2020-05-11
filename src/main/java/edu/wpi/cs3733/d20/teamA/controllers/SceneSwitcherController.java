@@ -184,6 +184,7 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   private void bindToTime2() {
+    //Create a new timeline
     Timeline timeline =
         new Timeline(
             new KeyFrame(
@@ -191,10 +192,15 @@ public class SceneSwitcherController extends AbstractController {
                 new EventHandler<ActionEvent>() {
                   @Override
                   public void handle(ActionEvent actionEvent) {
+                    //Create a new openweathermaps object
+                    //Note this uses Maddie's API Key pls don't steal my identity
                     OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
                     try {
+                      //Get the current weather by coordinates of Boston weather station
                       CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
+                      //Make a list of current weather: format Weather[conditioncode
                       List<Weather> w = cwd.getWeatherList();
+                      System.out.println(w);
                       int condCode = w.get(0).getConditionId();
                       String iconCode = w.get(0).getIconCode();
                       String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
