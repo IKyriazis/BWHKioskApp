@@ -60,7 +60,7 @@
                               <Insets right="15.0" />
                            </padding>
                         </Label>
-                        <ImageView fx:id="wView" fitHeight="75.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" />
+                        <JFXButton fx:id="button" disable="true" />
                      </children>
                   </HBox>
                   <GridPane prefWidth="200.0" GridPane.columnIndex="1">
@@ -93,6 +93,9 @@
                <effect>
                   <DropShadow height="24.0" radius="11.5" width="24.0" />
                </effect>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
             </GridPane>
             <StackPane pickOnBounds="false" GridPane.rowIndex="1">
                <children>
