@@ -200,7 +200,6 @@ public class SceneSwitcherController extends AbstractController {
                       CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
                       // Make a list of current weather: format Weather[conditionId, mainInfo, moreInfo, iconCode]
                       List<Weather> w = cwd.getWeatherList();
-                      System.out.println(w);
                       //Get the current weather's condition code
                       int condCode = w.get(0).getConditionId();
                       //Get the icon code to display the icon in the corner
