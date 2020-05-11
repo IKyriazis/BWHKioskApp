@@ -214,17 +214,19 @@ public class SceneSwitcherController extends AbstractController {
 
                       //Get the current temperature
                       Double d = cwd.getMainData().getTemp();
-
+                      //Convert the temperature from kelvin to fahrenheit
                       double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
                       int t = (int) Math.rint(f);
                       String tem = t + "";
+                      //Set the text of the label to the temperature and add degree symbol to make it pretty
                       tempLabel.setText(tem + (char) 0x00B0 + " F");
                     } catch (Exception e) {
                       e.printStackTrace();
                     }
                   }
                 }),
-            new KeyFrame(Duration.seconds(900)));
+            //Have the temperature and icon update every hour
+            new KeyFrame(Duration.seconds(3600)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
