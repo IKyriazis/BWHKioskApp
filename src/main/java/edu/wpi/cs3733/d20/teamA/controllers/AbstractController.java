@@ -12,6 +12,7 @@ import edu.wpi.cs3733.d20.teamA.database.inventory.InventoryDatabase;
 import edu.wpi.cs3733.d20.teamA.database.patient.PatientDatabase;
 import edu.wpi.cs3733.d20.teamA.database.reservation.ReservationDatabase;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceDatabase;
+import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Graph;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.NodeAutoCompleteHandler;
@@ -65,27 +66,61 @@ public abstract class AbstractController {
 
     // Create the employee table if it doesn't exist
     if (eDB.getSize() == -1 || eDB.getSize() == 0) {
-      eDB.createTables();
-      eDB.addEmployee(
-          "111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN, "1122112211");
-      eDB.addEmployee(
-          "222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.NURSE, "2233223322");
-      eDB.addEmployee(
-          "Brennan", "Aubuchaun", "baub", "baUb578", EmployeeTitle.INTERPRETER, "1234567890");
-      eDB.addEmployee(
-          "Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano2", EmployeeTitle.NURSE, "3344334433");
-      eDB.addEmployee(
-          "Eva", "Labbe", "ELLabbe", "CluBP3nGuin3", EmployeeTitle.JANITOR, "4455445544");
-      eDB.addEmployee(
-          "Dean", "Winchester", "WinDean", "catNipRox2", EmployeeTitle.DOCTOR, "5566556655");
-      eDB.addEmployee(
-          "Stella", "Simmons", "Ssimmons", "gaLaxY6", EmployeeTitle.RECEPTIONIST, "6677667766");
-      eDB.addEmployee(
-          "Yolanda", "Daniels", "YDaniels", "SpoodRman3", EmployeeTitle.RETAIL, "7788778877");
-      // create account with rfid
-      eDB.addEmployeeGA(
-          "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
+      addEmployees();
     }
+
+    if (serviceDatabase.getSize() == -1 || serviceDatabase.getSize() == 0) {
+      addRequests();
+    }
+  }
+
+  private void addEmployees() {
+    eDB.createTables();
+    eDB.addEmployee(
+        "111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN, "1122112211");
+    eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.NURSE, "2233223322");
+    eDB.addEmployee(
+        "Brennan", "Aubuchaun", "baub", "baUb578", EmployeeTitle.INTERPRETER, "1234567890");
+    eDB.addEmployee(
+        "Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano2", EmployeeTitle.NURSE, "3344334433");
+    eDB.addEmployee("Eva", "Labbe", "ELLabbe", "CluBP3nGuin3", EmployeeTitle.JANITOR, "4455445544");
+    eDB.addEmployee(
+        "Dean", "Winchester", "WinDean", "catNipRox2", EmployeeTitle.DOCTOR, "5566556655");
+    eDB.addEmployee(
+        "Stella", "Simmons", "Ssimmons", "gaLaxY6", EmployeeTitle.RECEPTIONIST, "6677667766");
+    eDB.addEmployee(
+        "Yolanda", "Daniels", "YDaniels", "SpoodRman3", EmployeeTitle.RETAIL, "7788778877");
+    // create account with rfid
+    eDB.addEmployeeGA(
+        "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
+  }
+
+  private void addRequests() {
+    serviceDatabase.createTables();
+    serviceDatabase.addServiceReq(
+        ServiceType.PRESCRIPTION,
+        "",
+        "WinDean",
+        "Take Daily",
+        "Yash Patel" + "|" + "Advil" + "|" + "2 pills" + "|" + "4" + "|" + "CVS");
+    serviceDatabase.addServiceReq(
+        ServiceType.PRESCRIPTION,
+        "",
+        "WinDean",
+        "Infection",
+        "Amari Watt" + "|" + "Amoxicillin" + "|" + "1 pill" + "|" + "1" + "|" + "Walgreens");
+    serviceDatabase.addServiceReq(
+        ServiceType.EQUIPMENT,
+        "BWH Surgical Specialties",
+        null,
+        "Scissors" + "|" + 1 + "|" + "Low");
+    serviceDatabase.addServiceReq(
+        ServiceType.EQUIPMENT,
+        "Emergency Department",
+        null,
+        "Pairs of Gloves" + "|" + 30 + "|" + "High");
+    serviceDatabase.addServiceReq(
+        ServiceType.IT_TICKET, "Mechanical Space 01", "Can't connect to main router", "WIFI");
   }
 
   public String scanRFID() {

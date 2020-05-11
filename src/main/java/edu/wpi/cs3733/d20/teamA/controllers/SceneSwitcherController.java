@@ -64,7 +64,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private Label timeLabel;
   @FXML private Label dateLabel;
   @FXML private Label tempLabel;
-  @FXML private ImageView wView;
+  @FXML private JFXButton button;
 
   private static SceneSwitcherController instance;
 
@@ -210,9 +210,12 @@ public class SceneSwitcherController extends AbstractController {
                       // Get the url of the image from openweathermaps with the icon code
                       String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
 
+                      button.setOpacity(1.0);
+
                       // Create new image with the url and set the imageview's image to that image
                       Image img = new Image(iconUrl);
-                      wView.setImage(img);
+                      ImageView wView = new ImageView(img);
+                      button.setGraphic(wView);
 
                       // Get the current temperature
                       Double d = cwd.getMainData().getTemp();
