@@ -33,7 +33,6 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                   </GridPane>
-                  <Label fx:id="textualDirectionsLabel" alignment="TOP_LEFT" layoutY="180.0" prefHeight="128.0" prefWidth="194.0" />
                   <VBox fx:id="directionsBox" alignment="CENTER" layoutX="15.0" layoutY="125.0" maxHeight="-Infinity" maxWidth="300.0" minHeight="-Infinity" minWidth="300.0" prefWidth="300.0" spacing="25.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="125.0">
 
                            <padding>
