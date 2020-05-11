@@ -155,11 +155,13 @@ public class SceneSwitcherController extends AbstractController {
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
     this.dateLabel.setText(dateFormat.format(this.date));
 
+    //Call bind to time functions to update weather and time
     bindToTime();
     bindToTime2();
   }
 
   private void bindToTime() {
+    //Create a new timeline object
     Timeline timeline =
         new Timeline(
             new KeyFrame(
@@ -167,11 +169,15 @@ public class SceneSwitcherController extends AbstractController {
                 new EventHandler<ActionEvent>() {
                   @Override
                   public void handle(ActionEvent actionEvent) {
+                    //Get the current date and time
                     Calendar time = Calendar.getInstance();
+                    //Create a format for the time so it is pretty
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm aa");
+                    //Set the time to the label
                     timeLabel.setText(simpleDateFormat.format(time.getTime()));
                   }
                 }),
+            //Make it update every second so the time is accurate
             new KeyFrame(Duration.seconds(1)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
