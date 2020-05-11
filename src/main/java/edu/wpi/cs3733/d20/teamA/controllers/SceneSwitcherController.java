@@ -209,7 +209,9 @@ public class SceneSwitcherController extends AbstractController {
                       String iconCode = w.get(0).getIconCode();
                       // Get the url of the image from openweathermaps with the icon code
                       String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+
                       button.setOpacity(1.0);
+
                       // Create new image with the url and set the imageview's image to that image
                       Image img = new Image(iconUrl);
                       ImageView wView = new ImageView(img);
