@@ -13,6 +13,7 @@ public class InternalTransportViewerController extends AbstractViewerController 
   @FXML private GenericViewerController genericController;
   @FXML private Label headerLabel;
   @FXML private JFXButton saveButton;
+  @FXML private JFXButton deleteButton;
   @FXML private JFXTextField destinationField;
 
   public InternalTransportViewerController(ServiceRequest req) {
@@ -39,6 +40,11 @@ public class InternalTransportViewerController extends AbstractViewerController 
     // Fill standard fields
     genericController.updateRequestFromFields(req);
     // Fire tab switch event forcing table to update
+    headerLabel.fireEvent(new TabSwitchEvent());
+  }
+
+  public void pressedDelete() {
+    serviceDatabase.deleteServReq(req.getReqID());
     headerLabel.fireEvent(new TabSwitchEvent());
   }
 
