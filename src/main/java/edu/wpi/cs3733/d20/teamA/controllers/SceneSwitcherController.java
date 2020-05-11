@@ -591,7 +591,6 @@ public class SceneSwitcherController extends AbstractController {
                 if (loggedIn == true) {
                   pressedSignIn();
                 }
-                System.out.println("The program has timed out");
               }));
 
   @FXML
