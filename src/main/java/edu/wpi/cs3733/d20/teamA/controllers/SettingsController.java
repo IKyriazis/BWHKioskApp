@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXRadioButton;
-import edu.wpi.cs3733.d20.teamA.controllers.MapEditorController;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import java.io.*;
@@ -118,8 +117,8 @@ public class SettingsController {
 
   @FXML
   private void updateTheme(ActionEvent event) {
-    //setColoredFloorImages(getColor("-primary-color-light"), getColor("-primary-color-dark"));
-    //MapEditorController.updateTipLabel();
+    // setColoredFloorImages(getColor("-primary-color-light"), getColor("-primary-color-dark"));
+    // MapEditorController.updateTipLabel();
     // Write theme to temporary file
     File themeFile = new File(themePath);
     try {
