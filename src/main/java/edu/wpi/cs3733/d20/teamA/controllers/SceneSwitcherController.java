@@ -77,9 +77,7 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
-  private int logoutTime = 15000;
-
-  boolean logoutTimerIsRunning;
+  private double logoutTime = 15;
 
   @FXML
   public void initialize() {
@@ -599,25 +597,21 @@ public class SceneSwitcherController extends AbstractController {
     pushScene("views/AboutPage.fxml", TransitionType.ZOOM);
   }
 
+  Timeline timer =
+      new Timeline(
+          new KeyFrame(
+              Duration.seconds(logoutTime),
+              (v) -> {
+                pressedHome();
+                if (loggedIn == true) {
+                  pressedSignIn();
+                }
+                System.out.println("The program has timed out");
+              }));
+
   @FXML
   public void logoutTimer() {
-    if (logoutTimerIsRunning) {
-      logoutTimerIsRunning = false;
-      ThreadPool.logoutShutdown();
-    }
-    logoutTimerIsRunning = true;
-    ThreadPool.logoutSingleShotMainTask(
-        logoutTime,
-        () -> {
-          pressedHome();
-          if (loggedIn == true) {
-            pressedSignIn();
-          }
-          System.out.println("The program has timed out");
-          logoutTimerIsRunning = false;
-        });
+    timer.stop();
+    timer.play();
   }
-
-
-
 }
