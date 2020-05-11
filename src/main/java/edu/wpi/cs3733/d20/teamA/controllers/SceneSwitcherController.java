@@ -76,6 +76,8 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
+  private double logoutTime = 15;
+
   @FXML
   public void initialize() {
     // Setup instance
@@ -578,5 +580,23 @@ public class SceneSwitcherController extends AbstractController {
 
   public void openAbout(ActionEvent actionEvent) {
     pushScene("views/About.fxml", TransitionType.ZOOM);
+  }
+
+  Timeline timer =
+      new Timeline(
+          new KeyFrame(
+              Duration.seconds(logoutTime),
+              (v) -> {
+                pressedHome();
+                if (loggedIn == true) {
+                  pressedSignIn();
+                }
+                System.out.println("The program has timed out");
+              }));
+
+  @FXML
+  public void logoutTimer() {
+    timer.stop();
+    timer.play();
   }
 }
