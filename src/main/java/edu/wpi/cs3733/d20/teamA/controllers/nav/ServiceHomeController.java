@@ -4,6 +4,7 @@ import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -30,6 +31,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
   }
 
   private void buildButtonPane() {
+    buttonPane.setAlignment(Pos.CENTER);
     buttonPane.getChildren().clear();
 
     // Services available to the public
@@ -50,27 +52,43 @@ public class ServiceHomeController extends AbstractNavPaneController {
         "views/service/InterpreterRequest.fxml",
         "Interpreters");
 
+    addButton(buttonPane, new FontIcon(FontAwesomeSolid.HAMBURGER), "views/food/Food.fxml", "Food");
+
+    addButton(
+        buttonPane, new FontIcon(FontAwesomeSolid.GIFT), "views/service/GiftRequest.fxml", "Gifts");
+
     // Services available to employees
     if (eDB.getLoggedIn() != null) {
 
       String employeeTitle = eDB.getLoggedIn().getTitle();
-      System.out.println(employeeTitle);
+
+      if (employeeTitle.equals("admin")
+          || employeeTitle.equals("doctor")
+          || employeeTitle.equals("nurse")
+          || employeeTitle.equals("janitor")) {
+        addButton(
+            buttonPane,
+            new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
+            "views/service/LaundryRequest.fxml",
+            "Laundry");
+      }
 
       // services available to admins, doctors, and nurses
       if (employeeTitle.equals("admin")
           || employeeTitle.equals("doctor")
           || employeeTitle.equals("nurse")) {
-        addButton(
-            buttonPane,
-            new FontIcon(FontAwesomeSolid.MEDKIT),
-            "views/service/MedicineRequest.fxml",
-            "Medicine\nDelivery");
 
         addButton(
             buttonPane,
             new FontIcon(FontAwesomeSolid.USER),
             "views/PatientsInfoService.fxml",
             "Patient\nInfo");
+
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.MEDKIT),
+            "views/service/MedicineRequest.fxml",
+            "Medicine\nDelivery");
 
         addButton(
             buttonPane,
@@ -83,6 +101,22 @@ public class ServiceHomeController extends AbstractNavPaneController {
             new FontIcon(FontAwesomeSolid.CALENDAR_DAY),
             "views/reservation/Reservation.fxml",
             "Room\nScheduler");
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.ID_BADGE),
+            "Security Report",
+            () -> {
+              Rectangle2D primScreenBounds = javafx.stage.Screen.getPrimary().getVisualBounds();
+              edu.wpi.cs3733.d20.teamB.api.IncidentReportApplication.run(
+                  (int) ((primScreenBounds.getWidth() - 750) / 2),
+                  (int) ((primScreenBounds.getHeight() - 500) / 3),
+                  0,
+                  0,
+                  null,
+                  "",
+                  "");
+              return true;
+            });
       }
 
       // services excluded to retail employees
@@ -98,6 +132,12 @@ public class ServiceHomeController extends AbstractNavPaneController {
             new FontIcon(FontAwesomeSolid.LAPTOP),
             "views/service/ITRequest.fxml",
             "Tech\nSupport");
+
+        addButton(
+            buttonPane,
+            new FontIcon(FontAwesomeSolid.PAGER),
+            "views/OnCallList.fxml",
+            "Employees\nOn Call");
       }
 
       addButton(
@@ -105,23 +145,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
           new FontIcon(FontAwesomeSolid.BROOM),
           "views/service/JanitorRequest.fxml",
           "Janitorial");
-
-      if (employeeTitle.equals("admin")
-          || employeeTitle.equals("doctor")
-          || employeeTitle.equals("nurse")
-          || employeeTitle.equals("janitor")) {
-        addButton(
-            buttonPane,
-            new FontIcon(Material.LOCAL_LAUNDRY_SERVICE),
-            "views/service/LaundryRequest.fxml",
-            "Laundry");
-      }
-
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.BAND_AID),
-          "APIService",
-          "Appointment\nRequest");
 
       addButton(
           buttonPane,

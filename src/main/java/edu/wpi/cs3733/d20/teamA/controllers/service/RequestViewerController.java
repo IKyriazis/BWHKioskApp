@@ -171,6 +171,14 @@ public class RequestViewerController extends AbstractController {
                   FXMLCache.getController("views/service/edit/PrescriptionRequestViewer.fxml"))
               .reset(req);
           break;
+        case GIFT:
+          newNode =
+              FXMLCache.loadServiceFXML(
+                  "views/service/edit/GiftRequestViewer.fxml", new GiftViewerController(req));
+          ((AbstractViewerController)
+                  FXMLCache.getController("views/service/edit/GiftRequestViewer.fxml"))
+              .reset(req);
+          break;
         default:
           break;
       }

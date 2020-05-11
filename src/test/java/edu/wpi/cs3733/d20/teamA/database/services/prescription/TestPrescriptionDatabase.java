@@ -29,7 +29,8 @@ public class TestPrescriptionDatabase {
       conn = DriverManager.getConnection(jdbcUrl);
       graphDatabase = new GraphDatabase(conn);
       employeesDatabase = new EmployeesDatabase(conn);
-      employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+      employeesDatabase.addEmployee(
+          "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, "8887493372l");
       employeesDatabase.logIn("yppatel", "YashPatel1");
       serviceDatabase = new ServiceDatabase(conn);
     } catch (SQLException e) {
