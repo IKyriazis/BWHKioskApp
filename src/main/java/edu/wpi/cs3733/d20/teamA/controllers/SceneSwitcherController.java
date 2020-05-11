@@ -225,8 +225,8 @@ public class SceneSwitcherController extends AbstractController {
                     }
                   }
                 }),
-            //Have the temperature and icon update every hour
-            new KeyFrame(Duration.seconds(3600)));
+            //Have the temperature and icon update every 15 mins
+            new KeyFrame(Duration.seconds(900)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
