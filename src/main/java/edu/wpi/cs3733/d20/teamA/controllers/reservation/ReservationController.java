@@ -221,16 +221,17 @@ public class ReservationController extends AbstractController {
       String loc = entry.getLocation();
       Reservation reservation = reservationDatabase.getRes(startCal, loc);
       String emp = reservation.getRequestedBy();
-      if (!reservationDatabase.getLoggedIn().getUsername().equals(emp)) {
-        DialogUtil.simpleErrorDialog(
-            dialogStackPane, "Error", "This reservation does not belong to you.");
-      } else {
+      String logged = reservationDatabase.getLoggedIn().getUsername();
+      if (emp.equals(logged) || "admin".equals(logged)) {
         if (reservationDatabase.deleteRes(startCal, loc)) {
           update();
           DialogUtil.simpleInfoDialog(dialogStackPane, "Thank You", "Request Deleted");
         } else {
           DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot delete request");
         }
+      } else {
+        DialogUtil.simpleErrorDialog(
+            dialogStackPane, "Error", "This reservation does not belong to you.");
       }
     }
   }
@@ -281,14 +282,34 @@ public class ReservationController extends AbstractController {
     Calendar calendar1 = Calendar.getInstance();
     Calendar calendar2 = Calendar.getInstance();
     String loc;
+    boolean admin = false;
+    if ("admin".equals(reservationDatabase.getLoggedIn().getTitle())) {
+      admin = true;
+    }
     try {
       for (Reservation r : reservations) {
         loc = r.getAreaReserved();
         calendar1.setTime(sdf.parse(r.getStartTime()));
         calendar2.setTime(sdf.parse(r.getEndTime()));
         String hour = String.format("%02d", calendar1.get(Calendar.HOUR));
+        if(calendar1.get(Calendar.HOUR) == 0) {
+          hour = "12";
+        }
         String minute = String.format("%02d", calendar1.get(Calendar.MINUTE));
-        Entry<String> entry = new Entry<>(loc + " at " + hour + ":" + minute); // Names the entry
+        Entry<String> entry;
+        if (admin) {
+          entry =
+              new Entry<>(
+                  loc
+                      + " at "
+                      + hour
+                      + ":"
+                      + minute
+                      + " by: "
+                      + r.getRequestedBy()); // Names the entry
+        } else {
+          entry = new Entry<>(loc + " at " + hour + ":" + minute); // Names the entry
+        }
         entry.setLocation(loc); // Sets the location
         Interval interval =
             new Interval(makeLocalDateTime(calendar1), makeLocalDateTime(calendar2));
