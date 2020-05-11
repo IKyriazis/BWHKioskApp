@@ -100,7 +100,7 @@
                               </JFXButton>
                            </children>
                         </GridPane>
-                        <JFXListView fx:id="directionsList" prefHeight="498.0" GridPane.rowIndex="1" />
+                        <JFXListView fx:id="directionsList" pickOnBounds="false" prefHeight="498.0" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                   <HBox layoutX="948.0" layoutY="568.0" spacing="25.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0">
