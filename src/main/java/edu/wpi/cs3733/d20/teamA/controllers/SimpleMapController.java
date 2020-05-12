@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -582,6 +583,30 @@ public class SimpleMapController extends AbstractController {
     for (int i = 1; i < segmentLabels.size() - 1; i++) {
       segmentLabels.get(i).setGraphic(new FontIcon(FontAwesomeSolid.GRIP_LINES_VERTICAL));
     }
+
+    Platform.runLater(
+        () -> {
+          // Get widest icon
+          double widestIconWidth = 0.0;
+          for (int i = 0; i < segmentLabels.size(); i++) {
+            widestIconWidth =
+                Math.max(
+                    widestIconWidth,
+                    segmentLabels.get(i).getGraphic().prefWidth(segmentLabels.get(i).getHeight()));
+          }
+          widestIconWidth += 4.0;
+
+          // Align based on widest icon
+          for (int i = 0; i < segmentLabels.size(); i++) {
+            double currGraphicWidth =
+                segmentLabels.get(i).getGraphic().prefWidth(segmentLabels.get(i).getHeight());
+            double widthDiff = widestIconWidth - currGraphicWidth;
+
+            segmentLabels.get(i).setPadding(new Insets(0, 0, 0, widthDiff / 2.0));
+
+            segmentLabels.get(i).setGraphicTextGap(widthDiff / 2.0);
+          }
+        });
 
     directionsList.getItems().addAll(segmentLabels);
     directionsList.getSelectionModel().select(segmentLabels.get(currPathSegment));
