@@ -672,6 +672,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML
   public void logoutTimer() {
     timer.stop();
+    System.out.println("Reset");
     timer.play();
   }
 

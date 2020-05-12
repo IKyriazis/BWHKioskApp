@@ -9,6 +9,8 @@ import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -16,6 +18,26 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 public class DialogUtil {
   private static StackPane defaultStackPane;
+  private static final MouseEvent movedEvent =
+      new MouseEvent(
+          MouseEvent.MOUSE_MOVED,
+          0,
+          0,
+          0,
+          0,
+          MouseButton.PRIMARY,
+          0,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          null);
 
   private static JFXButton createCloseButton() {
     JFXButton closeButton = new JFXButton("Close");
@@ -33,10 +55,42 @@ public class DialogUtil {
       headingLabel.setGraphic(headingIcon);
 
       JFXDialogLayout layout = new JFXDialogLayout();
+      layout.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       layout.setHeading(headingLabel);
       layout.setBody(new Text(body));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.TOP);
+      dialog.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
 
       JFXButton closeButton = createCloseButton();
       closeButton.setOnAction(
@@ -101,9 +155,41 @@ public class DialogUtil {
       loader.setLocation(App.class.getResource(path));
 
       JFXDialogLayout layout = new JFXDialogLayout();
+      layout.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       layout.setHeading(new Text(heading));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.BOTTOM);
+      dialog.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       dialog.setOnDialogClosed(closeHandler);
       if (controller != null) {
         controller.setDialog(dialog);
