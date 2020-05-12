@@ -116,6 +116,12 @@
     -fx-text-fill: -secondary-color-text;
 }
 
+.jfx-date-picker {
+    -jfx-default-color: -primary-color;
+    -fx-fill: -secondary-color-text;
+    -fx-text-fill: -secondary-color-text;
+}
+
 .sidebar-button .glyph-icon {
     -fx-fill: -secondary-color-text;
 }
