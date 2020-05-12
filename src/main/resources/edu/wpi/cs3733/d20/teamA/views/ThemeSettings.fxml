@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXColorPicker?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
@@ -84,6 +85,7 @@
                         <JFXRadioButton fx:id="dfsButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Depth First Search" />
                         <JFXRadioButton fx:id="bfsButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Breadth First Search" />
                         <JFXRadioButton fx:id="djikstraButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Djikstra" />
+                        <JFXComboBox fx:id="logoutTimeBox" onAction="#updateLogoutTime" promptText="Set Logout Time" />
                      </children>
                   </VBox>
                </children>
