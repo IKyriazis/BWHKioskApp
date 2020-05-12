@@ -11,7 +11,6 @@ import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
-import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -243,7 +242,8 @@ public class SimpleMapController extends AbstractController {
           clearPath();
 
           // Redraw map
-          currCanvas.draw(floor);
+          mainCanvas.draw(floor);
+          faulknerCanvas.draw(floor);
         });
 
     try {

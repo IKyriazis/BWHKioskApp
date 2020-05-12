@@ -13,8 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.image.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -26,8 +25,6 @@ import javafx.util.Duration;
 
 public class MapCanvas extends Canvas {
   private Graph graph;
-
-  private final Image[] floorImages;
 
   private final int maxFloor;
 
@@ -63,7 +60,6 @@ public class MapCanvas extends Canvas {
 
   public MapCanvas(boolean dragEnabled, Campus campus) {
     super();
-
     graph = Graph.getInstance(campus);
     maxFloor = campus == Campus.FAULKNER ? 5 : 6;
 
@@ -73,21 +69,6 @@ public class MapCanvas extends Canvas {
     pathArrow = new ImageView(ImageCache.loadImage("images/blue_right.png"));
     pathArrow.setFitWidth(32.0);
     pathArrow.setFitHeight(32.0);
-
-    // Collate image locations
-    ArrayList<String> imageLocations = new ArrayList<>();
-    for (int i = 0; i < maxFloor; i++) {
-      String imgName = (campus == Campus.FAULKNER ? "Faulkner" : "Main") + (i + 1);
-      imageLocations.add("images/" + imgName + ".png");
-    }
-
-    // Load floor images in parallel
-    floorImages = new Image[maxFloor];
-    List<Image> images =
-        imageLocations.parallelStream().map(ImageCache::loadImage).collect(Collectors.toList());
-    for (int i = 0; i < maxFloor; i++) {
-      floorImages[i] = images.get(i);
-    }
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
@@ -180,8 +161,8 @@ public class MapCanvas extends Canvas {
   }
 
   private void calcViewSpace(int floor, double zoomVal) {
-    double imageWidth = floorImages[floor - 1].getWidth();
-    double imageHeight = floorImages[floor - 1].getHeight();
+    double imageWidth = ImageCache.getFloorImage(graph.getCampus(), floor).getWidth();
+    double imageHeight = ImageCache.getFloorImage(graph.getCampus(), floor).getHeight();
 
     // Set center if not yet set
     if ((center == null)) {
@@ -322,14 +303,14 @@ public class MapCanvas extends Canvas {
   }
 
   private void drawFloorBackground(int floor) {
-    Image img = floorImages[floor - 1];
+    Image image = ImageCache.getFloorImage(graph.getCampus(), floor);
 
     Point2D imgStart = graphToCanvas(new Point2D(0, 0));
-    Point2D imgEnd = graphToCanvas(new Point2D(img.getWidth(), img.getHeight()));
+    Point2D imgEnd = graphToCanvas(new Point2D(image.getWidth(), image.getHeight()));
 
     getGraphicsContext2D()
         .drawImage(
-            img,
+            image,
             imgStart.getX(),
             imgStart.getY(),
             imgEnd.getX() - imgStart.getX(),
@@ -532,13 +513,13 @@ public class MapCanvas extends Canvas {
             floorNodes.stream()
                 .mapToInt(Node::getX)
                 .average()
-                .orElse(floorImages[floor].getWidth() / 2);
+                .orElse(ImageCache.getFloorImage(graph.getCampus(), floor).getWidth() / 2);
     int centerY =
         (int)
             floorNodes.stream()
                 .mapToInt(Node::getY)
                 .average()
-                .orElse(floorImages[floor].getHeight() / 2);
+                .orElse(ImageCache.getFloorImage(graph.getCampus(), floor).getHeight() / 2);
     Point2D idealCenter = new Point2D(centerX, centerY);
 
     // Find closest fitting zoom level
