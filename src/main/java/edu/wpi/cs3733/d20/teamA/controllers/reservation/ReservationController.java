@@ -106,6 +106,7 @@ public class ReservationController extends AbstractController {
 
     // Removes the ability for the user to add calendars cause that wouldn't really work yo
     calendarView.setShowAddCalendarButton(false);
+    calendarView.setShowPrintButton(false);
 
     requestTablePane.getChildren().add(calendarView);
 

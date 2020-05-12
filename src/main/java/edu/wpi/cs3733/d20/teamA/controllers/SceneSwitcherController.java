@@ -687,5 +687,10 @@ public class SceneSwitcherController extends AbstractController {
                     pressedSignIn();
                   }
                 }));
+    logoutTimer();
+  }
+
+  public static SceneSwitcherController getInstanceOf() {
+    return instance;
   }
 }

@@ -168,7 +168,7 @@ public class SettingsController extends AbstractController {
 
   @FXML
   private void updateLogoutTime() {
-    SceneSwitcherController ssc = new SceneSwitcherController();
+    SceneSwitcherController ssc = SceneSwitcherController.getInstanceOf();
     ssc.setLogoutTime(logoutTimeBox.getValue());
   }
 }
