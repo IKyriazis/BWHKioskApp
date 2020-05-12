@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXColorPicker;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
@@ -16,7 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 
-public class SettingsController {
+public class SettingsController extends AbstractController {
   @FXML private JFXColorPicker primaryPicker;
   @FXML private JFXColorPicker primaryLightPicker;
   @FXML private JFXColorPicker primaryDarkPicker;
@@ -27,6 +28,7 @@ public class SettingsController {
   @FXML private JFXRadioButton bfsButton;
   @FXML private JFXRadioButton dfsButton;
   @FXML private JFXRadioButton djikstraButton;
+  @FXML private JFXComboBox<Integer> logoutTimeBox;
 
   private ToggleGroup toggleGroup;
 
@@ -76,6 +78,8 @@ public class SettingsController {
             MapSettings.setPath(new Djikstras(Graph.getInstance(Campus.FAULKNER)));
           }
         });
+
+    logoutTimeBox.getItems().addAll(15, 30, 45, 60, 90);
   }
 
   private Color getColor(String property) {
@@ -165,6 +169,12 @@ public class SettingsController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  @FXML
+  private void updateLogoutTime() {
+    SceneSwitcherController ssc = SceneSwitcherController.getInstanceOf();
+    ssc.setLogoutTime(logoutTimeBox.getValue());
   }
 
   public void updateMapColor(ActionEvent actionEvent) {
