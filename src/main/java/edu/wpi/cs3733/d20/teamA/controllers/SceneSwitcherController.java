@@ -18,6 +18,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -79,7 +81,8 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
-  private static double logoutTime = 15;
+  private static double logoutTime = 5;
+  private boolean infocus = true;
 
   @FXML
   public void initialize() {
@@ -91,6 +94,19 @@ public class SceneSwitcherController extends AbstractController {
 
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);
+
+    rootPane
+        .focusedProperty()
+        .addListener(
+            new ChangeListener<Boolean>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends Boolean> observable, Boolean onHidden, Boolean onShow) {
+                timer.stop();
+                infocus = onShow;
+                System.out.println(onShow);
+              }
+            });
 
     // Bind background image to just outside the bounds of the window for proper formatting
     rootPane
@@ -663,15 +679,24 @@ public class SceneSwitcherController extends AbstractController {
           new KeyFrame(
               Duration.seconds(logoutTime),
               (v) -> {
-                pressedHome();
-                if (loggedIn == true) {
-                  pressedSignIn();
+                if (infocus) {
+                  pressedHome();
+                  if (loggedIn == true) {
+                    pressedSignIn();
+                  }
                 }
               }));
 
   @FXML
   public void logoutTimer() {
     timer.stop();
+    timer.play();
+  }
+
+  @FXML
+  public void logoutTimerClick() {
+    timer.stop();
+    infocus = true;
     timer.play();
   }
 
