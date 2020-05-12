@@ -13,7 +13,7 @@ public class PrescriptionViewerController extends AbstractViewerController {
   @FXML private GenericViewerController genericController;
   @FXML private Label headerLabel;
   @FXML private JFXButton saveButton;
-
+  @FXML private JFXButton deleteButton;
   @FXML private JFXTextField patientNameField;
   @FXML private JFXTextField prescriptionField;
   @FXML private JFXTextField pharmacyField;
@@ -66,6 +66,11 @@ public class PrescriptionViewerController extends AbstractViewerController {
     serviceDatabase.setAdditional(req.getReqID(), newAdditional);
 
     // Fire tab switch event forcing table to update
+    headerLabel.fireEvent(new TabSwitchEvent());
+  }
+
+  public void pressedDelete() {
+    serviceDatabase.deleteServReq(req.getReqID());
     headerLabel.fireEvent(new TabSwitchEvent());
   }
 

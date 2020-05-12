@@ -3,6 +3,8 @@ package edu.wpi.cs3733.d20.teamA.database.graph;
 import edu.wpi.cs3733.d20.teamA.database.Database;
 import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.sql.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class GraphDatabase extends Database {
 
@@ -655,6 +657,36 @@ public class GraphDatabase extends Database {
     } catch (SQLException e) {
       e.printStackTrace();
       return false;
+    }
+  }
+
+  public ObservableList<String> getNodeByType(String type) {
+    ObservableList<String> nodeList = FXCollections.observableArrayList();
+    try {
+      PreparedStatement pstmt1 =
+          getConnection().prepareStatement("SELECT * FROM NodeFaulkner WHERE nodeType = ?");
+      pstmt1.setString(1, type);
+      ResultSet rset1 = pstmt1.executeQuery();
+      while (rset1.next()) {
+        String name = rset1.getString("longName");
+        nodeList.add(name);
+      }
+      rset1.close();
+      pstmt1.close();
+      PreparedStatement pstmt2 =
+          getConnection().prepareStatement("SELECT * FROM NodeMain WHERE nodeType = ?");
+      pstmt2.setString(1, type);
+      ResultSet rset2 = pstmt2.executeQuery();
+      while (rset2.next()) {
+        String name = rset2.getString("longName");
+        nodeList.add(name);
+      }
+      rset2.close();
+      pstmt2.close();
+      return nodeList;
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
     }
   }
 }

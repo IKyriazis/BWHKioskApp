@@ -281,3 +281,7 @@
     -fx-font-family: "Roboto";
     -fx-font-size: 18pt;
 }
+
+#button {
+    -fx-background-color: cornflowerblue;
+}
