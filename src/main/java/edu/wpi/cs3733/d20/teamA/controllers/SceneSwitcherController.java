@@ -104,7 +104,6 @@ public class SceneSwitcherController extends AbstractController {
                   ObservableValue<? extends Boolean> observable, Boolean onHidden, Boolean onShow) {
                 timer.stop();
                 infocus = onShow;
-                System.out.println(onShow);
               }
             });
 
