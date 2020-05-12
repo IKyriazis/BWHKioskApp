@@ -42,7 +42,7 @@ public class FlowerServiceController extends AbstractController {
           adminButton.setVisible(eDB.getLoggedIn() != null);
         });
 
-    setupNodeBox(comboLocation, null);
+    setupNodeLocationBox(comboLocation, null);
   }
 
   @FXML
