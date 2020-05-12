@@ -46,7 +46,6 @@ public class MapCanvas extends Canvas {
   private final EventHandler<MouseEvent> dragStartHandler;
   private final EventHandler<MouseEvent> dragHandler;
   private final EventHandler<MouseEvent> dragEndHandler;
-  // FF 70 43
   private ArrayList<Node> highlights;
   private Color highlightColor = Color.rgb(255, 112, 67);
   private Point2D highlightOffset;
@@ -59,6 +58,8 @@ public class MapCanvas extends Canvas {
   private ImageView pathArrow;
   private PathTransition transition = new PathTransition();
   private boolean animatingPath = false;
+
+  private boolean doingJankyMathPleaseDontRedraw = false;
 
   public MapCanvas(boolean dragEnabled, Campus campus) {
     super();
@@ -178,18 +179,18 @@ public class MapCanvas extends Canvas {
         (point.getY() * yRatio) + viewSpace.getMinY());
   }
 
-  private void calcViewSpace(int floor) {
+  private void calcViewSpace(int floor, double zoomVal) {
     double imageWidth = floorImages[floor - 1].getWidth();
     double imageHeight = floorImages[floor - 1].getHeight();
 
     // Set center if not yet set
-    if ((center == null) || (floor != lastDrawnFloor)) {
+    if ((center == null)) {
       center = new Point2D(0, 0).midpoint(new Point2D(imageWidth, imageHeight));
     }
 
     double aspectRatio = (imageWidth / getWidth()) / (imageHeight / getHeight());
 
-    double zoomFactor = (1.0 + ((zoom.getValue() / 100) * zoomScalar));
+    double zoomFactor = (1.0 + ((zoomVal / 100) * zoomScalar));
     double width = ((aspectRatio < 1.0) ? imageWidth : (imageWidth / aspectRatio)) / zoomFactor;
     double height = ((aspectRatio > 1.0) ? imageHeight : (imageHeight * aspectRatio)) / zoomFactor;
 
@@ -223,6 +224,10 @@ public class MapCanvas extends Canvas {
   }
 
   public void draw(int floor) {
+    if (doingJankyMathPleaseDontRedraw) {
+      return;
+    }
+
     // Clear background
     getGraphicsContext2D().setFill(Color.web("F4F4F4"));
     getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
@@ -231,7 +236,7 @@ public class MapCanvas extends Canvas {
     floor = Math.max(1, Math.min(floor, maxFloor));
 
     // Update view space
-    calcViewSpace(floor);
+    calcViewSpace(floor, zoom.getValue());
 
     // Draw background
     drawFloorBackground(floor);
@@ -298,6 +303,13 @@ public class MapCanvas extends Canvas {
       if (selectionStart != null && selectionEnd != null) {
         drawSelectionBox(selectionStart, selectionEnd);
       }
+    } else if (highlights != null) {
+      highlights.forEach(
+          node -> {
+            if (node != null && node.getCampus() == graph.getCampus()) {
+              drawNode(node, highlightColor);
+            }
+          });
     }
 
     // Draw path if it exists
@@ -482,7 +494,7 @@ public class MapCanvas extends Canvas {
 
     Pane parent = (Pane) getParent();
     if (!parent.getChildren().contains(pathArrow)) {
-      parent.getChildren().add(pathArrow);
+      parent.getChildren().add(parent.getChildren().indexOf(this) + 1, pathArrow);
     }
 
     transition.stop();
@@ -509,6 +521,62 @@ public class MapCanvas extends Canvas {
     this.pathNodes = null;
     this.pathEdges = null;
     disablePathAnimation();
+  }
+
+  public void centerPathOnFloor(int floor) {
+    List<Node> floorNodes =
+        pathNodes.stream().filter(node -> (node.getFloor() == floor)).collect(Collectors.toList());
+
+    int centerX =
+        (int)
+            floorNodes.stream()
+                .mapToInt(Node::getX)
+                .average()
+                .orElse(floorImages[floor].getWidth() / 2);
+    int centerY =
+        (int)
+            floorNodes.stream()
+                .mapToInt(Node::getY)
+                .average()
+                .orElse(floorImages[floor].getHeight() / 2);
+    Point2D idealCenter = new Point2D(centerX, centerY);
+
+    // Find closest fitting zoom level
+    doingJankyMathPleaseDontRedraw = true;
+    for (int newZoom = 100; newZoom > 0; newZoom -= 10) {
+      // Calculate new view space
+      center = idealCenter;
+      calcViewSpace(floor, newZoom);
+
+      // Calculate bounding box that takes directions into account
+      Point2D viewStart = new Point2D(viewSpace.getMinX(), viewSpace.getMaxX());
+
+      Point2D dirBoxStart = canvasToGraph(new Point2D(0, 0));
+      Point2D dirBoxEnd = canvasToGraph(new Point2D(300, 0));
+
+      int excess = (int) (dirBoxEnd.getX() - dirBoxStart.getX());
+      BoundingBox newBox =
+          new BoundingBox(
+              viewSpace.getMinX() + excess,
+              viewSpace.getMinY(),
+              viewSpace.getWidth() - excess,
+              viewSpace.getHeight());
+
+      // Check if all nodes are visible
+      boolean oob = false;
+      for (Node node : floorNodes) {
+        if (!newBox.contains(new Point2D(node.getX(), node.getY()))) {
+          oob = true;
+          break;
+        }
+      }
+      if (!oob) {
+        zoom.setValue(newZoom);
+        doingJankyMathPleaseDontRedraw = false;
+        return;
+      }
+    }
+    doingJankyMathPleaseDontRedraw = false;
   }
 
   @Override

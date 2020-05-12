@@ -57,7 +57,12 @@
                                 <RowConstraints vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <JFXButton fx:id="saveButton" onAction="#pressedSave" styleClass="large-text" text="Save" />
+                        <HBox alignment="CENTER" spacing="30.0">
+                           <children>
+                                      <JFXButton fx:id="saveButton" maxWidth="-Infinity" onAction="#pressedSave" prefWidth="125.0" styleClass="large-text" text="Save" />
+                              <JFXButton fx:id="deleteButton" maxWidth="-Infinity" onAction="#pressedDelete" prefWidth="125.0" styleClass="large-text" text="Delete" />
+                           </children>
+                        </HBox>
                             </children>
                         </GridPane>
                     </children>

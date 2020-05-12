@@ -108,7 +108,8 @@ public class Path extends PathAlgo implements IStrategyPath {
   private static int calcHeuristic(Node current, Node goal) {
     double xDist = Math.pow((goal.getX() - current.getX()), 2);
     double yDist = Math.pow((goal.getY() - current.getY()), 2);
+    double zDist = Math.pow((current.getFloor() - goal.getFloor()) * 100, 2);
 
-    return (int) Math.sqrt(xDist + yDist);
+    return (int) Math.sqrt(xDist + yDist + zDist);
   }
 }
