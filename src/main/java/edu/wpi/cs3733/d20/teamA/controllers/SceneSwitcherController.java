@@ -677,17 +677,7 @@ public class SceneSwitcherController extends AbstractController {
 
   public void setLogoutTime(double d) {
     logoutTime = d;
-    timer =
-        new Timeline(
-            new KeyFrame(
-                Duration.seconds(logoutTime),
-                (v) -> {
-                  pressedHome();
-                  if (loggedIn == true) {
-                    pressedSignIn();
-                  }
-                }));
-    logoutTimer();
+    timer.setDelay(Duration.seconds(logoutTime - 15));
   }
 
   public static SceneSwitcherController getInstanceOf() {
