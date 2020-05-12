@@ -667,12 +667,12 @@ public class SceneSwitcherController extends AbstractController {
                 if (loggedIn == true) {
                   pressedSignIn();
                 }
+                DialogUtil.killDialogs();
               }));
 
   @FXML
   public void logoutTimer() {
     timer.stop();
-    System.out.println("Reset");
     timer.play();
   }
 

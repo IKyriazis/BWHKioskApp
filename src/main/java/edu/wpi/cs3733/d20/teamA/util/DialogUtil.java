@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.events.JFXDialogEvent;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -38,6 +39,7 @@ public class DialogUtil {
           false,
           false,
           null);
+  private static final ArrayList<JFXDialog> dialogs = new ArrayList<>();
 
   private static JFXButton createCloseButton() {
     JFXButton closeButton = new JFXButton("Close");
@@ -75,6 +77,7 @@ public class DialogUtil {
       layout.setBody(new Text(body));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.TOP);
+      dialogs.add(dialog);
       dialog.setOnMouseMoved(
           event -> {
             dialogPane.fireEvent(movedEvent);
@@ -174,6 +177,7 @@ public class DialogUtil {
       layout.setHeading(new Text(heading));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.BOTTOM);
+      dialogs.add(dialog);
       dialog.setOnMouseMoved(
           event -> {
             dialogPane.fireEvent(movedEvent);
@@ -218,5 +222,15 @@ public class DialogUtil {
 
   public static void setDefaultStackPane(StackPane defaultStackPane) {
     DialogUtil.defaultStackPane = defaultStackPane;
+  }
+
+  public static void killDialogs() {
+    dialogs.forEach(
+        jfxDialog -> {
+          if (jfxDialog.isVisible()) {
+            jfxDialog.close();
+          }
+        });
+    dialogs.clear();
   }
 }
