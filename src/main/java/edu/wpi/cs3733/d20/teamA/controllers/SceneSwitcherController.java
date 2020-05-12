@@ -79,7 +79,7 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
-  private double logoutTime = 90;
+  private static double logoutTime = 15;
 
   @FXML
   public void initialize() {
@@ -536,8 +536,10 @@ public class SceneSwitcherController extends AbstractController {
     signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
 
     // Enable settings button & zoom it in
-    if (!settingsButton.isVisible()) {
+    if (!settingsButton.isVisible() && "admin".equals(serviceDatabase.getLoggedIn().getTitle())) {
       settingsButton.setVisible(true);
+    } else if (!"admin".equals(serviceDatabase.getLoggedIn().getTitle())) {
+      settingsButton.setVisible(false);
     }
 
     ZoomIn settingsTrans = new ZoomIn(settingsButton);
@@ -671,5 +673,14 @@ public class SceneSwitcherController extends AbstractController {
   public void logoutTimer() {
     timer.stop();
     timer.play();
+  }
+
+  public void setLogoutTime(double d) {
+    logoutTime = d;
+    timer.setDelay(Duration.seconds(logoutTime - 15));
+  }
+
+  public static SceneSwitcherController getInstanceOf() {
+    return instance;
   }
 }
