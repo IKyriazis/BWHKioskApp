@@ -112,12 +112,12 @@
                               <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXRadioButton fx:id="faulknerRadioButton" onAction="#toggleDisplayedMap" text="Faulkner Hospital" GridPane.rowIndex="1">
+                              <JFXRadioButton fx:id="faulknerRadioButton" onAction="#toggleDisplayedMap" selected="true" text="Faulkner Hospital" GridPane.rowIndex="1">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="campusToggle" />
                                  </toggleGroup>
                               </JFXRadioButton>
-                              <JFXRadioButton fx:id="mainRadioButton" onAction="#toggleDisplayedMap" selected="true" text="Main Campus" toggleGroup="$campusToggle" />
+                              <JFXRadioButton fx:id="mainRadioButton" onAction="#toggleDisplayedMap" text="Main Campus" toggleGroup="$campusToggle" />
                            </children>
                         </GridPane>
                         <VBox fx:id="floorBox" prefHeight="95.0" prefWidth="28.0" spacing="10.0">

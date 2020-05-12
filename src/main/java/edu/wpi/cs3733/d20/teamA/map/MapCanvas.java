@@ -1,6 +1,5 @@
 package edu.wpi.cs3733.d20.teamA.map;
 
-import edu.wpi.cs3733.d20.teamA.controllers.MapSettings;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.util.*;
@@ -27,9 +26,6 @@ import javafx.util.Duration;
 public class MapCanvas extends Canvas {
   private Graph graph;
 
-  private final Image[] floorImages;
-  private WritableImage[] coloredFloorImages;
-
   private final int maxFloor;
 
   private int lastDrawnFloor = 1;
@@ -49,8 +45,6 @@ public class MapCanvas extends Canvas {
   private final EventHandler<MouseEvent> dragEndHandler;
   private ArrayList<Node> highlights;
   private Color highlightColor = Color.rgb(255, 112, 67);
-  private Color darkColor;
-  private Color lightColor;
   private Point2D highlightOffset;
 
   private Point2D selectionStart;
@@ -75,26 +69,6 @@ public class MapCanvas extends Canvas {
     pathArrow = new ImageView(ImageCache.loadImage("images/blue_right.png"));
     pathArrow.setFitWidth(32.0);
     pathArrow.setFitHeight(32.0);
-
-    // Collate image locations
-    ArrayList<String> imageLocations = new ArrayList<>();
-    for (int i = 0; i < maxFloor; i++) {
-      String imgName = (campus == Campus.FAULKNER ? "Faulkner" : "Main") + (i + 1);
-      imageLocations.add("images/" + imgName + ".png");
-    }
-
-    darkColor = MapSettings.getDarkColor();
-    lightColor = MapSettings.getLightColor();
-
-    // Load floor images in parallel
-    floorImages = new Image[maxFloor];
-    List<Image> images =
-        imageLocations.parallelStream().map(ImageCache::loadImage).collect(Collectors.toList());
-    for (int i = 0; i < maxFloor; i++) {
-      floorImages[i] = images.get(i);
-    }
-
-    setColoredFloorImages(darkColor, lightColor);
 
     viewSpace = new BoundingBox(0, 0, 100, 100);
     setManaged(false);
@@ -187,8 +161,8 @@ public class MapCanvas extends Canvas {
   }
 
   private void calcViewSpace(int floor, double zoomVal) {
-    double imageWidth = floorImages[floor - 1].getWidth();
-    double imageHeight = floorImages[floor - 1].getHeight();
+    double imageWidth = ImageCache.getFloorImage(graph.getCampus(), floor).getWidth();
+    double imageHeight = ImageCache.getFloorImage(graph.getCampus(), floor).getHeight();
 
     // Set center if not yet set
     if ((center == null)) {
@@ -233,13 +207,6 @@ public class MapCanvas extends Canvas {
   public void draw(int floor) {
     if (doingJankyMathPleaseDontRedraw) {
       return;
-    }
-
-    if (!MapSettings.getDarkColor().equals(darkColor)
-        || !MapSettings.getLightColor().equals(lightColor)) {
-      darkColor = MapSettings.getDarkColor();
-      lightColor = MapSettings.getLightColor();
-      setColoredFloorImages(darkColor, lightColor);
     }
 
     // Clear background
@@ -336,7 +303,7 @@ public class MapCanvas extends Canvas {
   }
 
   private void drawFloorBackground(int floor) {
-    WritableImage image = coloredFloorImages[floor - 1];
+    Image image = ImageCache.getFloorImage(graph.getCampus(), floor);
 
     Point2D imgStart = graphToCanvas(new Point2D(0, 0));
     Point2D imgEnd = graphToCanvas(new Point2D(image.getWidth(), image.getHeight()));
@@ -348,41 +315,6 @@ public class MapCanvas extends Canvas {
             imgStart.getY(),
             imgEnd.getX() - imgStart.getX(),
             imgEnd.getY() - imgStart.getY());
-  }
-
-  private void setColoredFloorImages(Color dark, Color light) {
-    coloredFloorImages = new WritableImage[maxFloor];
-    this.lightColor = light;
-    this.darkColor = dark;
-
-    List<WritableImage> coloredImages =
-        List.of(this.floorImages)
-            .parallelStream()
-            .map(
-                image -> {
-                  PixelReader pixelReader = image.getPixelReader();
-                  WritableImage wImage =
-                      new WritableImage((int) image.getWidth(), (int) image.getHeight());
-                  PixelWriter pixelWriter = wImage.getPixelWriter();
-                  // Determine the color of each pixel in a specified row
-                  for (int readY = 0; readY < image.getHeight(); readY++) {
-                    for (int readX = 0; readX < image.getWidth(); readX++) {
-                      Color color = pixelReader.getColor(readX, readY);
-                      if (color.equals(Color.BLUE)) {
-                        color = darkColor;
-                      } else if (color.equals(Color.RED)) {
-                        color = lightColor;
-                      }
-                      pixelWriter.setColor(readX, readY, color);
-                    }
-                  }
-                  return wImage;
-                })
-            .collect(Collectors.toList());
-
-    for (int i = 0; i < coloredImages.size(); i++) {
-      coloredFloorImages[i] = coloredImages.get(i);
-    }
   }
 
   // Draws an edge
@@ -581,13 +513,13 @@ public class MapCanvas extends Canvas {
             floorNodes.stream()
                 .mapToInt(Node::getX)
                 .average()
-                .orElse(floorImages[floor].getWidth() / 2);
+                .orElse(ImageCache.getFloorImage(graph.getCampus(), floor).getWidth() / 2);
     int centerY =
         (int)
             floorNodes.stream()
                 .mapToInt(Node::getY)
                 .average()
-                .orElse(floorImages[floor].getHeight() / 2);
+                .orElse(ImageCache.getFloorImage(graph.getCampus(), floor).getHeight() / 2);
     Point2D idealCenter = new Point2D(centerX, centerY);
 
     // Find closest fitting zoom level

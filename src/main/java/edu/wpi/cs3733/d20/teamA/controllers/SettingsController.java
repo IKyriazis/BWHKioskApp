@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXColorPicker;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.io.*;
 import javafx.css.CssParser;
 import javafx.css.Rule;
@@ -169,5 +170,7 @@ public class SettingsController {
   public void updateMapColor(ActionEvent actionEvent) {
     MapSettings.setLightColor(mapLightPicker.getValue());
     MapSettings.setDarkColor(mapDarkPicker.getValue());
+
+    ImageCache.recolorFloorImages(mapDarkPicker.getValue(), mapLightPicker.getValue());
   }
 }

@@ -9,7 +9,6 @@ import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
-import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -110,6 +109,7 @@ public class SimpleMapController extends AbstractController {
     faulknerCanvas.setHighlights(highlights);
 
     mainCanvas = new MapCanvas(true, Campus.MAIN);
+    mainCanvas.setMouseTransparent(true);
     mainCanvas.setHighlights(highlights);
     mainCanvas.setVisible(false);
 
@@ -234,7 +234,8 @@ public class SimpleMapController extends AbstractController {
           clearPath();
 
           // Redraw map
-          currCanvas.draw(floor);
+          mainCanvas.draw(floor);
+          faulknerCanvas.draw(floor);
         });
 
     try {
@@ -478,9 +479,11 @@ public class SimpleMapController extends AbstractController {
       if (newCanvas != currCanvas) {
         currCanvas.disablePathAnimation();
         currCanvas.setVisible(false);
+        currCanvas.setMouseTransparent(true);
         currCanvas = newCanvas;
       }
       currCanvas.setVisible(true);
+      currCanvas.setMouseTransparent(false);
 
       // Hide bing map, bring slider back
       gMapView.setVisible(false);
