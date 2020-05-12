@@ -71,7 +71,7 @@
                               <JFXTextField fx:id="txtPharmacy" labelFloat="true" promptText="Pharmacy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <JFXTextField fx:id="txtPrescription" labelFloat="true" promptText="Prescription" GridPane.rowIndex="1" />
                               <JFXTextField fx:id="txtDosage" labelFloat="true" promptText="Dosage" GridPane.rowIndex="2" />
-                              <JFXTextField fx:id="txtNumberOfRefills" labelFloat="true" promptText="Number of Refills" GridPane.rowIndex="3" />
+                              <JFXComboBox fx:id="numberOfRefillsBox" labelFloat="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Number of Refills" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
                         <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" />
