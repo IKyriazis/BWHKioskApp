@@ -221,6 +221,14 @@ public class MapEditorController {
       e.printStackTrace();
     }
 
+    String c;
+    if (currCanvas == faulknerCanvas) {
+      c = "Faulkner";
+    } else {
+      c = "MAIN";
+    }
+    floorField.setText(graph.getFloorString(floor, c));
+
     Platform.runLater(() -> currCanvas.draw(floor));
   }
 
@@ -441,14 +449,26 @@ public class MapEditorController {
   public void floorUp() {
     floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
     currCanvas.draw(floor);
-    floorField.setText(String.valueOf(floor));
+    String c;
+    if (currCanvas == faulknerCanvas) {
+      c = "Faulkner";
+    } else {
+      c = "MAIN";
+    }
+    floorField.setText(graph.getFloorString(floor, c));
   }
 
   @FXML
   public void floorDown() {
     floor = Math.max(1, floor - 1);
     currCanvas.draw(floor);
-    floorField.setText(String.valueOf(floor));
+    String c;
+    if (currCanvas == faulknerCanvas) {
+      c = "Faulkner";
+    } else {
+      c = "MAIN";
+    }
+    floorField.setText(graph.getFloorString(floor, c));
   }
 
   @FXML
@@ -499,9 +519,14 @@ public class MapEditorController {
     if (newCanvas != currCanvas) {
       currCanvas.setVisible(false);
       newCanvas.setVisible(true);
-
+      String c;
+      if (newCanvas == faulknerCanvas) {
+        c = "Faulkner";
+      } else {
+        c = "MAIN";
+      }
       floor = 1;
-      floorField.setText(String.valueOf(floor));
+      floorField.setText(graph.getFloorString(floor, c));
       currCanvas = newCanvas;
       currCanvas.draw(floor);
 
