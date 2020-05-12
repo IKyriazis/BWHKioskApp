@@ -235,6 +235,10 @@ public class SimpleMapController extends AbstractController {
 
           // Redraw map
           currCanvas.draw(floor);
+
+          // Hide panels
+          hideSearchBox();
+          hideDirectionsBox();
         });
 
     try {
