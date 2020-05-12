@@ -53,6 +53,7 @@ public class NodeAutoCompleteHandler implements EventHandler<KeyEvent> {
       }
       toFocus.requestFocus();
     } else {
+
       ArrayList<Node> nodesList = new ArrayList<>(startingList);
       List<BoundExtractedResult<Node>> fuzzyMatch =
           FuzzySearch.extractTop(box.getEditor().getText(), nodesList, x -> x.toString(), 12, 50);
@@ -66,6 +67,10 @@ public class NodeAutoCompleteHandler implements EventHandler<KeyEvent> {
       box.setVisibleRowCount(Math.min(12, matches.size())); // used to be matches.size()
       if (box.getVisibleRowCount() > 0) {
         box.show();
+      }
+      if (box.getEditor().getText().isEmpty()) {
+        box.setItems(startingList);
+        box.setVisibleRowCount(12);
       }
     }
   }
