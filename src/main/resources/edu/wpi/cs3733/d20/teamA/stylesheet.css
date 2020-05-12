@@ -176,6 +176,10 @@
     -fx-background-radius: 0 1em 1em 0;
 }
 
+.button-flush {
+    -fx-background-radius: 0 0 0 0;
+}
+
 .button-rounded-left {
     -fx-background-radius: 1em 0 0 1em;
 }
