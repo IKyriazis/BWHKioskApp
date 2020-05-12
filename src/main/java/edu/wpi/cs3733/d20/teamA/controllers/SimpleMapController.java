@@ -42,6 +42,7 @@ public class SimpleMapController extends AbstractController {
   @FXML private StackPane dialogPane;
   @FXML private Pane gluonMapPane;
   @FXML private HBox buttonBox;
+  @FXML private VBox floorBox;
 
   @FXML private JFXButton goButton;
   @FXML private JFXButton swapBtn;
@@ -470,15 +471,16 @@ public class SimpleMapController extends AbstractController {
       directionsList.setMouseTransparent(false);
       directionsList.setPrefHeight(498);
 
+      // Show floor selection
+      floorBox.setVisible(true);
+
       MapCanvas newCanvas = (currSegment.getCampus() == Campus.MAIN) ? mainCanvas : faulknerCanvas;
       if (newCanvas != currCanvas) {
         currCanvas.disablePathAnimation();
-
         currCanvas.setVisible(false);
-        newCanvas.setVisible(true);
-
         currCanvas = newCanvas;
       }
+      currCanvas.setVisible(true);
 
       // Hide bing map, bring slider back
       gMapView.setVisible(false);
@@ -502,6 +504,9 @@ public class SimpleMapController extends AbstractController {
       directionsPane.setPrefHeight(52);
       directionsList.setPrefHeight(0);
       directionsList.setMouseTransparent(true);
+
+      // Hide floor selection
+      floorBox.setVisible(false);
 
       currCanvas.setVisible(false);
       currCanvas.disablePathAnimation();
