@@ -303,6 +303,13 @@ public class MapCanvas extends Canvas {
       if (selectionStart != null && selectionEnd != null) {
         drawSelectionBox(selectionStart, selectionEnd);
       }
+    } else if (highlights != null) {
+      highlights.forEach(
+          node -> {
+            if (node != null && node.getCampus() == graph.getCampus()) {
+              drawNode(node, highlightColor);
+            }
+          });
     }
 
     // Draw path if it exists

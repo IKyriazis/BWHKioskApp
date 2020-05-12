@@ -9,15 +9,19 @@ import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Optional;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.*;
 import javafx.scene.web.WebView;
 import javafx.util.Pair;
@@ -25,6 +29,7 @@ import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.icomoon.Icomoon;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+@SuppressWarnings("DuplicatedCode")
 public class SimpleMapController extends AbstractController {
   @FXML private BorderPane rootPane;
   @FXML private VBox directionsBox;
@@ -68,10 +73,18 @@ public class SimpleMapController extends AbstractController {
   private static final String FAULKNER_EXIT_NODE = "MHALL00342";
   private static final String MAIN_EXIT_NODE = "AEXIT0010G";
 
+  private final ArrayList<Node> highlights;
+
   private ChangeListener<Label> listChangeListener =
       (observable, oldVal, newVal) -> {
         selectedDirection();
       };
+
+  public SimpleMapController() {
+    highlights = new ArrayList<>();
+    highlights.add(null);
+    highlights.add(null);
+  }
 
   public void initialize() {
     try {
@@ -93,7 +106,10 @@ public class SimpleMapController extends AbstractController {
 
     // Make canvas occupy the full width / height of its parent anchor pane. Couldn't set in FXML.
     currCanvas = faulknerCanvas = new MapCanvas(true, Campus.FAULKNER);
+    faulknerCanvas.setHighlights(highlights);
+
     mainCanvas = new MapCanvas(true, Campus.MAIN);
+    mainCanvas.setHighlights(highlights);
     mainCanvas.setVisible(false);
 
     canvasPane.getChildren().add(0, faulknerCanvas);
@@ -135,6 +151,78 @@ public class SimpleMapController extends AbstractController {
         event -> {
           selectedDirection();
         });
+
+    // Register canvas click callback
+    mainCanvas.setOnMouseClicked(
+        event -> {
+          if (currCanvas != mainCanvas || event.getButton() != MouseButton.PRIMARY) {
+            return;
+          }
+
+          Point2D clickPos = new Point2D(event.getX(), event.getY());
+          Optional<Node> clickNode = mainCanvas.getClosestNode(floor, clickPos, 100);
+
+          if (clickNode.isPresent()) {
+            Node node = clickNode.get();
+
+            if (node.getType() == NodeType.HALL || node.getType() == NodeType.ELEV) {
+              return;
+            }
+            if (startingLocationBox.isFocused()) {
+              startingLocationBox.getEditor().setText(node.toString());
+            } else if (destinationBox.isFocused()) {
+              destinationBox.getEditor().setText(node.toString());
+            }
+          }
+        });
+
+    faulknerCanvas.setOnMouseClicked(
+        event -> {
+          if (currCanvas != faulknerCanvas || event.getButton() != MouseButton.PRIMARY) {
+            return;
+          }
+
+          Point2D clickPos = new Point2D(event.getX(), event.getY());
+          Optional<Node> clickNode = faulknerCanvas.getClosestNode(floor, clickPos, 100);
+
+          if (clickNode.isPresent()) {
+            Node node = clickNode.get();
+
+            if (node.getType() == NodeType.HALL || node.getType() == NodeType.ELEV) {
+              return;
+            }
+            if (startingLocationBox.isFocused()) {
+              startingLocationBox.getEditor().setText(node.toString());
+            } else if (destinationBox.isFocused()) {
+              destinationBox.getEditor().setText(node.toString());
+            }
+          }
+        });
+
+    // Register handler to show selected nodes
+    startingLocationBox
+        .getEditor()
+        .textProperty()
+        .addListener(
+            observable -> {
+              Node node = getSelectedNode(startingLocationBox);
+              if (node != null) {
+                highlights.set(0, node);
+                currCanvas.draw(floor);
+              }
+            });
+
+    startingLocationBox
+        .getEditor()
+        .textProperty()
+        .addListener(
+            observable -> {
+              Node node = getSelectedNode(startingLocationBox);
+              if (node != null) {
+                highlights.set(1, node);
+                currCanvas.draw(floor);
+              }
+            });
 
     // Register event handler to redraw map on tab selection
     rootPane.addEventHandler(
