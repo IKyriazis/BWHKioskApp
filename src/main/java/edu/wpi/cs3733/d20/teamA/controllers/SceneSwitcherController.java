@@ -23,7 +23,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
@@ -34,6 +33,7 @@ import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.weathericons.WeatherIcons;
 
 public class SceneSwitcherController extends AbstractController {
   @FXML private ImageView backgroundImage;
@@ -64,7 +64,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private Label timeLabel;
   @FXML private Label dateLabel;
   @FXML private Label tempLabel;
-  @FXML private JFXButton button;
+  @FXML private Label weatherIconLabel;
 
   private static SceneSwitcherController instance;
 
@@ -207,16 +207,51 @@ public class SceneSwitcherController extends AbstractController {
                       int condCode = w.get(0).getConditionId();
                       // Get the icon code to display the icon in the corner
                       String iconCode = w.get(0).getIconCode();
-                      // Get the url of the image from openweathermaps with the icon code
-                      String iconUrl = "http://openweathermap.org/img/wn/" + iconCode + ".png";
 
-                      button.setOpacity(1.0);
-
-                      // Create new image with the url and set the imageview's image to that image
-                      Image img = new Image(iconUrl);
-                      ImageView wView = new ImageView(img);
-                      button.setGraphic(wView);
-
+                      if (iconCode != null) {
+                        switch (iconCode) {
+                          case "01d":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.DAY_SUNNY));
+                            break;
+                          case "01n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.NIGHT_CLEAR));
+                          case "02d":
+                          case "03d":
+                          case "04d":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.DAY_CLOUDY));
+                            break;
+                          case "02n":
+                          case "03n":
+                          case "04n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.NIGHT_CLOUDY));
+                            break;
+                          case "09d":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.DAY_SHOWERS));
+                            break;
+                          case "09n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.NIGHT_SHOWERS));
+                          case "10d":
+                          case "10n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.RAIN));
+                            break;
+                          case "11d":
+                          case "11n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.THUNDERSTORM));
+                            break;
+                          case "13d":
+                          case "13n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.SNOW));
+                            break;
+                          case "50d":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.DAY_FOG));
+                            break;
+                          case "50n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.NIGHT_FOG));
+                            break;
+                          default:
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.METEOR));
+                        }
+                      }
                       // Get the current temperature
                       Double d = cwd.getMainData().getTemp();
                       // Convert the temperature from kelvin to fahrenheit
