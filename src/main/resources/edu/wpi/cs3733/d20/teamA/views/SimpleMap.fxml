@@ -88,7 +88,7 @@
                               <HBox fx:id="buttonBox" alignment="CENTER" GridPane.columnIndex="1">
                                  <children>
                                     <JFXButton fx:id="dirBackButton" onAction="#pressedDirBack" styleClass="button-rounded-left" text="Back" />
-                                    <JFXButton fx:id="dirNextButton" onAction="#pressedDirNext" styleClass="button-rounded-right" text="Next" />
+                                    <JFXButton fx:id="dirNextButton" contentDisplay="RIGHT" onAction="#pressedDirNext" styleClass="button-rounded-right" text="Next" />
                                  </children>
                               </HBox>
                               <JFXButton fx:id="directionListButton" onAction="#pressedDirectionList">
