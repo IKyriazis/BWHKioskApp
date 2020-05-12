@@ -267,6 +267,10 @@
     -fx-background-insets: 1;
 }
 
+#weatherIconLabel .ikonli-font-icon {
+    -fx-fill: -primary-color-dark-text;
+}
+
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
