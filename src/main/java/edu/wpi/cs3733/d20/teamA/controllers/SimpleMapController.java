@@ -115,7 +115,6 @@ public class SimpleMapController extends AbstractController {
     faulknerCanvas.setHighlights(highlights);
 
     mainCanvas = new MapCanvas(true, Campus.MAIN);
-    mainCanvas.setMouseTransparent(true);
     mainCanvas.setHighlights(highlights);
     mainCanvas.setVisible(false);
 
@@ -545,11 +544,9 @@ public class SimpleMapController extends AbstractController {
       if (newCanvas != currCanvas) {
         currCanvas.disablePathAnimation();
         currCanvas.setVisible(false);
-        currCanvas.setMouseTransparent(true);
         currCanvas = newCanvas;
       }
       currCanvas.setVisible(true);
-      currCanvas.setMouseTransparent(false);
 
       // Hide bing map, bring slider back
       gMapView.setVisible(false);
