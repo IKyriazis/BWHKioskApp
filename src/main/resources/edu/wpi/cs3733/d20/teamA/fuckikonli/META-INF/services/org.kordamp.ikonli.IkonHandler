@@ -6,3 +6,4 @@ org.kordamp.ikonli.fontawesome5.FontAwesomeRegularIkonHandler
 org.kordamp.ikonli.fontawesome5.FontAwesomeSolidIkonHandler
 org.kordamp.ikonli.material.MaterialkonHandler
 org.kordamp.ikonli.icomoon.IcomoonIkonHandler
+org.kordamp.ikonli.weathericons.WeatherIconsIkonHandler

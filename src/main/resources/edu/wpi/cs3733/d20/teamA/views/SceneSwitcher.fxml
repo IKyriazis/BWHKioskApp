@@ -43,7 +43,7 @@
             <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <GridPane fx:id="funPane" minHeight="75.0" prefHeight="75.0" prefWidth="1332.0" style="-fx-background-color: -primary-color-dark;">
+            <GridPane fx:id="funPane" maxHeight="75.0" minHeight="75.0" pickOnBounds="false" prefHeight="75.0" prefWidth="1332.0" style="-fx-background-color: -primary-color-dark;">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -60,7 +60,7 @@
                               <Insets right="15.0" />
                            </padding>
                         </Label>
-                        <JFXButton fx:id="button" disable="true" />
+                        <Label fx:id="weatherIconLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" />
                      </children>
                   </HBox>
                   <GridPane prefWidth="200.0" GridPane.columnIndex="1">

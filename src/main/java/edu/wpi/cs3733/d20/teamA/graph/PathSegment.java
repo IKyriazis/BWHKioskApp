@@ -145,4 +145,9 @@ public class PathSegment {
 
     return seg;
   }
+
+  @Override
+  public String toString() {
+    return getCampus().toString() + " - " + getFloor();
+  }
 }
