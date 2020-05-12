@@ -75,6 +75,11 @@ dependencies {
             // Twilio Text Messaging
             group: "com.twilio.sdk", name: "twilio", version: "7.50.0",
 
+            // AWS Text Messaging
+            platform('software.amazon.awssdk:bom:2.13.14'),
+            'software.amazon.awssdk:kinesis',
+
+
             //stuff for OpenWeatherMaps API
             'org.jetbrains:annotations:13.0',
             'com.squareup.retrofit2:converter-gson:2.3.0',

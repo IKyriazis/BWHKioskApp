@@ -313,37 +313,61 @@ public class SimpleMapController extends AbstractController {
       }
 
       if (phoneNumber != null && phoneNumber.length() >= 10) {
-        String directions = "";
-        for (Pair<Node, String> pair : path.getPathFindingAlgo().textualDirections()) {
-          directions += (pair.getValue() + "\n");
-        }
-        if (phoneNumber.contains(" ")
-            || phoneNumber.contains("(")
-            || phoneNumber.contains(")")
-            || phoneNumber.contains("-")) {
-          phoneNumber.replace(" ", "");
-          phoneNumber.replace("(", "");
-          phoneNumber.replace(")", "");
-          phoneNumber.replace("-", "");
-        }
-        if (!phoneNumber.substring(0, 2).equals("+1")) {
-          if (phoneNumber.length() == 10) {
-            phoneNumber = "+1" + phoneNumber;
-          }
-        }
-
-        Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
-        Message message =
-            Message.creator(
-                    new com.twilio.type.PhoneNumber(phoneNumber),
-                    new com.twilio.type.PhoneNumber("+12029310539"),
-                    directions)
-                .create();
-
-        System.out.println(message.getSid());
+        sendTextMessage(phoneNumber, path);
       }
     }
   }
+
+  public void sendTextMessage(String phoneNumber, ContextPath path) {
+    String directions = "";
+    for (Pair<Node, String> pair : path.getPathFindingAlgo().textualDirections()) {
+      directions += (pair.getValue() + "\n");
+    }
+    if (phoneNumber.contains(" ")
+        || phoneNumber.contains("(")
+        || phoneNumber.contains(")")
+        || phoneNumber.contains("-")) {
+      phoneNumber.replace(" ", "");
+      phoneNumber.replace("(", "");
+      phoneNumber.replace(")", "");
+      phoneNumber.replace("-", "");
+    }
+    if (!phoneNumber.substring(0, 2).equals("+1")) {
+      if (phoneNumber.length() == 10) {
+        phoneNumber = "+1" + phoneNumber;
+      }
+    }
+
+    // Use the proper AWS code if you want to implement AWS here
+    /*
+    AmazonSNSClient snsClient = new AmazonSNSClient();
+      String message = "My SMS message";
+      Map<String, MessageAttributeValue> smsAttributes =
+              new HashMap<String, MessageAttributeValue>();
+      //<set SMS attributes>
+      sendSMSMessage(snsClient, message, phoneNumber, smsAttributes);*/
+    // Below is the Twilio free trial code to send text messages to verified numbers
+    // Comment out or delete this code for
+    Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+    Message message =
+        Message.creator(
+                new com.twilio.type.PhoneNumber(phoneNumber),
+                new com.twilio.type.PhoneNumber("+12029310539"),
+                directions)
+            .create();
+    System.out.println(message.getSid());
+  }
+
+  /*
+  // Use this method in conjunction with the one above for sending SMS messages with AWS
+  public static void sendSMSMessage(AmazonSNSClient snsClient, String message,
+                                    String phoneNumber, Map<String, MessageAttributeValue> smsAttributes) {
+    PublishResult result = snsClient.publish(new PublishRequest()
+            .withMessage(message)
+            .withPhoneNumber(phoneNumber)
+            .withMessageAttributes(smsAttributes));
+    System.out.println(result); // Prints the message ID.
+  }*/
 
   @FXML
   public void toggleDisplayedMap() {
