@@ -46,7 +46,7 @@
                         </styleClass>
                      </JFXButton>
                      <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Destination" styleClass="small-text" />
-                     <JFXTextField fx:id="phoneNumberField" promptText="Phone Number">
+                     <JFXTextField fx:id="phoneNumberField" labelFloat="true" maxHeight="30.0" maxWidth="250.0" minHeight="30.0" minWidth="250.0" prefHeight="30.0" prefWidth="250.0" promptText="Phone Number" styleClass="small-text">
                         <font>
                            <Font size="11.0" />
                         </font>
