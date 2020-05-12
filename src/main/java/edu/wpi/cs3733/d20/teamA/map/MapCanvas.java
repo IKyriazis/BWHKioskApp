@@ -342,24 +342,34 @@ public class MapCanvas extends Canvas {
     coloredFloorImages = new WritableImage[maxFloor];
     this.lightColor = light;
     this.darkColor = dark;
-    for (int i = 0; i < this.floorImages.length; i++) {
-      Image image = floorImages[i];
-      PixelReader pixelReader = image.getPixelReader();
-      WritableImage wImage = new WritableImage((int) image.getWidth(), (int) image.getHeight());
-      PixelWriter pixelWriter = wImage.getPixelWriter();
-      // Determine the color of each pixel in a specified row
-      for (int readY = 0; readY < image.getHeight(); readY++) {
-        for (int readX = 0; readX < image.getWidth(); readX++) {
-          Color color = pixelReader.getColor(readX, readY);
-          if (color.equals(Color.BLUE)) {
-            color = darkColor;
-          } else if (color.equals(Color.RED)) {
-            color = lightColor;
-          }
-          pixelWriter.setColor(readX, readY, color);
-        }
-      }
-      this.coloredFloorImages[i] = wImage;
+
+    List<WritableImage> coloredImages =
+        List.of(this.floorImages)
+            .parallelStream()
+            .map(
+                image -> {
+                  PixelReader pixelReader = image.getPixelReader();
+                  WritableImage wImage =
+                      new WritableImage((int) image.getWidth(), (int) image.getHeight());
+                  PixelWriter pixelWriter = wImage.getPixelWriter();
+                  // Determine the color of each pixel in a specified row
+                  for (int readY = 0; readY < image.getHeight(); readY++) {
+                    for (int readX = 0; readX < image.getWidth(); readX++) {
+                      Color color = pixelReader.getColor(readX, readY);
+                      if (color.equals(Color.BLUE)) {
+                        color = darkColor;
+                      } else if (color.equals(Color.RED)) {
+                        color = lightColor;
+                      }
+                      pixelWriter.setColor(readX, readY, color);
+                    }
+                  }
+                  return wImage;
+                })
+            .collect(Collectors.toList());
+
+    for (int i = 0; i < coloredImages.size(); i++) {
+      coloredFloorImages[i] = coloredImages.get(i);
     }
   }
 
