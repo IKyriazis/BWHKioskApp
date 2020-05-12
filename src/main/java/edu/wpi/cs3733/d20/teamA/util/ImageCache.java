@@ -50,7 +50,7 @@ public class ImageCache {
       getFloorImagePaths().parallelStream().forEach(ImageCache::loadImage);
       loadedDefaultImages = true;
 
-      recolorFloorImages(Color.rgb(249, 194, 44), Color.rgb(255, 224, 140));
+      recolorFloorImages(Color.rgb(198, 177, 150), Color.rgb(220, 189, 156));
     }
 
     String path = "images/" + (campus == Campus.MAIN ? "Main" : "Faulkner") + floor + ".png";
