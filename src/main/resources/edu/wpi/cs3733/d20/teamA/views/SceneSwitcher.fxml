@@ -60,7 +60,7 @@
                               <Insets right="15.0" />
                            </padding>
                         </Label>
-                        <JFXButton fx:id="button" disable="true" />
+                        <Label fx:id="weatherIconLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" />
                      </children>
                   </HBox>
                   <GridPane prefWidth="200.0" GridPane.columnIndex="1">
