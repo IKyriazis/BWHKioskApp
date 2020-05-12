@@ -58,7 +58,7 @@ public class GiftRequestController extends AbstractController {
         if (s != null) {
           serviceDatabase.addServiceReq(
               ServiceType.GIFT,
-              comboLocation.getSelectionModel().getSelectedItem().getNodeID(),
+              comboLocation.getSelectionModel().getSelectedItem().getLongName(),
               s,
               null);
         }
