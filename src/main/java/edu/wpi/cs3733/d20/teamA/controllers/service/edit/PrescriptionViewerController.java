@@ -1,6 +1,7 @@
 package edu.wpi.cs3733.d20.teamA.controllers.service.edit;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -18,7 +19,7 @@ public class PrescriptionViewerController extends AbstractViewerController {
   @FXML private JFXTextField prescriptionField;
   @FXML private JFXTextField pharmacyField;
   @FXML private JFXTextField dosageField;
-  @FXML private JFXTextField refillField;
+  @FXML private JFXComboBox<String> refillField;
 
   public PrescriptionViewerController(ServiceRequest req) {
     super(req);
@@ -30,6 +31,7 @@ public class PrescriptionViewerController extends AbstractViewerController {
     headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.PILLS));
     saveButton.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
+    refillField.getItems().addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
     // Strip out additional info
     fillAdditionalFields();
 
@@ -43,7 +45,7 @@ public class PrescriptionViewerController extends AbstractViewerController {
     patientNameField.setText(additional[0]);
     prescriptionField.setText(additional[1]);
     dosageField.setText(additional[2]);
-    refillField.setText(additional[3]);
+    refillField.getSelectionModel().select(additional[3]);
     pharmacyField.setText(additional[4]);
   }
 
@@ -58,7 +60,7 @@ public class PrescriptionViewerController extends AbstractViewerController {
             + "|"
             + dosageField.getText()
             + "|"
-            + refillField.getText()
+            + refillField.getSelectionModel().getSelectedItem()
             + "|"
             + pharmacyField.getText();
 
