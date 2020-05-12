@@ -50,17 +50,17 @@
                         <JFXColorPicker fx:id="primaryPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" />
                         <JFXColorPicker fx:id="primaryDarkPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <JFXColorPicker fx:id="primaryLightPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Primary Color:">
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Buttons, Boxes, Labels:">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Primary Color (Dark):" GridPane.rowIndex="1">
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Ribbon (Dark):" GridPane.rowIndex="1">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Primary Color (Light):" GridPane.rowIndex="2">
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Highlight (Light):" GridPane.rowIndex="2">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -92,13 +92,16 @@
                         <String fx:value="title-label" />
                      </styleClass>
                   </Label>
-                  <VBox alignment="TOP_CENTER" spacing="35.0">
+                  <VBox spacing="35.0">
                      <children>
                         <JFXRadioButton fx:id="aStarButton" selected="true" styleClass="medium-text" stylesheets="@../stylesheet.css" text="A*" />
                         <JFXRadioButton fx:id="dfsButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Depth First Search" />
                         <JFXRadioButton fx:id="bfsButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Breadth First Search" />
                         <JFXRadioButton fx:id="djikstraButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Djikstra" />
                      </children>
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
                   </VBox>
                </children>
             </VBox>

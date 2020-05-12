@@ -39,8 +39,8 @@ public class SettingsController {
     primaryPicker.setValue(getColor("-primary-color"));
     primaryLightPicker.setValue(getColor("-primary-color-light"));
     primaryDarkPicker.setValue(getColor("-primary-color-dark"));
-    mapDarkPicker.setValue(Color.rgb(249, 194, 44));
-    mapLightPicker.setValue(Color.rgb(255, 224, 140));
+    mapDarkPicker.setValue(Color.rgb(198, 177, 150));
+    mapLightPicker.setValue(Color.rgb(220, 189, 156));
 
     // Set radio buttons and toggle group
     toggleGroup = new ToggleGroup();
