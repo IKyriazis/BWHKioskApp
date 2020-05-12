@@ -30,7 +30,7 @@ public class EquipReqController extends AbstractRequestController {
     qtyField.setTextFormatter(InputFormatUtil.getIntFilter());
 
     // Set up node box
-    setupNodeBox(nodeBox, submitButton);
+    setupNodeLocationBox(nodeBox, submitButton);
 
     // Set up priority box
     priCombo.getItems().addAll("High", "Medium", "Low");

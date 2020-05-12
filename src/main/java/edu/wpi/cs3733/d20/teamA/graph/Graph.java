@@ -49,6 +49,36 @@ public class Graph {
             });
   }
 
+  /** Combined observable list of non-navigation only nodes */
+  private static ObservableList<Node> roomLocationList = FXCollections.observableArrayList();
+
+  static {
+    allCampusObservableList.addListener(
+        (ListChangeListener<Node>)
+            c -> {
+              while (c.next()) {
+                if (c.wasAdded()) {
+                  roomLocationList.addAll(
+                      c.getAddedSubList().stream()
+                          .filter(
+                              node ->
+                                  ((node.getType() != NodeType.HALL)
+                                      && (node.getType() != NodeType.ELEV)
+                                      && (node.getType() != NodeType.STAI)
+                                      && (node.getType() != NodeType.EXIT)
+                                      && (node.getType() != NodeType.REST)))
+                          .collect(Collectors.toList()));
+                }
+
+                if (c.wasRemoved()) {
+                  roomLocationList.removeAll(c.getRemoved());
+                }
+              }
+
+              roomLocationList.sort(Comparator.comparing(o -> o.toString().toLowerCase()));
+            });
+  }
+
   /** Count of bidirectional edges */
   private int edgeCount = 0;
 
@@ -524,6 +554,14 @@ public class Graph {
     Graph main = getInstance(Campus.MAIN);
 
     return allValidDestinationList;
+  }
+
+  public static ObservableList<Node> getRoomLocationList() {
+    // Init both campuses in case they don't already exist
+    Graph faulkner = getInstance(Campus.FAULKNER);
+    Graph main = getInstance(Campus.MAIN);
+
+    return roomLocationList;
   }
 
   public GraphDatabase getDB() {

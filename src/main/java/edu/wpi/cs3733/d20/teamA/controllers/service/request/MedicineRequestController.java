@@ -33,7 +33,7 @@ public class MedicineRequestController extends AbstractRequestController {
     setupEmployeeBox(doctorBox, "doctor");
 
     // Set up node box
-    setupNodeBox(locationBox, submitButton);
+    setupNodeLocationBox(locationBox, submitButton);
   }
 
   @FXML
