@@ -451,11 +451,13 @@ public class SimpleMapController extends AbstractController {
 
     if (mainRadioButton.isSelected()) {
       currCanvas = mainCanvas;
+      floorField.setText(graph.getFloorString(floor, "MAIN"));
     } else {
       currCanvas = faulknerCanvas;
+      floorField.setText(graph.getFloorString(floor, "Faulkner"));
       if (floor == 6) {
         floor = 5;
-        floorField.setText("5");
+        floorField.setText(graph.getFloorString(floor, "Faulkner"));
       }
     }
 
@@ -472,7 +474,13 @@ public class SimpleMapController extends AbstractController {
   public void floorUp() {
     floor = Math.min(currCanvas == mainCanvas ? 6 : 5, floor + 1);
     currCanvas.draw(floor);
-    floorField.setText(String.valueOf(floor));
+    String c;
+    if (currCanvas == faulknerCanvas) {
+      c = "Faulkner";
+    } else {
+      c = "MAIN";
+    }
+    floorField.setText(graph.getFloorString(floor, c));
     currCanvas.draw(floor);
   }
 
@@ -480,7 +488,13 @@ public class SimpleMapController extends AbstractController {
   public void floorDown() {
     floor = Math.max(1, floor - 1);
     currCanvas.draw(floor);
-    floorField.setText(String.valueOf(floor));
+    String c;
+    if (currCanvas == faulknerCanvas) {
+      c = "Faulkner";
+    } else {
+      c = "MAIN";
+    }
+    floorField.setText(graph.getFloorString(floor, c));
     currCanvas.draw(floor);
   }
 
@@ -588,7 +602,13 @@ public class SimpleMapController extends AbstractController {
 
     // Set floor
     floor = currSegment.getFloor();
-    floorField.setText(String.valueOf(floor));
+    String c;
+    if (currCanvas == faulknerCanvas) {
+      c = "Faulkner";
+    } else {
+      c = "MAIN";
+    }
+    floorField.setText(graph.getFloorString(floor, c));
 
     // Show directions in list
     if (displayingPathOverview) {
