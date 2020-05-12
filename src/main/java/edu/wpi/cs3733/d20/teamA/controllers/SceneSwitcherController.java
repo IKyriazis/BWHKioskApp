@@ -79,7 +79,7 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
-  private double logoutTime = 15;
+  private double logoutTime = 90;
 
   @FXML
   public void initialize() {
