@@ -30,7 +30,6 @@ public abstract class AbstractController {
 
   protected ServiceDatabase serviceDatabase;
   protected InventoryDatabase inventoryDatabase;
-  // protected FlowerDatabase flDatabase;
   protected GraphDatabase graphDatabase;
   protected EmployeesDatabase eDB;
   protected OnCallDatabase ocDB;
@@ -72,6 +71,15 @@ public abstract class AbstractController {
     if (serviceDatabase.getSize() == -1 || serviceDatabase.getSize() == 0) {
       addRequests();
     }
+    if (patientDatabase.getSize() == -1 || patientDatabase.getSize() == 0) {
+      addPatients();
+    }
+  }
+  // Initialize patients
+  private void addPatients() {
+    patientDatabase.addPatient("Bob", "Roberts", "Cigna", "11/12/1976");
+    patientDatabase.addPatient("Judith", "Daelmans", "Cigna", "3/4/1953");
+    patientDatabase.addPatient("Sara", "Green", "Blue Cross Blue Shield", "9/2/1994");
   }
 
   private void addEmployees() {
@@ -97,6 +105,7 @@ public abstract class AbstractController {
 
   private void addRequests() {
     serviceDatabase.createTables();
+    // Prescription
     serviceDatabase.addServiceReq(
         ServiceType.PRESCRIPTION,
         "",
@@ -109,6 +118,8 @@ public abstract class AbstractController {
         "WinDean",
         "Infection",
         "Amari Watt" + "|" + "Amoxicillin" + "|" + "1 pill" + "|" + "1" + "|" + "Walgreens");
+
+    // Equipment
     serviceDatabase.addServiceReq(
         ServiceType.EQUIPMENT,
         "BWH Surgical Specialties",
@@ -119,8 +130,56 @@ public abstract class AbstractController {
         "Emergency Department",
         null,
         "Pairs of Gloves" + "|" + 30 + "|" + "High");
+
+    // IT
     serviceDatabase.addServiceReq(
         ServiceType.IT_TICKET, "Mechanical Space 01", "Can't connect to main router", "WIFI");
+
+    // Internal transport
+    serviceDatabase.addServiceReq(
+        ServiceType.INTERNAL_TRANSPORT,
+        "15 Francis - 5 - Elevator A",
+        null,
+        "15 Francis - 5 - MRI Associates Lab");
+    serviceDatabase.addServiceReq(
+        ServiceType.INTERNAL_TRANSPORT, "Faulkner - 4 - Finance 1", null, "BTM - 6 - Elevator S 3");
+
+    // Gift
+    serviceDatabase.addServiceReq(
+        ServiceType.GIFT,
+        "Chest Diseases",
+        "(1x) Harry Potter, (1x) Inheritance, (1x) Play-Do.",
+        "");
+
+    // Medicine
+    serviceDatabase.addServiceReq(
+        ServiceType.MEDICINE,
+        "45 Francis - 2 - CSIR MRI Lab",
+        "",
+        "Sara Green|WinDean|Tylenol|22:21");
+    serviceDatabase.addServiceReq(
+        ServiceType.MEDICINE,
+        "45 Francis - 4 - Wound and Ambulatory Department",
+        "",
+        "Matt Barker|WinDean|Xanax|14:15");
+
+    // Janitor
+    serviceDatabase.addServiceReq(
+        ServiceType.JANITOR, "45 Francis - 5 - 45 Francis Entrance", "", "High");
+    serviceDatabase.addServiceReq(
+        ServiceType.JANITOR, "45 Francis - 5 - Duncan Reid Conference Room", "", "Medium");
+    serviceDatabase.addServiceReq(
+        ServiceType.JANITOR, "45 Francis - 5 - Elevator E 2", "Spilled drink in hallway", "LOW");
+
+    // Interpreter
+    serviceDatabase.addServiceReq(
+        ServiceType.INTERPRETER_REQ, "15 Francis - 5 - Brigham Health", "baub", null, null);
+    // Laundry
+    serviceDatabase.addServiceReq(
+        ServiceType.LAUNDRY, "45 Francis - 5 - Duncan Reid Conference Room", "", "");
+    serviceDatabase.addServiceReq(
+        ServiceType.LAUNDRY, "45 Francis - 4 - Wound and Ambulatory Department", "", "");
+    serviceDatabase.addServiceReq(ServiceType.LAUNDRY, "BWH Surgical Specialties", "", "");
   }
 
   public String scanRFID() {

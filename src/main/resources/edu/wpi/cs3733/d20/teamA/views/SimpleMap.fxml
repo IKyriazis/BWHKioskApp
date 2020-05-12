@@ -8,6 +8,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -17,6 +18,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
 
 <BorderPane fx:id="rootPane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SimpleMapController">
    <center>
@@ -45,6 +48,11 @@
                         </styleClass>
                      </JFXButton>
                      <JFXComboBox fx:id="destinationBox" editable="true" labelFloat="true" maxWidth="250.0" minWidth="250.0" prefWidth="250.0" promptText="Destination" styleClass="small-text" />
+                     <JFXTextField fx:id="phoneNumberField" promptText="Phone Number">
+                        <font>
+                           <Font size="11.0" />
+                        </font>
+                     </JFXTextField>
 
                            <JFXButton fx:id="goButton" buttonType="RAISED" mnemonicParsing="false" onAction="#pressedGo" text="Go">
                         <styleClass>
@@ -88,7 +96,7 @@
                               <HBox fx:id="buttonBox" alignment="CENTER" GridPane.columnIndex="1">
                                  <children>
                                     <JFXButton fx:id="dirBackButton" onAction="#pressedDirBack" styleClass="button-rounded-left" text="Back" />
-                                    <JFXButton fx:id="dirNextButton" onAction="#pressedDirNext" styleClass="button-rounded-right" text="Next" />
+                                    <JFXButton fx:id="dirNextButton" contentDisplay="RIGHT" onAction="#pressedDirNext" styleClass="button-rounded-right" text="Next" />
                                  </children>
                               </HBox>
                               <JFXButton fx:id="directionListButton" onAction="#pressedDirectionList">
@@ -112,12 +120,12 @@
                               <RowConstraints valignment="CENTER" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXRadioButton fx:id="faulknerRadioButton" onAction="#toggleDisplayedMap" text="Faulkner Hospital" GridPane.rowIndex="1">
+                              <JFXRadioButton fx:id="faulknerRadioButton" onAction="#toggleDisplayedMap" selected="true" text="Faulkner Hospital" GridPane.rowIndex="1">
                                  <toggleGroup>
                                     <ToggleGroup fx:id="campusToggle" />
                                  </toggleGroup>
                               </JFXRadioButton>
-                              <JFXRadioButton fx:id="mainRadioButton" onAction="#toggleDisplayedMap" selected="true" text="Main Campus" toggleGroup="$campusToggle" />
+                              <JFXRadioButton fx:id="mainRadioButton" onAction="#toggleDisplayedMap" text="Main Campus" toggleGroup="$campusToggle" />
                            </children>
                         </GridPane>
                         <VBox fx:id="floorBox" prefHeight="95.0" prefWidth="28.0" spacing="10.0">

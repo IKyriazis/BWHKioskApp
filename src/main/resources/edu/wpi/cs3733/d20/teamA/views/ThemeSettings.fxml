@@ -24,7 +24,7 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <VBox alignment="TOP_CENTER" spacing="50.0" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+            <VBox alignment="TOP_CENTER" spacing="30.0" GridPane.halignment="CENTER" GridPane.valignment="TOP">
                <children>
                   <Label stylesheets="@../stylesheet.css" text="Theme Settings">
                      <font>
@@ -44,6 +44,8 @@
                         <RowConstraints vgrow="SOMETIMES" />
                         <RowConstraints vgrow="SOMETIMES" />
                         <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
+                        <RowConstraints vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
                         <JFXColorPicker fx:id="primaryPicker" onAction="#updateTheme" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" />
@@ -60,6 +62,18 @@
                            </font>
                         </Label>
                         <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Primary Color (Light):" GridPane.rowIndex="2">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXColorPicker fx:id="mapDarkPicker" onAction="#updateMapColor" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Map Color (Dark):" GridPane.rowIndex="3">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Label>
+                        <JFXColorPicker fx:id="mapLightPicker" onAction="#updateMapColor" prefHeight="35.0" styleClass="medium-text" stylesheets="@../stylesheet.css" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="Map Color (Light):" GridPane.rowIndex="4">
                            <font>
                               <Font size="14.0" />
                            </font>

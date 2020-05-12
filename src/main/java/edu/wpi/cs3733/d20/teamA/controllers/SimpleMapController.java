@@ -4,12 +4,13 @@ import animatefx.animation.FadeInLeft;
 import animatefx.animation.FadeOutLeft;
 import com.google.common.io.Resources;
 import com.jfoenix.controls.*;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
 import edu.wpi.cs3733.d20.teamA.map.MapCanvas;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
-import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -55,6 +56,8 @@ public class SimpleMapController extends AbstractController {
   @FXML private JFXButton floorDownButton;
   @FXML private JFXTextField floorField;
 
+  @FXML private JFXTextField phoneNumberField;
+
   @FXML private JFXRadioButton faulknerRadioButton;
   @FXML private JFXRadioButton mainRadioButton;
 
@@ -73,6 +76,8 @@ public class SimpleMapController extends AbstractController {
 
   private static final String FAULKNER_EXIT_NODE = "MHALL00342";
   private static final String MAIN_EXIT_NODE = "AEXIT0010G";
+  private static final String ACCOUNT_SID = "AC809fda5395cc3a459bc3555e6477ba72";
+  private static final String AUTH_TOKEN = "215f4ff302e84eccd3e7838c51d86506";
 
   private final ArrayList<Node> highlights;
 
@@ -142,6 +147,9 @@ public class SimpleMapController extends AbstractController {
 
     floorUpButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_UP));
     floorDownButton.setGraphic(new FontIcon(FontAwesomeSolid.ARROW_DOWN));
+
+    // Set phonenumber field to float
+    phoneNumberField.setLabelFloat(true);
 
     // Hide directions display
     directionsBox.setVisible(false);
@@ -234,7 +242,8 @@ public class SimpleMapController extends AbstractController {
           clearPath();
 
           // Redraw map
-          currCanvas.draw(floor);
+          mainCanvas.draw(floor);
+          faulknerCanvas.draw(floor);
         });
 
     try {
@@ -296,6 +305,8 @@ public class SimpleMapController extends AbstractController {
   public void pressedGo() {
     Node start = getSelectedNode(startingLocationBox);
     Node end = getSelectedNode(destinationBox);
+    String phoneNumber = phoneNumberField.getText();
+
     if ((start != null) && (end != null)) {
       ContextPath path = MapSettings.getPath();
 
@@ -375,8 +386,63 @@ public class SimpleMapController extends AbstractController {
         hideDirectionsBox();
         showSearchBox();
       }
+
+      if (phoneNumber != null && phoneNumber.length() >= 10) {
+        sendTextMessage(phoneNumber, path);
+      }
     }
   }
+
+  public void sendTextMessage(String phoneNumber, ContextPath path) {
+    String directions = "";
+    for (Pair<Node, String> pair : path.getPathFindingAlgo().textualDirections()) {
+      directions += (pair.getValue() + "\n");
+    }
+    if (phoneNumber.contains(" ")
+        || phoneNumber.contains("(")
+        || phoneNumber.contains(")")
+        || phoneNumber.contains("-")) {
+      phoneNumber.replace(" ", "");
+      phoneNumber.replace("(", "");
+      phoneNumber.replace(")", "");
+      phoneNumber.replace("-", "");
+    }
+    if (!phoneNumber.substring(0, 2).equals("+1")) {
+      if (phoneNumber.length() == 10) {
+        phoneNumber = "+1" + phoneNumber;
+      }
+    }
+
+    // Use the proper AWS code if you want to implement AWS here
+    /*
+    AmazonSNSClient snsClient = new AmazonSNSClient();
+      String message = "My SMS message";
+      Map<String, MessageAttributeValue> smsAttributes =
+              new HashMap<String, MessageAttributeValue>();
+      //<set SMS attributes>
+      sendSMSMessage(snsClient, message, phoneNumber, smsAttributes);*/
+    // Below is the Twilio free trial code to send text messages to verified numbers
+    // Comment out or delete this code for
+    Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+    Message message =
+        Message.creator(
+                new com.twilio.type.PhoneNumber(phoneNumber),
+                new com.twilio.type.PhoneNumber("+12029310539"),
+                directions)
+            .create();
+    System.out.println(message.getSid());
+  }
+
+  /*
+  // Use this method in conjunction with the one above for sending SMS messages with AWS
+  public static void sendSMSMessage(AmazonSNSClient snsClient, String message,
+                                    String phoneNumber, Map<String, MessageAttributeValue> smsAttributes) {
+    PublishResult result = snsClient.publish(new PublishRequest()
+            .withMessage(message)
+            .withPhoneNumber(phoneNumber)
+            .withMessageAttributes(smsAttributes));
+    System.out.println(result); // Prints the message ID.
+  }*/
 
   @FXML
   public void toggleDisplayedMap() {

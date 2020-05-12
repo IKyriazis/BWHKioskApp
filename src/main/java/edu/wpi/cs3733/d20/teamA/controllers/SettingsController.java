@@ -5,6 +5,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.io.*;
 import javafx.css.CssParser;
 import javafx.css.Rule;
@@ -20,6 +21,8 @@ public class SettingsController extends AbstractController {
   @FXML private JFXColorPicker primaryPicker;
   @FXML private JFXColorPicker primaryLightPicker;
   @FXML private JFXColorPicker primaryDarkPicker;
+  @FXML private JFXColorPicker mapDarkPicker;
+  @FXML private JFXColorPicker mapLightPicker;
 
   @FXML private JFXRadioButton aStarButton;
   @FXML private JFXRadioButton bfsButton;
@@ -38,6 +41,8 @@ public class SettingsController extends AbstractController {
     primaryPicker.setValue(getColor("-primary-color"));
     primaryLightPicker.setValue(getColor("-primary-color-light"));
     primaryDarkPicker.setValue(getColor("-primary-color-dark"));
+    mapDarkPicker.setValue(Color.rgb(249, 194, 44));
+    mapLightPicker.setValue(Color.rgb(255, 224, 140));
 
     // Set radio buttons and toggle group
     toggleGroup = new ToggleGroup();
@@ -121,7 +126,7 @@ public class SettingsController extends AbstractController {
 
   @FXML
   private void updateTheme(ActionEvent event) {
-    // Write theme to temporary file
+
     File themeFile = new File(themePath);
     try {
       boolean go = true;
@@ -170,5 +175,12 @@ public class SettingsController extends AbstractController {
   private void updateLogoutTime() {
     SceneSwitcherController ssc = SceneSwitcherController.getInstanceOf();
     ssc.setLogoutTime(logoutTimeBox.getValue());
+  }
+
+  public void updateMapColor(ActionEvent actionEvent) {
+    MapSettings.setLightColor(mapLightPicker.getValue());
+    MapSettings.setDarkColor(mapDarkPicker.getValue());
+
+    ImageCache.recolorFloorImages(mapDarkPicker.getValue(), mapLightPicker.getValue());
   }
 }
