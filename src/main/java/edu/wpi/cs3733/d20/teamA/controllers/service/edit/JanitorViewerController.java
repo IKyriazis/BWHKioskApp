@@ -13,6 +13,7 @@ public class JanitorViewerController extends AbstractViewerController {
   @FXML private GenericViewerController genericController;
   @FXML private Label headerLabel;
   @FXML private JFXButton saveButton;
+  @FXML private JFXButton deleteButton;
   @FXML private JFXComboBox<String> priorityBox;
 
   public JanitorViewerController(ServiceRequest req) {
@@ -45,6 +46,11 @@ public class JanitorViewerController extends AbstractViewerController {
         req.getReqID(), priorityBox.getSelectionModel().getSelectedItem());
 
     // Fire tab switch event forcing table to update
+    headerLabel.fireEvent(new TabSwitchEvent());
+  }
+
+  public void pressedDelete() {
+    serviceDatabase.deleteServReq(req.getReqID());
     headerLabel.fireEvent(new TabSwitchEvent());
   }
 

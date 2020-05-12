@@ -176,6 +176,10 @@
     -fx-background-radius: 0 1em 1em 0;
 }
 
+.button-flush {
+    -fx-background-radius: 0 0 0 0;
+}
+
 .button-rounded-left {
     -fx-background-radius: 1em 0 0 1em;
 }
@@ -263,6 +267,10 @@
     -fx-background-insets: 1;
 }
 
+#weatherIconLabel .ikonli-font-icon {
+    -fx-fill: -primary-color-dark-text;
+}
+
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
@@ -280,4 +288,8 @@
 #laundryLabel {
     -fx-font-family: "Roboto";
     -fx-font-size: 18pt;
+}
+
+#button {
+    -fx-background-color: cornflowerblue;
 }
