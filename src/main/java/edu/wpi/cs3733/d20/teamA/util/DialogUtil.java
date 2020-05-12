@@ -26,7 +26,7 @@ public class DialogUtil {
     return closeButton;
   }
 
-  private static void simpleDialog(
+  private static JFXDialog simpleDialog(
       StackPane dialogPane, String heading, String body, FontIcon headingIcon) {
     try {
       Label headingLabel = new Label(heading);
@@ -46,45 +46,49 @@ public class DialogUtil {
 
       layout.setActions(closeButton);
       dialog.show();
+      return dialog;
     } catch (Exception e) {
       e.printStackTrace();
+      return null;
     }
   }
 
-  public static void simpleInfoDialog(StackPane dialogPane, String heading, String body) {
-    simpleDialog(dialogPane, heading, body, new FontIcon(FontAwesomeSolid.INFO));
+  public static JFXDialog simpleInfoDialog(StackPane dialogPane, String heading, String body) {
+    return simpleDialog(dialogPane, heading, body, new FontIcon(FontAwesomeSolid.INFO));
   }
 
-  public static void simpleErrorDialog(StackPane dialogPane, String heading, String body) {
-    simpleDialog(dialogPane, heading, body, new FontIcon(FontAwesomeSolid.EXCLAMATION_TRIANGLE));
+  public static JFXDialog simpleErrorDialog(StackPane dialogPane, String heading, String body) {
+    return simpleDialog(
+        dialogPane, heading, body, new FontIcon(FontAwesomeSolid.EXCLAMATION_TRIANGLE));
   }
 
-  public static void simpleInfoDialog(String heading, String body) {
+  public static JFXDialog simpleInfoDialog(String heading, String body) {
     if (defaultStackPane == null) {
-      return;
+      return null;
     }
 
-    simpleInfoDialog(defaultStackPane, heading, body);
+    return simpleInfoDialog(defaultStackPane, heading, body);
   }
 
-  public static void simpleErrorDialog(String heading, String body) {
+  public static JFXDialog simpleErrorDialog(String heading, String body) {
     if (defaultStackPane == null) {
-      return;
+      return null;
     }
 
-    simpleErrorDialog(defaultStackPane, heading, body);
+    return simpleErrorDialog(defaultStackPane, heading, body);
   }
 
-  public static void complexDialog(
+  public static JFXDialog complexDialog(
       String heading,
       String path,
       boolean includeCloseButton,
       EventHandler<? super JFXDialogEvent> closeHandler,
       IDialogController controller) {
-    complexDialog(defaultStackPane, heading, path, includeCloseButton, closeHandler, controller);
+    return complexDialog(
+        defaultStackPane, heading, path, includeCloseButton, closeHandler, controller);
   }
 
-  public static void complexDialog(
+  public static JFXDialog complexDialog(
       StackPane dialogPane,
       String heading,
       String path,
@@ -119,9 +123,10 @@ public class DialogUtil {
       }
 
       dialog.show();
+      return dialog;
     } catch (Exception e) {
       e.printStackTrace();
-      simpleErrorDialog(dialogPane, "Error", "Unable to load complex dialog for: " + path);
+      return simpleErrorDialog(dialogPane, "Error", "Unable to load complex dialog for: " + path);
     }
   }
 

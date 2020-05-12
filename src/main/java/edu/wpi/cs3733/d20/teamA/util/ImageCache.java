@@ -1,9 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.util;
 
+import com.jfoenix.controls.JFXDialog;
+import edu.wpi.cs3733.d20.teamA.controllers.dialog.LoadingDialogController;
 import edu.wpi.cs3733.d20.teamA.graph.Campus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -56,6 +59,13 @@ public class ImageCache {
   }
 
   public static synchronized void recolorFloorImages(Color dark, Color light) {
+    JFXDialog loadingDialog =
+        DialogUtil.complexDialog(
+            "Loading",
+            "views/dialog/LoadingDialog.fxml",
+            false,
+            null,
+            new LoadingDialogController());
     ThreadPool.runBackgroundTask(
         () -> {
           getFloorImagePaths()
@@ -87,6 +97,8 @@ public class ImageCache {
 
           lightColor = light;
           darkColor = dark;
+
+          Platform.runLater(loadingDialog::close);
         });
   }
 }
