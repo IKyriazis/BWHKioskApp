@@ -81,8 +81,8 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
-  private static double logoutTime = 5;
-  private boolean infocus = true;
+  private static double logoutTime = 15;
+  private boolean inFocus = true;
 
   @FXML
   public void initialize() {
@@ -103,7 +103,7 @@ public class SceneSwitcherController extends AbstractController {
               public void changed(
                   ObservableValue<? extends Boolean> observable, Boolean onHidden, Boolean onShow) {
                 timer.stop();
-                infocus = onShow;
+                inFocus = onShow;
               }
             });
 
@@ -678,7 +678,7 @@ public class SceneSwitcherController extends AbstractController {
           new KeyFrame(
               Duration.seconds(logoutTime),
               (v) -> {
-                if (infocus) {
+                if (inFocus) {
                   pressedHome();
                   if (loggedIn == true) {
                     pressedSignIn();
@@ -695,7 +695,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML
   public void logoutTimerClick() {
     timer.stop();
-    infocus = true;
+    inFocus = true;
     timer.play();
   }
 
