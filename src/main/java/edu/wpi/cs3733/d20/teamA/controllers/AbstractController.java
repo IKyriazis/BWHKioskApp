@@ -156,12 +156,12 @@ public abstract class AbstractController {
         ServiceType.MEDICINE,
         "45 Francis - 2 - CSIR MRI Lab",
         "",
-        "Sara Green|WinDean|Tylenol|22:21");
+        "Sara Green|WinDean|Tylenol|22:21|2020|4|21");
     serviceDatabase.addServiceReq(
         ServiceType.MEDICINE,
         "45 Francis - 4 - Wound and Ambulatory Department",
         "",
-        "Matt Barker|WinDean|Xanax|14:15");
+        "Matt Barker|WinDean|Xanax|14:15|2020|5|20");
 
     // Janitor
     serviceDatabase.addServiceReq(
@@ -171,9 +171,6 @@ public abstract class AbstractController {
     serviceDatabase.addServiceReq(
         ServiceType.JANITOR, "45 Francis - 5 - Elevator E 2", "Spilled drink in hallway", "LOW");
 
-    // Interpreter
-    serviceDatabase.addServiceReq(
-        ServiceType.INTERPRETER_REQ, "15 Francis - 5 - Brigham Health", "baub", null, null);
     // Laundry
     serviceDatabase.addServiceReq(
         ServiceType.LAUNDRY, "45 Francis - 5 - Duncan Reid Conference Room", "", "");

@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXDatePicker?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import com.jfoenix.controls.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -55,15 +71,17 @@
                               <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="-Infinity" valignment="CENTER" vgrow="SOMETIMES" />
                               <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                               <JFXComboBox fx:id="doctorBox" labelFloat="true" prefWidth="250.0" promptText="Doctor Name" GridPane.columnIndex="1" />
-                              <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.rowIndex="2" GridPane.rowSpan="2" />
+                              <JFXTextArea fx:id="descriptionArea" labelFloat="true" prefHeight="100.0" prefWidth="250.0" promptText="Description (100 chars)" GridPane.rowIndex="2" GridPane.rowSpan="3" />
                               <JFXTextField fx:id="patientName" labelFloat="true" prefWidth="250.0" promptText="Patient Name" />
                               <JFXComboBox fx:id="locationBox" editable="true" labelFloat="true" prefWidth="250.0" promptText="Location" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <JFXTextField fx:id="medicineField" labelFloat="true" promptText="Medicine" GridPane.rowIndex="1" />
                               <JFXTimePicker fx:id="administerTime" maxWidth="1.7976931348623157E308" promptText="Administer Time" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <JFXDatePicker fx:id="datePicker" defaultColor="#5449b9" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
                      </children>

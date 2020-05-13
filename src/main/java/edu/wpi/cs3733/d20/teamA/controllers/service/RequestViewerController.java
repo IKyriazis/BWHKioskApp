@@ -57,6 +57,9 @@ public class RequestViewerController extends AbstractController {
 
     // Setup category items
     categoryItems = new HashMap<>();
+
+    String employeeTitle = eDB.getLoggedIn().getTitle();
+
     for (ServiceType type : ServiceType.values()) {
       TreeItem<ServiceRequest> categoryItem =
           new TreeItem<>(new ServiceRequest(type, "", "", "", "", "", "", "", ""));
@@ -126,15 +129,6 @@ public class RequestViewerController extends AbstractController {
                   new InternalTransportViewerController(req));
           ((AbstractViewerController)
                   FXMLCache.getController("views/service/edit/InternalTransportViewer.fxml"))
-              .reset(req);
-          break;
-        case INTERPRETER_REQ:
-          newNode =
-              FXMLCache.loadServiceFXML(
-                  "views/service/edit/InterpreterRequestViewer.fxml",
-                  new InterpreterRequestViewerController(req));
-          ((AbstractViewerController)
-                  FXMLCache.getController("views/service/edit/InterpreterRequestViewer.fxml"))
               .reset(req);
           break;
         case IT_TICKET:

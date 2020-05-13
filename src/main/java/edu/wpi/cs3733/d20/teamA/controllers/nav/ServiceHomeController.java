@@ -6,10 +6,17 @@ import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.event.ActionEvent;
+import edu.wpi.cs3733.d20.teamA.App;
+import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import edu.wpi.cs3733.d20.teamC.InterpreterRequest;
+import java.io.IOException;
+import java.util.function.BooleanSupplier;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.layout.*;
+import javafx.stage.Screen;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material.Material;
@@ -61,6 +68,31 @@ public class ServiceHomeController extends AbstractNavPaneController {
         new FontIcon(FontAwesomeSolid.WHEELCHAIR),
         "views/service/InternalTransportRequest.fxml",
         "Internal\nTransport");
+
+    addButton(
+        buttonPane,
+        new FontIcon(FontAwesomeSolid.GLOBE),
+        "Interpreter",
+        new BooleanSupplier() {
+          @Override
+          public boolean getAsBoolean() {
+            try {
+              Rectangle2D bounds = Screen.getPrimary().getBounds();
+              InterpreterRequest.run(
+                  (int) ((bounds.getWidth() - 1000) / 2),
+                  (int) ((bounds.getHeight() - 1000) / 3),
+                  1000,
+                  1000,
+                  App.class.getResource("stylesheet.css").toExternalForm(),
+                  "NodeTarg",
+                  "NodeEnd");
+              return true;
+            } catch (IOException e) {
+              e.printStackTrace();
+              return false;
+            }
+          }
+        });
 
     addButton(buttonPane, new FontIcon(FontAwesomeSolid.HAMBURGER), "views/food/Food.fxml", "Food");
 
