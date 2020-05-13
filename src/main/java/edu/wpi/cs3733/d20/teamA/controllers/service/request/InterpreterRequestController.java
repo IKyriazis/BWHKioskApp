@@ -33,12 +33,12 @@ public class InterpreterRequestController extends AbstractRequestController {
     setupEmployeeBox(interpreterBox, "interpreter");
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              locationBox.setValue(null);
-              interpreterBox.getSelectionModel().clearSelection();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          locationBox.setValue(null);
+          interpreterBox.getSelectionModel().clearSelection();
+        });
   }
 
   public void pressedSubmit() {
@@ -48,11 +48,7 @@ public class InterpreterRequestController extends AbstractRequestController {
     if (location != null && interpreter != null) {
       String l =
           serviceDatabase.addServiceReq(
-              ServiceType.INTERPRETER_REQ,
-              location.toString(),
-              interpreter.getUsername(),
-              null,
-              null);
+              ServiceType.JANITOR, location.toString(), interpreter.getUsername(), null, null);
       if (l == null) {
         DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
       } else {

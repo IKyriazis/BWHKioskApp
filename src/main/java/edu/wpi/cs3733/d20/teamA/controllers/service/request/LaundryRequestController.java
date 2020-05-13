@@ -34,12 +34,12 @@ public class LaundryRequestController extends AbstractRequestController {
     setupNodeLocationBox(nodeBox, submitButton);
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              nodeBox.setValue(null);
-              descriptionArea.clear();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          nodeBox.setValue(null);
+          descriptionArea.clear();
+        });
   }
 
   public void pressedSubmit() {

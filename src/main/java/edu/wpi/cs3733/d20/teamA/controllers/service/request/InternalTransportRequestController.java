@@ -40,12 +40,12 @@ public class InternalTransportRequestController extends AbstractRequestControlle
     progressBar.setProgress(0);
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              pickupLocationBox.setValue(null);
-              destinationLocationBox.setValue(null);
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          pickupLocationBox.setValue(null);
+          destinationLocationBox.setValue(null);
+        });
   }
 
   public void pressedSubmitBtn() {
