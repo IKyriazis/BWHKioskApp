@@ -6,6 +6,8 @@ import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -23,6 +25,7 @@ public class MedicineRequestController extends AbstractRequestController {
   @FXML private JFXTimePicker administerTime;
   @FXML private JFXTextArea descriptionArea;
   @FXML private JFXButton submitButton;
+  @FXML private JFXDatePicker datePicker;
 
   public void initialize() {
     // Setup icons
@@ -37,6 +40,12 @@ public class MedicineRequestController extends AbstractRequestController {
 
     // Set up node box
     setupNodeLocationBox(locationBox, submitButton);
+
+    // Sets up the date
+    datePicker.setValue(LocalDate.now());
+
+    // Sets up the time
+    administerTime.setValue(LocalTime.now());
 
     rootPane.addEventHandler(
             TabSwitchEvent.TAB_SWITCH,
@@ -59,7 +68,8 @@ public class MedicineRequestController extends AbstractRequestController {
         || doctor == null
         || medicineField.getText().isEmpty()
         || location == null
-        || administerTime.getEditor().getText().isEmpty()) {
+        || administerTime.getEditor().getText().isEmpty()
+        || datePicker.getValue() == null) {
       DialogUtil.simpleInfoDialog(
           "Empty Fields", "Please fully fill out the service request form and try again.");
       return;
@@ -67,6 +77,10 @@ public class MedicineRequestController extends AbstractRequestController {
 
     String patientNameText = patientName.getText();
     String medicine = medicineField.getText();
+    LocalDate date = datePicker.getValue();
+    int dayOfMonth = date.getDayOfMonth();
+    int year = date.getYear();
+    int month = date.getMonthValue();
 
     String additional =
         patientNameText
@@ -75,7 +89,13 @@ public class MedicineRequestController extends AbstractRequestController {
             + "|"
             + medicine
             + "|"
-            + administerTime.getValue().toString();
+            + administerTime.getValue().toString()
+            + "|"
+            + year
+            + "|"
+            + month
+            + "|"
+            + dayOfMonth;
 
     String l =
         serviceDatabase.addServiceReq(
@@ -94,5 +114,6 @@ public class MedicineRequestController extends AbstractRequestController {
     locationBox.setValue(null);
     administerTime.getEditor().clear();
     descriptionArea.clear();
+    datePicker.setValue(LocalDate.now());
   }
 }
