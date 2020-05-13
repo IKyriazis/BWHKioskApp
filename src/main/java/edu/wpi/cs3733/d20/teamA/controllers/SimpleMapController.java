@@ -244,6 +244,10 @@ public class SimpleMapController extends AbstractController {
           // Redraw map
           mainCanvas.draw(floor);
           faulknerCanvas.draw(floor);
+
+          // Hide drawers
+          hideDirectionsBox();
+          hideSearchBox();
         });
 
     try {
