@@ -34,6 +34,7 @@
                   <Label styleClass="small-text" stylesheets="@../stylesheet.css" text=" Secure Incident Reporting - Team B" />
                   <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Food Request - Team P" />
                   <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Gift Delivery Service Request - Team L" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Interpreter Request - Team C" />
                   <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="External APIs">
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
