@@ -38,13 +38,13 @@ public class ITRequestController extends AbstractRequestController {
     categoryBox.getItems().addAll("Wifi", "Email", "Login", "Kiosk", "Pager", "Other");
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              nodeBox.setValue(null);
-              descriptionArea.clear();
-              categoryBox.getSelectionModel().clearSelection();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          nodeBox.setValue(null);
+          descriptionArea.clear();
+          categoryBox.getSelectionModel().clearSelection();
+        });
   }
 
   public void pressedSubmit() {

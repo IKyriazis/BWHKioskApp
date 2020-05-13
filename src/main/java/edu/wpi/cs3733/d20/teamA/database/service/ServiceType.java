@@ -2,7 +2,6 @@ package edu.wpi.cs3733.d20.teamA.database.service;
 
 public enum ServiceType {
   LAUNDRY("laundry"),
-  INTERPRETER_REQ("interpret"),
   JANITOR("janitor"),
   MEDICINE("medicine"),
   EQUIPMENT("equipreq"),

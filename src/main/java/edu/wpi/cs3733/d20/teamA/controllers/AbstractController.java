@@ -171,9 +171,6 @@ public abstract class AbstractController {
     serviceDatabase.addServiceReq(
         ServiceType.JANITOR, "45 Francis - 5 - Elevator E 2", "Spilled drink in hallway", "LOW");
 
-    // Interpreter
-    serviceDatabase.addServiceReq(
-        ServiceType.INTERPRETER_REQ, "15 Francis - 5 - Brigham Health", "baub", null, null);
     // Laundry
     serviceDatabase.addServiceReq(
         ServiceType.LAUNDRY, "45 Francis - 5 - Duncan Reid Conference Room", "", "");

@@ -39,16 +39,16 @@ public class MedicineRequestController extends AbstractRequestController {
     setupNodeLocationBox(locationBox, submitButton);
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              patientName.clear();
-              doctorBox.getSelectionModel().clearSelection();
-              medicineField.clear();
-              locationBox.setValue(null);
-              administerTime.getEditor().clear();
-              descriptionArea.clear();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          patientName.clear();
+          doctorBox.getSelectionModel().clearSelection();
+          medicineField.clear();
+          locationBox.setValue(null);
+          administerTime.getEditor().clear();
+          descriptionArea.clear();
+        });
   }
 
   @FXML
