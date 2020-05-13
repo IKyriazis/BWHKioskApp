@@ -49,9 +49,10 @@ public class FoodRequestController extends AbstractController {
         event -> {
           event.consume();
           adminButton.setVisible(eDB.getLoggedIn() != null);
+          comboLocation.getSelectionModel().clearSelection();
         });
 
-    setupNodeBox(comboLocation, null);
+    setupNodeLocationBox(comboLocation, null);
 
     // Load employees if needed
     if (!hasReadFoodEmployees) {

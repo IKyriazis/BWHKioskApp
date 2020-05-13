@@ -108,9 +108,16 @@
 
 .jfx-spinner .arc {
     -fx-stroke: -primary-color;
+    -fx-stroke-width: 5;
 }
 
 .jfx-time-picker {
+    -jfx-default-color: -primary-color;
+    -fx-fill: -secondary-color-text;
+    -fx-text-fill: -secondary-color-text;
+}
+
+.jfx-date-picker {
     -jfx-default-color: -primary-color;
     -fx-fill: -secondary-color-text;
     -fx-text-fill: -secondary-color-text;
@@ -175,6 +182,10 @@
 
 .button-rounded-right {
     -fx-background-radius: 0 1em 1em 0;
+}
+
+.button-flush {
+    -fx-background-radius: 0 0 0 0;
 }
 
 .button-rounded-left {
@@ -264,6 +275,10 @@
     -fx-background-insets: 1;
 }
 
+#weatherIconLabel .ikonli-font-icon {
+    -fx-fill: -primary-color-dark-text;
+}
+
 #informationButton {
     -fx-padding: 0 10 0 10;
     -fx-alignment: CENTER;
@@ -287,4 +302,7 @@
     -fx-background-color: -primary-color-dark;
     -fx-text-fill: -primary-color-dark-text;
     -fx-font-weight: bold;
+}
+#button {
+    -fx-background-color: cornflowerblue;
 }

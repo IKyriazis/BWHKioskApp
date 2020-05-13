@@ -1,17 +1,25 @@
 package edu.wpi.cs3733.d20.teamA.controllers.reservation;
 
+import com.calendarfx.model.CalendarSource;
+import com.calendarfx.model.Entry;
+import com.calendarfx.model.Interval;
+import com.calendarfx.view.CalendarView;
 import com.jfoenix.controls.*;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.controls.SimpleTableView;
 import edu.wpi.cs3733.d20.teamA.database.reservation.Reservation;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Locale;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -30,6 +38,14 @@ public class ReservationController extends AbstractController {
   @FXML private JFXTimePicker startPicker;
   @FXML private JFXTimePicker endPicker;
   @FXML private JFXComboBox<String> roomBox;
+  @FXML private JFXButton removeReservation;
+  @FXML private GridPane rootPane;
+
+  private CalendarView calendarView;
+  private CalendarSource calendarSource;
+  private com.calendarfx.model.Calendar bedsCalendar;
+  private com.calendarfx.model.Calendar reflectCalendar;
+  private com.calendarfx.model.Calendar confCalendar;
 
   private SimpleTableView<Reservation> tblView;
 
@@ -38,31 +54,69 @@ public class ReservationController extends AbstractController {
     reservationButton.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_PLUS));
     myReservationsCheck.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_CHECK));
     promptLabel.setGraphic(new FontIcon(FontAwesomeSolid.BARS));
+    removeReservation.setGraphic(new FontIcon(FontAwesomeSolid.CALENDAR_TIMES));
 
     tblView =
         new SimpleTableView<>(
             new Reservation("", Calendar.getInstance(), Calendar.getInstance(), ""), 80.0);
-    requestTablePane.getChildren().add(tblView);
+    // requestTablePane.getChildren().add(tblView);
 
-    update();
+    ObservableList<String> roomList = FXCollections.observableArrayList();
 
-    roomBox
-        .getItems()
-        .addAll(
-            "On-Call Bed 1",
-            "On-Call Bed 2",
-            "On-Call Bed 3",
-            "On-Call Bed 4",
-            "On-Call Bed 5",
-            "On-Call Bed 6",
-            "On-Call Bed 7",
-            "Reflection Room 1",
-            "Reflection Room 2",
-            "Reflection Room 3");
+    roomList.addAll(
+        "On-Call Bed 1",
+        "On-Call Bed 2",
+        "On-Call Bed 3",
+        "On-Call Bed 4",
+        "On-Call Bed 5",
+        "On-Call Bed 6",
+        "On-Call Bed 7",
+        "Reflection Room 1",
+        "Reflection Room 2",
+        "Reflection Room 3");
+
+    // Adds the conference rooms to the list of reservable rooms
+    roomList.addAll(graphDatabase.getNodeByType("CONF"));
+
+    roomBox.getItems().addAll(roomList);
 
     datePicker.setValue(LocalDate.now());
 
     myReservationsCheck.setSelected(false);
+
+    calendarView = new CalendarView();
+    calendarSource = new CalendarSource("Room Calendars");
+
+    // Makes a calendar for each type of room
+    bedsCalendar = new com.calendarfx.model.Calendar("On-Call Beds");
+    bedsCalendar.setStyle(com.calendarfx.model.Calendar.Style.STYLE1);
+    bedsCalendar.setReadOnly(true);
+
+    reflectCalendar = new com.calendarfx.model.Calendar("Reflection Rooms");
+    reflectCalendar.setStyle(com.calendarfx.model.Calendar.Style.STYLE2);
+    reflectCalendar.setReadOnly(true);
+
+    confCalendar = new com.calendarfx.model.Calendar("Conference Rooms");
+    confCalendar.setStyle(com.calendarfx.model.Calendar.Style.STYLE3);
+    confCalendar.setReadOnly(true);
+
+    calendarSource.getCalendars().addAll(bedsCalendar, reflectCalendar, confCalendar);
+
+    calendarView.getCalendarSources().setAll(calendarSource);
+
+    // Removes the ability for the user to add calendars cause that wouldn't really work yo
+    calendarView.setShowAddCalendarButton(false);
+    calendarView.setShowPrintButton(false);
+
+    requestTablePane.getChildren().add(calendarView);
+
+    rootPane.addEventHandler(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+
+          update();
+        });
   }
   // Creates a calendar datatype from a date and a time
   private Calendar makeCalendar(LocalDate date, LocalTime time) {
@@ -165,18 +219,120 @@ public class ReservationController extends AbstractController {
     }
   }
 
+  @FXML
+  private void deleteReservation() {
+    ObservableSet<Entry<?>> theSet = calendarView.getSelections();
+    for (Entry<?> entry : theSet) {
+      LocalDate startDate = entry.getStartDate();
+      LocalTime startTime = entry.getStartTime();
+      Calendar startCal = makeCalendar(startDate, startTime);
+      String loc = entry.getLocation();
+      Reservation reservation = reservationDatabase.getRes(startCal, loc);
+      String emp = reservation.getRequestedBy();
+      String logged = reservationDatabase.getLoggedIn().getUsername();
+      if (emp.equals(logged) || "admin".equals(logged)) {
+        if (reservationDatabase.deleteRes(startCal, loc)) {
+          update();
+          DialogUtil.simpleInfoDialog(dialogStackPane, "Thank You", "Request Deleted");
+        } else {
+          DialogUtil.simpleErrorDialog(dialogStackPane, "Error", "Cannot delete request");
+        }
+      } else {
+        DialogUtil.simpleErrorDialog(
+            dialogStackPane, "Error", "This reservation does not belong to you.");
+      }
+    }
+  }
+
   public void update() {
     try {
-      tblView.clear();
+      bedsCalendar.clear();
+      reflectCalendar.clear();
+      confCalendar.clear();
       if (myReservationsCheck.selectedProperty().get()) {
-        tblView.add(reservationDatabase.getObservableListByUser());
+        addAllRes(reservationDatabase.getObservableListByUser());
       } else {
-        tblView.add(reservationDatabase.getObservableList());
+        addAllRes(reservationDatabase.getObservableList());
       }
     } catch (Exception e) {
       e.printStackTrace();
       DialogUtil.simpleErrorDialog(
           dialogStackPane, "Error", "Failed to update room scheduler table");
+    }
+  }
+  // Creates a LocalDateTime from a calendar
+  private LocalDateTime makeLocalDateTime(Calendar cal) {
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH) + 1;
+    int day = cal.get(Calendar.DAY_OF_MONTH);
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+    int minute = cal.get(Calendar.MINUTE);
+    int second = cal.get(Calendar.SECOND);
+    return LocalDateTime.of(year, month, day, hour, minute, second);
+  }
+
+  private LocalDate makeLocalDate(Calendar cal) {
+    int year = cal.get(Calendar.YEAR);
+    int month = cal.get(Calendar.MONTH) + 1;
+    int day = cal.get(Calendar.DAY_OF_MONTH);
+    return LocalDate.of(year, month, day);
+  }
+
+  private LocalTime makeLocalTime(Calendar cal) {
+    int hour = cal.get(Calendar.HOUR_OF_DAY);
+    int minute = cal.get(Calendar.MINUTE);
+    int second = cal.get(Calendar.SECOND);
+    return LocalTime.of(hour, minute, second);
+  }
+  // Adds all of the reservations to the calendar
+  private void addAllRes(ObservableList<Reservation> reservations) {
+    SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+    Calendar calendar1 = Calendar.getInstance();
+    Calendar calendar2 = Calendar.getInstance();
+    String loc;
+    boolean admin = false;
+    if ("admin".equals(reservationDatabase.getLoggedIn().getTitle())) {
+      admin = true;
+    }
+    try {
+      for (Reservation r : reservations) {
+        loc = r.getAreaReserved();
+        calendar1.setTime(sdf.parse(r.getStartTime()));
+        calendar2.setTime(sdf.parse(r.getEndTime()));
+        String hour = String.format("%02d", calendar1.get(Calendar.HOUR));
+        if (calendar1.get(Calendar.HOUR) == 0) {
+          hour = "12";
+        }
+        String minute = String.format("%02d", calendar1.get(Calendar.MINUTE));
+        Entry<String> entry;
+        if (admin) {
+          entry =
+              new Entry<>(
+                  loc
+                      + " at "
+                      + hour
+                      + ":"
+                      + minute
+                      + " by: "
+                      + r.getRequestedBy()); // Names the entry
+        } else {
+          entry = new Entry<>(loc + " at " + hour + ":" + minute); // Names the entry
+        }
+        entry.setLocation(loc); // Sets the location
+        Interval interval =
+            new Interval(makeLocalDateTime(calendar1), makeLocalDateTime(calendar2));
+        entry.setInterval(interval); // Sets the time interval
+        if (loc.contains("On-Call Bed")) { // Sets the calendar for it to be added to
+          entry.setCalendar(bedsCalendar);
+        } else if (loc.contains("Reflection Room")) {
+          entry.setCalendar(reflectCalendar);
+        } else {
+          entry.setCalendar(confCalendar);
+        }
+      }
+    } catch (ParseException e) {
+      e.printStackTrace();
+      return;
     }
   }
 }

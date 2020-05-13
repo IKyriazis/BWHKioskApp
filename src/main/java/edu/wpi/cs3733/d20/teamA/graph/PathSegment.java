@@ -145,4 +145,35 @@ public class PathSegment {
 
     return seg;
   }
+
+  public String getFloorString(int floor) {
+    if (campus.equals(Campus.FAULKNER)) {
+      return Integer.toString(floor);
+    } else {
+      switch (floor) {
+        case 1:
+          return "L2";
+        case 2:
+          return "L1";
+        case 3:
+          return "G";
+        case 4:
+          return "1";
+        case 5:
+          return "2";
+        case 6:
+          return "3";
+        default:
+          return "";
+      }
+    }
+  }
+
+  @Override
+  public String toString() {
+    if (getCampus().equals(Campus.INTER)) {
+      return getCampus().toString();
+    }
+    return getCampus().toString() + " - " + getFloorString(getFloor());
+  }
 }

@@ -1,5 +1,6 @@
 package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
+import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -25,6 +26,8 @@ public class ServiceHomeController extends AbstractNavPaneController {
 
     // Build initial button pane
     buildButtonPane();
+
+    FXMLCache.preLoadFXML("views/reservation/Reservation.fxml");
   }
 
   private void buildButtonPane() {
