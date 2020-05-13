@@ -46,12 +46,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
         "views/service/InternalTransportRequest.fxml",
         "Internal\nTransport");
 
-    addButton(
-        buttonPane,
-        new FontIcon(FontAwesomeSolid.GLOBE),
-        "views/service/InterpreterRequest.fxml",
-        "Interpreters");
-
     addButton(buttonPane, new FontIcon(FontAwesomeSolid.HAMBURGER), "views/food/Food.fxml", "Food");
 
     addButton(
