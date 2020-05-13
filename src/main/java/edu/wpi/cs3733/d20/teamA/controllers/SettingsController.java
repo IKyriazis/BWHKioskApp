@@ -28,7 +28,7 @@ public class SettingsController extends AbstractController {
   @FXML private JFXRadioButton bfsButton;
   @FXML private JFXRadioButton dfsButton;
   @FXML private JFXRadioButton djikstraButton;
-  @FXML private JFXComboBox<Integer> logoutTimeBox;
+  @FXML private JFXComboBox<String> logoutTimeBox;
 
   private ToggleGroup toggleGroup;
 
@@ -79,7 +79,18 @@ public class SettingsController extends AbstractController {
           }
         });
 
-    logoutTimeBox.getItems().addAll(15, 30, 45, 60, 90);
+    logoutTimeBox
+        .getItems()
+        .addAll(
+            "15 Seconds",
+            "30 Seconds",
+            "45 Seconds",
+            "60 Seconds",
+            "90 Seconds",
+            "5 Minutes",
+            "10 Minutes");
+
+    logoutTimeBox.setValue("15 Seconds");
   }
 
   private Color getColor(String property) {
@@ -174,7 +185,14 @@ public class SettingsController extends AbstractController {
   @FXML
   private void updateLogoutTime() {
     SceneSwitcherController ssc = SceneSwitcherController.getInstanceOf();
-    ssc.setLogoutTime(logoutTimeBox.getValue());
+    String logOut = logoutTimeBox.getValue();
+    int time = 15;
+    if (logOut.contains("Seconds")) {
+      time = Integer.parseInt(logOut.replaceAll("[\\D]", ""));
+    } else if (logOut.contains("Minutes")) {
+      time = Integer.parseInt(logOut.replaceAll("[\\D]", "")) * 60;
+    }
+    ssc.setLogoutTime(time);
   }
 
   public void updateMapColor(ActionEvent actionEvent) {
