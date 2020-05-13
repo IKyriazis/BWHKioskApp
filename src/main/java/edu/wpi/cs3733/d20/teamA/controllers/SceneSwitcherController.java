@@ -684,6 +684,7 @@ public class SceneSwitcherController extends AbstractController {
                     pressedSignIn();
                   }
                 }
+                DialogUtil.killDialogs();
               }));
 
   @FXML

@@ -28,7 +28,7 @@ public class LaundryRequestController extends AbstractRequestController {
     setupDescriptionArea(descriptionArea);
 
     // Set up node box
-    setupNodeBox(nodeBox, submitButton);
+    setupNodeLocationBox(nodeBox, submitButton);
   }
 
   public void pressedSubmit() {

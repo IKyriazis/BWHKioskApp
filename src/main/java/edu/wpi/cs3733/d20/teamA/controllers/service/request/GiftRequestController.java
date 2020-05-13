@@ -34,7 +34,7 @@ public class GiftRequestController extends AbstractController {
     headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.GIFT));
     orderButton.setGraphic(new FontIcon(FontAwesomeRegular.ARROW_ALT_CIRCLE_RIGHT));
 
-    setupNodeBox(comboLocation, null);
+    setupNodeLocationBox(comboLocation, null);
   }
 
   @FXML
