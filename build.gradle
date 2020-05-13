@@ -162,7 +162,8 @@ def codeCoverageExcludes = [
         'edu.wpi.cs3733.d20.teamA.util.*',
         'edu.wpi.cs3733.d20.teamA.database.flower.*',
         'edu.wpi.cs3733.d20.teamA.Main.*',
-        'edu.wpi.cs3733.d20.teamA.graph.PathSegment'
+        'edu.wpi.cs3733.d20.teamA.graph.PathSegment',
+        'edu.wpi.cs3733.d20.teamA.memento.*'
 ]
 
 jacoco {

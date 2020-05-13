@@ -94,7 +94,7 @@ public class TestInterpreterDatabase {
 
     inventoryDatabase.addItem(ItemType.INTERPRETER, "Yash", 0, 0.0, null, "French");
 
-    String a = serviceDatabase.addServiceReq(ServiceType.INTERPRETER_REQ, "", "Yash", "");
+    String a = serviceDatabase.addServiceReq(ServiceType.JANITOR, "", "Yash", "");
     Assertions.assertEquals(1, serviceDatabase.getSize());
 
     serviceDatabase.deleteServReq(a);

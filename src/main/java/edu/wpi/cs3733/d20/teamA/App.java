@@ -15,6 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class App extends Application {
+  public FXMLLoader loader;
+  public Node rootPane;
+  public JFXDecorator decorator;
+  public Scene scene;
 
   @Override
   public void init() {
@@ -24,18 +28,18 @@ public class App extends Application {
   @Override
   public void start(Stage primaryStage) throws IOException {
     // Load FXML file
-    FXMLLoader loader = new FXMLLoader();
+    loader = new FXMLLoader();
 
     loader.setLocation(App.class.getResource("views/SceneSwitcher.fxml"));
-    Node rootPane = loader.load();
+    rootPane = loader.load();
     rootPane.setCache(true);
     rootPane.setCacheHint(CacheHint.SPEED);
 
     // Set up the stage
-    JFXDecorator decorator = new JFXDecorator(primaryStage, rootPane);
+    decorator = new JFXDecorator(primaryStage, rootPane);
     decorator.setCustomMaximize(true);
 
-    Scene scene = new Scene(decorator);
+    scene = new Scene(decorator);
     scene.getStylesheets().add(getClass().getResource("stylesheet.css").toExternalForm());
     ((HBox) decorator.getChildren().get(0))
         .getChildren()

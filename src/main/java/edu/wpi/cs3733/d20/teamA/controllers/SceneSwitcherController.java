@@ -18,6 +18,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -80,6 +82,7 @@ public class SceneSwitcherController extends AbstractController {
   private Date date;
 
   private static double logoutTime = 15;
+  private boolean inFocus = true;
 
   private static boolean settingsScene = false;
 
@@ -93,6 +96,18 @@ public class SceneSwitcherController extends AbstractController {
 
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);
+
+    rootPane
+        .focusedProperty()
+        .addListener(
+            new ChangeListener<Boolean>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends Boolean> observable, Boolean onHidden, Boolean onShow) {
+                timer.stop();
+                inFocus = onShow;
+              }
+            });
 
     // Bind background image to just outside the bounds of the window for proper formatting
     rootPane
@@ -671,9 +686,11 @@ public class SceneSwitcherController extends AbstractController {
           new KeyFrame(
               Duration.seconds(logoutTime),
               (v) -> {
-                pressedHome();
-                if (loggedIn == true) {
-                  pressedSignIn();
+                if (inFocus) {
+                  pressedHome();
+                  if (loggedIn == true) {
+                    pressedSignIn();
+                  }
                 }
                 DialogUtil.killDialogs();
               }));
@@ -681,6 +698,13 @@ public class SceneSwitcherController extends AbstractController {
   @FXML
   public void logoutTimer() {
     timer.stop();
+    timer.play();
+  }
+
+  @FXML
+  public void logoutTimerClick() {
+    timer.stop();
+    inFocus = true;
     timer.play();
   }
 
