@@ -81,6 +81,8 @@ public class SceneSwitcherController extends AbstractController {
 
   private static double logoutTime = 15;
 
+  private static boolean settingsScene = false;
+
   @FXML
   public void initialize() {
     // Setup instance
@@ -505,6 +507,8 @@ public class SceneSwitcherController extends AbstractController {
   @FXML
   public void pressedSettings() {
     pushScene("views/nav/Settings.fxml", TransitionType.FADE);
+    settingsScene = true;
+    settingsButton.setVisible(false);
   }
 
   private void login() {
@@ -536,7 +540,9 @@ public class SceneSwitcherController extends AbstractController {
     signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
 
     // Enable settings button & zoom it in
-    if (!settingsButton.isVisible() && "admin".equals(serviceDatabase.getLoggedIn().getTitle())) {
+    if (!settingsButton.isVisible()
+        && "admin".equals(serviceDatabase.getLoggedIn().getTitle())
+        && !settingsScene) {
       settingsButton.setVisible(true);
     } else if (!"admin".equals(serviceDatabase.getLoggedIn().getTitle())) {
       settingsButton.setVisible(false);
@@ -643,6 +649,8 @@ public class SceneSwitcherController extends AbstractController {
         }
       }
     }
+    // Tell settings scene not to show
+    settingsScene = false;
 
     pushScene(node, trans);
   }

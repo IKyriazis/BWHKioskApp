@@ -2,11 +2,8 @@ package edu.wpi.cs3733.d20.teamA.controllers.service.request;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
-import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
-import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -31,7 +28,8 @@ public class InterpreterRequestController extends AbstractRequestController {
   }
 
   public void pressedSubmit() {
-    Node location = getSelectedNode(locationBox);
+
+    /*Node location = getSelectedNode(locationBox);
     Employee interpreter = interpreterBox.getSelectionModel().getSelectedItem();
 
     if (location != null && interpreter != null) {
@@ -53,6 +51,6 @@ public class InterpreterRequestController extends AbstractRequestController {
           "No Room Selected", "Please select a room in the dropdown and try again");
     }
     locationBox.setValue(null);
-    interpreterBox.getSelectionModel().clearSelection();
+    interpreterBox.getSelectionModel().clearSelection();*/
   }
 }
