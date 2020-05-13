@@ -49,6 +49,7 @@ public class FoodRequestController extends AbstractController {
         event -> {
           event.consume();
           adminButton.setVisible(eDB.getLoggedIn() != null);
+          comboLocation.getSelectionModel().clearSelection();
         });
 
     setupNodeLocationBox(comboLocation, null);

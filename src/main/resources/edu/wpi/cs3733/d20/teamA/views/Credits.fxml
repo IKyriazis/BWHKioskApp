@@ -31,15 +31,21 @@
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
                      </padding></Label>
-                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text=" Secure Incident Reporting API - Team B" />
-                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Food Request API - Team P" />
-                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Gift Delivery Service Request API - Team L" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text=" Secure Incident Reporting - Team B" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Food Request - Team P" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Gift Delivery Service Request - Team L" />
                   <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="External APIs">
                      <padding>
                         <Insets bottom="10.0" top="10.0" />
                      </padding>
                   </Label>
-                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="other apis" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Calendar for on-call feature- CalendarFX" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Weather - OpenWeatherMap" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Fuzzy search algorithm - FuzzyWuzzy" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Communication with ardiuno (for RFID) - fazecast" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Text messaging - Twilio Programmable SMS" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Authentication - Google Authenticator" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Open CSV files - OpenCSV" />
                </children>
                <GridPane.margin>
                   <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

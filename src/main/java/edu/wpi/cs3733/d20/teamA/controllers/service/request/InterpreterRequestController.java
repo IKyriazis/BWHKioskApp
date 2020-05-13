@@ -7,12 +7,15 @@ import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class InterpreterRequestController extends AbstractRequestController {
+  @FXML private GridPane rootPane;
   @FXML private Label headerLabel;
   @FXML private JFXComboBox<Node> locationBox;
   @FXML private JFXComboBox<Employee> interpreterBox;
@@ -28,6 +31,14 @@ public class InterpreterRequestController extends AbstractRequestController {
 
     // Set up interpreter box
     setupEmployeeBox(interpreterBox, "interpreter");
+
+    rootPane.addEventHandler(
+            TabSwitchEvent.TAB_SWITCH,
+            event -> {
+              event.consume();
+              locationBox.setValue(null);
+              interpreterBox.getSelectionModel().clearSelection();
+            });
   }
 
   public void pressedSubmit() {
