@@ -17,13 +17,21 @@ import org.kordamp.ikonli.material.Material;
 public class ServiceHomeController extends AbstractNavPaneController {
   @FXML private AnchorPane rootPane;
   @FXML private GridPane buttonPane;
-  @FXML private VBox ServicesVBox;
-  @FXML private JFXButton ServicesBtn;
+  @FXML private VBox box;
+
+  private JFXButton servicesButton;
 
   public void initialize() {
+    // Create request viewer button
+    servicesButton = new JFXButton("Request Viewer", new FontIcon(FontAwesomeSolid.LIST));
+    servicesButton.getStyleClass().add("huge-text");
+    servicesButton.setOnAction(
+        event -> {
+          SceneSwitcherController.pushScene(
+              "views/service/RequestViewer.fxml", TransitionType.ZOOM);
+        });
+
     // Rebuild button pane when switching to this
-    ServicesVBox.setVisible(false);
-    ServicesBtn.setGraphic(new FontIcon(FontAwesomeSolid.LIST));
     rootPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
         event -> {
@@ -41,7 +49,6 @@ public class ServiceHomeController extends AbstractNavPaneController {
   private void buildButtonPane() {
     buttonPane.setAlignment(Pos.CENTER);
     buttonPane.getChildren().clear();
-    ServicesVBox.setVisible(false);
 
     // Services available to the public
     addButton(
@@ -62,7 +69,16 @@ public class ServiceHomeController extends AbstractNavPaneController {
 
     // Services available to employees
     if (eDB.getLoggedIn() != null) {
-      ServicesVBox.setVisible(true);
+      if (!box.getChildren().contains(servicesButton)) {
+        box.getChildren().add(servicesButton);
+      }
+      buttonPane
+          .widthProperty()
+          .addListener(
+              observable -> {
+                servicesButton.setPrefWidth(buttonPane.getWidth());
+                servicesButton.setPrefHeight(buttonPane.getHeight() / 4);
+              });
 
       String employeeTitle = eDB.getLoggedIn().getTitle();
 
@@ -149,6 +165,8 @@ public class ServiceHomeController extends AbstractNavPaneController {
           new FontIcon(FontAwesomeSolid.BROOM),
           "views/service/JanitorRequest.fxml",
           "Janitorial");
+    } else {
+      box.getChildren().remove(servicesButton);
     }
     equalizeButtonGrid(buttonPane);
   }
