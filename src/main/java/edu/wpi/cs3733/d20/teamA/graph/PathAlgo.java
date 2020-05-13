@@ -80,7 +80,10 @@ public abstract class PathAlgo implements IStrategyPath {
    * @return the distance in feet
    */
   private double pixelsToFeet(double distance) {
-    return distance * 0.238884;
+    if (graph.getCampus() == Campus.FAULKNER)
+      return distance * 0.238884; // Faulkner Scaling feet per pixel
+
+    return distance * 0.366174; // Main Campus Scaling feet per pixel
   }
 
   /**
@@ -148,12 +151,14 @@ public abstract class PathAlgo implements IStrategyPath {
       if (((angleDiff >= (Math.PI / 3)) && (angleDiff <= (2 * Math.PI / 3)))
           || ((angleDiff <= (-4 * Math.PI / 3)) && (angleDiff >= (-5 * Math.PI / 3)))) {
         directions.add(Direction.LEFT);
+        directions.add(Direction.NEXT);
       }
 
       // Right
       else if (((angleDiff <= (-Math.PI / 3)) && (angleDiff >= (-2 * Math.PI / 3)))
           || ((angleDiff >= (4 * Math.PI / 3)) && (angleDiff <= (5 * Math.PI / 3)))) {
         directions.add(Direction.RIGHT);
+        directions.add(Direction.NEXT);
       }
 
       // Slight Left
@@ -163,6 +168,7 @@ public abstract class PathAlgo implements IStrategyPath {
           || ((angleDiff >= (-4 * Math.PI / 3)) && (angleDiff <= (-7 * Math.PI / 6)))) {
 
         directions.add(Direction.SLIGHTLEFT);
+        directions.add(Direction.NEXT);
       }
 
       // Slight Right
@@ -172,6 +178,7 @@ public abstract class PathAlgo implements IStrategyPath {
           || ((angleDiff <= (4 * Math.PI / 3)) && (angleDiff >= (7 * Math.PI / 6)))) {
 
         directions.add(Direction.SLIGHTRIGHT);
+        directions.add(Direction.NEXT);
       } else {
         directions.add(Direction.NEXT);
       }
@@ -191,85 +198,92 @@ public abstract class PathAlgo implements IStrategyPath {
     }
 
     // Formulate the string of directions
-    for (int j = 0; j < directions.size(); j++) {
+    for (int k = 0, j = 0; j < directions.size(); j++, k++) {
       if (directions.get(j) == Direction.RIGHT) {
-        if (pathNodes.get(j).getType() != NodeType.HALL) {
+        if (pathNodes.get(k).getType() != NodeType.HALL) {
           textPath.add(
-              new Pair<>(pathNodes.get(j), "Turn right at " + pathNodes.get(j).getLongName()));
+              new Pair<>(pathNodes.get(k), "Turn right at " + pathNodes.get(k).getLongName()));
         } else {
-          textPath.add(new Pair<>(pathNodes.get(j), "Turn right"));
+          textPath.add(new Pair<>(pathNodes.get(k), "Turn right"));
         }
+        k--;
 
       } else if (directions.get(j) == Direction.LEFT) {
-        if (pathNodes.get(j).getType() != NodeType.HALL) {
+        if (pathNodes.get(k).getType() != NodeType.HALL) {
           textPath.add(
-              new Pair<>(pathNodes.get(j), "Turn left at " + pathNodes.get(j).getLongName()));
+              new Pair<>(pathNodes.get(k), "Turn left at " + pathNodes.get(k).getLongName()));
         } else {
-          textPath.add(new Pair<>(pathNodes.get(j), "Turn left "));
+          textPath.add(new Pair<>(pathNodes.get(k), "Turn left "));
         }
+        k--;
       } else if (directions.get(j) == Direction.SLIGHTLEFT) {
-        if (pathNodes.get(j).getType() != NodeType.HALL) {
+        if (pathNodes.get(k).getType() != NodeType.HALL) {
           textPath.add(
               new Pair<>(
-                  pathNodes.get(j), "Make a slight left at " + pathNodes.get(j).getLongName()));
+                  pathNodes.get(k), "Make a slight left at " + pathNodes.get(k).getLongName()));
         } else {
-          textPath.add(new Pair<>(pathNodes.get(j), "Make a slight left"));
+          textPath.add(new Pair<>(pathNodes.get(k), "Make a slight left"));
         }
+        k--;
       } else if (directions.get(j) == Direction.SLIGHTRIGHT) {
-        if (pathNodes.get(j).getType() != NodeType.HALL) {
+        if (pathNodes.get(k).getType() != NodeType.HALL) {
           textPath.add(
               new Pair<>(
-                  pathNodes.get(j), "Make a slight right at " + pathNodes.get(j).getLongName()));
+                  pathNodes.get(k), "Make a slight right at " + pathNodes.get(k).getLongName()));
         } else {
-          textPath.add(new Pair<>(pathNodes.get(j), "Make a slight right"));
+          textPath.add(new Pair<>(pathNodes.get(k), "Make a slight right"));
         }
+        k--;
       } else if (directions.get(j) == Direction.UP) {
         int sameLength = getSameLength(directions, j, Direction.UP);
 
         if (sameLength >= 1) {
+          k += sameLength - 1;
           j += sameLength - 1;
-          textPath.add(new Pair<>(pathNodes.get(j), "Go up " + sameLength + " floors"));
+          textPath.add(new Pair<>(pathNodes.get(k), "Go up " + sameLength + " floors"));
         } else {
-          textPath.add(new Pair<>(pathNodes.get(j), "Go up until destination"));
+          textPath.add(new Pair<>(pathNodes.get(k), "Go up until destination"));
           break;
         }
       } else if (directions.get(j) == Direction.DOWN) {
         int sameLength = getSameLength(directions, j, Direction.DOWN);
 
         if (sameLength >= 1) {
+          k += sameLength - 1;
           j += sameLength - 1;
-          textPath.add(new Pair<>(pathNodes.get(j), "Go down " + sameLength + " floors"));
+          textPath.add(new Pair<>(pathNodes.get(k), "Go down " + sameLength + " floors"));
         } else {
-          textPath.add(new Pair<>(pathNodes.get(j), "Go up until destination"));
+          textPath.add(new Pair<>(pathNodes.get(k), "Go up until destination"));
           break;
         }
 
       } else {
         // else if it's straight keep track of how many nodes it is straight for
         int sameLength = getSameLength(directions, j, Direction.NEXT);
-        double startX = pathNodes.get(j).getX();
-        double startY = pathNodes.get(j).getY();
+        double startX = pathNodes.get(k).getX();
+        double startY = pathNodes.get(k).getY();
 
         if (sameLength >= 1) {
           j += sameLength - 1;
-          double endX = pathNodes.get(j + 1).getX();
-          double endY = pathNodes.get(j + 1).getY();
+          k += sameLength - 1;
+          double endX = pathNodes.get(k + 1).getX();
+          double endY = pathNodes.get(k + 1).getY();
           double feet =
               pixelsToFeet(
                   (Math.sqrt((Math.pow(startX - endX, 2)) + (Math.pow(startY - endY, 2)))));
-          if (pathNodes.get(j + 1).getType() != NodeType.HALL) {
+          if (pathNodes.get(k + 1).getType() != NodeType.HALL) {
             textPath.add(
                 new Pair<>(
-                    pathNodes.get(j),
+                    pathNodes.get(k),
                     "Go straight for "
                         + (int) feet
                         + " feet until "
-                        + pathNodes.get(j + 1).getLongName()));
+                        + pathNodes.get(k + 1).getLongName()));
           } else {
-            textPath.add(new Pair<>(pathNodes.get(j), "Go straight for " + (int) feet + " feet"));
+            textPath.add(new Pair<>(pathNodes.get(k), "Go straight for " + (int) feet + " feet"));
           }
         } else {
-          textPath.add(new Pair<>(pathNodes.get(j), "Continue straight until destination"));
+          textPath.add(new Pair<>(pathNodes.get(k), "Continue straight until destination"));
           break;
         }
       }
