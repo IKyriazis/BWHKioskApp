@@ -6,12 +6,15 @@ import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class MedicineRequestController extends AbstractRequestController {
+  @FXML private GridPane rootPane;
   @FXML private Label headerLabel;
   @FXML private JFXTextField patientName;
   @FXML private JFXComboBox<Employee> doctorBox;
@@ -34,6 +37,18 @@ public class MedicineRequestController extends AbstractRequestController {
 
     // Set up node box
     setupNodeLocationBox(locationBox, submitButton);
+
+    rootPane.addEventHandler(
+            TabSwitchEvent.TAB_SWITCH,
+            event -> {
+              event.consume();
+              patientName.clear();
+              doctorBox.getSelectionModel().clearSelection();
+              medicineField.clear();
+              locationBox.setValue(null);
+              administerTime.getEditor().clear();
+              descriptionArea.clear();
+            });
   }
 
   @FXML
