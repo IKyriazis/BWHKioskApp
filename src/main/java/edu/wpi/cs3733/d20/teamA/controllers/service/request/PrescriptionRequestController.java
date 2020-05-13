@@ -72,7 +72,8 @@ public class PrescriptionRequestController extends AbstractRequestController {
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {
-      DialogUtil.simpleInfoDialog("Requested", "Request " + l + " Has Been Added");
+      // DialogUtil.simpleInfoDialog("Requested", "Request " + l + " Has Been Added");
+      DialogUtil.textingDialog(l);
       SceneSwitcherController.popScene();
     }
 
