@@ -10,8 +10,6 @@ public class TestServiceType {
   public void testType() {
     ServiceType type = ServiceType.getServiceType("laundry");
     Assertions.assertEquals("laundry", type.toString());
-    ServiceType type1 = ServiceType.getServiceType("interpret");
-    Assertions.assertEquals("interpret", type1.toString());
     ServiceType type2 = ServiceType.getServiceType("medicine");
     Assertions.assertEquals("medicine", type2.toString());
     ServiceType type3 = ServiceType.getServiceType("equipreq");
