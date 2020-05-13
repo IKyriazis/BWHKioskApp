@@ -82,7 +82,7 @@
                   </GridPane>
                </children>
             </VBox>
-            <VBox alignment="TOP_CENTER" spacing="50.0" GridPane.columnIndex="1">
+            <VBox alignment="TOP_CENTER" spacing="40.0" GridPane.columnIndex="1">
                <children>
                   <Label stylesheets="@../stylesheet.css" text="Pathfinding Algorithm">
                      <font>
@@ -93,17 +93,30 @@
                         <String fx:value="title-label" />
                      </styleClass>
                   </Label>
-                  <VBox spacing="35.0">
+                  <VBox spacing="10.0">
                      <children>
                         <JFXRadioButton fx:id="aStarButton" selected="true" styleClass="medium-text" stylesheets="@../stylesheet.css" text="A*" />
                         <JFXRadioButton fx:id="dfsButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Depth First Search" />
                         <JFXRadioButton fx:id="bfsButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Breadth First Search" />
                         <JFXRadioButton fx:id="djikstraButton" styleClass="medium-text" stylesheets="@../stylesheet.css" text="Djikstra" />
-                        <JFXComboBox fx:id="logoutTimeBox" onAction="#updateLogoutTime" promptText="Set Logout Time" />
                      </children>
                      <padding>
                         <Insets left="50.0" />
                      </padding>
+                  </VBox>
+                  <VBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <Label stylesheets="@../stylesheet.css" text="Logout Time">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                           <styleClass>
+                              <String fx:value="large-text" />
+                              <String fx:value="title-label" />
+                           </styleClass>
+                        </Label>
+                        <JFXComboBox fx:id="logoutTimeBox" onAction="#updateLogoutTime" promptText="Set Logout Time" />
+                     </children>
                   </VBox>
                </children>
             </VBox>
