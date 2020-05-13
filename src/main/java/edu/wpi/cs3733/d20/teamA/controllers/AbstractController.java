@@ -240,6 +240,12 @@ public abstract class AbstractController {
             new NodeAutoCompleteHandler(box, toFocus, Graph.getAllValidDestinationList()));
   }
 
+  protected void setupNodeLocationBox(JFXComboBox<Node> box, javafx.scene.Node toFocus) {
+    box.setItems(Graph.getRoomLocationList());
+    box.getEditor()
+        .setOnKeyTyped(new NodeAutoCompleteHandler(box, toFocus, Graph.getRoomLocationList()));
+  }
+
   protected Node getSelectedNode(JFXComboBox<Node> nodeBox) {
     Optional<Node> selected =
         nodeBox.getItems().stream()

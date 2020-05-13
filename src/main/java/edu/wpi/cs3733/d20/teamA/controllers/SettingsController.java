@@ -1,9 +1,11 @@
 package edu.wpi.cs3733.d20.teamA.controllers;
 
 import com.jfoenix.controls.JFXColorPicker;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXRadioButton;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.graph.*;
+import edu.wpi.cs3733.d20.teamA.util.ImageCache;
 import java.io.*;
 import javafx.css.CssParser;
 import javafx.css.Rule;
@@ -15,15 +17,18 @@ import javafx.scene.Scene;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.paint.Color;
 
-public class SettingsController {
+public class SettingsController extends AbstractController {
   @FXML private JFXColorPicker primaryPicker;
   @FXML private JFXColorPicker primaryLightPicker;
   @FXML private JFXColorPicker primaryDarkPicker;
+  @FXML private JFXColorPicker mapDarkPicker;
+  @FXML private JFXColorPicker mapLightPicker;
 
   @FXML private JFXRadioButton aStarButton;
   @FXML private JFXRadioButton bfsButton;
   @FXML private JFXRadioButton dfsButton;
   @FXML private JFXRadioButton djikstraButton;
+  @FXML private JFXComboBox<String> logoutTimeBox;
 
   private ToggleGroup toggleGroup;
 
@@ -36,6 +41,8 @@ public class SettingsController {
     primaryPicker.setValue(getColor("-primary-color"));
     primaryLightPicker.setValue(getColor("-primary-color-light"));
     primaryDarkPicker.setValue(getColor("-primary-color-dark"));
+    mapDarkPicker.setValue(Color.rgb(198, 177, 150));
+    mapLightPicker.setValue(Color.rgb(220, 189, 156));
 
     // Set radio buttons and toggle group
     toggleGroup = new ToggleGroup();
@@ -71,6 +78,19 @@ public class SettingsController {
             MapSettings.setPath(new Djikstras(Graph.getInstance(Campus.FAULKNER)));
           }
         });
+
+    logoutTimeBox
+        .getItems()
+        .addAll(
+            "15 Seconds",
+            "30 Seconds",
+            "45 Seconds",
+            "60 Seconds",
+            "90 Seconds",
+            "5 Minutes",
+            "10 Minutes");
+
+    logoutTimeBox.setValue("15 Seconds");
   }
 
   private Color getColor(String property) {
@@ -117,7 +137,7 @@ public class SettingsController {
 
   @FXML
   private void updateTheme(ActionEvent event) {
-    // Write theme to temporary file
+
     File themeFile = new File(themePath);
     try {
       boolean go = true;
@@ -160,5 +180,25 @@ public class SettingsController {
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  @FXML
+  private void updateLogoutTime() {
+    SceneSwitcherController ssc = SceneSwitcherController.getInstanceOf();
+    String logOut = logoutTimeBox.getValue();
+    int time = 15;
+    if (logOut.contains("Seconds")) {
+      time = Integer.parseInt(logOut.replaceAll("[\\D]", ""));
+    } else if (logOut.contains("Minutes")) {
+      time = Integer.parseInt(logOut.replaceAll("[\\D]", "")) * 60;
+    }
+    ssc.setLogoutTime(time);
+  }
+
+  public void updateMapColor(ActionEvent actionEvent) {
+    MapSettings.setLightColor(mapLightPicker.getValue());
+    MapSettings.setDarkColor(mapDarkPicker.getValue());
+
+    ImageCache.recolorFloorImages(mapDarkPicker.getValue(), mapLightPicker.getValue());
   }
 }

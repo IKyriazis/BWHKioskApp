@@ -7,13 +7,16 @@ import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.material.Material;
 
 public class LaundryRequestController extends AbstractRequestController {
+  @FXML private GridPane rootPane;
   @FXML private Label headerLabel;
   @FXML private JFXComboBox<Node> nodeBox;
   @FXML private JFXButton submitButton;
@@ -28,7 +31,15 @@ public class LaundryRequestController extends AbstractRequestController {
     setupDescriptionArea(descriptionArea);
 
     // Set up node box
-    setupNodeBox(nodeBox, submitButton);
+    setupNodeLocationBox(nodeBox, submitButton);
+
+    rootPane.addEventHandler(
+            TabSwitchEvent.TAB_SWITCH,
+            event -> {
+              event.consume();
+              nodeBox.setValue(null);
+              descriptionArea.clear();
+            });
   }
 
   public void pressedSubmit() {

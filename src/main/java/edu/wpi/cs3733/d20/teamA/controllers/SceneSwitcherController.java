@@ -18,6 +18,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -79,7 +81,8 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
-  private double logoutTime = 15;
+  private static double logoutTime = 15;
+  private boolean inFocus = true;
 
   @FXML
   public void initialize() {
@@ -91,6 +94,18 @@ public class SceneSwitcherController extends AbstractController {
 
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);
+
+    rootPane
+        .focusedProperty()
+        .addListener(
+            new ChangeListener<Boolean>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends Boolean> observable, Boolean onHidden, Boolean onShow) {
+                timer.stop();
+                inFocus = onShow;
+              }
+            });
 
     // Bind background image to just outside the bounds of the window for proper formatting
     rootPane
@@ -536,8 +551,10 @@ public class SceneSwitcherController extends AbstractController {
     signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
 
     // Enable settings button & zoom it in
-    if (!settingsButton.isVisible()) {
+    if (!settingsButton.isVisible() && "admin".equals(serviceDatabase.getLoggedIn().getTitle())) {
       settingsButton.setVisible(true);
+    } else if (!"admin".equals(serviceDatabase.getLoggedIn().getTitle())) {
+      settingsButton.setVisible(false);
     }
 
     ZoomIn settingsTrans = new ZoomIn(settingsButton);
@@ -661,15 +678,34 @@ public class SceneSwitcherController extends AbstractController {
           new KeyFrame(
               Duration.seconds(logoutTime),
               (v) -> {
-                pressedHome();
-                if (loggedIn == true) {
-                  pressedSignIn();
+                if (inFocus) {
+                  pressedHome();
+                  if (loggedIn == true) {
+                    pressedSignIn();
+                  }
                 }
+                DialogUtil.killDialogs();
               }));
 
   @FXML
   public void logoutTimer() {
     timer.stop();
     timer.play();
+  }
+
+  @FXML
+  public void logoutTimerClick() {
+    timer.stop();
+    inFocus = true;
+    timer.play();
+  }
+
+  public void setLogoutTime(double d) {
+    logoutTime = d;
+    timer.setDelay(Duration.seconds(logoutTime - 15));
+  }
+
+  public static SceneSwitcherController getInstanceOf() {
+    return instance;
   }
 }

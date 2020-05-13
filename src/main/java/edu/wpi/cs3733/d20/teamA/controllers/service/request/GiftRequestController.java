@@ -6,6 +6,7 @@ import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.AbstractController;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import edu.wpi.cs3733.d20.teamL.GiftServiceRequest;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
@@ -34,7 +35,14 @@ public class GiftRequestController extends AbstractController {
     headerLabel.setGraphic(new FontIcon(FontAwesomeSolid.GIFT));
     orderButton.setGraphic(new FontIcon(FontAwesomeRegular.ARROW_ALT_CIRCLE_RIGHT));
 
-    setupNodeBox(comboLocation, null);
+    setupNodeLocationBox(comboLocation, null);
+
+    rootPane.addEventHandler(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          comboLocation.getSelectionModel().clearSelection();
+        });
   }
 
   @FXML

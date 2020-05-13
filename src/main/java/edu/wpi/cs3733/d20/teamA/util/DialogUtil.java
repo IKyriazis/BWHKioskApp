@@ -6,9 +6,12 @@ import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.events.JFXDialogEvent;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -16,6 +19,27 @@ import org.kordamp.ikonli.javafx.FontIcon;
 
 public class DialogUtil {
   private static StackPane defaultStackPane;
+  private static final MouseEvent movedEvent =
+      new MouseEvent(
+          MouseEvent.MOUSE_MOVED,
+          0,
+          0,
+          0,
+          0,
+          MouseButton.PRIMARY,
+          0,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          null);
+  private static final ArrayList<JFXDialog> dialogs = new ArrayList<>();
 
   private static JFXButton createCloseButton() {
     JFXButton closeButton = new JFXButton("Close");
@@ -26,17 +50,50 @@ public class DialogUtil {
     return closeButton;
   }
 
-  private static void simpleDialog(
+  private static JFXDialog simpleDialog(
       StackPane dialogPane, String heading, String body, FontIcon headingIcon) {
     try {
       Label headingLabel = new Label(heading);
       headingLabel.setGraphic(headingIcon);
 
       JFXDialogLayout layout = new JFXDialogLayout();
+      layout.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       layout.setHeading(headingLabel);
       layout.setBody(new Text(body));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.TOP);
+      dialogs.add(dialog);
+      dialog.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
 
       JFXButton closeButton = createCloseButton();
       closeButton.setOnAction(
@@ -46,45 +103,49 @@ public class DialogUtil {
 
       layout.setActions(closeButton);
       dialog.show();
+      return dialog;
     } catch (Exception e) {
       e.printStackTrace();
+      return null;
     }
   }
 
-  public static void simpleInfoDialog(StackPane dialogPane, String heading, String body) {
-    simpleDialog(dialogPane, heading, body, new FontIcon(FontAwesomeSolid.INFO));
+  public static JFXDialog simpleInfoDialog(StackPane dialogPane, String heading, String body) {
+    return simpleDialog(dialogPane, heading, body, new FontIcon(FontAwesomeSolid.INFO));
   }
 
-  public static void simpleErrorDialog(StackPane dialogPane, String heading, String body) {
-    simpleDialog(dialogPane, heading, body, new FontIcon(FontAwesomeSolid.EXCLAMATION_TRIANGLE));
+  public static JFXDialog simpleErrorDialog(StackPane dialogPane, String heading, String body) {
+    return simpleDialog(
+        dialogPane, heading, body, new FontIcon(FontAwesomeSolid.EXCLAMATION_TRIANGLE));
   }
 
-  public static void simpleInfoDialog(String heading, String body) {
+  public static JFXDialog simpleInfoDialog(String heading, String body) {
     if (defaultStackPane == null) {
-      return;
+      return null;
     }
 
-    simpleInfoDialog(defaultStackPane, heading, body);
+    return simpleInfoDialog(defaultStackPane, heading, body);
   }
 
-  public static void simpleErrorDialog(String heading, String body) {
+  public static JFXDialog simpleErrorDialog(String heading, String body) {
     if (defaultStackPane == null) {
-      return;
+      return null;
     }
 
-    simpleErrorDialog(defaultStackPane, heading, body);
+    return simpleErrorDialog(defaultStackPane, heading, body);
   }
 
-  public static void complexDialog(
+  public static JFXDialog complexDialog(
       String heading,
       String path,
       boolean includeCloseButton,
       EventHandler<? super JFXDialogEvent> closeHandler,
       IDialogController controller) {
-    complexDialog(defaultStackPane, heading, path, includeCloseButton, closeHandler, controller);
+    return complexDialog(
+        defaultStackPane, heading, path, includeCloseButton, closeHandler, controller);
   }
 
-  public static void complexDialog(
+  public static JFXDialog complexDialog(
       StackPane dialogPane,
       String heading,
       String path,
@@ -97,9 +158,42 @@ public class DialogUtil {
       loader.setLocation(App.class.getResource(path));
 
       JFXDialogLayout layout = new JFXDialogLayout();
+      layout.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       layout.setHeading(new Text(heading));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.BOTTOM);
+      dialogs.add(dialog);
+      dialog.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       dialog.setOnDialogClosed(closeHandler);
       if (controller != null) {
         controller.setDialog(dialog);
@@ -119,13 +213,24 @@ public class DialogUtil {
       }
 
       dialog.show();
+      return dialog;
     } catch (Exception e) {
       e.printStackTrace();
-      simpleErrorDialog(dialogPane, "Error", "Unable to load complex dialog for: " + path);
+      return simpleErrorDialog(dialogPane, "Error", "Unable to load complex dialog for: " + path);
     }
   }
 
   public static void setDefaultStackPane(StackPane defaultStackPane) {
     DialogUtil.defaultStackPane = defaultStackPane;
+  }
+
+  public static void killDialogs() {
+    dialogs.forEach(
+        jfxDialog -> {
+          if (jfxDialog.isVisible()) {
+            jfxDialog.close();
+          }
+        });
+    dialogs.clear();
   }
 }
