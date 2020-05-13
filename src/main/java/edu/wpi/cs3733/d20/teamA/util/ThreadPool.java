@@ -7,7 +7,7 @@ import javafx.application.Platform;
 public class ThreadPool {
   private static ExecutorService executor =
       Executors.newFixedThreadPool(
-          5,
+          500,
           r -> {
             Thread t = Executors.defaultThreadFactory().newThread(r);
             t.setDaemon(true);

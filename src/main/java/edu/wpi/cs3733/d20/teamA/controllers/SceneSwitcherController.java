@@ -523,7 +523,7 @@ public class SceneSwitcherController extends AbstractController {
   public void pressedSettings() {
     pushScene("views/nav/Settings.fxml", TransitionType.FADE);
     settingsScene = true;
-    settingsButton.setVisible(false);
+    //settingsButton.setVisible(false);
   }
 
   private void login() {
