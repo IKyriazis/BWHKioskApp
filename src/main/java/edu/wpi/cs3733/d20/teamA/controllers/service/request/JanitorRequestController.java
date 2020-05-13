@@ -38,13 +38,13 @@ public class JanitorRequestController extends AbstractRequestController {
     priorityBox.getItems().addAll("High", "Medium", "Low");
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              nodeBox.setValue(null);
-              descriptionArea.clear();
-              priorityBox.getSelectionModel().clearSelection();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          nodeBox.setValue(null);
+          descriptionArea.clear();
+          priorityBox.getSelectionModel().clearSelection();
+        });
   }
 
   public void pressedSubmit() {

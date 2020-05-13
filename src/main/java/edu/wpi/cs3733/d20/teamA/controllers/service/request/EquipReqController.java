@@ -39,14 +39,14 @@ public class EquipReqController extends AbstractRequestController {
     priCombo.getItems().addAll("High", "Medium", "Low");
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              nodeBox.setValue(null);
-              itemField.clear();
-              qtyField.clear();
-              priCombo.getSelectionModel().clearSelection();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          nodeBox.setValue(null);
+          itemField.clear();
+          qtyField.clear();
+          priCombo.getSelectionModel().clearSelection();
+        });
   }
 
   public void pressedSubmit() {
