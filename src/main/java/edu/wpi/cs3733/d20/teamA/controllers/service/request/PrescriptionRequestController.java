@@ -5,9 +5,8 @@ import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
-import java.sql.Timestamp;
-
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.sql.Timestamp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -43,17 +42,17 @@ public class PrescriptionRequestController extends AbstractRequestController {
         .addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              txtPatientName.clear();
-              txtPharmacy.clear();
-              boxDoctorName.getSelectionModel().clearSelection();
-              txtPrescription.clear();
-              numberOfRefillsBox.getSelectionModel().clearSelection();
-              txtDosage.clear();
-              txtNotes.clear();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          txtPatientName.clear();
+          txtPharmacy.clear();
+          boxDoctorName.getSelectionModel().clearSelection();
+          txtPrescription.clear();
+          numberOfRefillsBox.getSelectionModel().clearSelection();
+          txtDosage.clear();
+          txtNotes.clear();
+        });
   }
 
   @FXML

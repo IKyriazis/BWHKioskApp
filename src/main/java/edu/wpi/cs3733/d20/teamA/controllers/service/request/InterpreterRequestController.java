@@ -33,12 +33,12 @@ public class InterpreterRequestController extends AbstractRequestController {
     setupEmployeeBox(interpreterBox, "interpreter");
 
     rootPane.addEventHandler(
-            TabSwitchEvent.TAB_SWITCH,
-            event -> {
-              event.consume();
-              locationBox.setValue(null);
-              interpreterBox.getSelectionModel().clearSelection();
-            });
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          locationBox.setValue(null);
+          interpreterBox.getSelectionModel().clearSelection();
+        });
   }
 
   public void pressedSubmit() {

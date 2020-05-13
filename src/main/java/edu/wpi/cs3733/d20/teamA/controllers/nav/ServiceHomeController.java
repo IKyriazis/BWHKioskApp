@@ -1,5 +1,8 @@
 package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
+import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
+import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.event.ActionEvent;
@@ -14,9 +17,13 @@ import org.kordamp.ikonli.material.Material;
 public class ServiceHomeController extends AbstractNavPaneController {
   @FXML private AnchorPane rootPane;
   @FXML private GridPane buttonPane;
+  @FXML private VBox ServicesVBox;
+  @FXML private JFXButton ServicesBtn;
 
   public void initialize() {
     // Rebuild button pane when switching to this
+    ServicesVBox.setVisible(false);
+    ServicesBtn.setGraphic(new FontIcon(FontAwesomeSolid.LIST));
     rootPane.addEventHandler(
         TabSwitchEvent.TAB_SWITCH,
         event -> {
@@ -34,6 +41,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
   private void buildButtonPane() {
     buttonPane.setAlignment(Pos.CENTER);
     buttonPane.getChildren().clear();
+    ServicesVBox.setVisible(false);
 
     // Services available to the public
     addButton(
@@ -54,6 +62,7 @@ public class ServiceHomeController extends AbstractNavPaneController {
 
     // Services available to employees
     if (eDB.getLoggedIn() != null) {
+      ServicesVBox.setVisible(true);
 
       String employeeTitle = eDB.getLoggedIn().getTitle();
 
@@ -140,17 +149,11 @@ public class ServiceHomeController extends AbstractNavPaneController {
           new FontIcon(FontAwesomeSolid.BROOM),
           "views/service/JanitorRequest.fxml",
           "Janitorial");
-
-      addButton(
-          buttonPane,
-          new FontIcon(FontAwesomeSolid.LIST),
-          "views/service/RequestViewer.fxml",
-          "Service\nRequests");
     }
     equalizeButtonGrid(buttonPane);
   }
 
   public void openServices(ActionEvent actionEvent) {
-
+    SceneSwitcherController.pushScene("views/service/RequestViewer.fxml", TransitionType.ZOOM);
   }
 }
