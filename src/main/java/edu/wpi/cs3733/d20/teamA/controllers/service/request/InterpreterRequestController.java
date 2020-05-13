@@ -24,10 +24,10 @@ public class InterpreterRequestController extends AbstractRequestController {
     submitBtn.setGraphic(new FontIcon(FontAwesomeSolid.CHECK_CIRCLE));
 
     // Set up node box
-    setupNodeBox(locationBox, submitBtn);
+    setupNodeLocationBox(locationBox, submitBtn);
 
     // Set up interpreter box
-    setupEmployeeBox(interpreterBox);
+    setupEmployeeBox(interpreterBox, "interpreter");
   }
 
   public void pressedSubmit() {

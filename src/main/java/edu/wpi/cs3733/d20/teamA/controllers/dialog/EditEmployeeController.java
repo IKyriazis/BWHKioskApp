@@ -19,6 +19,7 @@ public class EditEmployeeController extends AbstractController implements IDialo
   @FXML private JFXPasswordField cPass;
   @FXML private JFXPasswordField oldPass;
   @FXML private JFXComboBox title;
+  @FXML private JFXTextField EditPager;
 
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
@@ -50,6 +51,7 @@ public class EditEmployeeController extends AbstractController implements IDialo
     lName.setText(eDB.getLastName(employee.getUsername()));
     uName.setText(employee.getUsername());
     title.getSelectionModel().select(eDB.getTitle(employee.getUsername()));
+    EditPager.setText(eDB.getPager(employee.getUsername()));
   }
 
   @FXML
@@ -57,7 +59,8 @@ public class EditEmployeeController extends AbstractController implements IDialo
     if (fName.getText().isEmpty()
         || lName.getText().isEmpty()
         || uName.getText().isEmpty()
-        || title.getValue().toString().equals("Choose one:")) {
+        || title.getValue().toString().equals("Choose one:")
+        || EditPager.getText().isEmpty()) {
       // make popup that says one or more fields are empty
       DialogUtil.simpleInfoDialog(
           "Empty fields", "You left some fields empty. Please make sure they are all filled.");
@@ -106,6 +109,7 @@ public class EditEmployeeController extends AbstractController implements IDialo
     pass.clear();
     oldPass.clear();
     cPass.clear();
+    EditPager.clear();
   }
 
   @Override

@@ -29,7 +29,7 @@ public class ITRequestController extends AbstractRequestController {
     setupDescriptionArea(descriptionArea);
 
     // Set up node box
-    setupNodeBox(nodeBox, submitButton);
+    setupNodeLocationBox(nodeBox, submitButton);
 
     // Set up category box
     categoryBox.getItems().addAll("Wifi", "Email", "Login", "Kiosk", "Pager", "Other");

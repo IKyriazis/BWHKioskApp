@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="rootPane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController">
+<StackPane fx:id="rootPane" onKeyPressed="#logoutTimer" onKeyReleased="#logoutTimer" onMouseMoved="#logoutTimer" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController">
    <children>
       <AnchorPane>
          <children>
@@ -43,7 +43,7 @@
             <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <GridPane fx:id="funPane" minHeight="75.0" prefHeight="75.0" prefWidth="1332.0" style="-fx-background-color: -primary-color-dark;">
+            <GridPane fx:id="funPane" maxHeight="75.0" minHeight="75.0" pickOnBounds="false" prefHeight="75.0" prefWidth="1332.0" style="-fx-background-color: -primary-color-dark;">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -53,11 +53,16 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label fx:id="tempLabel" alignment="CENTER_RIGHT" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
-                     <padding>
-                        <Insets right="15.0" />
-                     </padding>
-                  </Label>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="75.0" prefWidth="249.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT">
+                     <children>
+                        <Label fx:id="tempLabel" alignment="CENTER_RIGHT" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text">
+                           <padding>
+                              <Insets right="15.0" />
+                           </padding>
+                        </Label>
+                        <Label fx:id="weatherIconLabel" style="-fx-text-fill: -primary-color-dark-text;" styleClass="huge-text" />
+                     </children>
+                  </HBox>
                   <GridPane prefWidth="200.0" GridPane.columnIndex="1">
                     <columnConstraints>
                       <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -88,6 +93,9 @@
                <effect>
                   <DropShadow height="24.0" radius="11.5" width="24.0" />
                </effect>
+               <padding>
+                  <Insets right="20.0" />
+               </padding>
             </GridPane>
             <StackPane pickOnBounds="false" GridPane.rowIndex="1">
                <children>

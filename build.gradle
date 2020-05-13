@@ -49,6 +49,7 @@ dependencies {
             'org.kordamp.ikonli:ikonli-fontawesome5-pack:11.4.0',
             'org.kordamp.ikonli:ikonli-material-pack:11.4.0',
             'org.kordamp.ikonli:ikonli-icomoon-pack:11.4.0',
+            'org.kordamp.ikonli:ikonli-weathericons-pack:11.4.0',
 
             'com.google.inject:guice:4.2.2',
 
@@ -69,8 +70,16 @@ dependencies {
             'de.taimos:totp:1.0',
             'commons-codec:commons-codec:1.10',
 
-            // Team R Appointment Request API
-            'edu.wpi.cs3733.c20.teamR:AppointmentRequest:5.0.0',
+            // FuzzyWuzzy Fuzzy Search Algorithm
+            'me.xdrop:fuzzywuzzy:1.3.1',
+
+            // Twilio Text Messaging
+            group: "com.twilio.sdk", name: "twilio", version: "7.50.0",
+
+            // AWS Text Messaging
+            platform('software.amazon.awssdk:bom:2.13.14'),
+            'software.amazon.awssdk:kinesis',
+
 
             //stuff for OpenWeatherMaps API
             'org.jetbrains:annotations:13.0',
@@ -86,16 +95,17 @@ dependencies {
             // for comms with arduino
             'com.fazecast:jSerialComm:2.6.2',
 
-            // Gluon Maps
-            'com.gluonhq:maps:2.0.0-ea+1',
-            'com.gluonhq.attach:util:4.0.7',
-            'com.gluonhq.attach:storage:4.0.7',
-            'com.gluonhq.attach:position:4.0.7',
+            //CalendarFX API
+            'com.calendarfx:view:11.8.2',
 
-            //Flower API
-            group: 'edu.wpi.cs3733.d20.teamA', name: 'TeamAFlowerRequest', version:'1.1.0'
+            'edu.wpi.cs3733.d20.teamA:TeamAFlowerRequest:1.1.2',
+            //Food API
+            [group: 'edu.wpi.cs3733.d20.teamP', name: 'FoodRequest', version:'1.1.0'],
+            //Gift API
+            [group: 'edu.wpi.cs3733.d20.teamL', name: 'GiftDeliveryServiceRequest', version:'1.0.0'],
+            //Security report API
+            [group: 'edu.wpi.cs3733.d20.teamB', name: 'IncidentReporting', version:'1.0.0']
     )
-    //compile files("src/main/resources/edu/wpi/cs3733/d20/teamA/APIFlower.jar")
 
     testImplementation(
             'org.junit.jupiter:junit-jupiter:5.6.0',
@@ -110,7 +120,7 @@ dependencies {
 
 javafx {
     version = "11.0.2"
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.graphics', 'javafx.media']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.swing', 'javafx.graphics', 'javafx.media', 'javafx.web']
 }
 
 
@@ -143,7 +153,9 @@ def codeCoverageExcludes = [
         'edu.wpi.cs3733.d20.teamA.controls.*',
         'edu.wpi.cs3733.d20.teamA.map.MapCanvas',
         'edu.wpi.cs3733.d20.teamA.util.*',
-        'edu.wpi.cs3733.d20.teamA.database.flower.*'
+        'edu.wpi.cs3733.d20.teamA.database.flower.*',
+        'edu.wpi.cs3733.d20.teamA.Main.*',
+        'edu.wpi.cs3733.d20.teamA.graph.PathSegment'
 ]
 
 jacoco {

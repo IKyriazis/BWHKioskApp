@@ -24,7 +24,7 @@ public class GenericViewerController extends AbstractRequestController {
     locationField.setText(request.getLocation());
     requestorField.setText(request.getMadeReqName());
 
-    setupEmployeeBox(assigneeBox);
+    setupEmployeeBox(assigneeBox, "");
     // Locate employee object corresponding to assigned
     eDB.getObservableList().stream()
         .filter(employee1 -> employee1.getUsername().equals(request.getDidReqName()))
