@@ -1,10 +1,12 @@
 package edu.wpi.cs3733.d20.teamA.controllers.service.edit;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceRequest;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -15,11 +17,12 @@ public class MedicineViewerController extends AbstractViewerController {
   @FXML private GenericViewerController genericController;
   @FXML private Label headerLabel;
   @FXML private JFXButton saveButton;
-
+  @FXML private JFXButton deleteButton;
   @FXML private JFXTextField patientNameField;
   @FXML private JFXTextField doctorNameField;
   @FXML private JFXTextField medicineField;
   @FXML private JFXTimePicker administerTimePicker;
+  @FXML private JFXDatePicker datePicker;
 
   public MedicineViewerController(ServiceRequest req) {
     super(req);
@@ -42,6 +45,12 @@ public class MedicineViewerController extends AbstractViewerController {
     doctorNameField.setText(additional[1]);
     medicineField.setText(additional[2]);
     administerTimePicker.setValue(LocalTime.parse(additional[3]));
+    LocalDate d =
+        LocalDate.of(
+            Integer.parseInt(additional[4]),
+            Integer.parseInt(additional[5]),
+            Integer.parseInt(additional[6]));
+    datePicker.setValue(d);
   }
 
   public void pressedSave() {
@@ -63,6 +72,11 @@ public class MedicineViewerController extends AbstractViewerController {
     serviceDatabase.setAdditional(req.getReqID(), newAdditional);
 
     // Fire tab switch event forcing table to update
+    headerLabel.fireEvent(new TabSwitchEvent());
+  }
+
+  public void pressedDelete() {
+    serviceDatabase.deleteServReq(req.getReqID());
     headerLabel.fireEvent(new TabSwitchEvent());
   }
 

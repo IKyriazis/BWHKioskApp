@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="650.0" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.flower.FlowerServiceController">
+<AnchorPane fx:id="rootPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="325.0" prefWidth="750.0" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.flower.FlowerServiceController">
    <children>
       <StackPane fx:id="dialogPane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane maxHeight="325.0" maxWidth="650.0" vgap="25.0">
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="25.0">
                <columnConstraints>
                   <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" />
                </columnConstraints>
@@ -58,7 +58,7 @@
                               <Font size="24.0" />
                            </font>
                         </JFXButton>
-                        <JFXComboBox fx:id="comboLocation" prefWidth="200.0" />
+                        <JFXComboBox fx:id="comboLocation" prefWidth="300.0" promptText="Destination" />
                         <JFXButton fx:id="trackButton" buttonType="RAISED" minWidth="200.0" onAction="#trackOrder" text="Track Order" GridPane.columnIndex="1" GridPane.rowIndex="1">
                            <font>
                               <Font size="24.0" />

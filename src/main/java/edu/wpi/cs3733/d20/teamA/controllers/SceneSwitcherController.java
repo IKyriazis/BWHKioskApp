@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXSpinner;
 import com.jfoenix.controls.JFXTextField;
 import de.taimos.totp.TOTP;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
-import edu.wpi.cs3733.d20.teamA.database.employee.EmployeeTitle;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
@@ -19,6 +18,8 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,10 +30,12 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 import net.aksingh.owmjapis.core.OWM;
 import net.aksingh.owmjapis.model.CurrentWeather;
+import net.aksingh.owmjapis.model.param.Weather;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Hex;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.weathericons.WeatherIcons;
 
 public class SceneSwitcherController extends AbstractController {
   @FXML private ImageView backgroundImage;
@@ -63,6 +66,7 @@ public class SceneSwitcherController extends AbstractController {
   @FXML private Label timeLabel;
   @FXML private Label dateLabel;
   @FXML private Label tempLabel;
+  @FXML private Label weatherIconLabel;
 
   private static SceneSwitcherController instance;
 
@@ -77,6 +81,11 @@ public class SceneSwitcherController extends AbstractController {
   private String username;
   private Date date;
 
+  private static double logoutTime = 15;
+  private boolean inFocus = true;
+
+  private static boolean settingsScene = false;
+
   @FXML
   public void initialize() {
     // Setup instance
@@ -85,24 +94,20 @@ public class SceneSwitcherController extends AbstractController {
     // Make it so top bar is actually on top of everything.
     funPane.toFront();
 
-    // Create the employee table if it doesn't exist
-    if (eDB.getSize() == -1 || eDB.getSize() == 0) {
-      eDB.createTables();
-      eDB.addEmployee("111111", "Amethyst", "Asguardians", "admin", "admin", EmployeeTitle.ADMIN);
-      eDB.addEmployee("222222", "Yash", "Patel", "staff", "staff", EmployeeTitle.NURSE);
-      eDB.addEmployee("Brennan", "Aubuchaun", "baub", "baUb578", EmployeeTitle.INTERPRETER);
-      eDB.addEmployee("Cory", "Helmuth", "CLHelmuth77", "!Lov3MyPiano2", EmployeeTitle.NURSE);
-      eDB.addEmployee("Eva", "Labbe", "ELLabbe", "CluBP3nGuin3", EmployeeTitle.JANITOR);
-      eDB.addEmployee("Dean", "Winchester", "WinDean", "catNipRox2", EmployeeTitle.DOCTOR);
-      eDB.addEmployee("Stella", "Simmons", "Ssimmons", "gaLaxY6", EmployeeTitle.RECEPTIONIST);
-      eDB.addEmployee("Yolanda", "Daniels", "YDaniels", "SpoodRman3", EmployeeTitle.RETAIL);
-      // create account with rfid
-      eDB.addEmployeeGA(
-          "Ioannis", "Kyriazis", "ioannisky", "Ioannisky1", EmployeeTitle.ADMIN, "7100250198");
-    }
-
     // Set default dialog pane
     DialogUtil.setDefaultStackPane(rootPane);
+
+    rootPane
+        .focusedProperty()
+        .addListener(
+            new ChangeListener<Boolean>() {
+              @Override
+              public void changed(
+                  ObservableValue<? extends Boolean> observable, Boolean onHidden, Boolean onShow) {
+                timer.stop();
+                inFocus = onShow;
+              }
+            });
 
     // Bind background image to just outside the bounds of the window for proper formatting
     rootPane
@@ -162,14 +167,20 @@ public class SceneSwitcherController extends AbstractController {
     // Sometimes buttons start selected for some reason
     rootPane.requestFocus();
 
+    // Setup date and time
+    // Create new date
     this.date = new Date();
+    // Get the current date and format it
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
     this.dateLabel.setText(dateFormat.format(this.date));
+
+    // Call bind to time functions to update weather and time
     bindToTime();
     bindToTime2();
   }
 
   private void bindToTime() {
+    // Create a new timeline object
     Timeline timeline =
         new Timeline(
             new KeyFrame(
@@ -177,17 +188,22 @@ public class SceneSwitcherController extends AbstractController {
                 new EventHandler<ActionEvent>() {
                   @Override
                   public void handle(ActionEvent actionEvent) {
+                    // Get the current date and time
                     Calendar time = Calendar.getInstance();
+                    // Create a format for the time so it is pretty
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm aa");
+                    // Set the time to the label
                     timeLabel.setText(simpleDateFormat.format(time.getTime()));
                   }
                 }),
+            // Make it update every second so the time is accurate
             new KeyFrame(Duration.seconds(1)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
 
   private void bindToTime2() {
+    // Create a new timeline
     Timeline timeline =
         new Timeline(
             new KeyFrame(
@@ -195,20 +211,80 @@ public class SceneSwitcherController extends AbstractController {
                 new EventHandler<ActionEvent>() {
                   @Override
                   public void handle(ActionEvent actionEvent) {
+                    // Create a new openweathermaps object
+                    // Note this uses Maddie's API Key pls don't steal my identity
                     OWM owm = new OWM("75fc9ba2793ec8f828c04ab93cc3437c");
                     try {
+                      // Get the current weather by coordinates of Boston weather station
                       CurrentWeather cwd = owm.currentWeatherByCoords(42.3584, -71.0598);
+                      // Make a list of current weather: format Weather[conditionId, mainInfo,
+                      // moreInfo, iconCode]
+                      List<Weather> w = cwd.getWeatherList();
+                      // Get the current weather's condition code
+                      int condCode = w.get(0).getConditionId();
+                      // Get the icon code to display the icon in the corner
+                      String iconCode = w.get(0).getIconCode();
+
+                      if (iconCode != null) {
+                        switch (iconCode) {
+                          case "01d":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.DAY_SUNNY));
+                            break;
+                          case "01n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.NIGHT_CLEAR));
+                          case "02d":
+                          case "03d":
+                          case "04d":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.DAY_CLOUDY));
+                            break;
+                          case "02n":
+                          case "03n":
+                          case "04n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.NIGHT_CLOUDY));
+                            break;
+                          case "09d":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.DAY_SHOWERS));
+                            break;
+                          case "09n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.NIGHT_SHOWERS));
+                          case "10d":
+                          case "10n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.RAIN));
+                            break;
+                          case "11d":
+                          case "11n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.THUNDERSTORM));
+                            break;
+                          case "13d":
+                          case "13n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.SNOW));
+                            break;
+                          case "50d":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.DAY_FOG));
+                            break;
+                          case "50n":
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.NIGHT_FOG));
+                            break;
+                          default:
+                            weatherIconLabel.setGraphic(new FontIcon(WeatherIcons.METEOR));
+                        }
+                      }
+                      // Get the current temperature
                       Double d = cwd.getMainData().getTemp();
+                      // Convert the temperature from kelvin to fahrenheit
                       double f = ((d.doubleValue() - 273.15) * (9.0 / 5.0)) + 32.0;
                       int t = (int) Math.rint(f);
                       String tem = t + "";
+                      // Set the text of the label to the temperature and add degree symbol to make
+                      // it pretty
                       tempLabel.setText(tem + (char) 0x00B0 + " F");
                     } catch (Exception e) {
                       e.printStackTrace();
                     }
                   }
                 }),
-            new KeyFrame(Duration.seconds(3600)));
+            // Have the temperature and icon update every 15 mins
+            new KeyFrame(Duration.seconds(900)));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
@@ -310,6 +386,8 @@ public class SceneSwitcherController extends AbstractController {
     if (loginTransitioning) {
       return;
     }
+
+    stopRFID();
 
     loginTransitioning = true;
 
@@ -444,6 +522,8 @@ public class SceneSwitcherController extends AbstractController {
   @FXML
   public void pressedSettings() {
     pushScene("views/nav/Settings.fxml", TransitionType.FADE);
+    settingsScene = true;
+    settingsButton.setVisible(false);
   }
 
   private void login() {
@@ -475,8 +555,12 @@ public class SceneSwitcherController extends AbstractController {
     signInButton.setGraphic(new FontIcon(FontAwesomeSolid.SIGN_OUT_ALT));
 
     // Enable settings button & zoom it in
-    if (!settingsButton.isVisible()) {
+    if (!settingsButton.isVisible()
+        && "admin".equals(serviceDatabase.getLoggedIn().getTitle())
+        && !settingsScene) {
       settingsButton.setVisible(true);
+    } else if (!"admin".equals(serviceDatabase.getLoggedIn().getTitle())) {
+      settingsButton.setVisible(false);
     }
 
     ZoomIn settingsTrans = new ZoomIn(settingsButton);
@@ -580,6 +664,8 @@ public class SceneSwitcherController extends AbstractController {
         }
       }
     }
+    // Tell settings scene not to show
+    settingsScene = false;
 
     pushScene(node, trans);
   }
@@ -592,6 +678,42 @@ public class SceneSwitcherController extends AbstractController {
   }
 
   public void openAbout(ActionEvent actionEvent) {
-    pushScene("views/AboutPage.fxml", TransitionType.ZOOM);
+    pushScene("views/About.fxml", TransitionType.ZOOM);
+  }
+
+  Timeline timer =
+      new Timeline(
+          new KeyFrame(
+              Duration.seconds(logoutTime),
+              (v) -> {
+                if (inFocus) {
+                  pressedHome();
+                  if (loggedIn == true) {
+                    pressedSignIn();
+                  }
+                }
+                DialogUtil.killDialogs();
+              }));
+
+  @FXML
+  public void logoutTimer() {
+    timer.stop();
+    timer.play();
+  }
+
+  @FXML
+  public void logoutTimerClick() {
+    timer.stop();
+    inFocus = true;
+    timer.play();
+  }
+
+  public void setLogoutTime(double d) {
+    logoutTime = d;
+    timer.setDelay(Duration.seconds(logoutTime - 15));
+  }
+
+  public static SceneSwitcherController getInstanceOf() {
+    return instance;
   }
 }

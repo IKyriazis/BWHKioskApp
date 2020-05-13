@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="rounded-pane" stylesheets="@../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.nav.AboutPageController">
+   <children>
+      <GridPane alignment="CENTER" prefHeight="400.0" prefWidth="600.0" styleClass="rounded-pane" stylesheets="@../stylesheet.css">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <VBox alignment="TOP_CENTER" stylesheets="@../stylesheet.css" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" stylesheets="@../stylesheet.css" text="Credits" textAlignment="CENTER">
+                     <styleClass>
+                        <String fx:value="title-label" />
+                        <String fx:value="large-text" />
+                     </styleClass>
+                  </Label>
+                  <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="CS3733-D20 Software Engineering APIs">
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding></Label>
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text=" Secure Incident Reporting - Team B" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Food Request - Team P" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Gift Delivery Service Request - Team L" />
+                  <Label styleClass="medium-text" stylesheets="@../stylesheet.css" text="External APIs">
+                     <padding>
+                        <Insets bottom="10.0" top="10.0" />
+                     </padding>
+                  </Label>
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Calendar for on-call feature- CalendarFX" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Weather - OpenWeatherMap" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Fuzzy search algorithm - FuzzyWuzzy" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Communication with ardiuno (for RFID) - fazecast" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Text messaging - Twilio Programmable SMS" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Authentication - Google Authenticator" />
+                  <Label styleClass="small-text" stylesheets="@../stylesheet.css" text="Open CSV files - OpenCSV" />
+               </children>
+               <GridPane.margin>
+                  <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+               </GridPane.margin>
+            </VBox>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

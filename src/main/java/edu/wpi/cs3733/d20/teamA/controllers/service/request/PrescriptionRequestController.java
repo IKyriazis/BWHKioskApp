@@ -5,20 +5,23 @@ import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.database.employee.Employee;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import java.sql.Timestamp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class PrescriptionRequestController extends AbstractRequestController {
+  @FXML private GridPane rootPane;
   @FXML private Label headerLabel;
   @FXML private JFXTextField txtPatientName;
   @FXML private JFXComboBox<Employee> boxDoctorName;
   @FXML private JFXTextField txtPrescription;
   @FXML private JFXTextField txtPharmacy;
   @FXML private JFXTextField txtDosage;
-  @FXML private JFXTextField txtNumberOfRefills;
+  @FXML private JFXComboBox<String> numberOfRefillsBox;
   @FXML private JFXTextArea txtNotes;
   @FXML private JFXButton submitButton;
 
@@ -31,7 +34,25 @@ public class PrescriptionRequestController extends AbstractRequestController {
     setupDescriptionArea(txtNotes);
 
     // Set up employee box
-    setupEmployeeBox(boxDoctorName);
+    setupEmployeeBox(boxDoctorName, "doctor");
+
+    // Set up Number of Refills
+    numberOfRefillsBox
+        .getItems()
+        .addAll("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12");
+
+    rootPane.addEventHandler(
+        TabSwitchEvent.TAB_SWITCH,
+        event -> {
+          event.consume();
+          txtPatientName.clear();
+          txtPharmacy.clear();
+          boxDoctorName.getSelectionModel().clearSelection();
+          txtPrescription.clear();
+          numberOfRefillsBox.getSelectionModel().clearSelection();
+          txtDosage.clear();
+          txtNotes.clear();
+        });
   }
 
   @FXML
@@ -43,7 +64,7 @@ public class PrescriptionRequestController extends AbstractRequestController {
         || txtPrescription.getText().isEmpty()
         || txtPharmacy.getText().isEmpty()
         || txtDosage.getText().isEmpty()
-        || txtNumberOfRefills.getText().isEmpty()
+        || numberOfRefillsBox.getSelectionModel().isEmpty()
         || txtNotes.getText().isEmpty()) {
       DialogUtil.simpleInfoDialog(
           "Empty Fields", "Please fully fill out the service request form and try again.");
@@ -53,7 +74,7 @@ public class PrescriptionRequestController extends AbstractRequestController {
     String patientName = txtPatientName.getText();
     String prescription = txtPrescription.getText();
     String dosage = txtDosage.getText();
-    String numberOfRefills = txtNumberOfRefills.getText();
+    String numberOfRefills = numberOfRefillsBox.getSelectionModel().getSelectedItem();
     String pharmacy = txtPharmacy.getText();
 
     Timestamp timestamp = new Timestamp(0);
@@ -67,7 +88,8 @@ public class PrescriptionRequestController extends AbstractRequestController {
     if (l == null) {
       DialogUtil.simpleErrorDialog("Database Error", "Cannot add request");
     } else {
-      DialogUtil.simpleInfoDialog("Requested", "Request " + l + " Has Been Added");
+      // DialogUtil.simpleInfoDialog("Requested", "Request " + l + " Has Been Added");
+      DialogUtil.textingDialog(l);
       SceneSwitcherController.popScene();
     }
 
@@ -75,7 +97,7 @@ public class PrescriptionRequestController extends AbstractRequestController {
     txtPharmacy.clear();
     boxDoctorName.getSelectionModel().clearSelection();
     txtPrescription.clear();
-    txtNumberOfRefills.clear();
+    numberOfRefillsBox.getSelectionModel().clearSelection();
     txtDosage.clear();
     txtNotes.clear();
   }

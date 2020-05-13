@@ -2,8 +2,8 @@ package edu.wpi.cs3733.d20.teamA.database;
 
 import edu.wpi.cs3733.d20.teamA.controls.ITableable;
 import edu.wpi.cs3733.d20.teamA.database.service.equipreq.EquipRequest;
+import edu.wpi.cs3733.d20.teamA.database.service.gift.Gift;
 import edu.wpi.cs3733.d20.teamA.database.service.internaltransport.InternalTransportRequest;
-import edu.wpi.cs3733.d20.teamA.database.service.interpreter.InterpreterRequest;
 import edu.wpi.cs3733.d20.teamA.database.service.itticket.ITTicket;
 import edu.wpi.cs3733.d20.teamA.database.service.janitor.JanitorService;
 import edu.wpi.cs3733.d20.teamA.database.service.laundry.Laundry;
@@ -58,15 +58,10 @@ public class TableItemFactory {
             timeOfReq,
             status,
             additional); // Additional hold name because it doenst check table
-      case "interpret":
-        return new InterpreterRequest(
-            reqID,
-            description,
-            additional,
-            location,
-            status); // Hold interpreter name in description to avoid the employee ID restriction
       case "rxreq":
         return new Prescription(reqID, description, additional);
+      case "gift":
+        return new Gift(additional);
       default:
         return null;
     }

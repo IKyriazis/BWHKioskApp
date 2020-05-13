@@ -35,7 +35,8 @@ public class TestInterpreterDatabase {
     employeesDatabase = new EmployeesDatabase(conn);
     inventoryDatabase = new InventoryDatabase(conn);
     serviceDatabase = new ServiceDatabase(conn);
-    employeesDatabase.addEmployee("Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN);
+    employeesDatabase.addEmployee(
+        "Yash", "Patel", "yppatel", "YashPatel1", EmployeeTitle.ADMIN, "7738495743l");
     employeesDatabase.logIn("yppatel", "YashPatel1");
   }
 
@@ -93,7 +94,7 @@ public class TestInterpreterDatabase {
 
     inventoryDatabase.addItem(ItemType.INTERPRETER, "Yash", 0, 0.0, null, "French");
 
-    String a = serviceDatabase.addServiceReq(ServiceType.INTERPRETER_REQ, "", "Yash", "");
+    String a = serviceDatabase.addServiceReq(ServiceType.JANITOR, "", "Yash", "");
     Assertions.assertEquals(1, serviceDatabase.getSize());
 
     serviceDatabase.deleteServReq(a);

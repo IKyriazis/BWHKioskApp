@@ -12,7 +12,7 @@ import javafx.fxml.FXML;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
-public class EmployeeEditController extends AbstractController implements IDialogController {
+public class CreateAcctController extends AbstractController implements IDialogController {
 
   @FXML private JFXTextField fName;
   @FXML private JFXTextField lName;
@@ -21,6 +21,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
   @FXML private JFXPasswordField cPass;
   @FXML private JFXCheckBox addRFID;
   @FXML private JFXComboBox title;
+  @FXML private JFXTextField IPager;
 
   @FXML private JFXButton submit;
   @FXML private JFXButton clear;
@@ -86,11 +87,31 @@ public class EmployeeEditController extends AbstractController implements IDialo
       return;
     }
 
+    if (!IPager.getText().isEmpty()) {
+      if (IPager.getText().length() != 10) {
+        DialogUtil.simpleInfoDialog(
+            "Invalid Length", "Please enter a pager number consisting of 10 digits.");
+        return;
+      }
+      if (!IPager.getText().matches("[0-9]+")) {
+        DialogUtil.simpleInfoDialog(
+            "Invalid Pager Number", "Please enter a pager number consisting of only digits.");
+        return;
+      }
+    }
+
     ThreadPool.runBackgroundTask(
         () -> {
-          String secretKey = "";
-          // must add rfid card if the user checks they want to add
-          // an rfid card
+          String secretKey =
+              eDB.addEmployeeGA(
+                  fName.getText(),
+                  lName.getText(),
+                  uName.getText(),
+                  cPass.getText(),
+                  EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
+          if (!IPager.getText().isEmpty()) {
+            eDB.addPagerNum(uName.getText(), IPager.getText());
+          }
           if (addRFID.isSelected()) {
             // popup message saying that we are scanning for rfid card
             Platform.runLater(
@@ -99,7 +120,6 @@ public class EmployeeEditController extends AbstractController implements IDialo
                   DialogUtil.simpleErrorDialog("Started Scanning", "We are looking for your card.");
                 });
             String rfid = scanRFID();
-
             if (rfid != null) {
               // if the rfid card is associated with a user it will return the username which is not
               // null
@@ -109,39 +129,29 @@ public class EmployeeEditController extends AbstractController implements IDialo
                     () -> {
                       DialogUtil.simpleErrorDialog(
                           "Duplicate Card", "There is another account associated with this card.");
+                      clearFields();
                     });
+                // delete the employee we just made as we want to start from scratch if the rfid
+                // messes up
+                eDB.deleteEmployee(uName.getText());
+                return;
               } else {
-                // else if the username is null it means no one has been assigned that card
-                // so go ahead and assign it
-                secretKey =
-                    eDB.addEmployeeGA(
-                        fName.getText(),
-                        lName.getText(),
-                        uName.getText(),
-                        cPass.getText(),
-                        EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()),
-                        rfid);
-                clearFields();
+                eDB.addRFID(uName.getText(), rfid);
               }
             } else {
               Platform.runLater(
                   () -> {
                     DialogUtil.simpleErrorDialog(
                         "Read Fail", "There was an error reading the card please try again");
+                    clearFields();
                   });
-              clearFields();
+              // delete the employee we just made as we want to start from scratch if the rfid
+              // messes up
+              eDB.deleteEmployee(uName.getText());
+              return;
             }
-          } else {
-            secretKey =
-                eDB.addEmployeeGA(
-                    fName.getText(),
-                    lName.getText(),
-                    uName.getText(),
-                    cPass.getText(),
-                    EmployeeTitle.valueOf(title.getValue().toString().toUpperCase()));
-            clearFields();
           }
-          String companyName = "Amethyst Asgardians";
+
           String barCodeUrl =
               getGoogleAuthenticatorBarCode(secretKey, uName.getText(), companyName);
           if (!secretKey.isEmpty()) {
@@ -154,6 +164,7 @@ public class EmployeeEditController extends AbstractController implements IDialo
                       true,
                       null,
                       new QRDialogController(barCodeUrl));
+                  clearFields();
                 });
           }
         });
@@ -166,6 +177,8 @@ public class EmployeeEditController extends AbstractController implements IDialo
     title.setValue("Choose one:");
     pass.clear();
     cPass.clear();
+    IPager.clear();
+    addRFID.setSelected(false);
   }
 
   @Override

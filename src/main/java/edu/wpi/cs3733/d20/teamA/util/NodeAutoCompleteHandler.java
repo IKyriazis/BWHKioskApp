@@ -3,13 +3,15 @@ package edu.wpi.cs3733.d20.teamA.util;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.skins.JFXComboBoxListViewSkin;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import me.xdrop.fuzzywuzzy.FuzzySearch;
+import me.xdrop.fuzzywuzzy.model.BoundExtractedResult;
 
 public class NodeAutoCompleteHandler implements EventHandler<KeyEvent> {
   private final JFXComboBox<Node> box;
@@ -51,18 +53,24 @@ public class NodeAutoCompleteHandler implements EventHandler<KeyEvent> {
       }
       toFocus.requestFocus();
     } else {
-      List<Node> matches =
-          startingList.stream()
-              .filter(
-                  node ->
-                      node.toString()
-                          .toLowerCase()
-                          .contains(box.getEditor().getText().toLowerCase()))
-              .collect(Collectors.toList());
-      box.setItems(FXCollections.observableArrayList(matches));
-      box.setVisibleRowCount(Math.min(12, matches.size()));
+
+      ArrayList<Node> nodesList = new ArrayList<>(startingList);
+      List<BoundExtractedResult<Node>> fuzzyMatch =
+          FuzzySearch.extractTop(box.getEditor().getText(), nodesList, x -> x.toString(), 12, 50);
+      ArrayList<Node> matches = new ArrayList<>();
+      for (BoundExtractedResult<Node> node : fuzzyMatch) {
+        Node aMatch = node.getReferent();
+        matches.add(aMatch);
+      }
+
+      box.setItems(FXCollections.observableArrayList(matches)); // used to be matches
+      box.setVisibleRowCount(Math.min(12, matches.size())); // used to be matches.size()
       if (box.getVisibleRowCount() > 0) {
         box.show();
+      }
+      if (box.getEditor().getText().isEmpty()) {
+        box.setItems(startingList);
+        box.setVisibleRowCount(12);
       }
     }
   }

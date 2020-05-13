@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXTextArea?>
-<?import com.jfoenix.controls.JFXTextField?>
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.service.request.PrescriptionRequestController">
+<GridPane fx:id="rootPane" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="rounded-pane" stylesheets="@../../stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wpi.cs3733.d20.teamA.controllers.service.request.PrescriptionRequestController">
   <columnConstraints>
       <ColumnConstraints maxWidth="-Infinity" />
   </columnConstraints>
@@ -71,7 +63,7 @@
                               <JFXTextField fx:id="txtPharmacy" labelFloat="true" promptText="Pharmacy" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                               <JFXTextField fx:id="txtPrescription" labelFloat="true" promptText="Prescription" GridPane.rowIndex="1" />
                               <JFXTextField fx:id="txtDosage" labelFloat="true" promptText="Dosage" GridPane.rowIndex="2" />
-                              <JFXTextField fx:id="txtNumberOfRefills" labelFloat="true" promptText="Number of Refills" GridPane.rowIndex="3" />
+                              <JFXComboBox fx:id="numberOfRefillsBox" labelFloat="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Number of Refills" GridPane.rowIndex="3" />
                            </children>
                         </GridPane>
                         <JFXButton fx:id="submitButton" onAction="#pressedSubmit" text="Submit" />
