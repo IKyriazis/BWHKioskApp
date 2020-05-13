@@ -390,6 +390,7 @@ public class SimpleMapController extends AbstractController {
       if (phoneNumber != null && phoneNumber.length() >= 10) {
         sendTextMessage(phoneNumber, path);
       }
+      phoneNumberField.clear();
     }
   }
 

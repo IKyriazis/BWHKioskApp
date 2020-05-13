@@ -9,9 +9,12 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.dialog.IDialogController;
+import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
@@ -21,6 +24,28 @@ public class DialogUtil {
   private static StackPane defaultStackPane;
   private static final String ACCOUNT_SID = "AC809fda5395cc3a459bc3555e6477ba72";
   private static final String AUTH_TOKEN = "215f4ff302e84eccd3e7838c51d86506";
+
+  private static final MouseEvent movedEvent =
+      new MouseEvent(
+          MouseEvent.MOUSE_MOVED,
+          0,
+          0,
+          0,
+          0,
+          MouseButton.PRIMARY,
+          0,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          true,
+          false,
+          false,
+          null);
+  private static final ArrayList<JFXDialog> dialogs = new ArrayList<>();
 
   private static JFXButton createCloseButton() {
     JFXButton closeButton = new JFXButton("Close");
@@ -47,10 +72,43 @@ public class DialogUtil {
       headingLabel.setGraphic(headingIcon);
 
       JFXDialogLayout layout = new JFXDialogLayout();
+      layout.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       layout.setHeading(headingLabel);
       layout.setBody(new Text(body));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.TOP);
+      dialogs.add(dialog);
+      dialog.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
 
       JFXButton closeButton = createCloseButton();
       closeButton.setOnAction(
@@ -115,9 +173,42 @@ public class DialogUtil {
       loader.setLocation(App.class.getResource(path));
 
       JFXDialogLayout layout = new JFXDialogLayout();
+      layout.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      layout.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       layout.setHeading(new Text(heading));
 
       JFXDialog dialog = new JFXDialog(dialogPane, layout, JFXDialog.DialogTransition.BOTTOM);
+      dialogs.add(dialog);
+      dialog.setOnMouseMoved(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnMouseClicked(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyPressed(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
+      dialog.setOnKeyReleased(
+          event -> {
+            dialogPane.fireEvent(movedEvent);
+          });
       dialog.setOnDialogClosed(closeHandler);
       if (controller != null) {
         controller.setDialog(dialog);
@@ -218,5 +309,15 @@ public class DialogUtil {
 
   public static void setDefaultStackPane(StackPane defaultStackPane) {
     DialogUtil.defaultStackPane = defaultStackPane;
+  }
+
+  public static void killDialogs() {
+    dialogs.forEach(
+        jfxDialog -> {
+          if (jfxDialog.isVisible()) {
+            jfxDialog.close();
+          }
+        });
+    dialogs.clear();
   }
 }

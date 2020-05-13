@@ -5,13 +5,16 @@ import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.database.service.ServiceType;
 import edu.wpi.cs3733.d20.teamA.graph.Node;
 import edu.wpi.cs3733.d20.teamA.util.DialogUtil;
+import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 public class InternalTransportRequestController extends AbstractRequestController {
+  @FXML private GridPane rootPane;
   @FXML private Label headerLabel;
   @FXML private JFXComboBox<Node> pickupLocationBox;
   @FXML private JFXComboBox<Node> destinationLocationBox;
@@ -35,6 +38,14 @@ public class InternalTransportRequestController extends AbstractRequestControlle
 
     // Set the progress to 0
     progressBar.setProgress(0);
+
+    rootPane.addEventHandler(
+            TabSwitchEvent.TAB_SWITCH,
+            event -> {
+              event.consume();
+              pickupLocationBox.setValue(null);
+              destinationLocationBox.setValue(null);
+            });
   }
 
   public void pressedSubmitBtn() {
