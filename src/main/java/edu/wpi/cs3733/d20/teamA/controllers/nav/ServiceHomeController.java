@@ -2,6 +2,7 @@ package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -147,5 +148,9 @@ public class ServiceHomeController extends AbstractNavPaneController {
           "Service\nRequests");
     }
     equalizeButtonGrid(buttonPane);
+  }
+
+  public void openServices(ActionEvent actionEvent) {
+
   }
 }
