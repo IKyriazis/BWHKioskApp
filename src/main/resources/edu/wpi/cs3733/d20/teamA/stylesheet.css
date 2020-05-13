@@ -24,6 +24,7 @@
 
     -secondary-color-dark: white;
     -secondary-color-dark-text: rgba(0, 0, 0, 0.92);
+
 }
 
 .tab .tab-label {
@@ -280,4 +281,10 @@
 #laundryLabel {
     -fx-font-family: "Roboto";
     -fx-font-size: 18pt;
+}
+
+.button:hover {
+    -fx-background-color: -primary-color-dark;
+    -fx-text-fill: -primary-color-dark-text;
+    -fx-font-weight: bold;
 }
