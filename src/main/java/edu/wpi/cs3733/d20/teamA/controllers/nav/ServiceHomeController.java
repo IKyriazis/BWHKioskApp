@@ -1,17 +1,15 @@
 package edu.wpi.cs3733.d20.teamA.controllers.nav;
 
 import com.jfoenix.controls.JFXButton;
+import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.controllers.SceneSwitcherController;
 import edu.wpi.cs3733.d20.teamA.controls.TransitionType;
-import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
-import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
-import javafx.event.ActionEvent;
-import edu.wpi.cs3733.d20.teamA.App;
 import edu.wpi.cs3733.d20.teamA.util.FXMLCache;
 import edu.wpi.cs3733.d20.teamA.util.TabSwitchEvent;
 import edu.wpi.cs3733.d20.teamC.InterpreterRequest;
 import java.io.IOException;
 import java.util.function.BooleanSupplier;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
